@@ -4,7 +4,7 @@ import { BrokerState, BrokerStore } from './broker.store';
 
 @Injectable({ providedIn: 'root' })
 export class BrokerQuery extends QueryEntity<BrokerState> {
-    constructor(protected brokerStore: BrokerStore) {
-        super(brokerStore);
-    }
+   constructor(protected brokerStore: BrokerStore) {
+      super(brokerStore);
+   }
 }

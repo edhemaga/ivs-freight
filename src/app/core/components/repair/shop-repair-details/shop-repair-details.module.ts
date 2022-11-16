@@ -9,18 +9,18 @@ import { ShopRepairCardViewComponent } from '../shop-repair-card-view/shop-repai
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-    declarations: [
-        ShopRepairDetailsComponent,
-        ShopRepairDetailsItemComponent,
-        ShopRepairCardViewComponent,
-    ],
-    exports: [ShopRepairCardViewComponent, SharedModule],
-    imports: [
-        CommonModule,
-        ShopRepairDetailsRoutes,
-        TruckassistProgressExpirationModule,
-        SharedModule,
-        TruckassistTableModule,
-    ],
+   declarations: [
+      ShopRepairDetailsComponent,
+      ShopRepairDetailsItemComponent,
+      ShopRepairCardViewComponent,
+   ],
+   exports: [ShopRepairCardViewComponent, SharedModule],
+   imports: [
+      CommonModule,
+      ShopRepairDetailsRoutes,
+      TruckassistProgressExpirationModule,
+      SharedModule,
+      TruckassistTableModule,
+   ],
 })
 export class ShopRepairDetailsModule {}

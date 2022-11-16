@@ -1,331 +1,316 @@
 <div class="cards-item-wrapper-1">
-    <app-ta-details-header-card
-        [cardDetailsDate]="broker?.createdAt | formatDateP"
-        [tooltipNext]="'Next Broker'"
-        [tooltipPrevious]="'Previous Broker'"
-        [searchInputName]="'Search Broker'"
-        [dateChecked]="'5 days ago'"
-        [options]="brokerDropdowns"
-        (selectValue)="onSelectBroker($event)"
-        (changeEvent)="onChangeBroker($event)"
-    >
-        <div class="repair-information-wrapper">
-            <div class="repair-information-item">
-                <span class="header-bottom">{{ broker?.dbaName }}</span>
+   <app-ta-details-header-card
+      [cardDetailsDate]="broker?.createdAt | formatDateP"
+      [tooltipNext]="'Next Broker'"
+      [tooltipPrevious]="'Previous Broker'"
+      [searchInputName]="'Search Broker'"
+      [dateChecked]="'5 days ago'"
+      [options]="brokerDropdowns"
+      (selectValue)="onSelectBroker($event)"
+      (changeEvent)="onChangeBroker($event)"
+   >
+      <div class="repair-information-wrapper">
+         <div class="repair-information-item">
+            <span class="header-bottom">{{ broker?.dbaName }}</span>
+         </div>
+         <div class="repair-information-item">
+            <span
+               tooltipBackground="#6c6c6c"
+               ngbTooltip
+               mainTooltip="Call"
+               position="top"
+               class="semi-tooltip"
+            >
+               <svg-icon
+                  class="repair-icon"
+                  src="assets/svg/common/ic_phone.svg"
+               ></svg-icon>
+            </span>
+            <app-ta-copy [copyValue]="broker?.phone"></app-ta-copy>
+         </div>
+         <div *ngIf="broker.email" class="repair-information-item">
+            <span
+               tooltipBackground="#6c6c6c"
+               ngbTooltip
+               mainTooltip="Send Email"
+               position="top"
+               class="semi-tooltip"
+            >
+               <svg-icon
+                  class="repair-icon"
+                  src="assets/svg/common/ic_email.svg"
+               ></svg-icon>
+            </span>
+            <app-ta-copy [copyValue]="broker?.email"></app-ta-copy>
+         </div>
+         <div class="repair-information-item">
+            <svg-icon
+               class="repair-icon"
+               src="assets/svg/common/ic_address.svg"
+            ></svg-icon>
+            <app-ta-copy
+               [copyValue]="
+                  broker?.mainAddress?.address
+                     ? broker.mainAddress.address
+                     : broker?.billingAddress?.address
+               "
+            ></app-ta-copy>
+         </div>
+      </div>
+   </app-ta-details-header-card>
+   <div
+      class="wrapper-additional-cards"
+      [ngClass]="{ 'bind-heigth': !templateCard }"
+   >
+      <div class="repair-cards">
+         <app-ta-custom-card
+            [bodyTemplate]="'card'"
+            [hasDivider]="false"
+            [cardName]="'Additional Info'"
+            [isCardOpen]="true"
+         >
+            <div class="additional-template-broker-data">
+               <div class="addition-template-item">
+                  <span class="header">EIN</span>
+                  <span class="value">{{ broker?.ein | formatEinP }}</span>
+               </div>
+               <div class="addition-template-item">
+                  <span class="header">MC</span>
+                  <span class="value">{{ broker?.mcNumber }}</span>
+               </div>
             </div>
-            <div class="repair-information-item">
-                <span
-                    tooltipBackground="#6c6c6c"
-                    ngbTooltip
-                    mainTooltip="Call"
-                    position="top"
-                    class="semi-tooltip"
-                >
-                    <svg-icon
-                        class="repair-icon"
-                        src="assets/svg/common/ic_phone.svg"
-                    ></svg-icon>
-                </span>
-                <app-ta-copy [copyValue]="broker?.phone"></app-ta-copy>
+         </app-ta-custom-card>
+         <app-ta-custom-card
+            [bodyTemplate]="'card'"
+            [hasDivider]="true"
+            [hasCounter]="20"
+            [cardName]="'Paid Invoice'"
+            [isCardOpen]="true"
+         >
+            <div class="charts-template perfomance">
+               <app-ta-tab-switch
+                  [tabs]="tabsBroker"
+                  [type]="'type2-modal-popup'"
+               >
+               </app-ta-tab-switch>
+
+               <div
+                  class="additional-template-broker-data charts-broker-template"
+               >
+                  <div class="addition-template-item">
+                     <div class="header-svg-wrapper">
+                        <svg-icon
+                           src="assets/svg/common/ic_broker_billing.svg"
+                        ></svg-icon>
+                        <span class="header">Count</span>
+                     </div>
+                     <span class="value charts-value">567</span>
+                  </div>
+                  <div class="addition-template-item">
+                     <div class="header-svg-wrapper">
+                        <svg-icon
+                           src="assets/svg/common/ic_broker_cost.svg"
+                        ></svg-icon>
+                        <span class="header">Revenue</span>
+                     </div>
+                     <span class="value charts-value">$315,234.64</span>
+                  </div>
+               </div>
             </div>
-            <div *ngIf="broker.email" class="repair-information-item">
-                <span
-                    tooltipBackground="#6c6c6c"
-                    ngbTooltip
-                    mainTooltip="Send Email"
-                    position="top"
-                    class="semi-tooltip"
-                >
-                    <svg-icon
-                        class="repair-icon"
-                        src="assets/svg/common/ic_email.svg"
-                    ></svg-icon>
-                </span>
-                <app-ta-copy [copyValue]="broker?.email"></app-ta-copy>
+         </app-ta-custom-card>
+         <app-ta-custom-card
+            [bodyTemplate]="'card'"
+            [hasDivider]="true"
+            [cardName]="'Mileage Rate History'"
+            [isCardOpen]="false"
+            [tooltipName]="'View in Modal'"
+            [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+         >
+            <div
+               class="charts-template perfomance"
+               [class.p-0]="mileageChart.hoveringStatus"
+            >
+               <div *ngIf="!mileageChart.hoveringStatus">
+                  <app-ta-tab-switch
+                     [type]="'type2-modal-popup'"
+                     [tabs]="tabsBroker"
+                  >
+                  </app-ta-tab-switch>
+               </div>
+               <app-ta-chart
+                  #mileageChart
+                  [chartConfig]="mileageChartConfig"
+                  [axesProperties]="mileageBarAxes"
+                  [legendAttributes]="mileageBarChartLegend"
+               >
+               </app-ta-chart>
             </div>
-            <div class="repair-information-item">
-                <svg-icon
-                    class="repair-icon"
-                    src="assets/svg/common/ic_address.svg"
-                ></svg-icon>
-                <app-ta-copy
-                    [copyValue]="
-                        broker?.mainAddress?.address
-                            ? broker.mainAddress.address
-                            : broker?.billingAddress?.address
-                    "
-                ></app-ta-copy>
+         </app-ta-custom-card>
+         <app-ta-custom-card
+            [bodyTemplate]="'card'"
+            [hasDivider]="true"
+            [hasCounter]="
+               invoiceAgeingCounter
+                  ? invoiceAgeingCounter
+                  : broker?.invoiceAgeingGroup?.countInvoice
+            "
+            [cardName]="'Invoice Ageing'"
+            [isCardOpen]="true"
+         >
+            <div class="invoice-ageing-template">
+               <div class="invoice-ageing-template-item">
+                  <span class="header-name">Total Debt</span>
+                  <span class="value-ageing">{{
+                     broker?.totalDebt | formatCurrency
+                  }}</span>
+               </div>
+               <div
+                  *ngIf="broker.payTerm.name === 'Unlimited'"
+                  class="invoice-agein-unlimited"
+               >
+                  Avg.
+                  <span class="avg-days-invoice"
+                     >{{ broker?.invoiceAgeingGroup?.averageDays }} Days</span
+                  >
+               </div>
             </div>
-        </div>
-    </app-ta-details-header-card>
-    <div
-        class="wrapper-additional-cards"
-        [ngClass]="{ 'bind-heigth': !templateCard }"
-    >
-        <div class="repair-cards">
-            <app-ta-custom-card
-                [bodyTemplate]="'card'"
-                [hasDivider]="false"
-                [cardName]="'Additional Info'"
-                [isCardOpen]="true"
+            <app-progress-invoices
+               *ngIf="
+                  broker.payTerm.name !== 'Unlimited' &&
+                  broker?.invoiceAgeingGroupOne
+               "
+               [invoiceDays]="broker?.invoiceAgeingGroupOne?.periodOfDays"
+               [invoiceCounter]="broker?.invoiceAgeingGroupOne?.countInvoice"
+               [invoiceTotal]="broker?.invoiceAgeingGroupOne?.totalSum"
+               [template]="'light-blue'"
             >
-                <div class="additional-template-broker-data">
-                    <div class="addition-template-item">
-                        <span class="header">EIN</span>
-                        <span class="value">{{
-                            broker?.ein | formatEinP
-                        }}</span>
-                    </div>
-                    <div class="addition-template-item">
-                        <span class="header">MC</span>
-                        <span class="value">{{ broker?.mcNumber }}</span>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-            <app-ta-custom-card
-                [bodyTemplate]="'card'"
-                [hasDivider]="true"
-                [hasCounter]="20"
-                [cardName]="'Paid Invoice'"
-                [isCardOpen]="true"
+            </app-progress-invoices>
+
+            <app-progress-invoices
+               *ngIf="
+                  broker.payTerm.name !== 'Unlimited' &&
+                  broker?.invoiceAgeingGroupTwo
+               "
+               [invoiceDays]="broker?.invoiceAgeingGroupTwo?.periodOfDays"
+               [invoiceCounter]="broker?.invoiceAgeingGroupTwo?.countInvoice"
+               [invoiceTotal]="broker?.invoiceAgeingGroupTwo?.totalSum"
+               [template]="'mid-blue'"
             >
-                <div class="charts-template perfomance">
-                    <app-ta-tab-switch
-                        [tabs]="tabsBroker"
-                        [type]="'type2-modal-popup'"
-                    >
-                    </app-ta-tab-switch>
-
-                    <div
-                        class="additional-template-broker-data charts-broker-template"
-                    >
-                        <div class="addition-template-item">
-                            <div class="header-svg-wrapper">
-                                <svg-icon
-                                    src="assets/svg/common/ic_broker_billing.svg"
-                                ></svg-icon>
-                                <span class="header">Count</span>
-                            </div>
-                            <span class="value charts-value">567</span>
-                        </div>
-                        <div class="addition-template-item">
-                            <div class="header-svg-wrapper">
-                                <svg-icon
-                                    src="assets/svg/common/ic_broker_cost.svg"
-                                ></svg-icon>
-                                <span class="header">Revenue</span>
-                            </div>
-                            <span class="value charts-value">$315,234.64</span>
-                        </div>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-            <app-ta-custom-card
-                [bodyTemplate]="'card'"
-                [hasDivider]="true"
-                [cardName]="'Mileage Rate History'"
-                [isCardOpen]="false"
-                [tooltipName]="'View in Modal'"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+            </app-progress-invoices>
+            <app-progress-invoices
+               *ngIf="
+                  broker.payTerm.name !== 'Unlimited' &&
+                  broker?.invoiceAgeingGroupThree
+               "
+               [invoiceDays]="broker?.invoiceAgeingGroupThree?.periodOfDays"
+               [invoiceCounter]="broker?.invoiceAgeingGroupThree?.countInvoice"
+               [invoiceTotal]="broker?.invoiceAgeingGroupThree?.totalSum"
+               [template]="'dark-blue'"
             >
-                <div
-                    class="charts-template perfomance"
-                    [class.p-0]="mileageChart.hoveringStatus"
-                >
-                    <div *ngIf="!mileageChart.hoveringStatus">
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            [tabs]="tabsBroker"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
-                    <app-ta-chart
-                        #mileageChart
-                        [chartConfig]="mileageChartConfig"
-                        [axesProperties]="mileageBarAxes"
-                        [legendAttributes]="mileageBarChartLegend"
-                    >
-                    </app-ta-chart>
-                </div>
-            </app-ta-custom-card>
-            <app-ta-custom-card
-                [bodyTemplate]="'card'"
-                [hasDivider]="true"
-                [hasCounter]="
-                    invoiceAgeingCounter
-                        ? invoiceAgeingCounter
-                        : broker?.invoiceAgeingGroup?.countInvoice
-                "
-                [cardName]="'Invoice Ageing'"
-                [isCardOpen]="true"
+            </app-progress-invoices>
+            <app-progress-invoices
+               *ngIf="
+                  broker.payTerm.name !== 'Unlimited' &&
+                  broker?.invoiceAgeingGroupFour
+               "
+               [invoiceDays]="broker?.invoiceAgeingGroupFour?.periodOfDays"
+               [invoiceCounter]="broker?.invoiceAgeingGroupFour?.countInvoice"
+               [invoiceTotal]="broker?.invoiceAgeingGroupFour?.totalSum"
+               [template]="'danger'"
             >
-                <div class="invoice-ageing-template">
-                    <div class="invoice-ageing-template-item">
-                        <span class="header-name">Total Debt</span>
-                        <span class="value-ageing">{{
-                            broker?.totalDebt | formatCurrency
-                        }}</span>
-                    </div>
-                    <div
-                        *ngIf="broker.payTerm.name === 'Unlimited'"
-                        class="invoice-agein-unlimited"
-                    >
-                        Avg.
-                        <span class="avg-days-invoice"
-                            >{{
-                                broker?.invoiceAgeingGroup?.averageDays
-                            }}
-                            Days</span
-                        >
-                    </div>
-                </div>
-                <app-progress-invoices
-                    *ngIf="
-                        broker.payTerm.name !== 'Unlimited' &&
-                        broker?.invoiceAgeingGroupOne
-                    "
-                    [invoiceDays]="broker?.invoiceAgeingGroupOne?.periodOfDays"
-                    [invoiceCounter]="
-                        broker?.invoiceAgeingGroupOne?.countInvoice
-                    "
-                    [invoiceTotal]="broker?.invoiceAgeingGroupOne?.totalSum"
-                    [template]="'light-blue'"
-                >
-                </app-progress-invoices>
+            </app-progress-invoices>
+         </app-ta-custom-card>
 
-                <app-progress-invoices
-                    *ngIf="
-                        broker.payTerm.name !== 'Unlimited' &&
-                        broker?.invoiceAgeingGroupTwo
-                    "
-                    [invoiceDays]="broker?.invoiceAgeingGroupTwo?.periodOfDays"
-                    [invoiceCounter]="
-                        broker?.invoiceAgeingGroupTwo?.countInvoice
-                    "
-                    [invoiceTotal]="broker?.invoiceAgeingGroupTwo?.totalSum"
-                    [template]="'mid-blue'"
-                >
-                </app-progress-invoices>
-                <app-progress-invoices
-                    *ngIf="
-                        broker.payTerm.name !== 'Unlimited' &&
-                        broker?.invoiceAgeingGroupThree
-                    "
-                    [invoiceDays]="
-                        broker?.invoiceAgeingGroupThree?.periodOfDays
-                    "
-                    [invoiceCounter]="
-                        broker?.invoiceAgeingGroupThree?.countInvoice
-                    "
-                    [invoiceTotal]="broker?.invoiceAgeingGroupThree?.totalSum"
-                    [template]="'dark-blue'"
-                >
-                </app-progress-invoices>
-                <app-progress-invoices
-                    *ngIf="
-                        broker.payTerm.name !== 'Unlimited' &&
-                        broker?.invoiceAgeingGroupFour
-                    "
-                    [invoiceDays]="broker?.invoiceAgeingGroupFour?.periodOfDays"
-                    [invoiceCounter]="
-                        broker?.invoiceAgeingGroupFour?.countInvoice
-                    "
-                    [invoiceTotal]="broker?.invoiceAgeingGroupFour?.totalSum"
-                    [template]="'danger'"
-                >
-                </app-progress-invoices>
-            </app-ta-custom-card>
-
-            <app-ta-custom-card
-                [bodyTemplate]="'card'"
-                [hasDivider]="true"
-                [cardName]="'Terms and Credit'"
-                [isCardOpen]="true"
+         <app-ta-custom-card
+            [bodyTemplate]="'card'"
+            [hasDivider]="true"
+            [cardName]="'Terms and Credit'"
+            [isCardOpen]="true"
+         >
+            <div
+               class="invoice-ageing-template"
+               *ngIf="broker?.availableCredit"
             >
-                <div
-                    class="invoice-ageing-template"
-                    *ngIf="broker?.availableCredit"
-                >
-                    <div class="invoice-ageing-template-item">
-                        <span class="header-name">Available Credit</span>
-                        <div class="credit-perctange">
-                            <span class="value-ageing">{{
-                                broker?.availableCredit | formatCurrency
-                            }}</span>
-                            <div class="percntage-broker">
-                                {{ getPercntageOfPaid.toFixed(0) }}%
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="progress-container" *ngIf="broker.availableCredit">
-                    <app-ta-currency-progress-bar
-                        [template]="'broker-credit'"
-                        [totalAmount]="broker.creditLimit"
-                        [paidSoFarAmount]="broker.totalDebt"
-                    >
-                    </app-ta-currency-progress-bar>
-                </div>
-
-                <div class="additional-template-broker-data">
-                    <div class="addition-template-item">
-                        <span class="header">Credit</span>
-                        <span class="value charts-value">{{
-                            broker.creditType.name === 'Unlimited'
-                                ? 'Unlimited'
-                                : (broker?.creditLimit | formatCurrency)
-                        }}</span>
-                    </div>
-                    <div class="addition-template-item">
-                        <span class="header">Pay Term</span>
-                        <span class="value charts-value">{{
-                            broker?.payTerm?.name
-                        }}</span>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-
-            <app-ta-custom-card
-                [bodyTemplate]="'card'"
-                [hasDivider]="true"
-                [cardName]="'Payment History'"
-                [isCardOpen]="false"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-            >
-                <div
-                    class="charts-template perfomance"
-                    [class.p-0]="paymentChart.hoveringStatus"
-                >
-                    <div *ngIf="!paymentChart.hoveringStatus">
-                        <app-ta-tab-switch
-                            [tabs]="tabsBroker"
-                            [type]="'type2-modal-popup'"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
-                    <app-ta-chart
-                        #paymentChart
-                        [chartConfig]="paymentChartConfig"
-                        [axesProperties]="paymentAxes"
-                        [legendAttributes]="paymentChartLegend"
-                    >
-                    </app-ta-chart>
-                </div>
-            </app-ta-custom-card>
-
-            <div class="divider"></div>
-            <div class="note-cards">
-                <app-ta-input-note
-                    [formControl]="note"
-                    [isVisibleArrow]="true"
-                    [minRows]="1"
-                    [isVisibleDivider]="false"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                    [note]="broker.note"
-                    [noteType]="'details-card'"
-                ></app-ta-input-note>
+               <div class="invoice-ageing-template-item">
+                  <span class="header-name">Available Credit</span>
+                  <div class="credit-perctange">
+                     <span class="value-ageing">{{
+                        broker?.availableCredit | formatCurrency
+                     }}</span>
+                     <div class="percntage-broker">
+                        {{ getPercntageOfPaid.toFixed(0) }}%
+                     </div>
+                  </div>
+               </div>
             </div>
-        </div>
-    </div>
+            <div class="progress-container" *ngIf="broker.availableCredit">
+               <app-ta-currency-progress-bar
+                  [template]="'broker-credit'"
+                  [totalAmount]="broker.creditLimit"
+                  [paidSoFarAmount]="broker.totalDebt"
+               >
+               </app-ta-currency-progress-bar>
+            </div>
+
+            <div class="additional-template-broker-data">
+               <div class="addition-template-item">
+                  <span class="header">Credit</span>
+                  <span class="value charts-value">{{
+                     broker.creditType.name === 'Unlimited'
+                        ? 'Unlimited'
+                        : (broker?.creditLimit | formatCurrency)
+                  }}</span>
+               </div>
+               <div class="addition-template-item">
+                  <span class="header">Pay Term</span>
+                  <span class="value charts-value">{{
+                     broker?.payTerm?.name
+                  }}</span>
+               </div>
+            </div>
+         </app-ta-custom-card>
+
+         <app-ta-custom-card
+            [bodyTemplate]="'card'"
+            [hasDivider]="true"
+            [cardName]="'Payment History'"
+            [isCardOpen]="false"
+            [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+         >
+            <div
+               class="charts-template perfomance"
+               [class.p-0]="paymentChart.hoveringStatus"
+            >
+               <div *ngIf="!paymentChart.hoveringStatus">
+                  <app-ta-tab-switch
+                     [tabs]="tabsBroker"
+                     [type]="'type2-modal-popup'"
+                  >
+                  </app-ta-tab-switch>
+               </div>
+               <app-ta-chart
+                  #paymentChart
+                  [chartConfig]="paymentChartConfig"
+                  [axesProperties]="paymentAxes"
+                  [legendAttributes]="paymentChartLegend"
+               >
+               </app-ta-chart>
+            </div>
+         </app-ta-custom-card>
+
+         <div class="divider"></div>
+         <div class="note-cards">
+            <app-ta-input-note
+               [formControl]="note"
+               [isVisibleArrow]="true"
+               [minRows]="1"
+               [isVisibleDivider]="false"
+               [placeholder]="'Write something.'"
+               [customClass]="'note-small'"
+               [note]="broker.note"
+               [noteType]="'details-card'"
+            ></app-ta-input-note>
+         </div>
+      </div>
+   </div>
 </div>

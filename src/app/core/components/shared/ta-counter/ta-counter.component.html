@@ -1,18 +1,15 @@
 <div
-    class="ta-counter"
-    [ngStyle]="{
-        color: countColor,
-        'background-color': countBackground,
-        'font-weight': countFontWeight,
-        height: countHeight,
-        'min-width': countWidth,
-        'border-radius': countBorderRadius
-    }"
+   class="ta-counter"
+   [ngStyle]="{
+      color: countColor,
+      'background-color': countBackground,
+      'font-weight': countFontWeight,
+      height: countHeight,
+      'min-width': countWidth,
+      'border-radius': countBorderRadius
+   }"
 >
-    <p
-        class="ta-counter-number"
-        [ngStyle]="{ bottom: countTextBottomPosition }"
-    >
-        {{ count > 0 ? (count | taThousandSeparator) : 0 }}
-    </p>
+   <p class="ta-counter-number" [ngStyle]="{ bottom: countTextBottomPosition }">
+      {{ count > 0 ? (count | taThousandSeparator) : 0 }}
+   </p>
 </div>

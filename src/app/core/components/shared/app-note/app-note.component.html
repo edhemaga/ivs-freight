@@ -1,14 +1,14 @@
 <button
-    (click)="setResizeGpsMain(rowIndex)"
-    *ngIf="!note_expanded"
-    class="custom-rounded-btn note-btn"
-    [ngClass]="{
-        'note-normal-icon': note && !openedAll,
-        'note-note-empty': !note && !openedAll,
-        'note-all-expanded': openedAll
-    }"
+   (click)="setResizeGpsMain(rowIndex)"
+   *ngIf="!note_expanded"
+   class="custom-rounded-btn note-btn"
+   [ngClass]="{
+      'note-normal-icon': note && !openedAll,
+      'note-note-empty': !note && !openedAll,
+      'note-all-expanded': openedAll
+   }"
 >
-    <!-- <svg-icon
+   <!-- <svg-icon
     *ngIf="note && !openedAll"
     [src]="'assets/img/svgs/table/note.svg'"
     [svgStyle]="{ 'width.px': '16', 'height.px': '18' }"

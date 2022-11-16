@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { ConfirmationModalComponent } from './confirmation-modal.component';
 
 describe('ConfirmationModalComponent', () => {
-    let component: ConfirmationModalComponent;
-    let fixture: ComponentFixture<ConfirmationModalComponent>;
+   let component: ConfirmationModalComponent;
+   let fixture: ComponentFixture<ConfirmationModalComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [ConfirmationModalComponent],
-        }).compileComponents();
-    }));
+   beforeEach(async(() => {
+      TestBed.configureTestingModule({
+         declarations: [ConfirmationModalComponent],
+      }).compileComponents();
+   }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(ConfirmationModalComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+   beforeEach(() => {
+      fixture = TestBed.createComponent(ConfirmationModalComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+   });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+   it('should create', () => {
+      expect(component).toBeTruthy();
+   });
 });

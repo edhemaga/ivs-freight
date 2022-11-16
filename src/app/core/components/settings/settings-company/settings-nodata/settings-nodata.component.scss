@@ -1,60 +1,60 @@
 @import '../../settings.global.scss';
 
 .no-settings {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 99999999999;
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   z-index: 99999999999;
 
-    background-color: rgba($color: #000000, $alpha: 0.2);
-    overflow: hidden;
+   background-color: rgba($color: #000000, $alpha: 0.2);
+   overflow: hidden;
 
-    .no-settings-edit-button {
-        display: inline-block;
-        position: relative;
-        top: 61px;
-        left: 592px;
-        background-color: #ffffff;
-        width: 32px;
-        height: 32px;
-        border: 5px solid rgba(86, 115, 170, 0.4);
-        border-radius: 3px;
-        padding: 12px;
+   .no-settings-edit-button {
+      display: inline-block;
+      position: relative;
+      top: 61px;
+      left: 592px;
+      background-color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border: 5px solid rgba(86, 115, 170, 0.4);
+      border-radius: 3px;
+      padding: 12px;
 
-        svg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+      svg {
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+      }
 
-        &:hover {
-            transform: $settings-transition;
-            cursor: pointer;
-            svg {
-                path {
-                    fill: $settings-gray;
-                }
+      &:hover {
+         transform: $settings-transition;
+         cursor: pointer;
+         svg {
+            path {
+               fill: $settings-gray;
             }
-        }
-    }
+         }
+      }
+   }
 
-    .no-settings-text {
-        display: inline-block;
-        position: relative;
-        top: 82px;
-        left: 480px;
-        height: 27px;
-        width: 193px;
-        color: $settings-gray-dark;
-        background-color: $settings-nodata;
-        box-shadow: $settings-box-shadow;
-        border-radius: 3px;
-        font-size: 12px;
-        font-weight: 600;
-        text-align: center;
-        padding: 5px;
-    }
+   .no-settings-text {
+      display: inline-block;
+      position: relative;
+      top: 82px;
+      left: 480px;
+      height: 27px;
+      width: 193px;
+      color: $settings-gray-dark;
+      background-color: $settings-nodata;
+      box-shadow: $settings-box-shadow;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      padding: 5px;
+   }
 }

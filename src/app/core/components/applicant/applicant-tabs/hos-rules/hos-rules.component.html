@@ -1,179 +1,160 @@
 <div class="container-fluid">
-    <div class="row">
-        <div
-            class="container-fluid d-flex flex-column justify-content-between hos-rules-container"
-        >
-            <div class="d-flex flex-column align-items-center">
-                <app-applicant-header
-                    [mode]="selectedMode"
-                ></app-applicant-header>
+   <div class="row">
+      <div
+         class="container-fluid d-flex flex-column justify-content-between hos-rules-container"
+      >
+         <div class="d-flex flex-column align-items-center">
+            <app-applicant-header [mode]="selectedMode"></app-applicant-header>
 
-                <h1 class="m-0 text-center title ta-font-bold">
-                    HOS Rules and Regulations
-                </h1>
+            <h1 class="m-0 text-center title ta-font-bold">
+               HOS Rules and Regulations
+            </h1>
 
-                <div
-                    class="d-flex flex-column text-center align-items-center justify-content-center info-container"
-                    [ngStyle]="{
-                        color:
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? '#919191'
-                                : '#6C6C6C'
-                    }"
-                >
-                    <p class="m-0 ta-font-regular">
-                        <span class="ta-font-bold">Hours of Service (HOS)</span>
-                        are regulations governed by the FMCSA which is the
-                        abbreviation for the "Federal Motor Carrier Safety
-                        Administration". The FM CSA is a division of the United
-                        States Department of Transportation (USDOT) which is
-                        responsible for code enforcement. "Hours of Service"
-                        refers to the hours that a commercial driver operating a
-                        commercial motor vehicle on the road can operate during
-                        a 70 hours within 8 days period without resting for 34
-                        hours before continuing. Drivers are responsible for
-                        maintaining a record of their hours in a logbook while
-                        operating detailing hours driving and resting.
-                    </p>
+            <div
+               class="d-flex flex-column text-center align-items-center justify-content-center info-container"
+               [ngStyle]="{
+                  color:
+                     selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+               }"
+            >
+               <p class="m-0 ta-font-regular">
+                  <span class="ta-font-bold">Hours of Service (HOS)</span>
+                  are regulations governed by the FMCSA which is the
+                  abbreviation for the "Federal Motor Carrier Safety
+                  Administration". The FM CSA is a division of the United States
+                  Department of Transportation (USDOT) which is responsible for
+                  code enforcement. "Hours of Service" refers to the hours that
+                  a commercial driver operating a commercial motor vehicle on
+                  the road can operate during a 70 hours within 8 days period
+                  without resting for 34 hours before continuing. Drivers are
+                  responsible for maintaining a record of their hours in a
+                  logbook while operating detailing hours driving and resting.
+               </p>
 
-                    <p class="m-0 ta-font-regular">
-                        The basic definitions and interpretations of the new HOS
-                        Rules and Regulations are as follows: Note: Drivers have
-                        two sets of time in one period. Drive time and on duty
-                        time during the period. Drive time+ on duty time = total
-                        time towards the 14 hour daily on duty limit. A period
-                        maxed out is 70 hours or 8 consecutive days, whichever
-                        comes first.
-                    </p>
+               <p class="m-0 ta-font-regular">
+                  The basic definitions and interpretations of the new HOS Rules
+                  and Regulations are as follows: Note: Drivers have two sets of
+                  time in one period. Drive time and on duty time during the
+                  period. Drive time+ on duty time = total time towards the 14
+                  hour daily on duty limit. A period maxed out is 70 hours or 8
+                  consecutive days, whichever comes first.
+               </p>
 
-                    <p class="m-0 ta-font-regular">
-                        Truck drivers may not drive more than 11 hours resting
-                        for 30 minutes before continuing after 8 hours driving
-                    </p>
+               <p class="m-0 ta-font-regular">
+                  Truck drivers may not drive more than 11 hours resting for 30
+                  minutes before continuing after 8 hours driving
+               </p>
 
-                    <p class="m-0 ta-font-regular">
-                        Truck drivers may not drive after 14 hours of on duty
-                        time.
-                    </p>
+               <p class="m-0 ta-font-regular">
+                  Truck drivers may not drive after 14 hours of on duty time.
+               </p>
 
-                    <p class="m-0 ta-font-regular">
-                        After 70 hours of on duty time within 8 days the driver
-                        must take 34 hours off that include 2 - separate 8 hour
-                        sleeping shifts that have to include sleep during the
-                        hours of 1 am to 5 am. Yes HOS determines what time of
-                        the day you will sleep.
-                    </p>
+               <p class="m-0 ta-font-regular">
+                  After 70 hours of on duty time within 8 days the driver must
+                  take 34 hours off that include 2 - separate 8 hour sleeping
+                  shifts that have to include sleep during the hours of 1 am to
+                  5 am. Yes HOS determines what time of the day you will sleep.
+               </p>
 
-                    <p class="m-0 ta-font-regular">
-                        What this means is after 8 hours of off duty time
-                        drivers need to take a 30 minute break that counts
-                        against your on duty time (14 hours) then may drive no
-                        more than 3 more hours within 14 hours' time. The 14
-                        hours' time can't be extended by 8 hours in the sleeper
-                        and 2 hours off duty time - 10 hours total. Time in the
-                        sleeper (8 hours continuous) + 2 hours off duty is the
-                        only way to recharge for another 14 hours of time on
-                        duty time. Each period while the driver is on duty can't
-                        exceed whichever is soonest 70 hours in 8 days. To start
-                        another period the driver must take 34 hours of off duty
-                        time.
-                    </p>
+               <p class="m-0 ta-font-regular">
+                  What this means is after 8 hours of off duty time drivers need
+                  to take a 30 minute break that counts against your on duty
+                  time (14 hours) then may drive no more than 3 more hours
+                  within 14 hours' time. The 14 hours' time can't be extended by
+                  8 hours in the sleeper and 2 hours off duty time - 10 hours
+                  total. Time in the sleeper (8 hours continuous) + 2 hours off
+                  duty is the only way to recharge for another 14 hours of time
+                  on duty time. Each period while the driver is on duty can't
+                  exceed whichever is soonest 70 hours in 8 days. To start
+                  another period the driver must take 34 hours of off duty time.
+               </p>
 
-                    <div
-                        class="d-flex flex-column text-center justify-content-center align-items-center title-container"
-                    >
-                        <h3 class="m-0 ta-font-bold">
-                            THE SLEEPER BERTH PROVISION.
-                        </h3>
-                        <p class="m-0 ta-font-regular">
-                            You can use the sleeper berth provision to get you
-                            on the road again if you have time left in your 70
-                            hour within 8 day period but you have to sleep for a
-                            minimum of 8 consecutive hours and then be off duty
-                            for 2 hours.
-                        </p>
-                    </div>
+               <div
+                  class="d-flex flex-column text-center justify-content-center align-items-center title-container"
+               >
+                  <h3 class="m-0 ta-font-bold">THE SLEEPER BERTH PROVISION.</h3>
+                  <p class="m-0 ta-font-regular">
+                     You can use the sleeper berth provision to get you on the
+                     road again if you have time left in your 70 hour within 8
+                     day period but you have to sleep for a minimum of 8
+                     consecutive hours and then be off duty for 2 hours.
+                  </p>
+               </div>
 
-                    <div
-                        class="d-flex flex-column text-center justify-content-center align-items-center title-container"
-                    >
-                        <h3 class="m-0 ta-font-bold">
-                            70 HOURS IN 8 DAYS RULE.
-                        </h3>
-                        <p class="m-0 ta-font-regular">
-                            After a combined total of drive time and on duty
-                            time it can't exceed 70 hours within 8 days' time.
-                            As soon as you hit 70 hours or 8 days the driver
-                            can't drive for 34 hours of time off.
-                        </p>
-                    </div>
+               <div
+                  class="d-flex flex-column text-center justify-content-center align-items-center title-container"
+               >
+                  <h3 class="m-0 ta-font-bold">70 HOURS IN 8 DAYS RULE.</h3>
+                  <p class="m-0 ta-font-regular">
+                     After a combined total of drive time and on duty time it
+                     can't exceed 70 hours within 8 days' time. As soon as you
+                     hit 70 hours or 8 days the driver can't drive for 34 hours
+                     of time off.
+                  </p>
+               </div>
 
-                    <div
-                        class="d-flex flex-column text-center justify-content-center align-items-center title-container"
-                    >
-                        <h3 class="m-0 ta-font-bold">
-                            34 HOURS RECHARGE RULE.
-                        </h3>
-                        <p class="m-0 ta-font-regular">
-                            After a driver has been on duty for his combined
-                            total of either 70 hours within/or 8 days the period
-                            is over. You can start another period with 34 hours
-                            off but once again you have to get 2 different sleep
-                            shifts that MUST CONTAIN sleep within the hours of 1
-                            am to 5 am in each sleep. Yes you ready that
-                            correctly HOS controls when you can sleep within 4
-                            hours. Off means off. No paperwork, tarping, shining
-                            chrome. Go spend time with your family, friends or
-                            just go clear your head. You are important to the
-                            nation and we need you healthy so we can all
-                            function with whatever it is you are delivering. We
-                            love, care about and thank the commercial drivers of
-                            America!
-                        </p>
-                    </div>
-                </div>
-
-                <!-- CONFIRM CHECKBOX -->
-
-                <div
-                    class="d-flex jusitfy-content-center align-items-center"
-                    [formGroup]="hosRulesForm"
-                >
-                    <app-ta-checkbox
-                        formControlName="isReadingConfirmed"
-                        [name]="'isReadingConfirmed'"
-                        [label]="
-                            'Please confirm that you have read and understood the content of this notice'
-                        "
-                        [customClass]="'bold-12'"
-                        [disabledStillCheckMark]="
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                        "
-                    >
-                    </app-ta-checkbox>
-                </div>
+               <div
+                  class="d-flex flex-column text-center justify-content-center align-items-center title-container"
+               >
+                  <h3 class="m-0 ta-font-bold">34 HOURS RECHARGE RULE.</h3>
+                  <p class="m-0 ta-font-regular">
+                     After a driver has been on duty for his combined total of
+                     either 70 hours within/or 8 days the period is over. You
+                     can start another period with 34 hours off but once again
+                     you have to get 2 different sleep shifts that MUST CONTAIN
+                     sleep within the hours of 1 am to 5 am in each sleep. Yes
+                     you ready that correctly HOS controls when you can sleep
+                     within 4 hours. Off means off. No paperwork, tarping,
+                     shining chrome. Go spend time with your family, friends or
+                     just go clear your head. You are important to the nation
+                     and we need you healthy so we can all function with
+                     whatever it is you are delivering. We love, care about and
+                     thank the commercial drivers of America!
+                  </p>
+               </div>
             </div>
 
-            <!-- FOOTER -->
+            <!-- CONFIRM CHECKBOX -->
 
-            <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
-        </div>
-    </div>
+            <div
+               class="d-flex jusitfy-content-center align-items-center"
+               [formGroup]="hosRulesForm"
+            >
+               <app-ta-checkbox
+                  formControlName="isReadingConfirmed"
+                  [name]="'isReadingConfirmed'"
+                  [label]="
+                     'Please confirm that you have read and understood the content of this notice'
+                  "
+                  [customClass]="'bold-12'"
+                  [disabledStillCheckMark]="
+                     selectedMode === 'REVIEW_MODE' ||
+                     selectedMode === 'FEEDBACK_MODE'
+                  "
+               >
+               </app-ta-checkbox>
+            </div>
+         </div>
+
+         <!-- FOOTER -->
+
+         <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
+      </div>
+   </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-    class="d-flex justify-content-center align-items-center next-btn-container"
+   class="d-flex justify-content-center align-items-center next-btn-container"
 >
-    <app-applicant-next-back-btn
-        [nextStep]="true"
-        [lastStep]="true"
-        [filledCorrectly]="
-            selectedMode === 'APPLICANT_MODE' && hosRulesForm.valid
-        "
-        [mode]="selectedMode"
-        (stepEvent)="onStepAction($event)"
-    ></app-applicant-next-back-btn>
+   <app-applicant-next-back-btn
+      [nextStep]="true"
+      [lastStep]="true"
+      [filledCorrectly]="
+         selectedMode === 'APPLICANT_MODE' && hosRulesForm.valid
+      "
+      [mode]="selectedMode"
+      (stepEvent)="onStepAction($event)"
+   ></app-applicant-next-back-btn>
 </div>

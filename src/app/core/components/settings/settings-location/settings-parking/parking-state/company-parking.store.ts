@@ -7,7 +7,7 @@ export interface ParkingState extends EntityState<ParkingResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'parkingStore' })
 export class ParkingStore extends EntityStore<ParkingState> {
-    constructor() {
-        super();
-    }
+   constructor() {
+      super();
+   }
 }

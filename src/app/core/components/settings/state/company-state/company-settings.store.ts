@@ -7,7 +7,7 @@ export interface CompanyState extends EntityState<CompanyResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'company' })
 export class CompanyStore extends EntityStore<CompanyState> {
-    constructor() {
-        super();
-    }
+   constructor() {
+      super();
+   }
 }

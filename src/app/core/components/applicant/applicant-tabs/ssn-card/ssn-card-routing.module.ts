@@ -4,17 +4,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { SsnCardComponent } from './ssn-card.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: SsnCardComponent,
-        data: { title: 'SSN Card' },
-        children: [],
-    },
+   {
+      path: '',
+      component: SsnCardComponent,
+      data: { title: 'SSN Card' },
+      children: [],
+   },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
+   imports: [RouterModule.forChild(routes)],
 
-    exports: [RouterModule],
+   exports: [RouterModule],
 })
 export class SsnCardRoutingModule {}

@@ -1,167 +1,167 @@
 <app-ta-modal
-    [modalTitle]="
-        editData?.type !== 'edit-licence'
-            ? this.editData.type === 'renew-licence'
-                ? 'Renew CDL'
-                : 'Add CDL'
-            : 'Edit CDL'
-    "
-    [editData]="editData"
-    [editName]="modalName"
-    [isModalValid]="cdlForm.valid && isFormDirty"
-    [specificCaseModalName]="true"
-    (action)="onModalAction($event)"
+   [modalTitle]="
+      editData?.type !== 'edit-licence'
+         ? this.editData.type === 'renew-licence'
+            ? 'Renew CDL'
+            : 'Add CDL'
+         : 'Edit CDL'
+   "
+   [editData]="editData"
+   [editName]="modalName"
+   [isModalValid]="cdlForm.valid && isFormDirty"
+   [specificCaseModalName]="true"
+   (action)="onModalAction($event)"
 >
-    <form
-        origin
-        [formGroup]="cdlForm"
-        class="form-container form-container-without-mb"
-    >
-        <div class="row">
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="cdlNumber"
-                    [inputConfig]="{
-                        name: 'cdl-number',
-                        type: 'text',
-                        label: 'CDL No.',
-                        isRequired: true,
-                        textTransform: 'capitalize',
-                        autoFocus: editData?.type !== 'edit-licence',
-                        minLength: selectedCountryType === 'US' ? 1 : 5,
-                        maxLength: selectedCountryType === 'US' ? 19 : 15,
-                        isDisabled: this.editData.type === 'renew-licence'
-                    }"
-                ></app-ta-input>
-            </div>
-            <div class="col-3">
-                <app-ta-input-dropdown
-                    formControlName="classType"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Class',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-109',
-                        isDisabled: this.editData.type === 'renew-licence'
-                    }"
-                    [options]="classTypes"
-                    [activeItem]="selectedClassType"
-                    (selectedItem)="onSelectDropdown($event, 'class')"
-                ></app-ta-input-dropdown>
-            </div>
-            <div class="col-3 no-p-left">
-                <app-ta-input-dropdown
-                    formControlName="stateId"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'State',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-109',
-                        isDisabled: this.editData.type === 'renew-licence'
-                    }"
-                    [options]="stateTypes"
-                    [activeItem]="selectedStateType"
-                    (selectedItem)="onSelectDropdown($event, 'state')"
-                ></app-ta-input-dropdown>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="issueDate"
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        isDropdown: true,
-                        label: 'Issue Date',
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        customClass: 'datetimeclass'
-                    }"
-                ></app-ta-input>
-            </div>
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="expDate"
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        label: 'Exp. Date',
-                        isDropdown: true,
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        customClass: 'datetimeclass'
-                    }"
-                ></app-ta-input>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <app-ta-input-dropdown
-                    formControlName="restrictions"
-                    [template]="'multiselect'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        isDropdown: true,
-                        label: 'Restrictions',
-                        multiselectDropdown: true,
-                        dropdownWidthClass: 'w-col-456'
-                    }"
-                    [options]="restrictions"
-                    [preloadMultiselectItems]="selectedRestrictions"
-                    (selectedItems)="onSelectDropdown($event, 'restrictions')"
-                ></app-ta-input-dropdown>
-            </div>
-        </div>
-        <div class="row last-row">
-            <div class="col-12">
-                <app-ta-input-dropdown
-                    formControlName="endorsements"
-                    [template]="'multiselect'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        isDropdown: true,
-                        label: 'Endorsement',
-                        multiselectDropdown: true,
-                        dropdownWidthClass: 'w-col-456'
-                    }"
-                    [options]="endorsements"
-                    [preloadMultiselectItems]="selectedEndorsments"
-                    (selectedItems)="onSelectDropdown($event, 'endorsments')"
-                ></app-ta-input-dropdown>
-            </div>
-        </div>
-        <div class="ta-card-body-overflow-none">
-            <app-ta-custom-card
-                [hasCounter]="documents.length ? documents.length : 0"
-                [cardName]="'Documents'"
-                [isCardOpen]="documents.length > 0"
-            >
-                <app-ta-upload-files
-                    [files]="documents"
-                    (onFileEvent)="onFilesEvent($event)"
-                ></app-ta-upload-files>
-            </app-ta-custom-card>
-        </div>
+   <form
+      origin
+      [formGroup]="cdlForm"
+      class="form-container form-container-without-mb"
+   >
+      <div class="row">
+         <div class="col-6">
+            <app-ta-input
+               formControlName="cdlNumber"
+               [inputConfig]="{
+                  name: 'cdl-number',
+                  type: 'text',
+                  label: 'CDL No.',
+                  isRequired: true,
+                  textTransform: 'capitalize',
+                  autoFocus: editData?.type !== 'edit-licence',
+                  minLength: selectedCountryType === 'US' ? 1 : 5,
+                  maxLength: selectedCountryType === 'US' ? 19 : 15,
+                  isDisabled: this.editData.type === 'renew-licence'
+               }"
+            ></app-ta-input>
+         </div>
+         <div class="col-3">
+            <app-ta-input-dropdown
+               formControlName="classType"
+               [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Class',
+                  isRequired: true,
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-109',
+                  isDisabled: this.editData.type === 'renew-licence'
+               }"
+               [options]="classTypes"
+               [activeItem]="selectedClassType"
+               (selectedItem)="onSelectDropdown($event, 'class')"
+            ></app-ta-input-dropdown>
+         </div>
+         <div class="col-3 no-p-left">
+            <app-ta-input-dropdown
+               formControlName="stateId"
+               [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'State',
+                  isRequired: true,
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-109',
+                  isDisabled: this.editData.type === 'renew-licence'
+               }"
+               [options]="stateTypes"
+               [activeItem]="selectedStateType"
+               (selectedItem)="onSelectDropdown($event, 'state')"
+            ></app-ta-input-dropdown>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-6">
+            <app-ta-input
+               formControlName="issueDate"
+               [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  isDropdown: true,
+                  label: 'Issue Date',
+                  placeholderIcon: 'date',
+                  isRequired: true,
+                  customClass: 'datetimeclass'
+               }"
+            ></app-ta-input>
+         </div>
+         <div class="col-6">
+            <app-ta-input
+               formControlName="expDate"
+               [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  label: 'Exp. Date',
+                  isDropdown: true,
+                  placeholderIcon: 'date',
+                  isRequired: true,
+                  customClass: 'datetimeclass'
+               }"
+            ></app-ta-input>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-12">
+            <app-ta-input-dropdown
+               formControlName="restrictions"
+               [template]="'multiselect'"
+               [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  isDropdown: true,
+                  label: 'Restrictions',
+                  multiselectDropdown: true,
+                  dropdownWidthClass: 'w-col-456'
+               }"
+               [options]="restrictions"
+               [preloadMultiselectItems]="selectedRestrictions"
+               (selectedItems)="onSelectDropdown($event, 'restrictions')"
+            ></app-ta-input-dropdown>
+         </div>
+      </div>
+      <div class="row last-row">
+         <div class="col-12">
+            <app-ta-input-dropdown
+               formControlName="endorsements"
+               [template]="'multiselect'"
+               [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  isDropdown: true,
+                  label: 'Endorsement',
+                  multiselectDropdown: true,
+                  dropdownWidthClass: 'w-col-456'
+               }"
+               [options]="endorsements"
+               [preloadMultiselectItems]="selectedEndorsments"
+               (selectedItems)="onSelectDropdown($event, 'endorsments')"
+            ></app-ta-input-dropdown>
+         </div>
+      </div>
+      <div class="ta-card-body-overflow-none">
+         <app-ta-custom-card
+            [hasCounter]="documents.length ? documents.length : 0"
+            [cardName]="'Documents'"
+            [isCardOpen]="documents.length > 0"
+         >
+            <app-ta-upload-files
+               [files]="documents"
+               (onFileEvent)="onFilesEvent($event)"
+            ></app-ta-upload-files>
+         </app-ta-custom-card>
+      </div>
 
-        <app-ta-input-note
-            formControlName="note"
-            [isVisibleNote]="
-                cdlForm.get('note').value && cdlForm.get('note').value != 'null'
-                    ? cdlForm.get('note').value
-                    : false
-            "
-            [note]="
-                cdlForm.get('note').value && cdlForm.get('note').value != 'null'
-                    ? cdlForm.get('note').value
-                    : ''
-            "
-        ></app-ta-input-note>
-    </form>
+      <app-ta-input-note
+         formControlName="note"
+         [isVisibleNote]="
+            cdlForm.get('note').value && cdlForm.get('note').value != 'null'
+               ? cdlForm.get('note').value
+               : false
+         "
+         [note]="
+            cdlForm.get('note').value && cdlForm.get('note').value != 'null'
+               ? cdlForm.get('note').value
+               : ''
+         "
+      ></app-ta-input-note>
+   </form>
 </app-ta-modal>

@@ -1,3113 +1,3101 @@
 @import '../../../../../theme/variables.scss';
 $trailer_collors: 'FF5454', '6D82C7', '56AB62', '3C3C3C', '6FDFE4', 'F89A3D',
-    '1E9DF3', '59A5A5', 'A468FF', 'A34CB8', '4A9A4F', 'F3D542';
+   '1E9DF3', '59A5A5', 'A468FF', 'A34CB8', '4A9A4F', 'F3D542';
 
 $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5',
-    '415FC1';
+   '415FC1';
 
 .parking-table {
-    @each $truck_col in $truck_collors {
-        .truck_#{$truck_col} {
-            span {
-                color: unquote('#' + $truck_col) !important;
-                &:hover {
-                    background-color: unquote('#' + $truck_col) !important;
-                    color: #fff !important;
+   @each $truck_col in $truck_collors {
+      .truck_#{$truck_col} {
+         span {
+            color: unquote('#' + $truck_col) !important;
+            &:hover {
+               background-color: unquote('#' + $truck_col) !important;
+               color: #fff !important;
 
-                    .dispatcher-close {
-                        display: block !important;
-                    }
-                }
+               .dispatcher-close {
+                  display: block !important;
+               }
             }
-        }
-    }
+         }
+      }
+   }
 
-    @each $trailer_col in $trailer_collors {
-        .trailer_#{$trailer_col} {
-            span {
-                color: unquote('#' + $trailer_col) !important;
-                &:hover {
-                    background-color: unquote('#' + $trailer_col) !important;
-                    color: #fff !important;
-                    .dispatcher-close {
-                        display: block !important;
-                    }
-                }
+   @each $trailer_col in $trailer_collors {
+      .trailer_#{$trailer_col} {
+         span {
+            color: unquote('#' + $trailer_col) !important;
+            &:hover {
+               background-color: unquote('#' + $trailer_col) !important;
+               color: #fff !important;
+               .dispatcher-close {
+                  display: block !important;
+               }
             }
-        }
-    }
+         }
+      }
+   }
 }
 
 .dispacher-table,
 .dragged-row,
 .in-table-dragged-row {
-    .drag-span {
-        width: 100% !important;
-        background: linear-gradient(to right, #dadada 50%, transparent 50%);
-        background-position: right bottom !important;
-        transition: all 0.2s ease-out;
-        background-size: 200% 100% !important;
+   .drag-span {
+      width: 100% !important;
+      background: linear-gradient(to right, #dadada 50%, transparent 50%);
+      background-position: right bottom !important;
+      transition: all 0.2s ease-out;
+      background-size: 200% 100% !important;
 
-        &:hover {
-            border-left: none;
-            background: #f9f9f9;
-            background-position: left bottom !important;
+      &:hover {
+         border-left: none;
+         background: #f9f9f9;
+         background-position: left bottom !important;
+
+         .select_span {
+            color: #919191 !important;
+         }
+      }
+
+      .dispatcher-close {
+         svg {
+            #main_circle {
+               fill: #dadada;
+            }
+         }
+
+         &:hover {
+            #main_circle {
+               fill: unquote('#' + 'DADADA');
+            }
+         }
+      }
+   }
+
+   .unlocked {
+      .dispatcher-close:hover {
+         #main_circle {
+            fill: #b7b7b7;
+         }
+      }
+
+      .drag-span {
+         position: relative;
+
+         @each $truck_col in $truck_collors {
+            &.truck_#{$truck_col} {
+               background: linear-gradient(
+                  to right,
+                  unquote('#' + $truck_col + '80') 50%,
+                  transparent 50%
+               );
+
+               .dispatcher-close {
+                  svg {
+                     #main_circle {
+                        fill: unquote('#' + $truck_col + '80');
+                     }
+                  }
+
+                  &:hover {
+                     #main_circle {
+                        fill: unquote('#' + $truck_col);
+                     }
+                  }
+               }
+            }
+         }
+
+         @each $trailer_col in $trailer_collors {
+            &.trailer_#{$trailer_col} {
+               background: linear-gradient(
+                  to right,
+                  unquote('#' + $trailer_col + '80') 50%,
+                  transparent 50%
+               );
+
+               .dispatcher-close {
+                  svg {
+                     #main_circle {
+                        fill: unquote('#' + $trailer_col + '80');
+                     }
+                  }
+
+                  &:hover {
+                     #main_circle {
+                        fill: unquote('#' + $trailer_col);
+                     }
+                  }
+               }
+            }
+         }
+
+         &:hover {
+            .dispatcher-close {
+               display: block;
+            }
 
             .select_span {
-                color: #919191 !important;
+               color: #fff !important;
             }
-        }
+         }
+      }
 
-        .dispatcher-close {
-            svg {
-                #main_circle {
-                    fill: #dadada;
-                }
+      .no-color {
+         &:hover {
+            background: linear-gradient(to right, #6c6c6c 50%, transparent 50%);
+            //background-position: right bottom !important;
+            transition: all 0.2s ease-out;
+            background-size: 200% 100% !important;
+         }
+      }
+   }
+
+   .locked {
+      .drag-span {
+         @each $truck_col in $truck_collors {
+            &.truck_#{$truck_col} {
+               .select_span {
+                  color: unquote('#' + $truck_col) !important;
+                  &::-moz-selection {
+                     color: unquote('#' + $truck_col) !important;
+                     background: unquote('#' + $truck_col + '22') !important;
+                  }
+
+                  &::selection {
+                     color: unquote('#' + $truck_col) !important;
+                     background: unquote('#' + $truck_col + '22') !important;
+                  }
+               }
             }
+         }
 
-            &:hover {
-                #main_circle {
-                    fill: unquote('#' + 'DADADA');
-                }
+         @each $trailer_col in $trailer_collors {
+            &.trailer_#{$trailer_col} {
+               .select_span {
+                  color: unquote('#' + $trailer_col) !important;
+                  &::-moz-selection {
+                     color: unquote('#' + $trailer_col) !important;
+                     background: unquote('#' + $trailer_col + '22') !important;
+                  }
+
+                  &::selection {
+                     color: unquote('#' + $trailer_col) !important;
+                     background: unquote('#' + $trailer_col + '22') !important;
+                  }
+               }
             }
-        }
-    }
+         }
+      }
 
-    .unlocked {
-        .dispatcher-close:hover {
-            #main_circle {
-                fill: #b7b7b7;
+      .no-color {
+         &:hover {
+            // background: linear-gradient(to right, #DADADA 50%, transparent 50%) !important;
+            // //background-position: right bottom !important;
+            // transition: all 0.2s ease-out;
+            // background-size: 200% 100% !important;
+
+            .select_span {
+               color: #b7b7b7 !important;
             }
-        }
+         }
+      }
+   }
 
-        .drag-span {
-            position: relative;
+   .drag-span {
+      width: 100% !important;
+      background: #fff;
+      background-position: right bottom !important;
+      transition: all 0.2s ease-out;
+      background-size: 200% 100% !important;
+      color: #919191 !important;
+      border-radius: 3px;
 
-            @each $truck_col in $truck_collors {
-                &.truck_#{$truck_col} {
-                    background: linear-gradient(
-                        to right,
-                        unquote('#' + $truck_col + '80') 50%,
-                        transparent 50%
-                    );
+      &.statusOpened {
+         color: rgba(145, 145, 145, 0.3) !important;
+      }
+   }
 
-                    .dispatcher-close {
-                        svg {
-                            #main_circle {
-                                fill: unquote('#' + $truck_col + '80');
-                            }
-                        }
+   // .dispatch-label {
+   //   @each $truck_col in $truck_collors {
+   //     &.label_#{$truck_col} {
+   //       background: unquote('#' + $truck_col  + '70') !important;
+   //     }
+   //   }
 
-                        &:hover {
-                            #main_circle {
-                                fill: unquote('#' + $truck_col);
-                            }
-                        }
-                    }
-                }
-            }
+   //   @each $truck_col in $trailer_collors {
+   //     &.label_#{$truck_col} {
+   //       background: unquote('#' + $truck_col  + '70') !important;
+   //     }
+   //   }
+   // }
 
-            @each $trailer_col in $trailer_collors {
-                &.trailer_#{$trailer_col} {
-                    background: linear-gradient(
-                        to right,
-                        unquote('#' + $trailer_col + '80') 50%,
-                        transparent 50%
-                    );
+   .drag-span.hasColor:hover {
+      .select_span {
+         // color: #fff !important;
+      }
+   }
 
-                    .dispatcher-close {
-                        svg {
-                            #main_circle {
-                                fill: unquote('#' + $trailer_col + '80');
-                            }
-                        }
-
-                        &:hover {
-                            #main_circle {
-                                fill: unquote('#' + $trailer_col);
-                            }
-                        }
-                    }
-                }
-            }
-
-            &:hover {
-                .dispatcher-close {
-                    display: block;
-                }
-
-                .select_span {
-                    color: #fff !important;
-                }
-            }
-        }
-
-        .no-color {
-            &:hover {
-                background: linear-gradient(
-                    to right,
-                    #6c6c6c 50%,
-                    transparent 50%
-                );
-                //background-position: right bottom !important;
-                transition: all 0.2s ease-out;
-                background-size: 200% 100% !important;
-            }
-        }
-    }
-
-    .locked {
-        .drag-span {
-            @each $truck_col in $truck_collors {
-                &.truck_#{$truck_col} {
-                    .select_span {
-                        color: unquote('#' + $truck_col) !important;
-                        &::-moz-selection {
-                            color: unquote('#' + $truck_col) !important;
-                            background: unquote(
-                                '#' + $truck_col + '22'
-                            ) !important;
-                        }
-
-                        &::selection {
-                            color: unquote('#' + $truck_col) !important;
-                            background: unquote(
-                                '#' + $truck_col + '22'
-                            ) !important;
-                        }
-                    }
-                }
-            }
-
-            @each $trailer_col in $trailer_collors {
-                &.trailer_#{$trailer_col} {
-                    .select_span {
-                        color: unquote('#' + $trailer_col) !important;
-                        &::-moz-selection {
-                            color: unquote('#' + $trailer_col) !important;
-                            background: unquote(
-                                '#' + $trailer_col + '22'
-                            ) !important;
-                        }
-
-                        &::selection {
-                            color: unquote('#' + $trailer_col) !important;
-                            background: unquote(
-                                '#' + $trailer_col + '22'
-                            ) !important;
-                        }
-                    }
-                }
-            }
-        }
-
-        .no-color {
-            &:hover {
-                // background: linear-gradient(to right, #DADADA 50%, transparent 50%) !important;
-                // //background-position: right bottom !important;
-                // transition: all 0.2s ease-out;
-                // background-size: 200% 100% !important;
-
-                .select_span {
-                    color: #b7b7b7 !important;
-                }
-            }
-        }
-    }
-
-    .drag-span {
-        width: 100% !important;
-        background: #fff;
-        background-position: right bottom !important;
-        transition: all 0.2s ease-out;
-        background-size: 200% 100% !important;
-        color: #919191 !important;
-        border-radius: 3px;
-
-        &.statusOpened {
+   .locked,
+   .unlocked {
+      .drag-span {
+         &.statusOpened {
             color: rgba(145, 145, 145, 0.3) !important;
-        }
-    }
+         }
+      }
+   }
 
-    // .dispatch-label {
-    //   @each $truck_col in $truck_collors {
-    //     &.label_#{$truck_col} {
-    //       background: unquote('#' + $truck_col  + '70') !important;
-    //     }
-    //   }
+   .dispatchers_table.locked {
+      .drag-span:hover,
+      ~ .dispatch-label {
+         background: transparent !important;
+      }
+   }
 
-    //   @each $truck_col in $trailer_collors {
-    //     &.label_#{$truck_col} {
-    //       background: unquote('#' + $truck_col  + '70') !important;
-    //     }
-    //   }
-    // }
-
-    .drag-span.hasColor:hover {
-        .select_span {
-            // color: #fff !important;
-        }
-    }
-
-    .locked,
-    .unlocked {
-        .drag-span {
-            &.statusOpened {
-                color: rgba(145, 145, 145, 0.3) !important;
-            }
-        }
-    }
-
-    .dispatchers_table.locked {
-        .drag-span:hover,
-        ~ .dispatch-label {
-            background: transparent !important;
-        }
-    }
-
-    // .trailer-col {
-    //   .example-custom-placeholder {
-    //     @each $trailer_col in $trailer_collors {
-    //       &.trailer_#{$trailer_col}:hover {
-    //         background: unquote('#' + $trailer_col);
-    //         cursor: grabbing;
-    //       }
-    //     }
-    //   }
-    // }
+   // .trailer-col {
+   //   .example-custom-placeholder {
+   //     @each $trailer_col in $trailer_collors {
+   //       &.trailer_#{$trailer_col}:hover {
+   //         background: unquote('#' + $trailer_col);
+   //         cursor: grabbing;
+   //       }
+   //     }
+   //   }
+   // }
 }
 
 .dispacher-table {
-    position: absolute;
-    width: calc(100% - 95px);
-    max-width: 1920px;
+   position: absolute;
+   width: calc(100% - 95px);
+   max-width: 1920px;
 
-    &.parking_opened {
-        width: calc(100% - 440px);
-    }
+   &.parking_opened {
+      width: calc(100% - 440px);
+   }
 
-    .kendo_top_grid {
-        max-width: 1510px !important;
-        .k-grid-toolbar {
-            position: relative;
+   .kendo_top_grid {
+      max-width: 1510px !important;
+      .k-grid-toolbar {
+         position: relative;
 
-            z-index: 100;
-        }
+         z-index: 100;
+      }
 
-        .k-grid-aria-root {
-            display: none !important;
-        }
-    }
+      .k-grid-aria-root {
+         display: none !important;
+      }
+   }
 
-    .main_top_container {
-        padding: 0;
+   .main_top_container {
+      padding: 0;
 
-        .top_toolbar_cont {
-            width: 100%;
+      .top_toolbar_cont {
+         width: 100%;
+         align-items: center;
+
+         .dispatch-action-container {
+            flex: 1;
+            margin: 0 5px;
+            border-radius: 3px;
+            height: 32px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
 
-            .dispatch-action-container {
-                flex: 1;
-                margin: 0 5px;
-                border-radius: 3px;
-                height: 32px;
-                background-color: #fff;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-
-                .dispatch-board-buttons-holder {
-                    display: flex;
-                    align-items: center;
-                }
+            .dispatch-board-buttons-holder {
+               display: flex;
+               align-items: center;
             }
-        }
+         }
+      }
 
-        .row {
-            width: 100%;
-            margin: 0;
-        }
-    }
+      .row {
+         width: 100%;
+         margin: 0;
+      }
+   }
 
-    .border-spacer {
-        height: 20px;
-        width: 2px;
-        margin: 0 2px;
-        border-radius: 1px;
-        background-color: #f3f3f3;
-    }
+   .border-spacer {
+      height: 20px;
+      width: 2px;
+      margin: 0 2px;
+      border-radius: 1px;
+      background-color: #f3f3f3;
+   }
 
-    .k-grid-header {
-        background: #eeeeee !important;
-        border: none;
-        display: table-row !important;
+   .k-grid-header {
+      background: #eeeeee !important;
+      border: none;
+      display: table-row !important;
 
-        &:hover {
-            background-color: transparent !important;
-            border: none;
-        }
-    }
+      &:hover {
+         background-color: transparent !important;
+         border: none;
+      }
+   }
 
-    .svg-placeholder {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+   .svg-placeholder {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
 
-        &.hidden {
-            display: none;
-        }
+      &.hidden {
+         display: none;
+      }
 
-        &.edit-placeholder {
-            svg {
-                path:first-child {
-                    fill: #b7b7b7;
-                }
-
-                path:last-child {
-                    fill: #fff;
-                }
+      &.edit-placeholder {
+         svg {
+            path:first-child {
+               fill: #b7b7b7;
             }
-        }
-    }
 
-    .example-container {
-        width: 400px;
-        max-width: 100%;
-        margin: 0 25px 25px 0;
-        display: inline-block;
-        vertical-align: top;
-    }
+            path:last-child {
+               fill: #fff;
+            }
+         }
+      }
+   }
 
-    .dispatch-list {
-        position: relative;
-        // border: solid 1px #ccc;
-        min-height: 32px;
-        height: 32px !important;
-        // background: white;
-        border-radius: 3px;
-        overflow: hidden;
-        display: block;
-        transition: all 0.2s ease 0s !important;
-    }
+   .example-container {
+      width: 400px;
+      max-width: 100%;
+      margin: 0 25px 25px 0;
+      display: inline-block;
+      vertical-align: top;
+   }
 
-    .cdk-drag-disabled {
-        .dispatch-box:not(.cdk-drag) {
-            cursor: auto !important;
-        }
-    }
+   .dispatch-list {
+      position: relative;
+      // border: solid 1px #ccc;
+      min-height: 32px;
+      height: 32px !important;
+      // background: white;
+      border-radius: 3px;
+      overflow: hidden;
+      display: block;
+      transition: all 0.2s ease 0s !important;
+   }
 
-    .cdk-drop-list-dragging {
-        .dispatch-box {
-            cursor: grabbing !important;
-        }
-    }
+   .cdk-drag-disabled {
+      .dispatch-box:not(.cdk-drag) {
+         cursor: auto !important;
+      }
+   }
 
-    .cdk-drag-preview {
-        box-sizing: border-box;
-        border-radius: 3px;
-        // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14),
-        // 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+   .cdk-drop-list-dragging {
+      .dispatch-box {
+         cursor: grabbing !important;
+      }
+   }
 
-        .abs-right {
-            top: 0;
-        }
+   .cdk-drag-preview {
+      box-sizing: border-box;
+      border-radius: 3px;
+      // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+      // 0 3px 14px 2px rgba(0, 0, 0, 0.12);
 
-        .driver-field {
-            width: 322px !important;
-            padding-left: 175px !important;
-        }
-    }
+      .abs-right {
+         top: 0;
+      }
 
-    .cdk-drag-placeholder {
-        opacity: 0;
-    }
+      .driver-field {
+         width: 322px !important;
+         padding-left: 175px !important;
+      }
+   }
 
-    .cdk-drag-animating {
-        transition: transform 150ms cubic-bezier(0, 0, 0.2, 1);
-    }
+   .cdk-drag-placeholder {
+      opacity: 0;
+   }
 
-    .dispatch-box:last-child {
-        border: none;
-        display: flex;
-        justify-content: center;
-    }
+   .cdk-drag-animating {
+      transition: transform 150ms cubic-bezier(0, 0, 0.2, 1);
+   }
 
-    .dispatch-list.cdk-drop-list-dragging
-        .dispatch-box:not(.cdk-drag-placeholder) {
-        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-    }
+   .dispatch-box:last-child {
+      border: none;
+      display: flex;
+      justify-content: center;
+   }
 
-    .example-custom-placeholder {
-        position: absolute;
-        width: 100%;
-        left: 0;
-        //background: #fff;
-        min-height: 32px;
-        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-        opacity: 1;
-        //outline: 1px dashed #ffffff;
-        //box-shadow: 0 0 4px rgba(0, 0, 0, .15) inset;
-        outline-offset: -3px;
-        border-radius: 3px;
-        cursor: grabbing;
-        z-index: 100;
-    }
+   .dispatch-list.cdk-drop-list-dragging
+      .dispatch-box:not(.cdk-drag-placeholder) {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+   }
 
-    tr:hover {
-        color: unset !important;
-        background-color: unset !important;
-    }
+   .example-custom-placeholder {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      //background: #fff;
+      min-height: 32px;
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+      opacity: 1;
+      //outline: 1px dashed #ffffff;
+      //box-shadow: 0 0 4px rgba(0, 0, 0, .15) inset;
+      outline-offset: -3px;
+      border-radius: 3px;
+      cursor: grabbing;
+      z-index: 100;
+   }
 
-    .add-button-table-main:hover,
-    .add-button-dicpatch-table:hover {
-        opacity: 1;
-        color: #ffffff !important;
-        background-color: #3d3d3d !important;
-        border-color: #3d3d3d !important;
-        // transform: scale(1.1)translate3d(0,0,0);
-        transition: all 0.3s ease-in-out;
-    }
+   tr:hover {
+      color: unset !important;
+      background-color: unset !important;
+   }
 
-    .add-button-table-main,
-    .add-button-dicpatch-table {
-        color: #ffffff !important;
-        background-color: #b7b7b7 !important;
-        border-color: #b7b7b7 !important;
-        border-radius: 50%;
-        padding: 5px 6px;
-    }
+   .add-button-table-main:hover,
+   .add-button-dicpatch-table:hover {
+      opacity: 1;
+      color: #ffffff !important;
+      background-color: #3d3d3d !important;
+      border-color: #3d3d3d !important;
+      // transform: scale(1.1)translate3d(0,0,0);
+      transition: all 0.3s ease-in-out;
+   }
 
-    .inactive-wrapper-slider.cdk-drag-preview,
-    .active-wrapper-slider.cdk-drag-preview {
-        box-shadow: none !important;
+   .add-button-table-main,
+   .add-button-dicpatch-table {
+      color: #ffffff !important;
+      background-color: #b7b7b7 !important;
+      border-color: #b7b7b7 !important;
+      border-radius: 50%;
+      padding: 5px 6px;
+   }
 
-        .ng5-slider-bubble.ng5-slider-limit {
+   .inactive-wrapper-slider.cdk-drag-preview,
+   .active-wrapper-slider.cdk-drag-preview {
+      box-shadow: none !important;
+
+      .ng5-slider-bubble.ng5-slider-limit {
+         visibility: hidden !important;
+      }
+
+      .ng5-slider-full-bar {
+         visibility: hidden !important;
+      }
+
+      .ng5-slider-pointer::after {
+         display: none;
+      }
+
+      .ng5-slider-bar.ng5-slider-selection {
+         background: #919191 !important;
+      }
+
+      .ng5-slider-pointer {
+         width: 5px;
+         height: 4px;
+         top: 0;
+         border-radius: 3px;
+         background-color: #919191;
+         opacity: 0 !important;
+      }
+   }
+
+   .active-wrapper-slider.cdk-drag-preview {
+      .ng5-slider-bar.ng5-slider-selection {
+         background: #24c1a1 !important;
+      }
+
+      .ng5-slider-pointer {
+         background-color: #24c1a1 !important;
+      }
+   }
+
+   .hos-column-wrapper {
+      font-family: 'Montserrat', sans-serif !important;
+
+      .popover {
+         min-width: 400px;
+      }
+
+      .slider-wrapper {
+         .ng5-slider-full-bar {
             visibility: hidden !important;
-        }
+         }
 
-        .ng5-slider-full-bar {
-            visibility: hidden !important;
-        }
-
-        .ng5-slider-pointer::after {
-            display: none;
-        }
-
-        .ng5-slider-bar.ng5-slider-selection {
-            background: #919191 !important;
-        }
-
-        .ng5-slider-pointer {
-            width: 5px;
-            height: 4px;
-            top: 0;
-            border-radius: 3px;
-            background-color: #919191;
-            opacity: 0 !important;
-        }
-    }
-
-    .active-wrapper-slider.cdk-drag-preview {
-        .ng5-slider-bar.ng5-slider-selection {
-            background: #24c1a1 !important;
-        }
-
-        .ng5-slider-pointer {
-            background-color: #24c1a1 !important;
-        }
-    }
-
-    .hos-column-wrapper {
-        font-family: 'Montserrat', sans-serif !important;
-
-        .popover {
-            min-width: 400px;
-        }
-
-        .slider-wrapper {
-            .ng5-slider-full-bar {
-                visibility: hidden !important;
-            }
-
-            .inactive-parent-wrapper {
-                position: relative;
-                height: 33px;
-
-                .item-container {
-                    position: absolute;
-                    top: 0;
-                    width: 100%;
-
-                    .inactive-wrapper-slider {
-                        .ng5-slider-bar.ng5-slider-selection {
-                            background: #919191 !important;
-                        }
-
-                        .ng5-slider-pointer {
-                            width: 5px;
-                            height: 4px;
-                            top: 0;
-                            border-radius: 3px;
-                            background-color: #919191;
-                            opacity: 0 !important;
-                        }
-                    }
-                }
-            }
-
-            .active-parent-wrapper {
-                position: relative;
-                height: 33px;
-
-                .item-container {
-                    position: absolute;
-                    top: 0;
-                    width: 100%;
-
-                    .active-wrapper-slider {
-                        .ng5-slider-bar.ng5-slider-selection {
-                            background: #24c1a1 !important;
-                        }
-
-                        .ng5-slider-pointer {
-                            width: 5px;
-                            height: 4px;
-                            top: 0;
-                            border-radius: 3px;
-                            background-color: #24c1a1;
-                            opacity: 0 !important;
-                        }
-                    }
-                }
-            }
-
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .time-ruler {
-            width: 100%;
-            border-top: 1px solid #afafaf;
-            height: 10px;
-            border-left: 3px solid #3d3d3d;
-            border-right: 3px solid #3d3d3d;
-            margin-top: 0.5rem;
-            display: flex;
-            padding-left: 2.3px;
-
-            .hour-mark {
-                border-left: 1px solid #afafaf;
-                width: 15.5px;
-                height: 7px;
-            }
-
-            .hour-mark.noon-mark {
-                border-left: 3px solid #3d3d3d;
-                height: 10px;
-            }
-
-            .hour-mark.noon-mark::before {
-                content: 'N';
-                position: relative;
-                top: -19px;
-                left: -6px;
-                font-size: 12px;
-                font-weight: 600;
-            }
-        }
-
-        .time-ruler::before {
-            content: 'M';
+         .inactive-parent-wrapper {
             position: relative;
-            top: -17px;
-            left: -9px;
+            height: 33px;
+
+            .item-container {
+               position: absolute;
+               top: 0;
+               width: 100%;
+
+               .inactive-wrapper-slider {
+                  .ng5-slider-bar.ng5-slider-selection {
+                     background: #919191 !important;
+                  }
+
+                  .ng5-slider-pointer {
+                     width: 5px;
+                     height: 4px;
+                     top: 0;
+                     border-radius: 3px;
+                     background-color: #919191;
+                     opacity: 0 !important;
+                  }
+               }
+            }
+         }
+
+         .active-parent-wrapper {
+            position: relative;
+            height: 33px;
+
+            .item-container {
+               position: absolute;
+               top: 0;
+               width: 100%;
+
+               .active-wrapper-slider {
+                  .ng5-slider-bar.ng5-slider-selection {
+                     background: #24c1a1 !important;
+                  }
+
+                  .ng5-slider-pointer {
+                     width: 5px;
+                     height: 4px;
+                     top: 0;
+                     border-radius: 3px;
+                     background-color: #24c1a1;
+                     opacity: 0 !important;
+                  }
+               }
+            }
+         }
+
+         display: flex;
+         flex-direction: column;
+         width: 100%;
+      }
+
+      .time-ruler {
+         width: 100%;
+         border-top: 1px solid #afafaf;
+         height: 10px;
+         border-left: 3px solid #3d3d3d;
+         border-right: 3px solid #3d3d3d;
+         margin-top: 0.5rem;
+         display: flex;
+         padding-left: 2.3px;
+
+         .hour-mark {
+            border-left: 1px solid #afafaf;
+            width: 15.5px;
+            height: 7px;
+         }
+
+         .hour-mark.noon-mark {
+            border-left: 3px solid #3d3d3d;
+            height: 10px;
+         }
+
+         .hour-mark.noon-mark::before {
+            content: 'N';
+            position: relative;
+            top: -19px;
+            left: -6px;
             font-size: 12px;
             font-weight: 600;
-        }
+         }
+      }
 
-        .time-ruler::after {
-            content: 'M';
-            position: absolute;
-            top: 0;
-            right: 9px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-    }
+      .time-ruler::before {
+         content: 'M';
+         position: relative;
+         top: -17px;
+         left: -9px;
+         font-size: 12px;
+         font-weight: 600;
+      }
 
-    .ng5-slider {
-        position: absolute !important;
-        margin: -1px 0 0 !important;
+      .time-ruler::after {
+         content: 'M';
+         position: absolute;
+         top: 0;
+         right: 9px;
+         font-size: 12px;
+         font-weight: 600;
+      }
+   }
 
-        .ng5-slider-bar-wrapper {
-            padding-top: 16px !important;
-        }
-    }
+   .ng5-slider {
+      position: absolute !important;
+      margin: -1px 0 0 !important;
 
-    .value-container {
-        z-index: 99999999999;
-        justify-content: center;
-        display: flex;
-        font-family: 'Montserrat', sans-serif !important;
-        font-size: 13px;
-        font-weight: 600;
-    }
+      .ng5-slider-bar-wrapper {
+         padding-top: 16px !important;
+      }
+   }
 
-    .inactive-parent-wrapper {
-        .value-container {
-            color: #919191;
-        }
-    }
+   .value-container {
+      z-index: 99999999999;
+      justify-content: center;
+      display: flex;
+      font-family: 'Montserrat', sans-serif !important;
+      font-size: 13px;
+      font-weight: 600;
+   }
 
-    .active-parent-wrapper {
-        .button-wrapper {
-            top: 34px;
-        }
+   .inactive-parent-wrapper {
+      .value-container {
+         color: #919191;
+      }
+   }
 
-        .value-container {
-            color: #24c1a1;
-        }
-    }
+   .active-parent-wrapper {
+      .button-wrapper {
+         top: 34px;
+      }
 
-    .ng5-slider-selection-bar {
-        pointer-events: none;
-    }
+      .value-container {
+         color: #24c1a1;
+      }
+   }
 
-    .ng5-slider-pointer {
-        cursor: col-resize !important;
-    }
+   .ng5-slider-selection-bar {
+      pointer-events: none;
+   }
 
-    ngb-popover-window:not(.load-routes-popover) {
-        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
-    }
+   .ng5-slider-pointer {
+      cursor: col-resize !important;
+   }
+
+   ngb-popover-window:not(.load-routes-popover) {
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
+   }
 }
 
 .dragged-row {
-    .dispatch-list {
-        height: 32px !important;
-    }
+   .dispatch-list {
+      height: 32px !important;
+   }
 
-    cursor: grabbing;
-    //background-color: #ffffff;
-    td {
-        vertical-align: middle;
-    }
+   cursor: grabbing;
+   //background-color: #ffffff;
+   td {
+      vertical-align: middle;
+   }
 
-    .trailer-col {
-        position: relative;
-        width: 100px !important;
-        max-width: 100px !important;
-        overflow: hidden;
-    }
+   .trailer-col {
+      position: relative;
+      width: 100px !important;
+      max-width: 100px !important;
+      overflow: hidden;
+   }
 
-    .truck-col {
-        position: relative;
-        width: 77px !important;
-        max-width: 77px !important;
-        overflow: hidden;
-    }
+   .truck-col {
+      position: relative;
+      width: 77px !important;
+      max-width: 77px !important;
+      overflow: hidden;
+   }
 
-    .driver-col {
-        position: relative;
-        width: 140px !important;
-        max-width: 140px !important;
-        overflow: hidden;
-    }
+   .driver-col {
+      position: relative;
+      width: 140px !important;
+      max-width: 140px !important;
+      overflow: hidden;
+   }
 
-    .email-phone-col {
-        width: 149px !important;
-        max-width: 149px !important;
-        overflow: hidden;
+   .email-phone-col {
+      width: 149px !important;
+      max-width: 149px !important;
+      overflow: hidden;
 
-        .phone-em-hold {
-            height: 32px;
-            background-color: #fff;
-            padding: 2px;
-            border-radius: 3px;
-        }
+      .phone-em-hold {
+         height: 32px;
+         background-color: #fff;
+         padding: 2px;
+         border-radius: 3px;
+      }
 
-        .button-switch-email-phone {
-            display: none;
-        }
-    }
+      .button-switch-email-phone {
+         display: none;
+      }
+   }
 
-    .destination-col {
-        width: 129px !important;
-        max-width: 129px !important;
-        overflow: hidden;
+   .destination-col {
+      width: 129px !important;
+      max-width: 129px !important;
+      overflow: hidden;
 
-        // .full_location_name {
-        //   display: flex;
-        //   width: 100%;
+      // .full_location_name {
+      //   display: flex;
+      //   width: 100%;
 
-        //   span {
-        //     text-overflow: ellipsis;
-        //     overflow: hidden;
-        //     white-space: nowrap;
-        //   }
-        // }
-    }
+      //   span {
+      //     text-overflow: ellipsis;
+      //     overflow: hidden;
+      //     white-space: nowrap;
+      //   }
+      // }
+   }
 
-    .status-col {
-        width: 125px !important;
-        max-width: 125px !important;
-        overflow: hidden;
-    }
+   .status-col {
+      width: 125px !important;
+      max-width: 125px !important;
+      overflow: hidden;
+   }
 
-    .pickup-col,
-    .delivery-col {
-        width: 150px !important;
-        max-width: 150px !important;
-        overflow: hidden;
-    }
+   .pickup-col,
+   .delivery-col {
+      width: 150px !important;
+      max-width: 150px !important;
+      overflow: hidden;
+   }
 
-    .hos-col {
-        width: 34px !important;
-        max-width: 34px !important;
-    }
+   .hos-col {
+      width: 34px !important;
+      max-width: 34px !important;
+   }
 
-    .dispatcher-col {
-        width: 34px !important;
-        max-width: 34px !important;
-        overflow: hidden;
+   .dispatcher-col {
+      width: 34px !important;
+      max-width: 34px !important;
+      overflow: hidden;
 
-        &.note-col {
-            width: 248px !important;
-            max-width: 248px !important;
-        }
+      &.note-col {
+         width: 248px !important;
+         max-width: 248px !important;
+      }
 
-        &.add-col {
-            width: 34px !important;
-            max-width: 34px !important;
+      &.add-col {
+         width: 34px !important;
+         max-width: 34px !important;
 
-            .new_load_dispatch {
-                margin: 0 0 0 auto;
-            }
-        }
-    }
+         .new_load_dispatch {
+            margin: 0 0 0 auto;
+         }
+      }
+   }
 
-    // .svg-placeholder {
-    //   position: absolute;
-    //   top: 50%;
-    //   left: 50%;
-    //   transform: translate(-50%, -50%);
-    // }
+   // .svg-placeholder {
+   //   position: absolute;
+   //   top: 50%;
+   //   left: 50%;
+   //   transform: translate(-50%, -50%);
+   // }
 
-    // .email-phone-col {
-    //   width: 171px !important;
-    //   max-width: 171px !important;
-    //   padding-left: 5px !important;
-    //   padding-right: 5px !important;
-    //   overflow: hidden;
-    // }
+   // .email-phone-col {
+   //   width: 171px !important;
+   //   max-width: 171px !important;
+   //   padding-left: 5px !important;
+   //   padding-right: 5px !important;
+   //   overflow: hidden;
+   // }
 
-    // .dispatch-list {
-    //   min-height: 38px !important;
-    // }
+   // .dispatch-list {
+   //   min-height: 38px !important;
+   // }
 
-    // .dispatch-box {
-    //   display: flex;
-    //   flex-direction: row;
-    //   align-items: center;
-    // }
+   // .dispatch-box {
+   //   display: flex;
+   //   flex-direction: row;
+   //   align-items: center;
+   // }
 
-    // .dispacher-card {
-    //   display: flex;
-    //   position: relative;
-    //   justify-content: center;
-    //   text-overflow: ellipsis;
-    // }
+   // .dispacher-card {
+   //   display: flex;
+   //   position: relative;
+   //   justify-content: center;
+   //   text-overflow: ellipsis;
+   // }
 
-    // .dispatcher-gps-location {
-    //   align-items: flex-end;
-    // }
+   // .dispatcher-gps-location {
+   //   align-items: flex-end;
+   // }
 
-    // .destination-col {
-    //   width: 165px !important;
-    //   max-width: 165px !important;
-    //   padding-left: 5px !important;
-    //   padding-right: 5px !important;
-    //   overflow: hidden;
+   // .destination-col {
+   //   width: 165px !important;
+   //   max-width: 165px !important;
+   //   padding-left: 5px !important;
+   //   padding-right: 5px !important;
+   //   overflow: hidden;
 
-    //   .full_location_name {
-    //     display: flex;
-    //     width: 100%;
+   //   .full_location_name {
+   //     display: flex;
+   //     width: 100%;
 
-    //     span {
-    //       text-overflow: ellipsis;
-    //       overflow: hidden;
-    //       white-space: nowrap;
-    //     }
-    //   }
-    // }
+   //     span {
+   //       text-overflow: ellipsis;
+   //       overflow: hidden;
+   //       white-space: nowrap;
+   //     }
+   //   }
+   // }
 
-    // .driver-col {
-    //   position: relative;
-    //   width: 160px !important;
-    //   max-width: 160px !important;
-    //   overflow: hidden;
-    // }
+   // .driver-col {
+   //   position: relative;
+   //   width: 160px !important;
+   //   max-width: 160px !important;
+   //   overflow: hidden;
+   // }
 
-    // .trailer-col,
-    // .truck-col {
-    //   position: relative;
-    //   width: 89px !important;
-    //   max-width: 89px !important;
-    //   overflow: hidden;
-    // }
-    // .status-col {
-    //   width: 143px !important;
-    //   max-width: 143px !important;
-    //   overflow: hidden;
-    //   padding-left: 5px !important;
-    //   padding-right: 5px !important;
+   // .trailer-col,
+   // .truck-col {
+   //   position: relative;
+   //   width: 89px !important;
+   //   max-width: 89px !important;
+   //   overflow: hidden;
+   // }
+   // .status-col {
+   //   width: 143px !important;
+   //   max-width: 143px !important;
+   //   overflow: hidden;
+   //   padding-left: 5px !important;
+   //   padding-right: 5px !important;
 
-    //   app-ta-status-select {
-    //     display: inline-block;
-    //     width: 100% !important;
-    //   }
-    // }
+   //   app-ta-status-select {
+   //     display: inline-block;
+   //     width: 100% !important;
+   //   }
+   // }
 
-    // .pickup-col,
-    // .delivery-col {
-    //   width: 219px !important;
-    //   max-width: 219px !important;
-    //   padding-left: 5px !important;
-    //   padding-right: 5px !important;
-    //   overflow: hidden;
-    // }
+   // .pickup-col,
+   // .delivery-col {
+   //   width: 219px !important;
+   //   max-width: 219px !important;
+   //   padding-left: 5px !important;
+   //   padding-right: 5px !important;
+   //   overflow: hidden;
+   // }
 
-    // .hos-col {
-    //   width: 54px !important;
-    //   max-width: 54px !important;
-    //   padding-left: 5px !important;
-    //   padding-right: 5px !important;
-    // }
+   // .hos-col {
+   //   width: 54px !important;
+   //   max-width: 54px !important;
+   //   padding-left: 5px !important;
+   //   padding-right: 5px !important;
+   // }
 
-    // .dispatcher-col {
-    //   width: 34px !important;
-    //   max-width: 34px !important;
-    //   padding-left: 5px !important;
-    //   padding-right: 5px !important;
-    //   text-align: left !important;
-    //   overflow: hidden;
+   // .dispatcher-col {
+   //   width: 34px !important;
+   //   max-width: 34px !important;
+   //   padding-left: 5px !important;
+   //   padding-right: 5px !important;
+   //   text-align: left !important;
+   //   overflow: hidden;
 
-    //   &.note-col {
-    //     width: 32px !important;
-    //     max-width: 32px !important;
-    //   }
-    //   &.add-col {
-    //     width: 32px !important;
-    //     max-width: 32px !important;
-    //   }
-    // }
+   //   &.note-col {
+   //     width: 32px !important;
+   //     max-width: 32px !important;
+   //   }
+   //   &.add-col {
+   //     width: 32px !important;
+   //     max-width: 32px !important;
+   //   }
+   // }
 }
 
 .dispatcher_table_list {
-    width: 100%;
+   width: 100%;
 
-    .truck-col {
-        width: 77px !important;
-        min-width: 77px !important;
-        max-width: 77px !important;
-    }
+   .truck-col {
+      width: 77px !important;
+      min-width: 77px !important;
+      max-width: 77px !important;
+   }
 
-    .trailer-col {
-        width: 100px !important;
-        min-width: 100px !important;
-        max-width: 100px !important;
-    }
+   .trailer-col {
+      width: 100px !important;
+      min-width: 100px !important;
+      max-width: 100px !important;
+   }
 
-    .driver-col {
-        width: 140px !important;
-        min-width: 140px !important;
-        max-width: 140px !important;
-    }
+   .driver-col {
+      width: 140px !important;
+      min-width: 140px !important;
+      max-width: 140px !important;
+   }
 
-    .email-phone-col {
-        position: relative;
-        width: 149px !important;
-        min-width: 149px !important;
-        max-width: 149px !important;
+   .email-phone-col {
+      position: relative;
+      width: 149px !important;
+      min-width: 149px !important;
+      max-width: 149px !important;
 
-        .phone-em-hold {
-            height: 32px;
-            background-color: #fff;
-            padding: 2px;
-            border-radius: 3px;
-        }
+      .phone-em-hold {
+         height: 32px;
+         background-color: #fff;
+         padding: 2px;
+         border-radius: 3px;
+      }
 
-        .button-switch-email-phone {
-            display: none;
-            position: absolute;
-            right: -1px;
-            top: 3px;
-            border: none;
-            background-color: transparent;
+      .button-switch-email-phone {
+         display: none;
+         position: absolute;
+         right: -1px;
+         top: 3px;
+         border: none;
+         background-color: transparent;
 
+         svg-icon {
+            width: 24px;
+            height: 24px;
+
+            svg {
+               width: 24px;
+               height: 24px;
+            }
+         }
+
+         &:hover {
             svg-icon {
-                width: 24px;
-                height: 24px;
-
-                svg {
-                    width: 24px;
-                    height: 24px;
-                }
+               svg {
+                  rect {
+                     fill: #b7b7b7;
+                  }
+               }
             }
+         }
+      }
 
-            &:hover {
-                svg-icon {
-                    svg {
-                        rect {
-                            fill: #b7b7b7;
-                        }
-                    }
-                }
+      &:hover {
+         .button-switch-email-phone {
+            display: block;
+         }
+      }
+   }
+
+   .destination-col {
+      width: 129px !important;
+      max-width: 129px !important;
+      //max-width: 129px !important;
+   }
+
+   .status-col {
+      width: 125px !important;
+      min-width: 125px !important;
+      max-width: 125px !important;
+      cursor: pointer;
+
+      button {
+         border: none;
+
+         &.asc {
+            svg-icon {
+               svg {
+                  path:first-child {
+                     fill: #5673aa;
+                     opacity: 1;
+                  }
+               }
             }
-        }
+         }
 
-        &:hover {
-            .button-switch-email-phone {
-                display: block;
+         &.desc {
+            svg-icon {
+               svg {
+                  path:last-child {
+                     fill: #5673aa;
+                     opacity: 1;
+                  }
+               }
             }
-        }
-    }
+         }
+      }
+   }
 
-    .destination-col {
-        width: 129px !important;
-        max-width: 129px !important;
-        //max-width: 129px !important;
-    }
+   .pickup-col {
+      width: 150px !important;
+      min-width: 150px !important;
+      max-width: 150px !important;
+   }
 
-    .status-col {
-        width: 125px !important;
-        min-width: 125px !important;
-        max-width: 125px !important;
-        cursor: pointer;
+   .delivery-col {
+      width: 150px !important;
+      min-width: 150px !important;
+      max-width: 150px !important;
+   }
 
-        button {
-            border: none;
+   .hos-col,
+   .dispatcher-col {
+      width: 34px !important;
+      min-width: 34px !important;
+      max-width: 34px !important;
 
-            &.asc {
-                svg-icon {
-                    svg {
-                        path:first-child {
-                            fill: #5673aa;
-                            opacity: 1;
-                        }
-                    }
-                }
-            }
-
-            &.desc {
-                svg-icon {
-                    svg {
-                        path:last-child {
-                            fill: #5673aa;
-                            opacity: 1;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    .pickup-col {
-        width: 150px !important;
-        min-width: 150px !important;
-        max-width: 150px !important;
-    }
-
-    .delivery-col {
-        width: 150px !important;
-        min-width: 150px !important;
-        max-width: 150px !important;
-    }
-
-    .hos-col,
-    .dispatcher-col {
-        width: 34px !important;
-        min-width: 34px !important;
-        max-width: 34px !important;
-
-        &.note-col {
-            width: 248px !important;
-            max-width: 248px !important;
-            min-width: 248px !important;
-        }
-    }
+      &.note-col {
+         width: 248px !important;
+         max-width: 248px !important;
+         min-width: 248px !important;
+      }
+   }
 }
 
 .dispatch-label {
-    width: 3px;
-    height: 100%;
-    background-color: #b7b7b7;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    position: absolute;
-    left: 0;
-    top: 0;
+   width: 3px;
+   height: 100%;
+   background-color: #b7b7b7;
+   border-top-left-radius: 3px;
+   border-bottom-left-radius: 3px;
+   position: absolute;
+   left: 0;
+   top: 0;
 }
 
 .pickup-data {
-    display: flex;
-    flex-wrap: nowrap;
+   display: flex;
+   flex-wrap: nowrap;
 }
 
 app-ta-status-select .ng-arrow-wrapper::after {
-    display: none;
+   display: none;
 }
 
 app-ta-status-select ng-select.ng-untouched:hover .ng-select-container:after {
-    border: 0 !important;
+   border: 0 !important;
 }
 
 .kendo-table-container .grid-wrapper {
-    .k-grid .k-grid-toolbar {
-        border-radius: 5px !important;
-        border: none;
-        overflow: visible !important;
-        background-color: transparent !important;
-        height: 32px;
-        align-items: self-start;
-    }
+   .k-grid .k-grid-toolbar {
+      border-radius: 5px !important;
+      border: none;
+      overflow: visible !important;
+      background-color: transparent !important;
+      height: 32px;
+      align-items: self-start;
+   }
 
-    mat-accordion mat-expansion-panel {
-        mat-expansion-panel-header mat-panel-title,
-        .truck-item-wrapper .truck-text {
-            user-select: none;
-        }
-    }
+   mat-accordion mat-expansion-panel {
+      mat-expansion-panel-header mat-panel-title,
+      .truck-item-wrapper .truck-text {
+         user-select: none;
+      }
+   }
 }
 
 kendo-grid .toolbar-container {
-    .row {
-        height: 32px;
+   .row {
+      height: 32px;
 
-        .col-6:first-of-type {
-            padding-left: 0;
-        }
-    }
+      .col-6:first-of-type {
+         padding-left: 0;
+      }
+   }
 }
 
 .individual-item {
-    display: flex;
+   display: flex;
 }
 
 .ng5-slider-combined {
-    visibility: hidden !important;
+   visibility: hidden !important;
 }
 
 .ng5-slider-model-high {
-    opacity: 1 !important;
+   opacity: 1 !important;
 }
 
 .button-wrapper {
-    position: fixed;
+   position: fixed;
 }
 
 .active-parent .cdk-drag-placeholder {
-    height: 0 !important;
+   height: 0 !important;
 }
 
 .kendo-table-container .k-grid tbody tr {
-    height: 25px;
+   height: 25px;
 }
 
 .time_pad {
-    padding-right: 10px;
+   padding-right: 10px;
 }
 
 .dispatcher_status_address {
-    font-size: 16px;
-    display: inline-grid;
-    width: 100%;
+   font-size: 16px;
+   display: inline-grid;
+   width: 100%;
 
-    span {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
+   span {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+   }
 }
 
 .load_holder {
-    position: relative;
-    height: 3rem;
-    padding: 10px 0;
-    background-color: #fff;
+   position: relative;
+   height: 3rem;
+   padding: 10px 0;
+   background-color: #fff;
 }
 
 .map_main_holder {
-    position: relative;
+   position: relative;
 }
 
 .customTabsDispatchHold {
-    position: relative;
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    padding: 2px;
-    height: 32px;
+   position: relative;
+   display: flex;
+   align-items: center;
+   background-color: #fff;
+   padding: 2px;
+   height: 32px;
 
-    &.left {
-        border-radius: 3px;
-        margin-right: 0;
-        padding-right: 0;
-    }
+   &.left {
+      border-radius: 3px;
+      margin-right: 0;
+      padding-right: 0;
+   }
 
-    &.right {
-        margin-left: 0;
-        border-radius: 0 3px 3px 0;
-        padding-left: 0;
-    }
+   &.right {
+      margin-left: 0;
+      border-radius: 0 3px 3px 0;
+      padding-left: 0;
+   }
 
-    .left,
-    .right {
-        flex: 1;
-    }
+   .left,
+   .right {
+      flex: 1;
+   }
 }
 
 .customTabsDispatch {
-    display: flex;
-    align-items: center;
-    height: 32px;
-    padding-left: 2px;
+   display: flex;
+   align-items: center;
+   height: 32px;
+   padding-left: 2px;
 
-    background-color: #fff;
+   background-color: #fff;
 
-    cursor: pointer;
+   cursor: pointer;
 
-    .dispatch-pickup-delivery {
-        height: 28px;
-        line-height: 28px;
+   .dispatch-pickup-delivery {
+      height: 28px;
+      line-height: 28px;
 
-        &.with-line-heights {
-            .cursor-pointer {
-                line-height: 39px !important;
-            }
+      &.with-line-heights {
+         .cursor-pointer {
+            line-height: 39px !important;
+         }
 
-            .pick-del-location,
-            .time_info {
-                line-height: 1 !important;
-            }
-        }
-    }
+         .pick-del-location,
+         .time_info {
+            line-height: 1 !important;
+         }
+      }
+   }
 }
 
 .pick-del-field {
-    position: relative;
+   position: relative;
 
-    span.cursor-pointer {
-        position: absolute;
-        width: 100%;
-        color: rgba(145, 145, 145, 1);
-    }
+   span.cursor-pointer {
+      position: absolute;
+      width: 100%;
+      color: rgba(145, 145, 145, 1);
+   }
 
-    .select_span {
-        line-height: 14px;
-        min-width: 100px;
-        display: inline-block;
+   .select_span {
+      line-height: 14px;
+      min-width: 100px;
+      display: inline-block;
 
-        .time_info {
-            display: flex;
-            justify-content: space-between;
+      .time_info {
+         display: flex;
+         justify-content: space-between;
 
-            div {
-                font-size: 10px;
-                font-weight: 700;
-                color: #919191;
+         div {
+            font-size: 10px;
+            font-weight: 700;
+            color: #919191;
 
-                &::-moz-selection {
-                    color: #919191 !important;
-                    background: #91919122 !important;
-                }
-
-                &::selection {
-                    color: #6c6c6c !important;
-                    background: #91919122 !important;
-                }
+            &::-moz-selection {
+               color: #919191 !important;
+               background: #91919122 !important;
             }
-        }
-    }
+
+            &::selection {
+               color: #6c6c6c !important;
+               background: #91919122 !important;
+            }
+         }
+      }
+   }
 }
 
 .destination-data,
 .pickup-data {
-    span {
-        color: rgba(145, 145, 145, 1);
-        .select_span {
-            line-height: 14px;
-            min-width: 100px;
-            display: inline-block;
+   span {
+      color: rgba(145, 145, 145, 1);
+      .select_span {
+         line-height: 14px;
+         min-width: 100px;
+         display: inline-block;
 
-            .time_info {
-                display: flex;
-                justify-content: space-between;
+         .time_info {
+            display: flex;
+            justify-content: space-between;
 
-                div {
-                    font-size: 10px;
-                    font-weight: 700;
-                    color: #919191;
+            div {
+               font-size: 10px;
+               font-weight: 700;
+               color: #919191;
 
-                    &::-moz-selection {
-                        color: #919191 !important;
-                        background: #91919122 !important;
-                    }
+               &::-moz-selection {
+                  color: #919191 !important;
+                  background: #91919122 !important;
+               }
 
-                    &::selection {
-                        color: #6c6c6c !important;
-                        background: #91919122 !important;
-                    }
-                }
+               &::selection {
+                  color: #6c6c6c !important;
+                  background: #91919122 !important;
+               }
             }
-        }
-    }
+         }
+      }
+   }
 }
 
 .text {
-    font-weight: bold !important;
-    font-size: 14px;
-    color: #919191 !important;
-    background: #f9f9f9 !important;
+   font-weight: bold !important;
+   font-size: 14px;
+   color: #919191 !important;
+   background: #f9f9f9 !important;
 
-    &:hover {
-        background: #f3f3f3 !important;
+   &:hover {
+      background: #f3f3f3 !important;
 
-        color: #6c6c6c !important;
-    }
+      color: #6c6c6c !important;
+   }
 }
 
 .legend_pop {
-    // width: 180px;
-    width: 572px !important;
+   // width: 180px;
+   width: 572px !important;
 }
 
 .nav_size {
-    width: 386px !important;
-    height: auto !important;
-    // left: 0px !important;
-    transition: all 0.15s ease-in-out !important;
-    user-select: none;
-    opacity: 1 !important;
+   width: 386px !important;
+   height: auto !important;
+   // left: 0px !important;
+   transition: all 0.15s ease-in-out !important;
+   user-select: none;
+   opacity: 1 !important;
 }
 
 .tab {
-    // height: 32px;
-    background: #f9f9f9;
-    cursor: pointer;
-    border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
-    height: 32px;
-    position: relative;
+   // height: 32px;
+   background: #f9f9f9;
+   cursor: pointer;
+   border-bottom-right-radius: 3px;
+   border-top-right-radius: 3px;
+   height: 32px;
+   position: relative;
 
-    .type-text {
-        padding: 7px 0 7px 12px;
-        font-weight: bold !important;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 14px;
-        color: #919191 !important;
-    }
+   .type-text {
+      padding: 7px 0 7px 12px;
+      font-weight: bold !important;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      color: #919191 !important;
+   }
 
-    span {
-        svg-icon {
-            padding-right: 6px;
-        }
+   span {
+      svg-icon {
+         padding-right: 6px;
+      }
 
-        border-bottom-right-radius: 3px;
-        border-top-right-radius: 3px;
-        // background: red;
-        // background: #f9f9f9 !important;
-    }
+      border-bottom-right-radius: 3px;
+      border-top-right-radius: 3px;
+      // background: red;
+      // background: #f9f9f9 !important;
+   }
 
-    svg {
-        #Path_1186 {
-            stroke: #919191;
-        }
+   svg {
+      #Path_1186 {
+         stroke: #919191;
+      }
 
-        #Path_1187 {
-            stroke: #919191;
-        }
-    }
+      #Path_1187 {
+         stroke: #919191;
+      }
+   }
 
-    &:hover {
-        background: #f3f3f3 !important;
+   &:hover {
+      background: #f3f3f3 !important;
 
-        span {
-            background: #f3f3f3 !important;
-            // background: red !important;
-            border-bottom-right-radius: 3px;
-            border-top-right-radius: 3px;
-            color: #6c6c6c !important;
-        }
+      span {
+         background: #f3f3f3 !important;
+         // background: red !important;
+         border-bottom-right-radius: 3px;
+         border-top-right-radius: 3px;
+         color: #6c6c6c !important;
+      }
 
-        svg {
-            #Path_1186 {
-                stroke: #6c6c6c !important;
-            }
+      svg {
+         #Path_1186 {
+            stroke: #6c6c6c !important;
+         }
 
-            #Path_1187 {
-                stroke: #6c6c6c !important;
-            }
-        }
-    }
+         #Path_1187 {
+            stroke: #6c6c6c !important;
+         }
+      }
+   }
 }
 
 .truck {
-    background: #ffffff;
-    cursor: pointer;
+   background: #ffffff;
+   cursor: pointer;
 }
 
 .svg_rotate {
-    svg {
-        transform: rotate(180deg);
-        transition: all 0.2s ease-in-out;
-    }
+   svg {
+      transform: rotate(180deg);
+      transition: all 0.2s ease-in-out;
+   }
 }
 
 .truck_tab {
-    height: auto;
-    width: auto;
-    transition: all 0.2s ease-in-out !important;
-    margin-top: -222px;
-    overflow: hidden;
-    background-color: transparent;
+   height: auto;
+   width: auto;
+   transition: all 0.2s ease-in-out !important;
+   margin-top: -222px;
+   overflow: hidden;
+   background-color: transparent;
 }
 
 .trailer_tab {
-    // height: 0px;
-    // width: 0px;
-    height: auto;
-    width: auto;
-    transition: all 0.2s ease-in-out !important;
-    margin-top: -444px;
-    visibility: hidden;
-    background-color: transparent;
-    // opacity: 0;
+   // height: 0px;
+   // width: 0px;
+   height: auto;
+   width: auto;
+   transition: all 0.2s ease-in-out !important;
+   margin-top: -444px;
+   visibility: hidden;
+   background-color: transparent;
+   // opacity: 0;
 }
 
 .truck_open {
-    height: auto;
-    width: auto;
-    transition: all 0.2s ease-in-out !important;
-    border-bottom-right-radius: 3px;
-    margin-top: 0;
-    background-color: #ffffff;
+   height: auto;
+   width: auto;
+   transition: all 0.2s ease-in-out !important;
+   border-bottom-right-radius: 3px;
+   margin-top: 0;
+   background-color: #ffffff;
 }
 
 .trailer_open {
-    height: auto;
-    width: auto;
-    transition: all 0.2s ease-in-out !important;
-    margin-top: 0;
-    visibility: visible;
-    background-color: $white;
-    // opacity: 1!important;
+   height: auto;
+   width: auto;
+   transition: all 0.2s ease-in-out !important;
+   margin-top: 0;
+   visibility: visible;
+   background-color: $white;
+   // opacity: 1!important;
 }
 
 .shadow {
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
+   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
 }
 
 .margin12 {
-    margin-left: 200px;
+   margin-left: 200px;
 }
 
 /*side menu styles*/
 .legend-side-menu {
-    .panel-default {
-        border: none transparent !important;
-        width: 190px !important;
-    }
+   .panel-default {
+      border: none transparent !important;
+      width: 190px !important;
+   }
 
-    .panel_click {
-        box-shadow: $box-shadow !important;
-    }
+   .panel_click {
+      box-shadow: $box-shadow !important;
+   }
 
-    .heading_click {
-        border-bottom-right-radius: 0 !important;
-        border-bottom-left-radius: 0 !important;
-        // color: #6c6c6c !important;
-        span {
-            color: #6c6c6c !important;
-        }
+   .heading_click {
+      border-bottom-right-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+      // color: #6c6c6c !important;
+      span {
+         color: #6c6c6c !important;
+      }
 
-        svg {
+      svg {
+         #Path_1186 {
+            stroke: #6c6c6c !important;
+         }
+
+         #Path_1187 {
+            stroke: #6c6c6c !important;
+         }
+      }
+   }
+
+   .panel {
+      box-shadow: none;
+      background-color: inherit;
+      margin-bottom: 0;
+      border: 0 !important;
+      border-radius: 3px;
+
+      &.tab-truck {
+         //margin-bottom: 12px;
+      }
+
+      .panel-body {
+         padding: 0;
+         border-bottom-right-radius: 3px;
+         border-bottom-left-radius: 3px;
+         overflow: hidden;
+         background: $white;
+      }
+
+      .panel-heading {
+         border-radius: 3px;
+         color: $muted;
+         background-color: $white;
+         border: none #f9f9f9;
+         height: 32px;
+         padding: 0;
+         cursor: pointer;
+
+         span {
+            svg-icon {
+               padding-right: 6px;
+            }
+         }
+
+         svg {
             #Path_1186 {
-                stroke: #6c6c6c !important;
+               stroke: #919191;
             }
 
             #Path_1187 {
-                stroke: #6c6c6c !important;
+               stroke: #919191;
             }
-        }
-    }
+         }
 
-    .panel {
-        box-shadow: none;
-        background-color: inherit;
-        margin-bottom: 0;
-        border: 0 !important;
-        border-radius: 3px;
-
-        &.tab-truck {
-            //margin-bottom: 12px;
-        }
-
-        .panel-body {
-            padding: 0;
-            border-bottom-right-radius: 3px;
-            border-bottom-left-radius: 3px;
-            overflow: hidden;
-            background: $white;
-        }
-
-        .panel-heading {
-            border-radius: 3px;
-            color: $muted;
-            background-color: $white;
-            border: none #f9f9f9;
-            height: 32px;
-            padding: 0;
-            cursor: pointer;
+         &:hover {
+            // background: #f3f3f3 !important;
+            background: #f5f5f5 !important;
 
             span {
-                svg-icon {
-                    padding-right: 6px;
-                }
+               color: #6c6c6c !important;
             }
 
             svg {
-                #Path_1186 {
-                    stroke: #919191;
-                }
+               #Path_1186 {
+                  stroke: #6c6c6c !important;
+               }
 
-                #Path_1187 {
-                    stroke: #919191;
-                }
+               #Path_1187 {
+                  stroke: #6c6c6c !important;
+               }
             }
+         }
 
-            &:hover {
-                // background: #f3f3f3 !important;
-                background: #f5f5f5 !important;
+         .panel-title {
+            padding: 7px 0 7px 12px;
+            font-weight: normal !important;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            color: #919191;
+            // color: #656565;
+         }
+      }
+   }
 
-                span {
-                    color: #6c6c6c !important;
-                }
+   .tab_click {
+      span {
+         color: #6c6c6c !important;
+      }
 
-                svg {
-                    #Path_1186 {
-                        stroke: #6c6c6c !important;
-                    }
+      svg {
+         #Path_1186 {
+            stroke: #6c6c6c !important;
+         }
 
-                    #Path_1187 {
-                        stroke: #6c6c6c !important;
-                    }
-                }
-            }
-
-            .panel-title {
-                padding: 7px 0 7px 12px;
-                font-weight: normal !important;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 14px;
-                color: #919191;
-                // color: #656565;
-            }
-        }
-    }
-
-    .tab_click {
-        span {
-            color: #6c6c6c !important;
-        }
-
-        svg {
-            #Path_1186 {
-                stroke: #6c6c6c !important;
-            }
-
-            #Path_1187 {
-                stroke: #6c6c6c !important;
-            }
-        }
-    }
+         #Path_1187 {
+            stroke: #6c6c6c !important;
+         }
+      }
+   }
 }
 
 .type-accordion2 {
-    width: 0;
-    opacity: 0;
-    margin-left: 6px;
-    border-radius: 0 3px 3px 0;
-    position: relative;
-    line-height: 32px;
-    height: 32px;
-    z-index: 10;
-    user-select: none;
-    transition: all 0.2s ease-in-out !important;
-
-    .open-acordion {
-        border-bottom-left-radius: 0 !important;
-        border-bottom-right-radius: 0 !important;
-    }
-
-    .collapse.show {
-        transition: all 0.1s ease-in-out !important;
-    }
-
-    .truck-item-wrapper {
-        &.semi-truck-icon {
-            svg {
-                align-items: center;
-
-                #Path_1223 {
-                    fill: #90bc6f;
-                }
-
-                #Path_1224 {
-                    fill: #90bc6f;
-                }
-
-                #Path_1225 {
-                    fill: #90bc6f;
-                }
-
-                #Path_1226 {
-                    fill: #90bc6f;
-                }
-
-                #Path_1227 {
-                    fill: #90bc6f;
-                }
-
-                #Path_1228 {
-                    fill: #90bc6f;
-                }
-
-                width: 43px;
-                height: 24px;
-            }
-        }
-
-        &.semi-wsleeper-icon {
-            svg {
-                #Path_1217 {
-                    fill: #ffc061 !important;
-                }
-
-                #Path_1218 {
-                    fill: #ffc061 !important;
-                }
-
-                #Path_1219 {
-                    fill: #ffc061 !important;
-                }
-
-                #Path_1220 {
-                    fill: #ffc061 !important;
-                }
-
-                #Path_1221 {
-                    fill: #ffc061 !important;
-                }
-
-                #Path_1222 {
-                    fill: #ffc061 !important;
-                }
-
-                width: 50px;
-                height: 24px;
-            }
-        }
-
-        &.box-truck-icon {
-            svg {
-                #Path_1229 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Path_1230 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Path_1231 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Path_1232 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Path_1233 {
-                    fill: #ef6e6e !important;
-                }
-
-                width: 49px;
-                height: 21px;
-            }
-        }
-
-        &.cargo-van-icon {
-            // vertical-align: middle;
-            svg {
-                #Path_1240 {
-                    fill: #78c7fc !important;
-                }
-
-                #Path_1241 {
-                    fill: #78c7fc !important;
-                }
-
-                #Path_1242 {
-                    fill: #78c7fc !important;
-                }
-
-                width: 40px;
-                height: 16px;
-            }
-        }
-
-        &.tow-truck-icon {
-            svg {
-                #Path_1234 {
-                    fill: #90659b !important;
-                }
-
-                #Path_1235 {
-                    fill: #90659b !important;
-                }
-
-                #Path_1236 {
-                    fill: #90659b !important;
-                }
-
-                #Rectangle_1320 {
-                    fill: #90659b !important;
-                }
-
-                #Path_1237 {
-                    fill: #90659b !important;
-                }
-
-                #Path_1238 {
-                    fill: #90659b !important;
-                }
-
-                #Path_1239 {
-                    fill: #90659b !important;
-                }
-
-                width: 57.43px;
-                height: 24px;
-            }
-        }
-
-        &.truck-hauler-icon {
-            svg {
-                #Rectangle_1321 {
-                    fill: #668888 !important;
-                }
-
-                #Ellipse_492 {
-                    fill: #668888 !important;
-                }
-
-                #Path_1243 {
-                    fill: #668888 !important;
-                }
-
-                width: 54.71px;
-                height: 20px;
-            }
-        }
-
-        &.reefer-icon {
-            svg {
-                #Path_1244 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Path_1245 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1322 {
-                    fill: $white !important;
-                }
-
-                #Path_1246 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Path_1247 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Path_1248 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Rectangle_1323 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1324 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1325 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1326 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1327 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1328 {
-                    fill: $white !important;
-                }
-
-                width: 59px;
-                height: 22px;
-            }
-        }
-
-        &.dry-van-icon {
-            svg {
-                width: 56.96px;
-                height: 22px;
-
-                #Path_1249 {
-                    fill: #5673aa !important;
-                }
-
-                #Path_1250 {
-                    fill: #5673aa !important;
-                }
-
-                #Path_1251 {
-                    fill: #5673aa !important;
-                }
-
-                #Path_1252 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1329 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1330 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1331 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1332 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1333 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1334 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1335 {
-                    fill: $white !important;
-                }
-            }
-        }
-
-        &.side-kit-icon {
-            svg {
-                width: 62.24px;
-                height: 21px;
-
-                #Rectangle_1336 {
-                    fill: #76a77d !important;
-                }
-
-                #Rectangle_1337 {
-                    fill: #76a77d !important;
-                }
-
-                #Rectangle_1338 {
-                    fill: #76a77d !important;
-                }
-
-                #Rectangle_1339 {
-                    fill: #76a77d !important;
-                }
-
-                #Rectangle_1340 {
-                    fill: #76a77d !important;
-                }
-
-                #Rectangle_1341 {
-                    fill: #76a77d !important;
-                }
-
-                #Rectangle_1342 {
-                    fill: #76a77d !important;
-                }
-
-                #Rectangle_1343 {
-                    fill: #76a77d !important;
-                }
-
-                #Rectangle_1344 {
-                    fill: #76a77d !important;
-                }
-
-                #Path_1253 {
-                    fill: #76a77d !important;
-                }
-
-                #Path_1254 {
-                    fill: #76a77d !important;
-                }
-
-                #Path_1255 {
-                    fill: #76a77d !important;
-                }
-
-                #Path_1256 {
-                    fill: #76a77d !important;
-                }
-            }
-        }
-
-        &.conestoga-icon {
-            svg {
-                width: 59.31px;
-                height: 22px;
-
-                #Path_1257 {
-                    fill: #484848 !important;
-                }
-
-                #Path_1258 {
-                    fill: #484848 !important;
-                }
-
-                #Path_1259 {
-                    fill: #484848 !important;
-                }
-
-                #Path_1260 {
-                    fill: #484848 !important;
-                }
-
-                #Path_1261 {
-                    fill: none !important;
-                    stroke: $white;
-                }
-
-                #Path_1262 {
-                    fill: none !important;
-                    stroke: $white;
-                }
-
-                #Path_1263 {
-                    fill: none !important;
-                    stroke: $white;
-                }
-
-                #Path_1264 {
-                    fill: none !important;
-                    stroke: $white;
-                }
-
-                #Path_1265 {
-                    fill: none !important;
-                    stroke: $white;
-                }
-            }
-        }
-
-        &.dumper-icon {
-            svg {
-                path {
-                    fill: #8fdee1 !important;
-                }
-
-                #Rectangle_1345 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1270 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1271 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1272 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1273 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1274 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1275 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Rectangle_1346 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1276 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1278 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Rectangle_1347 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1279 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1280 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1281 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1282 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1283 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1284 {
-                    fill: #8fdee1 !important;
-                }
-
-                #Path_1285 {
-                    fill: #8fdee1 !important;
-                }
-
-                width: 56px;
-                height: 21px;
-            }
-        }
-
-        &.container-icon {
-            svg {
-                #Path_1518 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Path_1519 {
-                    fill: #6c6c6c !important;
-                }
-
-                #Path_1520 {
-                    fill: #6c6c6c !important;
-                }
-
-                #Path_1521 {
-                    fill: #6c6c6c !important;
-                }
-
-                #Path_1522 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1564 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1565 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1566 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1567 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1568 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1569 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1570 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1571 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1572 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1573 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1574 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1575 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1576 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1577 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1578 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1579 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1580 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1581 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1582 {
-                    fill: $white !important;
-                }
-
-                #Path_1523 {
-                    fill: $white !important;
-                }
-
-                width: 58px;
-                height: 22px;
-            }
-        }
-
-        &.tanker-icon {
-            svg {
-                #Path_1266 {
-                    fill: #81ccff !important;
-                }
-
-                #Path_1267 {
-                    fill: #81ccff !important;
-                }
-
-                #Path_1268 {
-                    fill: #81ccff !important;
-                }
-
-                #Path_1269 {
-                    fill: $white !important;
-                }
-
-                width: 64.49px;
-                height: 20px;
-            }
-        }
-
-        &.trailer-hauler-icon {
-            svg {
-                #Path_1305 {
-                    fill: #668888 !important;
-                }
-
-                #Path_1306 {
-                    fill: #668888 !important;
-                }
-
-                #Path_1307 {
-                    fill: #668888 !important;
-                }
-
-                width: 61px;
-                height: 18px;
-            }
-        }
-
-        &.flat-bed-icon {
-            svg {
-                #Path_1292 {
-                    fill: #af88ea !important;
-                }
-
-                #Path_1293 {
-                    fill: #af88ea !important;
-                }
-
-                #Path_1294 {
-                    fill: #af88ea !important;
-                }
-
-                width: 60px;
-                height: 7.25px;
-            }
-        }
-
-        &.low-boy-rgn-icon {
-            svg {
-                #Path_1295 {
-                    fill: #955fa2 !important;
-                }
-
-                #Path_1296 {
-                    fill: #955fa2 !important;
-                }
-
-                #Path_1297 {
-                    fill: #955fa2 !important;
-                }
-
-                #Path_1298 {
-                    fill: #955fa2 !important;
-                }
-
-                width: 60px;
-                height: 8.02px;
-            }
-        }
-
-        &.chassis-icon {
-            svg {
-                #Path_1289 {
-                    fill: #547556 !important;
-                }
-
-                #Path_1290 {
-                    fill: #547556 !important;
-                }
-
-                #Path_1291 {
-                    fill: #547556 !important;
-                }
-
-                width: 60px;
-                height: 6.44px;
-            }
-        }
-
-        &.step-deck-icon {
-            svg {
-                #Path_1288 {
-                    fill: #f2dd75 !important;
-                }
-
-                #Ellipse_494 {
-                    fill: #f2dd75 !important;
-                }
-
-                #Ellipse_495 {
-                    fill: #f2dd75 !important;
-                }
-
-                width: 60px;
-                height: 12px;
-            }
-        }
-
-        .truck-text {
-            // width: 0;
-            // padding-top: 1px;
-            // max-width: 0;
-            width: 120px;
-            margin-left: -101px;
-            overflow: hidden;
-            // color: $white;
-            color: #ffffff;
-            //  color:red;
-            transition: all 0.2s ease-in-out;
-            display: flex;
+   width: 0;
+   opacity: 0;
+   margin-left: 6px;
+   border-radius: 0 3px 3px 0;
+   position: relative;
+   line-height: 32px;
+   height: 32px;
+   z-index: 10;
+   user-select: none;
+   transition: all 0.2s ease-in-out !important;
+
+   .open-acordion {
+      border-bottom-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+   }
+
+   .collapse.show {
+      transition: all 0.1s ease-in-out !important;
+   }
+
+   .truck-item-wrapper {
+      &.semi-truck-icon {
+         svg {
             align-items: center;
-            // align-items: flex-end;
-            // padding-bottom: 8px;
-            padding-left: 6px;
-            padding-right: 6px;
-            font-weight: bold;
-            white-space: pre;
-            font-size: 12px;
-            font-family: 'Montserrat', sans-serif;
-            height: 32px;
-            user-select: none;
-        }
 
-        .truck-image {
-            background-position: left center;
-            // background-size: 43px 24px;
-            background-repeat: no-repeat;
-            width: 70px;
-            // background-position-x: left;
-            background-color: transparent !important;
-            height: 32px;
-            margin-left: -12px;
-        }
-    }
-
-    .truck-item-wrapper:hover {
-        &.semi-truck-icon {
-            background: #90bc6f;
-
-            svg {
-                #Path_1223 {
-                    fill: $white !important;
-                }
-
-                #Path_1224 {
-                    fill: $white !important;
-                }
-
-                #Path_1225 {
-                    fill: $white !important;
-                }
-
-                #Path_1226 {
-                    fill: $white !important;
-                }
-
-                #Path_1227 {
-                    fill: $white !important;
-                }
-
-                #Path_1228 {
-                    fill: $white !important;
-                }
-
-                width: 43px;
-                height: 24px;
+            #Path_1223 {
+               fill: #90bc6f;
             }
-        }
 
-        &.semi-wsleeper-icon {
-            background: #ffc061;
-
-            svg {
-                #Path_1217 {
-                    fill: $white !important;
-                }
-
-                #Path_1218 {
-                    fill: $white !important;
-                }
-
-                #Path_1219 {
-                    fill: $white !important;
-                }
-
-                #Path_1220 {
-                    fill: $white !important;
-                }
-
-                #Path_1221 {
-                    fill: $white !important;
-                }
-
-                #Path_1222 {
-                    fill: $white !important;
-                }
-
-                width: 50px;
-                height: 24px;
+            #Path_1224 {
+               fill: #90bc6f;
             }
-        }
 
-        &.box-truck-icon {
-            background: #ef6e6e;
-
-            svg {
-                #Path_1229 {
-                    fill: $white !important;
-                }
-
-                #Path_1230 {
-                    fill: $white !important;
-                }
-
-                #Path_1231 {
-                    fill: $white !important;
-                }
-
-                #Path_1232 {
-                    fill: $white !important;
-                }
-
-                #Path_1233 {
-                    fill: $white !important;
-                }
-
-                width: 49px;
-                height: 21px;
+            #Path_1225 {
+               fill: #90bc6f;
             }
-        }
 
-        &.cargo-van-icon {
-            background: #78c7fc;
+            #Path_1226 {
+               fill: #90bc6f;
+            }
 
+            #Path_1227 {
+               fill: #90bc6f;
+            }
+
+            #Path_1228 {
+               fill: #90bc6f;
+            }
+
+            width: 43px;
+            height: 24px;
+         }
+      }
+
+      &.semi-wsleeper-icon {
+         svg {
+            #Path_1217 {
+               fill: #ffc061 !important;
+            }
+
+            #Path_1218 {
+               fill: #ffc061 !important;
+            }
+
+            #Path_1219 {
+               fill: #ffc061 !important;
+            }
+
+            #Path_1220 {
+               fill: #ffc061 !important;
+            }
+
+            #Path_1221 {
+               fill: #ffc061 !important;
+            }
+
+            #Path_1222 {
+               fill: #ffc061 !important;
+            }
+
+            width: 50px;
+            height: 24px;
+         }
+      }
+
+      &.box-truck-icon {
+         svg {
+            #Path_1229 {
+               fill: #ef6e6e !important;
+            }
+
+            #Path_1230 {
+               fill: #ef6e6e !important;
+            }
+
+            #Path_1231 {
+               fill: #ef6e6e !important;
+            }
+
+            #Path_1232 {
+               fill: #ef6e6e !important;
+            }
+
+            #Path_1233 {
+               fill: #ef6e6e !important;
+            }
+
+            width: 49px;
+            height: 21px;
+         }
+      }
+
+      &.cargo-van-icon {
+         // vertical-align: middle;
+         svg {
             #Path_1240 {
-                fill: $white !important;
+               fill: #78c7fc !important;
             }
 
             #Path_1241 {
-                fill: $white !important;
+               fill: #78c7fc !important;
             }
 
             #Path_1242 {
-                fill: $white !important;
+               fill: #78c7fc !important;
             }
-        }
 
-        &.tow-truck-icon {
-            background: #90659b;
+            width: 40px;
+            height: 16px;
+         }
+      }
 
-            svg {
-                #Path_1234 {
-                    fill: $white !important;
-                }
-
-                #Path_1235 {
-                    fill: $white !important;
-                }
-
-                #Path_1236 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1320 {
-                    fill: $white !important;
-                }
-
-                #Path_1237 {
-                    fill: $white !important;
-                }
-
-                #Path_1238 {
-                    fill: $white !important;
-                }
-
-                #Path_1239 {
-                    fill: $white !important;
-                }
-
-                width: 57.43px;
-                height: 24px;
+      &.tow-truck-icon {
+         svg {
+            #Path_1234 {
+               fill: #90659b !important;
             }
-        }
 
-        &.truck-hauler-icon {
-            background: #668888;
-
-            svg {
-                #Rectangle_1321 {
-                    fill: $white !important;
-                }
-
-                #Ellipse_492 {
-                    fill: $white !important;
-                }
-
-                #Path_1243 {
-                    fill: $white !important;
-                }
-
-                width: 54.71px;
-                height: 20px;
+            #Path_1235 {
+               fill: #90659b !important;
             }
-        }
 
-        &.reefer-icon {
-            background: #ef6e6e;
-
-            svg {
-                #Path_1244 {
-                    fill: $white !important;
-                }
-
-                #Path_1245 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Rectangle_1322 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Path_1246 {
-                    fill: $white !important;
-                }
-
-                #Path_1247 {
-                    fill: $white !important;
-                }
-
-                #Path_1248 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1323 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Rectangle_1324 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Rectangle_1325 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Rectangle_1326 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Rectangle_1327 {
-                    fill: #ef6e6e !important;
-                }
-
-                #Rectangle_1328 {
-                    fill: #ef6e6e !important;
-                }
-
-                width: 59px;
-                height: 22px;
+            #Path_1236 {
+               fill: #90659b !important;
             }
-        }
 
-        &.dry-van-icon {
-            background: #5673aa;
-
-            svg {
-                width: 56.96px;
-                height: 22px;
-
-                #Path_1249 {
-                    fill: $white !important;
-                }
-
-                #Path_1250 {
-                    fill: $white !important;
-                }
-
-                #Path_1251 {
-                    fill: $white !important;
-                }
-
-                #Path_1252 {
-                    fill: #5673aa !important;
-                }
-
-                #Rectangle_1329 {
-                    fill: #5673aa !important;
-                }
-
-                #Rectangle_1330 {
-                    fill: #5673aa !important;
-                }
-
-                #Rectangle_1331 {
-                    fill: #5673aa !important;
-                }
-
-                #Rectangle_1332 {
-                    fill: #5673aa !important;
-                }
-
-                #Rectangle_1333 {
-                    fill: #5673aa !important;
-                }
-
-                #Rectangle_1334 {
-                    fill: #5673aa !important;
-                }
-
-                #Rectangle_1335 {
-                    fill: #5673aa !important;
-                }
+            #Rectangle_1320 {
+               fill: #90659b !important;
             }
-        }
 
-        &.side-kit-icon {
-            background: #76a77d;
-
-            svg {
-                width: 62.24px;
-                height: 21px;
-
-                #Rectangle_1336 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1337 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1338 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1339 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1340 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1341 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1342 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1343 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1344 {
-                    fill: $white !important;
-                }
-
-                #Path_1253 {
-                    fill: $white !important;
-                }
-
-                #Path_1254 {
-                    fill: $white !important;
-                }
-
-                #Path_1255 {
-                    fill: $white !important;
-                }
-
-                #Path_1256 {
-                    fill: $white !important;
-                }
+            #Path_1237 {
+               fill: #90659b !important;
             }
-        }
 
-        &.conestoga-icon {
-            background: #484848;
-
-            svg {
-                width: 59.31px;
-                height: 22px;
-
-                #Path_1257 {
-                    fill: $white !important;
-                }
-
-                #Path_1258 {
-                    fill: $white !important;
-                }
-
-                #Path_1259 {
-                    fill: $white !important;
-                }
-
-                #Path_1260 {
-                    fill: $white !important;
-                }
-
-                #Path_1261 {
-                    fill: none !important;
-                    stroke: #484848;
-                }
-
-                #Path_1262 {
-                    fill: none !important;
-                    stroke: #484848;
-                }
-
-                #Path_1263 {
-                    fill: none !important;
-                    stroke: #484848;
-                }
-
-                #Path_1264 {
-                    fill: none !important;
-                    stroke: #484848;
-                }
-
-                #Path_1265 {
-                    fill: none !important;
-                    stroke: #484848;
-                }
+            #Path_1238 {
+               fill: #90659b !important;
             }
-        }
 
-        &.dumper-icon {
-            background: #8fdee1;
-
-            svg {
-                #Rectangle_1345 {
-                    fill: $white !important;
-                }
-
-                #Path_1270 {
-                    fill: $white !important;
-                }
-
-                #Path_1271 {
-                    fill: $white !important;
-                }
-
-                #Path_1272 {
-                    fill: $white !important;
-                }
-
-                #Path_1273 {
-                    fill: $white !important;
-                }
-
-                #Path_1274 {
-                    fill: $white !important;
-                }
-
-                #Path_1275 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1346 {
-                    fill: $white !important;
-                }
-
-                #Path_1276 {
-                    fill: $white !important;
-                }
-
-                #Path_1278 {
-                    fill: $white !important;
-                }
-
-                #Rectangle_1347 {
-                    fill: $white !important;
-                }
-
-                #Path_1279 {
-                    fill: $white !important;
-                }
-
-                #Path_1280 {
-                    fill: $white !important;
-                }
-
-                #Path_1281 {
-                    fill: $white !important;
-                }
-
-                #Path_1282 {
-                    fill: $white !important;
-                }
-
-                #Path_1283 {
-                    fill: $white !important;
-                }
-
-                #Path_1284 {
-                    fill: $white !important;
-                }
-
-                #Path_1285 {
-                    fill: $white !important;
-                }
-
-                width: 56px;
-                height: 21px;
+            #Path_1239 {
+               fill: #90659b !important;
             }
-        }
 
-        &.container-icon {
-            background: #ffbe7d;
+            width: 57.43px;
+            height: 24px;
+         }
+      }
 
-            svg {
-                #Path_1518 {
-                    fill: $white !important;
-                }
-
-                #Path_1519 {
-                    fill: #6c6c6c !important;
-                }
-
-                #Path_1520 {
-                    fill: #6c6c6c !important;
-                }
-
-                #Path_1521 {
-                    fill: #6c6c6c !important;
-                }
-
-                #Path_1522 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1564 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1565 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1566 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1567 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1568 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1569 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1570 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1571 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1572 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1573 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1574 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1575 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1576 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1577 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1578 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1579 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1580 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1581 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Rectangle_1582 {
-                    fill: #ffbe7d !important;
-                }
-
-                #Path_1523 {
-                    fill: #ffbe7d !important;
-                }
-
-                width: 58px;
-                height: 22px;
+      &.truck-hauler-icon {
+         svg {
+            #Rectangle_1321 {
+               fill: #668888 !important;
             }
-        }
 
-        &.tanker-icon {
-            background: #81ccff !important;
-
-            svg {
-                #Path_1266 {
-                    fill: $white !important;
-                }
-
-                #Path_1267 {
-                    fill: $white !important;
-                }
-
-                #Path_1268 {
-                    fill: $white !important;
-                }
-
-                #Path_1269 {
-                    fill: #81ccff !important;
-                }
-
-                width: 64.49px;
-                height: 20px;
+            #Ellipse_492 {
+               fill: #668888 !important;
             }
-        }
 
-        &.trailer-hauler-icon {
-            background: #668888;
-
-            svg {
-                #Path_1305 {
-                    fill: $white !important;
-                }
-
-                #Path_1306 {
-                    fill: $white !important;
-                }
-
-                #Path_1307 {
-                    fill: $white !important;
-                }
-
-                width: 61px;
-                height: 18px;
+            #Path_1243 {
+               fill: #668888 !important;
             }
-        }
 
-        &.flat-bed-icon {
-            background: #af88ea;
+            width: 54.71px;
+            height: 20px;
+         }
+      }
 
-            svg {
-                #Path_1292 {
-                    fill: $white !important;
-                }
-
-                #Path_1293 {
-                    fill: $white !important;
-                }
-
-                #Path_1294 {
-                    fill: $white !important;
-                }
-
-                width: 60px;
-                height: 7.25px;
+      &.reefer-icon {
+         svg {
+            #Path_1244 {
+               fill: #ef6e6e !important;
             }
-        }
 
-        &.low-boy-rgn-icon {
-            background: #955fa2;
-
-            svg {
-                #Path_1295 {
-                    fill: $white !important;
-                }
-
-                #Path_1296 {
-                    fill: $white !important;
-                }
-
-                #Path_1297 {
-                    fill: $white !important;
-                }
-
-                #Path_1298 {
-                    fill: $white !important;
-                }
-
-                width: 60px;
-                height: 8.02px;
+            #Path_1245 {
+               fill: $white !important;
             }
-        }
 
-        &.chassis-icon {
-            background: #547556;
-
-            svg {
-                #Path_1289 {
-                    fill: $white !important;
-                }
-
-                #Path_1290 {
-                    fill: $white !important;
-                }
-
-                #Path_1291 {
-                    fill: $white !important;
-                }
-
-                width: 60px;
-                height: 6.44px;
+            #Rectangle_1322 {
+               fill: $white !important;
             }
-        }
 
-        &.step-deck-icon {
-            background: #f2dd75;
-
-            svg {
-                #Path_1288 {
-                    fill: $white !important;
-                }
-
-                #Ellipse_494 {
-                    fill: $white !important;
-                }
-
-                #Ellipse_495 {
-                    fill: $white !important;
-                }
-
-                width: 60px;
-                height: 12px;
+            #Path_1246 {
+               fill: #ef6e6e !important;
             }
-        }
 
-        .truck-text {
-            // width:120px;
-            margin-left: 0;
-            width: auto;
-            max-width: 1000px;
-            transition: all 0.2s ease-in-out;
-            color: #ffffff;
-            // color: red;
-        }
+            #Path_1247 {
+               fill: #ef6e6e !important;
+            }
 
-        .truck-image {
-            margin-left: 0;
-            // transition: all 0.2s ease-in-out;
-        }
-    }
+            #Path_1248 {
+               fill: #ef6e6e !important;
+            }
 
-    // .mat-expansion-indicator::after {
-    //   border: none !important;
-    //   content: '+';
-    //   font-size: 24px;
-    //   font-weight: 700;
-    //   transform: none;
-    // }
-    // .mat-expanded {
-    //   .mat-expansion-indicator::after {
-    //     font-family: 'Font Awesome 5 Duotone';
-    //     content: '\f067' !important;
-    //     font-size: 15px;
-    //     margin-right: 0.5px;
-    //   }
-    // }
-    // .mat-expansion-indicator {
-    //   transform: none !important;
-    // }
+            #Rectangle_1323 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1324 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1325 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1326 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1327 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1328 {
+               fill: $white !important;
+            }
+
+            width: 59px;
+            height: 22px;
+         }
+      }
+
+      &.dry-van-icon {
+         svg {
+            width: 56.96px;
+            height: 22px;
+
+            #Path_1249 {
+               fill: #5673aa !important;
+            }
+
+            #Path_1250 {
+               fill: #5673aa !important;
+            }
+
+            #Path_1251 {
+               fill: #5673aa !important;
+            }
+
+            #Path_1252 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1329 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1330 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1331 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1332 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1333 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1334 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1335 {
+               fill: $white !important;
+            }
+         }
+      }
+
+      &.side-kit-icon {
+         svg {
+            width: 62.24px;
+            height: 21px;
+
+            #Rectangle_1336 {
+               fill: #76a77d !important;
+            }
+
+            #Rectangle_1337 {
+               fill: #76a77d !important;
+            }
+
+            #Rectangle_1338 {
+               fill: #76a77d !important;
+            }
+
+            #Rectangle_1339 {
+               fill: #76a77d !important;
+            }
+
+            #Rectangle_1340 {
+               fill: #76a77d !important;
+            }
+
+            #Rectangle_1341 {
+               fill: #76a77d !important;
+            }
+
+            #Rectangle_1342 {
+               fill: #76a77d !important;
+            }
+
+            #Rectangle_1343 {
+               fill: #76a77d !important;
+            }
+
+            #Rectangle_1344 {
+               fill: #76a77d !important;
+            }
+
+            #Path_1253 {
+               fill: #76a77d !important;
+            }
+
+            #Path_1254 {
+               fill: #76a77d !important;
+            }
+
+            #Path_1255 {
+               fill: #76a77d !important;
+            }
+
+            #Path_1256 {
+               fill: #76a77d !important;
+            }
+         }
+      }
+
+      &.conestoga-icon {
+         svg {
+            width: 59.31px;
+            height: 22px;
+
+            #Path_1257 {
+               fill: #484848 !important;
+            }
+
+            #Path_1258 {
+               fill: #484848 !important;
+            }
+
+            #Path_1259 {
+               fill: #484848 !important;
+            }
+
+            #Path_1260 {
+               fill: #484848 !important;
+            }
+
+            #Path_1261 {
+               fill: none !important;
+               stroke: $white;
+            }
+
+            #Path_1262 {
+               fill: none !important;
+               stroke: $white;
+            }
+
+            #Path_1263 {
+               fill: none !important;
+               stroke: $white;
+            }
+
+            #Path_1264 {
+               fill: none !important;
+               stroke: $white;
+            }
+
+            #Path_1265 {
+               fill: none !important;
+               stroke: $white;
+            }
+         }
+      }
+
+      &.dumper-icon {
+         svg {
+            path {
+               fill: #8fdee1 !important;
+            }
+
+            #Rectangle_1345 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1270 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1271 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1272 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1273 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1274 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1275 {
+               fill: #8fdee1 !important;
+            }
+
+            #Rectangle_1346 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1276 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1278 {
+               fill: #8fdee1 !important;
+            }
+
+            #Rectangle_1347 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1279 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1280 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1281 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1282 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1283 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1284 {
+               fill: #8fdee1 !important;
+            }
+
+            #Path_1285 {
+               fill: #8fdee1 !important;
+            }
+
+            width: 56px;
+            height: 21px;
+         }
+      }
+
+      &.container-icon {
+         svg {
+            #Path_1518 {
+               fill: #ffbe7d !important;
+            }
+
+            #Path_1519 {
+               fill: #6c6c6c !important;
+            }
+
+            #Path_1520 {
+               fill: #6c6c6c !important;
+            }
+
+            #Path_1521 {
+               fill: #6c6c6c !important;
+            }
+
+            #Path_1522 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1564 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1565 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1566 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1567 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1568 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1569 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1570 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1571 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1572 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1573 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1574 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1575 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1576 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1577 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1578 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1579 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1580 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1581 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1582 {
+               fill: $white !important;
+            }
+
+            #Path_1523 {
+               fill: $white !important;
+            }
+
+            width: 58px;
+            height: 22px;
+         }
+      }
+
+      &.tanker-icon {
+         svg {
+            #Path_1266 {
+               fill: #81ccff !important;
+            }
+
+            #Path_1267 {
+               fill: #81ccff !important;
+            }
+
+            #Path_1268 {
+               fill: #81ccff !important;
+            }
+
+            #Path_1269 {
+               fill: $white !important;
+            }
+
+            width: 64.49px;
+            height: 20px;
+         }
+      }
+
+      &.trailer-hauler-icon {
+         svg {
+            #Path_1305 {
+               fill: #668888 !important;
+            }
+
+            #Path_1306 {
+               fill: #668888 !important;
+            }
+
+            #Path_1307 {
+               fill: #668888 !important;
+            }
+
+            width: 61px;
+            height: 18px;
+         }
+      }
+
+      &.flat-bed-icon {
+         svg {
+            #Path_1292 {
+               fill: #af88ea !important;
+            }
+
+            #Path_1293 {
+               fill: #af88ea !important;
+            }
+
+            #Path_1294 {
+               fill: #af88ea !important;
+            }
+
+            width: 60px;
+            height: 7.25px;
+         }
+      }
+
+      &.low-boy-rgn-icon {
+         svg {
+            #Path_1295 {
+               fill: #955fa2 !important;
+            }
+
+            #Path_1296 {
+               fill: #955fa2 !important;
+            }
+
+            #Path_1297 {
+               fill: #955fa2 !important;
+            }
+
+            #Path_1298 {
+               fill: #955fa2 !important;
+            }
+
+            width: 60px;
+            height: 8.02px;
+         }
+      }
+
+      &.chassis-icon {
+         svg {
+            #Path_1289 {
+               fill: #547556 !important;
+            }
+
+            #Path_1290 {
+               fill: #547556 !important;
+            }
+
+            #Path_1291 {
+               fill: #547556 !important;
+            }
+
+            width: 60px;
+            height: 6.44px;
+         }
+      }
+
+      &.step-deck-icon {
+         svg {
+            #Path_1288 {
+               fill: #f2dd75 !important;
+            }
+
+            #Ellipse_494 {
+               fill: #f2dd75 !important;
+            }
+
+            #Ellipse_495 {
+               fill: #f2dd75 !important;
+            }
+
+            width: 60px;
+            height: 12px;
+         }
+      }
+
+      .truck-text {
+         // width: 0;
+         // padding-top: 1px;
+         // max-width: 0;
+         width: 120px;
+         margin-left: -101px;
+         overflow: hidden;
+         // color: $white;
+         color: #ffffff;
+         //  color:red;
+         transition: all 0.2s ease-in-out;
+         display: flex;
+         align-items: center;
+         // align-items: flex-end;
+         // padding-bottom: 8px;
+         padding-left: 6px;
+         padding-right: 6px;
+         font-weight: bold;
+         white-space: pre;
+         font-size: 12px;
+         font-family: 'Montserrat', sans-serif;
+         height: 32px;
+         user-select: none;
+      }
+
+      .truck-image {
+         background-position: left center;
+         // background-size: 43px 24px;
+         background-repeat: no-repeat;
+         width: 70px;
+         // background-position-x: left;
+         background-color: transparent !important;
+         height: 32px;
+         margin-left: -12px;
+      }
+   }
+
+   .truck-item-wrapper:hover {
+      &.semi-truck-icon {
+         background: #90bc6f;
+
+         svg {
+            #Path_1223 {
+               fill: $white !important;
+            }
+
+            #Path_1224 {
+               fill: $white !important;
+            }
+
+            #Path_1225 {
+               fill: $white !important;
+            }
+
+            #Path_1226 {
+               fill: $white !important;
+            }
+
+            #Path_1227 {
+               fill: $white !important;
+            }
+
+            #Path_1228 {
+               fill: $white !important;
+            }
+
+            width: 43px;
+            height: 24px;
+         }
+      }
+
+      &.semi-wsleeper-icon {
+         background: #ffc061;
+
+         svg {
+            #Path_1217 {
+               fill: $white !important;
+            }
+
+            #Path_1218 {
+               fill: $white !important;
+            }
+
+            #Path_1219 {
+               fill: $white !important;
+            }
+
+            #Path_1220 {
+               fill: $white !important;
+            }
+
+            #Path_1221 {
+               fill: $white !important;
+            }
+
+            #Path_1222 {
+               fill: $white !important;
+            }
+
+            width: 50px;
+            height: 24px;
+         }
+      }
+
+      &.box-truck-icon {
+         background: #ef6e6e;
+
+         svg {
+            #Path_1229 {
+               fill: $white !important;
+            }
+
+            #Path_1230 {
+               fill: $white !important;
+            }
+
+            #Path_1231 {
+               fill: $white !important;
+            }
+
+            #Path_1232 {
+               fill: $white !important;
+            }
+
+            #Path_1233 {
+               fill: $white !important;
+            }
+
+            width: 49px;
+            height: 21px;
+         }
+      }
+
+      &.cargo-van-icon {
+         background: #78c7fc;
+
+         #Path_1240 {
+            fill: $white !important;
+         }
+
+         #Path_1241 {
+            fill: $white !important;
+         }
+
+         #Path_1242 {
+            fill: $white !important;
+         }
+      }
+
+      &.tow-truck-icon {
+         background: #90659b;
+
+         svg {
+            #Path_1234 {
+               fill: $white !important;
+            }
+
+            #Path_1235 {
+               fill: $white !important;
+            }
+
+            #Path_1236 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1320 {
+               fill: $white !important;
+            }
+
+            #Path_1237 {
+               fill: $white !important;
+            }
+
+            #Path_1238 {
+               fill: $white !important;
+            }
+
+            #Path_1239 {
+               fill: $white !important;
+            }
+
+            width: 57.43px;
+            height: 24px;
+         }
+      }
+
+      &.truck-hauler-icon {
+         background: #668888;
+
+         svg {
+            #Rectangle_1321 {
+               fill: $white !important;
+            }
+
+            #Ellipse_492 {
+               fill: $white !important;
+            }
+
+            #Path_1243 {
+               fill: $white !important;
+            }
+
+            width: 54.71px;
+            height: 20px;
+         }
+      }
+
+      &.reefer-icon {
+         background: #ef6e6e;
+
+         svg {
+            #Path_1244 {
+               fill: $white !important;
+            }
+
+            #Path_1245 {
+               fill: #ef6e6e !important;
+            }
+
+            #Rectangle_1322 {
+               fill: #ef6e6e !important;
+            }
+
+            #Path_1246 {
+               fill: $white !important;
+            }
+
+            #Path_1247 {
+               fill: $white !important;
+            }
+
+            #Path_1248 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1323 {
+               fill: #ef6e6e !important;
+            }
+
+            #Rectangle_1324 {
+               fill: #ef6e6e !important;
+            }
+
+            #Rectangle_1325 {
+               fill: #ef6e6e !important;
+            }
+
+            #Rectangle_1326 {
+               fill: #ef6e6e !important;
+            }
+
+            #Rectangle_1327 {
+               fill: #ef6e6e !important;
+            }
+
+            #Rectangle_1328 {
+               fill: #ef6e6e !important;
+            }
+
+            width: 59px;
+            height: 22px;
+         }
+      }
+
+      &.dry-van-icon {
+         background: #5673aa;
+
+         svg {
+            width: 56.96px;
+            height: 22px;
+
+            #Path_1249 {
+               fill: $white !important;
+            }
+
+            #Path_1250 {
+               fill: $white !important;
+            }
+
+            #Path_1251 {
+               fill: $white !important;
+            }
+
+            #Path_1252 {
+               fill: #5673aa !important;
+            }
+
+            #Rectangle_1329 {
+               fill: #5673aa !important;
+            }
+
+            #Rectangle_1330 {
+               fill: #5673aa !important;
+            }
+
+            #Rectangle_1331 {
+               fill: #5673aa !important;
+            }
+
+            #Rectangle_1332 {
+               fill: #5673aa !important;
+            }
+
+            #Rectangle_1333 {
+               fill: #5673aa !important;
+            }
+
+            #Rectangle_1334 {
+               fill: #5673aa !important;
+            }
+
+            #Rectangle_1335 {
+               fill: #5673aa !important;
+            }
+         }
+      }
+
+      &.side-kit-icon {
+         background: #76a77d;
+
+         svg {
+            width: 62.24px;
+            height: 21px;
+
+            #Rectangle_1336 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1337 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1338 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1339 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1340 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1341 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1342 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1343 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1344 {
+               fill: $white !important;
+            }
+
+            #Path_1253 {
+               fill: $white !important;
+            }
+
+            #Path_1254 {
+               fill: $white !important;
+            }
+
+            #Path_1255 {
+               fill: $white !important;
+            }
+
+            #Path_1256 {
+               fill: $white !important;
+            }
+         }
+      }
+
+      &.conestoga-icon {
+         background: #484848;
+
+         svg {
+            width: 59.31px;
+            height: 22px;
+
+            #Path_1257 {
+               fill: $white !important;
+            }
+
+            #Path_1258 {
+               fill: $white !important;
+            }
+
+            #Path_1259 {
+               fill: $white !important;
+            }
+
+            #Path_1260 {
+               fill: $white !important;
+            }
+
+            #Path_1261 {
+               fill: none !important;
+               stroke: #484848;
+            }
+
+            #Path_1262 {
+               fill: none !important;
+               stroke: #484848;
+            }
+
+            #Path_1263 {
+               fill: none !important;
+               stroke: #484848;
+            }
+
+            #Path_1264 {
+               fill: none !important;
+               stroke: #484848;
+            }
+
+            #Path_1265 {
+               fill: none !important;
+               stroke: #484848;
+            }
+         }
+      }
+
+      &.dumper-icon {
+         background: #8fdee1;
+
+         svg {
+            #Rectangle_1345 {
+               fill: $white !important;
+            }
+
+            #Path_1270 {
+               fill: $white !important;
+            }
+
+            #Path_1271 {
+               fill: $white !important;
+            }
+
+            #Path_1272 {
+               fill: $white !important;
+            }
+
+            #Path_1273 {
+               fill: $white !important;
+            }
+
+            #Path_1274 {
+               fill: $white !important;
+            }
+
+            #Path_1275 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1346 {
+               fill: $white !important;
+            }
+
+            #Path_1276 {
+               fill: $white !important;
+            }
+
+            #Path_1278 {
+               fill: $white !important;
+            }
+
+            #Rectangle_1347 {
+               fill: $white !important;
+            }
+
+            #Path_1279 {
+               fill: $white !important;
+            }
+
+            #Path_1280 {
+               fill: $white !important;
+            }
+
+            #Path_1281 {
+               fill: $white !important;
+            }
+
+            #Path_1282 {
+               fill: $white !important;
+            }
+
+            #Path_1283 {
+               fill: $white !important;
+            }
+
+            #Path_1284 {
+               fill: $white !important;
+            }
+
+            #Path_1285 {
+               fill: $white !important;
+            }
+
+            width: 56px;
+            height: 21px;
+         }
+      }
+
+      &.container-icon {
+         background: #ffbe7d;
+
+         svg {
+            #Path_1518 {
+               fill: $white !important;
+            }
+
+            #Path_1519 {
+               fill: #6c6c6c !important;
+            }
+
+            #Path_1520 {
+               fill: #6c6c6c !important;
+            }
+
+            #Path_1521 {
+               fill: #6c6c6c !important;
+            }
+
+            #Path_1522 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1564 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1565 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1566 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1567 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1568 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1569 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1570 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1571 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1572 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1573 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1574 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1575 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1576 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1577 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1578 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1579 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1580 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1581 {
+               fill: #ffbe7d !important;
+            }
+
+            #Rectangle_1582 {
+               fill: #ffbe7d !important;
+            }
+
+            #Path_1523 {
+               fill: #ffbe7d !important;
+            }
+
+            width: 58px;
+            height: 22px;
+         }
+      }
+
+      &.tanker-icon {
+         background: #81ccff !important;
+
+         svg {
+            #Path_1266 {
+               fill: $white !important;
+            }
+
+            #Path_1267 {
+               fill: $white !important;
+            }
+
+            #Path_1268 {
+               fill: $white !important;
+            }
+
+            #Path_1269 {
+               fill: #81ccff !important;
+            }
+
+            width: 64.49px;
+            height: 20px;
+         }
+      }
+
+      &.trailer-hauler-icon {
+         background: #668888;
+
+         svg {
+            #Path_1305 {
+               fill: $white !important;
+            }
+
+            #Path_1306 {
+               fill: $white !important;
+            }
+
+            #Path_1307 {
+               fill: $white !important;
+            }
+
+            width: 61px;
+            height: 18px;
+         }
+      }
+
+      &.flat-bed-icon {
+         background: #af88ea;
+
+         svg {
+            #Path_1292 {
+               fill: $white !important;
+            }
+
+            #Path_1293 {
+               fill: $white !important;
+            }
+
+            #Path_1294 {
+               fill: $white !important;
+            }
+
+            width: 60px;
+            height: 7.25px;
+         }
+      }
+
+      &.low-boy-rgn-icon {
+         background: #955fa2;
+
+         svg {
+            #Path_1295 {
+               fill: $white !important;
+            }
+
+            #Path_1296 {
+               fill: $white !important;
+            }
+
+            #Path_1297 {
+               fill: $white !important;
+            }
+
+            #Path_1298 {
+               fill: $white !important;
+            }
+
+            width: 60px;
+            height: 8.02px;
+         }
+      }
+
+      &.chassis-icon {
+         background: #547556;
+
+         svg {
+            #Path_1289 {
+               fill: $white !important;
+            }
+
+            #Path_1290 {
+               fill: $white !important;
+            }
+
+            #Path_1291 {
+               fill: $white !important;
+            }
+
+            width: 60px;
+            height: 6.44px;
+         }
+      }
+
+      &.step-deck-icon {
+         background: #f2dd75;
+
+         svg {
+            #Path_1288 {
+               fill: $white !important;
+            }
+
+            #Ellipse_494 {
+               fill: $white !important;
+            }
+
+            #Ellipse_495 {
+               fill: $white !important;
+            }
+
+            width: 60px;
+            height: 12px;
+         }
+      }
+
+      .truck-text {
+         // width:120px;
+         margin-left: 0;
+         width: auto;
+         max-width: 1000px;
+         transition: all 0.2s ease-in-out;
+         color: #ffffff;
+         // color: red;
+      }
+
+      .truck-image {
+         margin-left: 0;
+         // transition: all 0.2s ease-in-out;
+      }
+   }
+
+   // .mat-expansion-indicator::after {
+   //   border: none !important;
+   //   content: '+';
+   //   font-size: 24px;
+   //   font-weight: 700;
+   //   transform: none;
+   // }
+   // .mat-expanded {
+   //   .mat-expansion-indicator::after {
+   //     font-family: 'Font Awesome 5 Duotone';
+   //     content: '\f067' !important;
+   //     font-size: 15px;
+   //     margin-right: 0.5px;
+   //   }
+   // }
+   // .mat-expansion-indicator {
+   //   transform: none !important;
+   // }
 }
 
 .positionRel {
-    position: relative;
+   position: relative;
 
-    &.status_holder {
-        height: 32px;
-        display: flex;
-        align-items: center;
-        // background-color: #fff;
-        border-radius: 3px;
-        z-index: 10;
+   &.status_holder {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      // background-color: #fff;
+      border-radius: 3px;
+      z-index: 10;
 
-        &:hover {
-            // box-shadow: 0px 0px 4px rgba(0, 0, 0, .15);
-            transition: box-shadow 0.4s;
-        }
+      &:hover {
+         // box-shadow: 0px 0px 4px rgba(0, 0, 0, .15);
+         transition: box-shadow 0.4s;
+      }
 
-        &.go_over_all {
-            z-index: 100;
-        }
-    }
+      &.go_over_all {
+         z-index: 100;
+      }
+   }
 }
 
 .destination-col {
-    position: relative;
+   position: relative;
 
-    ngb-popover-window {
-        background-color: transparent;
-        box-shadow: none !important;
-        margin-top: 0 !important;
+   ngb-popover-window {
+      background-color: transparent;
+      box-shadow: none !important;
+      margin-top: 0 !important;
 
-        .popover-body {
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            background-color: #fff !important;
+      .popover-body {
+         padding-top: 0 !important;
+         padding-bottom: 0 !important;
+         background-color: #fff !important;
 
-            .pac_main_cont {
-                position: relative;
-            }
-        }
+         .pac_main_cont {
+            position: relative;
+         }
+      }
 
-        &.bs-popover-top,
-        &.bs-popover-auto[x-placement^='top'] {
-            margin-bottom: 3px;
-        }
+      &.bs-popover-top,
+      &.bs-popover-auto[x-placement^='top'] {
+         margin-bottom: 3px;
+      }
 
-        &::after {
-            display: none !important;
-        }
-    }
+      &::after {
+         display: none !important;
+      }
+   }
 
-    .pac-container {
-        position: relative !important;
-        top: 0 !important;
-        left: 0 !important;
-    }
+   .pac-container {
+      position: relative !important;
+      top: 0 !important;
+      left: 0 !important;
+   }
 }
 
 .dispatchboard-title {
-    height: 32px;
-    margin-right: 12px;
+   height: 32px;
+   margin-right: 12px;
 
-    font-size: 26px;
-    color: #919191;
-    font-weight: 900;
-    line-height: 32px;
+   font-size: 26px;
+   color: #919191;
+   font-weight: 900;
+   line-height: 32px;
 
-    &::-moz-selection {
-        color: #919191 !important;
-        background: #91919122 !important;
-    }
+   &::-moz-selection {
+      color: #919191 !important;
+      background: #91919122 !important;
+   }
 
-    &::selection {
-        color: #6c6c6c !important;
-        background: #91919122 !important;
-    }
+   &::selection {
+      color: #6c6c6c !important;
+      background: #91919122 !important;
+   }
 }

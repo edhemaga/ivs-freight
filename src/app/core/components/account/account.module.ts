@@ -5,7 +5,7 @@ import { AccountRoutingModule } from './account-routing.module';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 
 @NgModule({
-    declarations: [AccountTableComponent],
-    imports: [CommonModule, AccountRoutingModule, TruckassistTableModule],
+   declarations: [AccountTableComponent],
+   imports: [CommonModule, AccountRoutingModule, TruckassistTableModule],
 })
 export class AccountModule {}

@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { BrokerModalComponent } from './broker-modal.component';
 
 describe('BrokerModalComponent', () => {
-    let component: BrokerModalComponent;
-    let fixture: ComponentFixture<BrokerModalComponent>;
+   let component: BrokerModalComponent;
+   let fixture: ComponentFixture<BrokerModalComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [BrokerModalComponent],
-        }).compileComponents();
-    }));
+   beforeEach(async(() => {
+      TestBed.configureTestingModule({
+         declarations: [BrokerModalComponent],
+      }).compileComponents();
+   }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(BrokerModalComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+   beforeEach(() => {
+      fixture = TestBed.createComponent(BrokerModalComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+   });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+   it('should create', () => {
+      expect(component).toBeTruthy();
+   });
 });

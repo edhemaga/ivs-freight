@@ -1,78 +1,78 @@
 <div class="table-container">
-    <app-truckassist-table-toolbar
-        (toolBarAction)="onToolBarAction($event)"
-        [options]="tableOptions"
-        [tableData]="tableData"
-        [selectedTab]="selectedTab"
-        [columns]="columns"
-        [tableContainerWidth]="tableContainerWidth"
-    ></app-truckassist-table-toolbar>
+   <app-truckassist-table-toolbar
+      (toolBarAction)="onToolBarAction($event)"
+      [options]="tableOptions"
+      [tableData]="tableData"
+      [selectedTab]="selectedTab"
+      [columns]="columns"
+      [tableContainerWidth]="tableContainerWidth"
+   ></app-truckassist-table-toolbar>
 
-    <div *ngIf="activeViewMode == 'List'">
-        <app-truckassist-table-head
-            [options]="tableOptions"
-            [viewData]="viewData"
-            [columns]="columns"
-            [tableData]="tableData"
-            (headActions)="onTableHeadActions($event)"
-            [tableContainerWidth]="tableContainerWidth"
-        ></app-truckassist-table-head>
+   <div *ngIf="activeViewMode == 'List'">
+      <app-truckassist-table-head
+         [options]="tableOptions"
+         [viewData]="viewData"
+         [columns]="columns"
+         [tableData]="tableData"
+         (headActions)="onTableHeadActions($event)"
+         [tableContainerWidth]="tableContainerWidth"
+      ></app-truckassist-table-head>
 
-        <app-truckassist-table-body
-            [viewData]="viewData"
-            [columns]="columns"
-            [options]="tableOptions"
-            [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
-            [tableData]="tableData"
-            [tableContainerWidth]="tableContainerWidth"
-        ></app-truckassist-table-body>
-    </div>
+      <app-truckassist-table-body
+         [viewData]="viewData"
+         [columns]="columns"
+         [options]="tableOptions"
+         [selectedTab]="selectedTab"
+         (bodyActions)="onTableBodyActions($event)"
+         [tableData]="tableData"
+         [tableContainerWidth]="tableContainerWidth"
+      ></app-truckassist-table-body>
+   </div>
 
-    <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
-        <app-map-list
+   <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
+      <app-map-list
+         [type]="'fuelStop'"
+         [sortTypes]="sortTypes"
+         [columns]="columns"
+         [activeSortType]="activeSortType"
+         [mapListContent]="viewData"
+         (changeSortCategory)="changeSortCategory($event)"
+         (changeSortDirection)="changeSortDirection($event)"
+         (searchData)="searchStops($event)"
+      >
+         <app-map-list-card
+            *ngFor="let latlong of viewData; let i = index"
+            [title]="latlong?.companyName"
+            [isSelected]="latlong?.isSelected"
+            [status]="latlong?.status"
+            [item]="latlong"
+            [index]="i"
+            [address]="latlong.address"
+            [rating]="{
+               up: latlong?.upRatingCount,
+               down: latlong?.downRatingCount
+            }"
             [type]="'fuelStop'"
-            [sortTypes]="sortTypes"
-            [columns]="columns"
-            [activeSortType]="activeSortType"
-            [mapListContent]="viewData"
-            (changeSortCategory)="changeSortCategory($event)"
-            (changeSortDirection)="changeSortDirection($event)"
-            (searchData)="searchStops($event)"
-        >
-            <app-map-list-card
-                *ngFor="let latlong of viewData; let i = index"
-                [title]="latlong?.companyName"
-                [isSelected]="latlong?.isSelected"
-                [status]="latlong?.status"
-                [item]="latlong"
-                [index]="i"
-                [address]="latlong.address"
-                [rating]="{
-                    up: latlong?.upRatingCount,
-                    down: latlong?.downRatingCount
-                }"
-                [type]="'fuelStop'"
-                [sortCategory]="activeSortType"
-                [locationFilterOn]="locationFilterOn"
-                [dropdownActions]="tableOptions.actions"
-                (bodyActions)="onTableBodyActions($event)"
-                (clickedMarker)="selectItem(latlong.id)"
-                [ngStyle]="{
-                    display:
-                        locationFilterOn && latlong?.isShown == false
-                            ? 'none'
-                            : 'block'
-                }"
-            ></app-map-list-card>
-        </app-map-list>
-
-        <app-maps
-            #mapsComponent
-            [_viewData]="viewData"
+            [sortCategory]="activeSortType"
+            [locationFilterOn]="locationFilterOn"
             [dropdownActions]="tableOptions.actions"
-            [mapType]="'fuelStop'"
-            (callDropDownAction)="onTableBodyActions($event)"
-        ></app-maps>
-    </div>
+            (bodyActions)="onTableBodyActions($event)"
+            (clickedMarker)="selectItem(latlong.id)"
+            [ngStyle]="{
+               display:
+                  locationFilterOn && latlong?.isShown == false
+                     ? 'none'
+                     : 'block'
+            }"
+         ></app-map-list-card>
+      </app-map-list>
+
+      <app-maps
+         #mapsComponent
+         [_viewData]="viewData"
+         [dropdownActions]="tableOptions.actions"
+         [mapType]="'fuelStop'"
+         (callDropDownAction)="onTableBodyActions($event)"
+      ></app-maps>
+   </div>
 </div>

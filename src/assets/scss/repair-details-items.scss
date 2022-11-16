@@ -29,627 +29,627 @@ $border-radius: 3px;
 $transition: all 0.3s ease-in-out;
 
 .repair-details-container {
-    display: grid;
-    grid-template-columns: 440px 732px 340px 280px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    row-gap: 12px;
+   display: grid;
+   grid-template-columns: 440px 732px 340px 280px;
+   -moz-column-gap: 12px;
+   column-gap: 12px;
+   row-gap: 12px;
 }
 .repair-details-cmp {
-    display: grid;
-    grid-template-columns: 440px 732px 340px 280px;
-    column-gap: 12px;
-    row-gap: 12px;
+   display: grid;
+   grid-template-columns: 440px 732px 340px 280px;
+   column-gap: 12px;
+   row-gap: 12px;
 }
 
 .repair-component {
-    display: grid;
-    grid-auto-flow: column;
-    column-gap: 12px;
-    row-gap: 12px;
-    p {
-        margin: 0 !important;
-    }
-    .repair-information-wrapper {
-        padding: 0 16px;
-        padding-top: 13px;
-        .repair-information-item {
-            display: flex;
-            align-items: center;
-            padding-bottom: 4px;
-            svg {
-                &:hover {
-                    path {
-                        fill: #6c6c6c;
-                    }
-                }
+   display: grid;
+   grid-auto-flow: column;
+   column-gap: 12px;
+   row-gap: 12px;
+   p {
+      margin: 0 !important;
+   }
+   .repair-information-wrapper {
+      padding: 0 16px;
+      padding-top: 13px;
+      .repair-information-item {
+         display: flex;
+         align-items: center;
+         padding-bottom: 4px;
+         svg {
+            &:hover {
+               path {
+                  fill: #6c6c6c;
+               }
             }
-            .repair-value {
-                font-size: $font-size14;
-                font-weight: 400;
-                color: #6c6c6c;
-                padding-left: 6px;
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
+         }
+         .repair-value {
+            font-size: $font-size14;
+            font-weight: 400;
+            color: #6c6c6c;
+            padding-left: 6px;
+            &::-moz-selection {
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
-            .repair-icon {
-                margin-right: 6px;
-                cursor: pointer;
+            &::selection {
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
-        }
-    }
-    .repair-cards {
-        border-radius: 3px;
-        overflow: hidden;
-        width: 440px;
-        background-color: $color-white;
-        padding: 9px 6px;
-    }
+         }
+         .repair-icon {
+            margin-right: 6px;
+            cursor: pointer;
+         }
+      }
+   }
+   .repair-cards {
+      border-radius: 3px;
+      overflow: hidden;
+      width: 440px;
+      background-color: $color-white;
+      padding: 9px 6px;
+   }
 }
 
 .repair-container {
-    padding: 8px 6px 2px 6px;
+   padding: 8px 6px 2px 6px;
 
-    width: 732px;
-    background-color: $color-white;
-    border-radius: 3px;
-    max-height: calc(100vh - 62px);
-    .repair-items-wrapper {
-        overflow-y: scroll;
-        max-height: calc(96vh - 62px);
-        // min-height: calc(24vh - 8px);
-        min-height: fit-content;
-        overflow-x: hidden;
+   width: 732px;
+   background-color: $color-white;
+   border-radius: 3px;
+   max-height: calc(100vh - 62px);
+   .repair-items-wrapper {
+      overflow-y: scroll;
+      max-height: calc(96vh - 62px);
+      // min-height: calc(24vh - 8px);
+      min-height: fit-content;
+      overflow-x: hidden;
 
-        &::-webkit-scrollbar {
-            width: 4px;
-        }
+      &::-webkit-scrollbar {
+         width: 4px;
+      }
 
-        &::-webkit-scrollbar-track {
-            border-radius: 1px;
-        }
-        &::-webkit-scrollbar-thumb {
-            background: #aaaaaa;
-            border-radius: 1px;
-            height: 20px;
-        }
-        &::-webkit-scrollbar-track-piece:end {
-            margin-bottom: 4px;
-        }
+      &::-webkit-scrollbar-track {
+         border-radius: 1px;
+      }
+      &::-webkit-scrollbar-thumb {
+         background: #aaaaaa;
+         border-radius: 1px;
+         height: 20px;
+      }
+      &::-webkit-scrollbar-track-piece:end {
+         margin-bottom: 4px;
+      }
 
-        &::-webkit-scrollbar-track-piece:start {
-            margin-top: 4px;
-        }
-    }
-    .repair-header {
-        padding: 0 10px;
-        display: grid;
-        grid-template-columns: 36px 40px 40px 330px 50px;
-        column-gap: 46px;
-        height: 18px;
-        margin-bottom: 6px;
-        .repaier-headers {
-            font-size: 14px;
-            font-weight: $font-bold;
+      &::-webkit-scrollbar-track-piece:start {
+         margin-top: 4px;
+      }
+   }
+   .repair-header {
+      padding: 0 10px;
+      display: grid;
+      grid-template-columns: 36px 40px 40px 330px 50px;
+      column-gap: 46px;
+      height: 18px;
+      margin-bottom: 6px;
+      .repaier-headers {
+         font-size: 14px;
+         font-weight: $font-bold;
+         color: $color-gray;
+         &::-moz-selection {
             color: $color-gray;
-            &::-moz-selection {
-                color: $color-gray;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-                color: $color-gray;
-                background: rgb(183, 183, 183, 0.2);
-            }
-        }
-    }
-    .repair-items {
-        // padding: 0 6px;
-        .unit {
-            font-size: $font-size14;
-            font-weight: $font-bold;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         &::selection {
+            color: $color-gray;
+            background: rgb(183, 183, 183, 0.2);
+         }
+      }
+   }
+   .repair-items {
+      // padding: 0 6px;
+      .unit {
+         font-size: $font-size14;
+         font-weight: $font-bold;
+         color: $color-gray-dark;
+         line-height: 17px;
+         display: flex;
+         align-items: center;
+         &::-moz-selection {
             color: $color-gray-dark;
-            line-height: 17px;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+      }
+      .items-header {
+         padding: 0 4px;
+         padding-left: 10px;
+         display: grid;
+         grid-template-columns: 82px 86px 86px 307px 108px;
+         cursor: pointer;
+         align-content: center;
+         grid-auto-flow: column;
+         margin-top: 8px;
+         margin-bottom: 8px;
+         .dots-vertical {
+            height: 20px !important;
             display: flex;
-            align-items: center;
-            &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-        }
-        .items-header {
-            padding: 0 4px;
-            padding-left: 10px;
-            display: grid;
-            grid-template-columns: 82px 86px 86px 307px 108px;
-            cursor: pointer;
-            align-content: center;
-            grid-auto-flow: column;
-            margin-top: 8px;
-            margin-bottom: 8px;
-            .dots-vertical {
-                height: 20px !important;
-                display: flex;
-                width: 18px;
-                margin-left: 13px;
-                justify-content: flex-end;
-                align-items: center;
-            }
-            &:hover {
-                background-color: #f3f3f3;
-                margin-bottom: 2px !important;
-                margin-top: 2px !important;
-                padding: 6px 4px;
-                padding-left: 10px;
-                border-radius: 2px;
-            }
-        }
-        .date-description {
-            font-size: $font-size14;
-            font-weight: 400;
-            color: $color-gray-dark;
-            overflow: hidden;
-            line-height: 19px;
-            text-overflow: ellipsis;
-        }
-        .date {
-            font-size: $font-size14;
-            font-weight: 400;
-            color: $color-gray-dark;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            line-height: 17px;
-            &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            .inv {
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-            }
-        }
-        .cost {
-            font-size: $font-size14;
-            font-weight: $font-semibold;
-            color: $color-gray-dark;
-            text-align: right;
-            line-height: 18px;
-            display: flex;
+            width: 18px;
+            margin-left: 13px;
             justify-content: flex-end;
-            align-items: end;
+            align-items: center;
+         }
+         &:hover {
+            background-color: #f3f3f3;
+            margin-bottom: 2px !important;
+            margin-top: 2px !important;
+            padding: 6px 4px;
+            padding-left: 10px;
+            border-radius: 2px;
+         }
+      }
+      .date-description {
+         font-size: $font-size14;
+         font-weight: 400;
+         color: $color-gray-dark;
+         overflow: hidden;
+         line-height: 19px;
+         text-overflow: ellipsis;
+      }
+      .date {
+         font-size: $font-size14;
+         font-weight: 400;
+         color: $color-gray-dark;
+         white-space: nowrap;
+         display: flex;
+         align-items: center;
+         line-height: 17px;
+         &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         .inv {
             &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
             &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
-        }
-    }
+         }
+      }
+      .cost {
+         font-size: $font-size14;
+         font-weight: $font-semibold;
+         color: $color-gray-dark;
+         text-align: right;
+         line-height: 18px;
+         display: flex;
+         justify-content: flex-end;
+         align-items: end;
+         &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+      }
+   }
 }
 .repaired-vehicle-container {
-    padding: 8px 8px;
-    padding-bottom: 0px;
-    max-width: 340px;
-    background-color: $color-white;
-    border-radius: 3px;
-    .repair-vehicle-header {
-        padding: 0 8px;
-        display: grid;
-        grid-template-columns: 40px 62px 58px 42px;
-        height: 18px;
-        grid-gap: 36px;
-        align-content: center;
-        margin-bottom: 4px;
-        margin-top: 2px;
-        .repaier-headers {
+   padding: 8px 8px;
+   padding-bottom: 0px;
+   max-width: 340px;
+   background-color: $color-white;
+   border-radius: 3px;
+   .repair-vehicle-header {
+      padding: 0 8px;
+      display: grid;
+      grid-template-columns: 40px 62px 58px 42px;
+      height: 18px;
+      grid-gap: 36px;
+      align-content: center;
+      margin-bottom: 4px;
+      margin-top: 2px;
+      .repaier-headers {
+         font-size: $font-size14;
+         font-weight: $font-bold;
+         color: $color-gray;
+         &::-moz-selection {
+            color: $color-gray;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         &::selection {
+            color: $color-gray;
+            background: rgb(183, 183, 183, 0.2);
+         }
+      }
+   }
+   .repair-items-vehicle {
+      padding: 0 4px;
+      .items-vehicle {
+         padding: 0px 4px;
+         display: grid;
+         grid-gap: 15px;
+         grid-template-columns: 61px 84px 16px 100px;
+         margin-top: 8px;
+         margin-bottom: 8px;
+         align-content: center;
+         .truck-icon {
+            position: relative;
+            bottom: 2px;
+         }
+         .vehicle-icon {
+            display: flex;
+            svg {
+               width: 55px;
+
+               display: flex;
+               path {
+                  fill: #aaaaaa;
+               }
+            }
+         }
+         .unit {
             font-size: $font-size14;
             font-weight: $font-bold;
-            color: $color-gray;
+            color: $color-gray-dark;
+            height: 18px;
             &::-moz-selection {
-                color: $color-gray;
-                background: rgb(183, 183, 183, 0.2);
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
             &::selection {
-                color: $color-gray;
-                background: rgb(183, 183, 183, 0.2);
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
-        }
-    }
-    .repair-items-vehicle {
-        padding: 0 4px;
-        .items-vehicle {
-            padding: 0px 4px;
-            display: grid;
-            grid-gap: 15px;
-            grid-template-columns: 61px 84px 16px 100px;
-            margin-top: 8px;
-            margin-bottom: 8px;
-            align-content: center;
-            .truck-icon {
-                position: relative;
-                bottom: 2px;
+         }
+         .date {
+            font-size: $font-size14;
+            font-weight: 400;
+            color: $color-gray-dark;
+            height: 18px;
+            &::-moz-selection {
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
-            .vehicle-icon {
-                display: flex;
-                svg {
-                    width: 55px;
-
-                    display: flex;
-                    path {
-                        fill: #aaaaaa;
-                    }
-                }
+            &::selection {
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
-            .unit {
-                font-size: $font-size14;
-                font-weight: $font-bold;
-                color: $color-gray-dark;
-                height: 18px;
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
+         }
+         .cost {
+            font-size: $font-size14;
+            font-weight: $font-semibold;
+            color: $color-gray-dark;
+            height: 18px;
+            text-align: right;
+            &::-moz-selection {
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
-            .date {
-                font-size: $font-size14;
-                font-weight: 400;
-                color: $color-gray-dark;
-                height: 18px;
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
+            &::selection {
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
-            .cost {
-                font-size: $font-size14;
-                font-weight: $font-semibold;
-                color: $color-gray-dark;
-                height: 18px;
-                text-align: right;
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-            }
-        }
-        &:last-child {
-            .divider {
-                visibility: hidden;
-            }
-        }
-    }
+         }
+      }
+      &:last-child {
+         .divider {
+            visibility: hidden;
+         }
+      }
+   }
 }
 .vin-text {
-    &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-    }
-    &::selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-    }
+   &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+   }
+   &::selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+   }
 }
 .dots-top {
-    position: relative;
-    top: 0.4px !important;
-    left: 4px;
+   position: relative;
+   top: 0.4px !important;
+   left: 4px;
 }
 .divider {
-    margin: 0;
-    height: 2px;
-    width: 100%;
-    border-radius: 1px;
-    background-color: $color-white-light;
+   margin: 0;
+   height: 2px;
+   width: 100%;
+   border-radius: 1px;
+   background-color: $color-white-light;
 }
 .charts-template {
-    display: grid;
-    grid-template-columns: 215px 1fr;
-    grid-row-gap: 12px;
-    row-gap: 12px;
-    margin-bottom: 12px;
-    padding-left: 6px;
-    padding-right: 6px;
-    .charts-template-item {
-        display: flex;
-        flex-direction: column;
+   display: grid;
+   grid-template-columns: 215px 1fr;
+   grid-row-gap: 12px;
+   row-gap: 12px;
+   margin-bottom: 12px;
+   padding-left: 6px;
+   padding-right: 6px;
+   .charts-template-item {
+      display: flex;
+      flex-direction: column;
 
-        .icon-name-item {
-            display: flex;
-            align-items: baseline;
-            height: 18px;
-            .charts-template-item-name {
-                margin-left: 6px;
-            }
-        }
-        .charts-template-item-name {
-            font-size: $font-size12;
-            font-weight: $font-semibold;
+      .icon-name-item {
+         display: flex;
+         align-items: baseline;
+         height: 18px;
+         .charts-template-item-name {
+            margin-left: 6px;
+         }
+      }
+      .charts-template-item-name {
+         font-size: $font-size12;
+         font-weight: $font-semibold;
+         color: $color-gray-dark;
+
+         &::-moz-selection {
             color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+      }
 
+      .charts-template-item-value {
+         font-size: $font-size18;
+         font-weight: $font-semibold;
+         color: $color-gray-dark;
+         width: 220px;
+         &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+
+         p {
             &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
             &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
-        }
+         }
 
-        .charts-template-item-value {
-            font-size: $font-size18;
-            font-weight: $font-semibold;
-            color: $color-gray-dark;
-            width: 220px;
-            &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-
-            p {
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-            }
-
-            .hidden-svg-eye {
-                margin-left: 6px;
-                position: relative;
-                bottom: 1px;
-            }
-        }
-    }
+         .hidden-svg-eye {
+            margin-left: 6px;
+            position: relative;
+            bottom: 1px;
+         }
+      }
+   }
 }
 .perfomance {
-    display: flex !important;
-    flex-direction: column;
+   display: flex !important;
+   flex-direction: column;
 
-    .common-template-item-name {
-        font-size: $font-size14 !important;
-        font-weight: $font-semibold !important;
-    }
-    .common-template-item-value {
-        font-size: $font-size18 !important;
-        font-weight: $font-semibold !important;
-    }
+   .common-template-item-name {
+      font-size: $font-size14 !important;
+      font-weight: $font-semibold !important;
+   }
+   .common-template-item-value {
+      font-size: $font-size18 !important;
+      font-weight: $font-semibold !important;
+   }
 }
 .likes-count-container {
-    max-width: 280px;
-    min-height: 48px;
-    background-color: $color-white;
-    border-radius: 3px;
-    .likes-item {
-        display: flex;
-        column-gap: 41px;
-        padding-left: 46px;
-        padding-right: 46px;
-        .ic-counter {
-            display: flex;
-            margin-top: 12px;
-        }
-        .like {
-            margin-right: 4px;
-            position: relative;
-            bottom: 3px;
-            svg {
-                width: 20px;
-                height: 20px;
-                transform: rotate(180deg);
+   max-width: 280px;
+   min-height: 48px;
+   background-color: $color-white;
+   border-radius: 3px;
+   .likes-item {
+      display: flex;
+      column-gap: 41px;
+      padding-left: 46px;
+      padding-right: 46px;
+      .ic-counter {
+         display: flex;
+         margin-top: 12px;
+      }
+      .like {
+         margin-right: 4px;
+         position: relative;
+         bottom: 3px;
+         svg {
+            width: 20px;
+            height: 20px;
+            transform: rotate(180deg);
 
-                path {
-                    fill: #4db6a2;
-                }
+            path {
+               fill: #4db6a2;
             }
-        }
-        .dislike {
-            margin-left: 4px;
-            position: relative;
-            svg {
-                width: 20px;
-                height: 20px;
-                path {
-                    fill: #aaaaaa;
-                }
+         }
+      }
+      .dislike {
+         margin-left: 4px;
+         position: relative;
+         svg {
+            width: 20px;
+            height: 20px;
+            path {
+               fill: #aaaaaa;
             }
-        }
-    }
+         }
+      }
+   }
 }
 .review-container {
-    background-color: $color-white;
-    border-radius: 3px;
-    max-width: 280px;
-    height: fit-content;
-    min-height: 50px;
-    margin-top: 12px;
-    padding: 6px 6px 2px 6px;
+   background-color: $color-white;
+   border-radius: 3px;
+   max-width: 280px;
+   height: fit-content;
+   min-height: 50px;
+   margin-top: 12px;
+   padding: 6px 6px 2px 6px;
 }
 // Parking Template
 .parking-template-data {
-    display: grid;
-    grid-template-columns: 150px 146px;
-    row-gap: 6px;
-    padding: 6px 10px;
-    margin-top: -6px;
-    grid-column-gap: 30px;
-    column-gap: 12px;
-    border-radius: 2px;
-    .parking-template-item {
-        display: flex;
-        align-items: center;
-        .parking-template-name {
-            font-size: 14px;
-            font-weight: $font-semibold;
+   display: grid;
+   grid-template-columns: 150px 146px;
+   row-gap: 6px;
+   padding: 6px 10px;
+   margin-top: -6px;
+   grid-column-gap: 30px;
+   column-gap: 12px;
+   border-radius: 2px;
+   .parking-template-item {
+      display: flex;
+      align-items: center;
+      .parking-template-name {
+         font-size: 14px;
+         font-weight: $font-semibold;
+         color: $color-gray-dark;
+         margin-bottom: -6px;
+         &::-moz-selection {
             color: $color-gray-dark;
-            margin-bottom: -6px;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+      }
+      .parking-template-number {
+         font-size: 17px;
+         font-weight: $font-semibold;
+         color: $color-gray-dark;
+         user-select: none;
+      }
+
+      .parking-template-text {
+         color: $color-gray-dark;
+         margin-left: 6px;
+         font-size: 14px;
+         &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+         }
+
+         &.cross-out {
+            text-decoration: line-through;
+            color: $color-white-dark;
             &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
+               color: $color-white-dark !important;
+               background: rgb(183, 183, 183, 0.2) !important;
             }
             &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
+               color: $color-white-dark !important;
+               background: rgb(183, 183, 183, 0.2) !important;
             }
-        }
-        .parking-template-number {
-            font-size: 17px;
-            font-weight: $font-semibold;
-            color: $color-gray-dark;
-            user-select: none;
-        }
+         }
+      }
 
-        .parking-template-text {
-            color: $color-gray-dark;
-            margin-left: 6px;
-            font-size: 14px;
-            &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
+      .parking-template-svg {
+         user-select: none;
+         &.disabled {
+            svg {
+               path {
+                  fill: #aaaaaa;
+               }
             }
-            &::selection {
-                color: $color-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &.cross-out {
-                text-decoration: line-through;
-                color: $color-white-dark;
-                &::-moz-selection {
-                    color: $color-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
-                &::selection {
-                    color: $color-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
-            }
-        }
-
-        .parking-template-svg {
-            user-select: none;
-            &.disabled {
-                svg {
-                    path {
-                        fill: #aaaaaa;
-                    }
-                }
-            }
-        }
-    }
-    .parking-template-email {
-        grid-column: 1 / -1;
-    }
-    .parking-name {
-        display: flex;
-        justify-content: space-between;
-    }
-    &:hover {
-        background-color: #f3f3f3;
-        transition: all 0.3ms ease-in-out;
-        .svg-wrapper {
-            display: flex;
-        }
-    }
+         }
+      }
+   }
+   .parking-template-email {
+      grid-column: 1 / -1;
+   }
+   .parking-name {
+      display: flex;
+      justify-content: space-between;
+   }
+   &:hover {
+      background-color: #f3f3f3;
+      transition: all 0.3ms ease-in-out;
+      .svg-wrapper {
+         display: flex;
+      }
+   }
 }
 .svg-wrapper {
-    display: flex;
-    align-items: center;
-    display: none;
-    height: 14px;
-    .svg-icon-edit {
-        cursor: pointer;
-        svg {
-            width: 18px;
-            height: 18px;
-            display: flex;
-            &:hover {
-                path {
-                    fill: #6c6c6c;
-                }
-            }
-        }
-    }
-    .svg-icon-trash {
-        cursor: pointer;
-        svg {
-            margin-left: 8px;
-            width: 18px;
-            height: 18px;
-            display: flex;
+   display: flex;
+   align-items: center;
+   display: none;
+   height: 14px;
+   .svg-icon-edit {
+      cursor: pointer;
+      svg {
+         width: 18px;
+         height: 18px;
+         display: flex;
+         &:hover {
             path {
-                fill: #aaaaaa;
+               fill: #6c6c6c;
             }
-            &:hover {
-                path {
-                    fill: #ef5350;
-                }
+         }
+      }
+   }
+   .svg-icon-trash {
+      cursor: pointer;
+      svg {
+         margin-left: 8px;
+         width: 18px;
+         height: 18px;
+         display: flex;
+         path {
+            fill: #aaaaaa;
+         }
+         &:hover {
+            path {
+               fill: #ef5350;
             }
-        }
-    }
+         }
+      }
+   }
 }
 .no-reviews-details {
-    padding: 0 10px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #919191;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 46px;
-    &::-moz-selection {
-        color: #919191;
-        background: rgb(145, 145, 145, 0.2);
-    }
-    &::selection {
-        color: #919191;
-        background: rgb(145, 145, 145, 0.2);
-    }
+   padding: 0 10px;
+   font-size: 14px;
+   font-weight: 600;
+   color: #919191;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   height: 46px;
+   &::-moz-selection {
+      color: #919191;
+      background: rgb(145, 145, 145, 0.2);
+   }
+   &::selection {
+      color: #919191;
+      background: rgb(145, 145, 145, 0.2);
+   }
 }
 .load {
-    width: 732px;
+   width: 732px;
 }
 .contact {
-    width: 340px;
+   width: 340px;
 }

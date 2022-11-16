@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { DriverCdlModalComponent } from './driver-cdl-modal.component';
 
 describe('DriverCdlModalComponent', () => {
-    let component: DriverCdlModalComponent;
-    let fixture: ComponentFixture<DriverCdlModalComponent>;
+   let component: DriverCdlModalComponent;
+   let fixture: ComponentFixture<DriverCdlModalComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [DriverCdlModalComponent],
-        }).compileComponents();
-    }));
+   beforeEach(async(() => {
+      TestBed.configureTestingModule({
+         declarations: [DriverCdlModalComponent],
+      }).compileComponents();
+   }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(DriverCdlModalComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+   beforeEach(() => {
+      fixture = TestBed.createComponent(DriverCdlModalComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+   });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+   it('should create', () => {
+      expect(component).toBeTruthy();
+   });
 });

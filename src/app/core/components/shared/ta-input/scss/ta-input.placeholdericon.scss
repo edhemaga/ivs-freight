@@ -1,232 +1,232 @@
 @import './ta-input.colors.scss';
 //-------------------- Input Icon ---------------------
 .input-icon {
-    position: absolute;
-    left: 6px;
-    z-index: 10;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+   position: absolute;
+   left: 6px;
+   z-index: 10;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
 
-    svg-icon {
-        svg {
-            width: 18px;
-            height: 18px;
-        }
-    }
+   svg-icon {
+      svg {
+         width: 18px;
+         height: 18px;
+      }
+   }
 
-    &.datetimeclass {
-        z-index: 21;
-    }
+   &.datetimeclass {
+      z-index: 21;
+   }
 
-    &.default-svg-color {
-        svg {
-            path {
-                fill: $input-placeholder-icon-normal;
-            }
-        }
-    }
+   &.default-svg-color {
+      svg {
+         path {
+            fill: $input-placeholder-icon-normal;
+         }
+      }
+   }
 
-    &::after {
-        content: '';
-        display: block;
-        height: 16px;
-        width: 1px;
-        border-radius: 3px;
-        background: $input-placeholder-icon-normal-after;
-        position: absolute;
-        left: 24px;
-        top: 5px;
-    }
+   &::after {
+      content: '';
+      display: block;
+      height: 16px;
+      width: 1px;
+      border-radius: 3px;
+      background: $input-placeholder-icon-normal-after;
+      position: absolute;
+      left: 24px;
+      top: 5px;
+   }
 
-    &.cursor-pointer {
-        cursor: pointer;
-    }
+   &.cursor-pointer {
+      cursor: pointer;
+   }
 
-    &.valid-required-in {
-        transition: all 0.3s ease-in-out;
-        svg {
-            path {
-                fill: $input-placeholder-icon-path-valid-focus !important;
-            }
-        }
-
-        text {
+   &.valid-required-in {
+      transition: all 0.3s ease-in-out;
+      svg {
+         path {
             fill: $input-placeholder-icon-path-valid-focus !important;
-        }
+         }
+      }
 
-        &::after {
-            background: $input-placeholder-icon-path-valid-focus !important;
-        }
-    }
+      text {
+         fill: $input-placeholder-icon-path-valid-focus !important;
+      }
 
-    &.valid-required-out {
-        transition: all 0.3s ease-in-out;
-        svg {
-            path {
-                fill: $input-placeholder-icon-path-valid;
-            }
-        }
+      &::after {
+         background: $input-placeholder-icon-path-valid-focus !important;
+      }
+   }
 
-        text {
-            fill: $input-placeholder-icon-path-valid !important;
-        }
+   &.valid-required-out {
+      transition: all 0.3s ease-in-out;
+      svg {
+         path {
+            fill: $input-placeholder-icon-path-valid;
+         }
+      }
 
-        &::after {
-            background: $input-placeholder-icon-valid-after !important;
-        }
-    }
+      text {
+         fill: $input-placeholder-icon-path-valid !important;
+      }
 
-    &.invalid-required-in {
-        transition: all 0.3s ease-in-out;
-        svg {
-            path {
-                fill: $input-placeholder-icon-path-invalid-focus !important;
-            }
-        }
+      &::after {
+         background: $input-placeholder-icon-valid-after !important;
+      }
+   }
 
-        text {
+   &.invalid-required-in {
+      transition: all 0.3s ease-in-out;
+      svg {
+         path {
             fill: $input-placeholder-icon-path-invalid-focus !important;
-        }
+         }
+      }
 
-        &::after {
-            background-color: $input-placeholder-icon-path-invalid-focus !important;
-        }
-    }
+      text {
+         fill: $input-placeholder-icon-path-invalid-focus !important;
+      }
 
-    &.invalid-required-empty,
-    &.invalid-required-filled-out {
-        transition: all 0.3s ease-in-out;
-        svg {
+      &::after {
+         background-color: $input-placeholder-icon-path-invalid-focus !important;
+      }
+   }
+
+   &.invalid-required-empty,
+   &.invalid-required-filled-out {
+      transition: all 0.3s ease-in-out;
+      svg {
+         path {
+            fill: #e57373;
+         }
+      }
+
+      text {
+         fill: $input-placeholder-icon-path-invalid !important;
+      }
+
+      &::after {
+         background: $input-placeholder-icon-invalid-after !important;
+      }
+   }
+
+   &.password-eye {
+      svg {
+         path {
+            fill: $input-placeholder-icon-normal !important;
+         }
+      }
+   }
+
+   &.password-eye-invalid {
+      svg {
+         path {
+            fill: $input-placeholder-icon-path-invalid-focus !important;
+         }
+      }
+   }
+
+   &.input-dropdown {
+      display: none !important;
+   }
+
+   &.disabled-empty {
+      svg {
+         path {
+            fill: $input-placeholder-icon-disabled !important;
+         }
+      }
+   }
+
+   &.disabled-filled {
+      svg {
+         path {
+            fill: $input-placeholder-icon-disabled-filled !important;
+         }
+      }
+
+      &::after {
+         background-color: $input-placeholder-icon-disabled-filled !important;
+      }
+   }
+
+   //------------------------- Custom class -------------------------
+   &.input-32 {
+      top: 2.7px;
+   }
+
+   &.input-30 {
+      top: 2px;
+   }
+
+   &.line-input-26 {
+      top: 2px;
+
+      &::after {
+         left: 24px;
+         top: 3px;
+      }
+   }
+
+   &.line-input-26-in-card {
+      top: 1px;
+
+      &::after {
+         top: 4px;
+         height: 17px;
+      }
+   }
+
+   &.discolor-placeholder {
+      svg {
+         path {
+            fill: $input-placeholder-icon-normal !important;
+         }
+      }
+   }
+
+   &.repair-shop-open-hour {
+      svg {
+         path {
+            fill: $input-placeholder-icon-normal !important;
+         }
+      }
+   }
+
+   &.load-adjusted-rate {
+      svg {
+         path {
+            fill: $input-placeholder-icon-color-dark-yellow !important;
+         }
+      }
+   }
+
+   &.load-advance-rate {
+      svg {
+         path {
+            fill: $input-placeholder-icon-color-dark-green !important;
+         }
+      }
+   }
+
+   &.hazardous-svg {
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      svg {
+         path {
+            fill: $input-yellow-color-2;
+         }
+      }
+
+      &:hover {
+         svg {
             path {
-                fill: #e57373;
+               fill: $input-yellow-color-2 !important;
             }
-        }
-
-        text {
-            fill: $input-placeholder-icon-path-invalid !important;
-        }
-
-        &::after {
-            background: $input-placeholder-icon-invalid-after !important;
-        }
-    }
-
-    &.password-eye {
-        svg {
-            path {
-                fill: $input-placeholder-icon-normal !important;
-            }
-        }
-    }
-
-    &.password-eye-invalid {
-        svg {
-            path {
-                fill: $input-placeholder-icon-path-invalid-focus !important;
-            }
-        }
-    }
-
-    &.input-dropdown {
-        display: none !important;
-    }
-
-    &.disabled-empty {
-        svg {
-            path {
-                fill: $input-placeholder-icon-disabled !important;
-            }
-        }
-    }
-
-    &.disabled-filled {
-        svg {
-            path {
-                fill: $input-placeholder-icon-disabled-filled !important;
-            }
-        }
-
-        &::after {
-            background-color: $input-placeholder-icon-disabled-filled !important;
-        }
-    }
-
-    //------------------------- Custom class -------------------------
-    &.input-32 {
-        top: 2.7px;
-    }
-
-    &.input-30 {
-        top: 2px;
-    }
-
-    &.line-input-26 {
-        top: 2px;
-
-        &::after {
-            left: 24px;
-            top: 3px;
-        }
-    }
-
-    &.line-input-26-in-card {
-        top: 1px;
-
-        &::after {
-            top: 4px;
-            height: 17px;
-        }
-    }
-
-    &.discolor-placeholder {
-        svg {
-            path {
-                fill: $input-placeholder-icon-normal !important;
-            }
-        }
-    }
-
-    &.repair-shop-open-hour {
-        svg {
-            path {
-                fill: $input-placeholder-icon-normal !important;
-            }
-        }
-    }
-
-    &.load-adjusted-rate {
-        svg {
-            path {
-                fill: $input-placeholder-icon-color-dark-yellow !important;
-            }
-        }
-    }
-
-    &.load-advance-rate {
-        svg {
-            path {
-                fill: $input-placeholder-icon-color-dark-green !important;
-            }
-        }
-    }
-
-    &.hazardous-svg {
-        transition: all 0.3s ease-in-out;
-        cursor: pointer;
-        svg {
-            path {
-                fill: $input-yellow-color-2;
-            }
-        }
-
-        &:hover {
-            svg {
-                path {
-                    fill: $input-yellow-color-2 !important;
-                }
-            }
-        }
-    }
+         }
+      }
+   }
 }

@@ -1,852 +1,837 @@
 <div class="d-flex flex-column step-form" [formGroup]="workExperienceForm">
-    <!-- EMPLOYER -->
+   <!-- EMPLOYER -->
 
-    <div class="d-flex line-container">
-        <div class="group employer-group">
-            <app-ta-input
-                formControlName="employer"
-                [inputConfig]="{
-                    name: 'Employer',
-                    type: 'text',
-                    label: 'Current or last employer',
-                    isRequired: true,
-                    autoFocus: selectedMode === 'APPLICANT_MODE',
-                    textTransform: 'uppercase',
-                    minLength: 2,
-                    maxLength: 64,
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.isEmployerValid),
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[20].lineInputs[0]"
-                (incorrectEvent)="incorrectInput($event, 0, 20)"
-            ></app-ta-input>
-        </div>
+   <div class="d-flex line-container">
+      <div class="group employer-group">
+         <app-ta-input
+            formControlName="employer"
+            [inputConfig]="{
+               name: 'Employer',
+               type: 'text',
+               label: 'Current or last employer',
+               isRequired: true,
+               autoFocus: selectedMode === 'APPLICANT_MODE',
+               textTransform: 'uppercase',
+               minLength: 2,
+               maxLength: 64,
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  (selectedMode === 'FEEDBACK_MODE' &&
+                     stepFeedbackValues?.isEmployerValid),
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [incorrectValue]="openAnnotationArray[20].lineInputs[0]"
+            (incorrectEvent)="incorrectInput($event, 0, 20)"
+         ></app-ta-input>
+      </div>
 
-        <!-- REVIEW AND FEEDBACK -->
+      <!-- REVIEW AND FEEDBACK -->
 
-        <div
-            class="review-feedback-container"
-            *ngIf="
-                (selectedMode === 'REVIEW_MODE' ||
-                    selectedMode === 'FEEDBACK_MODE') &&
-                !isReviewingCard
+      <div
+         class="review-feedback-container"
+         *ngIf="
+            (selectedMode === 'REVIEW_MODE' ||
+               selectedMode === 'FEEDBACK_MODE') &&
+            !isReviewingCard
+         "
+      >
+         <app-applicant-review-feedback
+            formControlName="firstRowReview"
+            [displayAnnotationButton]="
+               selectedMode === 'REVIEW_MODE' &&
+               openAnnotationArray[20].displayAnnotationButton
             "
-        >
-            <app-applicant-review-feedback
-                formControlName="firstRowReview"
-                [displayAnnotationButton]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[20].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[20].displayAnnotationTextArea
-                "
-                [lineIndex]="20"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                    selectedMode === 'FEEDBACK_MODE' &&
-                    stepFeedbackValues?.employerMessage
-                "
-                (annotationBtnClickEvent)="
-                    selectedMode === 'REVIEW_MODE' &&
-                        getAnnotationBtnClickValue($event)
-                "
-            ></app-applicant-review-feedback>
-        </div>
-    </div>
-
-    <!-- JOB DESCRIPTION, FROM, TO -->
-
-    <div class="d-flex line-container">
-        <div class="group job-description-group">
-            <app-ta-input
-                formControlName="jobDescription"
-                [inputConfig]="{
-                    name: 'Description',
-                    type: 'text',
-                    label: 'Job description',
-                    isRequired: true,
-                    minLength: 2,
-                    maxLength: 160,
-                    textTransform: 'capitalize',
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.isJobDescriptionValid),
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[21].lineInputs[0]"
-                (incorrectEvent)="incorrectInput($event, 0, 21)"
-            ></app-ta-input>
-        </div>
-        <div class="group date-group">
-            <app-ta-input
-                formControlName="fromDate"
-                [inputConfig]="{
-                    name: 'datepicker',
-                    type: 'text',
-                    label: 'From',
-                    placeholderIcon: 'date',
-                    isRequired: true,
-                    customClass: 'datetimeclass',
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.isFromValid),
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[21].lineInputs[1]"
-                (incorrectEvent)="incorrectInput($event, 1, 21)"
-            ></app-ta-input>
-        </div>
-        <div class="group date-group date-to-group">
-            <app-ta-input
-                formControlName="toDate"
-                [inputConfig]="{
-                    name: 'datepicker',
-                    type: 'text',
-                    label: 'To',
-                    placeholderIcon: 'date',
-                    isRequired: true,
-                    customClass: 'datetimeclass',
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.isToValid),
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[21].lineInputs[2]"
-                (incorrectEvent)="incorrectInput($event, 2, 21)"
-            ></app-ta-input>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div
-            class="review-feedback-container"
-            *ngIf="
-                (selectedMode === 'REVIEW_MODE' ||
-                    selectedMode === 'FEEDBACK_MODE') &&
-                !isReviewingCard
+            [displayAnnotationTextArea]="
+               selectedMode === 'REVIEW_MODE' &&
+               openAnnotationArray[20].displayAnnotationTextArea
             "
-        >
-            <app-applicant-review-feedback
-                formControlName="secondRowReview"
-                [displayAnnotationButton]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[21].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[21].displayAnnotationTextArea
-                "
-                [lineIndex]="21"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                    selectedMode === 'FEEDBACK_MODE' &&
-                    stepFeedbackValues?.jobDescriptionMessage
-                "
-                (annotationBtnClickEvent)="
-                    selectedMode === 'REVIEW_MODE' &&
-                        getAnnotationBtnClickValue($event)
-                "
-            ></app-applicant-review-feedback>
-        </div>
-    </div>
-
-    <!-- PHONE, EMAIL, FAX -->
-
-    <div class="d-flex line-container">
-        <div class="group phone-group">
-            <app-ta-input
-                formControlName="employerPhone"
-                [inputConfig]="{
-                    name: 'Phone',
-                    type: 'text',
-                    label: 'Employer Phone',
-                    isRequired: true,
-                    placeholderIcon: 'phone',
-                    mask: '(000) 000-0000',
-                    maxLength: 14,
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.isPhoneValid),
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[22].lineInputs[0]"
-                (incorrectEvent)="incorrectInput($event, 0, 22)"
-            ></app-ta-input>
-        </div>
-        <div class="group email-group">
-            <app-ta-input
-                formControlName="employerEmail"
-                [inputConfig]="{
-                    name: 'Email',
-                    type: 'text',
-                    label: 'Employer Email',
-                    isRequired: true,
-                    placeholderIcon: 'email',
-                    minLength: 5,
-                    maxLength: 64,
-                    textTransform: 'lowercase',
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.isEmailValid),
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[22].lineInputs[1]"
-                (incorrectEvent)="incorrectInput($event, 1, 22)"
-            ></app-ta-input>
-        </div>
-        <div class="group fax-group">
-            <app-ta-input
-                formControlName="employerFax"
-                [inputConfig]="{
-                    name: 'Fax',
-                    type: 'text',
-                    label: 'Employer Fax',
-                    placeholderIcon: 'fax',
-                    mask: '(000) 000-0000',
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.isFaxValid),
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[22].lineInputs[2]"
-                (incorrectEvent)="incorrectInput($event, 2, 22)"
-            ></app-ta-input>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div
-            class="review-feedback-container"
-            *ngIf="
-                (selectedMode === 'REVIEW_MODE' ||
-                    selectedMode === 'FEEDBACK_MODE') &&
-                !isReviewingCard
+            [lineIndex]="20"
+            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+            [feedbackText]="
+               selectedMode === 'FEEDBACK_MODE' &&
+               stepFeedbackValues?.employerMessage
             "
-        >
-            <app-applicant-review-feedback
-                formControlName="thirdRowReview"
-                [displayAnnotationButton]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[22].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[22].displayAnnotationTextArea
-                "
-                [lineIndex]="22"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                    selectedMode === 'FEEDBACK_MODE' &&
-                    stepFeedbackValues?.contactMessage
-                "
-                (annotationBtnClickEvent)="
-                    selectedMode === 'REVIEW_MODE' &&
-                        getAnnotationBtnClickValue($event)
-                "
-            ></app-applicant-review-feedback>
-        </div>
-    </div>
-
-    <!-- ADDRESS -->
-
-    <div class="d-flex line-container">
-        <div class="group address-group">
-            <app-input-address-dropdown
-                formControlName="employerAddress"
-                [inputConfig]="{
-                    name: 'Address',
-                    type: 'text',
-                    label: 'Employer Address, City, State Zip',
-                    isRequired: true,
-                    placeholderIcon: 'address',
-                    textTransform: 'capitalize',
-                    dropdownWidthClass: 'w-col-481',
-                    minLength: 12,
-                    maxLength: 256,
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.isAddressValid),
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [placeholderType]="'longAddress'"
-                [activeAddress]="selectedAddress"
-                [incorrectValue]="openAnnotationArray[23].lineInputs[0]"
-                (incorrectEvent)="incorrectInput($event, 0, 23)"
-                (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-            ></app-input-address-dropdown>
-        </div>
-        <div class="group address-unit-group">
-            <app-ta-input
-                formControlName="employerAddressUnit"
-                [inputConfig]="{
-                    name: 'address-unit',
-                    type: 'text',
-                    label: 'Unit No.',
-                    minLength: 1,
-                    maxLength: 10,
-                    textTransform: 'uppercase',
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.isAddressUnitValid),
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[23].lineInputs[1]"
-                (incorrectEvent)="incorrectInput($event, 1, 23)"
-            ></app-ta-input>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div
-            class="review-feedback-container"
-            *ngIf="
-                (selectedMode === 'REVIEW_MODE' ||
-                    selectedMode === 'FEEDBACK_MODE') &&
-                !isReviewingCard
+            (annotationBtnClickEvent)="
+               selectedMode === 'REVIEW_MODE' &&
+                  getAnnotationBtnClickValue($event)
             "
-        >
-            <app-applicant-review-feedback
-                formControlName="fourthRowReview"
-                [displayAnnotationButton]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[23].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[23].displayAnnotationTextArea
-                "
-                [lineIndex]="23"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                    selectedMode === 'FEEDBACK_MODE' &&
-                    stepFeedbackValues?.addressMessage
-                "
-                (annotationBtnClickEvent)="
-                    selectedMode === 'REVIEW_MODE' &&
-                        getAnnotationBtnClickValue($event)
-                "
-            ></app-applicant-review-feedback>
-        </div>
-    </div>
+         ></app-applicant-review-feedback>
+      </div>
+   </div>
 
-    <!-- DRIVING POSITION CHECKBOX -->
+   <!-- JOB DESCRIPTION, FROM, TO -->
 
-    <div
-        class="d-flex justify-content-center align-items-center driving-position-group"
-    >
-        <app-ta-checkbox
-            formControlName="isDrivingPosition"
-            [name]="'isDrivingPosition'"
-            [label]="'Was this a driving position?'"
-            [customClass]="'bold-12'"
-            [disabledStillCheckMark]="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
+   <div class="d-flex line-container">
+      <div class="group job-description-group">
+         <app-ta-input
+            formControlName="jobDescription"
+            [inputConfig]="{
+               name: 'Description',
+               type: 'text',
+               label: 'Job description',
+               isRequired: true,
+               minLength: 2,
+               maxLength: 160,
+               textTransform: 'capitalize',
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  (selectedMode === 'FEEDBACK_MODE' &&
+                     stepFeedbackValues?.isJobDescriptionValid),
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [incorrectValue]="openAnnotationArray[21].lineInputs[0]"
+            (incorrectEvent)="incorrectInput($event, 0, 21)"
+         ></app-ta-input>
+      </div>
+      <div class="group date-group">
+         <app-ta-input
+            formControlName="fromDate"
+            [inputConfig]="{
+               name: 'datepicker',
+               type: 'text',
+               label: 'From',
+               placeholderIcon: 'date',
+               isRequired: true,
+               customClass: 'datetimeclass',
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  (selectedMode === 'FEEDBACK_MODE' &&
+                     stepFeedbackValues?.isFromValid),
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [incorrectValue]="openAnnotationArray[21].lineInputs[1]"
+            (incorrectEvent)="incorrectInput($event, 1, 21)"
+         ></app-ta-input>
+      </div>
+      <div class="group date-group date-to-group">
+         <app-ta-input
+            formControlName="toDate"
+            [inputConfig]="{
+               name: 'datepicker',
+               type: 'text',
+               label: 'To',
+               placeholderIcon: 'date',
+               isRequired: true,
+               customClass: 'datetimeclass',
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  (selectedMode === 'FEEDBACK_MODE' &&
+                     stepFeedbackValues?.isToValid),
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [incorrectValue]="openAnnotationArray[21].lineInputs[2]"
+            (incorrectEvent)="incorrectInput($event, 2, 21)"
+         ></app-ta-input>
+      </div>
+
+      <!-- REVIEW AND FEEDBACK -->
+
+      <div
+         class="review-feedback-container"
+         *ngIf="
+            (selectedMode === 'REVIEW_MODE' ||
+               selectedMode === 'FEEDBACK_MODE') &&
+            !isReviewingCard
+         "
+      >
+         <app-applicant-review-feedback
+            formControlName="secondRowReview"
+            [displayAnnotationButton]="
+               selectedMode === 'REVIEW_MODE' &&
+               openAnnotationArray[21].displayAnnotationButton
             "
-        ></app-ta-checkbox>
-    </div>
+            [displayAnnotationTextArea]="
+               selectedMode === 'REVIEW_MODE' &&
+               openAnnotationArray[21].displayAnnotationTextArea
+            "
+            [lineIndex]="21"
+            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+            [feedbackText]="
+               selectedMode === 'FEEDBACK_MODE' &&
+               stepFeedbackValues?.jobDescriptionMessage
+            "
+            (annotationBtnClickEvent)="
+               selectedMode === 'REVIEW_MODE' &&
+                  getAnnotationBtnClickValue($event)
+            "
+         ></app-applicant-review-feedback>
+      </div>
+   </div>
 
-    <!-- TRUCK TYPE, TRAILER TYPE, LENGTH -->
+   <!-- PHONE, EMAIL, FAX -->
 
-    <div
-        class="d-flex flex-column"
-        *ngIf="workExperienceForm.get('isDrivingPosition').value"
-    >
-        <!-- CREATED ANOTHER CLASS OF EQUIPMENT DATA -->
+   <div class="d-flex line-container">
+      <div class="group phone-group">
+         <app-ta-input
+            formControlName="employerPhone"
+            [inputConfig]="{
+               name: 'Phone',
+               type: 'text',
+               label: 'Employer Phone',
+               isRequired: true,
+               placeholderIcon: 'phone',
+               mask: '(000) 000-0000',
+               maxLength: 14,
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  (selectedMode === 'FEEDBACK_MODE' &&
+                     stepFeedbackValues?.isPhoneValid),
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [incorrectValue]="openAnnotationArray[22].lineInputs[0]"
+            (incorrectEvent)="incorrectInput($event, 0, 22)"
+         ></app-ta-input>
+      </div>
+      <div class="group email-group">
+         <app-ta-input
+            formControlName="employerEmail"
+            [inputConfig]="{
+               name: 'Email',
+               type: 'text',
+               label: 'Employer Email',
+               isRequired: true,
+               placeholderIcon: 'email',
+               minLength: 5,
+               maxLength: 64,
+               textTransform: 'lowercase',
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  (selectedMode === 'FEEDBACK_MODE' &&
+                     stepFeedbackValues?.isEmailValid),
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [incorrectValue]="openAnnotationArray[22].lineInputs[1]"
+            (incorrectEvent)="incorrectInput($event, 1, 22)"
+         ></app-ta-input>
+      </div>
+      <div class="group fax-group">
+         <app-ta-input
+            formControlName="employerFax"
+            [inputConfig]="{
+               name: 'Fax',
+               type: 'text',
+               label: 'Employer Fax',
+               placeholderIcon: 'fax',
+               mask: '(000) 000-0000',
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  (selectedMode === 'FEEDBACK_MODE' &&
+                     stepFeedbackValues?.isFaxValid),
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [incorrectValue]="openAnnotationArray[22].lineInputs[2]"
+            (incorrectEvent)="incorrectInput($event, 2, 22)"
+         ></app-ta-input>
+      </div>
 
-        <div
-            *ngIf="classOfEquipmentArray?.length"
-            formGroupName="classOfEquipmentCards"
-            class="d-flex flex-column justify-content-center equipment-container"
-        >
+      <!-- REVIEW AND FEEDBACK -->
+
+      <div
+         class="review-feedback-container"
+         *ngIf="
+            (selectedMode === 'REVIEW_MODE' ||
+               selectedMode === 'FEEDBACK_MODE') &&
+            !isReviewingCard
+         "
+      >
+         <app-applicant-review-feedback
+            formControlName="thirdRowReview"
+            [displayAnnotationButton]="
+               selectedMode === 'REVIEW_MODE' &&
+               openAnnotationArray[22].displayAnnotationButton
+            "
+            [displayAnnotationTextArea]="
+               selectedMode === 'REVIEW_MODE' &&
+               openAnnotationArray[22].displayAnnotationTextArea
+            "
+            [lineIndex]="22"
+            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+            [feedbackText]="
+               selectedMode === 'FEEDBACK_MODE' &&
+               stepFeedbackValues?.contactMessage
+            "
+            (annotationBtnClickEvent)="
+               selectedMode === 'REVIEW_MODE' &&
+                  getAnnotationBtnClickValue($event)
+            "
+         ></app-applicant-review-feedback>
+      </div>
+   </div>
+
+   <!-- ADDRESS -->
+
+   <div class="d-flex line-container">
+      <div class="group address-group">
+         <app-input-address-dropdown
+            formControlName="employerAddress"
+            [inputConfig]="{
+               name: 'Address',
+               type: 'text',
+               label: 'Employer Address, City, State Zip',
+               isRequired: true,
+               placeholderIcon: 'address',
+               textTransform: 'capitalize',
+               dropdownWidthClass: 'w-col-481',
+               minLength: 12,
+               maxLength: 256,
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  (selectedMode === 'FEEDBACK_MODE' &&
+                     stepFeedbackValues?.isAddressValid),
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [placeholderType]="'longAddress'"
+            [activeAddress]="selectedAddress"
+            [incorrectValue]="openAnnotationArray[23].lineInputs[0]"
+            (incorrectEvent)="incorrectInput($event, 0, 23)"
+            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+         ></app-input-address-dropdown>
+      </div>
+      <div class="group address-unit-group">
+         <app-ta-input
+            formControlName="employerAddressUnit"
+            [inputConfig]="{
+               name: 'address-unit',
+               type: 'text',
+               label: 'Unit No.',
+               minLength: 1,
+               maxLength: 10,
+               textTransform: 'uppercase',
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  (selectedMode === 'FEEDBACK_MODE' &&
+                     stepFeedbackValues?.isAddressUnitValid),
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [incorrectValue]="openAnnotationArray[23].lineInputs[1]"
+            (incorrectEvent)="incorrectInput($event, 1, 23)"
+         ></app-ta-input>
+      </div>
+
+      <!-- REVIEW AND FEEDBACK -->
+
+      <div
+         class="review-feedback-container"
+         *ngIf="
+            (selectedMode === 'REVIEW_MODE' ||
+               selectedMode === 'FEEDBACK_MODE') &&
+            !isReviewingCard
+         "
+      >
+         <app-applicant-review-feedback
+            formControlName="fourthRowReview"
+            [displayAnnotationButton]="
+               selectedMode === 'REVIEW_MODE' &&
+               openAnnotationArray[23].displayAnnotationButton
+            "
+            [displayAnnotationTextArea]="
+               selectedMode === 'REVIEW_MODE' &&
+               openAnnotationArray[23].displayAnnotationTextArea
+            "
+            [lineIndex]="23"
+            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+            [feedbackText]="
+               selectedMode === 'FEEDBACK_MODE' &&
+               stepFeedbackValues?.addressMessage
+            "
+            (annotationBtnClickEvent)="
+               selectedMode === 'REVIEW_MODE' &&
+                  getAnnotationBtnClickValue($event)
+            "
+         ></app-applicant-review-feedback>
+      </div>
+   </div>
+
+   <!-- DRIVING POSITION CHECKBOX -->
+
+   <div
+      class="d-flex justify-content-center align-items-center driving-position-group"
+   >
+      <app-ta-checkbox
+         formControlName="isDrivingPosition"
+         [name]="'isDrivingPosition'"
+         [label]="'Was this a driving position?'"
+         [customClass]="'bold-12'"
+         [disabledStillCheckMark]="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+         "
+      ></app-ta-checkbox>
+   </div>
+
+   <!-- TRUCK TYPE, TRAILER TYPE, LENGTH -->
+
+   <div
+      class="d-flex flex-column"
+      *ngIf="workExperienceForm.get('isDrivingPosition').value"
+   >
+      <!-- CREATED ANOTHER CLASS OF EQUIPMENT DATA -->
+
+      <div
+         *ngIf="classOfEquipmentArray?.length"
+         formGroupName="classOfEquipmentCards"
+         class="d-flex flex-column justify-content-center equipment-container"
+      >
+         <div
+            class="d-flex flex-column"
+            *ngFor="
+               let classOfEquipment of classOfEquipmentArray;
+               let i = index;
+               trackBy: trackByIdentity
+            "
+         >
             <div
-                class="d-flex flex-column"
-                *ngFor="
-                    let classOfEquipment of classOfEquipmentArray;
-                    let i = index;
-                    trackBy: trackByIdentity
-                "
+               class="d-flex align-items-center title-container"
+               *ngIf="
+                  (classOfEquipmentArray.length > 0 &&
+                     classOfEquipmentHelperIndex !== 0 &&
+                     i === 0) ||
+                  (classOfEquipmentHelperIndex === 0 && i === 1)
+               "
             >
-                <div
-                    class="d-flex align-items-center title-container"
-                    *ngIf="
-                        (classOfEquipmentArray.length > 0 &&
-                            classOfEquipmentHelperIndex !== 0 &&
-                            i === 0) ||
-                        (classOfEquipmentHelperIndex === 0 && i === 1)
-                    "
-                >
-                    <div class="d-flex align-items-center vehicle-title-box">
-                        <p class="m-0 ta-font-bold">
-                            VEHICLE TYPE <span>*</span>
-                        </p>
-                    </div>
-                    <div class="d-flex align-items-center trailer-title-box">
-                        <p class="m-0 ta-font-bold">
-                            TRAILER TYPE <span>*</span>
-                        </p>
-                    </div>
-                    <div class="d-flex align-items-center length-title-box">
-                        <p class="m-0 ta-font-bold">LENGTH <span>*</span></p>
-                    </div>
-                </div>
-
-                <div
-                    class="d-flex align-items-center equipment-info-container line-container"
-                    *ngIf="!classOfEquipment.isEditingClassOfEquipment"
-                >
-                    <div class="d-flex align-items-center info-btn-container">
-                        <div class="d-flex align-items-center vehicle-box">
-                            <svg-icon
-                                class="icon"
-                                [src]="
-                                    'assets/svg/common/trucks/' +
-                                    classOfEquipment.vehicleTypeImageLocation
-                                "
-                            ></svg-icon>
-
-                            <p class="m-0 ta-font-regular">
-                                {{ classOfEquipment.vehicleType }}
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center trailer-box">
-                            <svg-icon
-                                *ngIf="
-                                    classOfEquipment.trailerTypeImageLocation
-                                "
-                                class="icon"
-                                [src]="
-                                    'assets/svg/common/trailers/' +
-                                    classOfEquipment.trailerTypeImageLocation
-                                "
-                            ></svg-icon>
-
-                            <p class="m-0 ta-font-regular">
-                                {{ classOfEquipment.trailerType }}
-                            </p>
-                        </div>
-                        <div
-                            class="d-flex align-items-center length-box"
-                            [ngStyle]="{
-                                width:
-                                    selectedMode === 'APPLICANT_MODE'
-                                        ? '79px'
-                                        : '60px'
-                            }"
-                        >
-                            <p class="m-0 ta-font-regular">
-                                {{ classOfEquipment.trailerLength }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="d-flex align-items-center btn-container"
-                        *ngIf="selectedMode === 'APPLICANT_MODE'"
-                    >
-                        <div
-                            ngbTooltip
-                            mainTooltip="Edit"
-                            tooltipBackground="#6C6C6C"
-                            position="top"
-                        >
-                            <svg-icon
-                                class="edit-icon"
-                                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                (click)="onEditClassOfEquipment(i)"
-                            ></svg-icon>
-                        </div>
-
-                        <div
-                            ngbTooltip
-                            mainTooltip="Delete"
-                            tooltipBackground="#EF5350"
-                            position="top"
-                        >
-                            <svg-icon
-                                class="delete-icon"
-                                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                (click)="onDeleteClassOfEquipment(i)"
-                            ></svg-icon>
-                        </div>
-                    </div>
-                </div>
+               <div class="d-flex align-items-center vehicle-title-box">
+                  <p class="m-0 ta-font-bold">VEHICLE TYPE <span>*</span></p>
+               </div>
+               <div class="d-flex align-items-center trailer-title-box">
+                  <p class="m-0 ta-font-bold">TRAILER TYPE <span>*</span></p>
+               </div>
+               <div class="d-flex align-items-center length-title-box">
+                  <p class="m-0 ta-font-bold">LENGTH <span>*</span></p>
+               </div>
             </div>
-        </div>
-
-        <div class="d-flex line-container" [formGroup]="classOfEquipmentForm">
-            <div class="group vehicle-type-group">
-                <app-ta-input-dropdown
-                    formControlName="vehicleType"
-                    [template]="'svgtext-template'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Vehicle type',
-                        isRequired: true,
-                        isDropdown: true,
-                        isDisabled:
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE',
-                        dropdownWidthClass: 'w-col-251',
-                        dropdownImageInput: {
-                            withText: true,
-                            svg: true,
-                            image: false,
-                            url: selectedVehicleType?.logoName,
-                            template: 'truck',
-                            class: selectedVehicleType?.name
-                                ?.trim()
-                                .replace(' ', '')
-                                .toLowerCase()
-                        },
-                        customClass: 'truck-trailer-dropdown'
-                    }"
-                    [options]="vehicleType"
-                    [activeItem]="selectedVehicleType"
-                    (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
-                ></app-ta-input-dropdown>
-            </div>
-            <div class="group trailer-type-group">
-                <app-ta-input-dropdown
-                    formControlName="trailerType"
-                    [template]="'svgtext-template'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Trailer Type',
-                        isDisabled:
-                            (selectedMode === 'APPLICANT_MODE' &&
-                                !isTruckSelected) ||
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE',
-                        isRequired: isTruckSelected,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-211',
-                        customClass: 'truck-trailer-dropdown',
-                        dropdownImageInput: {
-                            withText: true,
-                            svg: true,
-                            image: false,
-                            url: selectedTrailerType?.logoName,
-                            template: 'trailer',
-                            class: selectedTrailerType?.name
-                                ?.toLowerCase()
-                                .includes('liquid')
-                                ? 'tanker-liquid'
-                                : selectedTrailerType?.name
-                                      ?.toLowerCase()
-                                      .includes('rgn')
-                                ? 'low-boy-rgn'
-                                : selectedTrailerType?.name
-                                      ?.toLowerCase()
-                                      .includes('dry-bulk')
-                                ? 'tanker-dry-bulk'
-                                : selectedTrailerType?.name
-                                      ?.trim()
-                                      .replace(' ', '')
-                                      .toLowerCase()
-                        }
-                    }"
-                    [activeItem]="selectedTrailerType"
-                    [options]="trailerType"
-                    (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
-                ></app-ta-input-dropdown>
-            </div>
-            <div class="group length-group">
-                <app-ta-input-dropdown
-                    formControlName="trailerLength"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Length',
-                        isDropdown: true,
-                        isDisabled:
-                            (selectedMode === 'APPLICANT_MODE' &&
-                                !isTruckSelected) ||
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE',
-
-                        isRequired: isTruckSelected,
-
-                        dropdownWidthClass: 'w-col-130'
-                    }"
-                    [options]="trailerLengthType"
-                    [activeItem]="selectedTrailerLength"
-                    (selectedItem)="handleInputSelect($event, 'TRAILER-LENGTH')"
-                ></app-ta-input-dropdown>
-            </div>
-        </div>
-
-        <!-- ANOTHER CLASS -->
-
-        <div
-            class="d-flex justify-content-center align-items-center another-class-group"
-        >
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-                [ngClass]="{
-                    disabled: classOfEquipmentForm.invalid
-                }"
-                [ngStyle]="{
-                    'margin-bottom': isEditingClassOfEquipment ? 0 : '22px'
-                }"
-                (click)="onAddClassOfEquipment()"
-                *ngIf="
-                    selectedMode === 'APPLICANT_MODE' &&
-                    !isEditingClassOfEquipment
-                "
-            >
-                <svg-icon
-                    class="plus-icon"
-                    src="assets/svg/common/ic_plus.svg"
-                    [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                    }"
-                ></svg-icon>
-
-                Add Another Class Of Equipment
-            </button>
 
             <div
-                class="d-flex align-items-center justify-content-center btn-container"
-                *ngIf="isEditingClassOfEquipment"
+               class="d-flex align-items-center equipment-info-container line-container"
+               *ngIf="!classOfEquipment.isEditingClassOfEquipment"
             >
-                <button
-                    type="button"
-                    class="d-flex justify-content-center align-items-center ta-font-bold add-btn cancel-btn"
-                    (click)="onCancelEditClassOfEquipment()"
-                >
-                    Cancel
-                </button>
-                <button
-                    type="button"
-                    class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
-                    [ngClass]="{
-                        disabled: !isClassOfEquipmentEdited
-                    }"
-                    (click)="onSaveEditedClassOfEquipment()"
-                >
-                    Save Changes
-                </button>
+               <div class="d-flex align-items-center info-btn-container">
+                  <div class="d-flex align-items-center vehicle-box">
+                     <svg-icon
+                        class="icon"
+                        [src]="
+                           'assets/svg/common/trucks/' +
+                           classOfEquipment.vehicleTypeImageLocation
+                        "
+                     ></svg-icon>
+
+                     <p class="m-0 ta-font-regular">
+                        {{ classOfEquipment.vehicleType }}
+                     </p>
+                  </div>
+                  <div class="d-flex align-items-center trailer-box">
+                     <svg-icon
+                        *ngIf="classOfEquipment.trailerTypeImageLocation"
+                        class="icon"
+                        [src]="
+                           'assets/svg/common/trailers/' +
+                           classOfEquipment.trailerTypeImageLocation
+                        "
+                     ></svg-icon>
+
+                     <p class="m-0 ta-font-regular">
+                        {{ classOfEquipment.trailerType }}
+                     </p>
+                  </div>
+                  <div
+                     class="d-flex align-items-center length-box"
+                     [ngStyle]="{
+                        width:
+                           selectedMode === 'APPLICANT_MODE' ? '79px' : '60px'
+                     }"
+                  >
+                     <p class="m-0 ta-font-regular">
+                        {{ classOfEquipment.trailerLength }}
+                     </p>
+                  </div>
+               </div>
+
+               <div
+                  class="d-flex align-items-center btn-container"
+                  *ngIf="selectedMode === 'APPLICANT_MODE'"
+               >
+                  <div
+                     ngbTooltip
+                     mainTooltip="Edit"
+                     tooltipBackground="#6C6C6C"
+                     position="top"
+                  >
+                     <svg-icon
+                        class="edit-icon"
+                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                        [svgStyle]="{
+                           'width.px': 18,
+                           'height.px': 18
+                        }"
+                        (click)="onEditClassOfEquipment(i)"
+                     ></svg-icon>
+                  </div>
+
+                  <div
+                     ngbTooltip
+                     mainTooltip="Delete"
+                     tooltipBackground="#EF5350"
+                     position="top"
+                  >
+                     <svg-icon
+                        class="delete-icon"
+                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                        [svgStyle]="{
+                           'width.px': 18,
+                           'height.px': 18
+                        }"
+                        (click)="onDeleteClassOfEquipment(i)"
+                     ></svg-icon>
+                  </div>
+               </div>
             </div>
-        </div>
+         </div>
+      </div>
 
-        <!-- QUESTIONS -->
-
-        <div class="d-flex align-items-center questions-container">
-            <div
-                class="d-flex align-items-center question-box"
-                *ngFor="
-                    let question of questions;
-                    let i = index;
-                    trackBy: trackByIdentity
-                "
-            >
-                <div class="question-title-box">
-                    <p
-                        class="m-0 noselect ta-font-regular"
-                        class="m-0 ta-font-regular"
-                        [ngClass]="
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'question-title-feedback'
-                                : 'question-title'
-                        "
-                    >
-                        {{ question.title }} <span>*</span>
-                    </p>
-                </div>
-
-                <div class="question-radios-box">
-                    <app-ta-input-radiobuttons
-                        #cmp
-                        [buttons]="question.answerChoices"
-                        [disabled]="
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                        "
-                        (changedValue)="
-                            handleInputSelect($event, 'ANSWER-CHOICE')
-                        "
-                    ></app-ta-input-radiobuttons>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- REASON FOR LEAVING -->
-
-    <div class="d-flex line-container">
-        <div class="group reason-for-leaving-group">
+      <div class="d-flex line-container" [formGroup]="classOfEquipmentForm">
+         <div class="group vehicle-type-group">
             <app-ta-input-dropdown
-                formControlName="reasonForLeaving"
-                [inputConfig]="{
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    label: 'Reason for leaving',
-                    isRequired: true,
-                    isDropdown: true,
-                    dropdownWidthClass: 'w-col-616',
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE'
-                }"
-                [options]="reasonsForLeaving"
-                [activeItem]="selectedReasonForLeaving"
-                (selectedItem)="handleInputSelect($event, 'REASON-FOR-LEAVING')"
+               formControlName="vehicleType"
+               [template]="'svgtext-template'"
+               [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Vehicle type',
+                  isRequired: true,
+                  isDropdown: true,
+                  isDisabled:
+                     selectedMode === 'REVIEW_MODE' ||
+                     selectedMode === 'FEEDBACK_MODE',
+                  dropdownWidthClass: 'w-col-251',
+                  dropdownImageInput: {
+                     withText: true,
+                     svg: true,
+                     image: false,
+                     url: selectedVehicleType?.logoName,
+                     template: 'truck',
+                     class: selectedVehicleType?.name
+                        ?.trim()
+                        .replace(' ', '')
+                        .toLowerCase()
+                  },
+                  customClass: 'truck-trailer-dropdown'
+               }"
+               [options]="vehicleType"
+               [activeItem]="selectedVehicleType"
+               (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
             ></app-ta-input-dropdown>
-        </div>
-    </div>
+         </div>
+         <div class="group trailer-type-group">
+            <app-ta-input-dropdown
+               formControlName="trailerType"
+               [template]="'svgtext-template'"
+               [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Trailer Type',
+                  isDisabled:
+                     (selectedMode === 'APPLICANT_MODE' && !isTruckSelected) ||
+                     selectedMode === 'REVIEW_MODE' ||
+                     selectedMode === 'FEEDBACK_MODE',
+                  isRequired: isTruckSelected,
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-211',
+                  customClass: 'truck-trailer-dropdown',
+                  dropdownImageInput: {
+                     withText: true,
+                     svg: true,
+                     image: false,
+                     url: selectedTrailerType?.logoName,
+                     template: 'trailer',
+                     class: selectedTrailerType?.name
+                        ?.toLowerCase()
+                        .includes('liquid')
+                        ? 'tanker-liquid'
+                        : selectedTrailerType?.name
+                             ?.toLowerCase()
+                             .includes('rgn')
+                        ? 'low-boy-rgn'
+                        : selectedTrailerType?.name
+                             ?.toLowerCase()
+                             .includes('dry-bulk')
+                        ? 'tanker-dry-bulk'
+                        : selectedTrailerType?.name
+                             ?.trim()
+                             .replace(' ', '')
+                             .toLowerCase()
+                  }
+               }"
+               [activeItem]="selectedTrailerType"
+               [options]="trailerType"
+               (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
+            ></app-ta-input-dropdown>
+         </div>
+         <div class="group length-group">
+            <app-ta-input-dropdown
+               formControlName="trailerLength"
+               [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Length',
+                  isDropdown: true,
+                  isDisabled:
+                     (selectedMode === 'APPLICANT_MODE' && !isTruckSelected) ||
+                     selectedMode === 'REVIEW_MODE' ||
+                     selectedMode === 'FEEDBACK_MODE',
 
-    <!-- ACCOUNT FOR PERIOD -->
+                  isRequired: isTruckSelected,
 
-    <div class="d-flex line-container">
-        <div class="mb-0 account-for-period-group group">
-            <app-ta-input
-                formControlName="accountForPeriod"
-                [inputConfig]="{
-                    name: 'Account for Period',
-                    type: 'text',
-                    label: 'Account for period between jobs (include reason)',
-                    textTransform: 'capitalize',
-                    isDisabled:
-                        selectedMode === 'REVIEW_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.isAccountForPeriodBetweenValid),
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[26].lineInputs[0]"
-                (incorrectEvent)="incorrectInput($event, 0, 26)"
-            ></app-ta-input>
-        </div>
+                  dropdownWidthClass: 'w-col-130'
+               }"
+               [options]="trailerLengthType"
+               [activeItem]="selectedTrailerLength"
+               (selectedItem)="handleInputSelect($event, 'TRAILER-LENGTH')"
+            ></app-ta-input-dropdown>
+         </div>
+      </div>
 
-        <!-- REVIEW AND FEEDBACK -->
+      <!-- ANOTHER CLASS -->
 
-        <div
-            class="review-feedback-container"
-            *ngIf="
-                (selectedMode === 'REVIEW_MODE' ||
-                    selectedMode === 'FEEDBACK_MODE') &&
-                !isReviewingCard
-            "
-        >
-            <app-applicant-review-feedback
-                formControlName="seventhRowReview"
-                [displayAnnotationButton]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[26].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                    selectedMode === 'REVIEW_MODE' &&
-                    openAnnotationArray[26].displayAnnotationTextArea
-                "
-                [lineIndex]="26"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                    selectedMode === 'FEEDBACK_MODE' &&
-                    stepFeedbackValues?.accountForPeriodBetweenMessage
-                "
-                (annotationBtnClickEvent)="
-                    selectedMode === 'REVIEW_MODE' &&
-                        getAnnotationBtnClickValue($event)
-                "
-            ></app-applicant-review-feedback>
-        </div>
-    </div>
-
-    <!-- ADD BTN -->
-
-    <div class="d-flex justify-content-center btn-container">
-        <button
+      <div
+         class="d-flex justify-content-center align-items-center another-class-group"
+      >
+         <button
             type="button"
             class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
             [ngClass]="{
-                disabled:
-                    classOfEquipmentForm.invalid || workExperienceForm.invalid
+               disabled: classOfEquipmentForm.invalid
             }"
-            (click)="onAddSecondOrLastEmployer()"
-            *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
-        >
+            [ngStyle]="{
+               'margin-bottom': isEditingClassOfEquipment ? 0 : '22px'
+            }"
+            (click)="onAddClassOfEquipment()"
+            *ngIf="
+               selectedMode === 'APPLICANT_MODE' && !isEditingClassOfEquipment
+            "
+         >
             <svg-icon
-                class="plus-icon"
-                src="assets/svg/common/ic_plus.svg
-   "
-                [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                }"
+               class="plus-icon"
+               src="assets/svg/common/ic_plus.svg"
+               [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+               }"
             ></svg-icon>
 
-            Add Second Or Last Employer
-        </button>
+            Add Another Class Of Equipment
+         </button>
 
-        <div
+         <div
             class="d-flex align-items-center justify-content-center btn-container"
-            *ngIf="isEditing"
-        >
+            *ngIf="isEditingClassOfEquipment"
+         >
             <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-bold add-btn cancel-btn"
-                (click)="onCancelEditWorkExperience()"
+               type="button"
+               class="d-flex justify-content-center align-items-center ta-font-bold add-btn cancel-btn"
+               (click)="onCancelEditClassOfEquipment()"
             >
-                Cancel
+               Cancel
             </button>
             <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
-                [ngClass]="{
-                    disabled: !isWorkExperienceEdited
-                }"
-                (click)="onSaveEditedWorkExperience()"
+               type="button"
+               class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
+               [ngClass]="{
+                  disabled: !isClassOfEquipmentEdited
+               }"
+               (click)="onSaveEditedClassOfEquipment()"
             >
-                Save Changes
+               Save Changes
             </button>
-        </div>
+         </div>
+      </div>
 
-        <div
-            class="d-flex align-items-center justify-content-center btn-container"
-            *ngIf="isReviewingCard"
-        >
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-bold add-btn cancel-btn"
-                (click)="onCancelReviewWorkExperience()"
-            >
-                Cancel
-            </button>
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
-                [ngClass]="{
-                    disabled: !isCardReviewedIncorrect
-                }"
-                (click)="onAddAnnotation()"
-            >
-                Add Annotation
-            </button>
-        </div>
-    </div>
+      <!-- QUESTIONS -->
+
+      <div class="d-flex align-items-center questions-container">
+         <div
+            class="d-flex align-items-center question-box"
+            *ngFor="
+               let question of questions;
+               let i = index;
+               trackBy: trackByIdentity
+            "
+         >
+            <div class="question-title-box">
+               <p
+                  class="m-0 noselect ta-font-regular"
+                  class="m-0 ta-font-regular"
+                  [ngClass]="
+                     selectedMode === 'FEEDBACK_MODE'
+                        ? 'question-title-feedback'
+                        : 'question-title'
+                  "
+               >
+                  {{ question.title }} <span>*</span>
+               </p>
+            </div>
+
+            <div class="question-radios-box">
+               <app-ta-input-radiobuttons
+                  #cmp
+                  [buttons]="question.answerChoices"
+                  [disabled]="
+                     selectedMode === 'REVIEW_MODE' ||
+                     selectedMode === 'FEEDBACK_MODE'
+                  "
+                  (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+               ></app-ta-input-radiobuttons>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- REASON FOR LEAVING -->
+
+   <div class="d-flex line-container">
+      <div class="group reason-for-leaving-group">
+         <app-ta-input-dropdown
+            formControlName="reasonForLeaving"
+            [inputConfig]="{
+               name: 'Input Dropdown',
+               type: 'text',
+               label: 'Reason for leaving',
+               isRequired: true,
+               isDropdown: true,
+               dropdownWidthClass: 'w-col-616',
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  selectedMode === 'FEEDBACK_MODE'
+            }"
+            [options]="reasonsForLeaving"
+            [activeItem]="selectedReasonForLeaving"
+            (selectedItem)="handleInputSelect($event, 'REASON-FOR-LEAVING')"
+         ></app-ta-input-dropdown>
+      </div>
+   </div>
+
+   <!-- ACCOUNT FOR PERIOD -->
+
+   <div class="d-flex line-container">
+      <div class="mb-0 account-for-period-group group">
+         <app-ta-input
+            formControlName="accountForPeriod"
+            [inputConfig]="{
+               name: 'Account for Period',
+               type: 'text',
+               label: 'Account for period between jobs (include reason)',
+               textTransform: 'capitalize',
+               isDisabled:
+                  selectedMode === 'REVIEW_MODE' ||
+                  (selectedMode === 'FEEDBACK_MODE' &&
+                     stepFeedbackValues?.isAccountForPeriodBetweenValid),
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [incorrectValue]="openAnnotationArray[26].lineInputs[0]"
+            (incorrectEvent)="incorrectInput($event, 0, 26)"
+         ></app-ta-input>
+      </div>
+
+      <!-- REVIEW AND FEEDBACK -->
+
+      <div
+         class="review-feedback-container"
+         *ngIf="
+            (selectedMode === 'REVIEW_MODE' ||
+               selectedMode === 'FEEDBACK_MODE') &&
+            !isReviewingCard
+         "
+      >
+         <app-applicant-review-feedback
+            formControlName="seventhRowReview"
+            [displayAnnotationButton]="
+               selectedMode === 'REVIEW_MODE' &&
+               openAnnotationArray[26].displayAnnotationButton
+            "
+            [displayAnnotationTextArea]="
+               selectedMode === 'REVIEW_MODE' &&
+               openAnnotationArray[26].displayAnnotationTextArea
+            "
+            [lineIndex]="26"
+            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+            [feedbackText]="
+               selectedMode === 'FEEDBACK_MODE' &&
+               stepFeedbackValues?.accountForPeriodBetweenMessage
+            "
+            (annotationBtnClickEvent)="
+               selectedMode === 'REVIEW_MODE' &&
+                  getAnnotationBtnClickValue($event)
+            "
+         ></app-applicant-review-feedback>
+      </div>
+   </div>
+
+   <!-- ADD BTN -->
+
+   <div class="d-flex justify-content-center btn-container">
+      <button
+         type="button"
+         class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+         [ngClass]="{
+            disabled: classOfEquipmentForm.invalid || workExperienceForm.invalid
+         }"
+         (click)="onAddSecondOrLastEmployer()"
+         *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
+      >
+         <svg-icon
+            class="plus-icon"
+            src="assets/svg/common/ic_plus.svg
+   "
+            [svgStyle]="{
+               'width.px': 18,
+               'height.px': 18
+            }"
+         ></svg-icon>
+
+         Add Second Or Last Employer
+      </button>
+
+      <div
+         class="d-flex align-items-center justify-content-center btn-container"
+         *ngIf="isEditing"
+      >
+         <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-bold add-btn cancel-btn"
+            (click)="onCancelEditWorkExperience()"
+         >
+            Cancel
+         </button>
+         <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
+            [ngClass]="{
+               disabled: !isWorkExperienceEdited
+            }"
+            (click)="onSaveEditedWorkExperience()"
+         >
+            Save Changes
+         </button>
+      </div>
+
+      <div
+         class="d-flex align-items-center justify-content-center btn-container"
+         *ngIf="isReviewingCard"
+      >
+         <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-bold add-btn cancel-btn"
+            (click)="onCancelReviewWorkExperience()"
+         >
+            Cancel
+         </button>
+         <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
+            [ngClass]="{
+               disabled: !isCardReviewedIncorrect
+            }"
+            (click)="onAddAnnotation()"
+         >
+            Add Annotation
+         </button>
+      </div>
+   </div>
 </div>

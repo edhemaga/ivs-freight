@@ -1,34 +1,32 @@
 <div class="ta_status_main_holder">
-    <!-- <div @shadowAnimation [class.active]="openedStatus == statusMainIndex" class="shadow_item"></div> -->
-    <div
-        #t2="ngbPopover"
-        [ngbPopover]="statusPopover"
-        [placement]="['top']"
-        [popoverClass]="'status_change_popover'"
-        autoclose="outside"
-        [container]="'body'"
-        (click)="openPopover(t2)"
-        (hidden)="onClose()"
-        triggers="'manual'"
-        class="ta_status_switch_holder hoverItem closedItem"
-    >
-        <div class="status_change_wrapper">
-            <div
-                [class.withAgo]="withStatusAgo"
-                [ngStyle]="{
-                    color: (status.statusValue.id | statusPipe: currentStopType)
-                }"
-                class="switch_statuses"
-            >
-                {{ status.statusString }}
-                <span *ngIf="withStatusAgo" class="time_ago">{{
-                    statusAgo
-                }}</span>
-            </div>
-        </div>
-    </div>
+   <!-- <div @shadowAnimation [class.active]="openedStatus == statusMainIndex" class="shadow_item"></div> -->
+   <div
+      #t2="ngbPopover"
+      [ngbPopover]="statusPopover"
+      [placement]="['top']"
+      [popoverClass]="'status_change_popover'"
+      autoclose="outside"
+      [container]="'body'"
+      (click)="openPopover(t2)"
+      (hidden)="onClose()"
+      triggers="'manual'"
+      class="ta_status_switch_holder hoverItem closedItem"
+   >
+      <div class="status_change_wrapper">
+         <div
+            [class.withAgo]="withStatusAgo"
+            [ngStyle]="{
+               color: (status.statusValue.id | statusPipe: currentStopType)
+            }"
+            class="switch_statuses"
+         >
+            {{ status.statusString }}
+            <span *ngIf="withStatusAgo" class="time_ago">{{ statusAgo }}</span>
+         </div>
+      </div>
+   </div>
 
-    <!-- <div
+   <!-- <div
     [class.closedItem]="openedStatus != statusMainIndex"
     [class.otherStatusOpened]="openedStatus > -1  && openedStatus != statusMainIndex"
     class="ta_status_switch_holder hoverItem"
@@ -61,36 +59,36 @@
 </div>
 
 <ng-template #statusPopover let-data="data">
-    <div class="ta_status_main_holder hoverItem">
-        <div
-            [class.active]="openedStatus == statusMainIndex"
-            [ngStyle]="{ top: '0px' }"
-            class="status_change_wrapper popover-wraper"
-        >
-            <div
-                (click)="setStatus(item, indx)"
-                *ngFor="let item of data; let indx = index"
-                [class.active]="
-                    data.id == changeIndex && openedStatus == statusMainIndex
-                "
-                [ngStyle]="{
-                    color: (item.statusValue.id | statusPipe: nextStopType)
-                }"
-                class="switch_statuses"
-            >
-                <div *ngIf="item.load_repear" class="load-repear-item">L</div>
-                {{ item.statusString }}
+   <div class="ta_status_main_holder hoverItem">
+      <div
+         [class.active]="openedStatus == statusMainIndex"
+         [ngStyle]="{ top: '0px' }"
+         class="status_change_wrapper popover-wraper"
+      >
+         <div
+            (click)="setStatus(item, indx)"
+            *ngFor="let item of data; let indx = index"
+            [class.active]="
+               data.id == changeIndex && openedStatus == statusMainIndex
+            "
+            [ngStyle]="{
+               color: (item.statusValue.id | statusPipe: nextStopType)
+            }"
+            class="switch_statuses"
+         >
+            <div *ngIf="item.load_repear" class="load-repear-item">L</div>
+            {{ item.statusString }}
 
-                <div
-                    *ngIf="item.load_count"
-                    [ngStyle]="{
-                        color: item.id >= 5100 ? '#ff5d5d' : '#24C1A1'
-                    }"
-                    class="load-count-number"
-                >
-                    {{ item.load_count }}
-                </div>
+            <div
+               *ngIf="item.load_count"
+               [ngStyle]="{
+                  color: item.id >= 5100 ? '#ff5d5d' : '#24C1A1'
+               }"
+               class="load-count-number"
+            >
+               {{ item.load_count }}
             </div>
-        </div>
-    </div>
+         </div>
+      </div>
+   </div>
 </ng-template>

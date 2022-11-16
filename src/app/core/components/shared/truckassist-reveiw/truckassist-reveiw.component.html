@@ -1,23 +1,23 @@
 <div class="reveiw-container">
-    <svg-icon
-        class="like-icon"
-        [svgStyle]="{ 'width.px': '18', 'height.px': '17.28' }"
-        [src]="'assets/svg/truckassist-table/review/Like.svg'"
-    ></svg-icon>
-    <div
-        class="count-container"
-        [ngClass]="{ 'has-reveiw': data.thumbUp || data.thumbDown }"
-    >
-        <div class="like-count">
-            {{ data.upCount }}
-        </div>
-        <div class="dislike-count">
-            {{ data.downCount }}
-        </div>
-    </div>
-    <svg-icon
-        class="dislike-icon"
-        [svgStyle]="{ 'width.px': '18', 'height.px': '17.28' }"
-        [src]="'assets/svg/truckassist-table/review/Dislike.svg'"
-    ></svg-icon>
+   <svg-icon
+      class="like-icon"
+      [svgStyle]="{ 'width.px': '18', 'height.px': '17.28' }"
+      [src]="'assets/svg/truckassist-table/review/Like.svg'"
+   ></svg-icon>
+   <div
+      class="count-container"
+      [ngClass]="{ 'has-reveiw': data.thumbUp || data.thumbDown }"
+   >
+      <div class="like-count">
+         {{ data.upCount }}
+      </div>
+      <div class="dislike-count">
+         {{ data.downCount }}
+      </div>
+   </div>
+   <svg-icon
+      class="dislike-icon"
+      [svgStyle]="{ 'width.px': '18', 'height.px': '17.28' }"
+      [src]="'assets/svg/truckassist-table/review/Dislike.svg'"
+   ></svg-icon>
 </div>

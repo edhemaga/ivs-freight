@@ -5,7 +5,7 @@ import { ContactsRoutingModule } from './contacts-routing.module';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 
 @NgModule({
-    declarations: [ContactsTableComponent],
-    imports: [CommonModule, ContactsRoutingModule, TruckassistTableModule],
+   declarations: [ContactsTableComponent],
+   imports: [CommonModule, ContactsRoutingModule, TruckassistTableModule],
 })
 export class ContactsModule {}

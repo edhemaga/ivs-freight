@@ -1,18 +1,18 @@
 .ta-counter {
-    text-align: center;
-    margin-right: 4px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    p {
-        margin: 0 !important;
-        position: relative;
-        line-height: 18px;
-        font-size: 14px;
-        padding: 0 4px;
-    }
+   text-align: center;
+   margin-right: 4px;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   p {
+      margin: 0 !important;
+      position: relative;
+      line-height: 18px;
+      font-size: 14px;
+      padding: 0 4px;
+   }
 }

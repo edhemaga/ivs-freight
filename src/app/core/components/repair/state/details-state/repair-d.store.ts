@@ -5,18 +5,18 @@ import { IRepairD } from './repair-d.model';
 export interface RepairDState extends EntityState<IRepairD> {}
 
 export const initialState = (): RepairDState => {
-    return {
-        repairShop: [],
-        repairList: [],
-        repairedVehicleList: [],
-        repairShopMinimal: [],
-    };
+   return {
+      repairShop: [],
+      repairList: [],
+      repairedVehicleList: [],
+      repairShopMinimal: [],
+   };
 };
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'repairD' })
 export class RepairDStore extends EntityStore<RepairDState> {
-    constructor() {
-        super(initialState());
-    }
+   constructor() {
+      super(initialState());
+   }
 }

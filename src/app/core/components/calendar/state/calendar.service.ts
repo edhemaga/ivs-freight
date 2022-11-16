@@ -5,9 +5,9 @@ import { SharedService } from '../../../services/shared/shared.service';
 
 @Injectable({ providedIn: 'root' })
 export class CalendarStoreService {
-    constructor(
-        private calendarStore: CalendarStore,
-        private http: HttpClient,
-        private sharedService: SharedService
-    ) {}
+   constructor(
+      private calendarStore: CalendarStore,
+      private http: HttpClient,
+      private sharedService: SharedService
+   ) {}
 }

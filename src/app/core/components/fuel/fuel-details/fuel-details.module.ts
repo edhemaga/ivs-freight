@@ -10,15 +10,15 @@ import { TruckassistTableModule } from '../../shared/truckassist-table/truckassi
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-    declarations: [FuelDetailsComponent, FuelDetailsItemComponent],
-    exports: [SharedModule],
+   declarations: [FuelDetailsComponent, FuelDetailsItemComponent],
+   exports: [SharedModule],
 
-    imports: [
-        CommonModule,
-        SharedModule,
-        FuelDetailsRoutes,
-        TruckassistProgressExpirationModule,
-        TruckassistTableModule,
-    ],
+   imports: [
+      CommonModule,
+      SharedModule,
+      FuelDetailsRoutes,
+      TruckassistProgressExpirationModule,
+      TruckassistTableModule,
+   ],
 })
 export class FuelDetailsModule {}

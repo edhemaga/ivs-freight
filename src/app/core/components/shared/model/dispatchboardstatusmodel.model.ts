@@ -1,5 +1,5 @@
 export interface DispatchboardStatusModel {
-    Id: BigInt;
-    Name: String;
-    StatusId: DoubleRange;
+   Id: BigInt;
+   Name: String;
+   StatusId: DoubleRange;
 }

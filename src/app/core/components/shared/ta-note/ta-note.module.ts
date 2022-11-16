@@ -9,15 +9,15 @@ import { PipesModule } from '../../../pipes/pipes.module';
 import { TaSpinnerModule } from '../ta-spinner/ta-spinner.module';
 
 @NgModule({
-    declarations: [TaNoteComponent, TaNoteContainerComponent],
-    imports: [
-        CommonModule,
-        NgbModule,
-        PipesModule,
-        AngularSvgIconModule,
-        AppTooltipeModule,
-        TaSpinnerModule,
-    ],
-    exports: [TaNoteComponent, TaNoteContainerComponent],
+   declarations: [TaNoteComponent, TaNoteContainerComponent],
+   imports: [
+      CommonModule,
+      NgbModule,
+      PipesModule,
+      AngularSvgIconModule,
+      AppTooltipeModule,
+      TaSpinnerModule,
+   ],
+   exports: [TaNoteComponent, TaNoteContainerComponent],
 })
 export class TaNoteModule {}

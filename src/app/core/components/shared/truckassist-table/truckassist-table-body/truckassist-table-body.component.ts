@@ -1,22 +1,22 @@
 import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnDestroy,
-    OnInit,
-    Output,
-    SimpleChanges,
-    ViewChild,
+   AfterViewInit,
+   ChangeDetectionStrategy,
+   ChangeDetectorRef,
+   Component,
+   EventEmitter,
+   Input,
+   OnChanges,
+   OnDestroy,
+   OnInit,
+   Output,
+   SimpleChanges,
+   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
 
 import {
-    CdkVirtualScrollViewport,
-    VIRTUAL_SCROLL_STRATEGY,
+   CdkVirtualScrollViewport,
+   VIRTUAL_SCROLL_STRATEGY,
 } from '@angular/cdk/scrolling';
 import { TableStrategy } from './table_strategy';
 import { Subject, takeUntil } from 'rxjs';
@@ -26,102 +26,102 @@ import { DetailsDataService } from '../../../../services/details-data/details-da
 import { TableType } from 'appcoretruckassist';
 
 @Component({
-    selector: 'app-truckassist-table-body',
-    templateUrl: './truckassist-table-body.component.html',
-    styleUrls: ['./truckassist-table-body.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [
-        {
-            provide: VIRTUAL_SCROLL_STRATEGY,
-            useClass: TableStrategy,
-        },
-    ],
+   selector: 'app-truckassist-table-body',
+   templateUrl: './truckassist-table-body.component.html',
+   styleUrls: ['./truckassist-table-body.component.scss'],
+   changeDetection: ChangeDetectionStrategy.OnPush,
+   providers: [
+      {
+         provide: VIRTUAL_SCROLL_STRATEGY,
+         useClass: TableStrategy,
+      },
+   ],
 })
 export class TruckassistTableBodyComponent
-    implements OnInit, OnChanges, AfterViewInit, OnDestroy
+   implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
-    @ViewChild('tableScrollRef', { static: false })
-    public virtualScrollViewport: CdkVirtualScrollViewport;
+   private destroy$ = new Subject<void>();
+   @ViewChild('tableScrollRef', { static: false })
+   public virtualScrollViewport: CdkVirtualScrollViewport;
 
-    @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
-    @Input() viewData: any[];
-    @Input() columns: any[];
-    @Input() options: any;
-    @Input() tableData: any[];
-    @Input() selectedTab: string;
-    @Input() tableContainerWidth: number;
+   @Input() viewData: any[];
+   @Input() columns: any[];
+   @Input() options: any;
+   @Input() tableData: any[];
+   @Input() selectedTab: string;
+   @Input() tableContainerWidth: number;
 
-    pinedColumns: any = [];
-    pinedWidth: number = 0;
-    notPinedColumns: any = [];
-    actionsColumns: any = [];
-    actionsWidth: number = 0;
-    mySelection: any[] = [];
-    showItemDrop: number = -1;
-    showScrollSectionBorder: boolean = false;
-    activeTableData: any = {};
-    notPinedMaxWidth: number = 0;
-    dropContent: any[] = [];
-    tooltip: any;
-    dropDownActive: number = -1;
-    progressData: any[] = [];
-    viewDataEmpty: boolean;
-    viewDataTimeOut: any;
-    rowData: any;
-    activeDescriptionDropdown: number = -1;
-    descriptionTooltip: any;
-    pageHeight: number = window.innerHeight;
-    activeAttachment: number = -1;
-    activeMedia: number = -1;
-    activeInsurance: number = -1;
-    statusTooltip: any;
-    statusDropdownActive: number = -1;
-    statusDropdownData: any;
-    showInspectinDescriptionEdit: boolean;
-    editInspectinDescriptionText: string = '';
-    tableConfigurationType: any = { configType: '', id: null };
-    tableTypes = [
-        { configType: 'LOAD_TEMPLATE', id: 1 },
-        { configType: 'LOAD_CLOSED', id: 2 },
-        { configType: 'LOAD_REGULAR', id: 3 },
-        { configType: 'BROKER', id: 4 },
-        { configType: 'SHIPPER', id: 5 },
-        { configType: 'DRIVER', id: 6 },
-        { configType: 'APPLICANT', id: 7 },
-        { configType: 'TRUCK', id: 8 },
-        { configType: 'TRAILER', id: 9 },
-        { configType: 'REPAIR_TRUCK', id: 10 },
-        { configType: 'REPAIR_TRAILER', id: 11 },
-        { configType: 'REPAIR_SHOP', id: 12 },
-        { configType: 'PM_TRUCK', id: 13 },
-        { configType: 'PM_TRAILER', id: 14 },
-        { configType: 'FUEL_TRANSACTION', id: 15 },
-        { configType: 'FUEL_STOP', id: 16 },
-        { configType: 'OWNER', id: 17 },
-        { configType: 'ACCOUNT', id: 18 },
-        { configType: 'CONTACT', id: 19 },
-        { configType: 'ROADSIDE_INSPECTION', id: 20 },
-        { configType: 'ACCIDENT', id: 21 },
-        { configType: 'USER', id: 22 },
-    ];
+   pinedColumns: any = [];
+   pinedWidth: number = 0;
+   notPinedColumns: any = [];
+   actionsColumns: any = [];
+   actionsWidth: number = 0;
+   mySelection: any[] = [];
+   showItemDrop: number = -1;
+   showScrollSectionBorder: boolean = false;
+   activeTableData: any = {};
+   notPinedMaxWidth: number = 0;
+   dropContent: any[] = [];
+   tooltip: any;
+   dropDownActive: number = -1;
+   progressData: any[] = [];
+   viewDataEmpty: boolean;
+   viewDataTimeOut: any;
+   rowData: any;
+   activeDescriptionDropdown: number = -1;
+   descriptionTooltip: any;
+   pageHeight: number = window.innerHeight;
+   activeAttachment: number = -1;
+   activeMedia: number = -1;
+   activeInsurance: number = -1;
+   statusTooltip: any;
+   statusDropdownActive: number = -1;
+   statusDropdownData: any;
+   showInspectinDescriptionEdit: boolean;
+   editInspectinDescriptionText: string = '';
+   tableConfigurationType: any = { configType: '', id: null };
+   tableTypes = [
+      { configType: 'LOAD_TEMPLATE', id: 1 },
+      { configType: 'LOAD_CLOSED', id: 2 },
+      { configType: 'LOAD_REGULAR', id: 3 },
+      { configType: 'BROKER', id: 4 },
+      { configType: 'SHIPPER', id: 5 },
+      { configType: 'DRIVER', id: 6 },
+      { configType: 'APPLICANT', id: 7 },
+      { configType: 'TRUCK', id: 8 },
+      { configType: 'TRAILER', id: 9 },
+      { configType: 'REPAIR_TRUCK', id: 10 },
+      { configType: 'REPAIR_TRAILER', id: 11 },
+      { configType: 'REPAIR_SHOP', id: 12 },
+      { configType: 'PM_TRUCK', id: 13 },
+      { configType: 'PM_TRAILER', id: 14 },
+      { configType: 'FUEL_TRANSACTION', id: 15 },
+      { configType: 'FUEL_STOP', id: 16 },
+      { configType: 'OWNER', id: 17 },
+      { configType: 'ACCOUNT', id: 18 },
+      { configType: 'CONTACT', id: 19 },
+      { configType: 'ROADSIDE_INSPECTION', id: 20 },
+      { configType: 'ACCIDENT', id: 21 },
+      { configType: 'USER', id: 22 },
+   ];
 
-    constructor(
-        private router: Router,
-        private tableService: TruckassistTableService,
-        private changeDetectorRef: ChangeDetectorRef,
-        private sharedService: SharedService,
-        private detailsDataService: DetailsDataService
-    ) {}
+   constructor(
+      private router: Router,
+      private tableService: TruckassistTableService,
+      private changeDetectorRef: ChangeDetectorRef,
+      private sharedService: SharedService,
+      private detailsDataService: DetailsDataService
+   ) {}
 
-    // --------------------------------NgOnInit---------------------------------
-    ngOnInit(): void {
-        // Get Selected Tab Data
-        this.getSelectedTabTableData();
+   // --------------------------------NgOnInit---------------------------------
+   ngOnInit(): void {
+      // Get Selected Tab Data
+      this.getSelectedTabTableData();
 
-        // Get Table Configuration
-        /* this.tableService
+      // Get Table Configuration
+      /* this.tableService
       .getTableConfig(this.tableConfigurationType.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
@@ -136,452 +136,450 @@ export class TruckassistTableBodyComponent
         // );
       }); */
 
-        this.viewDataEmpty = this.viewData.length ? false : true;
+      this.viewDataEmpty = this.viewData.length ? false : true;
 
-        // Get Table Sections(Pined, Not Pined, Actions)
-        this.getTableSections();
+      // Get Table Sections(Pined, Not Pined, Actions)
+      this.getTableSections();
 
-        // Set Dropdown Content
-        this.setDropContent();
+      // Set Dropdown Content
+      this.setDropContent();
 
-        // Select Or Deselect All
-        this.tableService.currentSelectOrDeselect
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: string) => {
-                if (response !== '') {
-                    const isSelect = response === 'select';
-                    this.mySelection = [];
+      // Select Or Deselect All
+      this.tableService.currentSelectOrDeselect
+         .pipe(takeUntil(this.destroy$))
+         .subscribe((response: string) => {
+            if (response !== '') {
+               const isSelect = response === 'select';
+               this.mySelection = [];
 
-                    this.viewData = this.viewData.map((data) => {
-                        data.isSelected = isSelect;
+               this.viewData = this.viewData.map((data) => {
+                  data.isSelected = isSelect;
 
-                        if (data.isSelected) {
-                            this.mySelection.push({ id: data.id });
-                        }
+                  if (data.isSelected) {
+                     this.mySelection.push({ id: data.id });
+                  }
 
-                        return data;
-                    });
+                  return data;
+               });
 
-                    this.tableService.sendRowsSelected(this.mySelection);
+               this.tableService.sendRowsSelected(this.mySelection);
 
-                    this.changeDetectorRef.detectChanges();
-                }
-            });
-
-        // Columns Reorder
-        this.tableService.currentColumnsOrder
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
-                if (response.columnsOrder) {
-                    this.columns = response.columnsOrder;
-
-                    this.getTableSections();
-
-                    this.changeDetectorRef.detectChanges();
-
-                    this.getNotPinedMaxWidth();
-                }
-            });
-
-        // Reset Selected Columns
-        this.tableService.currentResetSelectedColumns
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((reset: boolean) => {
-                if (reset) {
-                    this.mySelection = [];
-                }
-            });
-
-        // Scrolling Virtual Container
-        this.sharedService.emitTableScrolling
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((offSet: any) => {
-                if (offSet < 84) {
-                    this.virtualScrollViewport.scrollToOffset(0);
-                } else if (offSet > 84) {
-                    this.virtualScrollViewport.scrollToOffset(offSet);
-                }
-            });
-    }
-
-    // --------------------------------NgOnChanges---------------------------------
-    ngOnChanges(changes: SimpleChanges): void {
-        if (!changes?.viewData?.firstChange && changes?.viewData) {
-            clearTimeout(this.viewDataTimeOut);
-
-            this.viewData = [...changes.viewData.currentValue];
-
-            this.viewDataEmpty = this.viewData.length ? false : true;
-
-            if (!this.viewDataEmpty && changes.viewData.currentValue) {
-                this.viewDataTimeOut = setTimeout(() => {
-                    this.getNotPinedMaxWidth();
-                    this.getSelectedTabTableData();
-                }, 10);
+               this.changeDetectorRef.detectChanges();
             }
+         });
 
-            if (changes.viewData.currentValue[0]) {
-                //this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
+      // Columns Reorder
+      this.tableService.currentColumnsOrder
+         .pipe(takeUntil(this.destroy$))
+         .subscribe((response: any) => {
+            if (response.columnsOrder) {
+               this.columns = response.columnsOrder;
+
+               this.getTableSections();
+
+               this.changeDetectorRef.detectChanges();
+
+               this.getNotPinedMaxWidth();
             }
-        }
+         });
 
-        if (!changes?.tableData?.firstChange && changes?.tableData) {
-            this.getSelectedTabTableData();
-        }
+      // Reset Selected Columns
+      this.tableService.currentResetSelectedColumns
+         .pipe(takeUntil(this.destroy$))
+         .subscribe((reset: boolean) => {
+            if (reset) {
+               this.mySelection = [];
+            }
+         });
 
-        if (
-            !changes?.tableContainerWidth?.firstChange &&
-            changes?.tableContainerWidth &&
-            changes?.tableContainerWidth?.previousValue > 0
-        ) {
-            this.getNotPinedMaxWidth();
-        }
+      // Scrolling Virtual Container
+      this.sharedService.emitTableScrolling
+         .pipe(takeUntil(this.destroy$))
+         .subscribe((offSet: any) => {
+            if (offSet < 84) {
+               this.virtualScrollViewport.scrollToOffset(0);
+            } else if (offSet > 84) {
+               this.virtualScrollViewport.scrollToOffset(offSet);
+            }
+         });
+   }
 
-        if (
-            changes?.columns &&
-            !changes?.columns?.firstChange &&
-            changes.columns.currentValue !== changes.columns.previousValue
-        ) {
-            this.columns = changes.columns.currentValue;
+   // --------------------------------NgOnChanges---------------------------------
+   ngOnChanges(changes: SimpleChanges): void {
+      if (!changes?.viewData?.firstChange && changes?.viewData) {
+         clearTimeout(this.viewDataTimeOut);
 
-            this.getTableSections();
+         this.viewData = [...changes.viewData.currentValue];
 
-            setTimeout(() => {
-                this.getNotPinedMaxWidth();
+         this.viewDataEmpty = this.viewData.length ? false : true;
+
+         if (!this.viewDataEmpty && changes.viewData.currentValue) {
+            this.viewDataTimeOut = setTimeout(() => {
+               this.getNotPinedMaxWidth();
+               this.getSelectedTabTableData();
             }, 10);
-        }
+         }
 
-        if (
-            !changes?.selectedTab?.firstChange &&
-            changes?.selectedTab?.currentValue !==
-                changes?.selectedTab?.previousValue &&
-            changes?.selectedTab
-        ) {
-            this.selectedTab = changes.selectedTab.currentValue;
+         if (changes.viewData.currentValue[0]) {
+            //this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
+         }
+      }
 
-            this.getSelectedTabTableData();
-        }
+      if (!changes?.tableData?.firstChange && changes?.tableData) {
+         this.getSelectedTabTableData();
+      }
 
-        if (!changes?.options?.firstChange && changes?.options) {
-            this.options = changes.options.currentValue;
+      if (
+         !changes?.tableContainerWidth?.firstChange &&
+         changes?.tableContainerWidth &&
+         changes?.tableContainerWidth?.previousValue > 0
+      ) {
+         this.getNotPinedMaxWidth();
+      }
 
-            this.setDropContent();
-        }
-    }
+      if (
+         changes?.columns &&
+         !changes?.columns?.firstChange &&
+         changes.columns.currentValue !== changes.columns.previousValue
+      ) {
+         this.columns = changes.columns.currentValue;
 
-    // --------------------------------NgAfterViewInit---------------------------------
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            if (this.viewData.length) {
-                const tableContainer =
-                    document.querySelector('.table-container');
+         this.getTableSections();
 
-                const cdkVirtualScrollSpacer = document.querySelector(
-                    '.cdk-virtual-scroll-spacer'
-                );
+         setTimeout(() => {
+            this.getNotPinedMaxWidth();
+         }, 10);
+      }
 
-                const pageHeight =
-                    tableContainer.clientHeight -
-                    1018 +
-                    cdkVirtualScrollSpacer.clientHeight;
+      if (
+         !changes?.selectedTab?.firstChange &&
+         changes?.selectedTab?.currentValue !==
+            changes?.selectedTab?.previousValue &&
+         changes?.selectedTab
+      ) {
+         this.selectedTab = changes.selectedTab.currentValue;
 
-                this.sharedService.emitUpdateScrollHeight.emit({
-                    tablePageHeight: pageHeight,
-                });
-            }
-        }, 10);
+         this.getSelectedTabTableData();
+      }
 
-        this.getNotPinedMaxWidth();
-    }
+      if (!changes?.options?.firstChange && changes?.options) {
+         this.options = changes.options.currentValue;
 
-    onHorizontalScroll(scrollEvent: any) {
-        if (scrollEvent.eventAction === 'scrolling') {
-            document
-                .querySelectorAll('#table-not-pined-scroll-container')
-                .forEach((el) => {
-                    el.scrollLeft = scrollEvent.scrollPosition;
-                });
+         this.setDropContent();
+      }
+   }
 
-            this.tableService.sendScroll(scrollEvent.scrollPosition);
-        } else if (
-            scrollEvent.eventAction === 'isScrollShowing' &&
-            this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing
-        ) {
-            this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
-
-            this.changeDetectorRef.detectChanges();
-        }
-    }
-
-    // Get Table Sections
-    getTableSections() {
-        this.pinedColumns = [];
-        this.notPinedColumns = [];
-        this.actionsColumns = [];
-
-        this.pinedWidth = 0;
-        this.actionsWidth = 0;
-
-        this.columns.map((c: any) => {
-            // Pined
-            if (c.isPined && !c.isAction && !c.hidden) {
-                this.pinedColumns.push(c);
-
-                this.pinedWidth += c.minWidth > c.width ? c.minWidth : c.width;
-            }
-
-            // Not Pined
-            if (!c.isPined && !c.isAction && !c.hidden) {
-                this.notPinedColumns.push(c);
-            }
-
-            // Actions
-            if (c.isAction && !c.hidden) {
-                this.actionsColumns.push(c);
-
-                this.actionsWidth +=
-                    c.minWidth > c.width ? c.minWidth : c.width;
-            }
-        });
-    }
-
-    // Get Tab Table Data For Selected Tab
-    getSelectedTabTableData() {
-        if (this.tableData?.length) {
-            this.activeTableData = this.tableData.find(
-                (t) => t.field === this.selectedTab
-            );
-
-            this.tableTypes.filter((t) => {
-                if (t.configType === this.activeTableData.tableConfiguration) {
-                    this.tableConfigurationType = {
-                        ...this.tableConfigurationType,
-                        configType: t.configType,
-                        id: t.id,
-                    };
-                }
-            });
-        }
-    }
-
-    // Get Not Pined Section Of Table Max Width
-    getNotPinedMaxWidth() {
-        if (this.viewData.length) {
+   // --------------------------------NgAfterViewInit---------------------------------
+   ngAfterViewInit(): void {
+      setTimeout(() => {
+         if (this.viewData.length) {
             const tableContainer = document.querySelector('.table-container');
 
-            this.notPinedMaxWidth =
-                tableContainer.clientWidth -
-                (this.pinedWidth + this.actionsWidth) -
-                8;
-
-            this.changeDetectorRef.detectChanges();
-        }
-    }
-
-    // Go To Details Page
-    goToDetails(route: any, row: any) {
-        const link =
-            route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
-        this.detailsDataService.setNewData(row);
-        this.router.navigate([link]);
-    }
-
-    // Select Row
-    onSelectItem(rowData: any, index: number): void {
-        this.viewData[index].isSelected = !this.viewData[index].isSelected;
-
-        if (rowData.isSelected) {
-            this.mySelection.push({ id: rowData.id, tableData: rowData });
-        } else {
-            const index = this.mySelection.findIndex(
-                (selection) => rowData.id === selection.id
+            const cdkVirtualScrollSpacer = document.querySelector(
+               '.cdk-virtual-scroll-spacer'
             );
 
-            if (index !== -1) {
-                this.mySelection.splice(index, 1);
+            const pageHeight =
+               tableContainer.clientHeight -
+               1018 +
+               cdkVirtualScrollSpacer.clientHeight;
+
+            this.sharedService.emitUpdateScrollHeight.emit({
+               tablePageHeight: pageHeight,
+            });
+         }
+      }, 10);
+
+      this.getNotPinedMaxWidth();
+   }
+
+   onHorizontalScroll(scrollEvent: any) {
+      if (scrollEvent.eventAction === 'scrolling') {
+         document
+            .querySelectorAll('#table-not-pined-scroll-container')
+            .forEach((el) => {
+               el.scrollLeft = scrollEvent.scrollPosition;
+            });
+
+         this.tableService.sendScroll(scrollEvent.scrollPosition);
+      } else if (
+         scrollEvent.eventAction === 'isScrollShowing' &&
+         this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing
+      ) {
+         this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
+
+         this.changeDetectorRef.detectChanges();
+      }
+   }
+
+   // Get Table Sections
+   getTableSections() {
+      this.pinedColumns = [];
+      this.notPinedColumns = [];
+      this.actionsColumns = [];
+
+      this.pinedWidth = 0;
+      this.actionsWidth = 0;
+
+      this.columns.map((c: any) => {
+         // Pined
+         if (c.isPined && !c.isAction && !c.hidden) {
+            this.pinedColumns.push(c);
+
+            this.pinedWidth += c.minWidth > c.width ? c.minWidth : c.width;
+         }
+
+         // Not Pined
+         if (!c.isPined && !c.isAction && !c.hidden) {
+            this.notPinedColumns.push(c);
+         }
+
+         // Actions
+         if (c.isAction && !c.hidden) {
+            this.actionsColumns.push(c);
+
+            this.actionsWidth += c.minWidth > c.width ? c.minWidth : c.width;
+         }
+      });
+   }
+
+   // Get Tab Table Data For Selected Tab
+   getSelectedTabTableData() {
+      if (this.tableData?.length) {
+         this.activeTableData = this.tableData.find(
+            (t) => t.field === this.selectedTab
+         );
+
+         this.tableTypes.filter((t) => {
+            if (t.configType === this.activeTableData.tableConfiguration) {
+               this.tableConfigurationType = {
+                  ...this.tableConfigurationType,
+                  configType: t.configType,
+                  id: t.id,
+               };
             }
-        }
+         });
+      }
+   }
 
-        this.tableService.sendRowsSelected(this.mySelection);
-    }
+   // Get Not Pined Section Of Table Max Width
+   getNotPinedMaxWidth() {
+      if (this.viewData.length) {
+         const tableContainer = document.querySelector('.table-container');
 
-    // Show Password
-    onShowPassword(row: any, column: any) {
-        row[column.field].apiCallStarted = true;
+         this.notPinedMaxWidth =
+            tableContainer.clientWidth -
+            (this.pinedWidth + this.actionsWidth) -
+            8;
 
-        setTimeout(() => {
-            row[column.field].apiCallStarted = false;
-            row[column.field].hiden = !row[column.field].hiden;
+         this.changeDetectorRef.detectChanges();
+      }
+   }
 
-            this.changeDetectorRef.detectChanges();
-        }, 1000);
-    }
+   // Go To Details Page
+   goToDetails(route: any, row: any) {
+      const link =
+         route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
+      this.detailsDataService.setNewData(row);
+      this.router.navigate([link]);
+   }
 
-    // RAITING
-    onLike(row: any) {
-        this.detailsDataService.setNewData(row);
-        this.bodyActions.emit({
-            data: row,
-            type: 'raiting',
-            subType: 'like',
-        });
-    }
+   // Select Row
+   onSelectItem(rowData: any, index: number): void {
+      this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-    onDislike(row: any) {
-        this.detailsDataService.setNewData(row);
-        this.bodyActions.emit({
-            data: row,
-            type: 'raiting',
-            subType: 'dislike',
-        });
-    }
+      if (rowData.isSelected) {
+         this.mySelection.push({ id: rowData.id, tableData: rowData });
+      } else {
+         const index = this.mySelection.findIndex(
+            (selection) => rowData.id === selection.id
+         );
 
-    onOpenReviews(row: any) {
-        this.bodyActions.emit({
-            data: row,
-            type: 'open-reviews',
-        });
-    }
+         if (index !== -1) {
+            this.mySelection.splice(index, 1);
+         }
+      }
 
-    // HIRE
-    onHire(row: any) {
-        this.bodyActions.emit({
-            data: row,
-            type: 'hire',
-        });
-    }
+      this.tableService.sendRowsSelected(this.mySelection);
+   }
 
-    // FAVORITE
-    onFavorite(row: any) {
-        this.bodyActions.emit({
-            data: row,
-            type: 'favorite',
-        });
-    }
+   // Show Password
+   onShowPassword(row: any, column: any) {
+      row[column.field].apiCallStarted = true;
 
-    // --------------------------------DROPDOWN---------------------------------
+      setTimeout(() => {
+         row[column.field].apiCallStarted = false;
+         row[column.field].hiden = !row[column.field].hiden;
 
-    // Set Dropdown Content
-    setDropContent() {
-        this.dropContent = [];
+         this.changeDetectorRef.detectChanges();
+      }, 1000);
+   }
 
-        if (this.options.actions.length) {
-            for (let i = 0; i < this.options.actions.length; i++) {
-                this.dropContent.push(this.options.actions[i]);
-            }
-        }
-    }
+   // RAITING
+   onLike(row: any) {
+      this.detailsDataService.setNewData(row);
+      this.bodyActions.emit({
+         data: row,
+         type: 'raiting',
+         subType: 'like',
+      });
+   }
 
-    // Toggle Dropdown
-    toggleDropdown(tooltip: any, row: any) {
-        this.tooltip = tooltip;
+   onDislike(row: any) {
+      this.detailsDataService.setNewData(row);
+      this.bodyActions.emit({
+         data: row,
+         type: 'raiting',
+         subType: 'dislike',
+      });
+   }
 
-        if (tooltip.isOpen()) {
-            tooltip.close();
-        } else {
-            tooltip.open({ data: this.dropContent });
-        }
+   onOpenReviews(row: any) {
+      this.bodyActions.emit({
+         data: row,
+         type: 'open-reviews',
+      });
+   }
 
-        this.dropDownActive = tooltip.isOpen() ? row.id : -1;
-        this.rowData = row;
-        this.detailsDataService.setNewData(row);
-    }
+   // HIRE
+   onHire(row: any) {
+      this.bodyActions.emit({
+         data: row,
+         type: 'hire',
+      });
+   }
 
-    // Toggle Status Dropdown
-    toggleStatusDropdown(tooltip: any, row: any) {
-        this.statusTooltip = tooltip;
-        if (tooltip.isOpen()) {
-            tooltip.close();
-        } else {
-            tooltip.open();
-        }
+   // FAVORITE
+   onFavorite(row: any) {
+      this.bodyActions.emit({
+         data: row,
+         type: 'favorite',
+      });
+   }
 
-        this.statusDropdownActive = tooltip.isOpen() ? row.id : -1;
-        this.statusDropdownData = row;
-    }
+   // --------------------------------DROPDOWN---------------------------------
 
-    // Show Description Dropdown
-    onShowDescriptionDropdown(popup: any, row: any) {
-        this.descriptionTooltip = popup;
+   // Set Dropdown Content
+   setDropContent() {
+      this.dropContent = [];
 
-        if (popup.isOpen()) {
-            popup.close();
-        } else {
-            popup.open({ data: row });
-        }
+      if (this.options.actions.length) {
+         for (let i = 0; i < this.options.actions.length; i++) {
+            this.dropContent.push(this.options.actions[i]);
+         }
+      }
+   }
 
-        this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
-    }
+   // Toggle Dropdown
+   toggleDropdown(tooltip: any, row: any) {
+      this.tooltip = tooltip;
 
-    /* Dropdown Actions */
-    onDropAction(action: any) {
-        this.bodyActions.emit({
-            id: this.dropDownActive,
-            data: this.rowData,
-            type: action.name,
-        });
+      if (tooltip.isOpen()) {
+         tooltip.close();
+      } else {
+         tooltip.open({ data: this.dropContent });
+      }
 
-        this.tooltip.close();
-    }
+      this.dropDownActive = tooltip.isOpen() ? row.id : -1;
+      this.rowData = row;
+      this.detailsDataService.setNewData(row);
+   }
 
-    // Show Attachments
-    onShowAttachments(row: any) {
-        if (this.activeAttachment !== row.id) {
-            this.activeAttachment = row.id;
-        } else {
-            this.activeAttachment = -1;
-        }
-    }
+   // Toggle Status Dropdown
+   toggleStatusDropdown(tooltip: any, row: any) {
+      this.statusTooltip = tooltip;
+      if (tooltip.isOpen()) {
+         tooltip.close();
+      } else {
+         tooltip.open();
+      }
 
-    // Show Media
-    onShowMedia(row: any) {
-        if (this.activeMedia !== row.id) {
-            this.activeMedia = row.id;
-        } else {
-            this.activeMedia = -1;
-        }
-    }
+      this.statusDropdownActive = tooltip.isOpen() ? row.id : -1;
+      this.statusDropdownData = row;
+   }
 
-    // Show Insurance
-    onShowInsurance(row: any) {
-        if (this.activeInsurance !== row.id) {
-            this.activeInsurance = row.id;
-        } else {
-            this.activeInsurance = -1;
-        }
-    }
+   // Show Description Dropdown
+   onShowDescriptionDropdown(popup: any, row: any) {
+      this.descriptionTooltip = popup;
 
-    // Save Inspectin Description
-    onSaveInspectinDescription() {}
+      if (popup.isOpen()) {
+         popup.close();
+      } else {
+         popup.open({ data: row });
+      }
 
-    // Finish Order
-    onFinishOrder(row: any) {
-        this.bodyActions.emit({
-            data: row,
-            type: 'finish-order',
-        });
-    }
+      this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
+   }
 
-    // Show More Data
-    onShowMore() {
-        this.bodyActions.emit({
-            type: 'show-more',
-        });
-    }
+   /* Dropdown Actions */
+   onDropAction(action: any) {
+      this.bodyActions.emit({
+         id: this.dropDownActive,
+         data: this.rowData,
+         type: action.name,
+      });
 
-    // --------------------------------ON DESTROY---------------------------------
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-        this.tableService.sendRowsSelected([]);
-    }
+      this.tooltip.close();
+   }
 
-    // --------------------------------TODO---------------------------------
-    onShowItemDrop(index: number) {
-        alert('Treba da se odradi');
-    }
+   // Show Attachments
+   onShowAttachments(row: any) {
+      if (this.activeAttachment !== row.id) {
+         this.activeAttachment = row.id;
+      } else {
+         this.activeAttachment = -1;
+      }
+   }
 
-    saveNote(note: string, row: any) {
-        alert('Treba da se odradi');
-    }
+   // Show Media
+   onShowMedia(row: any) {
+      if (this.activeMedia !== row.id) {
+         this.activeMedia = row.id;
+      } else {
+         this.activeMedia = -1;
+      }
+   }
+
+   // Show Insurance
+   onShowInsurance(row: any) {
+      if (this.activeInsurance !== row.id) {
+         this.activeInsurance = row.id;
+      } else {
+         this.activeInsurance = -1;
+      }
+   }
+
+   // Save Inspectin Description
+   onSaveInspectinDescription() {}
+
+   // Finish Order
+   onFinishOrder(row: any) {
+      this.bodyActions.emit({
+         data: row,
+         type: 'finish-order',
+      });
+   }
+
+   // Show More Data
+   onShowMore() {
+      this.bodyActions.emit({
+         type: 'show-more',
+      });
+   }
+
+   // --------------------------------ON DESTROY---------------------------------
+   ngOnDestroy(): void {
+      this.destroy$.next();
+      this.destroy$.complete();
+      this.tableService.sendRowsSelected([]);
+   }
+
+   // --------------------------------TODO---------------------------------
+   onShowItemDrop(index: number) {
+      alert('Treba da se odradi');
+   }
+
+   saveNote(note: string, row: any) {
+      alert('Treba da se odradi');
+   }
 }

@@ -1,426 +1,426 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
-    padding-top: 22px;
+   padding-top: 22px;
 
-    .step-title {
-        color: $ta-blue;
-        font-size: 32px;
-        height: 39px;
-        margin-bottom: 22px !important;
+   .step-title {
+      color: $ta-blue;
+      font-size: 32px;
+      height: 39px;
+      margin-bottom: 22px !important;
 
-        &::-moz-selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
-        }
+      &::-moz-selection {
+         color: $ta-blue;
+         background: rgb(83, 107, 194, 0.2);
+      }
 
-        &::selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
-        }
-    }
+      &::selection {
+         color: $ta-blue;
+         background: rgb(83, 107, 194, 0.2);
+      }
+   }
 
-    .instructions-container {
-        width: 820px;
+   .instructions-container {
+      width: 820px;
 
-        p {
+      p {
+         font-size: 14px;
+         color: $bw6-2;
+         line-height: 22px;
+
+         &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+         }
+
+         &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+         }
+
+         &:nth-child(2) {
+            margin-top: 22px !important;
+         }
+
+         span {
+            &::-moz-selection {
+               color: $bw6-2;
+               background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+               color: $bw6-2;
+               background: rgb(108, 108, 108, 0.2);
+            }
+         }
+      }
+   }
+
+   .form-section {
+      .seven-days-hos-table-container {
+         table {
+            width: 616px;
+            margin: 12px auto 12px auto;
+
+            .day-container {
+               width: 616px;
+               height: 18px;
+               margin-bottom: 6px;
+
+               .day-box {
+                  p {
+                     font-size: 14px;
+                     color: $bw5;
+
+                     &::-moz-selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                     }
+
+                     &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                     }
+                  }
+               }
+            }
+
+            .date-container {
+               width: 616px;
+               height: 18px;
+               margin-bottom: 14px;
+
+               .date-box {
+                  width: 53px;
+
+                  p {
+                     color: $bw5;
+                     font-size: 12px;
+
+                     &::-moz-selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                     }
+
+                     &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                     }
+                  }
+
+                  .date-para0 {
+                     font-size: 14px;
+                  }
+               }
+            }
+
+            .input-container {
+               margin-bottom: 6px;
+
+               .hos-title-group {
+                  width: 43px;
+                  margin-right: 5px;
+
+                  .hos-title {
+                     height: 18px;
+                     color: $bw6-2;
+                     font-size: 14px;
+
+                     &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                     }
+
+                     &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                     }
+
+                     span {
+                        color: $progress-danger;
+
+                        &::-moz-selection {
+                           color: $bw6-2;
+                           background: rgb(108, 108, 108, 0.2);
+                        }
+
+                        &::selection {
+                           color: $bw6-2;
+                           background: rgb(108, 108, 108, 0.2);
+                        }
+                     }
+                  }
+
+                  .hos-title-feedback {
+                     color: $bw5;
+
+                     &::-moz-selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                     }
+
+                     &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                     }
+
+                     span {
+                        color: $bw5;
+
+                        &::-moz-selection {
+                           color: $bw5;
+                           background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        &::selection {
+                           color: $bw5;
+                           background: rgb(145, 145, 145, 0.2);
+                        }
+                     }
+                  }
+               }
+
+               .hos-input-group {
+                  width: 76px;
+                  margin-right: 6px !important;
+
+                  &:last-child {
+                     margin-right: 0px;
+                  }
+               }
+            }
+
+            .total-container {
+               height: 18px;
+               margin-left: 52px;
+
+               p {
+                  color: $ta-light-blue;
+                  font-size: 14px;
+
+                  &::-moz-selection {
+                     color: $ta-light-blue;
+                     background: rgb(109, 130, 199, 0.2);
+                  }
+
+                  &::selection {
+                     color: $ta-light-blue;
+                     background: rgb(109, 130, 199, 0.2);
+                  }
+               }
+            }
+         }
+      }
+
+      .valid-hos-container {
+         width: 575px;
+         margin: 0 auto 22px auto;
+
+         p {
+            font-size: 12px;
+            margin-top: -5px !important;
+            user-select: none;
+            cursor: pointer;
+         }
+      }
+
+      .step-subtitle {
+         height: 18px;
+         color: $bw6-2;
+         font-size: 14px;
+         margin-bottom: 32px !important;
+
+         &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+         }
+
+         &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+         }
+      }
+
+      .group {
+         margin-bottom: 22px;
+         margin-right: 12px;
+
+         &:last-child {
+            margin-right: 0;
+            margin-bottom: 0;
+         }
+      }
+
+      .line-container {
+         position: relative;
+
+         .review-feedback-container {
+            position: absolute;
+            top: 0;
+            right: -435px;
+            width: 429px;
+         }
+      }
+
+      .date-location-container {
+         width: 616px;
+         margin: 0 auto;
+
+         .date-group {
+            width: 173px;
+         }
+
+         .location-group {
+            width: 431px;
+            margin-right: 0;
+         }
+      }
+
+      .instructions-bottom-container {
+         width: 820px;
+         margin-bottom: 22px;
+
+         p {
             font-size: 14px;
             color: $bw6-2;
             line-height: 22px;
 
             &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+               color: $bw6-2;
+               background: rgb(108, 108, 108, 0.2);
             }
 
             &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &:nth-child(2) {
-                margin-top: 22px !important;
+               color: $bw6-2;
+               background: rgb(108, 108, 108, 0.2);
             }
 
             span {
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                }
+               &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+               }
 
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                }
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+               }
             }
-        }
-    }
+         }
+      }
 
-    .form-section {
-        .seven-days-hos-table-container {
-            table {
-                width: 616px;
-                margin: 12px auto 12px auto;
+      .questions-container {
+         width: 616px;
+         margin: 0 auto;
 
-                .day-container {
-                    width: 616px;
-                    height: 18px;
-                    margin-bottom: 6px;
+         .question-container {
+            margin-bottom: 12px;
+            width: 100%;
 
-                    .day-box {
-                        p {
-                            font-size: 14px;
-                            color: $bw5;
+            .title-box {
+               .question-title {
+                  color: $bw6-2;
+                  font-size: 14px;
+                  line-height: 18px;
 
-                            &::-moz-selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
+                  &::-moz-selection {
+                     color: $bw6-2;
+                     background: rgb(108, 108, 108, 0.2);
+                  }
 
-                            &::selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-                        }
-                    }
-                }
+                  &::selection {
+                     color: $bw6-2;
+                     background: rgb(108, 108, 108, 0.2);
+                  }
 
-                .date-container {
-                    width: 616px;
-                    height: 18px;
-                    margin-bottom: 14px;
+                  .required-star {
+                     color: $progress-danger;
 
-                    .date-box {
-                        width: 53px;
-
-                        p {
-                            color: $bw5;
-                            font-size: 12px;
-
-                            &::-moz-selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-
-                            &::selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-                        }
-
-                        .date-para0 {
-                            font-size: 14px;
-                        }
-                    }
-                }
-
-                .input-container {
-                    margin-bottom: 6px;
-
-                    .hos-title-group {
-                        width: 43px;
-                        margin-right: 5px;
-
-                        .hos-title {
-                            height: 18px;
-                            color: $bw6-2;
-                            font-size: 14px;
-
-                            &::-moz-selection {
-                                color: $bw6-2;
-                                background: rgb(108, 108, 108, 0.2);
-                            }
-
-                            &::selection {
-                                color: $bw6-2;
-                                background: rgb(108, 108, 108, 0.2);
-                            }
-
-                            span {
-                                color: $progress-danger;
-
-                                &::-moz-selection {
-                                    color: $bw6-2;
-                                    background: rgb(108, 108, 108, 0.2);
-                                }
-
-                                &::selection {
-                                    color: $bw6-2;
-                                    background: rgb(108, 108, 108, 0.2);
-                                }
-                            }
-                        }
-
-                        .hos-title-feedback {
-                            color: $bw5;
-
-                            &::-moz-selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-
-                            &::selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-
-                            span {
-                                color: $bw5;
-
-                                &::-moz-selection {
-                                    color: $bw5;
-                                    background: rgb(145, 145, 145, 0.2);
-                                }
-
-                                &::selection {
-                                    color: $bw5;
-                                    background: rgb(145, 145, 145, 0.2);
-                                }
-                            }
-                        }
-                    }
-
-                    .hos-input-group {
-                        width: 76px;
-                        margin-right: 6px !important;
-
-                        &:last-child {
-                            margin-right: 0px;
-                        }
-                    }
-                }
-
-                .total-container {
-                    height: 18px;
-                    margin-left: 52px;
-
-                    p {
-                        color: $ta-light-blue;
-                        font-size: 14px;
-
-                        &::-moz-selection {
-                            color: $ta-light-blue;
-                            background: rgb(109, 130, 199, 0.2);
-                        }
-
-                        &::selection {
-                            color: $ta-light-blue;
-                            background: rgb(109, 130, 199, 0.2);
-                        }
-                    }
-                }
-            }
-        }
-
-        .valid-hos-container {
-            width: 575px;
-            margin: 0 auto 22px auto;
-
-            p {
-                font-size: 12px;
-                margin-top: -5px !important;
-                user-select: none;
-                cursor: pointer;
-            }
-        }
-
-        .step-subtitle {
-            height: 18px;
-            color: $bw6-2;
-            font-size: 14px;
-            margin-bottom: 32px !important;
-
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-
-        .group {
-            margin-bottom: 22px;
-            margin-right: 12px;
-
-            &:last-child {
-                margin-right: 0;
-                margin-bottom: 0;
-            }
-        }
-
-        .line-container {
-            position: relative;
-
-            .review-feedback-container {
-                position: absolute;
-                top: 0;
-                right: -435px;
-                width: 429px;
-            }
-        }
-
-        .date-location-container {
-            width: 616px;
-            margin: 0 auto;
-
-            .date-group {
-                width: 173px;
-            }
-
-            .location-group {
-                width: 431px;
-                margin-right: 0;
-            }
-        }
-
-        .instructions-bottom-container {
-            width: 820px;
-            margin-bottom: 22px;
-
-            p {
-                font-size: 14px;
-                color: $bw6-2;
-                line-height: 22px;
-
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-
-                span {
-                    &::-moz-selection {
+                     &::-moz-selection {
                         color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);
-                    }
+                     }
 
-                    &::selection {
+                     &::selection {
                         color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);
-                    }
-                }
-            }
-        }
+                     }
+                  }
+               }
 
-        .questions-container {
-            width: 616px;
-            margin: 0 auto;
+               .question-title-feedback {
+                  color: $bw5;
 
-            .question-container {
-                margin-bottom: 12px;
-                width: 100%;
+                  &::-moz-selection {
+                     color: $bw5;
+                     background: rgb(145, 145, 145, 0.2);
+                  }
 
-                .title-box {
-                    .question-title {
-                        color: $bw6-2;
-                        font-size: 14px;
-                        line-height: 18px;
+                  &::selection {
+                     color: $bw5;
+                     background: rgb(145, 145, 145, 0.2);
+                  }
 
-                        &::-moz-selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
+                  .required-star {
+                     color: $bw5;
 
-                        &::selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-
-                        .required-star {
-                            color: $progress-danger;
-
-                            &::-moz-selection {
-                                color: $bw6-2;
-                                background: rgb(108, 108, 108, 0.2);
-                            }
-
-                            &::selection {
-                                color: $bw6-2;
-                                background: rgb(108, 108, 108, 0.2);
-                            }
-                        }
-                    }
-
-                    .question-title-feedback {
+                     &::-moz-selection {
                         color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                     }
 
-                        &::-moz-selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-
-                        .required-star {
-                            color: $bw5;
-
-                            &::-moz-selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-
-                            &::selection {
-                                color: $bw5;
-                                background: rgb(145, 145, 145, 0.2);
-                            }
-                        }
-                    }
-                }
-
-                .title-box1 {
-                    width: 85%;
-                }
-
-                .radios-box {
-                    width: 86px;
-
-                    .ta-input-radiobutons {
-                        width: 100%;
-                    }
-                }
+                     &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                     }
+                  }
+               }
             }
-        }
 
-        .valid-another-employer-container {
-            width: 616px;
-            margin: 10px auto 0 auto;
-
-            p {
-                font-size: 12px;
-                margin-top: -5px !important;
-                user-select: none;
-                cursor: pointer;
-
-                &:last-of-type {
-                    margin-top: -2px !important;
-                }
+            .title-box1 {
+               width: 85%;
             }
-        }
-    }
+
+            .radios-box {
+               width: 86px;
+
+               .ta-input-radiobutons {
+                  width: 100%;
+               }
+            }
+         }
+      }
+
+      .valid-another-employer-container {
+         width: 616px;
+         margin: 10px auto 0 auto;
+
+         p {
+            font-size: 12px;
+            margin-top: -5px !important;
+            user-select: none;
+            cursor: pointer;
+
+            &:last-of-type {
+               margin-top: -2px !important;
+            }
+         }
+      }
+   }
 }
 
 .next-btn-container {
-    position: absolute;
-    top: 50%;
-    bottom: 50%;
-    transform: translate(0, -50%);
-    right: 42px;
+   position: absolute;
+   top: 50%;
+   bottom: 50%;
+   transform: translate(0, -50%);
+   right: 42px;
 }
 
 .back-btn-container {
-    position: absolute;
-    top: 50%;
-    bottom: 50%;
-    transform: translate(0, -50%);
-    left: 42px;
+   position: absolute;
+   top: 50%;
+   bottom: 50%;
+   transform: translate(0, -50%);
+   left: 42px;
 }

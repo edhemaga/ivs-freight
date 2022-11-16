@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'userData',
+   name: 'userData',
 })
 export class UserDataPipe implements PipeTransform {
-    transform(value: any): any {
-        return value.hasOwnProperty('companyName');
-    }
+   transform(value: any): any {
+      return value.hasOwnProperty('companyName');
+   }
 }

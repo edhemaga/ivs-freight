@@ -4,7 +4,7 @@ import { RoadItemState, RoadItemStore } from './roadside-details.store';
 
 @Injectable({ providedIn: 'root' })
 export class RoadDetailsQuery extends QueryEntity<RoadItemState> {
-    constructor(protected roadItemStore: RoadItemStore) {
-        super(roadItemStore);
-    }
+   constructor(protected roadItemStore: RoadItemStore) {
+      super(roadItemStore);
+   }
 }

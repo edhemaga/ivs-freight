@@ -1,468 +1,468 @@
 .ta-user-review {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    background-color: #ffffff;
-    padding: 6px;
-    border-radius: 2px;
-    transition: all 0.3s ease-in-out;
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+   background-color: #ffffff;
+   padding: 6px;
+   border-radius: 2px;
+   transition: all 0.3s ease-in-out;
 
-    &.separate {
-        margin-top: 4px;
-    }
+   &.separate {
+      margin-top: 4px;
+   }
 
-    p {
-        margin: 0;
-        padding: 0;
-    }
+   p {
+      margin: 0;
+      padding: 0;
+   }
 
-    .ta-review-header {
-        display: flex;
-        justify-content: space-between;
+   .ta-review-header {
+      display: flex;
+      justify-content: space-between;
 
-        .ta-user-information {
+      .ta-user-information {
+         display: flex;
+         gap: 6px;
+         align-items: center;
+         position: relative;
+
+         .ta-user-image {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            -o-object-fit: fill;
+            object-fit: fill;
+            user-select: none;
+         }
+
+         .ta-user-data {
             display: flex;
-            gap: 6px;
-            align-items: center;
-            position: relative;
+            flex-direction: column;
 
-            .ta-user-image {
-                width: 28px;
-                height: 28px;
-                border-radius: 50%;
-                -o-object-fit: fill;
-                object-fit: fill;
-                user-select: none;
-            }
-
-            .ta-user-data {
-                display: flex;
-                flex-direction: column;
-
-                .ta-user-name-rating {
-                    display: flex;
-                    align-items: center;
-                    gap: 4px;
-
-                    .ta-user-fullname {
-                        font-weight: 700;
-                        font-size: 11px;
-                        color: #6c6c6c;
-                        line-height: 14px;
-
-                        &::-moz-selection {
-                            background-color: rgb(108, 108, 108, 0.2);
-                            color: #6c6c6c;
-                        }
-
-                        &::selection {
-                            background-color: rgb(108, 108, 108, 0.2);
-                            color: #6c6c6c;
-                        }
-                    }
-
-                    .ta-user-reaction {
-                        svg {
-                            width: 15px;
-                            height: 15px;
-                            path {
-                                fill: #e57373;
-                            }
-                        }
-
-                        &.like {
-                            svg {
-                                width: 15px;
-                                height: 15px;
-                                path {
-                                    fill: #4db6a2;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .ta-user-datetime {
-                    display: flex;
-                    gap: 6px;
-                    align-items: center;
-                    font-size: 11px;
-                    font-weight: 600;
-                    line-height: 14px;
-                    color: #b7b7b7;
-
-                    .ta-user-date,
-                    .ta-user-time {
-                        &::-moz-selection {
-                            background-color: rgb(183, 183, 183, 0.2);
-                            color: #b7b7b7;
-                        }
-
-                        &::selection {
-                            background-color: rgb(183, 183, 183, 0.2);
-                            color: #b7b7b7;
-                        }
-                    }
-                }
-            }
-        }
-
-        .ta-user-actions {
-            display: none;
-            align-items: center;
-            gap: 6px;
-            justify-content: center;
-            text-align: center;
-
-            .action-edit,
-            .action-delete {
-                padding: 4px;
-                border-radius: 2px;
-                transition: all 0.3s ease-in-out;
-
-                svg {
-                    display: flex;
-                    width: 18px;
-                    height: 18px;
-                    path {
-                        fill: #919191;
-                    }
-                }
-
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-
-            .action-edit {
-                transition: all 0.3s ease-in-out;
-                &:hover {
-                    background-color: #cccccc;
-                    svg {
-                        path {
-                            fill: #424242;
-                        }
-                    }
-                }
-            }
-
-            .action-delete {
-                transition: all 0.3s ease-in-out;
-                &:hover {
-                    background-color: #f0ccc9;
-                    svg {
-                        path {
-                            fill: #f44336;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    .ta-review-message {
-        border-radius: 2px;
-        overflow: hidden;
-        position: relative;
-
-        .message {
-            color: #6c6c6c;
-            line-height: 18px;
-            font-size: 14px;
-            font-weight: 400;
-            position: relative;
-            left: 3px;
-
-            &::-moz-selection {
-                background-color: rgb(108, 108, 108, 0.2);
-                color: #6c6c6c;
-            }
-
-            &::selection {
-                background-color: rgb(108, 108, 108, 0.2);
-                color: #6c6c6c;
-            }
-        }
-
-        .review-textarea {
-            padding: 0;
-            margin-bottom: 10px;
-            width: 100%;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 18px;
-            color: #ffffff;
-            background-color: #2f2f2f;
-            resize: none;
-            border: none;
-            box-shadow: none;
-            outline: none;
-            display: none;
-            scrollbar-width: none !important; /* Firefox */
-
-            &::placeholder {
-                color: #919191;
-            }
-
-            &::-webkit-scrollbar {
-                width: 3px;
-            }
-
-            &::-webkit-scrollbar-thumb {
-                background-color: transparent;
-                border: 6px solid #e5e5e5;
-                border-radius: 1px;
-            }
-
-            &::-webkit-scrollbar-track {
-                padding: 0;
-                position: relative;
-                right: 0;
-                top: 0;
-                background: transparent;
-            }
-
-            &::-moz-selection {
-                background-color: rgb(229, 229, 229, 0.2);
-                color: #6c6c6c;
-            }
-
-            &::selection {
-                background-color: rgb(229, 229, 229, 0.2);
-                color: #6c6c6c;
-            }
-
-            &.show {
-                display: block;
-            }
-        }
-
-        .ta-review-message-actions {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 4px;
-            position: absolute;
-            right: 4px;
-            bottom: 2px;
-
-            .ta-review-message-confirm {
-                border-radius: 1px;
-                display: block;
-                transition: all 0.3s ease-in-out;
-                z-index: 20;
-                cursor: pointer;
-
-                .ta-review-message-confirm-first {
-                    svg {
-                        width: 18px !important;
-                        height: 18px !important;
-                        overflow: visible;
-
-                        path {
-                            fill: #6c6c6c;
-                        }
-
-                        rect {
-                            transition: transform 0.3s;
-                            transform: scale(1);
-                            transform-origin: center;
-                            fill: #b7b7b7;
-                        }
-                    }
-
-                    &:hover {
-                        svg {
-                            overflow: visible;
-                            rect {
-                                transform: scale(1.2);
-                                transform-origin: center;
-                                transition: transform 0.3s;
-                                fill: #eeeeee;
-                            }
-                        }
-                    }
-                }
-            }
-
-            .ta-review-message-cancel {
-                border-radius: 1px;
-                display: block;
-                transition: all 0.3s ease-in-out;
-                z-index: 20;
-                cursor: pointer;
-                .ta-review-message-cancel-first {
-                    svg {
-                        width: 18px !important;
-                        height: 18px !important;
-                        overflow: visible;
-                        path {
-                            fill: #6c6c6c;
-                        }
-                        rect {
-                            transition: transform 0.3s;
-                            transform: scale(1);
-                            transform-origin: center;
-                            fill: #b7b7b7;
-                        }
-                    }
-
-                    &:hover {
-                        svg {
-                            overflow: visible;
-                            rect {
-                                transform: scale(1.2);
-                                transform-origin: center;
-                                transition: transform 0.3s;
-                                fill: #eeeeee;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        .review_options_hold {
-            display: flex;
-            .review_prop_hold {
-                display: flex;
-                align-items: center;
-                flex: 1;
-                .review_option_icon {
-                    width: 14px;
-                    height: 14px;
-                    margin-right: 6px;
-
-                    svg-icon {
-                        svg {
-                            display: flex;
-                            width: 14px;
-                            height: 14px;
-
-                            path {
-                                fill: #6f9ee0;
-                            }
-                        }
-                    }
-                }
-                .review_option_text {
-                    color: #6f9ee0;
-                    font-size: 11px;
-                    font-weight: 700;
-                    line-height: 14px;
-                }
-            }
-
-            .review_buttons {
-                display: flex;
-                align-items: center;
-
-                .review_button {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-
-                    width: 100px;
-                    height: 26px;
-
-                    border-radius: 2px;
-                    cursor: pointer;
-
-                    .review_button_text {
-                        color: #ffffff;
-                        font-size: 11px;
-                        font-weight: 700;
-                        line-height: 14px;
-                    }
-
-                    &.close {
-                        background-color: #6c6c6c;
-                        margin-right: 4px;
-
-                        &:hover {
-                            background-color: #1d1d1d;
-                        }
-                    }
-
-                    &.save {
-                        background-color: #6c6c6c;
-
-                        .review_button_text {
-                            color: #aaaaaa;
-                        }
-
-                        &.value_changed {
-                            background-color: #6f9ee0;
-
-                            &:hover {
-                                background-color: #3074d3;
-                            }
-
-                            .review_button_text {
-                                color: #ffffff;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    &:hover {
-        background-color: #f7f7f7;
-        .ta-review-header {
-            .ta-user-actions {
-                display: flex !important;
-            }
-        }
-
-        .ta-user-data {
             .ta-user-name-rating {
-                .ta-user-fullname {
-                    color: #3c3c3c !important;
+               display: flex;
+               align-items: center;
+               gap: 4px;
 
-                    &::-moz-selection {
-                        background-color: rgb(60, 60, 60, 0.2) !important;
-                        color: #3c3c3c !important;
-                    }
+               .ta-user-fullname {
+                  font-weight: 700;
+                  font-size: 11px;
+                  color: #6c6c6c;
+                  line-height: 14px;
 
-                    &::selection {
-                        background-color: rgb(60, 60, 60, 0.2) !important;
-                        color: #3c3c3c !important;
-                    }
-                }
+                  &::-moz-selection {
+                     background-color: rgb(108, 108, 108, 0.2);
+                     color: #6c6c6c;
+                  }
+
+                  &::selection {
+                     background-color: rgb(108, 108, 108, 0.2);
+                     color: #6c6c6c;
+                  }
+               }
+
+               .ta-user-reaction {
+                  svg {
+                     width: 15px;
+                     height: 15px;
+                     path {
+                        fill: #e57373;
+                     }
+                  }
+
+                  &.like {
+                     svg {
+                        width: 15px;
+                        height: 15px;
+                        path {
+                           fill: #4db6a2;
+                        }
+                     }
+                  }
+               }
             }
 
             .ta-user-datetime {
-                color: #919191 !important;
+               display: flex;
+               gap: 6px;
+               align-items: center;
+               font-size: 11px;
+               font-weight: 600;
+               line-height: 14px;
+               color: #b7b7b7;
 
-                .ta-user-date,
-                .ta-user-time {
-                    &::-moz-selection {
-                        background-color: rgb(145, 145, 145, 0.2) !important;
-                        color: #919191 !important;
-                    }
+               .ta-user-date,
+               .ta-user-time {
+                  &::-moz-selection {
+                     background-color: rgb(183, 183, 183, 0.2);
+                     color: #b7b7b7;
+                  }
 
-                    &::selection {
-                        background-color: rgb(145, 145, 145, 0.2) !important;
-                        color: #919191 !important;
-                    }
-                }
+                  &::selection {
+                     background-color: rgb(183, 183, 183, 0.2);
+                     color: #b7b7b7;
+                  }
+               }
             }
-        }
-    }
+         }
+      }
 
-    // EDIT MODE
-    &.edit-review {
-        background-color: #2f2f2f;
-        border-radius: 2px;
-        transition: all 0.3s ease-in-out;
-        padding: 10px 4px 4px 10px;
+      .ta-user-actions {
+         display: none;
+         align-items: center;
+         gap: 6px;
+         justify-content: center;
+         text-align: center;
 
-        .ta-user-data {
-            .ta-user-datetime {
-                color: #b7b7b7 !important;
+         .action-edit,
+         .action-delete {
+            padding: 4px;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+
+            svg {
+               display: flex;
+               width: 18px;
+               height: 18px;
+               path {
+                  fill: #919191;
+               }
             }
-        }
-    }
+
+            &:hover {
+               cursor: pointer;
+            }
+         }
+
+         .action-edit {
+            transition: all 0.3s ease-in-out;
+            &:hover {
+               background-color: #cccccc;
+               svg {
+                  path {
+                     fill: #424242;
+                  }
+               }
+            }
+         }
+
+         .action-delete {
+            transition: all 0.3s ease-in-out;
+            &:hover {
+               background-color: #f0ccc9;
+               svg {
+                  path {
+                     fill: #f44336;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   .ta-review-message {
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+
+      .message {
+         color: #6c6c6c;
+         line-height: 18px;
+         font-size: 14px;
+         font-weight: 400;
+         position: relative;
+         left: 3px;
+
+         &::-moz-selection {
+            background-color: rgb(108, 108, 108, 0.2);
+            color: #6c6c6c;
+         }
+
+         &::selection {
+            background-color: rgb(108, 108, 108, 0.2);
+            color: #6c6c6c;
+         }
+      }
+
+      .review-textarea {
+         padding: 0;
+         margin-bottom: 10px;
+         width: 100%;
+         font-size: 14px;
+         font-weight: 400;
+         line-height: 18px;
+         color: #ffffff;
+         background-color: #2f2f2f;
+         resize: none;
+         border: none;
+         box-shadow: none;
+         outline: none;
+         display: none;
+         scrollbar-width: none !important; /* Firefox */
+
+         &::placeholder {
+            color: #919191;
+         }
+
+         &::-webkit-scrollbar {
+            width: 3px;
+         }
+
+         &::-webkit-scrollbar-thumb {
+            background-color: transparent;
+            border: 6px solid #e5e5e5;
+            border-radius: 1px;
+         }
+
+         &::-webkit-scrollbar-track {
+            padding: 0;
+            position: relative;
+            right: 0;
+            top: 0;
+            background: transparent;
+         }
+
+         &::-moz-selection {
+            background-color: rgb(229, 229, 229, 0.2);
+            color: #6c6c6c;
+         }
+
+         &::selection {
+            background-color: rgb(229, 229, 229, 0.2);
+            color: #6c6c6c;
+         }
+
+         &.show {
+            display: block;
+         }
+      }
+
+      .ta-review-message-actions {
+         display: flex;
+         align-items: center;
+         justify-content: flex-end;
+         gap: 4px;
+         position: absolute;
+         right: 4px;
+         bottom: 2px;
+
+         .ta-review-message-confirm {
+            border-radius: 1px;
+            display: block;
+            transition: all 0.3s ease-in-out;
+            z-index: 20;
+            cursor: pointer;
+
+            .ta-review-message-confirm-first {
+               svg {
+                  width: 18px !important;
+                  height: 18px !important;
+                  overflow: visible;
+
+                  path {
+                     fill: #6c6c6c;
+                  }
+
+                  rect {
+                     transition: transform 0.3s;
+                     transform: scale(1);
+                     transform-origin: center;
+                     fill: #b7b7b7;
+                  }
+               }
+
+               &:hover {
+                  svg {
+                     overflow: visible;
+                     rect {
+                        transform: scale(1.2);
+                        transform-origin: center;
+                        transition: transform 0.3s;
+                        fill: #eeeeee;
+                     }
+                  }
+               }
+            }
+         }
+
+         .ta-review-message-cancel {
+            border-radius: 1px;
+            display: block;
+            transition: all 0.3s ease-in-out;
+            z-index: 20;
+            cursor: pointer;
+            .ta-review-message-cancel-first {
+               svg {
+                  width: 18px !important;
+                  height: 18px !important;
+                  overflow: visible;
+                  path {
+                     fill: #6c6c6c;
+                  }
+                  rect {
+                     transition: transform 0.3s;
+                     transform: scale(1);
+                     transform-origin: center;
+                     fill: #b7b7b7;
+                  }
+               }
+
+               &:hover {
+                  svg {
+                     overflow: visible;
+                     rect {
+                        transform: scale(1.2);
+                        transform-origin: center;
+                        transition: transform 0.3s;
+                        fill: #eeeeee;
+                     }
+                  }
+               }
+            }
+         }
+      }
+
+      .review_options_hold {
+         display: flex;
+         .review_prop_hold {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            .review_option_icon {
+               width: 14px;
+               height: 14px;
+               margin-right: 6px;
+
+               svg-icon {
+                  svg {
+                     display: flex;
+                     width: 14px;
+                     height: 14px;
+
+                     path {
+                        fill: #6f9ee0;
+                     }
+                  }
+               }
+            }
+            .review_option_text {
+               color: #6f9ee0;
+               font-size: 11px;
+               font-weight: 700;
+               line-height: 14px;
+            }
+         }
+
+         .review_buttons {
+            display: flex;
+            align-items: center;
+
+            .review_button {
+               display: flex;
+               justify-content: center;
+               align-items: center;
+
+               width: 100px;
+               height: 26px;
+
+               border-radius: 2px;
+               cursor: pointer;
+
+               .review_button_text {
+                  color: #ffffff;
+                  font-size: 11px;
+                  font-weight: 700;
+                  line-height: 14px;
+               }
+
+               &.close {
+                  background-color: #6c6c6c;
+                  margin-right: 4px;
+
+                  &:hover {
+                     background-color: #1d1d1d;
+                  }
+               }
+
+               &.save {
+                  background-color: #6c6c6c;
+
+                  .review_button_text {
+                     color: #aaaaaa;
+                  }
+
+                  &.value_changed {
+                     background-color: #6f9ee0;
+
+                     &:hover {
+                        background-color: #3074d3;
+                     }
+
+                     .review_button_text {
+                        color: #ffffff;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   &:hover {
+      background-color: #f7f7f7;
+      .ta-review-header {
+         .ta-user-actions {
+            display: flex !important;
+         }
+      }
+
+      .ta-user-data {
+         .ta-user-name-rating {
+            .ta-user-fullname {
+               color: #3c3c3c !important;
+
+               &::-moz-selection {
+                  background-color: rgb(60, 60, 60, 0.2) !important;
+                  color: #3c3c3c !important;
+               }
+
+               &::selection {
+                  background-color: rgb(60, 60, 60, 0.2) !important;
+                  color: #3c3c3c !important;
+               }
+            }
+         }
+
+         .ta-user-datetime {
+            color: #919191 !important;
+
+            .ta-user-date,
+            .ta-user-time {
+               &::-moz-selection {
+                  background-color: rgb(145, 145, 145, 0.2) !important;
+                  color: #919191 !important;
+               }
+
+               &::selection {
+                  background-color: rgb(145, 145, 145, 0.2) !important;
+                  color: #919191 !important;
+               }
+            }
+         }
+      }
+   }
+
+   // EDIT MODE
+   &.edit-review {
+      background-color: #2f2f2f;
+      border-radius: 2px;
+      transition: all 0.3s ease-in-out;
+      padding: 10px 4px 4px 10px;
+
+      .ta-user-data {
+         .ta-user-datetime {
+            color: #b7b7b7 !important;
+         }
+      }
+   }
 }

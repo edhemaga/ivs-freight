@@ -1,20 +1,20 @@
 <div class="user-company" *ngIf="isNavigationHoveredAndPanelOpen">
-    <div class="user-company-header" (click)="onAction()">
-        <svg-icon
-            class="user-company-header-svg"
-            src="assets/svg/common/ic_x.svg"
-        ></svg-icon>
-        <p class="user-company-header-text">Switch Company</p>
-    </div>
-    <div
-        class="user-company-content"
-        *ngFor="let item of userCompanies; trackBy: identity"
-    >
-        <p
-            [ngClass]="{ 'user-company-text-active': item.active }"
-            class="user-company-text"
-        >
-            {{ item.companyName }}
-        </p>
-    </div>
+   <div class="user-company-header" (click)="onAction()">
+      <svg-icon
+         class="user-company-header-svg"
+         src="assets/svg/common/ic_x.svg"
+      ></svg-icon>
+      <p class="user-company-header-text">Switch Company</p>
+   </div>
+   <div
+      class="user-company-content"
+      *ngFor="let item of userCompanies; trackBy: identity"
+   >
+      <p
+         [ngClass]="{ 'user-company-text-active': item.active }"
+         class="user-company-text"
+      >
+         {{ item.companyName }}
+      </p>
+   </div>
 </div>

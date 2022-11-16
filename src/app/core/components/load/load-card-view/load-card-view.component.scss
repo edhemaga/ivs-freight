@@ -1,245 +1,245 @@
 @import '../load-details/load-details-item/load-details-item.component.scss';
 
 .load-status-driver-container {
-    display: grid;
-    align-items: center;
-    grid-template-columns: 150px 200px;
-    column-gap: 70px;
-    padding: 10px 16px;
-    .load-status-time {
-        flex-direction: column;
-        .load-status-item-status {
-            font-size: 18px;
-            font-weight: 900;
+   display: grid;
+   align-items: center;
+   grid-template-columns: 150px 200px;
+   column-gap: 70px;
+   padding: 10px 16px;
+   .load-status-time {
+      flex-direction: column;
+      .load-status-item-status {
+         font-size: 18px;
+         font-weight: 900;
+         color: #919191;
+         &::-moz-selection {
             color: #919191;
-            &::-moz-selection {
-                color: #919191;
-                background: rgb(145, 145, 145, 0.2);
-            }
-            &::selection {
-                color: #919191;
-                background: rgb(145, 145, 145, 0.2);
-            }
-        }
-        .load-status-item-days {
-            font-size: 14px;
-            font-weight: 400;
+            background: rgb(145, 145, 145, 0.2);
+         }
+         &::selection {
+            color: #919191;
+            background: rgb(145, 145, 145, 0.2);
+         }
+      }
+      .load-status-item-days {
+         font-size: 14px;
+         font-weight: 400;
+         color: #6c6c6c;
+         &::-moz-selection {
             color: #6c6c6c;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            .days {
-                &::-moz-selection {
-                    color: #6c6c6c;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: #6c6c6c;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
-        }
-    }
-    .driver-reg {
-        flex-direction: column;
-        margin-top: -3px;
-        .driver-avatar {
-            display: flex;
-            align-items: center;
-            .load-item-driver-name {
-                font-size: 18px;
-                font-weight: 500;
-                color: #6c6c6c;
-                white-space: nowrap;
-                &::-moz-selection {
-                    color: #6c6c6c;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: #6c6c6c;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
-            .avatar {
-                vertical-align: middle;
-                width: 22px;
-                height: 22px;
-                border-radius: 50%;
-                margin-right: 6px;
-                user-select: none;
-            }
-        }
-        .load-item-driver-ref {
-            font-size: 14px;
-            font-weight: 700;
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
             color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+         }
+         .days {
             &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
+               color: #6c6c6c;
+               background: rgb(108, 108, 108, 0.2);
             }
             &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
+               color: #6c6c6c;
+               background: rgb(108, 108, 108, 0.2);
             }
-        }
-    }
+         }
+      }
+   }
+   .driver-reg {
+      flex-direction: column;
+      margin-top: -3px;
+      .driver-avatar {
+         display: flex;
+         align-items: center;
+         .load-item-driver-name {
+            font-size: 18px;
+            font-weight: 500;
+            color: #6c6c6c;
+            white-space: nowrap;
+            &::-moz-selection {
+               color: #6c6c6c;
+               background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+               color: #6c6c6c;
+               background: rgb(108, 108, 108, 0.2);
+            }
+         }
+         .avatar {
+            vertical-align: middle;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            margin-right: 6px;
+            user-select: none;
+         }
+      }
+      .load-item-driver-ref {
+         font-size: 14px;
+         font-weight: 700;
+         color: #6c6c6c;
+         &::-moz-selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+         }
+      }
+   }
 }
 .note-item {
-    margin-left: 6px;
-    margin-right: 7px;
-    .note-body {
-        margin-left: 4px;
-    }
+   margin-left: 6px;
+   margin-right: 7px;
+   .note-body {
+      margin-left: 4px;
+   }
 }
 .load-broker-container {
-    padding: 0 10px;
-    display: flex;
-    flex-direction: column;
-    .company-name {
-        font-size: 18px;
-        font-weight: 500;
-        color: #6c6c6c;
-        margin-top: -4px;
-        margin-bottom: 12px;
-        &::-moz-selection {
-            color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-        }
-    }
-    .broker-name {
-        font-size: 14px;
-        font-weight: 500;
-        color: #6c6c6c;
-        margin-bottom: 12px;
-        &::-moz-selection {
-            color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-        }
-    }
-    .phone-ext-wrapper {
-        display: flex;
-        column-gap: 86px;
-    }
+   padding: 0 10px;
+   display: flex;
+   flex-direction: column;
+   .company-name {
+      font-size: 18px;
+      font-weight: 500;
+      color: #6c6c6c;
+      margin-top: -4px;
+      margin-bottom: 12px;
+      &::-moz-selection {
+         color: #6c6c6c;
+         background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+         color: #6c6c6c;
+         background: rgb(108, 108, 108, 0.2);
+      }
+   }
+   .broker-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #6c6c6c;
+      margin-bottom: 12px;
+      &::-moz-selection {
+         color: #6c6c6c;
+         background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+         color: #6c6c6c;
+         background: rgb(108, 108, 108, 0.2);
+      }
+   }
+   .phone-ext-wrapper {
+      display: flex;
+      column-gap: 86px;
+   }
 
-    .phone-ext-item-wrapper {
-        align-items: center;
-        margin-bottom: 12px;
-        .item-value {
-            font-size: 14px;
-            font-weight: 400;
+   .phone-ext-item-wrapper {
+      align-items: center;
+      margin-bottom: 12px;
+      .item-value {
+         font-size: 14px;
+         font-weight: 400;
+         color: #6c6c6c;
+         &::-moz-selection {
             color: #6c6c6c;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-    }
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+         }
+      }
+   }
 }
 .email-broker-load {
-    margin-left: 5px;
+   margin-left: 5px;
 }
 .load-assigned-container {
-    padding: 0 6px;
-    .truck {
-        width: 202px !important;
-        margin-right: 12px;
-    }
-    .trailer {
-        width: 202px !important;
-        .driver-name {
-            margin-left: 6px;
-        }
-    }
-    .assigned-driver {
-        width: 416px;
-        display: flex;
-        align-items: center;
-        border-radius: 2px;
-        padding: 3.5px 6px;
-        margin-bottom: 8px;
-        background-color: #f9f9f9;
-        .driver-info {
-            display: flex;
-            align-items: center;
-            .driver-name {
-                font-size: 18px;
-                font-weight: 500;
-                color: #6c6c6c;
-                &::-moz-selection {
-                    color: #6c6c6c;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: #6c6c6c;
-                    background: rgb(108, 108, 108, 0.2);
-                }
+   padding: 0 6px;
+   .truck {
+      width: 202px !important;
+      margin-right: 12px;
+   }
+   .trailer {
+      width: 202px !important;
+      .driver-name {
+         margin-left: 6px;
+      }
+   }
+   .assigned-driver {
+      width: 416px;
+      display: flex;
+      align-items: center;
+      border-radius: 2px;
+      padding: 3.5px 6px;
+      margin-bottom: 8px;
+      background-color: #f9f9f9;
+      .driver-info {
+         display: flex;
+         align-items: center;
+         .driver-name {
+            font-size: 18px;
+            font-weight: 500;
+            color: #6c6c6c;
+            &::-moz-selection {
+               color: #6c6c6c;
+               background: rgb(108, 108, 108, 0.2);
             }
-        }
-    }
+            &::selection {
+               color: #6c6c6c;
+               background: rgb(108, 108, 108, 0.2);
+            }
+         }
+      }
+   }
 }
 .driver-avatar {
-    vertical-align: middle;
-    width: 18px;
-    height: 20px;
-    border-radius: 2px;
-    margin-right: 6px;
-    user-select: none;
+   vertical-align: middle;
+   width: 18px;
+   height: 20px;
+   border-radius: 2px;
+   margin-right: 6px;
+   user-select: none;
 }
 .phone-ext-item-wrapper-last {
-    margin-bottom: 0 !important;
+   margin-bottom: 0 !important;
 }
 
 .flex-load {
-    display: flex;
+   display: flex;
 }
 .load-details-container {
-    padding: 0 10px;
-    .load-details-wrapper {
-        display: grid;
-        grid-template-columns: 210px 150px;
-        row-gap: 12px;
-        .load-details-header {
-            font-size: 12px;
-            font-weight: 600;
+   padding: 0 10px;
+   .load-details-wrapper {
+      display: grid;
+      grid-template-columns: 210px 150px;
+      row-gap: 12px;
+      .load-details-header {
+         font-size: 12px;
+         font-weight: 600;
+         color: #6c6c6c;
+         &::-moz-selection {
             color: #6c6c6c;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-        .load-details-value {
-            font-size: 14px;
-            font-weight: 400;
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
             color: #6c6c6c;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-    }
+            background: rgb(108, 108, 108, 0.2);
+         }
+      }
+      .load-details-value {
+         font-size: 14px;
+         font-weight: 400;
+         color: #6c6c6c;
+         &::-moz-selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+         }
+      }
+   }
 }

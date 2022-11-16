@@ -1,11 +1,11 @@
 @import '../../settings.global.scss';
 .settings-office {
-    width: 100%;
-    display: grid;
-    grid-template-rows: 32px auto;
-    row-gap: 12px;
+   width: 100%;
+   display: grid;
+   grid-template-rows: 32px auto;
+   row-gap: 12px;
 
-    .settings-name {
-        padding: 7px 4px;
-    }
+   .settings-name {
+      padding: 7px 4px;
+   }
 }

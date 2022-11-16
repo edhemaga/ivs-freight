@@ -1,200 +1,200 @@
 @import '../navigation.design.scss';
 
 .subroutes-container {
-    position: relative;
+   position: relative;
 
-    .subroutes {
-        height: 28px;
-        width: 178px;
-        position: relative;
-        left: -7px;
-        border-radius: 3px;
+   .subroutes {
+      height: 28px;
+      width: 178px;
+      position: relative;
+      left: -7px;
+      border-radius: 3px;
 
-        color: $nav-text-color;
-        font-weight: $nav-font-medium;
-        font-size: $nav-font-size;
+      color: $nav-text-color;
+      font-weight: $nav-font-medium;
+      font-size: $nav-font-size;
 
-        transition: $nav-transition;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+      transition: $nav-transition;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
-        margin-bottom: 1px;
-        &:nth-child(1) {
-            margin-top: 2px;
-        }
+      margin-bottom: 1px;
+      &:nth-child(1) {
+         margin-top: 2px;
+      }
 
-        .subroutes-active-checkpoint {
-            opacity: 0;
-            position: absolute;
-            top: 3px;
-            left: 9px;
+      .subroutes-active-checkpoint {
+         opacity: 0;
+         position: absolute;
+         top: 3px;
+         left: 9px;
 
-            svg {
-                path {
-                    fill: $nav-svg-active;
-                }
+         svg {
+            path {
+               fill: $nav-svg-active;
             }
-        }
+         }
+      }
 
-        .subroutes-item {
-            margin: 0;
-            margin-left: 48px;
-            font-size: $nav-font-size;
-            position: relative;
-            top: 4px;
-        }
+      .subroutes-item {
+         margin: 0;
+         margin-left: 48px;
+         font-size: $nav-font-size;
+         position: relative;
+         top: 4px;
+      }
 
-        &:hover {
+      &:hover {
+         transition: $nav-transition-5;
+         color: $nav-text-color-hover;
+      }
+   }
+
+   .subroute-active {
+      color: $nav-active-lighter;
+      &:hover {
+         color: $nav-active !important;
+
+         .subroutes-active-checkpoint {
             transition: $nav-transition-5;
-            color: $nav-text-color-hover;
-        }
-    }
-
-    .subroute-active {
-        color: $nav-active-lighter;
-        &:hover {
-            color: $nav-active !important;
-
-            .subroutes-active-checkpoint {
-                transition: $nav-transition-5;
-                svg {
-                    path {
-                        fill: $nav-active;
-                    }
-                }
+            svg {
+               path {
+                  fill: $nav-active;
+               }
             }
-        }
+         }
+      }
 
-        .subroutes-active-checkpoint {
-            transition: $nav-transition;
-            opacity: 1;
-        }
-    }
+      .subroutes-active-checkpoint {
+         transition: $nav-transition;
+         opacity: 1;
+      }
+   }
 
-    .new-magic-line {
-        display: inline-block;
-        position: absolute;
-        left: -7px;
-        top: 1px;
-        content: '';
-        height: 27px;
-        width: 178px;
-        background: $nav-hover-color;
-        border-radius: 3px;
-        transition: $magic-line-transition;
-        z-index: -1;
-    }
+   .new-magic-line {
+      display: inline-block;
+      position: absolute;
+      left: -7px;
+      top: 1px;
+      content: '';
+      height: 27px;
+      width: 178px;
+      background: $nav-hover-color;
+      border-radius: 3px;
+      transition: $magic-line-transition;
+      z-index: -1;
+   }
 
-    .new-magic-line-selected {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
+   .new-magic-line-selected {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+   }
 
-    .subroutes:nth-child(1):hover ~ .new-magic-line {
-        transform: translateY(0px) !important;
-    }
+   .subroutes:nth-child(1):hover ~ .new-magic-line {
+      transform: translateY(0px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(1) ~ .new-magic-line {
-        transform: translateY(0px);
-    }
+   .new-magic-line-selected:nth-child(1) ~ .new-magic-line {
+      transform: translateY(0px);
+   }
 
-    .subroutes:nth-child(2):hover ~ .new-magic-line {
-        transform: translateY(29px) !important;
-    }
+   .subroutes:nth-child(2):hover ~ .new-magic-line {
+      transform: translateY(29px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(2) ~ .new-magic-line {
-        transform: translateY(29px);
-    }
+   .new-magic-line-selected:nth-child(2) ~ .new-magic-line {
+      transform: translateY(29px);
+   }
 
-    .subroutes:nth-child(3):hover ~ .new-magic-line {
-        transform: translateY(58px) !important;
-    }
+   .subroutes:nth-child(3):hover ~ .new-magic-line {
+      transform: translateY(58px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(3) ~ .new-magic-line {
-        transform: translateY(58px);
-    }
+   .new-magic-line-selected:nth-child(3) ~ .new-magic-line {
+      transform: translateY(58px);
+   }
 
-    .subroutes:nth-child(4):hover ~ .new-magic-line {
-        transform: translateY(87px) !important;
-    }
+   .subroutes:nth-child(4):hover ~ .new-magic-line {
+      transform: translateY(87px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(4) ~ .new-magic-line {
-        transform: translateY(87px);
-    }
+   .new-magic-line-selected:nth-child(4) ~ .new-magic-line {
+      transform: translateY(87px);
+   }
 
-    .subroutes:nth-child(5):hover ~ .new-magic-line {
-        transform: translateY(116px) !important;
-    }
+   .subroutes:nth-child(5):hover ~ .new-magic-line {
+      transform: translateY(116px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(5) ~ .new-magic-line {
-        transform: translateY(116px);
-    }
+   .new-magic-line-selected:nth-child(5) ~ .new-magic-line {
+      transform: translateY(116px);
+   }
 
-    .subroutes:nth-child(6):hover ~ .new-magic-line {
-        transform: translateY(145px) !important;
-    }
+   .subroutes:nth-child(6):hover ~ .new-magic-line {
+      transform: translateY(145px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(6) ~ .new-magic-line {
-        transform: translateY(145px);
-    }
+   .new-magic-line-selected:nth-child(6) ~ .new-magic-line {
+      transform: translateY(145px);
+   }
 
-    .subroutes:nth-child(7):hover ~ .new-magic-line {
-        transform: translateY(174px) !important;
-    }
+   .subroutes:nth-child(7):hover ~ .new-magic-line {
+      transform: translateY(174px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(7) ~ .new-magic-line {
-        transform: translateY(174px);
-    }
+   .new-magic-line-selected:nth-child(7) ~ .new-magic-line {
+      transform: translateY(174px);
+   }
 
-    .subroutes:nth-child(8):hover ~ .new-magic-line {
-        transform: translateY(203px) !important;
-    }
+   .subroutes:nth-child(8):hover ~ .new-magic-line {
+      transform: translateY(203px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(8) ~ .new-magic-line {
-        transform: translateY(203px);
-    }
+   .new-magic-line-selected:nth-child(8) ~ .new-magic-line {
+      transform: translateY(203px);
+   }
 
-    .subroutes:nth-child(9):hover ~ .new-magic-line {
-        transform: translateY(232px) !important;
-    }
+   .subroutes:nth-child(9):hover ~ .new-magic-line {
+      transform: translateY(232px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(9) ~ .new-magic-line {
-        transform: translateY(232px);
-    }
+   .new-magic-line-selected:nth-child(9) ~ .new-magic-line {
+      transform: translateY(232px);
+   }
 
-    .subroutes:nth-child(10):hover ~ .new-magic-line {
-        transform: translateY(261px) !important;
-    }
+   .subroutes:nth-child(10):hover ~ .new-magic-line {
+      transform: translateY(261px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(10) ~ .new-magic-line {
-        transform: translateY(261px);
-    }
+   .new-magic-line-selected:nth-child(10) ~ .new-magic-line {
+      transform: translateY(261px);
+   }
 
-    .subroutes:nth-child(11):hover ~ .new-magic-line {
-        transform: translateY(290px) !important;
-    }
+   .subroutes:nth-child(11):hover ~ .new-magic-line {
+      transform: translateY(290px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(11) ~ .new-magic-line {
-        transform: translateY(290px);
-    }
+   .new-magic-line-selected:nth-child(11) ~ .new-magic-line {
+      transform: translateY(290px);
+   }
 
-    .subroutes:nth-child(12):hover ~ .new-magic-line {
-        transform: translateY(319px) !important;
-    }
+   .subroutes:nth-child(12):hover ~ .new-magic-line {
+      transform: translateY(319px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(12) ~ .new-magic-line {
-        transform: translateY(319px);
-    }
+   .new-magic-line-selected:nth-child(12) ~ .new-magic-line {
+      transform: translateY(319px);
+   }
 
-    .subroutes:nth-child(13):hover ~ .new-magic-line {
-        transform: translateY(348px) !important;
-    }
+   .subroutes:nth-child(13):hover ~ .new-magic-line {
+      transform: translateY(348px) !important;
+   }
 
-    .new-magic-line-selected:nth-child(13) ~ .new-magic-line {
-        transform: translateY(348px);
-    }
+   .new-magic-line-selected:nth-child(13) ~ .new-magic-line {
+      transform: translateY(348px);
+   }
 }

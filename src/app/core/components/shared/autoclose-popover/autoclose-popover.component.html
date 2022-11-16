@@ -1,19 +1,19 @@
 <div
-    #t2="ngbPopover"
-    [ngbPopover]="customPopover"
-    [placement]="placement"
-    [popoverClass]="customClass"
-    triggers="'manual'"
-    [autoClose]="false"
-    (click)="switchTab($event, t2)"
-    [disablePopover]="isDisabled"
-    (hidden)="onFilterClose()"
-    (shown)="onFilterShown()"
-    [container]="'body'"
+   #t2="ngbPopover"
+   [ngbPopover]="customPopover"
+   [placement]="placement"
+   [popoverClass]="customClass"
+   triggers="'manual'"
+   [autoClose]="false"
+   (click)="switchTab($event, t2)"
+   [disablePopover]="isDisabled"
+   (hidden)="onFilterClose()"
+   (shown)="onFilterShown()"
+   [container]="'body'"
 >
-    <ng-content select="[mainContent]"></ng-content>
+   <ng-content select="[mainContent]"></ng-content>
 </div>
 <!--- comment -->
 <ng-template #customPopover let-data="data">
-    <ng-content select="[popoverContent]"></ng-content>
+   <ng-content select="[popoverContent]"></ng-content>
 </ng-template>

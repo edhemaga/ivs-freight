@@ -7,22 +7,22 @@ import { PmTService } from '../pm.service';
 import { PmTruckState, PmTruckStore } from './pm-truck.store';
 
 @Injectable({
-    providedIn: 'root',
+   providedIn: 'root',
 })
 export class pmTruckResolver implements Resolve<PmTruckState> {
-    constructor(
-        private pmService: PmTService,
-        private pmTruckStore: PmTruckStore
-    ) {}
-    resolve(): Observable<PmTruckState | boolean> {
-        return this.pmService
-            .getPMTrailerUnitList(undefined, undefined, 1, 25)
-            .pipe(
-                catchError(() => {
-                    return of('No pm trucks data...');
-                }),
-                tap((pmTruckPagination: PMTruckUnitListResponse) => {
-                    /*  localStorage.setItem(
+   constructor(
+      private pmService: PmTService,
+      private pmTruckStore: PmTruckStore
+   ) {}
+   resolve(): Observable<PmTruckState | boolean> {
+      return this.pmService
+         .getPMTrailerUnitList(undefined, undefined, 1, 25)
+         .pipe(
+            catchError(() => {
+               return of('No pm trucks data...');
+            }),
+            tap((pmTruckPagination: PMTruckUnitListResponse) => {
+               /*  localStorage.setItem(
           'pmTruckTableCount',
           JSON.stringify({
             pmTruck: pmTruckPagination.pagination.count,
@@ -30,7 +30,7 @@ export class pmTruckResolver implements Resolve<PmTruckState> {
         );
         
         this.pmTruckStore.set(pmTruckPagination.pagination.data); */
-                })
-            );
-    }
+            })
+         );
+   }
 }

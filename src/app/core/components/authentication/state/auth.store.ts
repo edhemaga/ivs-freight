@@ -4,11 +4,11 @@ import { SignInResponse } from 'appcoretruckassist';
 
 export interface AuthState extends EntityState<SignInResponse, number> {}
 @Injectable({
-    providedIn: 'root',
+   providedIn: 'root',
 })
 @StoreConfig({ name: 'auth', idKey: '_id' })
 export class AuthStore extends EntityStore<AuthState> {
-    constructor() {
-        super();
-    }
+   constructor() {
+      super();
+   }
 }

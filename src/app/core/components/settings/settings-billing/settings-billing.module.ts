@@ -4,7 +4,7 @@ import { SettingsBillingComponent } from './settings-billing.component';
 import { SettingsBillingRoutes } from './settings-billing.routing';
 
 @NgModule({
-    imports: [CommonModule, SettingsBillingRoutes],
-    declarations: [SettingsBillingComponent],
+   imports: [CommonModule, SettingsBillingRoutes],
+   declarations: [SettingsBillingComponent],
 })
 export class SettingsBillingModule {}

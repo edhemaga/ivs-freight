@@ -1,29 +1,29 @@
 <div
-    #t2="ngbPopover"
-    (click)="toggleDropdown(t2)"
-    [autoClose]="true"
-    [ngbPopover]="dropdownPopover"
-    [placement]="placement"
-    class="table-dropdown-container"
-    [ngClass]="{ 'active-drop': dropDownActive === id }"
-    popoverClass="table-dropdown-popover"
-    triggers="manual"
-    [container]="'body'"
-    (hidden)="dropDownActive = -1"
+   #t2="ngbPopover"
+   (click)="toggleDropdown(t2)"
+   [autoClose]="true"
+   [ngbPopover]="dropdownPopover"
+   [placement]="placement"
+   class="table-dropdown-container"
+   [ngClass]="{ 'active-drop': dropDownActive === id }"
+   popoverClass="table-dropdown-popover"
+   triggers="manual"
+   [container]="'body'"
+   (hidden)="dropDownActive = -1"
 ></div>
 
 <ng-template #dropdownPopover let-data="data">
-    <div class="table-dropdown">
-        <div
-            (click)="onAction(action)"
-            *ngFor="let action of data"
-            class="table-dropdown-content"
-            [class]="action.class"
-        >
-            <div class="dropdown-content-icon">
-                <div [class]="action.contentType"></div>
-            </div>
-            <div class="dropdown-content-text">{{ action.title }}</div>
-        </div>
-    </div>
+   <div class="table-dropdown">
+      <div
+         (click)="onAction(action)"
+         *ngFor="let action of data"
+         class="table-dropdown-content"
+         [class]="action.class"
+      >
+         <div class="dropdown-content-icon">
+            <div [class]="action.contentType"></div>
+         </div>
+         <div class="dropdown-content-text">{{ action.title }}</div>
+      </div>
+   </div>
 </ng-template>

@@ -1,299 +1,299 @@
 .shared-contact-dropdown {
-    height: 48px;
-    transition: all 0.3s ease-in-out;
-    &.row {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-    }
+   height: 48px;
+   transition: all 0.3s ease-in-out;
+   &.row {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+   }
 }
 
 .contact-phone-container {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    &-label {
-        display: grid;
-        grid-template-columns: 175px 121px 1fr;
-        padding-left: 30px;
-        p {
-            margin: 0;
-            padding: 0;
-            font-size: 11px;
-            font-weight: 700;
-            color: #424242;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-    }
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   &-label {
+      display: grid;
+      grid-template-columns: 175px 121px 1fr;
+      padding-left: 30px;
+      p {
+         margin: 0;
+         padding: 0;
+         font-size: 11px;
+         font-weight: 700;
+         color: #424242;
+         -webkit-user-select: none;
+         -moz-user-select: none;
+         -ms-user-select: none;
+         user-select: none;
+      }
+   }
 
-    &-body {
-        &-card {
+   &-body {
+      &-card {
+         display: grid;
+         grid-template-columns: 14px 434px;
+         align-items: center;
+         grid-gap: 6px;
+         gap: 6px;
+         margin-bottom: 8px;
+
+         .contact-phone-radio-btn {
+            content: '';
+            background-color: #cccccc;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            cursor: pointer;
+
+            &.active {
+               border: 4px solid #3074d3;
+               background-color: #ffffff;
+            }
+         }
+
+         .contact-phone-card-content {
+            height: 34px;
+            border-radius: 2px;
+            background-color: #eeeeee;
+            transition: all 0.3s ease-in-out;
             display: grid;
-            grid-template-columns: 14px 434px;
             align-items: center;
-            grid-gap: 6px;
-            gap: 6px;
-            margin-bottom: 8px;
+            justify-content: center;
+            grid-template-columns: 164px 110px 100px 1fr;
+            -moz-column-gap: 12px;
+            column-gap: 12px;
+            padding-left: 7px;
 
-            .contact-phone-radio-btn {
-                content: '';
-                background-color: #cccccc;
-                width: 14px;
-                height: 14px;
-                border-radius: 50%;
-                cursor: pointer;
+            ::ng-deep .input-control {
+               background-color: transparent;
 
-                &.active {
-                    border: 4px solid #3074d3;
-                    background-color: #ffffff;
-                }
+               &.valid-focus-out-filled {
+                  background-color: transparent !important;
+               }
+
+               &:hover {
+                  background-color: #eeeeee !important;
+               }
+
+               &:focus {
+                  background-color: #2f2f2f !important;
+               }
+
+               &.valid-focus-in {
+                  background-color: #255bb9 !important;
+               }
+
+               &.invalid-focus-in {
+                  background-color: #f44336 !important;
+               }
             }
 
-            .contact-phone-card-content {
-                height: 34px;
-                border-radius: 2px;
-                background-color: #eeeeee;
-                transition: all 0.3s ease-in-out;
-                display: grid;
-                align-items: center;
-                justify-content: center;
-                grid-template-columns: 164px 110px 100px 1fr;
-                -moz-column-gap: 12px;
-                column-gap: 12px;
-                padding-left: 7px;
+            .phone-extension {
+               cursor: pointer;
+               svg-icon {
+                  svg {
+                     path {
+                        fill: #919191;
+                     }
+                  }
+               }
 
-                ::ng-deep .input-control {
-                    background-color: transparent;
-
-                    &.valid-focus-out-filled {
-                        background-color: transparent !important;
-                    }
-
-                    &:hover {
-                        background-color: #eeeeee !important;
-                    }
-
-                    &:focus {
-                        background-color: #2f2f2f !important;
-                    }
-
-                    &.valid-focus-in {
-                        background-color: #255bb9 !important;
-                    }
-
-                    &.invalid-focus-in {
-                        background-color: #f44336 !important;
-                    }
-                }
-
-                .phone-extension {
-                    cursor: pointer;
-                    svg-icon {
-                        svg {
-                            path {
-                                fill: #919191;
-                            }
-                        }
-                    }
-
-                    &:hover {
-                        svg-icon {
-                            svg {
-                                path {
-                                    fill: #6c6c6c;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .contact-phone-delete {
-                    position: relative;
-                    right: 7px;
-                    bottom: 0px;
-                    width: 25px;
-                    height: 26px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding-left: 1px;
-                    padding-bottom: 1px;
-                    border-radius: 2px;
-
-                    opacity: 0;
-                    cursor: pointer;
-
-                    svg {
+               &:hover {
+                  svg-icon {
+                     svg {
                         path {
-                            fill: #919191;
+                           fill: #6c6c6c;
                         }
-                    }
-                }
-
-                &:hover {
-                    background-color: #e5e5e5;
-
-                    .contact-phone-delete {
-                        opacity: 1;
-
-                        &:hover {
-                            background: rgb(239, 83, 80, 0.2);
-                            svg {
-                                path {
-                                    fill: #ef5350;
-                                }
-                            }
-                        }
-                    }
-                }
+                     }
+                  }
+               }
             }
-        }
-    }
+
+            .contact-phone-delete {
+               position: relative;
+               right: 7px;
+               bottom: 0px;
+               width: 25px;
+               height: 26px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               padding-left: 1px;
+               padding-bottom: 1px;
+               border-radius: 2px;
+
+               opacity: 0;
+               cursor: pointer;
+
+               svg {
+                  path {
+                     fill: #919191;
+                  }
+               }
+            }
+
+            &:hover {
+               background-color: #e5e5e5;
+
+               .contact-phone-delete {
+                  opacity: 1;
+
+                  &:hover {
+                     background: rgb(239, 83, 80, 0.2);
+                     svg {
+                        path {
+                           fill: #ef5350;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
 }
 
 .contact-email-container {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    &-label {
-        display: grid;
-        grid-template-columns: 296px 1fr;
-        padding-left: 30px;
-        p {
-            margin: 0;
-            padding: 0;
-            font-size: 11px;
-            font-weight: 700;
-            color: #424242;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-    }
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   &-label {
+      display: grid;
+      grid-template-columns: 296px 1fr;
+      padding-left: 30px;
+      p {
+         margin: 0;
+         padding: 0;
+         font-size: 11px;
+         font-weight: 700;
+         color: #424242;
+         -webkit-user-select: none;
+         -moz-user-select: none;
+         -ms-user-select: none;
+         user-select: none;
+      }
+   }
 
-    &-body {
-        &-card {
+   &-body {
+      &-card {
+         display: grid;
+         grid-template-columns: 14px 434px;
+         align-items: center;
+         grid-gap: 6px;
+         gap: 6px;
+         margin-bottom: 8px;
+
+         .contact-email-radio-btn {
+            content: '';
+            background-color: #cccccc;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            cursor: pointer;
+
+            &.active {
+               border: 4px solid #3074d3;
+               background-color: #ffffff;
+            }
+         }
+
+         .contact-email-card-content {
+            height: 34px;
+            border-radius: 2px;
+            background-color: #eeeeee;
+            transition: all 0.3s ease-in-out;
             display: grid;
-            grid-template-columns: 14px 434px;
             align-items: center;
-            grid-gap: 6px;
-            gap: 6px;
-            margin-bottom: 8px;
+            justify-content: center;
+            grid-template-columns: 285px 100px 1fr;
+            -moz-column-gap: 12px;
+            column-gap: 12px;
+            padding-left: 7px;
 
-            .contact-email-radio-btn {
-                content: '';
-                background-color: #cccccc;
-                width: 14px;
-                height: 14px;
-                border-radius: 50%;
-                cursor: pointer;
+            ::ng-deep .input-control {
+               background-color: transparent;
 
-                &.active {
-                    border: 4px solid #3074d3;
-                    background-color: #ffffff;
-                }
+               &.valid-focus-out-filled {
+                  background-color: transparent !important;
+               }
+
+               &:hover {
+                  background-color: #eeeeee !important;
+               }
+
+               &:focus {
+                  background-color: #2f2f2f !important;
+               }
+
+               &.valid-focus-in {
+                  background-color: #255bb9 !important;
+               }
+
+               &.invalid-focus-in {
+                  background-color: #f44336 !important;
+               }
             }
 
-            .contact-email-card-content {
-                height: 34px;
-                border-radius: 2px;
-                background-color: #eeeeee;
-                transition: all 0.3s ease-in-out;
-                display: grid;
-                align-items: center;
-                justify-content: center;
-                grid-template-columns: 285px 100px 1fr;
-                -moz-column-gap: 12px;
-                column-gap: 12px;
-                padding-left: 7px;
+            .email-extension {
+               cursor: pointer;
+               svg-icon {
+                  svg {
+                     path {
+                        fill: #919191;
+                     }
+                  }
+               }
 
-                ::ng-deep .input-control {
-                    background-color: transparent;
-
-                    &.valid-focus-out-filled {
-                        background-color: transparent !important;
-                    }
-
-                    &:hover {
-                        background-color: #eeeeee !important;
-                    }
-
-                    &:focus {
-                        background-color: #2f2f2f !important;
-                    }
-
-                    &.valid-focus-in {
-                        background-color: #255bb9 !important;
-                    }
-
-                    &.invalid-focus-in {
-                        background-color: #f44336 !important;
-                    }
-                }
-
-                .email-extension {
-                    cursor: pointer;
-                    svg-icon {
-                        svg {
-                            path {
-                                fill: #919191;
-                            }
-                        }
-                    }
-
-                    &:hover {
-                        svg-icon {
-                            svg {
-                                path {
-                                    fill: #6c6c6c;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .contact-email-delete {
-                    position: relative;
-                    right: 7px;
-                    bottom: 0px;
-                    width: 25px;
-                    height: 26px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding-left: 1px;
-                    padding-bottom: 1px;
-                    border-radius: 2px;
-
-                    opacity: 0;
-                    cursor: pointer;
-                    svg {
+               &:hover {
+                  svg-icon {
+                     svg {
                         path {
-                            fill: #919191;
+                           fill: #6c6c6c;
                         }
-                    }
-                }
-
-                &:hover {
-                    background-color: #e5e5e5;
-
-                    .contact-email-delete {
-                        opacity: 1;
-
-                        &:hover {
-                            background: rgb(239, 83, 80, 0.2);
-                            svg {
-                                path {
-                                    fill: #ef5350;
-                                }
-                            }
-                        }
-                    }
-                }
+                     }
+                  }
+               }
             }
-        }
-    }
+
+            .contact-email-delete {
+               position: relative;
+               right: 7px;
+               bottom: 0px;
+               width: 25px;
+               height: 26px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               padding-left: 1px;
+               padding-bottom: 1px;
+               border-radius: 2px;
+
+               opacity: 0;
+               cursor: pointer;
+               svg {
+                  path {
+                     fill: #919191;
+                  }
+               }
+            }
+
+            &:hover {
+               background-color: #e5e5e5;
+
+               .contact-email-delete {
+                  opacity: 1;
+
+                  &:hover {
+                     background: rgb(239, 83, 80, 0.2);
+                     svg {
+                        path {
+                           fill: #ef5350;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
 }

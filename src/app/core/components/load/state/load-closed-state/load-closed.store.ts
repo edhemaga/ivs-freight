@@ -7,7 +7,7 @@ export interface LoadClosedState extends EntityState<LoadResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'loadClosed' })
 export class LoadClosedStore extends EntityStore<LoadClosedState> {
-    constructor() {
-        super();
-    }
+   constructor() {
+      super();
+   }
 }

@@ -7,21 +7,21 @@ import { ShipperTService } from './shipper.service';
 import { ShipperState, ShipperStore } from './shipper.store';
 
 @Injectable({
-    providedIn: 'root',
+   providedIn: 'root',
 })
 export class ShipperResolver implements Resolve<ShipperState> {
-    constructor(
-        private shipperService: ShipperTService,
-        private shipperStore: ShipperStore
-    ) {}
-    resolve(): Observable<ShipperState | boolean> {
-        return this.shipperService.getShippersList(null, null, 1, 25).pipe(
-            catchError(() => {
-                return of('No shipper data...');
-            }),
-            tap((shipperPagination: ShipperListResponse) => {
-                this.shipperStore.set(shipperPagination.pagination.data);
-            })
-        );
-    }
+   constructor(
+      private shipperService: ShipperTService,
+      private shipperStore: ShipperStore
+   ) {}
+   resolve(): Observable<ShipperState | boolean> {
+      return this.shipperService.getShippersList(null, null, 1, 25).pipe(
+         catchError(() => {
+            return of('No shipper data...');
+         }),
+         tap((shipperPagination: ShipperListResponse) => {
+            this.shipperStore.set(shipperPagination.pagination.data);
+         })
+      );
+   }
 }

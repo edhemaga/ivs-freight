@@ -1,611 +1,611 @@
 @import '../shop-repair-details.component.scss';
 
 app-shop-repair-details-item {
-    .have-pm-description {
-        color: #536bc2 !important;
-        &::-moz-selection {
+   .have-pm-description {
+      color: #536bc2 !important;
+      &::-moz-selection {
+         color: #536bc2 !important;
+         background: rgb(83, 107, 194, 0.2) !important;
+      }
+      &::selection {
+         color: #536bc2 !important;
+         background: rgb(83, 107, 194, 0.2) !important;
+      }
+      .description-item {
+         color: #536bc2 !important;
+         &::-moz-selection {
             color: #536bc2 !important;
             background: rgb(83, 107, 194, 0.2) !important;
-        }
-        &::selection {
+         }
+         &::selection {
             color: #536bc2 !important;
             background: rgb(83, 107, 194, 0.2) !important;
-        }
-        .description-item {
+         }
+      }
+      .description-item-qty {
+         color: #536bc2 !important;
+         &::-moz-selection {
             color: #536bc2 !important;
-            &::-moz-selection {
-                color: #536bc2 !important;
-                background: rgb(83, 107, 194, 0.2) !important;
-            }
-            &::selection {
-                color: #536bc2 !important;
-                background: rgb(83, 107, 194, 0.2) !important;
-            }
-        }
-        .description-item-qty {
+            background: rgb(83, 107, 194, 0.2) !important;
+         }
+         &::selection {
             color: #536bc2 !important;
-            &::-moz-selection {
-                color: #536bc2 !important;
-                background: rgb(83, 107, 194, 0.2) !important;
-            }
-            &::selection {
-                color: #536bc2 !important;
-                background: rgb(83, 107, 194, 0.2) !important;
-            }
-        }
-        .description-item-total {
+            background: rgb(83, 107, 194, 0.2) !important;
+         }
+      }
+      .description-item-total {
+         color: #536bc2 !important;
+         &::-moz-selection {
             color: #536bc2 !important;
-            &::-moz-selection {
-                color: #536bc2 !important;
-                background: rgb(83, 107, 194, 0.2) !important;
-            }
-            &::selection {
-                color: #536bc2 !important;
-                background: rgb(83, 107, 194, 0.2) !important;
-            }
-        }
-        .full-stop-shop {
-            color: #6c6c6c !important;
-        }
-    }
-    .item-icon-desc-wrapper {
-        display: flex;
-        align-items: center;
-        .pm-icon {
-            background-color: #6d82c7;
-            height: 20px;
-            width: 20px;
-            display: flex;
-            border-radius: 1px;
-            padding: 1px;
-            margin-right: 6px;
-            svg {
-                path {
-                    fill: #ffffff;
-                }
-            }
-        }
-    }
-    .working-hours-container {
-        padding: 0 10px;
-        .open-now-wrapper {
-            .open-now-icon-text {
-                display: flex;
-                align-items: center;
-            }
-
-            .open-time {
-                font-size: $font-size18;
-                color: $color-gray-dark;
-                height: 18px;
-                position: relative;
-                bottom: 2px;
-                font-weight: $font-semibold;
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-            }
-        }
-        .open-header {
-            font-size: $font-size12;
-            font-weight: $font-semibold;
-            color: $color-gray-dark;
-            padding-right: 4px;
-            &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-        }
-        .open-hours-wrapper {
-            display: grid;
-            grid-template-columns: 190px 180px;
-            margin-top: 12px;
-        }
-        .open-working-days-value {
-            font-size: 14px;
-            font-weight: 400;
-            color: #6c6c6c;
-            height: 18px;
-            &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-        }
-        .sunday {
-            margin-top: 12px;
-        }
-    }
-
-    .note-cards {
-        padding: 0 7px;
-        .note-body {
-            padding: 0 2px !important;
-            // margin-bottom: 7px !important;
-            .note-textarea {
-                color: #6c6c6c !important;
-                font-weight: 500 !important;
-                &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-
-                &::selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-
-                span {
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-                }
-
-                span[style*='color: rgb(83, 107, 194)'],
-                span[style*='color: rgb(83, 107, 194)'] span {
-                    &::-moz-selection {
-                        color: $bw6-2 !important;
-                        background: rgb(83, 107, 194, 0.2) !important;
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(83, 107, 194, 0.2) !important;
-                    }
-                }
-
-                span[style*='color: rgb(38, 166, 144)'],
-                span[style*='color: rgb(38, 166, 144)'] span {
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(38, 166, 144, 0.2) !important;
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(38, 166, 144, 0.2) !important;
-                    }
-                }
-
-                span[style*='color: rgb(239, 83, 80)'],
-                span[style*='color: rgb(239, 83, 80)'] span {
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(239, 83, 80, 0.2) !important;
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(239, 83, 80, 0.2) !important;
-                    }
-                }
-
-                span[style*='color: rgb(255, 167, 38)'],
-                span[style*='color: rgb(255, 167, 38)'] span {
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(255, 167, 38, 0.2) !important;
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(255, 167, 38, 0.2) !important;
-                    }
-                }
-
-                span[style*='color: rgb(83, 107, 194)'],
-                span[style*='color: rgb(83, 107, 194)'] span {
-                    &::-moz-selection {
-                        color: $bw6-2 !important;
-                        background: rgb(83, 107, 194, 0.2) !important;
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(83, 107, 194, 0.2) !important;
-                    }
-                }
-
-                span[style*='color: rgb(38, 166, 144)'],
-                span[style*='color: rgb(38, 166, 144)'] span {
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(38, 166, 144, 0.2) !important;
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(38, 166, 144, 0.2) !important;
-                    }
-                }
-
-                span[style*='color: rgb(239, 83, 80)'],
-                span[style*='color: rgb(239, 83, 80)'] span {
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(239, 83, 80, 0.2) !important;
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(239, 83, 80, 0.2) !important;
-                    }
-                }
-
-                span[style*='color: rgb(255, 167, 38)'],
-                span[style*='color: rgb(255, 167, 38)'] span {
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(255, 167, 38, 0.2) !important;
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(255, 167, 38, 0.2) !important;
-                    }
-                }
-            }
-        }
-    }
-
-    .service-container {
-        padding: 0 23px;
-        display: grid;
-        grid-template-columns: 32px 32px 32px 32px;
-        column-gap: 78px;
-        row-gap: 13px;
-        .service-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            svg {
-                width: 32px;
-                height: 32px;
-                path {
-                    fill: #aaaaaa;
-                }
-            }
-            .service-type {
-                font-size: 12px;
-                font-weight: $font-semibold;
-                color: #6c6c6c;
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
-        }
-    }
-    .item-desc {
-        white-space: nowrap;
-        display: inline;
-        align-items: center;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: #6c6c6c;
-        &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: $color-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &:last-child {
-            .full-stop-shop {
-                visibility: hidden;
-            }
-        }
-    }
-    .full-stop-shop {
-        margin: 0 2px;
-        &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-            color: $color-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-        }
-    }
-    .border-vertical {
-        margin: 0;
-        width: 2px;
-        height: 28px;
-        border: none;
-        border-radius: 1px;
-        border-left: 2px solid #f3f3f3;
-        margin-top: 10px;
-    }
-    .review-container {
-        background-color: $color-white;
-        border-radius: 3px;
-        max-width: 280px;
-        height: fit-content;
-        min-height: 50px;
-        margin-top: 12px;
-        padding: 6px;
-    }
-    .button-wrapper-shop {
-        position: relative;
-        display: flex;
-        left: -91px;
-        background-color: #6d82c7;
-        color: #ffffff;
-        cursor: pointer;
-        white-space: nowrap;
-        margin: auto;
-        font-size: 12px;
-        font-weight: 700;
-        border-radius: 2px;
-        align-items: center;
-        justify-content: center;
-        line-height: 20px;
-        height: 22px;
-        text-align: center;
-        border: none;
-        padding: 0px 8px;
-        &:hover {
-            background-color: #536bc2;
-        }
-    }
-    .finish-order-cont {
-        .repair-items {
-            .items-header {
-                background-color: #fff3e0;
-                margin-bottom: 2px !important;
-                margin-top: 2px !important;
-                padding: 6px 4px;
-                padding-left: 10px;
-                border-radius: 2px;
-                grid-template-columns: 82px 86px 86px 0 415px !important;
-                &:hover {
-                    background-color: #ffecd1 !important;
-                }
-            }
-        }
-        .unit {
-            position: relative;
-        }
-    }
-    .disabled {
-        svg {
+            background: rgb(83, 107, 194, 0.2) !important;
+         }
+         &::selection {
+            color: #536bc2 !important;
+            background: rgb(83, 107, 194, 0.2) !important;
+         }
+      }
+      .full-stop-shop {
+         color: #6c6c6c !important;
+      }
+   }
+   .item-icon-desc-wrapper {
+      display: flex;
+      align-items: center;
+      .pm-icon {
+         background-color: #6d82c7;
+         height: 20px;
+         width: 20px;
+         display: flex;
+         border-radius: 1px;
+         padding: 1px;
+         margin-right: 6px;
+         svg {
             path {
-                fill: #dadada !important;
+               fill: #ffffff;
             }
-        }
-    }
-    .cross-out {
-        text-decoration: line-through;
-        color: #b7b7b7 !important;
-        &::-moz-selection {
-            color: #b7b7b7 !important;
-            background: rgb(183, 183, 183, 0.2) !important;
-        }
-        &::selection {
-            color: #b7b7b7 !important;
-            background: rgb(183, 183, 183, 0.2) !important;
-        }
-    }
-    .no-invoice {
-        display: flex;
-        align-items: center;
-        position: relative;
-        right: 86px;
-        .no-inv {
-            svg {
-                display: flex;
-            }
-        }
-        .date-order {
-            font-size: 14px;
-            font-weight: 400;
-            color: #6c6c6c;
-            margin-left: 4px;
+         }
+      }
+   }
+   .working-hours-container {
+      padding: 0 10px;
+      .open-now-wrapper {
+         .open-now-icon-text {
+            display: flex;
+            align-items: center;
+         }
+
+         .open-time {
+            font-size: $font-size18;
+            color: $color-gray-dark;
+            height: 18px;
+            position: relative;
+            bottom: 2px;
+            font-weight: $font-semibold;
             &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
             &::selection {
-                color: $color-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
+               color: $color-gray-dark;
+               background: rgb(183, 183, 183, 0.2);
             }
-        }
-    }
+         }
+      }
+      .open-header {
+         font-size: $font-size12;
+         font-weight: $font-semibold;
+         color: $color-gray-dark;
+         padding-right: 4px;
+         &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+      }
+      .open-hours-wrapper {
+         display: grid;
+         grid-template-columns: 190px 180px;
+         margin-top: 12px;
+      }
+      .open-working-days-value {
+         font-size: 14px;
+         font-weight: 400;
+         color: #6c6c6c;
+         height: 18px;
+         &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+         &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+         }
+      }
+      .sunday {
+         margin-top: 12px;
+      }
+   }
+
+   .note-cards {
+      padding: 0 7px;
+      .note-body {
+         padding: 0 2px !important;
+         // margin-bottom: 7px !important;
+         .note-textarea {
+            color: #6c6c6c !important;
+            font-weight: 500 !important;
+            &::-moz-selection {
+               color: $bw6-2;
+               background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+               color: $bw6-2;
+               background: rgb(108, 108, 108, 0.2);
+            }
+
+            span {
+               &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+               }
+
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+               }
+            }
+
+            span[style*='color: rgb(83, 107, 194)'],
+            span[style*='color: rgb(83, 107, 194)'] span {
+               &::-moz-selection {
+                  color: $bw6-2 !important;
+                  background: rgb(83, 107, 194, 0.2) !important;
+               }
+
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(83, 107, 194, 0.2) !important;
+               }
+            }
+
+            span[style*='color: rgb(38, 166, 144)'],
+            span[style*='color: rgb(38, 166, 144)'] span {
+               &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(38, 166, 144, 0.2) !important;
+               }
+
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(38, 166, 144, 0.2) !important;
+               }
+            }
+
+            span[style*='color: rgb(239, 83, 80)'],
+            span[style*='color: rgb(239, 83, 80)'] span {
+               &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(239, 83, 80, 0.2) !important;
+               }
+
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(239, 83, 80, 0.2) !important;
+               }
+            }
+
+            span[style*='color: rgb(255, 167, 38)'],
+            span[style*='color: rgb(255, 167, 38)'] span {
+               &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(255, 167, 38, 0.2) !important;
+               }
+
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(255, 167, 38, 0.2) !important;
+               }
+            }
+
+            span[style*='color: rgb(83, 107, 194)'],
+            span[style*='color: rgb(83, 107, 194)'] span {
+               &::-moz-selection {
+                  color: $bw6-2 !important;
+                  background: rgb(83, 107, 194, 0.2) !important;
+               }
+
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(83, 107, 194, 0.2) !important;
+               }
+            }
+
+            span[style*='color: rgb(38, 166, 144)'],
+            span[style*='color: rgb(38, 166, 144)'] span {
+               &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(38, 166, 144, 0.2) !important;
+               }
+
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(38, 166, 144, 0.2) !important;
+               }
+            }
+
+            span[style*='color: rgb(239, 83, 80)'],
+            span[style*='color: rgb(239, 83, 80)'] span {
+               &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(239, 83, 80, 0.2) !important;
+               }
+
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(239, 83, 80, 0.2) !important;
+               }
+            }
+
+            span[style*='color: rgb(255, 167, 38)'],
+            span[style*='color: rgb(255, 167, 38)'] span {
+               &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(255, 167, 38, 0.2) !important;
+               }
+
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(255, 167, 38, 0.2) !important;
+               }
+            }
+         }
+      }
+   }
+
+   .service-container {
+      padding: 0 23px;
+      display: grid;
+      grid-template-columns: 32px 32px 32px 32px;
+      column-gap: 78px;
+      row-gap: 13px;
+      .service-item {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         svg {
+            width: 32px;
+            height: 32px;
+            path {
+               fill: #aaaaaa;
+            }
+         }
+         .service-type {
+            font-size: 12px;
+            font-weight: $font-semibold;
+            color: #6c6c6c;
+            &::-moz-selection {
+               color: $color-gray-dark;
+               background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+               color: $color-gray-dark;
+               background: rgb(108, 108, 108, 0.2);
+            }
+         }
+      }
+   }
+   .item-desc {
+      white-space: nowrap;
+      display: inline;
+      align-items: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #6c6c6c;
+      &::-moz-selection {
+         color: $color-gray-dark;
+         background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+         color: $color-gray-dark;
+         background: rgb(108, 108, 108, 0.2);
+      }
+      &:last-child {
+         .full-stop-shop {
+            visibility: hidden;
+         }
+      }
+   }
+   .full-stop-shop {
+      margin: 0 2px;
+      &::-moz-selection {
+         color: $color-gray-dark;
+         background: rgb(108, 108, 108, 0.2);
+      }
+      &::selection {
+         color: $color-gray-dark;
+         background: rgb(108, 108, 108, 0.2);
+      }
+   }
+   .border-vertical {
+      margin: 0;
+      width: 2px;
+      height: 28px;
+      border: none;
+      border-radius: 1px;
+      border-left: 2px solid #f3f3f3;
+      margin-top: 10px;
+   }
+   .review-container {
+      background-color: $color-white;
+      border-radius: 3px;
+      max-width: 280px;
+      height: fit-content;
+      min-height: 50px;
+      margin-top: 12px;
+      padding: 6px;
+   }
+   .button-wrapper-shop {
+      position: relative;
+      display: flex;
+      left: -91px;
+      background-color: #6d82c7;
+      color: #ffffff;
+      cursor: pointer;
+      white-space: nowrap;
+      margin: auto;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 2px;
+      align-items: center;
+      justify-content: center;
+      line-height: 20px;
+      height: 22px;
+      text-align: center;
+      border: none;
+      padding: 0px 8px;
+      &:hover {
+         background-color: #536bc2;
+      }
+   }
+   .finish-order-cont {
+      .repair-items {
+         .items-header {
+            background-color: #fff3e0;
+            margin-bottom: 2px !important;
+            margin-top: 2px !important;
+            padding: 6px 4px;
+            padding-left: 10px;
+            border-radius: 2px;
+            grid-template-columns: 82px 86px 86px 0 415px !important;
+            &:hover {
+               background-color: #ffecd1 !important;
+            }
+         }
+      }
+      .unit {
+         position: relative;
+      }
+   }
+   .disabled {
+      svg {
+         path {
+            fill: #dadada !important;
+         }
+      }
+   }
+   .cross-out {
+      text-decoration: line-through;
+      color: #b7b7b7 !important;
+      &::-moz-selection {
+         color: #b7b7b7 !important;
+         background: rgb(183, 183, 183, 0.2) !important;
+      }
+      &::selection {
+         color: #b7b7b7 !important;
+         background: rgb(183, 183, 183, 0.2) !important;
+      }
+   }
+   .no-invoice {
+      display: flex;
+      align-items: center;
+      position: relative;
+      right: 86px;
+      .no-inv {
+         svg {
+            display: flex;
+         }
+      }
+      .date-order {
+         font-size: 14px;
+         font-weight: 400;
+         color: #6c6c6c;
+         margin-left: 4px;
+         &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+         }
+      }
+   }
 }
 .order-activate {
-    position: relative;
-    right: 93px;
+   position: relative;
+   right: 93px;
 }
 .item-shop-wrapper {
-    &:last-child {
-        .divider {
-            display: none;
-        }
-    }
+   &:last-child {
+      .divider {
+         display: none;
+      }
+   }
 }
 .open-items-body {
-    background-color: #e5e5e5 !important;
-    margin-bottom: 2px !important;
-    margin-top: 2px !important;
-    padding: 6px 4px !important;
-    padding-left: 10px !important;
-    border-radius: 2px;
-    .unit {
-        color: #3c3c3c !important;
-    }
-    .date {
-        color: #3c3c3c !important;
-    }
-    .item-desc {
-        color: #3c3c3c !important;
-    }
-    .cost {
-        color: #3c3c3c !important;
-    }
+   background-color: #e5e5e5 !important;
+   margin-bottom: 2px !important;
+   margin-top: 2px !important;
+   padding: 6px 4px !important;
+   padding-left: 10px !important;
+   border-radius: 2px;
+   .unit {
+      color: #3c3c3c !important;
+   }
+   .date {
+      color: #3c3c3c !important;
+   }
+   .item-desc {
+      color: #3c3c3c !important;
+   }
+   .cost {
+      color: #3c3c3c !important;
+   }
 }
 .open-items-body-no-invoice {
-    background-color: #ffe0b2 !important;
-    margin-bottom: 2px !important;
-    margin-top: 2px !important;
-    padding: 6px 4px !important;
-    padding-left: 10px !important;
-    border-radius: 2px;
-    .unit {
-        color: #3c3c3c !important;
-    }
-    .date {
-        color: #3c3c3c !important;
-    }
-    .item-desc {
-        color: #3c3c3c !important;
-    }
-    .cost {
-        color: #3c3c3c !important;
-    }
+   background-color: #ffe0b2 !important;
+   margin-bottom: 2px !important;
+   margin-top: 2px !important;
+   padding: 6px 4px !important;
+   padding-left: 10px !important;
+   border-radius: 2px;
+   .unit {
+      color: #3c3c3c !important;
+   }
+   .date {
+      color: #3c3c3c !important;
+   }
+   .item-desc {
+      color: #3c3c3c !important;
+   }
+   .cost {
+      color: #3c3c3c !important;
+   }
 }
 .repair-items-body-wrapper {
-    height: fit-content;
-    width: 100%;
-    background-color: #f9f9f9;
-    height: fit-content;
-    border-radius: 0 0 2px 2px;
-    .repair-items-body-header {
-        display: grid;
-        grid-template-columns: 33px 418px 80px 98px 58px;
-        align-items: center;
-        align-content: center;
-        padding: 0 10px;
-        .item-header {
-            font-size: 12px;
-            font-weight: $font-bold;
+   height: fit-content;
+   width: 100%;
+   background-color: #f9f9f9;
+   height: fit-content;
+   border-radius: 0 0 2px 2px;
+   .repair-items-body-header {
+      display: grid;
+      grid-template-columns: 33px 418px 80px 98px 58px;
+      align-items: center;
+      align-content: center;
+      padding: 0 10px;
+      .item-header {
+         font-size: 12px;
+         font-weight: $font-bold;
+         color: #919191;
+         &::-moz-selection {
             color: #919191;
-            &::-moz-selection {
-                color: #919191;
-                background: rgb(145, 145, 145, 0.2);
-            }
-            &::selection {
-                color: #919191;
-                background: rgb(145, 145, 145, 0.2);
-            }
-        }
-    }
-    .repair-items-body {
-        display: grid;
-        align-items: center;
-        grid-template-columns: 31px 340px 118px 60px;
-        grid-auto-flow: column;
-        width: 690px;
-        padding: 0 10px;
-        .description-item-counter {
-            font-size: 14px;
-            font-weight: $font-semibold;
+            background: rgb(145, 145, 145, 0.2);
+         }
+         &::selection {
             color: #919191;
-            line-height: 10px;
-            &::-moz-selection {
-                color: #919191;
-                background: rgb(145, 145, 145, 0.2);
-            }
-            &::selection {
-                color: #919191;
-                background: rgb(145, 145, 145, 0.2);
-            }
-        }
-        .description-item {
-            font-size: 16px;
-            font-weight: 400;
+            background: rgb(145, 145, 145, 0.2);
+         }
+      }
+   }
+   .repair-items-body {
+      display: grid;
+      align-items: center;
+      grid-template-columns: 31px 340px 118px 60px;
+      grid-auto-flow: column;
+      width: 690px;
+      padding: 0 10px;
+      .description-item-counter {
+         font-size: 14px;
+         font-weight: $font-semibold;
+         color: #919191;
+         line-height: 10px;
+         &::-moz-selection {
+            color: #919191;
+            background: rgb(145, 145, 145, 0.2);
+         }
+         &::selection {
+            color: #919191;
+            background: rgb(145, 145, 145, 0.2);
+         }
+      }
+      .description-item {
+         font-size: 16px;
+         font-weight: 400;
+         color: #6c6c6c;
+         &::-moz-selection {
             color: #6c6c6c;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-        .description-item-qty {
-            font-size: 14px;
-            font-weight: 400;
-            display: flex;
-            justify-content: flex-end;
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
             color: #6c6c6c;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
+            background: rgb(108, 108, 108, 0.2);
+         }
+      }
+      .description-item-qty {
+         font-size: 14px;
+         font-weight: 400;
+         display: flex;
+         justify-content: flex-end;
+         color: #6c6c6c;
+         &::-moz-selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+         }
+      }
 
-        .description-item-total {
-            font-size: 14px;
-            font-weight: 600;
+      .description-item-total {
+         font-size: 14px;
+         font-weight: 600;
+         color: #6c6c6c;
+         text-align: right;
+         &::-moz-selection {
             color: #6c6c6c;
-            text-align: right;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-        &:hover {
-            .description-item-counter {
-                color: #6c6c6c;
-            }
-            .description-item {
-                color: #3c3c3c;
-            }
-            .description-item-qty {
-                color: #3c3c3c;
-            }
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+         }
+      }
+      &:hover {
+         .description-item-counter {
+            color: #6c6c6c;
+         }
+         .description-item {
+            color: #3c3c3c;
+         }
+         .description-item-qty {
+            color: #3c3c3c;
+         }
 
-            .description-item-total {
-                color: #3c3c3c;
-            }
-        }
-    }
+         .description-item-total {
+            color: #3c3c3c;
+         }
+      }
+   }
 }
 .no-repairs-inovice {
-    .repair-items-body-header {
-        grid-template-columns: 33px 612px 80px !important;
-    }
-    .repair-items-body {
-        grid-template-columns: 31px 516px 127px !important;
-        width: 100% !important;
-    }
+   .repair-items-body-header {
+      grid-template-columns: 33px 612px 80px !important;
+   }
+   .repair-items-body {
+      grid-template-columns: 31px 516px 127px !important;
+      width: 100% !important;
+   }
 }
 .repair-body-container {
-    &:hover {
-        background-color: #f3f3f3 !important;
-        border-radius: 2px;
-        width: 100%;
-    }
+   &:hover {
+      background-color: #f3f3f3 !important;
+      border-radius: 2px;
+      width: 100%;
+   }
 }

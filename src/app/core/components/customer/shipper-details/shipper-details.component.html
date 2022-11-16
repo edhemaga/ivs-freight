@@ -1,25 +1,25 @@
 <div class="repair-details-container">
-    <div *ngFor="let item of shipperConfig; trackBy: identity">
-        <app-ta-details-header
-            [route]="'/customer'"
-            [tooltipHeaderName]="'Back to Shipper List'"
-            [headerText]="item.nameDefault"
-            [counterData]="item.length"
-            [hasIcon]="item.icon"
-            [options]="shipperDrop"
-            [hidePlus]="item.hide"
-            [customText]="item.customText"
-            [statusInactive]="item.hide"
-            [arrayIcons]="item.icons"
-            [optionsId]="shipperId"
-            (dropActions)="onDropActions($event)"
-            [hasDateArrow]="item.hasArrow"
-            [hasDateNav]="false"
-            [mainData]="item"
-        >
-        </app-ta-details-header>
-    </div>
+   <div *ngFor="let item of shipperConfig; trackBy: identity">
+      <app-ta-details-header
+         [route]="'/customer'"
+         [tooltipHeaderName]="'Back to Shipper List'"
+         [headerText]="item.nameDefault"
+         [counterData]="item.length"
+         [hasIcon]="item.icon"
+         [options]="shipperDrop"
+         [hidePlus]="item.hide"
+         [customText]="item.customText"
+         [statusInactive]="item.hide"
+         [arrayIcons]="item.icons"
+         [optionsId]="shipperId"
+         (dropActions)="onDropActions($event)"
+         [hasDateArrow]="item.hasArrow"
+         [hasDateNav]="false"
+         [mainData]="item"
+      >
+      </app-ta-details-header>
+   </div>
 
-    <app-shipper-details-single [shipper]="shipperConfig">
-    </app-shipper-details-single>
+   <app-shipper-details-single [shipper]="shipperConfig">
+   </app-shipper-details-single>
 </div>

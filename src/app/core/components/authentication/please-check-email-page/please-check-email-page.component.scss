@@ -1,118 +1,118 @@
 @import 'src/theme/variables';
 
 .check-email-container {
-    background-color: $white;
-    min-height: 100vh;
-    padding-top: 60px;
+   background-color: $white;
+   min-height: 100vh;
+   padding-top: 60px;
 
-    .check-email-text {
-        h1 {
-            font-weight: 800;
-            font-size: 52px;
-            height: 63px;
-            width: 688px;
+   .check-email-text {
+      h1 {
+         font-weight: 800;
+         font-size: 52px;
+         height: 63px;
+         width: 688px;
+         color: $bw6-2;
+         margin-bottom: 30px !important;
+
+         &::-moz-selection {
             color: $bw6-2;
-            margin-bottom: 30px !important;
+            background: rgb(108, 108, 108, 0.2);
+         }
+
+         &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+         }
+
+         span {
+            color: $ta-blue;
 
             &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+               color: $ta-blue;
+               background: rgb(83, 107, 194, 0.2);
             }
 
             &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+               color: $ta-blue;
+               background: rgb(83, 107, 194, 0.2);
             }
+         }
+      }
 
-            span {
-                color: $ta-blue;
+      h2 {
+         font-weight: bold;
+         font-size: 20px;
+         line-height: 24px;
+         width: 762px;
+         height: 48px;
+         color: $bw6-2;
+         margin-bottom: 10px !important;
+         text-transform: uppercase;
 
-                &::-moz-selection {
-                    color: $ta-blue;
-                    background: rgb(83, 107, 194, 0.2);
-                }
-
-                &::selection {
-                    color: $ta-blue;
-                    background: rgb(83, 107, 194, 0.2);
-                }
-            }
-        }
-
-        h2 {
-            font-weight: bold;
-            font-size: 20px;
-            line-height: 24px;
-            width: 762px;
-            height: 48px;
+         &::-moz-selection {
             color: $bw6-2;
-            margin-bottom: 10px !important;
-            text-transform: uppercase;
+            background: rgb(108, 108, 108, 0.2);
+         }
+
+         &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+         }
+
+         span {
+            color: $ta-blue;
 
             &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+               color: $ta-blue;
+               background: rgb(83, 107, 194, 0.2);
             }
 
             &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+               color: $ta-blue;
+               background: rgb(83, 107, 194, 0.2);
             }
+         }
+      }
 
-            span {
-                color: $ta-blue;
+      p {
+         font-weight: 400;
+         font-size: 18px;
+         height: 44px;
+         width: 608px;
+         line-height: 22px;
+         color: $bw6-2;
+         margin-bottom: 38px !important;
 
-                &::-moz-selection {
-                    color: $ta-blue;
-                    background: rgb(83, 107, 194, 0.2);
-                }
-
-                &::selection {
-                    color: $ta-blue;
-                    background: rgb(83, 107, 194, 0.2);
-                }
-            }
-        }
-
-        p {
-            font-weight: 400;
-            font-size: 18px;
-            height: 44px;
-            width: 608px;
-            line-height: 22px;
+         &::-moz-selection {
             color: $bw6-2;
-            margin-bottom: 38px !important;
+            background: rgb(108, 108, 108, 0.2);
+         }
 
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
+         &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+         }
+      }
+   }
 
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-    }
+   .copyright {
+      height: 42px;
+      border-top: 0.1rem solid $ta-gray-02;
 
-    .copyright {
-        height: 42px;
-        border-top: 0.1rem solid $ta-gray-02;
+      p {
+         color: $ta-blue-2;
+         font-weight: 400;
+         font-size: 14px;
 
-        p {
+         &::-moz-selection {
             color: $ta-blue-2;
-            font-weight: 400;
-            font-size: 14px;
+            background: rgb(53, 81, 183, 0.2);
+         }
 
-            &::-moz-selection {
-                color: $ta-blue-2;
-                background: rgb(53, 81, 183, 0.2);
-            }
-
-            &::selection {
-                color: $ta-blue-2;
-                background: rgb(53, 81, 183, 0.2);
-            }
-        }
-    }
+         &::selection {
+            color: $ta-blue-2;
+            background: rgb(53, 81, 183, 0.2);
+         }
+      }
+   }
 }

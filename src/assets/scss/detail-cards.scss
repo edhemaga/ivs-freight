@@ -1,67 +1,149 @@
 .card-main-holder {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 440px 1fr;
-    column-gap: 12px;
-    margin: auto;
-    margin-top: 12px !important;
-    overflow: hidden;
-    height: calc(100vh - 72px);
-    .left-side {
-        padding-right: 0px;
+   width: 100%;
+   display: grid;
+   grid-template-columns: 440px 1fr;
+   column-gap: 12px;
+   margin: auto;
+   margin-top: 12px !important;
+   overflow: hidden;
+   height: calc(100vh - 72px);
+   .left-side {
+      padding-right: 0px;
 
-        .details {
-            width: 440px;
-            border-radius: 3px;
-        }
-    }
+      .details {
+         width: 440px;
+         border-radius: 3px;
+      }
+   }
 
-    .right-side {
-        padding-right: 0px;
-        display: grid;
-        grid-template-columns: repeat(4, 335px);
-        column-gap: 12px;
+   .right-side {
+      padding-right: 0px;
+      display: grid;
+      grid-template-columns: repeat(4, 335px);
+      column-gap: 12px;
 
-        .card-frame {
+      .card-frame {
+         position: relative;
+         padding: 0px 0px 12px 0px;
+         box-sizing: border-box;
+
+         .card-holder-frame {
             position: relative;
-            padding: 0px 0px 12px 0px;
+            padding: 12px;
             box-sizing: border-box;
+            background-color: #fff;
+            border-radius: 3px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
 
-            .card-holder-frame {
-                position: relative;
-                padding: 12px;
-                box-sizing: border-box;
-                background-color: #fff;
-                border-radius: 3px;
-                display: flex;
-                justify-content: flex-start;
-                align-items: flex-start;
-                flex-direction: column;
+            .contact-text-frame {
+               display: flex;
+               justify-content: flex-start;
+               align-items: flex-start;
+               padding-top: 6px;
+               box-sizing: border-box;
 
-                .contact-text-frame {
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                    padding-top: 6px;
-                    box-sizing: border-box;
+               &:hover {
+                  cursor: pointer;
 
-                    &:hover {
+                  .contact-icon {
+                     svg {
+                        path {
+                           fill: #919191;
+                        }
+                     }
+                  }
+
+                  .contact-text {
+                     color: #919191;
+                  }
+               }
+
+               .contact-icon {
+                  width: 15px;
+                  height: 15px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+
+                  svg {
+                     display: flex;
+
+                     path {
+                        fill: #b7b7b7;
+                     }
+                  }
+               }
+
+               .contact-text {
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #b7b7b7;
+                  line-height: 15px;
+                  padding-left: 6px;
+                  box-sizing: border-box;
+               }
+            }
+
+            .contact-global-frame {
+               width: 100%;
+               display: flex;
+               justify-content: flex-start;
+               align-items: flex-start;
+
+               .contact-img {
+                  width: 62px;
+                  height: 62px;
+
+                  svg {
+                     display: flex;
+                     width: 62px;
+                     height: 62px;
+                     border-radius: 100%;
+                  }
+               }
+
+               .contact-frame {
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: flex-start;
+                  flex-direction: column;
+                  padding-left: 6px;
+                  box-sizing: border-box;
+
+                  .contact-title {
+                     font-size: 16px;
+                     font-weight: 700;
+                     color: #b7b7b7;
+                     line-height: 16px;
+                  }
+
+                  .contact-text-frame {
+                     display: flex;
+                     justify-content: flex-start;
+                     align-items: flex-start;
+                     padding-top: 6px;
+                     box-sizing: border-box;
+
+                     &:hover {
                         cursor: pointer;
 
                         .contact-icon {
-                            svg {
-                                path {
-                                    fill: #919191;
-                                }
-                            }
+                           svg {
+                              path {
+                                 fill: #919191;
+                              }
+                           }
                         }
 
                         .contact-text {
-                            color: #919191;
+                           color: #919191;
                         }
-                    }
+                     }
 
-                    .contact-icon {
+                     .contact-icon {
                         width: 15px;
                         height: 15px;
                         display: flex;
@@ -69,854 +151,772 @@
                         align-items: center;
 
                         svg {
-                            display: flex;
+                           display: flex;
 
-                            path {
-                                fill: #b7b7b7;
-                            }
+                           path {
+                              fill: #b7b7b7;
+                           }
                         }
-                    }
+                     }
 
-                    .contact-text {
+                     .contact-text {
                         font-size: 12px;
                         font-weight: 400;
                         color: #b7b7b7;
                         line-height: 15px;
                         padding-left: 6px;
                         box-sizing: border-box;
-                    }
-                }
+                     }
+                  }
+               }
+            }
 
-                .contact-global-frame {
-                    width: 100%;
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: flex-start;
+            .accounts-tag {
+               position: absolute;
+               width: 15px;
+               height: 15px;
+               bottom: 8px;
+               right: 8px;
 
-                    .contact-img {
-                        width: 62px;
-                        height: 62px;
+               svg {
+                  display: flex;
 
-                        svg {
-                            display: flex;
-                            width: 62px;
-                            height: 62px;
-                            border-radius: 100%;
+                  path {
+                     fill: #47b68b;
+                  }
+               }
+            }
+
+            .account-frame {
+               display: flex;
+               justify-content: flex-start;
+               align-items: center;
+               padding-top: 7px;
+               box-sizing: border-box;
+
+               &:hover {
+                  cursor: pointer;
+
+                  .account-img-box {
+                     svg {
+                        path {
+                           fill: #919191;
                         }
-                    }
 
-                    .contact-frame {
-                        display: flex;
-                        justify-content: flex-start;
-                        align-items: flex-start;
-                        flex-direction: column;
-                        padding-left: 6px;
-                        box-sizing: border-box;
-
-                        .contact-title {
-                            font-size: 16px;
-                            font-weight: 700;
-                            color: #b7b7b7;
-                            line-height: 16px;
+                        ellipse {
+                           fill: #919191;
                         }
+                     }
+                  }
 
-                        .contact-text-frame {
-                            display: flex;
-                            justify-content: flex-start;
-                            align-items: flex-start;
-                            padding-top: 6px;
-                            box-sizing: border-box;
+                  .account-text {
+                     color: #919191;
+                  }
 
-                            &:hover {
-                                cursor: pointer;
+                  .account-link {
+                     color: #5673aa;
+                  }
+               }
 
-                                .contact-icon {
-                                    svg {
-                                        path {
-                                            fill: #919191;
-                                        }
-                                    }
-                                }
+               .account-img-box {
+                  width: 15px;
+                  height: 15px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
 
-                                .contact-text {
-                                    color: #919191;
-                                }
-                            }
+                  svg {
+                     display: flex;
 
-                            .contact-icon {
-                                width: 15px;
-                                height: 15px;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
+                     path {
+                        fill: #b7b7b7;
+                     }
 
-                                svg {
-                                    display: flex;
+                     ellipse {
+                        fill: #b7b7b7;
+                     }
+                  }
 
-                                    path {
-                                        fill: #b7b7b7;
-                                    }
-                                }
-                            }
+                  &.different-height {
+                     height: 13.13px;
+                  }
+               }
 
-                            .contact-text {
-                                font-size: 12px;
-                                font-weight: 400;
-                                color: #b7b7b7;
-                                line-height: 15px;
-                                padding-left: 6px;
-                                box-sizing: border-box;
-                            }
-                        }
-                    }
-                }
+               .account-text {
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #b7b7b7;
+                  line-height: 15px;
+                  padding-left: 9px;
+                  box-sizing: border-box;
+               }
+            }
 
-                .accounts-tag {
-                    position: absolute;
-                    width: 15px;
-                    height: 15px;
-                    bottom: 8px;
-                    right: 8px;
+            .driver-dropdown {
+               position: absolute;
+               top: 12.5px;
+               right: 12px;
+               z-index: 100;
 
-                    svg {
+               svg-icon {
+                  svg {
+                     display: flex;
+                     width: 18px;
+                     height: 5px;
+
+                     circle {
+                        fill: #aaaaaa;
+                     }
+                  }
+               }
+            }
+
+            .inactive-overflow {
+               position: absolute;
+               width: 100%;
+               height: 100%;
+               background-color: rgba(255, 255, 255, 0.5);
+               z-index: 10;
+               top: 0px;
+               left: 0px;
+            }
+
+            .card-holder {
+               position: relative;
+               width: 100%;
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+
+               .price {
+                  font-size: 16px;
+                  font-weight: 700;
+                  color: #6c6c6c;
+                  line-height: 19px;
+                  padding-right: 30px;
+                  box-sizing: border-box;
+               }
+
+               &.account-padding {
+                  padding-bottom: 3px;
+                  box-sizing: border-box;
+               }
+
+               .broker-image {
+                  width: 18px;
+                  height: 18px;
+                  margin-right: 6px;
+
+                  svg-icon {
+                     svg {
                         display: flex;
 
                         path {
-                            fill: #47b68b;
+                           fill: #aaaaaa;
                         }
-                    }
-                }
+                     }
+                  }
+               }
 
-                .account-frame {
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    padding-top: 7px;
-                    box-sizing: border-box;
+               .broker-price {
+                  font-size: 14px;
+                  font-weight: 600;
+                  color: #6c6c6c;
+                  line-height: 18px;
+                  padding-left: 35px;
+                  box-sizing: border-box;
+               }
 
-                    &:hover {
-                        cursor: pointer;
+               &.padding-between {
+                  padding: 12px 0px;
+                  box-sizing: border-box;
+               }
 
-                        .account-img-box {
-                            svg {
-                                path {
-                                    fill: #919191;
-                                }
+               .check-holder {
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: center;
 
-                                ellipse {
-                                    fill: #919191;
-                                }
-                            }
-                        }
+                  .shuffle {
+                     width: 18px;
+                     height: 16px;
+                     margin-left: 4px;
 
-                        .account-text {
-                            color: #919191;
-                        }
-
-                        .account-link {
-                            color: #5673aa;
-                        }
-                    }
-
-                    .account-img-box {
-                        width: 15px;
-                        height: 15px;
+                     svg {
                         display: flex;
-                        justify-content: center;
-                        align-items: center;
-
-                        svg {
-                            display: flex;
-
-                            path {
-                                fill: #b7b7b7;
-                            }
-
-                            ellipse {
-                                fill: #b7b7b7;
-                            }
-                        }
-
-                        &.different-height {
-                            height: 13.13px;
-                        }
-                    }
-
-                    .account-text {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: #b7b7b7;
-                        line-height: 15px;
-                        padding-left: 9px;
-                        box-sizing: border-box;
-                    }
-                }
-
-                .driver-dropdown {
-                    position: absolute;
-                    top: 12.5px;
-                    right: 12px;
-                    z-index: 100;
-
-                    svg-icon {
-                        svg {
-                            display: flex;
-                            width: 18px;
-                            height: 5px;
-
-                            circle {
-                                fill: #aaaaaa;
-                            }
-                        }
-                    }
-                }
-
-                .inactive-overflow {
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    background-color: rgba(255, 255, 255, 0.5);
-                    z-index: 10;
-                    top: 0px;
-                    left: 0px;
-                }
-
-                .card-holder {
-                    position: relative;
-                    width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-
-                    .price {
-                        font-size: 16px;
-                        font-weight: 700;
-                        color: #6c6c6c;
-                        line-height: 19px;
-                        padding-right: 30px;
-                        box-sizing: border-box;
-                    }
-
-                    &.account-padding {
-                        padding-bottom: 3px;
-                        box-sizing: border-box;
-                    }
-
-                    .broker-image {
                         width: 18px;
-                        height: 18px;
-                        margin-right: 6px;
+                        height: 16px;
 
-                        svg-icon {
-                            svg {
-                                display: flex;
-
-                                path {
-                                    fill: #aaaaaa;
-                                }
-                            }
+                        path {
+                           fill: #6d82c7;
                         }
-                    }
+                     }
+                  }
 
-                    .broker-price {
-                        font-size: 14px;
-                        font-weight: 600;
-                        color: #6c6c6c;
-                        line-height: 18px;
-                        padding-left: 35px;
-                        box-sizing: border-box;
-                    }
+                  .left-arrows {
+                     width: 17.18px;
+                     height: 18px;
+                     margin-left: 4px;
 
-                    &.padding-between {
-                        padding: 12px 0px;
-                        box-sizing: border-box;
-                    }
-
-                    .check-holder {
+                     svg {
                         display: flex;
-                        justify-content: flex-start;
-                        align-items: center;
+                        width: 17.18px;
+                        height: 18px;
 
-                        .shuffle {
-                            width: 18px;
-                            height: 16px;
-                            margin-left: 4px;
-
-                            svg {
-                                display: flex;
-                                width: 18px;
-                                height: 16px;
-
-                                path {
-                                    fill: #6d82c7;
-                                }
-                            }
+                        path {
+                           fill: #6d82c7;
                         }
+                     }
+                  }
 
-                        .left-arrows {
-                            width: 17.18px;
-                            height: 18px;
-                            margin-left: 4px;
+                  .accounts-box {
+                     width: 14px;
+                     height: 14px;
+                     border-radius: 2px;
+                     background-color: #47b68b;
+                  }
 
-                            svg {
-                                display: flex;
-                                width: 17.18px;
-                                height: 18px;
+                  &.text-width {
+                     width: 88px;
+                  }
 
-                                path {
-                                    fill: #6d82c7;
-                                }
-                            }
-                        }
+                  .owner-box {
+                     padding: 3px 4px;
+                     box-sizing: border-box;
+                     min-width: 20px;
+                     border-radius: 2px;
+                     background-color: #f3f3f3;
+                     font-size: 12px;
+                     font-weight: 700;
+                     color: #b7b7b7;
+                     line-height: 14px;
+                     display: flex;
+                     justify-content: center;
+                     align-items: center;
+                  }
 
-                        .accounts-box {
-                            width: 14px;
-                            height: 14px;
-                            border-radius: 2px;
-                            background-color: #47b68b;
-                        }
+                  .owner-text {
+                     font-size: 14px;
+                     font-weight: 400;
+                     color: #b7b7b7;
+                     line-height: 18px;
+                     padding-left: 6px;
+                     box-sizing: border-box;
 
-                        &.text-width {
-                            width: 88px;
-                        }
-
-                        .owner-box {
-                            padding: 3px 4px;
-                            box-sizing: border-box;
-                            min-width: 20px;
-                            border-radius: 2px;
-                            background-color: #f3f3f3;
-                            font-size: 12px;
-                            font-weight: 700;
-                            color: #b7b7b7;
-                            line-height: 14px;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                        }
-
-                        .owner-text {
-                            font-size: 14px;
-                            font-weight: 400;
-                            color: #b7b7b7;
-                            line-height: 18px;
-                            padding-left: 6px;
-                            box-sizing: border-box;
-
-                            &.bold-text {
-                                font-weight: 700;
-                            }
-
-                            &.bold1-text {
-                                font-weight: 700;
-                                padding-left: 0px;
-                            }
-                        }
-
-                        .owner-phone {
-                            width: 18px;
-                            height: 18px;
-
-                            svg {
-                                display: flex;
-
-                                path {
-                                    fill: #aaaaaa;
-                                }
-                            }
-                        }
-
-                        input {
-                            opacity: 0;
-                            cursor: pointer;
-                            height: 0;
-                            width: 0;
-                        }
-
-                        .container1 {
-                            position: relative;
-                            width: 14px;
-                            display: flex;
-                            cursor: pointer;
-                            user-select: none;
-                        }
-
-                        .container1 .checkmark {
-                            position: absolute;
-                            display: inline-block;
-                            width: 14px;
-                            height: 14px;
-                            border-radius: 2px;
-                            background-color: #cccccc;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            left: 0px;
-                        }
-
-                        .container1 input:checked ~ .checkmark {
-                            background-color: #fff;
-                        }
-
-                        .checkmark:after {
-                            content: '';
-                            position: absolute;
-                            display: none;
-                        }
-
-                        .container1 input:checked ~ .checkmark:after {
-                            display: block;
-                        }
-
-                        .container1 .checkmark:after {
-                            left: 5px;
-                            top: 1.4px;
-                            width: 5px;
-                            height: 10px;
-                            border: solid #919191;
-                            border-width: 0 3px 3px 0;
-                            transform: rotate(45deg);
-                        }
-
-                        .check-box {
-                            width: 14px;
-                            height: 14px;
-                            border-radius: 2px;
-                            background-color: #cccccc;
-                        }
-
-                        .check-title {
-                            font-size: 16px;
-                            font-weight: 700;
-                            color: #6c6c6c;
-                            line-height: 16px;
-                            padding-left: 6px;
-                            box-sizing: border-box;
-
-                            &:hover {
-                                color: #3551b7;
-                            }
-
-                            &.account-title {
-                                color: #b7b7b7;
-                                padding-left: 8px;
-                            }
-
-                            &.owner-title {
-                                color: #b7b7b7;
-
-                                &:hover {
-                                    color: #91a4c7;
-                                }
-                            }
-
-                            &.truck-hover {
-                                &:hover {
-                                    cursor: pointer;
-                                    color: #3551b7;
-                                }
-                            }
-
-                            &.broker-title-size {
-                                width: 206px;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-
-                                &:hover {
-                                    cursor: pointer;
-                                    color: #3551b7;
-                                }
-                            }
-                        }
-
-                        .active-circle {
-                            width: 18px;
-                            height: 18px;
-                            margin-left: 6px;
-
-                            svg-icon {
-                                svg {
-                                    display: flex;
-
-                                    path {
-                                        fill: #6d82c7;
-                                    }
-                                }
-                            }
-                        }
-
-                        .ban-item {
-                            width: 18px;
-                            height: 18px;
-                            margin-left: 6px;
-
-                            svg-icon {
-                                svg {
-                                    display: flex;
-
-                                    path:first-child {
-                                        fill: #707070;
-                                    }
-                                }
-                            }
-
-                            &.ban {
-                                svg-icon {
-                                    svg {
-                                        display: flex;
-
-                                        path:first-child {
-                                            fill: #e57373;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        .count-box {
-                            min-width: 18px;
-                            padding: 2px 5px;
-                            box-sizing: border-box;
-                            border-radius: 2px;
-                            background-color: #4db6a2;
-                            font-size: 11px;
-                            font-weight: 700;
-                            color: #fff;
-                            line-height: 14px;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-
-                            &.different-bcg {
-                                background-color: #e57373;
-                            }
-
-                            &.broker-box-bcg {
-                                background-color: #6d82c7;
-                                border-radius: 2px 0px 0px 2px;
-                                padding: 2px 3px;
-                            }
-
-                            &.broker-box-between {
-                                background-color: #e57373;
-                                border-radius: 0px 2px 2px 0px;
-                                padding: 2px 3px;
-                                margin: 0px 4px 0px 2px;
-                            }
-
-                            &.no_value {
-                                background-color: #d2d2d2;
-                            }
-                        }
-                    }
-
-                    .dropdown {
-                        position: absolute;
-                        right: 0px;
-                        top: 0px;
-
-                        svg-icon {
-                            svg {
-                                display: flex;
-
-                                path {
-                                    fill: #aaaaaa;
-                                }
-                            }
-                        }
-
-                        &.owner-dropdown {
-                            svg {
-                                path {
-                                    fill: #dadada;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .name {
-                    font-size: 14px;
-                    font-weight: 400;
-                    color: #6c6c6c;
-                    line-height: 14px;
-
-                    &.shipper-text {
-                        width: 230px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                    }
-
-                    &.name-padding {
-                        padding: 0px 14px 0px 4px;
-                        box-sizing: border-box;
-                    }
-                }
-
-                .truck-card-text {
-                    display: flex;
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: #6c6c6c;
-                    line-height: 14px;
-
-                    .regular {
-                        width: 85px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        font-weight: 400;
-                        padding-left: 6px;
-                        box-sizing: border-box;
-                    }
-
-                    .trailer-regular {
-                        font-weight: 400;
-                        padding-left: 6px;
-                        box-sizing: border-box;
-                    }
-
-                    .trailer-regular1 {
-                        display: inline-block;
-                        width: 106px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        font-weight: 400;
-                        padding-left: 6px;
-                        box-sizing: border-box;
-                    }
-
-                    .repair-regular {
-                        display: inline-block;
-                        width: 207px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        font-weight: 400;
-                        padding-left: 6px;
-                        box-sizing: border-box;
-                    }
-
-                    .repair-bold {
+                     &.bold-text {
                         font-weight: 700;
-                        padding-left: 6px;
-                        box-sizing: border-box;
-                    }
-                }
+                     }
 
-                .finish-order {
-                    padding: 2px 12px;
-                    border-radius: 2px;
-                    background-color: #f3f3f3;
-                    font-size: 11px;
-                    font-weight: 800;
-                    color: #6c6c6c;
-                    line-height: 16px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                     &.bold1-text {
+                        font-weight: 700;
+                        padding-left: 0px;
+                     }
+                  }
 
-                    &:hover {
-                        cursor: pointer;
-                        background-color: #ab47bc;
-                        color: #ffffff;
-                    }
-                }
+                  .owner-phone {
+                     width: 18px;
+                     height: 18px;
 
-                .miles {
-                    font-weight: 700;
-                }
+                     svg {
+                        display: flex;
 
-                .driver-card-frame {
-                    position: relative;
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-
-                    .driver-card-img {
-                        position: relative;
-                        width: 68px;
-                        height: 79px;
-                        border-radius: 2px;
-
-                        svg {
-                            width: 68px;
-                            height: 79px;
+                        path {
+                           fill: #aaaaaa;
                         }
+                     }
+                  }
 
-                        .circle-active {
-                            position: absolute;
-                            width: 22px;
-                            height: 22px;
-                            bottom: -4px;
-                            right: -4px;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
+                  input {
+                     opacity: 0;
+                     cursor: pointer;
+                     height: 0;
+                     width: 0;
+                  }
 
-                            svg {
-                                display: flex;
-                                width: 19px;
-                                height: 19px;
-                            }
-                        }
+                  .container1 {
+                     position: relative;
+                     width: 14px;
+                     display: flex;
+                     cursor: pointer;
+                     user-select: none;
+                  }
 
-                        .container1 {
-                            position: absolute;
-                            display: none;
-                            width: 14px;
-                            cursor: pointer;
-                            user-select: none;
-                            top: 2px;
-                            left: 2px;
-                        }
+                  .container1 .checkmark {
+                     position: absolute;
+                     display: inline-block;
+                     width: 14px;
+                     height: 14px;
+                     border-radius: 2px;
+                     background-color: #cccccc;
+                     top: 50%;
+                     transform: translateY(-50%);
+                     left: 0px;
+                  }
 
-                        .container1 .checkmark {
-                            position: absolute;
-                            display: inline-block;
-                            width: 14px;
-                            height: 14px;
-                            border-radius: 2px;
-                            background-color: #ffffff;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            left: 0px;
-                        }
+                  .container1 input:checked ~ .checkmark {
+                     background-color: #fff;
+                  }
 
-                        .container1 input:checked ~ .checkmark {
-                            background-color: #fff;
-                        }
+                  .checkmark:after {
+                     content: '';
+                     position: absolute;
+                     display: none;
+                  }
 
-                        .checkmark:after {
-                            content: '';
-                            position: absolute;
-                            display: none;
-                        }
+                  .container1 input:checked ~ .checkmark:after {
+                     display: block;
+                  }
 
-                        .container1 input:checked ~ .checkmark:after {
-                            display: block;
-                        }
+                  .container1 .checkmark:after {
+                     left: 5px;
+                     top: 1.4px;
+                     width: 5px;
+                     height: 10px;
+                     border: solid #919191;
+                     border-width: 0 3px 3px 0;
+                     transform: rotate(45deg);
+                  }
 
-                        .container1 .checkmark:after {
-                            left: 5px;
-                            top: 1.4px;
-                            width: 5px;
-                            height: 10px;
-                            border: solid #919191;
-                            border-width: 0 3px 3px 0;
-                            transform: rotate(45deg);
-                        }
+                  .check-box {
+                     width: 14px;
+                     height: 14px;
+                     border-radius: 2px;
+                     background-color: #cccccc;
+                  }
 
-                        .check-box {
-                            width: 14px;
-                            height: 14px;
-                            border-radius: 2px;
-                            background-color: #ffffff;
-                        }
+                  .check-title {
+                     font-size: 16px;
+                     font-weight: 700;
+                     color: #6c6c6c;
+                     line-height: 16px;
+                     padding-left: 6px;
+                     box-sizing: border-box;
+
+                     &:hover {
+                        color: #3551b7;
+                     }
+
+                     &.account-title {
+                        color: #b7b7b7;
+                        padding-left: 8px;
+                     }
+
+                     &.owner-title {
+                        color: #b7b7b7;
 
                         &:hover {
-                            .container1 {
-                                display: flex;
-                            }
+                           color: #91a4c7;
                         }
-                    }
+                     }
 
-                    .driver-card-info-frame {
+                     &.truck-hover {
+                        &:hover {
+                           cursor: pointer;
+                           color: #3551b7;
+                        }
+                     }
+
+                     &.broker-title-size {
+                        width: 206px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+
+                        &:hover {
+                           cursor: pointer;
+                           color: #3551b7;
+                        }
+                     }
+                  }
+
+                  .active-circle {
+                     width: 18px;
+                     height: 18px;
+                     margin-left: 6px;
+
+                     svg-icon {
+                        svg {
+                           display: flex;
+
+                           path {
+                              fill: #6d82c7;
+                           }
+                        }
+                     }
+                  }
+
+                  .ban-item {
+                     width: 18px;
+                     height: 18px;
+                     margin-left: 6px;
+
+                     svg-icon {
+                        svg {
+                           display: flex;
+
+                           path:first-child {
+                              fill: #707070;
+                           }
+                        }
+                     }
+
+                     &.ban {
+                        svg-icon {
+                           svg {
+                              display: flex;
+
+                              path:first-child {
+                                 fill: #e57373;
+                              }
+                           }
+                        }
+                     }
+                  }
+
+                  .count-box {
+                     min-width: 18px;
+                     padding: 2px 5px;
+                     box-sizing: border-box;
+                     border-radius: 2px;
+                     background-color: #4db6a2;
+                     font-size: 11px;
+                     font-weight: 700;
+                     color: #fff;
+                     line-height: 14px;
+                     display: flex;
+                     justify-content: center;
+                     align-items: center;
+
+                     &.different-bcg {
+                        background-color: #e57373;
+                     }
+
+                     &.broker-box-bcg {
+                        background-color: #6d82c7;
+                        border-radius: 2px 0px 0px 2px;
+                        padding: 2px 3px;
+                     }
+
+                     &.broker-box-between {
+                        background-color: #e57373;
+                        border-radius: 0px 2px 2px 0px;
+                        padding: 2px 3px;
+                        margin: 0px 4px 0px 2px;
+                     }
+
+                     &.no_value {
+                        background-color: #d2d2d2;
+                     }
+                  }
+               }
+
+               .dropdown {
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+
+                  svg-icon {
+                     svg {
                         display: flex;
-                        justify-content: flex-start;
-                        align-items: flex-start;
-                        flex-direction: column;
-                        padding-left: 12px;
-                        box-sizing: border-box;
 
-                        .driver-card-name {
-                            font-size: 16px;
-                            font-weight: 600;
-                            color: #6c6c6c;
-                            line-height: 16px;
-
-                            &:hover {
-                                cursor: pointer;
-                                color: #3551b7;
-                            }
+                        path {
+                           fill: #aaaaaa;
                         }
+                     }
+                  }
 
-                        .driver-card-phone-frame {
-                            display: flex;
-                            justify-content: flex-start;
-                            align-items: flex-start;
-
-                            &.padding-between {
-                                padding: 12px 0px;
-                                box-sizing: border-box;
-                            }
-
-                            .driver-phone-img {
-                                width: 18px;
-                                height: 18px;
-
-                                svg-icon {
-                                    svg {
-                                        display: flex;
-
-                                        path {
-                                            fill: #aaaaaa;
-                                        }
-                                    }
-                                }
-                            }
-
-                            .driver-phone {
-                                width: 204px;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-                                font-size: 14px;
-                                font-weight: 400;
-                                color: #6c6c6c;
-                                line-height: 14px;
-                                padding-left: 6px;
-                                box-sizing: border-box;
-                            }
+                  &.owner-dropdown {
+                     svg {
+                        path {
+                           fill: #dadada;
                         }
-                    }
-                }
-
-                &.active {
-                    background-color: #e5e5e5;
-
-                    .count-box {
-                        background-color: #26a690 !important;
-
-                        &.different-bcg {
-                            background-color: #ef5350 !important;
-                        }
-                    }
-
-                    .broker-box-bcg {
-                        background-color: #536bc2 !important;
-                    }
-
-                    .broker-box-between {
-                        background-color: #f44336 !important;
-                    }
-
-                    .driver-card-img {
-                        .container1 {
-                            display: flex;
-                        }
-                    }
-                }
+                     }
+                  }
+               }
             }
-        }
-    }
+
+            .name {
+               font-size: 14px;
+               font-weight: 400;
+               color: #6c6c6c;
+               line-height: 14px;
+
+               &.shipper-text {
+                  width: 230px;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+               }
+
+               &.name-padding {
+                  padding: 0px 14px 0px 4px;
+                  box-sizing: border-box;
+               }
+            }
+
+            .truck-card-text {
+               display: flex;
+               font-size: 14px;
+               font-weight: 600;
+               color: #6c6c6c;
+               line-height: 14px;
+
+               .regular {
+                  width: 85px;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  font-weight: 400;
+                  padding-left: 6px;
+                  box-sizing: border-box;
+               }
+
+               .trailer-regular {
+                  font-weight: 400;
+                  padding-left: 6px;
+                  box-sizing: border-box;
+               }
+
+               .trailer-regular1 {
+                  display: inline-block;
+                  width: 106px;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  font-weight: 400;
+                  padding-left: 6px;
+                  box-sizing: border-box;
+               }
+
+               .repair-regular {
+                  display: inline-block;
+                  width: 207px;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  font-weight: 400;
+                  padding-left: 6px;
+                  box-sizing: border-box;
+               }
+
+               .repair-bold {
+                  font-weight: 700;
+                  padding-left: 6px;
+                  box-sizing: border-box;
+               }
+            }
+
+            .finish-order {
+               padding: 2px 12px;
+               border-radius: 2px;
+               background-color: #f3f3f3;
+               font-size: 11px;
+               font-weight: 800;
+               color: #6c6c6c;
+               line-height: 16px;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+
+               &:hover {
+                  cursor: pointer;
+                  background-color: #ab47bc;
+                  color: #ffffff;
+               }
+            }
+
+            .miles {
+               font-weight: 700;
+            }
+
+            .driver-card-frame {
+               position: relative;
+               display: flex;
+               justify-content: flex-start;
+               align-items: center;
+
+               .driver-card-img {
+                  position: relative;
+                  width: 68px;
+                  height: 79px;
+                  border-radius: 2px;
+
+                  svg {
+                     width: 68px;
+                     height: 79px;
+                  }
+
+                  .circle-active {
+                     position: absolute;
+                     width: 22px;
+                     height: 22px;
+                     bottom: -4px;
+                     right: -4px;
+                     display: flex;
+                     justify-content: center;
+                     align-items: center;
+
+                     svg {
+                        display: flex;
+                        width: 19px;
+                        height: 19px;
+                     }
+                  }
+
+                  .container1 {
+                     position: absolute;
+                     display: none;
+                     width: 14px;
+                     cursor: pointer;
+                     user-select: none;
+                     top: 2px;
+                     left: 2px;
+                  }
+
+                  .container1 .checkmark {
+                     position: absolute;
+                     display: inline-block;
+                     width: 14px;
+                     height: 14px;
+                     border-radius: 2px;
+                     background-color: #ffffff;
+                     top: 50%;
+                     transform: translateY(-50%);
+                     left: 0px;
+                  }
+
+                  .container1 input:checked ~ .checkmark {
+                     background-color: #fff;
+                  }
+
+                  .checkmark:after {
+                     content: '';
+                     position: absolute;
+                     display: none;
+                  }
+
+                  .container1 input:checked ~ .checkmark:after {
+                     display: block;
+                  }
+
+                  .container1 .checkmark:after {
+                     left: 5px;
+                     top: 1.4px;
+                     width: 5px;
+                     height: 10px;
+                     border: solid #919191;
+                     border-width: 0 3px 3px 0;
+                     transform: rotate(45deg);
+                  }
+
+                  .check-box {
+                     width: 14px;
+                     height: 14px;
+                     border-radius: 2px;
+                     background-color: #ffffff;
+                  }
+
+                  &:hover {
+                     .container1 {
+                        display: flex;
+                     }
+                  }
+               }
+
+               .driver-card-info-frame {
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: flex-start;
+                  flex-direction: column;
+                  padding-left: 12px;
+                  box-sizing: border-box;
+
+                  .driver-card-name {
+                     font-size: 16px;
+                     font-weight: 600;
+                     color: #6c6c6c;
+                     line-height: 16px;
+
+                     &:hover {
+                        cursor: pointer;
+                        color: #3551b7;
+                     }
+                  }
+
+                  .driver-card-phone-frame {
+                     display: flex;
+                     justify-content: flex-start;
+                     align-items: flex-start;
+
+                     &.padding-between {
+                        padding: 12px 0px;
+                        box-sizing: border-box;
+                     }
+
+                     .driver-phone-img {
+                        width: 18px;
+                        height: 18px;
+
+                        svg-icon {
+                           svg {
+                              display: flex;
+
+                              path {
+                                 fill: #aaaaaa;
+                              }
+                           }
+                        }
+                     }
+
+                     .driver-phone {
+                        width: 204px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: #6c6c6c;
+                        line-height: 14px;
+                        padding-left: 6px;
+                        box-sizing: border-box;
+                     }
+                  }
+               }
+            }
+
+            &.active {
+               background-color: #e5e5e5;
+
+               .count-box {
+                  background-color: #26a690 !important;
+
+                  &.different-bcg {
+                     background-color: #ef5350 !important;
+                  }
+               }
+
+               .broker-box-bcg {
+                  background-color: #536bc2 !important;
+               }
+
+               .broker-box-between {
+                  background-color: #f44336 !important;
+               }
+
+               .driver-card-img {
+                  .container1 {
+                     display: flex;
+                  }
+               }
+            }
+         }
+      }
+   }
 }
 .divider {
-    margin: 0;
-    height: 2px;
-    width: 100%;
-    border-radius: 1px;
-    background-color: #f3f3f3;
+   margin: 0;
+   height: 2px;
+   width: 100%;
+   border-radius: 1px;
+   background-color: #f3f3f3;
 }

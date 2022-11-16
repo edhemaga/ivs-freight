@@ -1,166 +1,166 @@
 @import './ta-input.colors.scss';
 // -------------------- Input Label --------------------
 .input-label {
-    position: absolute;
-    top: 4px;
-    left: 6px;
-    font-size: 14px;
-    transition: all 0.3s ease-in-out;
-    color: $input-label-color;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    pointer-events: none;
-    line-height: 18px;
+   position: absolute;
+   top: 4px;
+   left: 6px;
+   font-size: 14px;
+   transition: all 0.3s ease-in-out;
+   color: $input-label-color;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   pointer-events: none;
+   line-height: 18px;
 
-    span {
-        &::-moz-selection {
+   span {
+      &::-moz-selection {
+         background-color: $input-label-background-selection !important;
+         color: $input-label-text-selection !important;
+      }
+
+      &::selection {
+         background-color: $input-label-background-selection !important;
+         color: $input-label-text-selection !important;
+      }
+   }
+
+   &.required {
+      &::after {
+         content: ' *';
+         color: $input-label-required-star;
+      }
+   }
+
+   &.disabled-empty {
+      transition: all 0.3s ease-in-out;
+      color: $input-label-color-disabled !important;
+   }
+
+   &.disabled-filled {
+      transition: all 0.3s ease-in-out;
+      color: $input-label-color-disabled !important;
+   }
+
+   &.up-label {
+      top: -17px;
+      left: 6px;
+      font-size: 11px;
+      font-weight: $input-label-color-active-up;
+      transition: all 0.3s ease-in-out;
+      color: $input-label-color;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+      pointer-events: none !important;
+
+      span {
+         &::-moz-selection {
             background-color: $input-label-background-selection !important;
             color: $input-label-text-selection !important;
-        }
+         }
 
-        &::selection {
+         &::selection {
             background-color: $input-label-background-selection !important;
             color: $input-label-text-selection !important;
-        }
-    }
+         }
+      }
+   }
 
-    &.required {
-        &::after {
+   &.has-input-icon {
+      left: 37px;
+
+      &.up-label {
+         left: 36px;
+      }
+   }
+
+   &.valid-focus-out,
+   &.invalid-focus-out {
+      transition: all 0.3s ease-in-out;
+      color: $input-label-color;
+      font-weight: $input-label-color-active-up;
+   }
+
+   &.hidden-label {
+      display: none !important;
+   }
+
+   &.routing-address {
+      font-size: 11px;
+      color: $input-label-color;
+      font-weight: $input-label-color-active-up;
+      top: 2px !important;
+   }
+
+   &.routing-address-focus {
+      display: none !important;
+   }
+
+   &.load-shipper {
+      &.required {
+         &::after {
             content: ' *';
             color: $input-label-required-star;
-        }
-    }
+            position: absolute;
+            right: -10px;
+            top: 0px;
+         }
+      }
+   }
 
-    &.disabled-empty {
-        transition: all 0.3s ease-in-out;
-        color: $input-label-color-disabled !important;
-    }
+   //------------------------- Multiple Labels Classs -------------------------
 
-    &.disabled-filled {
-        transition: all 0.3s ease-in-out;
-        color: $input-label-color-disabled !important;
-    }
+   .load-dispatches-ttd {
+      display: grid;
+      grid-template-columns: repeat(3, 58px);
+      align-items: center;
+      -moz-column-gap: 70px;
+      column-gap: 70px;
+   }
 
-    &.up-label {
-        top: -17px;
-        left: 6px;
-        font-size: 11px;
-        font-weight: $input-label-color-active-up;
-        transition: all 0.3s ease-in-out;
-        color: $input-label-color;
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-        pointer-events: none !important;
+   .load-broker-contact {
+      display: grid;
+      grid-template-columns: repeat(3, 120px);
+      align-items: center;
+   }
 
-        span {
-            &::-moz-selection {
-                background-color: $input-label-background-selection !important;
-                color: $input-label-text-selection !important;
-            }
+   .load-shipper {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: center;
+      -moz-column-gap: 252px;
+      column-gap: 252px;
+   }
 
-            &::selection {
-                background-color: $input-label-background-selection !important;
-                color: $input-label-text-selection !important;
-            }
-        }
-    }
+   //------------------------- Custom class -------------------------
+   &.input-32 {
+      top: 7px;
 
-    &.has-input-icon {
-        left: 37px;
+      &.up-label {
+         top: -19px;
+      }
+   }
 
-        &.up-label {
-            left: 36px;
-        }
-    }
+   &.input-30 {
+      top: 6px;
 
-    &.valid-focus-out,
-    &.invalid-focus-out {
-        transition: all 0.3s ease-in-out;
-        color: $input-label-color;
-        font-weight: $input-label-color-active-up;
-    }
+      &.up-label {
+         top: -17px;
+      }
+   }
 
-    &.hidden-label {
-        display: none !important;
-    }
+   &.regular {
+      font-weight: 400;
+   }
 
-    &.routing-address {
-        font-size: 11px;
-        color: $input-label-color;
-        font-weight: $input-label-color-active-up;
-        top: 2px !important;
-    }
+   &.load-adjusted-rate {
+      color: $input-label-color-dark-yellow !important;
+   }
 
-    &.routing-address-focus {
-        display: none !important;
-    }
-
-    &.load-shipper {
-        &.required {
-            &::after {
-                content: ' *';
-                color: $input-label-required-star;
-                position: absolute;
-                right: -10px;
-                top: 0px;
-            }
-        }
-    }
-
-    //------------------------- Multiple Labels Classs -------------------------
-
-    .load-dispatches-ttd {
-        display: grid;
-        grid-template-columns: repeat(3, 58px);
-        align-items: center;
-        -moz-column-gap: 70px;
-        column-gap: 70px;
-    }
-
-    .load-broker-contact {
-        display: grid;
-        grid-template-columns: repeat(3, 120px);
-        align-items: center;
-    }
-
-    .load-shipper {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        align-items: center;
-        -moz-column-gap: 252px;
-        column-gap: 252px;
-    }
-
-    //------------------------- Custom class -------------------------
-    &.input-32 {
-        top: 7px;
-
-        &.up-label {
-            top: -19px;
-        }
-    }
-
-    &.input-30 {
-        top: 6px;
-
-        &.up-label {
-            top: -17px;
-        }
-    }
-
-    &.regular {
-        font-weight: 400;
-    }
-
-    &.load-adjusted-rate {
-        color: $input-label-color-dark-yellow !important;
-    }
-
-    &.load-advance-rate {
-        color: $input-label-color-dark-green !important;
-    }
+   &.load-advance-rate {
+      color: $input-label-color-dark-green !important;
+   }
 }

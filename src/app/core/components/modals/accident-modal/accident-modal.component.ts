@@ -1,8 +1,8 @@
 import {
-    phoneFaxRegex,
-    addressValidation,
-    vinNumberValidation,
-    descriptionValidation,
+   phoneFaxRegex,
+   addressValidation,
+   vinNumberValidation,
+   descriptionValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
@@ -19,423 +19,417 @@ import { AccidentModalResponse } from '../../../../../../appcoretruckassist/mode
 import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
-    selector: 'app-accident-modal',
-    templateUrl: './accident-modal.component.html',
-    styleUrls: ['./accident-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
-    providers: [ModalService, FormService],
+   selector: 'app-accident-modal',
+   templateUrl: './accident-modal.component.html',
+   styleUrls: ['./accident-modal.component.scss'],
+   animations: [tab_modal_animation('animationTabsModal')],
+   providers: [ModalService, FormService],
 })
 export class AccidentModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-    @Input() editData: any;
+   private destroy$ = new Subject<void>();
+   @Input() editData: any;
 
-    public accidentForm: FormGroup;
+   public accidentForm: FormGroup;
 
-    public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
+   public selectedTab: number = 1;
+   public tabs: any[] = [
+      {
+         id: 1,
+         name: 'Basic',
+      },
+      {
+         id: 2,
+         name: 'Additional',
+      },
+   ];
 
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
+   public animationObject = {
+      value: this.selectedTab,
+      params: { height: '0px' },
+   };
 
-    public documents: any[] = [];
-    public media: any[] = [];
+   public documents: any[] = [];
+   public media: any[] = [];
 
-    public labelsAccidentCustomer: any[] = [];
-    public labelsTrailerUnits: any[] = [];
+   public labelsAccidentCustomer: any[] = [];
+   public labelsTrailerUnits: any[] = [];
 
-    public labelsInsuranceType: any[] = [];
-    public selectedInsuranceType: any[] = [];
+   public labelsInsuranceType: any[] = [];
+   public selectedInsuranceType: any[] = [];
 
-    public selectedAccidentCustomer: any = null;
-    public selectedTrailerUnit: any = null;
+   public selectedAccidentCustomer: any = null;
+   public selectedTrailerUnit: any = null;
 
-    public selectedAddressLocation: AddressEntity = null;
-    public selectedAddressDestination: AddressEntity = null;
-    public selectedAddressOrigin: AddressEntity = null;
-    public selectedAddressAuthority: AddressEntity = null;
+   public selectedAddressLocation: AddressEntity = null;
+   public selectedAddressDestination: AddressEntity = null;
+   public selectedAddressOrigin: AddressEntity = null;
+   public selectedAddressAuthority: AddressEntity = null;
 
-    public isLocationAndShippingOpen: boolean = true;
+   public isLocationAndShippingOpen: boolean = true;
 
-    public isFormDirty: boolean;
+   public isFormDirty: boolean;
 
-    public accidentModalName: string = null;
+   public accidentModalName: string = null;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private inputService: TaInputService,
-        private modalService: ModalService,
-        private formService: FormService,
-        private accidentTService: AccidentTService,
-        private notificationService: NotificationService
-    ) {}
+   constructor(
+      private formBuilder: FormBuilder,
+      private inputService: TaInputService,
+      private modalService: ModalService,
+      private formService: FormService,
+      private accidentTService: AccidentTService,
+      private notificationService: NotificationService
+   ) {}
 
-    ngOnInit() {
-        this.createForm();
-        this.getModalDropdowns();
+   ngOnInit() {
+      this.createForm();
+      this.getModalDropdowns();
 
-        if (this.editData) {
-            this.editAccidentById(this.editData.id);
-        }
-    }
+      if (this.editData) {
+         this.editAccidentById(this.editData.id);
+      }
+   }
 
-    private createForm() {
-        this.accidentForm = this.formBuilder.group({
-            report: [null],
-            federallyRecordable: [null],
-            stateRecordable: [null],
-            injury: [null],
-            fatality: [null],
-            towing: [null],
-            hazmat: [null],
-            vehicleNumber: [null],
-            location: [null, [...addressValidation]],
-            date: [null],
-            time: [null],
-            driverName: [null],
-            driverLicenceNumber: [null],
-            driverState: [null],
-            driverDOB: [null],
-            truckUnit: [null],
-            truckType: [null],
-            truckMake: [null],
-            truckPlateNumber: [null],
-            truckState: [null],
-            truckVIN: [null, [...vinNumberValidation]],
-            trailerUnit: [null],
-            trailerType: [null],
-            trailerMake: [null],
-            trailerPlateNumber: [null],
-            trailerState: [null],
-            trailerVIN: [null, [...vinNumberValidation]],
-            violations: this.formBuilder.array([]),
-            insurance: this.formBuilder.array([]),
-            note: [null],
-            roadwayTrafficWay: [null],
-            weatherCondition: [null],
-            roadAccessControl: [null],
-            roadSurfaceCondition: [null],
-            lightCondition: [null],
-            reportingAgency: [null],
-            policeOfficer: [null],
-            bagdeNo: [null],
-            authorityAddress: [null, [...addressValidation]],
-            phoneOfficer: [null, phoneFaxRegex],
-            fax: [null, phoneFaxRegex],
-            origin: [null, [...addressValidation]],
-            destination: [null, [...addressValidation]],
-            customer: [null],
-            boL: [null],
-            cargo: [null],
-        });
+   private createForm() {
+      this.accidentForm = this.formBuilder.group({
+         report: [null],
+         federallyRecordable: [null],
+         stateRecordable: [null],
+         injury: [null],
+         fatality: [null],
+         towing: [null],
+         hazmat: [null],
+         vehicleNumber: [null],
+         location: [null, [...addressValidation]],
+         date: [null],
+         time: [null],
+         driverName: [null],
+         driverLicenceNumber: [null],
+         driverState: [null],
+         driverDOB: [null],
+         truckUnit: [null],
+         truckType: [null],
+         truckMake: [null],
+         truckPlateNumber: [null],
+         truckState: [null],
+         truckVIN: [null, [...vinNumberValidation]],
+         trailerUnit: [null],
+         trailerType: [null],
+         trailerMake: [null],
+         trailerPlateNumber: [null],
+         trailerState: [null],
+         trailerVIN: [null, [...vinNumberValidation]],
+         violations: this.formBuilder.array([]),
+         insurance: this.formBuilder.array([]),
+         note: [null],
+         roadwayTrafficWay: [null],
+         weatherCondition: [null],
+         roadAccessControl: [null],
+         roadSurfaceCondition: [null],
+         lightCondition: [null],
+         reportingAgency: [null],
+         policeOfficer: [null],
+         bagdeNo: [null],
+         authorityAddress: [null, [...addressValidation]],
+         phoneOfficer: [null, phoneFaxRegex],
+         fax: [null, phoneFaxRegex],
+         origin: [null, [...addressValidation]],
+         destination: [null, [...addressValidation]],
+         customer: [null],
+         boL: [null],
+         cargo: [null],
+      });
 
-        this.formService.checkFormChange(this.accidentForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
-    }
+      this.formService.checkFormChange(this.accidentForm);
+      this.formService.formValueChange$
+         .pipe(takeUntil(this.destroy$))
+         .subscribe((isFormChange: boolean) => {
+            this.isFormDirty = isFormChange;
+         });
+   }
 
-    public tabChange(event: any): void {
-        this.selectedTab = event.id;
-        let dotAnimation = document.querySelector('.animation-two-tabs');
+   public tabChange(event: any): void {
+      this.selectedTab = event.id;
+      let dotAnimation = document.querySelector('.animation-two-tabs');
 
-        this.animationObject = {
-            value: this.selectedTab,
-            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-        };
-    }
+      this.animationObject = {
+         value: this.selectedTab,
+         params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+      };
+   }
 
-    public get violations(): FormArray {
-        return this.accidentForm.get('violations') as FormArray;
-    }
+   public get violations(): FormArray {
+      return this.accidentForm.get('violations') as FormArray;
+   }
 
-    public get insurances(): FormArray {
-        return this.accidentForm.get('insurance') as FormArray;
-    }
+   public get insurances(): FormArray {
+      return this.accidentForm.get('insurance') as FormArray;
+   }
 
-    private createInsurance(data?: {
-        insuranceType: string;
-        claimNumber: string;
-        insuranceAdjuster: string;
-        phone: string;
-        email: string;
-    }): FormGroup {
-        return this.formBuilder.group({
-            insuranceType: [data?.insuranceType ? data.insuranceType : null],
-            claimNumber: [data?.claimNumber ? data.claimNumber : null],
-            insuranceAdjuster: [
-                data?.insuranceAdjuster ? data.insuranceAdjuster : null,
-            ],
-            phone: [data?.phone ? data.phone : null, phoneFaxRegex],
-            email: [data?.email ? data.email : null],
-        });
-    }
+   private createInsurance(data?: {
+      insuranceType: string;
+      claimNumber: string;
+      insuranceAdjuster: string;
+      phone: string;
+      email: string;
+   }): FormGroup {
+      return this.formBuilder.group({
+         insuranceType: [data?.insuranceType ? data.insuranceType : null],
+         claimNumber: [data?.claimNumber ? data.claimNumber : null],
+         insuranceAdjuster: [
+            data?.insuranceAdjuster ? data.insuranceAdjuster : null,
+         ],
+         phone: [data?.phone ? data.phone : null, phoneFaxRegex],
+         email: [data?.email ? data.email : null],
+      });
+   }
 
-    public addInsurance(event: { check: boolean; action: string }) {
-        const form = this.createInsurance();
-        if (event.check) {
-            this.insurances.push(form);
-        }
+   public addInsurance(event: { check: boolean; action: string }) {
+      const form = this.createInsurance();
+      if (event.check) {
+         this.insurances.push(form);
+      }
 
-        this.inputService.customInputValidator(
-            form.get('email'),
-            'email',
-            this.destroy$
-        );
-    }
+      this.inputService.customInputValidator(
+         form.get('email'),
+         'email',
+         this.destroy$
+      );
+   }
 
-    public removeInsurance(id: number) {
-        this.insurances.removeAt(id);
-        this.selectedInsuranceType.splice(id, 1);
-    }
+   public removeInsurance(id: number) {
+      this.insurances.removeAt(id);
+      this.selectedInsuranceType.splice(id, 1);
+   }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
-            case 'close': {
-                break;
+   public onModalAction(data: { action: string; bool: boolean }): void {
+      switch (data.action) {
+         case 'close': {
+            break;
+         }
+         case 'save': {
+            if (this.accidentForm.invalid || !this.isFormDirty) {
+               this.inputService.markInvalid(this.accidentForm);
+               return;
             }
-            case 'save': {
-                if (this.accidentForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.accidentForm);
-                    return;
-                }
-                if (this.editData) {
-                    this.updateAccident(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                    });
-                } else {
-                    this.addAccident();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                    });
-                }
-                break;
+            if (this.editData) {
+               this.updateAccident(this.editData.id);
+               this.modalService.setModalSpinner({
+                  action: null,
+                  status: true,
+               });
+            } else {
+               this.addAccident();
+               this.modalService.setModalSpinner({
+                  action: null,
+                  status: true,
+               });
             }
-            default: {
-                break;
-            }
-        }
-    }
+            break;
+         }
+         default: {
+            break;
+         }
+      }
+   }
 
-    public editAccidentById(id: number) {
-        this.accidentTService
-            .getAccidentById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: AccidentResponse) => {
-                    console.log;
-                    this.accidentForm.patchValue({
-                        report: res.report,
-                        federallyRecordable: res.federallyRecordable,
-                        stateRecordable: res.stateRecordable,
-                        injury: res.injury,
-                        fatality: res.fatality,
-                        towing: res.towing,
-                        hazmat: res.hazMat,
-                        vehicleNumber: res.vehicloNo,
-                        location: res.addressAccident
-                            ? res.addressAccident.address
-                            : null,
-                        date: res.date
-                            ? convertDateFromBackend(res.date)
-                            : null,
-                        time: res.time,
-                        driverName: res.driver_FullName,
-                        driverLicenceNumber: res.driver_LicenceNo,
-                        driverState: res.driver_State,
-                        driverDOB: res.driver_DateOfBirth
-                            ? convertDateFromBackend(res.driver_DateOfBirth)
-                            : null,
-                        truckUnit: res.truck_Unit,
-                        truckType: res.truck_Type,
-                        truckMake: res.truck_Make,
-                        truckPlateNumber: res.truck_PlateNo,
-                        truckState: res.truck_State,
-                        truckVIN: res.truck_VIN,
-                        trailerUnit: res.trailer_Unit,
-                        trailerType: res.trailer_Type,
-                        trailerMake: res.trailer_Make,
-                        trailerPlateNumber: res.trailer_PlateNo,
-                        trailerState: res.trailer_State,
-                        trailerVIN: res.trailer_VIN,
-                        violations: [],
-                        insurance: [],
-                        note: null,
-                        roadwayTrafficWay: res.roadwayTrafficway,
-                        weatherCondition: res.weatherCondition,
-                        roadAccessControl: res.roadAccessControl,
-                        roadSurfaceCondition: res.roadSurfaceCondition,
-                        lightCondition: res.lightCondition,
-                        reportingAgency: res.reportingAgency,
-                        policeOfficer: res.policeOfficer,
-                        bagdeNo: res.bagdeNo,
-                        authorityAddress: res.addressAuthority
-                            ? res.addressAuthority.address
-                            : null,
-                        phoneOfficer: res.phoneOfficer,
-                        fax: res.fax,
-                        origin: res.origin ? res.origin.address : null,
-                        destination: res.destination
-                            ? res.destination.address
-                            : null,
-                        customer: res.broker ? res.broker.businessName : null,
-                        boL: res.boL,
-                        cargo: res.cargo,
-                    });
+   public editAccidentById(id: number) {
+      this.accidentTService
+         .getAccidentById(id)
+         .pipe(takeUntil(this.destroy$))
+         .subscribe({
+            next: (res: AccidentResponse) => {
+               console.log;
+               this.accidentForm.patchValue({
+                  report: res.report,
+                  federallyRecordable: res.federallyRecordable,
+                  stateRecordable: res.stateRecordable,
+                  injury: res.injury,
+                  fatality: res.fatality,
+                  towing: res.towing,
+                  hazmat: res.hazMat,
+                  vehicleNumber: res.vehicloNo,
+                  location: res.addressAccident
+                     ? res.addressAccident.address
+                     : null,
+                  date: res.date ? convertDateFromBackend(res.date) : null,
+                  time: res.time,
+                  driverName: res.driver_FullName,
+                  driverLicenceNumber: res.driver_LicenceNo,
+                  driverState: res.driver_State,
+                  driverDOB: res.driver_DateOfBirth
+                     ? convertDateFromBackend(res.driver_DateOfBirth)
+                     : null,
+                  truckUnit: res.truck_Unit,
+                  truckType: res.truck_Type,
+                  truckMake: res.truck_Make,
+                  truckPlateNumber: res.truck_PlateNo,
+                  truckState: res.truck_State,
+                  truckVIN: res.truck_VIN,
+                  trailerUnit: res.trailer_Unit,
+                  trailerType: res.trailer_Type,
+                  trailerMake: res.trailer_Make,
+                  trailerPlateNumber: res.trailer_PlateNo,
+                  trailerState: res.trailer_State,
+                  trailerVIN: res.trailer_VIN,
+                  violations: [],
+                  insurance: [],
+                  note: null,
+                  roadwayTrafficWay: res.roadwayTrafficway,
+                  weatherCondition: res.weatherCondition,
+                  roadAccessControl: res.roadAccessControl,
+                  roadSurfaceCondition: res.roadSurfaceCondition,
+                  lightCondition: res.lightCondition,
+                  reportingAgency: res.reportingAgency,
+                  policeOfficer: res.policeOfficer,
+                  bagdeNo: res.bagdeNo,
+                  authorityAddress: res.addressAuthority
+                     ? res.addressAuthority.address
+                     : null,
+                  phoneOfficer: res.phoneOfficer,
+                  fax: res.fax,
+                  origin: res.origin ? res.origin.address : null,
+                  destination: res.destination ? res.destination.address : null,
+                  customer: res.broker ? res.broker.businessName : null,
+                  boL: res.boL,
+                  cargo: res.cargo,
+               });
 
-                    this.accidentModalName = res.report;
+               this.accidentModalName = res.report;
 
-                    this.selectedAddressLocation = res.addressAccident;
-                    this.selectedAddressAuthority = res.addressAuthority;
-                    this.selectedAddressOrigin = res.origin;
-                    this.selectedAddressDestination = res.destination;
+               this.selectedAddressLocation = res.addressAccident;
+               this.selectedAddressAuthority = res.addressAuthority;
+               this.selectedAddressOrigin = res.origin;
+               this.selectedAddressDestination = res.destination;
 
-                    this.selectedAccidentCustomer = res.broker;
+               this.selectedAccidentCustomer = res.broker;
 
-                    if (res.insuranceType.length) {
-                        for (let i = 0; i < res.insuranceType.length; i++) {
-                            this.insurances.push(
-                                this.createInsurance({
-                                    insuranceType: res.insuranceType[i].insTypes
-                                        ? res.insuranceType[i].insTypes.name
-                                        : null,
-                                    claimNumber:
-                                        res.insuranceType[i].claimNo.toString(),
-                                    insuranceAdjuster:
-                                        res.insuranceType[i].insAdjuster,
-                                    phone: res.insuranceType[i].phone,
-                                    email: res.insuranceType[i].email,
-                                })
-                            );
-                        }
-                    }
+               if (res.insuranceType.length) {
+                  for (let i = 0; i < res.insuranceType.length; i++) {
+                     this.insurances.push(
+                        this.createInsurance({
+                           insuranceType: res.insuranceType[i].insTypes
+                              ? res.insuranceType[i].insTypes.name
+                              : null,
+                           claimNumber: res.insuranceType[i].claimNo.toString(),
+                           insuranceAdjuster: res.insuranceType[i].insAdjuster,
+                           phone: res.insuranceType[i].phone,
+                           email: res.insuranceType[i].email,
+                        })
+                     );
+                  }
+               }
 
-                    // [
-                    //   this.formBuilder.group({
-                    //     categoryId: ['Crash Indicator'],
-                    //     sw: ['2'],
-                    //     hm: [true],
-                    //     description: [
-                    //       'Involves tow-away but no injury or fatality',
-                    //       [...descriptionValidation],
-                    //     ],
-                    //   }),
-                    // ]
-                },
-                error: (err: any) => {
-                    this.notificationService.error('Error', err);
-                },
-            });
-    }
+               // [
+               //   this.formBuilder.group({
+               //     categoryId: ['Crash Indicator'],
+               //     sw: ['2'],
+               //     hm: [true],
+               //     description: [
+               //       'Involves tow-away but no injury or fatality',
+               //       [...descriptionValidation],
+               //     ],
+               //   }),
+               // ]
+            },
+            error: (err: any) => {
+               this.notificationService.error('Error', err);
+            },
+         });
+   }
 
-    private updateAccident(id: number) {}
+   private updateAccident(id: number) {}
 
-    private addAccident() {}
+   private addAccident() {}
 
-    private getModalDropdowns() {
-        this.accidentTService
-            .getModalDropdowns()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: AccidentModalResponse) => {
-                    console.log(res);
-                    this.labelsTrailerUnits = res.trailers.map((item) => {
-                        return {
-                            id: item.id,
-                            name: item.trailerNumber,
-                        };
-                    });
-                    this.labelsInsuranceType = res.insuranceType;
-                },
-                error: (err: any) => {
-                    this.notificationService.error('Error', err);
-                },
-            });
-    }
+   private getModalDropdowns() {
+      this.accidentTService
+         .getModalDropdowns()
+         .pipe(takeUntil(this.destroy$))
+         .subscribe({
+            next: (res: AccidentModalResponse) => {
+               console.log(res);
+               this.labelsTrailerUnits = res.trailers.map((item) => {
+                  return {
+                     id: item.id,
+                     name: item.trailerNumber,
+                  };
+               });
+               this.labelsInsuranceType = res.insuranceType;
+            },
+            error: (err: any) => {
+               this.notificationService.error('Error', err);
+            },
+         });
+   }
 
-    public onHandleAddress(
-        event: {
-            address: AddressEntity | any;
-            valid: boolean;
-        },
-        action
-    ) {
-        switch (action) {
-            case 'address-authority': {
-                if (event.valid) this.selectedAddressAuthority = event;
-                break;
-            }
-            case 'address-origin': {
-                if (event.valid) this.selectedAddressOrigin = event;
-                break;
-            }
-            case 'address-destination': {
-                if (event.valid) this.selectedAddressDestination = event;
-                break;
-            }
-            case 'location': {
-                if (event.valid) this.selectedAddressLocation = event;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
+   public onHandleAddress(
+      event: {
+         address: AddressEntity | any;
+         valid: boolean;
+      },
+      action
+   ) {
+      switch (action) {
+         case 'address-authority': {
+            if (event.valid) this.selectedAddressAuthority = event;
+            break;
+         }
+         case 'address-origin': {
+            if (event.valid) this.selectedAddressOrigin = event;
+            break;
+         }
+         case 'address-destination': {
+            if (event.valid) this.selectedAddressDestination = event;
+            break;
+         }
+         case 'location': {
+            if (event.valid) this.selectedAddressLocation = event;
+            break;
+         }
+         default: {
+            break;
+         }
+      }
+   }
 
-    public onFilesEvent(event: any) {
-        switch (event.type) {
-            case 'documents': {
-                this.documents = event.files;
-                break;
-            }
-            case 'media': {
-                this.media = event.files;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
+   public onFilesEvent(event: any) {
+      switch (event.type) {
+         case 'documents': {
+            this.documents = event.files;
+            break;
+         }
+         case 'media': {
+            this.media = event.files;
+            break;
+         }
+         default: {
+            break;
+         }
+      }
+   }
 
-    public onSelectDropDown(event: any, action: string, index?: number) {
-        switch (action) {
-            case 'shipping-customer': {
-                this.selectedAccidentCustomer = event;
-                break;
-            }
-            case 'trailer-unit': {
-                this.selectedTrailerUnit = event;
-                break;
-            }
-            case 'insurance-type': {
-                this.selectedInsuranceType[index] = event;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
+   public onSelectDropDown(event: any, action: string, index?: number) {
+      switch (action) {
+         case 'shipping-customer': {
+            this.selectedAccidentCustomer = event;
+            break;
+         }
+         case 'trailer-unit': {
+            this.selectedTrailerUnit = event;
+            break;
+         }
+         case 'insurance-type': {
+            this.selectedInsuranceType[index] = event;
+            break;
+         }
+         default: {
+            break;
+         }
+      }
+   }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
+   ngOnDestroy(): void {
+      this.destroy$.next();
+      this.destroy$.complete();
+   }
 }

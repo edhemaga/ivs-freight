@@ -5,18 +5,18 @@ import { IDispatcher } from './dispatcher.model';
 export interface DispatcherState extends EntityState<IDispatcher, string> {}
 
 export function createInitialState(): DispatcherState {
-    return {
-        modal: [],
-        dispatchList: [],
-    };
+   return {
+      modal: [],
+      dispatchList: [],
+   };
 }
 
 @Injectable({
-    providedIn: 'root',
+   providedIn: 'root',
 })
 @StoreConfig({ name: 'dispatchboard' })
 export class DispatcherStore extends EntityStore<DispatcherState> {
-    constructor() {
-        super(createInitialState());
-    }
+   constructor() {
+      super(createInitialState());
+   }
 }

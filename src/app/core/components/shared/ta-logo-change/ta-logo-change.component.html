@@ -1,109 +1,107 @@
 <div
-    class="ta-logo-container"
-    [ngClass]="{
-        expanded: !showUploadZone && !imageUrl,
-        'image-zone-flex': imageUrl,
-        'ta-logo-container-rectangle': croppieShape === 'rectangle'
-    }"
+   class="ta-logo-container"
+   [ngClass]="{
+      expanded: !showUploadZone && !imageUrl,
+      'image-zone-flex': imageUrl,
+      'ta-logo-container-rectangle': croppieShape === 'rectangle'
+   }"
 >
-    <!------------------------ Croppie editing ------------------------>
-    <div [hidden]="showUploadZone || imageUrl">
-        <div class="d-flex">
-            <img
-                alt="cropped-image"
-                #croppie="croppie"
-                [croppieOptions]="croppieOptions"
-                (update)="handleCroppieUpdate()"
-            />
-        </div>
-        <div class="crop-accepted-container">
-            <div class="slider-container">
-                <app-ta-ngx-slider
-                    *ngIf="!showUploadZone"
-                    [sliderTemplate]="'logo-change'"
-                    [sliderOptions]="ngxLogoOptions"
-                    [startedValue]="ngxSliderPosition"
-                    [customClass]="customClass | logoSlider"
-                    (onUserValueChange)="zooming($event)"
-                ></app-ta-ngx-slider>
+   <!------------------------ Croppie editing ------------------------>
+   <div [hidden]="showUploadZone || imageUrl">
+      <div class="d-flex">
+         <img
+            alt="cropped-image"
+            #croppie="croppie"
+            [croppieOptions]="croppieOptions"
+            (update)="handleCroppieUpdate()"
+         />
+      </div>
+      <div class="crop-accepted-container">
+         <div class="slider-container">
+            <app-ta-ngx-slider
+               *ngIf="!showUploadZone"
+               [sliderTemplate]="'logo-change'"
+               [sliderOptions]="ngxLogoOptions"
+               [startedValue]="ngxSliderPosition"
+               [customClass]="customClass | logoSlider"
+               (onUserValueChange)="zooming($event)"
+            ></app-ta-ngx-slider>
 
-                <div class="buttons-container">
-                    <div
-                        (click)="saveImage()"
-                        class="save-check"
-                        ngbTooltip
-                        mainTooltip="Confirm"
-                        tooltipBackground="#536bc2"
-                        position="top"
-                    >
-                        <p>CROP</p>
-                    </div>
-                    <div
-                        (click)="onCancel()"
-                        class="cancel-check"
-                        ngbTooltip
-                        mainTooltip="Cancel"
-                        tooltipBackground="#6c6c6c"
-                        position="top"
-                    >
-                        <p>CANCEL</p>
-                    </div>
-                </div>
+            <div class="buttons-container">
+               <div
+                  (click)="saveImage()"
+                  class="save-check"
+                  ngbTooltip
+                  mainTooltip="Confirm"
+                  tooltipBackground="#536bc2"
+                  position="top"
+               >
+                  <p>CROP</p>
+               </div>
+               <div
+                  (click)="onCancel()"
+                  class="cancel-check"
+                  ngbTooltip
+                  mainTooltip="Cancel"
+                  tooltipBackground="#6c6c6c"
+                  position="top"
+               >
+                  <p>CANCEL</p>
+               </div>
             </div>
+         </div>
 
-            <div class="crop-message">Crop Confirmation Required</div>
-        </div>
-    </div>
+         <div class="crop-message">Crop Confirmation Required</div>
+      </div>
+   </div>
 
-    <!------------------------ Saved File ------------------------>
-    <div
-        class="ta-logo-saved-image"
-        [ngClass]="{
-            'ta-logo-saved-image-circle':
-                croppieOptions.viewport.type === 'circle'
-        }"
-        *ngIf="imageUrl"
-    >
-        <div
-            *ngIf="croppieShape !== 'rectangle'"
-            class="ta-logo-image-delete"
-            ngbTooltip
-            mainTooltip="Delete"
-            tooltipBackground="#EF5350"
-            position="top"
-            (click)="onDeleteSavedImage()"
-        >
-            <svg-icon
-                class="ta-delete-logo-svg"
-                src="assets/svg/common/ic_trash.svg"
-            ></svg-icon>
-        </div>
+   <!------------------------ Saved File ------------------------>
+   <div
+      class="ta-logo-saved-image"
+      [ngClass]="{
+         'ta-logo-saved-image-circle': croppieOptions.viewport.type === 'circle'
+      }"
+      *ngIf="imageUrl"
+   >
+      <div
+         *ngIf="croppieShape !== 'rectangle'"
+         class="ta-logo-image-delete"
+         ngbTooltip
+         mainTooltip="Delete"
+         tooltipBackground="#EF5350"
+         position="top"
+         (click)="onDeleteSavedImage()"
+      >
+         <svg-icon
+            class="ta-delete-logo-svg"
+            src="assets/svg/common/ic_trash.svg"
+         ></svg-icon>
+      </div>
 
-        <img
-            class="ta-logo-image"
-            [ngStyle]="{
-                width: croppieShape === 'rectangle' ? '616px' : '162px',
-                border:
-                    croppieShape === 'rectangle' ? '4px dashed #e5e5e5' : '0',
-                animation:
-                    croppieShape === 'rectangle' ? 'none' : 'slideInImage 200ms'
-            }"
-            [ngClass]="{
-                'ta-logo-image-circle': croppieOptions.viewport.type == 'circle'
-            }"
-            [src]="imageUrl"
-            alt="Cropped Image"
-        />
-    </div>
+      <img
+         class="ta-logo-image"
+         [ngStyle]="{
+            width: croppieShape === 'rectangle' ? '616px' : '162px',
+            border: croppieShape === 'rectangle' ? '4px dashed #e5e5e5' : '0',
+            animation:
+               croppieShape === 'rectangle' ? 'none' : 'slideInImage 200ms'
+         }"
+         [ngClass]="{
+            'ta-logo-image-circle': croppieOptions.viewport.type == 'circle'
+         }"
+         [src]="imageUrl"
+         alt="Cropped Image"
+      />
+   </div>
 
-    <!------------------------ DROP ZONE ------------------------>
-    <div
-        class="dropzone-logo-container {{ customClass }}"
-        [hidden]="!showUploadZone"
-    >
-        <app-ta-upload-dropzone
-            [dropZoneConfig]="dropZoneConfig"
-            (onFileEvent)="onUploadImage($event)"
-        ></app-ta-upload-dropzone>
-    </div>
+   <!------------------------ DROP ZONE ------------------------>
+   <div
+      class="dropzone-logo-container {{ customClass }}"
+      [hidden]="!showUploadZone"
+   >
+      <app-ta-upload-dropzone
+         [dropZoneConfig]="dropZoneConfig"
+         (onFileEvent)="onUploadImage($event)"
+      ></app-ta-upload-dropzone>
+   </div>
 </div>

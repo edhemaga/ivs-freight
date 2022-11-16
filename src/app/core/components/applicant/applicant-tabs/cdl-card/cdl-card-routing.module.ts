@@ -4,16 +4,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { CdlCardComponent } from './cdl-card.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: CdlCardComponent,
-        data: { title: 'CDL Card' },
-        children: [],
-    },
+   {
+      path: '',
+      component: CdlCardComponent,
+      data: { title: 'CDL Card' },
+      children: [],
+   },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
+   imports: [RouterModule.forChild(routes)],
+   exports: [RouterModule],
 })
 export class CdlCardRoutingModule {}

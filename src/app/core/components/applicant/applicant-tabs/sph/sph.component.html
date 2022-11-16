@@ -1,180 +1,173 @@
 <div class="container-fluid">
-    <div class="row">
-        <div
-            class="container-fluid d-flex flex-column justify-content-between sph-container"
-        >
-            <div class="d-flex flex-column align-items-center">
-                <app-applicant-header
-                    [mode]="selectedMode"
-                ></app-applicant-header>
+   <div class="row">
+      <div
+         class="container-fluid d-flex flex-column justify-content-between sph-container"
+      >
+         <div class="d-flex flex-column align-items-center">
+            <app-applicant-header [mode]="selectedMode"></app-applicant-header>
 
-                <h1 class="m-0 text-center title ta-font-bold">
-                    Safety Performance History
-                </h1>
+            <h1 class="m-0 text-center title ta-font-bold">
+               Safety Performance History
+            </h1>
 
-                <!-- APPLICANT CARD -->
+            <!-- APPLICANT CARD -->
 
-                <div
-                    class="d-flex flex-column justify-content-center applicant-card-container"
-                    *ngIf="applicantCardInfo.ssn"
-                >
-                    <div
-                        class="d-flex align-items-center"
-                        [ngClass]="
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'title-container title-container-feedback'
-                                : 'title-container'
-                        "
-                    >
-                        <div class="d-flex align-items-center name-title-box">
-                            <p class="m-0 ta-font-bold">APPLICANT NAME</p>
-                        </div>
-                        <div class="d-flex align-items-center ssn-title-box">
-                            <p class="m-0 ta-font-bold">SSN</p>
-                        </div>
-                        <div class="d-flex align-items-center dob-title-box">
-                            <p class="m-0 ta-font-bold">DOB</p>
-                        </div>
-                    </div>
+            <div
+               class="d-flex flex-column justify-content-center applicant-card-container"
+               *ngIf="applicantCardInfo.ssn"
+            >
+               <div
+                  class="d-flex align-items-center"
+                  [ngClass]="
+                     selectedMode === 'FEEDBACK_MODE'
+                        ? 'title-container title-container-feedback'
+                        : 'title-container'
+                  "
+               >
+                  <div class="d-flex align-items-center name-title-box">
+                     <p class="m-0 ta-font-bold">APPLICANT NAME</p>
+                  </div>
+                  <div class="d-flex align-items-center ssn-title-box">
+                     <p class="m-0 ta-font-bold">SSN</p>
+                  </div>
+                  <div class="d-flex align-items-center dob-title-box">
+                     <p class="m-0 ta-font-bold">DOB</p>
+                  </div>
+               </div>
 
-                    <div
-                        class="d-flex align-items-center"
-                        [ngClass]="
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'applicant-card-info-container applicant-card-info-container-feedback'
-                                : 'applicant-card-info-container'
-                        "
-                    >
-                        <div class="d-flex align-items-center driver-box">
-                            <p class="m-0 ta-font-regular">
-                                {{ applicantCardInfo.name }}
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center ssn-box">
-                            <p class="m-0 ta-font-regular">
-                                {{ applicantCardInfo.ssn }}
-                            </p>
-                        </div>
-                        <div class="d-flex align-items-center date-box">
-                            <p class="m-0 ta-font-regular">
-                                {{ applicantCardInfo.dob }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AUTHORIZE CHECKBOX -->
-
-                <div
-                    class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    [formGroup]="sphForm"
-                >
-                    <app-ta-checkbox
-                        formControlName="isTested"
-                        [name]="'isTested'"
-                        [label]="
-                            'Hereby authorize my previous employer to release and forward the information requested'
-                        "
-                        [customClass]="'bold-12'"
-                        [disabledStillCheckMark]="
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                        "
-                    >
-                    </app-ta-checkbox>
-
-                    <p
-                        class="m-0 text-center ta-font-bold"
-                        [ngStyle]="{
-                            color:
-                                selectedMode !== 'FEEDBACK_MODE' &&
-                                sphForm.get('isTested').value
-                                    ? '#2f2f2f'
-                                    : '#6c6c6c',
-                            cursor:
-                                selectedMode === 'REVIEW_MODE'
-                                    ? 'auto'
-                                    : 'pointer'
-                        }"
-                        (click)="handleCheckboxParagraphClick('isTested')"
-                    >
-                        below concerning my Alcohol and Controlled Substance
-                        Testing records within the previous 3 years from the
-                        date of my employment application.
-                    </p>
-                </div>
-
-                <!-- REVIEW BTN -->
-
-                <div
-                    class="d-flex align-items-center justify-content-center btn-container"
-                >
-                    <button
-                        type="button"
-                        class="d-flex align-items-center justify-content-center ta-font-semi-bold review-btn"
-                        [ngStyle]="{
-                            color:
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? '#97A8DC'
-                                    : '#6D82C7'
-                        }"
-                        (click)="handleReviewSectionsClick()"
-                    >
-                        Review other sections of this form
-                    </button>
-                </div>
-
-                <!-- SIGNATURE PAD -->
-
-                <div class="d-flex signature-pad-container">
-                    <app-applicant-signature-pad
-                        [mode]="selectedMode"
-                        [signatureImgSrc]="signatureImgSrc"
-                        (signatureEmitter)="onSignatureAction($event)"
-                    ></app-applicant-signature-pad>
-                </div>
-
-                <!-- UNDERSTOOD CHECKBOX -->
-
-                <div
-                    class="d-flex jusitfy-content-center align-items-center understood-checkbox-container"
-                    [formGroup]="sphForm"
-                >
-                    <app-ta-checkbox
-                        formControlName="hasReadAndUnderstood"
-                        [name]="'hasReadAndUnderstood'"
-                        [label]="
-                            'Please confirm that you have read and understood the content of this notice'
-                        "
-                        [customClass]="'bold-12'"
-                        [disabledStillCheckMark]="
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                        "
-                    >
-                    </app-ta-checkbox>
-                </div>
+               <div
+                  class="d-flex align-items-center"
+                  [ngClass]="
+                     selectedMode === 'FEEDBACK_MODE'
+                        ? 'applicant-card-info-container applicant-card-info-container-feedback'
+                        : 'applicant-card-info-container'
+                  "
+               >
+                  <div class="d-flex align-items-center driver-box">
+                     <p class="m-0 ta-font-regular">
+                        {{ applicantCardInfo.name }}
+                     </p>
+                  </div>
+                  <div class="d-flex align-items-center ssn-box">
+                     <p class="m-0 ta-font-regular">
+                        {{ applicantCardInfo.ssn }}
+                     </p>
+                  </div>
+                  <div class="d-flex align-items-center date-box">
+                     <p class="m-0 ta-font-regular">
+                        {{ applicantCardInfo.dob }}
+                     </p>
+                  </div>
+               </div>
             </div>
 
-            <!-- FOOTER -->
+            <!-- AUTHORIZE CHECKBOX -->
 
-            <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
-        </div>
-    </div>
+            <div
+               class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+               [formGroup]="sphForm"
+            >
+               <app-ta-checkbox
+                  formControlName="isTested"
+                  [name]="'isTested'"
+                  [label]="
+                     'Hereby authorize my previous employer to release and forward the information requested'
+                  "
+                  [customClass]="'bold-12'"
+                  [disabledStillCheckMark]="
+                     selectedMode === 'REVIEW_MODE' ||
+                     selectedMode === 'FEEDBACK_MODE'
+                  "
+               >
+               </app-ta-checkbox>
+
+               <p
+                  class="m-0 text-center ta-font-bold"
+                  [ngStyle]="{
+                     color:
+                        selectedMode !== 'FEEDBACK_MODE' &&
+                        sphForm.get('isTested').value
+                           ? '#2f2f2f'
+                           : '#6c6c6c',
+                     cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
+                  }"
+                  (click)="handleCheckboxParagraphClick('isTested')"
+               >
+                  below concerning my Alcohol and Controlled Substance Testing
+                  records within the previous 3 years from the date of my
+                  employment application.
+               </p>
+            </div>
+
+            <!-- REVIEW BTN -->
+
+            <div
+               class="d-flex align-items-center justify-content-center btn-container"
+            >
+               <button
+                  type="button"
+                  class="d-flex align-items-center justify-content-center ta-font-semi-bold review-btn"
+                  [ngStyle]="{
+                     color:
+                        selectedMode === 'FEEDBACK_MODE' ? '#97A8DC' : '#6D82C7'
+                  }"
+                  (click)="handleReviewSectionsClick()"
+               >
+                  Review other sections of this form
+               </button>
+            </div>
+
+            <!-- SIGNATURE PAD -->
+
+            <div class="d-flex signature-pad-container">
+               <app-applicant-signature-pad
+                  [mode]="selectedMode"
+                  [signatureImgSrc]="signatureImgSrc"
+                  (signatureEmitter)="onSignatureAction($event)"
+               ></app-applicant-signature-pad>
+            </div>
+
+            <!-- UNDERSTOOD CHECKBOX -->
+
+            <div
+               class="d-flex jusitfy-content-center align-items-center understood-checkbox-container"
+               [formGroup]="sphForm"
+            >
+               <app-ta-checkbox
+                  formControlName="hasReadAndUnderstood"
+                  [name]="'hasReadAndUnderstood'"
+                  [label]="
+                     'Please confirm that you have read and understood the content of this notice'
+                  "
+                  [customClass]="'bold-12'"
+                  [disabledStillCheckMark]="
+                     selectedMode === 'REVIEW_MODE' ||
+                     selectedMode === 'FEEDBACK_MODE'
+                  "
+               >
+               </app-ta-checkbox>
+            </div>
+         </div>
+
+         <!-- FOOTER -->
+
+         <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
+      </div>
+   </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-    class="d-flex justify-content-center align-items-center next-btn-container"
+   class="d-flex justify-content-center align-items-center next-btn-container"
 >
-    <app-applicant-next-back-btn
-        [nextStep]="true"
-        [lastStep]="true"
-        [filledCorrectly]="
-            selectedMode === 'APPLICANT_MODE' && sphForm.valid && signature
-        "
-        [mode]="selectedMode"
-        (stepEvent)="onStepAction($event)"
-    ></app-applicant-next-back-btn>
+   <app-applicant-next-back-btn
+      [nextStep]="true"
+      [lastStep]="true"
+      [filledCorrectly]="
+         selectedMode === 'APPLICANT_MODE' && sphForm.valid && signature
+      "
+      [mode]="selectedMode"
+      (stepEvent)="onStepAction($event)"
+   ></app-applicant-next-back-btn>
 </div>

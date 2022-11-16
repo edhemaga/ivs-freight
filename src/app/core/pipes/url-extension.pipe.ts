@@ -1,16 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'urlExtension',
+   name: 'urlExtension',
 })
 export class UrlExtensionPipe implements PipeTransform {
-    transform(url: string): any {
-        if (!url) {
-            return null;
-        }
+   transform(url: string): any {
+      if (!url) {
+         return null;
+      }
 
-        const ext = url.split('.');
+      const ext = url.split('.');
 
-        return ext[ext.length - 1];
-    }
+      return ext[ext.length - 1];
+   }
 }

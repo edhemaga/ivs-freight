@@ -8,12 +8,12 @@ import { MedicalCertificateRoutingModule } from './medical-certificate-routing.m
 import { ApplicantModule } from '../../applicant.module';
 
 @NgModule({
-    declarations: [MedicalCertificateComponent],
-    imports: [
-        CommonModule,
-        SharedModule,
-        MedicalCertificateRoutingModule,
-        ApplicantModule,
-    ],
+   declarations: [MedicalCertificateComponent],
+   imports: [
+      CommonModule,
+      SharedModule,
+      MedicalCertificateRoutingModule,
+      ApplicantModule,
+   ],
 })
 export class MedicalCertificateModule {}

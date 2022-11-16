@@ -1,22 +1,22 @@
 <div class="settings-company">
-    <div class="settings-company-col-1">
-        <app-settings-general
-            [companyData]="data"
-            (selectValue)="selectCompany($event)"
-            [optionsCompany]="optionsCmp"
-        ></app-settings-general>
-    </div>
-    <div class="settings-company-col-2">
-        <app-settings-payroll [payrollData]="data"></app-settings-payroll>
-    </div>
-    <div class="settings-company-col-3">
-        <app-settings-insurancepolicy
-            [insurancePolicyData]="data"
-        ></app-settings-insurancepolicy>
-    </div>
-    <div class="settings-company-col-4">
-        <app-settings-factoring [factoringData]="data"></app-settings-factoring>
-    </div>
+   <div class="settings-company-col-1">
+      <app-settings-general
+         [companyData]="data"
+         (selectValue)="selectCompany($event)"
+         [optionsCompany]="optionsCmp"
+      ></app-settings-general>
+   </div>
+   <div class="settings-company-col-2">
+      <app-settings-payroll [payrollData]="data"></app-settings-payroll>
+   </div>
+   <div class="settings-company-col-3">
+      <app-settings-insurancepolicy
+         [insurancePolicyData]="data"
+      ></app-settings-insurancepolicy>
+   </div>
+   <div class="settings-company-col-4">
+      <app-settings-factoring [factoringData]="data"></app-settings-factoring>
+   </div>
 
-    <app-settings-nodata [showComponent]="isModalOpen$"></app-settings-nodata>
+   <app-settings-nodata [showComponent]="isModalOpen$"></app-settings-nodata>
 </div>

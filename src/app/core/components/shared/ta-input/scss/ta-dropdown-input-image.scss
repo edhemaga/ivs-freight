@@ -1,211 +1,211 @@
 @import './ta-input.colors.scss';
 
 .dropdown-selected-image {
-    position: absolute;
-    left: 6px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    pointer-events: none;
+   position: absolute;
+   left: 6px;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   pointer-events: none;
 
-    // Render Name Initials
-    &.name-initials-instead-url {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        object-fit: fill;
-        top: 4px;
-    }
+   // Render Name Initials
+   &.name-initials-instead-url {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      object-fit: fill;
+      top: 4px;
+   }
 
-    &.load-broker {
-        bottom: 2px;
+   &.load-broker {
+      bottom: 2px;
 
-        &.medium {
-            svg {
-                #Path_33564 {
-                    fill: #ffb74d;
-                }
+      &.medium {
+         svg {
+            #Path_33564 {
+               fill: #ffb74d;
             }
-        }
+         }
+      }
 
-        &.low {
-            svg {
-                #Path_33564 {
-                    fill: #e57373;
-                }
+      &.low {
+         svg {
+            #Path_33564 {
+               fill: #e57373;
             }
-        }
-    }
+         }
+      }
+   }
 
-    // --------------------- TRUCKS ---------------------
-    &.semitruck {
-        svg {
-            path {
-                fill: $input-semitruck-path-fill !important;
-            }
-        }
-    }
+   // --------------------- TRUCKS ---------------------
+   &.semitruck {
+      svg {
+         path {
+            fill: $input-semitruck-path-fill !important;
+         }
+      }
+   }
 
-    &.semisleeper {
-        svg {
-            path {
-                fill: $input-semisleepertruck-path-fill !important;
-            }
-        }
-    }
+   &.semisleeper {
+      svg {
+         path {
+            fill: $input-semisleepertruck-path-fill !important;
+         }
+      }
+   }
 
-    &.boxtruck {
-        svg {
-            path {
-                fill: $input-boxtruck-path-fill !important;
-            }
-        }
-    }
+   &.boxtruck {
+      svg {
+         path {
+            fill: $input-boxtruck-path-fill !important;
+         }
+      }
+   }
 
-    &.cargovan {
-        svg {
-            path {
-                fill: $input-cargovantruck-path-fill !important;
-            }
-        }
-    }
+   &.cargovan {
+      svg {
+         path {
+            fill: $input-cargovantruck-path-fill !important;
+         }
+      }
+   }
 
-    &.towtruck {
-        svg {
-            path {
-                fill: $input-towtruck-path-fill !important;
-            }
-        }
-    }
+   &.towtruck {
+      svg {
+         path {
+            fill: $input-towtruck-path-fill !important;
+         }
+      }
+   }
 
-    &.carhauler {
-        svg {
-            path {
-                fill: $input-carhaulertruck-path-fill !important;
-            }
-        }
-    }
+   &.carhauler {
+      svg {
+         path {
+            fill: $input-carhaulertruck-path-fill !important;
+         }
+      }
+   }
 
-    &.spotter {
-        svg {
-            path {
-                fill: $input-spottertruck-path-fill !important;
-            }
-        }
-    }
+   &.spotter {
+      svg {
+         path {
+            fill: $input-spottertruck-path-fill !important;
+         }
+      }
+   }
 
-    &.bus {
-        svg {
-            path {
-                fill: $input-bus-path-fill !important;
-            }
-        }
-    }
+   &.bus {
+      svg {
+         path {
+            fill: $input-bus-path-fill !important;
+         }
+      }
+   }
 
-    // --------------------- TRAILERS ---------------------
-    &.reefer {
-        svg {
-            path {
-                fill: $input-reefertrailer-path-fill !important;
-            }
-        }
-    }
+   // --------------------- TRAILERS ---------------------
+   &.reefer {
+      svg {
+         path {
+            fill: $input-reefertrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.dryvan {
-        svg {
-            path {
-                fill: $input-dryvantrailer-path-fill !important;
-            }
-        }
-    }
+   &.dryvan {
+      svg {
+         path {
+            fill: $input-dryvantrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.sidekit {
-        svg {
-            path {
-                fill: $input-sidekittrailer-path-fill !important;
-            }
-        }
-    }
+   &.sidekit {
+      svg {
+         path {
+            fill: $input-sidekittrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.conestoga {
-        svg {
-            path {
-                fill: $input-conestogatrailer-path-fill !important;
-            }
-        }
-    }
+   &.conestoga {
+      svg {
+         path {
+            fill: $input-conestogatrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.dumper {
-        svg {
-            path {
-                fill: $input-dumpertrailer-path-fill !important;
-            }
-        }
-    }
+   &.dumper {
+      svg {
+         path {
+            fill: $input-dumpertrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.container {
-        padding: 0 !important;
-        svg {
-            path {
-                fill: $input-containertrailer-path-fill !important;
-            }
-        }
-    }
+   &.container {
+      padding: 0 !important;
+      svg {
+         path {
+            fill: $input-containertrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.tanker-liquid {
-        svg {
-            path: {
-                fill: $input-tankerliquidtrailer-path-fill !important;
-            }
-        }
-    }
+   &.tanker-liquid {
+      svg {
+         path: {
+            fill: $input-tankerliquidtrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.carhauler {
-        svg {
-            path {
-                fill: $input-carhaulertrailer-path-fill !important;
-            }
-        }
-    }
+   &.carhauler {
+      svg {
+         path {
+            fill: $input-carhaulertrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.flatbed {
-        svg {
-            path {
-                fill: $input-flatbedtrailer-path-fill !important;
-            }
-        }
-    }
+   &.flatbed {
+      svg {
+         path {
+            fill: $input-flatbedtrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.low-boy-rgn {
-        svg {
-            path {
-                fill: $input-lowboyrgntrailer-path-fill !important;
-            }
-        }
-    }
+   &.low-boy-rgn {
+      svg {
+         path {
+            fill: $input-lowboyrgntrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.chassis {
-        svg {
-            path {
-                fill: $input-chassistrailer-path-fill !important;
-            }
-        }
-    }
+   &.chassis {
+      svg {
+         path {
+            fill: $input-chassistrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.stepdeck {
-        svg {
-            path {
-                fill: $input-stepdecktrailer-path-fill !important;
-            }
-        }
-    }
+   &.stepdeck {
+      svg {
+         path {
+            fill: $input-stepdecktrailer-path-fill !important;
+         }
+      }
+   }
 
-    &.tanker-dry-bulk {
-        svg {
-            path: {
-                fill: $input-tankerdrybulktrailer-path-fill !important;
-            }
-        }
-    }
+   &.tanker-dry-bulk {
+      svg {
+         path: {
+            fill: $input-tankerdrybulktrailer-path-fill !important;
+         }
+      }
+   }
 }

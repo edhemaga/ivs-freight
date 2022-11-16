@@ -1,22 +1,22 @@
 .ftl-load-status {
-    border-radius: 2px;
-    background-color: #f3f3f3;
-    color: #c1c1c1;
-    font-size: 11px;
-    font-weight: 900;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 26px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    transition: all 0.3s ease-in-out;
+   border-radius: 2px;
+   background-color: #f3f3f3;
+   color: #c1c1c1;
+   font-size: 11px;
+   font-weight: 900;
+   text-align: center;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   height: 26px;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+   transition: all 0.3s ease-in-out;
 
-    &:hover {
-        background-color: #eeeeee;
-        cursor: pointer;
-    }
+   &:hover {
+      background-color: #eeeeee;
+      cursor: pointer;
+   }
 }

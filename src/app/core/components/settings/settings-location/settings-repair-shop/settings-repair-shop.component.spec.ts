@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { SettingsRepairShopComponent } from './settings-repair-shop.component';
 
 describe('SettingsRepairShopComponent', () => {
-    let component: SettingsRepairShopComponent;
-    let fixture: ComponentFixture<SettingsRepairShopComponent>;
+   let component: SettingsRepairShopComponent;
+   let fixture: ComponentFixture<SettingsRepairShopComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [SettingsRepairShopComponent],
-        }).compileComponents();
-    }));
+   beforeEach(async(() => {
+      TestBed.configureTestingModule({
+         declarations: [SettingsRepairShopComponent],
+      }).compileComponents();
+   }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(SettingsRepairShopComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+   beforeEach(() => {
+      fixture = TestBed.createComponent(SettingsRepairShopComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+   });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+   it('should create', () => {
+      expect(component).toBeTruthy();
+   });
 });

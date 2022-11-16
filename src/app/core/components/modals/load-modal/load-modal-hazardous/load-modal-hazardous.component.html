@@ -1,255 +1,255 @@
 <div class="load-m-hazardous-container">
-    <!-------------------------- First Section -------------------------->
-    <div class="load-m-hazardous-container-title">
-        <p class="load-m-hazardous-title">
-            § 177.848 Segregation of hazardous materials.
-        </p>
-        <svg-icon
-            class="load-m-hazardous-title-close"
-            src="../../../../../../assets/svg/common/load/ic_hazardous-x.svg"
-            (click)="closeHazardous()"
-        ></svg-icon>
-    </div>
+   <!-------------------------- First Section -------------------------->
+   <div class="load-m-hazardous-container-title">
+      <p class="load-m-hazardous-title">
+         § 177.848 Segregation of hazardous materials.
+      </p>
+      <svg-icon
+         class="load-m-hazardous-title-close"
+         src="../../../../../../assets/svg/common/load/ic_hazardous-x.svg"
+         (click)="closeHazardous()"
+      ></svg-icon>
+   </div>
 
-    <!-- Hazardous Explanations -->
-    <div class="load-m-hazardous-container-explanations">
-        <div
-            class="load-m-hazardous-explanation"
+   <!-- Hazardous Explanations -->
+   <div class="load-m-hazardous-container-explanations">
+      <div
+         class="load-m-hazardous-explanation"
+         *ngFor="
+            let hazardousType of hazardous_materials_section;
+            trackBy: trackByIdentity
+         "
+      >
+         <!-- Explanation Main -->
+         <div class="load-m-hazardous-explanation-main">
+            <div class="load-m-hazardous-explanation-main-type">
+               <p>{{ hazardousType.type }}</p>
+            </div>
+            <div class="load-m-hazardous-explanation-main-title">
+               <p>{{ hazardousType.title }}</p>
+            </div>
+         </div>
+
+         <!-- Explanation Sub Main -->
+         <div
+            class="load-m-hazardous-explanation-subMain"
             *ngFor="
-                let hazardousType of hazardous_materials_section;
-                trackBy: trackByIdentity
+               let hazardousSubType of hazardousType.subType;
+               trackBy: trackByIdentity
             "
-        >
-            <!-- Explanation Main -->
-            <div class="load-m-hazardous-explanation-main">
-                <div class="load-m-hazardous-explanation-main-type">
-                    <p>{{ hazardousType.type }}</p>
-                </div>
-                <div class="load-m-hazardous-explanation-main-title">
-                    <p>{{ hazardousType.title }}</p>
-                </div>
+         >
+            <div class="load-m-hazardous-explanation-subMain-empty"></div>
+            <div class="load-m-hazardous-explanation-subMain-type">
+               <p>{{ hazardousSubType.type }}</p>
+            </div>
+            <div class="load-m-hazardous-explanation-subMain-title">
+               <p>{{ hazardousSubType.title }}</p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-------------------------- Second Section -------------------------->
+   <div class="load-m-hazardous-container-title segregation-title-container">
+      <p class="load-m-hazardous-title">
+         Segregation Table for Hazardous Materials
+      </p>
+   </div>
+
+   <!-- Segregation Table -->
+   <svg-icon
+      src="ic_segregation_table_hazardous.svg"
+      class="load-m-hazardous-segregation-table"
+   ></svg-icon>
+
+   <!-- Hazardous Explanations 1 -->
+   <div
+      class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-26"
+   >
+      <div
+         class="load-m-hazardous-explanation load-m-hazardous-explanation-no-mb"
+         *ngFor="
+            let hazardousType of segregation_section_1;
+            trackBy: trackByIdentity
+         "
+      >
+         <!-- Explanation Main -->
+         <div
+            class="load-m-hazardous-explanation-main load-m-hazardous-explanation-main-no-mb"
+         >
+            <div class="load-m-hazardous-explanation-main-type">
+               <p>{{ hazardousType.type }}</p>
+            </div>
+            <div class="load-m-hazardous-explanation-main-title">
+               <p>{{ hazardousType.title }}</p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Hazardous Explanations 2 -->
+   <div class="load-m-hazardous-container-explanations">
+      <div
+         class="load-m-hazardous-explanation"
+         *ngFor="
+            let hazardousType of segregation_section_2;
+            trackBy: trackByIdentity
+         "
+      >
+         <!-- Explanation Main -->
+         <div
+            class="load-m-hazardous-explanation-main load-m-hazardous-explanation-main-segregation-table"
+         >
+            <div class="load-m-hazardous-explanation-main-type">
+               <p>{{ hazardousType.type }}</p>
+            </div>
+            <div class="load-m-hazardous-explanation-main-tableContext">
+               <svg-icon [src]="hazardousType.tableContext"></svg-icon>
+            </div>
+            <div class="load-m-hazardous-explanation-main-title">
+               <p>{{ hazardousType.title }}</p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Hazardous Explanations 3 -->
+   <div
+      class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-0"
+   >
+      <div
+         class="load-m-hazardous-explanation"
+         *ngFor="
+            let hazardousType of segregation_section_3;
+            trackBy: trackByIdentity
+         "
+      >
+         <!-- Explanation Main -->
+         <div class="load-m-hazardous-explanation-main">
+            <div class="load-m-hazardous-explanation-main-type">
+               <p>{{ hazardousType.type }}</p>
+            </div>
+            <div class="load-m-hazardous-explanation-main-title">
+               <p>{{ hazardousType.title }}</p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-------------------------- Third Section -------------------------->
+   <div
+      class="load-m-hazardous-container-title load-m-hazardous-container-title-no-mb additional-title-container"
+   >
+      <p class="load-m-hazardous-title">ADDITIONAL NOTES</p>
+   </div>
+   <!-- Hazardous Explanations 1 -->
+   <div
+      class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-0"
+   >
+      <div
+         class="load-m-hazardous-explanation"
+         *ngFor="
+            let hazardousType of additional_note_section;
+            trackBy: trackByIdentity
+         "
+      >
+         <!-- Explanation Main -->
+         <div
+            class="load-m-hazardous-explanation-main load-m-hazardous-explanation-main-segregation-table"
+         >
+            <div class="load-m-hazardous-explanation-main-empty"></div>
+            <div class="load-m-hazardous-explanation-main-tableContext">
+               <svg-icon [src]="hazardousType.type"></svg-icon>
             </div>
 
-            <!-- Explanation Sub Main -->
+            <div class="load-m-hazardous-explanation-main-title">
+               <p>{{ hazardousType.title }}</p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-------------------------- Fourth Section -------------------------->
+   <div class="load-m-hazardous-container-title compatibility-title-container">
+      <p class="load-m-hazardous-title">
+         Compatibility Table For Class 1 (Explosive) Materials
+      </p>
+   </div>
+
+   <!-- Compatibility Table -->
+   <svg-icon
+      src="ic_compatibility_table_hazardous.svg"
+      class="load-m-hazardous-compatibility-table"
+   ></svg-icon>
+
+   <!-- Hazardous Explanations 1 -->
+   <div
+      class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-33"
+   >
+      <div
+         class="load-m-hazardous-explanation"
+         *ngFor="
+            let hazardousType of compatibility_section_1;
+            trackBy: trackByIdentity
+         "
+      >
+         <!-- Explanation Main -->
+         <div class="load-m-hazardous-explanation-main">
+            <div class="load-m-hazardous-explanation-main-type">
+               <p>{{ hazardousType.type }}</p>
+            </div>
+            <div class="load-m-hazardous-explanation-main-title">
+               <p>{{ hazardousType.title }}</p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Hazardous Explanations 2 -->
+   <div
+      class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-0"
+   >
+      <div
+         class="load-m-hazardous-explanation load-m-hazardous-explanation-no-mb"
+         *ngFor="
+            let hazardousType of compatibility_section_2;
+            let indx = index;
+            trackBy: trackByIdentity
+         "
+      >
+         <!-- Explanation Main -->
+         <div
+            class="load-m-hazardous-explanation-main load-m-hazardous-explanation-main-segregation-table"
+            [ngClass]="{
+               'load-m-hazardous-explanation-main-no-mb':
+                  indx === compatibility_section_2.length - 1
+            }"
+         >
+            <div class="load-m-hazardous-explanation-main-type">
+               <p>{{ hazardousType.type }}</p>
+            </div>
             <div
-                class="load-m-hazardous-explanation-subMain"
-                *ngFor="
-                    let hazardousSubType of hazardousType.subType;
-                    trackBy: trackByIdentity
-                "
+               class="load-m-hazardous-explanation-main-tableContext"
+               [ngClass]="{
+                  'custom-hazardous-padding-top':
+                     hazardousType?.tableContextText
+               }"
             >
-                <div class="load-m-hazardous-explanation-subMain-empty"></div>
-                <div class="load-m-hazardous-explanation-subMain-type">
-                    <p>{{ hazardousSubType.type }}</p>
-                </div>
-                <div class="load-m-hazardous-explanation-subMain-title">
-                    <p>{{ hazardousSubType.title }}</p>
-                </div>
+               <svg-icon
+                  *ngIf="hazardousType?.tableContextSvg"
+                  [src]="hazardousType?.tableContextSvg"
+               ></svg-icon>
+               <p
+                  class="tableContext-text"
+                  *ngIf="hazardousType?.tableContextText"
+               >
+                  {{ hazardousType?.tableContextText }}
+               </p>
             </div>
-        </div>
-    </div>
-
-    <!-------------------------- Second Section -------------------------->
-    <div class="load-m-hazardous-container-title segregation-title-container">
-        <p class="load-m-hazardous-title">
-            Segregation Table for Hazardous Materials
-        </p>
-    </div>
-
-    <!-- Segregation Table -->
-    <svg-icon
-        src="ic_segregation_table_hazardous.svg"
-        class="load-m-hazardous-segregation-table"
-    ></svg-icon>
-
-    <!-- Hazardous Explanations 1 -->
-    <div
-        class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-26"
-    >
-        <div
-            class="load-m-hazardous-explanation load-m-hazardous-explanation-no-mb"
-            *ngFor="
-                let hazardousType of segregation_section_1;
-                trackBy: trackByIdentity
-            "
-        >
-            <!-- Explanation Main -->
-            <div
-                class="load-m-hazardous-explanation-main load-m-hazardous-explanation-main-no-mb"
-            >
-                <div class="load-m-hazardous-explanation-main-type">
-                    <p>{{ hazardousType.type }}</p>
-                </div>
-                <div class="load-m-hazardous-explanation-main-title">
-                    <p>{{ hazardousType.title }}</p>
-                </div>
+            <div class="load-m-hazardous-explanation-main-title">
+               <p>{{ hazardousType.title }}</p>
             </div>
-        </div>
-    </div>
-
-    <!-- Hazardous Explanations 2 -->
-    <div class="load-m-hazardous-container-explanations">
-        <div
-            class="load-m-hazardous-explanation"
-            *ngFor="
-                let hazardousType of segregation_section_2;
-                trackBy: trackByIdentity
-            "
-        >
-            <!-- Explanation Main -->
-            <div
-                class="load-m-hazardous-explanation-main load-m-hazardous-explanation-main-segregation-table"
-            >
-                <div class="load-m-hazardous-explanation-main-type">
-                    <p>{{ hazardousType.type }}</p>
-                </div>
-                <div class="load-m-hazardous-explanation-main-tableContext">
-                    <svg-icon [src]="hazardousType.tableContext"></svg-icon>
-                </div>
-                <div class="load-m-hazardous-explanation-main-title">
-                    <p>{{ hazardousType.title }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hazardous Explanations 3 -->
-    <div
-        class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-0"
-    >
-        <div
-            class="load-m-hazardous-explanation"
-            *ngFor="
-                let hazardousType of segregation_section_3;
-                trackBy: trackByIdentity
-            "
-        >
-            <!-- Explanation Main -->
-            <div class="load-m-hazardous-explanation-main">
-                <div class="load-m-hazardous-explanation-main-type">
-                    <p>{{ hazardousType.type }}</p>
-                </div>
-                <div class="load-m-hazardous-explanation-main-title">
-                    <p>{{ hazardousType.title }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-------------------------- Third Section -------------------------->
-    <div
-        class="load-m-hazardous-container-title load-m-hazardous-container-title-no-mb additional-title-container"
-    >
-        <p class="load-m-hazardous-title">ADDITIONAL NOTES</p>
-    </div>
-    <!-- Hazardous Explanations 1 -->
-    <div
-        class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-0"
-    >
-        <div
-            class="load-m-hazardous-explanation"
-            *ngFor="
-                let hazardousType of additional_note_section;
-                trackBy: trackByIdentity
-            "
-        >
-            <!-- Explanation Main -->
-            <div
-                class="load-m-hazardous-explanation-main load-m-hazardous-explanation-main-segregation-table"
-            >
-                <div class="load-m-hazardous-explanation-main-empty"></div>
-                <div class="load-m-hazardous-explanation-main-tableContext">
-                    <svg-icon [src]="hazardousType.type"></svg-icon>
-                </div>
-
-                <div class="load-m-hazardous-explanation-main-title">
-                    <p>{{ hazardousType.title }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-------------------------- Fourth Section -------------------------->
-    <div class="load-m-hazardous-container-title compatibility-title-container">
-        <p class="load-m-hazardous-title">
-            Compatibility Table For Class 1 (Explosive) Materials
-        </p>
-    </div>
-
-    <!-- Compatibility Table -->
-    <svg-icon
-        src="ic_compatibility_table_hazardous.svg"
-        class="load-m-hazardous-compatibility-table"
-    ></svg-icon>
-
-    <!-- Hazardous Explanations 1 -->
-    <div
-        class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-33"
-    >
-        <div
-            class="load-m-hazardous-explanation"
-            *ngFor="
-                let hazardousType of compatibility_section_1;
-                trackBy: trackByIdentity
-            "
-        >
-            <!-- Explanation Main -->
-            <div class="load-m-hazardous-explanation-main">
-                <div class="load-m-hazardous-explanation-main-type">
-                    <p>{{ hazardousType.type }}</p>
-                </div>
-                <div class="load-m-hazardous-explanation-main-title">
-                    <p>{{ hazardousType.title }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hazardous Explanations 2 -->
-    <div
-        class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-0"
-    >
-        <div
-            class="load-m-hazardous-explanation load-m-hazardous-explanation-no-mb"
-            *ngFor="
-                let hazardousType of compatibility_section_2;
-                let indx = index;
-                trackBy: trackByIdentity
-            "
-        >
-            <!-- Explanation Main -->
-            <div
-                class="load-m-hazardous-explanation-main load-m-hazardous-explanation-main-segregation-table"
-                [ngClass]="{
-                    'load-m-hazardous-explanation-main-no-mb':
-                        indx === compatibility_section_2.length - 1
-                }"
-            >
-                <div class="load-m-hazardous-explanation-main-type">
-                    <p>{{ hazardousType.type }}</p>
-                </div>
-                <div
-                    class="load-m-hazardous-explanation-main-tableContext"
-                    [ngClass]="{
-                        'custom-hazardous-padding-top':
-                            hazardousType?.tableContextText
-                    }"
-                >
-                    <svg-icon
-                        *ngIf="hazardousType?.tableContextSvg"
-                        [src]="hazardousType?.tableContextSvg"
-                    ></svg-icon>
-                    <p
-                        class="tableContext-text"
-                        *ngIf="hazardousType?.tableContextText"
-                    >
-                        {{ hazardousType?.tableContextText }}
-                    </p>
-                </div>
-                <div class="load-m-hazardous-explanation-main-title">
-                    <p>{{ hazardousType.title }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
+         </div>
+      </div>
+   </div>
 </div>

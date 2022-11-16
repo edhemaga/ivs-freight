@@ -1,273 +1,333 @@
 @import 'src/theme/variables.scss';
 
 .step-form {
-    .line-container {
-        position: relative;
+   .line-container {
+      position: relative;
 
-        .review-feedback-container {
+      .review-feedback-container {
+         position: absolute;
+         top: 0;
+         right: -435px;
+         width: 429px;
+      }
+   }
+
+   .group {
+      margin-bottom: 32px;
+      margin-right: 12px;
+      width: 616px;
+
+      &:last-child {
+         margin-right: 0 !important;
+      }
+   }
+
+   .employer-group {
+      width: 616px;
+      margin-right: 0;
+   }
+
+   .job-description-group {
+      width: 292px;
+   }
+
+   .date-group {
+      width: 150px;
+   }
+
+   .date-to-group {
+      margin-right: 0 !important;
+   }
+
+   .phone-group {
+      width: 169px;
+   }
+
+   .email-group {
+      width: 254px;
+   }
+
+   .fax-group {
+      width: 169px;
+      margin-right: 0 !important;
+   }
+
+   .address-group {
+      width: 481px;
+      margin-bottom: 22px !important;
+   }
+
+   .address-unit-group {
+      width: 123px;
+      margin-bottom: 22px !important;
+      margin-right: 0 !important;
+   }
+
+   .driving-position-group {
+      margin-bottom: 32px;
+   }
+
+   .equipment-container {
+      width: 616px;
+      margin-bottom: 32px;
+
+      .line-container {
+         position: relative;
+
+         .review-feedback-container {
             position: absolute;
             top: 0;
             right: -435px;
             width: 429px;
-        }
-    }
+         }
+      }
 
-    .group {
-        margin-bottom: 32px;
-        margin-right: 12px;
-        width: 616px;
+      .title-container {
+         width: 100%;
+         margin-bottom: 6px;
+         padding-left: 6px;
 
-        &:last-child {
-            margin-right: 0 !important;
-        }
-    }
+         .vehicle-title-box,
+         .trailer-title-box,
+         .length-title-box {
+            p {
+               color: $bw5;
+               font-size: 12px;
 
-    .employer-group {
-        width: 616px;
-        margin-right: 0;
-    }
+               &::-moz-selection {
+                  color: $bw5;
+                  background: rgb(145, 145, 145, 0.2);
+               }
 
-    .job-description-group {
-        width: 292px;
-    }
+               &::selection {
+                  color: $bw5;
+                  background: rgb(145, 145, 145, 0.2);
+               }
 
-    .date-group {
-        width: 150px;
-    }
+               span {
+                  color: $progress-danger;
 
-    .date-to-group {
-        margin-right: 0 !important;
-    }
+                  &::-moz-selection {
+                     color: $bw5;
+                     background: rgb(145, 145, 145, 0.2);
+                  }
 
-    .phone-group {
-        width: 169px;
-    }
-
-    .email-group {
-        width: 254px;
-    }
-
-    .fax-group {
-        width: 169px;
-        margin-right: 0 !important;
-    }
-
-    .address-group {
-        width: 481px;
-        margin-bottom: 22px !important;
-    }
-
-    .address-unit-group {
-        width: 123px;
-        margin-bottom: 22px !important;
-        margin-right: 0 !important;
-    }
-
-    .driving-position-group {
-        margin-bottom: 32px;
-    }
-
-    .equipment-container {
-        width: 616px;
-        margin-bottom: 32px;
-
-        .line-container {
-            position: relative;
-
-            .review-feedback-container {
-                position: absolute;
-                top: 0;
-                right: -435px;
-                width: 429px;
+                  &::selection {
+                     color: $bw5;
+                     background: rgb(145, 145, 145, 0.2);
+                  }
+               }
             }
-        }
 
-        .title-container {
-            width: 100%;
-            margin-bottom: 6px;
-            padding-left: 6px;
-
-            .vehicle-title-box,
-            .trailer-title-box,
-            .length-title-box {
-                p {
-                    color: $bw5;
-                    font-size: 12px;
-
-                    &::-moz-selection {
-                        color: $bw5;
-                        background: rgb(145, 145, 145, 0.2);
-                    }
-
-                    &::selection {
-                        color: $bw5;
-                        background: rgb(145, 145, 145, 0.2);
-                    }
-
-                    span {
-                        color: $progress-danger;
-
-                        &::-moz-selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-                    }
-                }
-
-                &.vehicle-title-box {
-                    width: 99px;
-                    margin-right: 164px;
-                }
-
-                &.trailer-title-box {
-                    width: 100px;
-                    margin-right: 123px;
-                }
-
-                &.length-title-box {
-                    width: 60px;
-                }
+            &.vehicle-title-box {
+               width: 99px;
+               margin-right: 164px;
             }
-        }
 
-        .equipment-info-container {
-            width: 100%;
-            height: 26px;
-            padding: 4px 6px;
+            &.trailer-title-box {
+               width: 100px;
+               margin-right: 123px;
+            }
+
+            &.length-title-box {
+               width: 60px;
+            }
+         }
+      }
+
+      .equipment-info-container {
+         width: 100%;
+         height: 26px;
+         padding: 4px 6px;
+         background: $ta-light-grey-4;
+         border-radius: 2px;
+         margin-bottom: 2px;
+         color: $bw6-2;
+         font-size: 14px;
+         transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+         &:hover {
+            background: $bw2;
+            color: $ta-light-grey-3;
+
+            .info-btn-container {
+               .btn-container {
+                  .edit-icon,
+                  .delete-icon {
+                     opacity: 1;
+                     visibility: visible;
+                     display: flex;
+                  }
+               }
+            }
+         }
+
+         .vehicle-box,
+         .trailer-box,
+         .length-box {
+            p {
+               line-height: 18px;
+
+               &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+               }
+
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+               }
+            }
+
+            &.vehicle-box {
+               width: 239px;
+               margin-right: 24px;
+
+               p {
+                  margin-left: 6px !important;
+               }
+            }
+
+            .icon {
+               svg {
+                  path {
+                     fill: $bw5;
+                  }
+               }
+            }
+
+            &.trailer-box {
+               width: 199px;
+               margin-right: 24px;
+
+               p {
+                  margin-left: 6px !important;
+               }
+            }
+         }
+
+         .btn-container {
+            width: 42px;
+
+            .edit-icon,
+            .delete-icon {
+               cursor: pointer;
+               transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+
+               svg {
+                  path {
+                     fill: $bw4;
+                  }
+               }
+
+               &:hover {
+                  svg {
+                     path {
+                        transition: fill 0.2s ease-in-out;
+                        fill: $bw6-2;
+                     }
+                  }
+               }
+
+               &.edit-icon,
+               &.delete-icon {
+                  margin-right: 4px;
+
+                  &.delete-icon {
+                     margin-right: 0;
+                  }
+               }
+            }
+         }
+      }
+
+      .equipment-view-form {
+         margin: 32px auto 0 auto;
+      }
+   }
+
+   .vehicle-type-group {
+      width: 251px;
+      margin-bottom: 22px;
+   }
+
+   .trailer-type-group {
+      width: 211px;
+      margin-bottom: 22px;
+   }
+
+   .length-group {
+      width: 130px;
+      margin-bottom: 22px;
+      margin-right: 0 !important;
+   }
+
+   .another-class-group {
+      .add-btn {
+         position: relative;
+         bottom: 1px;
+         line-height: 18px;
+         height: 26px;
+         padding: 4px 8px;
+         border: none;
+         outline: none;
+         font-size: 14px;
+         border-radius: 2px;
+         color: $ta-blue;
+         background: $ta-gray-01;
+         transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+         -webkit-user-select: none !important;
+         -moz-user-select: none !important;
+         -ms-user-select: none !important;
+         user-select: none !important;
+
+         &:hover {
+            color: $white;
+            background: $ta-blue;
+         }
+
+         &:hover .plus-icon {
+            svg {
+               path {
+                  fill: $white;
+               }
+            }
+         }
+
+         &.disabled {
+            cursor: auto;
             background: $ta-light-grey-4;
-            border-radius: 2px;
-            margin-bottom: 2px;
-            color: $bw6-2;
-            font-size: 14px;
-            transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+            color: $bw4;
 
-            &:hover {
-                background: $bw2;
-                color: $ta-light-grey-3;
-
-                .info-btn-container {
-                    .btn-container {
-                        .edit-icon,
-                        .delete-icon {
-                            opacity: 1;
-                            visibility: visible;
-                            display: flex;
-                        }
-                    }
-                }
+            .plus-icon {
+               svg {
+                  path {
+                     fill: $ta-light-grey-6;
+                  }
+               }
             }
+         }
 
-            .vehicle-box,
-            .trailer-box,
-            .length-box {
-                p {
-                    line-height: 18px;
+         .plus-icon {
+            margin-right: 6px;
 
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-                }
-
-                &.vehicle-box {
-                    width: 239px;
-                    margin-right: 24px;
-
-                    p {
-                        margin-left: 6px !important;
-                    }
-                }
-
-                .icon {
-                    svg {
-                        path {
-                            fill: $bw5;
-                        }
-                    }
-                }
-
-                &.trailer-box {
-                    width: 199px;
-                    margin-right: 24px;
-
-                    p {
-                        margin-left: 6px !important;
-                    }
-                }
+            svg {
+               path {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $ta-light-blue;
+               }
             }
+         }
+      }
 
-            .btn-container {
-                width: 42px;
+      .btn-container {
+         margin-bottom: 32px;
 
-                .edit-icon,
-                .delete-icon {
-                    cursor: pointer;
-                    transition: opacity 0.2s ease-in-out,
-                        visibility 0.2s ease-in-out;
-
-                    svg {
-                        path {
-                            fill: $bw4;
-                        }
-                    }
-
-                    &:hover {
-                        svg {
-                            path {
-                                transition: fill 0.2s ease-in-out;
-                                fill: $bw6-2;
-                            }
-                        }
-                    }
-
-                    &.edit-icon,
-                    &.delete-icon {
-                        margin-right: 4px;
-
-                        &.delete-icon {
-                            margin-right: 0;
-                        }
-                    }
-                }
-            }
-        }
-
-        .equipment-view-form {
-            margin: 32px auto 0 auto;
-        }
-    }
-
-    .vehicle-type-group {
-        width: 251px;
-        margin-bottom: 22px;
-    }
-
-    .trailer-type-group {
-        width: 211px;
-        margin-bottom: 22px;
-    }
-
-    .length-group {
-        width: 130px;
-        margin-bottom: 22px;
-        margin-right: 0 !important;
-    }
-
-    .another-class-group {
-        .add-btn {
+         .add-btn {
             position: relative;
             bottom: 1px;
-            line-height: 18px;
+            margin-top: 0;
             height: 26px;
             padding: 4px 8px;
             border: none;
@@ -284,231 +344,237 @@
             user-select: none !important;
 
             &:hover {
-                color: $white;
-                background: $ta-blue;
+               color: $white;
+               background: $ta-blue;
             }
 
             &:hover .plus-icon {
-                svg {
-                    path {
-                        fill: $white;
-                    }
-                }
+               svg {
+                  path {
+                     fill: $white;
+                  }
+               }
             }
 
             &.disabled {
-                cursor: auto;
-                background: $ta-light-grey-4;
-                color: $bw4;
+               cursor: auto;
+               background: $ta-light-grey-4;
+               color: $bw4;
 
-                .plus-icon {
-                    svg {
-                        path {
-                            fill: $ta-light-grey-6;
-                        }
-                    }
-                }
+               .plus-icon {
+                  svg {
+                     path {
+                        fill: $ta-light-grey-6;
+                     }
+                  }
+               }
+
+               &:hover {
+                  background: $ta-light-grey-4 !important;
+                  color: $bw4 !important;
+               }
             }
 
             .plus-icon {
-                margin-right: 6px;
+               margin-right: 6px;
 
-                svg {
-                    path {
-                        transition: fill 0.2s ease-in-out;
-                        fill: $ta-light-blue;
-                    }
-                }
+               svg {
+                  path {
+                     transition: fill 0.2s ease-in-out;
+                     fill: $ta-light-blue;
+                  }
+               }
             }
-        }
+         }
 
-        .btn-container {
-            margin-bottom: 32px;
-
-            .add-btn {
-                position: relative;
-                bottom: 1px;
-                margin-top: 0;
-                height: 26px;
-                padding: 4px 8px;
-                border: none;
-                outline: none;
-                font-size: 14px;
-                border-radius: 2px;
-                color: $ta-blue;
-                background: $ta-gray-01;
-                transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-                -webkit-user-select: none !important;
-                -moz-user-select: none !important;
-                -ms-user-select: none !important;
-                user-select: none !important;
-
-                &:hover {
-                    color: $white;
-                    background: $ta-blue;
-                }
-
-                &:hover .plus-icon {
-                    svg {
-                        path {
-                            fill: $white;
-                        }
-                    }
-                }
-
-                &.disabled {
-                    cursor: auto;
-                    background: $ta-light-grey-4;
-                    color: $bw4;
-
-                    .plus-icon {
-                        svg {
-                            path {
-                                fill: $ta-light-grey-6;
-                            }
-                        }
-                    }
-
-                    &:hover {
-                        background: $ta-light-grey-4 !important;
-                        color: $bw4 !important;
-                    }
-                }
-
-                .plus-icon {
-                    margin-right: 6px;
-
-                    svg {
-                        path {
-                            transition: fill 0.2s ease-in-out;
-                            fill: $ta-light-blue;
-                        }
-                    }
-                }
-            }
-
-            .cancel-btn {
-                width: 150px;
-                height: 32px;
-                margin-right: 22px;
-                color: $bw6-2;
-                background: $ta-light-grey-4;
-                transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
-
-                &:hover {
-                    background: $bw6-2;
-                    color: $white;
-                }
-            }
-
-            .save-btn {
-                width: 150px;
-                height: 32px;
-                color: $white;
-                background: $ta-light-blue;
-
-                &:hover {
-                    background-color: $ta-blue;
-                }
-            }
-        }
-    }
-
-    .questions-container {
-        margin-bottom: 36px;
-
-        .question-box {
+         .cancel-btn {
+            width: 150px;
+            height: 32px;
             margin-right: 22px;
+            color: $bw6-2;
+            background: $ta-light-grey-4;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
 
-            .question-title-box {
-                margin-right: 12px;
+            &:hover {
+               background: $bw6-2;
+               color: $white;
+            }
+         }
 
-                .question-title {
-                    color: $bw6-2;
-                    font-size: 14px;
-                    line-height: 18px;
+         .save-btn {
+            width: 150px;
+            height: 32px;
+            color: $white;
+            background: $ta-light-blue;
 
-                    &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
+            &:hover {
+               background-color: $ta-blue;
+            }
+         }
+      }
+   }
 
-                    &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
+   .questions-container {
+      margin-bottom: 36px;
 
-                    span {
-                        color: $progress-danger;
+      .question-box {
+         margin-right: 22px;
 
-                        &::-moz-selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
+         .question-title-box {
+            margin-right: 12px;
 
-                        &::selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-                    }
-                }
+            .question-title {
+               color: $bw6-2;
+               font-size: 14px;
+               line-height: 18px;
 
-                .question-title-feedback {
-                    color: $bw5;
-                    font-size: 14px;
-                    line-height: 18px;
+               &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+               }
 
-                    &::-moz-selection {
-                        color: $bw5;
-                        background: rgb(145, 145, 145, 0.2);
-                    }
+               &::selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+               }
 
-                    &::selection {
-                        color: $bw5;
-                        background: rgb(145, 145, 145, 0.2);
-                    }
+               span {
+                  color: $progress-danger;
 
-                    span {
-                        color: $bw5;
+                  &::-moz-selection {
+                     color: $bw6-2;
+                     background: rgb(108, 108, 108, 0.2);
+                  }
 
-                        &::-moz-selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-                    }
-                }
+                  &::selection {
+                     color: $bw6-2;
+                     background: rgb(108, 108, 108, 0.2);
+                  }
+               }
             }
 
-            .question-radios-box {
-                width: 86px;
+            .question-title-feedback {
+               color: $bw5;
+               font-size: 14px;
+               line-height: 18px;
 
-                .ta-input-radiobutons {
-                    width: 100%;
-                }
+               &::-moz-selection {
+                  color: $bw5;
+                  background: rgb(145, 145, 145, 0.2);
+               }
+
+               &::selection {
+                  color: $bw5;
+                  background: rgb(145, 145, 145, 0.2);
+               }
+
+               span {
+                  color: $bw5;
+
+                  &::-moz-selection {
+                     color: $bw5;
+                     background: rgb(145, 145, 145, 0.2);
+                  }
+
+                  &::selection {
+                     color: $bw5;
+                     background: rgb(145, 145, 145, 0.2);
+                  }
+               }
             }
-        }
-    }
+         }
 
-    .reason-for-leaving-group {
-        width: 616px;
-        margin-right: 0 !important;
-    }
+         .question-radios-box {
+            width: 86px;
 
-    .account-for-period-group {
-        margin-right: 0 !important;
-    }
+            .ta-input-radiobutons {
+               width: 100%;
+            }
+         }
+      }
+   }
 
-    .btn-container {
-        .add-btn {
+   .reason-for-leaving-group {
+      width: 616px;
+      margin-right: 0 !important;
+   }
+
+   .account-for-period-group {
+      margin-right: 0 !important;
+   }
+
+   .btn-container {
+      .add-btn {
+         position: relative;
+         bottom: 1px;
+         margin-top: 22px;
+         height: 26px;
+         padding: 4px 8px;
+         border: none;
+         outline: none;
+         font-size: 14px;
+         border-radius: 2px;
+         color: $ta-blue;
+         background: $ta-gray-01;
+         transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+         -webkit-user-select: none !important;
+         -moz-user-select: none !important;
+         -ms-user-select: none !important;
+         user-select: none !important;
+
+         &:hover {
+            color: $white;
+            background: $ta-blue;
+         }
+
+         &:hover .plus-icon {
+            svg {
+               path {
+                  fill: $white;
+               }
+            }
+         }
+
+         &.disabled {
+            cursor: auto;
+            background: $ta-light-grey-4;
+            color: $bw4;
+
+            .plus-icon {
+               svg {
+                  path {
+                     fill: $ta-light-grey-6;
+                  }
+               }
+            }
+
+            &:hover {
+               background: $ta-light-grey-4 !important;
+               color: $bw4 !important;
+            }
+         }
+
+         .plus-icon {
+            margin-right: 6px;
+
+            svg {
+               path {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $ta-light-blue;
+               }
+            }
+         }
+      }
+
+      .btn-container {
+         margin-top: 22px;
+         margin-bottom: 32px;
+
+         .add-btn {
             position: relative;
             bottom: 1px;
-            margin-top: 22px;
+            margin-top: 0;
             height: 26px;
             padding: 4px 8px;
             border: none;
@@ -525,140 +591,73 @@
             user-select: none !important;
 
             &:hover {
-                color: $white;
-                background: $ta-blue;
+               color: $white;
+               background: $ta-blue;
             }
 
             &:hover .plus-icon {
-                svg {
-                    path {
-                        fill: $white;
-                    }
-                }
+               svg {
+                  path {
+                     fill: $white;
+                  }
+               }
             }
 
             &.disabled {
-                cursor: auto;
-                background: $ta-light-grey-4;
-                color: $bw4;
+               cursor: auto;
+               background: $ta-light-grey-4;
+               color: $bw4;
 
-                .plus-icon {
-                    svg {
-                        path {
-                            fill: $ta-light-grey-6;
-                        }
-                    }
-                }
+               .plus-icon {
+                  svg {
+                     path {
+                        fill: $ta-light-grey-6;
+                     }
+                  }
+               }
 
-                &:hover {
-                    background: $ta-light-grey-4 !important;
-                    color: $bw4 !important;
-                }
+               &:hover {
+                  background: $ta-light-grey-4 !important;
+                  color: $bw4 !important;
+               }
             }
 
             .plus-icon {
-                margin-right: 6px;
+               margin-right: 6px;
 
-                svg {
-                    path {
-                        transition: fill 0.2s ease-in-out;
-                        fill: $ta-light-blue;
-                    }
-                }
+               svg {
+                  path {
+                     transition: fill 0.2s ease-in-out;
+                     fill: $ta-light-blue;
+                  }
+               }
             }
-        }
+         }
 
-        .btn-container {
-            margin-top: 22px;
-            margin-bottom: 32px;
+         .cancel-btn {
+            width: 150px;
+            height: 32px;
+            margin-right: 22px;
+            color: $bw6-2;
+            background: $ta-light-grey-4;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
 
-            .add-btn {
-                position: relative;
-                bottom: 1px;
-                margin-top: 0;
-                height: 26px;
-                padding: 4px 8px;
-                border: none;
-                outline: none;
-                font-size: 14px;
-                border-radius: 2px;
-                color: $ta-blue;
-                background: $ta-gray-01;
-                transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-                -webkit-user-select: none !important;
-                -moz-user-select: none !important;
-                -ms-user-select: none !important;
-                user-select: none !important;
-
-                &:hover {
-                    color: $white;
-                    background: $ta-blue;
-                }
-
-                &:hover .plus-icon {
-                    svg {
-                        path {
-                            fill: $white;
-                        }
-                    }
-                }
-
-                &.disabled {
-                    cursor: auto;
-                    background: $ta-light-grey-4;
-                    color: $bw4;
-
-                    .plus-icon {
-                        svg {
-                            path {
-                                fill: $ta-light-grey-6;
-                            }
-                        }
-                    }
-
-                    &:hover {
-                        background: $ta-light-grey-4 !important;
-                        color: $bw4 !important;
-                    }
-                }
-
-                .plus-icon {
-                    margin-right: 6px;
-
-                    svg {
-                        path {
-                            transition: fill 0.2s ease-in-out;
-                            fill: $ta-light-blue;
-                        }
-                    }
-                }
+            &:hover {
+               background: $bw6-2;
+               color: $white;
             }
+         }
 
-            .cancel-btn {
-                width: 150px;
-                height: 32px;
-                margin-right: 22px;
-                color: $bw6-2;
-                background: $ta-light-grey-4;
-                transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
+         .save-btn {
+            width: 150px;
+            height: 32px;
+            color: $white;
+            background: $ta-light-blue;
 
-                &:hover {
-                    background: $bw6-2;
-                    color: $white;
-                }
+            &:hover {
+               background-color: $ta-blue;
             }
-
-            .save-btn {
-                width: 150px;
-                height: 32px;
-                color: $white;
-                background: $ta-light-blue;
-
-                &:hover {
-                    background-color: $ta-blue;
-                }
-            }
-        }
-    }
+         }
+      }
+   }
 }

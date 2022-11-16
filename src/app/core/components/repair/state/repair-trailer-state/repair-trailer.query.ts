@@ -4,7 +4,7 @@ import { RepairTrailerState, RepairTrailerStore } from './repair-trailer.store';
 
 @Injectable({ providedIn: 'root' })
 export class RepairTrailerQuery extends QueryEntity<RepairTrailerState> {
-    constructor(protected repairTrailerStore: RepairTrailerStore) {
-        super(repairTrailerStore);
-    }
+   constructor(protected repairTrailerStore: RepairTrailerStore) {
+      super(repairTrailerStore);
+   }
 }

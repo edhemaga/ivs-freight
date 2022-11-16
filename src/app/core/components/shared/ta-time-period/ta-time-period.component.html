@@ -1,33 +1,33 @@
 <div
-    class="dashboard-top-driver-header-toolbar-dropdown"
-    #t2="ngbPopover"
-    [ngbPopover]="periodPopover"
-    [placement]="['bottom-right']"
-    [popoverClass]="'periodpopovermain'"
-    autoClose="outside"
-    [container]="'body'"
-    [ngClass]="{ 'active-options': t2?.isOpen() }"
+   class="dashboard-top-driver-header-toolbar-dropdown"
+   #t2="ngbPopover"
+   [ngbPopover]="periodPopover"
+   [placement]="['bottom-right']"
+   [popoverClass]="'periodpopovermain'"
+   autoClose="outside"
+   [container]="'body'"
+   [ngClass]="{ 'active-options': t2?.isOpen() }"
 >
-    <div class="dashboard-top-driver-header-toolbar-dropdown-text">
-        {{ periodTitle }}
-    </div>
-    <div class="dashboard-top-driver-header-toolbar-dropdown-arrow">
-        <svg-icon src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
-    </div>
+   <div class="dashboard-top-driver-header-toolbar-dropdown-text">
+      {{ periodTitle }}
+   </div>
+   <div class="dashboard-top-driver-header-toolbar-dropdown-arrow">
+      <svg-icon src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
+   </div>
 </div>
 
 <ng-template #periodPopover let-data="data">
-    <div class="period-popover-holder">
-        <div
-            *ngFor="let item of periodSwitchItems; let indx = index"
-            class="period-popover-items-holder"
-            [ngClass]="{ active: item.active }"
-            (click)="changePeriod(item)"
-        >
-            <div class="period-popover-text">{{ item.name }}</div>
-            <div class="period-popover-icon-holder">
-                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
-            </div>
-        </div>
-    </div>
+   <div class="period-popover-holder">
+      <div
+         *ngFor="let item of periodSwitchItems; let indx = index"
+         class="period-popover-items-holder"
+         [ngClass]="{ active: item.active }"
+         (click)="changePeriod(item)"
+      >
+         <div class="period-popover-text">{{ item.name }}</div>
+         <div class="period-popover-icon-holder">
+            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+         </div>
+      </div>
+   </div>
 </ng-template>

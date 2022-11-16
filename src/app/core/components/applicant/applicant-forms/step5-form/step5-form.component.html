@@ -1,219 +1,217 @@
 <div class="d-flex flex-column step-form" [formGroup]="violationsForm">
-    <div class="d-flex line-container">
-        <div class="group date-group">
-            <app-ta-input
-                formControlName="date"
-                [inputConfig]="{
-                    name: 'datepicker',
-                    type: 'text',
-                    label: 'Date',
-                    placeholderIcon: 'date',
-                    isRequired: true,
-                    customClass: 'datetimeclass',
-                    isDisabled: selectedMode === 'REVIEW_MODE',
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
-                (incorrectEvent)="incorrectInput($event, 0, 10)"
-            ></app-ta-input>
-        </div>
-        <div class="group truck-type-group">
-            <app-ta-input-dropdown
-                formControlName="vehicleType"
-                [template]="'svgtext-template'"
-                [inputConfig]="{
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    label: 'Vehicle type',
-                    isRequired: true,
-                    isDropdown: true,
-                    isDisabled: selectedMode === 'REVIEW_MODE',
-                    dropdownWidthClass: 'w-col-192',
-                    dropdownImageInput: {
-                        withText: true,
-                        svg: true,
-                        image: false,
-                        url: selectedVehicleType?.logoName,
-                        template: 'truck',
-                        class: selectedVehicleType?.name
-                            ?.trim()
-                            .replace(' ', '')
-                            .toLowerCase()
-                    },
-                    customClass: 'truck-trailer-dropdown'
-                }"
-                [activeItem]="selectedVehicleType"
-                [options]="vehicleType"
-                (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
-            ></app-ta-input-dropdown>
-        </div>
-        <div class="group location-group">
-            <app-input-address-dropdown
-                formControlName="location"
-                [inputConfig]="{
-                    name: 'Address',
-                    type: 'text',
-                    label: 'Location',
-                    isRequired: true,
-                    placeholderIcon: 'address',
-                    textTransform: 'capitalize',
-                    dropdownWidthClass: 'w-col-242',
-                    minLength: 12,
-                    maxLength: 256,
-                    isDisabled: selectedMode === 'REVIEW_MODE',
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [placeholderType]="'shortAddress'"
-                [activeAddress]="selectedAddress"
-                [incorrectValue]="openAnnotationArray[10].lineInputs[2]"
-                (incorrectEvent)="incorrectInput($event, 2, 10)"
-                (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-            ></app-input-address-dropdown>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div
-            class="review-feedback-container"
-            *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-            "
-        >
-            <app-applicant-review-feedback
-                formControlName="firstRowReview"
-                [displayAnnotationButton]="
-                    openAnnotationArray[10].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                    openAnnotationArray[10].displayAnnotationTextArea
-                "
-                [lineIndex]="10"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                    'Check the routing number one more time (one number missing)!!!'
-                "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-            ></app-applicant-review-feedback>
-        </div>
-    </div>
-
-    <div class="d-flex line-container">
-        <div class="description-group">
-            <app-ta-input
-                formControlName="description"
-                [inputConfig]="{
-                    name: 'Description',
-                    type: 'text',
-                    label: 'Description of violation',
-                    minLength: 2,
-                    maxLength: 160,
-                    isRequired: true,
-                    textTransform: 'capitalize',
-                    isDisabled: selectedMode === 'REVIEW_MODE',
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[11].lineInputs[0]"
-                (incorrectEvent)="incorrectInput($event, 0, 11)"
-            ></app-ta-input>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div
-            class="review-feedback-container"
-            *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-            "
-        >
-            <app-applicant-review-feedback
-                formControlName="secondRowReview"
-                [displayAnnotationButton]="
-                    openAnnotationArray[11].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                    openAnnotationArray[11].displayAnnotationTextArea
-                "
-                [lineIndex]="11"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                    'Check the routing number one more time (one number missing)!!!'
-                "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-            ></app-applicant-review-feedback>
-        </div>
-    </div>
-
-    <!-- ADD ANOTHER VIOLATION -->
-
-    <div class="d-flex justify-content-center align-items-center btn-container">
-        <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-            [ngClass]="{
-                disabled: violationsForm.invalid
+   <div class="d-flex line-container">
+      <div class="group date-group">
+         <app-ta-input
+            formControlName="date"
+            [inputConfig]="{
+               name: 'datepicker',
+               type: 'text',
+               label: 'Date',
+               placeholderIcon: 'date',
+               isRequired: true,
+               customClass: 'datetimeclass',
+               isDisabled: selectedMode === 'REVIEW_MODE',
+               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
-            *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
-            (click)="onAddViolation()"
-        >
-            <svg-icon
-                class="plus-icon"
-                src="assets/svg/common/ic_plus.svg
+            [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
+            (incorrectEvent)="incorrectInput($event, 0, 10)"
+         ></app-ta-input>
+      </div>
+      <div class="group truck-type-group">
+         <app-ta-input-dropdown
+            formControlName="vehicleType"
+            [template]="'svgtext-template'"
+            [inputConfig]="{
+               name: 'Input Dropdown',
+               type: 'text',
+               label: 'Vehicle type',
+               isRequired: true,
+               isDropdown: true,
+               isDisabled: selectedMode === 'REVIEW_MODE',
+               dropdownWidthClass: 'w-col-192',
+               dropdownImageInput: {
+                  withText: true,
+                  svg: true,
+                  image: false,
+                  url: selectedVehicleType?.logoName,
+                  template: 'truck',
+                  class: selectedVehicleType?.name
+                     ?.trim()
+                     .replace(' ', '')
+                     .toLowerCase()
+               },
+               customClass: 'truck-trailer-dropdown'
+            }"
+            [activeItem]="selectedVehicleType"
+            [options]="vehicleType"
+            (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
+         ></app-ta-input-dropdown>
+      </div>
+      <div class="group location-group">
+         <app-input-address-dropdown
+            formControlName="location"
+            [inputConfig]="{
+               name: 'Address',
+               type: 'text',
+               label: 'Location',
+               isRequired: true,
+               placeholderIcon: 'address',
+               textTransform: 'capitalize',
+               dropdownWidthClass: 'w-col-242',
+               minLength: 12,
+               maxLength: 256,
+               isDisabled: selectedMode === 'REVIEW_MODE',
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [placeholderType]="'shortAddress'"
+            [activeAddress]="selectedAddress"
+            [incorrectValue]="openAnnotationArray[10].lineInputs[2]"
+            (incorrectEvent)="incorrectInput($event, 2, 10)"
+            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+         ></app-input-address-dropdown>
+      </div>
+
+      <!-- REVIEW AND FEEDBACK -->
+
+      <div
+         class="review-feedback-container"
+         *ngIf="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+         "
+      >
+         <app-applicant-review-feedback
+            formControlName="firstRowReview"
+            [displayAnnotationButton]="
+               openAnnotationArray[10].displayAnnotationButton
+            "
+            [displayAnnotationTextArea]="
+               openAnnotationArray[10].displayAnnotationTextArea
+            "
+            [lineIndex]="10"
+            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+            [feedbackText]="
+               'Check the routing number one more time (one number missing)!!!'
+            "
+            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+         ></app-applicant-review-feedback>
+      </div>
+   </div>
+
+   <div class="d-flex line-container">
+      <div class="description-group">
+         <app-ta-input
+            formControlName="description"
+            [inputConfig]="{
+               name: 'Description',
+               type: 'text',
+               label: 'Description of violation',
+               minLength: 2,
+               maxLength: 160,
+               isRequired: true,
+               textTransform: 'capitalize',
+               isDisabled: selectedMode === 'REVIEW_MODE',
+               incorrectInput: selectedMode === 'REVIEW_MODE'
+            }"
+            [incorrectValue]="openAnnotationArray[11].lineInputs[0]"
+            (incorrectEvent)="incorrectInput($event, 0, 11)"
+         ></app-ta-input>
+      </div>
+
+      <!-- REVIEW AND FEEDBACK -->
+
+      <div
+         class="review-feedback-container"
+         *ngIf="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+         "
+      >
+         <app-applicant-review-feedback
+            formControlName="secondRowReview"
+            [displayAnnotationButton]="
+               openAnnotationArray[11].displayAnnotationButton
+            "
+            [displayAnnotationTextArea]="
+               openAnnotationArray[11].displayAnnotationTextArea
+            "
+            [lineIndex]="11"
+            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+            [feedbackText]="
+               'Check the routing number one more time (one number missing)!!!'
+            "
+            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+         ></app-applicant-review-feedback>
+      </div>
+   </div>
+
+   <!-- ADD ANOTHER VIOLATION -->
+
+   <div class="d-flex justify-content-center align-items-center btn-container">
+      <button
+         type="button"
+         class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+         [ngClass]="{
+            disabled: violationsForm.invalid
+         }"
+         *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
+         (click)="onAddViolation()"
+      >
+         <svg-icon
+            class="plus-icon"
+            src="assets/svg/common/ic_plus.svg
   "
-                [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                }"
-            ></svg-icon>
+            [svgStyle]="{
+               'width.px': 18,
+               'height.px': 18
+            }"
+         ></svg-icon>
 
-            Add Another Violation
-        </button>
+         Add Another Violation
+      </button>
 
-        <div
-            class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
-            *ngIf="isEditing"
-        >
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-                (click)="onCancelEditAccident()"
-            >
-                Cancel
-            </button>
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-                [ngClass]="{
-                    disabled: !isViolationEdited
-                }"
-                (click)="onSaveEditedViolation()"
-            >
-                Save Changes
-            </button>
-        </div>
+      <div
+         class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
+         *ngIf="isEditing"
+      >
+         <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+            (click)="onCancelEditAccident()"
+         >
+            Cancel
+         </button>
+         <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+            [ngClass]="{
+               disabled: !isViolationEdited
+            }"
+            (click)="onSaveEditedViolation()"
+         >
+            Save Changes
+         </button>
+      </div>
 
-        <div
-            class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
-            *ngIf="isReviewingCard"
-        >
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-                (click)="onCancelReviewViolation()"
-            >
-                Cancel
-            </button>
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-                [ngClass]="{
-                    disabled: !isCardReviewedIncorrect
-                }"
-                (click)="onAddAnnotation()"
-            >
-                Add Annotation
-            </button>
-        </div>
-    </div>
+      <div
+         class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
+         *ngIf="isReviewingCard"
+      >
+         <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+            (click)="onCancelReviewViolation()"
+         >
+            Cancel
+         </button>
+         <button
+            type="button"
+            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+            [ngClass]="{
+               disabled: !isCardReviewedIncorrect
+            }"
+            (click)="onAddAnnotation()"
+         >
+            Add Annotation
+         </button>
+      </div>
+   </div>
 </div>

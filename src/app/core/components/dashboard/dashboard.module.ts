@@ -14,23 +14,23 @@ import { TaNoteModule } from '../shared/ta-note/ta-note.module';
 import { TruckassistSearchModule } from '../shared/truckassist-search/truckassist-search.module';
 
 @NgModule({
-    declarations: [
-        DashboardComponent,
-        DashboardPerformanceComponent,
-        DashboardTopDriverComponent,
-        DashboardPickupByStateComponent,
-        DashboardMapComponent,
-        DashboardStateTrackingComponent,
-        DashboardStateUsaComponent,
-    ],
-    imports: [
-        CommonModule,
-        DashboardRoutingModule,
-        ReactiveFormsModule,
-        SharedModule,
-        TaNoteModule,
-        TruckassistSearchModule,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+   declarations: [
+      DashboardComponent,
+      DashboardPerformanceComponent,
+      DashboardTopDriverComponent,
+      DashboardPickupByStateComponent,
+      DashboardMapComponent,
+      DashboardStateTrackingComponent,
+      DashboardStateUsaComponent,
+   ],
+   imports: [
+      CommonModule,
+      DashboardRoutingModule,
+      ReactiveFormsModule,
+      SharedModule,
+      TaNoteModule,
+      TruckassistSearchModule,
+   ],
+   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DashboardModule {}

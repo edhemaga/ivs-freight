@@ -1,243 +1,225 @@
 <div class="container-fluid">
-    <div class="row">
-        <div
-            class="container-fluid d-flex flex-column justify-content-between cdl-card-container"
-        >
-            <div class="d-flex flex-column align-items-center">
-                <app-applicant-header
-                    [mode]="selectedMode"
-                ></app-applicant-header>
+   <div class="row">
+      <div
+         class="container-fluid d-flex flex-column justify-content-between cdl-card-container"
+      >
+         <div class="d-flex flex-column align-items-center">
+            <app-applicant-header [mode]="selectedMode"></app-applicant-header>
 
-                <h1 class="m-0 text-center title ta-font-bold">Upload CDL</h1>
+            <h1 class="m-0 text-center title ta-font-bold">Upload CDL</h1>
 
-                <h2
-                    class="m-0 text-center subtitle ta-font-regular"
-                    [ngStyle]="{
-                        color:
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? '#919191'
-                                : '#6C6C6C'
-                    }"
-                >
-                    Your identification document will help us to validate your
-                    identity.<br />
-                    <span class="ta-font-bold">
-                        To confirm you are you, please upload digital photo of
-                        the<br />front & back side of your SSN.
-                    </span>
-                </h2>
+            <h2
+               class="m-0 text-center subtitle ta-font-regular"
+               [ngStyle]="{
+                  color:
+                     selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+               }"
+            >
+               Your identification document will help us to validate your
+               identity.<br />
+               <span class="ta-font-bold">
+                  To confirm you are you, please upload digital photo of the<br />front
+                  & back side of your SSN.
+               </span>
+            </h2>
 
-                <!-- ISSUE DATE, EXP. DATE -->
+            <!-- ISSUE DATE, EXP. DATE -->
 
-                <form [formGroup]="cdlCardForm">
-                    <div class="d-flex line-container">
-                        <div class="date-group">
-                            <app-ta-input
-                                formControlName="fromDate"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    label: 'Issue date',
-                                    placeholderIcon: 'date',
-                                    isRequired: true,
-                                    customClass: 'datetimeclass',
-                                    incorrectInput:
-                                        selectedMode === 'REVIEW_MODE'
-                                }"
-                                [incorrectValue]="
-                                    openAnnotationArray[0].lineInputs[0]
-                                "
-                                (incorrectEvent)="incorrectInput($event, 0, 0)"
-                            ></app-ta-input>
-                        </div>
-                        <div class="date-group date-exp-group">
-                            <app-ta-input
-                                formControlName="toDate"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    label: 'Exp. date',
-                                    placeholderIcon: 'date',
-                                    isRequired: true,
-                                    customClass: 'datetimeclass',
-                                    incorrectInput:
-                                        selectedMode === 'REVIEW_MODE'
-                                }"
-                                [incorrectValue]="
-                                    openAnnotationArray[0].lineInputs[1]
-                                "
-                                (incorrectEvent)="incorrectInput($event, 1, 0)"
-                            ></app-ta-input>
-                        </div>
-
-                        <!-- REVIEW AND FEEDBACK -->
-
-                        <div
-                            class="review-feedback-container"
-                            *ngIf="
-                                selectedMode === 'REVIEW_MODE' ||
-                                selectedMode === 'FEEDBACK_MODE'
-                            "
-                        >
-                            <app-applicant-review-feedback
-                                formControlName="firstRowReview"
-                                [displayAnnotationButton]="
-                                    openAnnotationArray[0]
-                                        .displayAnnotationButton
-                                "
-                                [displayAnnotationTextArea]="
-                                    openAnnotationArray[0]
-                                        .displayAnnotationTextArea
-                                "
-                                [lineIndex]="0"
-                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                                [feedbackText]="
-                                    'Check the routing number one more time (one number missing)!!!'
-                                "
-                                (annotationBtnClickEvent)="
-                                    getAnnotationBtnClickValue($event)
-                                "
-                            ></app-applicant-review-feedback>
-                        </div>
-                    </div>
-                </form>
-
-                <!-- FILES CONTAINER -->
-
-                <div
-                    class="d-flex flex-column files-container"
-                    [formGroup]="cdlCardForm"
-                >
-                    <div class="d-flex align-items-center files-header">
-                        <div
-                            class="d-flex align-items-center justify-content-center counter-container"
-                        >
-                            <p class="m-0 ta-font-extra-bold">
-                                {{ documents.length }}
-                            </p>
-                        </div>
-                        <div
-                            class="d-flex align-items-center document-title-container"
-                        >
-                            <p class="m-0 ta-font-extra-bold documents-title">
-                                Documents
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="line-container">
-                        <app-ta-upload-files
-                            *ngIf="
-                                selectedMode === 'APPLICANT_MODE' ||
-                                selectedMode === 'FEEDBACK_MODE'
-                            "
-                            [files]="documents"
-                            [size]="'medium'"
-                            [hasNumberOfPages]="true"
-                            (onFileEvent)="onFilesAction($event)"
-                        ></app-ta-upload-files>
-
-                        <div
-                            class="d-flex review-documents-container"
-                            *ngIf="selectedMode === 'REVIEW_MODE'"
-                        ></div>
-
-                        <!-- REVIEW AND FEEDBACK -->
-
-                        <div
-                            class="review-feedback-container"
-                            *ngIf="
-                                selectedMode === 'REVIEW_MODE' ||
-                                selectedMode === 'FEEDBACK_MODE'
-                            "
-                        >
-                            <app-applicant-review-feedback
-                                formControlName="secondRowReview"
-                                [displayAnnotationButton]="
-                                    openAnnotationArray[1]
-                                        .displayAnnotationButton
-                                "
-                                [displayAnnotationTextArea]="
-                                    openAnnotationArray[1]
-                                        .displayAnnotationTextArea
-                                "
-                                [lineIndex]="1"
-                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                                [feedbackText]="
-                                    'Check the routing number one more time (one number missing)!!!'
-                                "
-                                (annotationBtnClickEvent)="
-                                    getAnnotationBtnClickValue($event)
-                                "
-                            ></app-applicant-review-feedback>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PRIVACY INFO -->
-
-                <div
-                    class="d-flex justify-content-center align-items-center privacy-container"
-                >
-                    <p
-                        class="m-0 ta-font-regular text-center"
-                        [ngStyle]="{
-                            color:
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? '#919191'
-                                    : '#6C6C6C'
+            <form [formGroup]="cdlCardForm">
+               <div class="d-flex line-container">
+                  <div class="date-group">
+                     <app-ta-input
+                        formControlName="fromDate"
+                        [inputConfig]="{
+                           name: 'datepicker',
+                           type: 'text',
+                           label: 'Issue date',
+                           placeholderIcon: 'date',
+                           isRequired: true,
+                           customClass: 'datetimeclass',
+                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                    >
-                        By continuing, you are agreeing to our
-                        <a
-                            class="ta-font-bold"
-                            href="#"
-                            [ngStyle]="{
-                                color:
-                                    selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6C6C6C'
-                            }"
-                            >Terms of Service</a
-                        ><br />
-                        and
-                        <a
-                            class="ta-font-bold"
-                            href="#"
-                            [ngStyle]="{
-                                color:
-                                    selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6C6C6C'
-                            }"
-                            >Privacy Policy</a
-                        >
-                    </p>
-                </div>
+                        [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
+                        (incorrectEvent)="incorrectInput($event, 0, 0)"
+                     ></app-ta-input>
+                  </div>
+                  <div class="date-group date-exp-group">
+                     <app-ta-input
+                        formControlName="toDate"
+                        [inputConfig]="{
+                           name: 'datepicker',
+                           type: 'text',
+                           label: 'Exp. date',
+                           placeholderIcon: 'date',
+                           isRequired: true,
+                           customClass: 'datetimeclass',
+                           incorrectInput: selectedMode === 'REVIEW_MODE'
+                        }"
+                        [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
+                        (incorrectEvent)="incorrectInput($event, 1, 0)"
+                     ></app-ta-input>
+                  </div>
+
+                  <!-- REVIEW AND FEEDBACK -->
+
+                  <div
+                     class="review-feedback-container"
+                     *ngIf="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                     "
+                  >
+                     <app-applicant-review-feedback
+                        formControlName="firstRowReview"
+                        [displayAnnotationButton]="
+                           openAnnotationArray[0].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                           openAnnotationArray[0].displayAnnotationTextArea
+                        "
+                        [lineIndex]="0"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                           'Check the routing number one more time (one number missing)!!!'
+                        "
+                        (annotationBtnClickEvent)="
+                           getAnnotationBtnClickValue($event)
+                        "
+                     ></app-applicant-review-feedback>
+                  </div>
+               </div>
+            </form>
+
+            <!-- FILES CONTAINER -->
+
+            <div
+               class="d-flex flex-column files-container"
+               [formGroup]="cdlCardForm"
+            >
+               <div class="d-flex align-items-center files-header">
+                  <div
+                     class="d-flex align-items-center justify-content-center counter-container"
+                  >
+                     <p class="m-0 ta-font-extra-bold">
+                        {{ documents.length }}
+                     </p>
+                  </div>
+                  <div
+                     class="d-flex align-items-center document-title-container"
+                  >
+                     <p class="m-0 ta-font-extra-bold documents-title">
+                        Documents
+                     </p>
+                  </div>
+               </div>
+
+               <div class="line-container">
+                  <app-ta-upload-files
+                     *ngIf="
+                        selectedMode === 'APPLICANT_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                     "
+                     [files]="documents"
+                     [size]="'medium'"
+                     [hasNumberOfPages]="true"
+                     (onFileEvent)="onFilesAction($event)"
+                  ></app-ta-upload-files>
+
+                  <div
+                     class="d-flex review-documents-container"
+                     *ngIf="selectedMode === 'REVIEW_MODE'"
+                  ></div>
+
+                  <!-- REVIEW AND FEEDBACK -->
+
+                  <div
+                     class="review-feedback-container"
+                     *ngIf="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                     "
+                  >
+                     <app-applicant-review-feedback
+                        formControlName="secondRowReview"
+                        [displayAnnotationButton]="
+                           openAnnotationArray[1].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                           openAnnotationArray[1].displayAnnotationTextArea
+                        "
+                        [lineIndex]="1"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                           'Check the routing number one more time (one number missing)!!!'
+                        "
+                        (annotationBtnClickEvent)="
+                           getAnnotationBtnClickValue($event)
+                        "
+                     ></app-applicant-review-feedback>
+                  </div>
+               </div>
             </div>
 
-            <!-- FOOTER -->
+            <!-- PRIVACY INFO -->
 
-            <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
-        </div>
-    </div>
+            <div
+               class="d-flex justify-content-center align-items-center privacy-container"
+            >
+               <p
+                  class="m-0 ta-font-regular text-center"
+                  [ngStyle]="{
+                     color:
+                        selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+                  }"
+               >
+                  By continuing, you are agreeing to our
+                  <a
+                     class="ta-font-bold"
+                     href="#"
+                     [ngStyle]="{
+                        color:
+                           selectedMode === 'FEEDBACK_MODE'
+                              ? '#919191'
+                              : '#6C6C6C'
+                     }"
+                     >Terms of Service</a
+                  ><br />
+                  and
+                  <a
+                     class="ta-font-bold"
+                     href="#"
+                     [ngStyle]="{
+                        color:
+                           selectedMode === 'FEEDBACK_MODE'
+                              ? '#919191'
+                              : '#6C6C6C'
+                     }"
+                     >Privacy Policy</a
+                  >
+               </p>
+            </div>
+         </div>
+
+         <!-- FOOTER -->
+
+         <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
+      </div>
+   </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-    class="d-flex justify-content-center align-items-center next-btn-container"
+   class="d-flex justify-content-center align-items-center next-btn-container"
 >
-    <app-applicant-next-back-btn
-        [nextStep]="true"
-        [lastPage]="true"
-        [filledCorrectly]="
-            selectedMode === 'APPLICANT_MODE' && cdlCardForm.valid
-        "
-        [hasIncorrectFields]="
-            selectedMode === 'REVIEW_MODE' && hasIncorrectFields
-        "
-        [mode]="selectedMode"
-        (stepEvent)="onStepAction($event)"
-    ></app-applicant-next-back-btn>
+   <app-applicant-next-back-btn
+      [nextStep]="true"
+      [lastPage]="true"
+      [filledCorrectly]="selectedMode === 'APPLICANT_MODE' && cdlCardForm.valid"
+      [hasIncorrectFields]="
+         selectedMode === 'REVIEW_MODE' && hasIncorrectFields
+      "
+      [mode]="selectedMode"
+      (stepEvent)="onStepAction($event)"
+   ></app-applicant-next-back-btn>
 </div>

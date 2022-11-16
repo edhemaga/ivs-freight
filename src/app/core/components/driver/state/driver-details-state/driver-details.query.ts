@@ -4,7 +4,7 @@ import { DriverItemState, DriversItemStore } from './driver-details.store';
 
 @Injectable({ providedIn: 'root' })
 export class DriversDetailsQuery extends QueryEntity<DriverItemState> {
-    constructor(protected driverItemStore: DriversItemStore) {
-        super(driverItemStore);
-    }
+   constructor(protected driverItemStore: DriversItemStore) {
+      super(driverItemStore);
+   }
 }

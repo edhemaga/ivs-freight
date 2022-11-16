@@ -6,32 +6,32 @@ import { TruckCardComponent } from './truck-card/truck-card.component';
 import { TruckTableComponent } from './truck-table/truck-table.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: TruckTableComponent,
-        data: { title: 'Truck' },
-    },
-    {
-        path: ':id/details',
-        loadChildren: () =>
-            import('./truck-details/truck-details.module').then(
-                (m) => m.TruckDetailsModule
-            ),
-        resolve: {
-            truck: TruckItemResolver,
-            truckMinimal: TruckMinimalResolver,
-        },
-        data: { title: 'Truck details' },
-    },
-    {
-        path: 'card',
-        component: TruckCardComponent,
-        data: { title: 'Truck cards' },
-    },
+   {
+      path: '',
+      component: TruckTableComponent,
+      data: { title: 'Truck' },
+   },
+   {
+      path: ':id/details',
+      loadChildren: () =>
+         import('./truck-details/truck-details.module').then(
+            (m) => m.TruckDetailsModule
+         ),
+      resolve: {
+         truck: TruckItemResolver,
+         truckMinimal: TruckMinimalResolver,
+      },
+      data: { title: 'Truck details' },
+   },
+   {
+      path: 'card',
+      component: TruckCardComponent,
+      data: { title: 'Truck cards' },
+   },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
+   imports: [RouterModule.forChild(routes)],
+   exports: [RouterModule],
 })
 export class TruckRoutingModule {}

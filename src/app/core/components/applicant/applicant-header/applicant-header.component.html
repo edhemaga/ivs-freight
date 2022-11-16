@@ -1,56 +1,56 @@
 <div class="d-flex align-items-center justify-content-center nav-header">
-    <nav>
-        <ul class="d-flex">
-            <li
-                *ngFor="
-                    let menuItem of menuItems;
-                    index as i;
-                    trackBy: trackByIdentity
-                "
-                class="d-flex align-items-center tab"
-                [routerLinkActive]="
-                    selectedMode === 'REVIEW_MODE' &&
+   <nav>
+      <ul class="d-flex">
+         <li
+            *ngFor="
+               let menuItem of menuItems;
+               index as i;
+               trackBy: trackByIdentity
+            "
+            class="d-flex align-items-center tab"
+            [routerLinkActive]="
+               selectedMode === 'REVIEW_MODE' &&
+               reviewStoreArr[i].isReviewed &&
+               !reviewStoreArr[i].hasIncorrectAnswer
+                  ? 'tab-active'
+                  : selectedMode === 'REVIEW_MODE' &&
                     reviewStoreArr[i].isReviewed &&
-                    !reviewStoreArr[i].hasIncorrectAnswer
-                        ? 'tab-active'
-                        : selectedMode === 'REVIEW_MODE' &&
-                          reviewStoreArr[i].isReviewed &&
-                          reviewStoreArr[i].hasIncorrectAnswer
-                        ? 'tab-active-review-incorrect'
-                        : selectedMode === 'FEEDBACK_MODE' &&
-                          feedbackStoreArr[i].hasIncorrectAnswer
-                        ? 'tab-active-feedback-incorrect'
-                        : 'tab-active'
-                "
-                [ngClass]="{
-                    'completed-tab':
-                        (selectedMode === 'APPLICANT_MODE' &&
-                            storeArr[i].isCompleted) ||
-                        (selectedMode === 'REVIEW_MODE' &&
-                            reviewStoreArr[i].isReviewed &&
-                            !reviewStoreArr[i].hasIncorrectAnswer),
-                    'reviewed-incorrect-answer':
-                        selectedMode === 'REVIEW_MODE' &&
-                        reviewStoreArr[i].isReviewed &&
-                        reviewStoreArr[i].hasIncorrectAnswer,
-                    'feedback-incorrect-answer':
-                        selectedMode === 'FEEDBACK_MODE' &&
-                        feedbackStoreArr[i].hasIncorrectAnswer
-                }"
+                    reviewStoreArr[i].hasIncorrectAnswer
+                  ? 'tab-active-review-incorrect'
+                  : selectedMode === 'FEEDBACK_MODE' &&
+                    feedbackStoreArr[i].hasIncorrectAnswer
+                  ? 'tab-active-feedback-incorrect'
+                  : 'tab-active'
+            "
+            [ngClass]="{
+               'completed-tab':
+                  (selectedMode === 'APPLICANT_MODE' &&
+                     storeArr[i].isCompleted) ||
+                  (selectedMode === 'REVIEW_MODE' &&
+                     reviewStoreArr[i].isReviewed &&
+                     !reviewStoreArr[i].hasIncorrectAnswer),
+               'reviewed-incorrect-answer':
+                  selectedMode === 'REVIEW_MODE' &&
+                  reviewStoreArr[i].isReviewed &&
+                  reviewStoreArr[i].hasIncorrectAnswer,
+               'feedback-incorrect-answer':
+                  selectedMode === 'FEEDBACK_MODE' &&
+                  feedbackStoreArr[i].hasIncorrectAnswer
+            }"
+         >
+            <a
+               class="d-flex align-items-center ta-font-medium"
+               [routerLink]="[menuItem.route, applicantId]"
             >
-                <a
-                    class="d-flex align-items-center ta-font-medium"
-                    [routerLink]="[menuItem.route, applicantId]"
-                >
-                    <svg-icon
-                        class="nav-icon"
-                        src="{{ menuItem.iconSrc }}"
-                        [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
-                    ></svg-icon>
+               <svg-icon
+                  class="nav-icon"
+                  src="{{ menuItem.iconSrc }}"
+                  [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
+               ></svg-icon>
 
-                    {{ menuItem.title }}
-                </a>
-            </li>
-        </ul>
-    </nav>
+               {{ menuItem.title }}
+            </a>
+         </li>
+      </ul>
+   </nav>
 </div>

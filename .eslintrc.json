@@ -13,6 +13,7 @@
                 "plugin:@angular-eslint/template/process-inline-templates",
                 "prettier"
             ],
+            "plugins": ["prettier"],
             "rules": {
                 "@angular-eslint/component-selector": [
                     "error",

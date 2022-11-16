@@ -1,118 +1,118 @@
 <div class="settings-parking">
-    <div class="settings-header">
-        <div class="settings-name d-flex align-items-center">
-            <app-ta-counter
-                [count]="parkingData?.count"
-                [countColor]="'#919191'"
-                [countBackground]="'#F3F3F3'"
-                [countHeight]="'24px'"
-                [countWidth]="'24px'"
-            ></app-ta-counter>
-            <p>Parking</p>
-        </div>
-        <div class="settings-header-button">
-            <div class="border-left"></div>
-            <svg-icon
-                src="assets/svg/common/ic_plus.svg"
-                class="settings-plus-button"
-                (click)="onAction({ modalName: 'parking' })"
-            ></svg-icon>
-        </div>
-    </div>
-    <span class="settings-body">
-        <app-ta-re-card
-            *ngFor="let item of parkingData?.data; trackBy: identity"
-            [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
-            [cardNameCommon]="item.name"
-            [hasFooter]="false"
-            [haveHeaderText]="true"
-            [optionsId]="item.id"
-            [options]="parkingActions"
-            (dropActions)="optionsEvent($event, 'parking')"
-            [paddingDots]="'11px 0px 0px 12px'"
-        >
-            <div class="settings-body-items">
-                <div *ngIf="item.phone" class="single-item">
-                    <svg-icon
-                        class="company-icons"
-                        src="assets/svg/common/ic_phone.svg"
-                    ></svg-icon>
-                    <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
-                </div>
-                <div *ngIf="item.email" class="single-item">
-                    <svg-icon
-                        class="company-icons"
-                        src="assets/svg/common/ic_email.svg"
-                    ></svg-icon>
-                    <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
-                </div>
-                <div *ngIf="item.address" class="single-item">
-                    <svg-icon
-                        class="company-icons"
-                        src="assets/svg/truckassist-table/location-icon.svg"
-                    ></svg-icon>
-                    <span>{{ item.address.address }}</span>
-                </div>
+   <div class="settings-header">
+      <div class="settings-name d-flex align-items-center">
+         <app-ta-counter
+            [count]="parkingData?.count"
+            [countColor]="'#919191'"
+            [countBackground]="'#F3F3F3'"
+            [countHeight]="'24px'"
+            [countWidth]="'24px'"
+         ></app-ta-counter>
+         <p>Parking</p>
+      </div>
+      <div class="settings-header-button">
+         <div class="border-left"></div>
+         <svg-icon
+            src="assets/svg/common/ic_plus.svg"
+            class="settings-plus-button"
+            (click)="onAction({ modalName: 'parking' })"
+         ></svg-icon>
+      </div>
+   </div>
+   <span class="settings-body">
+      <app-ta-re-card
+         *ngFor="let item of parkingData?.data; trackBy: identity"
+         [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
+         [cardNameCommon]="item.name"
+         [hasFooter]="false"
+         [haveHeaderText]="true"
+         [optionsId]="item.id"
+         [options]="parkingActions"
+         (dropActions)="optionsEvent($event, 'parking')"
+         [paddingDots]="'11px 0px 0px 12px'"
+      >
+         <div class="settings-body-items">
+            <div *ngIf="item.phone" class="single-item">
+               <svg-icon
+                  class="company-icons"
+                  src="assets/svg/common/ic_phone.svg"
+               ></svg-icon>
+               <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
             </div>
-            <app-ta-custom-card
-                [hasCounter]="item.parkingSlotCount + item.fullParkingSlotCount"
-                [cardName]="'Parking Slot'"
-                [isCardOpen]="true"
-                [bodyTemplate]="'card'"
+            <div *ngIf="item.email" class="single-item">
+               <svg-icon
+                  class="company-icons"
+                  src="assets/svg/common/ic_email.svg"
+               ></svg-icon>
+               <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
+            </div>
+            <div *ngIf="item.address" class="single-item">
+               <svg-icon
+                  class="company-icons"
+                  src="assets/svg/truckassist-table/location-icon.svg"
+               ></svg-icon>
+               <span>{{ item.address.address }}</span>
+            </div>
+         </div>
+         <app-ta-custom-card
+            [hasCounter]="item.parkingSlotCount + item.fullParkingSlotCount"
+            [cardName]="'Parking Slot'"
+            [isCardOpen]="true"
+            [bodyTemplate]="'card'"
+         >
+            <div
+               class="parking-template-data"
+               [ngClass]="{ 'no-divider': !item.rent }"
             >
-                <div
-                    class="parking-template-data"
-                    [ngClass]="{ 'no-divider': !item.rent }"
-                >
-                    <div class="parking-template-item">
-                        <p class="parking-template-number">
-                            {{ item.parkingSlot }}
-                        </p>
-                        <p class="parking-template-text">Parking Slot</p>
-                    </div>
-                    <div class="parking-template-item">
-                        <p class="parking-template-number">
-                            {{ item.fullParkingSlot }}
-                        </p>
-                        <p class="parking-template-text">Full Parking Slot</p>
-                    </div>
-                    <div class="parking-template-item">
-                        <svg-icon
-                            class="parking-template-svg"
-                            [ngClass]="{ disabled: !item.securityCamera }"
-                            src="assets/svg/common/ic_security-camera.svg"
-                        ></svg-icon>
-                        <p
-                            class="parking-template-text"
-                            [ngClass]="{ 'cross-out': !item.securityCamera }"
-                        >
-                            Security Camera
-                        </p>
-                    </div>
-                    <div class="parking-template-item">
-                        <svg-icon
-                            class="parking-template-svg"
-                            [ngClass]="{ disabled: !item.gate }"
-                            src="assets/svg/common/ic_security-gate.svg"
-                        ></svg-icon>
-                        <p
-                            class="parking-template-text"
-                            [ngClass]="{ 'cross-out': !item.gate }"
-                        >
-                            Gate
-                        </p>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-            <div *ngIf="item.rent" class="divider"></div>
-            <div *ngIf="item.rent" class="settings-progress-container">
-                <app-truckassist-progress-expiration
-                    [expireDate]="'03/25/2023'"
-                    [startDate]="'03/12/2023'"
-                    [expiresSettings]="'settings-parking'"
-                    [customText]="generateTextForProgressBar(item)"
-                ></app-truckassist-progress-expiration>
+               <div class="parking-template-item">
+                  <p class="parking-template-number">
+                     {{ item.parkingSlot }}
+                  </p>
+                  <p class="parking-template-text">Parking Slot</p>
+               </div>
+               <div class="parking-template-item">
+                  <p class="parking-template-number">
+                     {{ item.fullParkingSlot }}
+                  </p>
+                  <p class="parking-template-text">Full Parking Slot</p>
+               </div>
+               <div class="parking-template-item">
+                  <svg-icon
+                     class="parking-template-svg"
+                     [ngClass]="{ disabled: !item.securityCamera }"
+                     src="assets/svg/common/ic_security-camera.svg"
+                  ></svg-icon>
+                  <p
+                     class="parking-template-text"
+                     [ngClass]="{ 'cross-out': !item.securityCamera }"
+                  >
+                     Security Camera
+                  </p>
+               </div>
+               <div class="parking-template-item">
+                  <svg-icon
+                     class="parking-template-svg"
+                     [ngClass]="{ disabled: !item.gate }"
+                     src="assets/svg/common/ic_security-gate.svg"
+                  ></svg-icon>
+                  <p
+                     class="parking-template-text"
+                     [ngClass]="{ 'cross-out': !item.gate }"
+                  >
+                     Gate
+                  </p>
+               </div>
             </div>
-        </app-ta-re-card>
-    </span>
+         </app-ta-custom-card>
+         <div *ngIf="item.rent" class="divider"></div>
+         <div *ngIf="item.rent" class="settings-progress-container">
+            <app-truckassist-progress-expiration
+               [expireDate]="'03/25/2023'"
+               [startDate]="'03/12/2023'"
+               [expiresSettings]="'settings-parking'"
+               [customText]="generateTextForProgressBar(item)"
+            ></app-truckassist-progress-expiration>
+         </div>
+      </app-ta-re-card>
+   </span>
 </div>

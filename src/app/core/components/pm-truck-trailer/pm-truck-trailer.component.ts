@@ -5,265 +5,265 @@ import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../services/truckassist-table/truckassist-table.service';
 import {
-    getTruckPMColumnDefinition,
-    getTrailerPMColumnDefinition,
+   getTruckPMColumnDefinition,
+   getTrailerPMColumnDefinition,
 } from '../../../../assets/utils/settings/pm-columns';
 
 @Component({
-    selector: 'app-pm-truck-trailer',
-    templateUrl: './pm-truck-trailer.component.html',
-    styleUrls: ['./pm-truck-trailer.component.scss'],
+   selector: 'app-pm-truck-trailer',
+   templateUrl: './pm-truck-trailer.component.html',
+   styleUrls: ['./pm-truck-trailer.component.scss'],
 })
 export class PmTruckTrailerComponent implements OnInit {
-    private destroy$ = new Subject<void>();
-    tableOptions: any = {};
-    tableData: any[] = [];
-    viewData: any[] = [];
-    columns: any[] = [];
-    selectedTab = 'active';
-    activeViewMode: string = 'List';
+   private destroy$ = new Subject<void>();
+   tableOptions: any = {};
+   tableData: any[] = [];
+   viewData: any[] = [];
+   columns: any[] = [];
+   selectedTab = 'active';
+   activeViewMode: string = 'List';
 
-    constructor(
-        private modalService: ModalService,
-        private tableService: TruckassistTableService
-    ) {}
+   constructor(
+      private modalService: ModalService,
+      private tableService: TruckassistTableService
+   ) {}
 
-    ngOnInit(): void {
-        this.sendPMData();
+   ngOnInit(): void {
+      this.sendPMData();
 
-        // Reset Columns
-        this.tableService.currentResetColumns
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
-                if (response) {
-                    this.sendPMData();
-                }
-            });
-    }
+      // Reset Columns
+      this.tableService.currentResetColumns
+         .pipe(takeUntil(this.destroy$))
+         .subscribe((response: boolean) => {
+            if (response) {
+               this.sendPMData();
+            }
+         });
+   }
 
-    initTableOptions(): void {
-        this.tableOptions = {
-            toolbarActions: {
-                viewModeOptions: [
-                    { name: 'List', active: this.activeViewMode === 'List' },
-                    { name: 'Card', active: this.activeViewMode === 'Card' },
-                ],
-            },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit',
-                    class: 'regular-text',
-                    contentType: 'edit',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete',
-                    text: 'Are you sure you want to delete pm(s)',
-                    class: 'delete-text',
-                    contentType: 'delete',
-                },
+   initTableOptions(): void {
+      this.tableOptions = {
+         toolbarActions: {
+            viewModeOptions: [
+               { name: 'List', active: this.activeViewMode === 'List' },
+               { name: 'Card', active: this.activeViewMode === 'Card' },
             ],
-        };
-    }
-
-    sendPMData() {
-        this.initTableOptions();
-
-        this.tableData = [
+         },
+         actions: [
             {
-                title: 'Truck',
-                field: 'active',
-                length: 8,
-                data: this.getDumyData(8, 'truck'),
-                extended: false,
-                selectTab: true,
-                gridNameTitle: 'PM',
-                stateName: 'pm_trucks',
-                tableConfiguration: 'PM_TRUCK',
-                isActive: this.selectedTab === 'active',
-                gridColumns: this.getGridColumns('PM_TRUCK'),
+               title: 'Edit',
+               name: 'edit',
+               class: 'regular-text',
+               contentType: 'edit',
             },
             {
-                title: 'Trailer',
-                field: 'inactive',
-                length: 15,
-                data: this.getDumyData(15, 'trailer'),
-                extended: false,
-                selectTab: true,
-                gridNameTitle: 'PM',
-                stateName: 'pm_trailers',
-                tableConfiguration: 'PM_TRAILER',
-                isActive: this.selectedTab === 'inactive',
-                gridColumns: this.getGridColumns('PM_TRAILER'),
+               title: 'Delete',
+               name: 'delete',
+               text: 'Are you sure you want to delete pm(s)',
+               class: 'delete-text',
+               contentType: 'delete',
             },
-        ];
+         ],
+      };
+   }
 
-        const td = this.tableData.find((t) => t.field === this.selectedTab);
+   sendPMData() {
+      this.initTableOptions();
 
-        this.setPmData(td);
-    }
+      this.tableData = [
+         {
+            title: 'Truck',
+            field: 'active',
+            length: 8,
+            data: this.getDumyData(8, 'truck'),
+            extended: false,
+            selectTab: true,
+            gridNameTitle: 'PM',
+            stateName: 'pm_trucks',
+            tableConfiguration: 'PM_TRUCK',
+            isActive: this.selectedTab === 'active',
+            gridColumns: this.getGridColumns('PM_TRUCK'),
+         },
+         {
+            title: 'Trailer',
+            field: 'inactive',
+            length: 15,
+            data: this.getDumyData(15, 'trailer'),
+            extended: false,
+            selectTab: true,
+            gridNameTitle: 'PM',
+            stateName: 'pm_trailers',
+            tableConfiguration: 'PM_TRAILER',
+            isActive: this.selectedTab === 'inactive',
+            gridColumns: this.getGridColumns('PM_TRAILER'),
+         },
+      ];
 
-    getGridColumns(configType: string) {
-        const tableColumnsConfig = JSON.parse(
-            localStorage.getItem(`table-${configType}-Configuration`)
-        );
+      const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-        if (configType === 'PM_TRUCK') {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getTruckPMColumnDefinition();
-        } else {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getTrailerPMColumnDefinition();
-        }
-    }
+      this.setPmData(td);
+   }
 
-    setPmData(td: any) {
-        this.columns = td.gridColumns;
+   getGridColumns(configType: string) {
+      const tableColumnsConfig = JSON.parse(
+         localStorage.getItem(`table-${configType}-Configuration`)
+      );
 
-        if (td.data.length) {
-            this.viewData = td.data;
+      if (configType === 'PM_TRUCK') {
+         return tableColumnsConfig
+            ? tableColumnsConfig
+            : getTruckPMColumnDefinition();
+      } else {
+         return tableColumnsConfig
+            ? tableColumnsConfig
+            : getTrailerPMColumnDefinition();
+      }
+   }
 
-            this.viewData = this.viewData.map((data) => {
-                data.isSelected = false;
-                return data;
-            });
-        } else {
-            this.viewData = [];
-        }
-    }
+   setPmData(td: any) {
+      this.columns = td.gridColumns;
 
-    getDumyData(numberOfCopy: number, dataType: string) {
-        const truck = {
-            textUnit: '12345',
-            textOdometear: '567,364',
-            oilFilter: {
-                start: new Date(),
-                end: null,
-            },
-            airFilter: {
-                start: new Date(),
-                end: null,
-            },
-            transFluid: {
-                start: new Date(),
-                end: null,
-            },
-            belts: {
-                start: new Date(),
-                end: null,
-            },
-            engTuneUp: {
-                start: new Date(),
-                end: null,
-            },
-            alignment: {
-                start: new Date(),
-                end: null,
-            },
-            textInv: 'W444-444',
-            textLastShop: 'NEXTRAN TRUCKS',
-            lastService: '04/04/24',
-        };
+      if (td.data.length) {
+         this.viewData = td.data;
 
-        const trailer = {
-            textUnit: '123',
-            textOdometer: '1,267,305',
-            lastServe: '01/29/21',
-            repairShop: 'ARMEN’S TIRE AND SERVICE',
-            color: '#7040A1',
-            svgIcon: 'Treba da se sredi',
-            reeferUnit: {
-                start: new Date(),
-                end: null,
-            },
-            ruMake: 'Carrier',
-            reventiveMaintenance: {
-                start: new Date(),
-                end: null,
-            },
-        };
+         this.viewData = this.viewData.map((data) => {
+            data.isSelected = false;
+            return data;
+         });
+      } else {
+         this.viewData = [];
+      }
+   }
 
-        let data = [];
+   getDumyData(numberOfCopy: number, dataType: string) {
+      const truck = {
+         textUnit: '12345',
+         textOdometear: '567,364',
+         oilFilter: {
+            start: new Date(),
+            end: null,
+         },
+         airFilter: {
+            start: new Date(),
+            end: null,
+         },
+         transFluid: {
+            start: new Date(),
+            end: null,
+         },
+         belts: {
+            start: new Date(),
+            end: null,
+         },
+         engTuneUp: {
+            start: new Date(),
+            end: null,
+         },
+         alignment: {
+            start: new Date(),
+            end: null,
+         },
+         textInv: 'W444-444',
+         textLastShop: 'NEXTRAN TRUCKS',
+         lastService: '04/04/24',
+      };
 
-        for (let i = 0; i < numberOfCopy; i++) {
-            if (dataType === 'truck') {
-                data.push(truck);
-            } else {
-                data.push(trailer);
-            }
-        }
+      const trailer = {
+         textUnit: '123',
+         textOdometer: '1,267,305',
+         lastServe: '01/29/21',
+         repairShop: 'ARMEN’S TIRE AND SERVICE',
+         color: '#7040A1',
+         svgIcon: 'Treba da se sredi',
+         reeferUnit: {
+            start: new Date(),
+            end: null,
+         },
+         ruMake: 'Carrier',
+         reventiveMaintenance: {
+            start: new Date(),
+            end: null,
+         },
+      };
 
-        return data;
-    }
+      let data = [];
 
-    onToolBarAction(event: any) {
-        if (event.action === 'tab-selected') {
-            this.selectedTab = event.tabData.field;
-            this.sendPMData();
-        } else if (event.action === 'open-general-pm') {
-            if (this.selectedTab === 'active') {
-                this.modalService.openModal(
-                    RepairPmModalComponent,
-                    { size: 'small' },
-                    {
-                        type: 'new',
-                        header: 'Truck',
-                        action: 'generic-pm',
-                    }
-                );
-            } else {
-                this.modalService.openModal(
-                    RepairPmModalComponent,
-                    { size: 'small' },
-                    {
-                        type: 'new',
-                        header: 'Trailer',
-                        action: 'generic-pm',
-                    }
-                );
-            }
-        } else if (event.action === 'view-mode') {
-            this.activeViewMode = event.mode;
-        }
-    }
+      for (let i = 0; i < numberOfCopy; i++) {
+         if (dataType === 'truck') {
+            data.push(truck);
+         } else {
+            data.push(trailer);
+         }
+      }
 
-    public onTableBodyActions(event: any) {
-        switch (this.selectedTab) {
-            case 'active': {
-                this.modalService.openModal(
-                    RepairPmModalComponent,
-                    { size: 'small' },
-                    {
-                        ...event,
-                        header: 'Truck',
-                        action: 'unit-pm',
-                    }
-                );
-                break;
-            }
-            case 'inactive': {
-                this.modalService.openModal(
-                    RepairPmModalComponent,
-                    { size: 'small' },
-                    {
-                        ...event,
-                        header: 'Trailer',
-                        action: 'unit-pm',
-                    }
-                );
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
+      return data;
+   }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
+   onToolBarAction(event: any) {
+      if (event.action === 'tab-selected') {
+         this.selectedTab = event.tabData.field;
+         this.sendPMData();
+      } else if (event.action === 'open-general-pm') {
+         if (this.selectedTab === 'active') {
+            this.modalService.openModal(
+               RepairPmModalComponent,
+               { size: 'small' },
+               {
+                  type: 'new',
+                  header: 'Truck',
+                  action: 'generic-pm',
+               }
+            );
+         } else {
+            this.modalService.openModal(
+               RepairPmModalComponent,
+               { size: 'small' },
+               {
+                  type: 'new',
+                  header: 'Trailer',
+                  action: 'generic-pm',
+               }
+            );
+         }
+      } else if (event.action === 'view-mode') {
+         this.activeViewMode = event.mode;
+      }
+   }
+
+   public onTableBodyActions(event: any) {
+      switch (this.selectedTab) {
+         case 'active': {
+            this.modalService.openModal(
+               RepairPmModalComponent,
+               { size: 'small' },
+               {
+                  ...event,
+                  header: 'Truck',
+                  action: 'unit-pm',
+               }
+            );
+            break;
+         }
+         case 'inactive': {
+            this.modalService.openModal(
+               RepairPmModalComponent,
+               { size: 'small' },
+               {
+                  ...event,
+                  header: 'Trailer',
+                  action: 'unit-pm',
+               }
+            );
+            break;
+         }
+         default: {
+            break;
+         }
+      }
+   }
+
+   ngOnDestroy(): void {
+      this.destroy$.next();
+      this.destroy$.complete();
+   }
 }

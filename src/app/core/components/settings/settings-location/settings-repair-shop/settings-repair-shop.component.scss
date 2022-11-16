@@ -1,80 +1,80 @@
 @import '../../settings.global.scss';
 
 .settings-repair-shop {
-    width: 100%;
-    display: grid;
-    grid-template-rows: 32px auto;
-    row-gap: 12px;
+   width: 100%;
+   display: grid;
+   grid-template-rows: 32px auto;
+   row-gap: 12px;
 
-    .settings-name {
-        padding: 7px 4px;
-    }
+   .settings-name {
+      padding: 7px 4px;
+   }
 }
 // Repair Shop Template
 .repair-shop-template-data {
-    display: grid;
-    grid-template-columns: 170px 150px;
-    row-gap: 11px;
-    padding-left: 10px;
-    margin-bottom: 12px;
-    column-gap: 50px;
-    .repair-shop-template-item {
-        display: flex;
-        align-items: center;
+   display: grid;
+   grid-template-columns: 170px 150px;
+   row-gap: 11px;
+   padding-left: 10px;
+   margin-bottom: 12px;
+   column-gap: 50px;
+   .repair-shop-template-item {
+      display: flex;
+      align-items: center;
 
-        .repair-shop-template-text {
-            margin-left: 6px;
+      .repair-shop-template-text {
+         margin-left: 6px;
+         color: $settings-gray-dark;
+         &::-moz-selection {
             color: $settings-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+         }
+         &::selection {
+            color: $settings-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+         }
+
+         &.cross-out {
+            text-decoration: line-through;
+            color: $settings-white-dark;
             &::-moz-selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
+               color: $settings-white-dark !important;
+               background: rgb(183, 183, 183, 0.2) !important;
             }
             &::selection {
-                color: $settings-gray-dark;
-                background: rgb(108, 108, 108, 0.2);
+               color: $settings-white-dark !important;
+               background: rgb(183, 183, 183, 0.2) !important;
             }
-
-            &.cross-out {
-                text-decoration: line-through;
-                color: $settings-white-dark;
-                &::-moz-selection {
-                    color: $settings-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
-                &::selection {
-                    color: $settings-white-dark !important;
-                    background: rgb(183, 183, 183, 0.2) !important;
-                }
+         }
+      }
+      .repair-shop-template-svg {
+         user-select: none;
+         svg {
+            width: 18px;
+            height: 18px;
+            path {
+               fill: #aaaaaa;
             }
-        }
-        .repair-shop-template-svg {
-            user-select: none;
+            &:hover {
+               path {
+                  fill: $settings-gray-dark;
+               }
+            }
+         }
+         &.disabled {
             svg {
-                width: 18px;
-                height: 18px;
-                path {
-                    fill: #aaaaaa;
-                }
-                &:hover {
-                    path {
-                        fill: $settings-gray-dark;
-                    }
-                }
+               path {
+                  fill: #dadada !important;
+               }
             }
-            &.disabled {
-                svg {
-                    path {
-                        fill: #dadada !important;
-                    }
-                }
-            }
-        }
-    }
+         }
+      }
+   }
 
-    &.no-line {
-        margin-bottom: 0px !important;
-    }
+   &.no-line {
+      margin-bottom: 0px !important;
+   }
 }
 .copy-icon {
-    margin-left: 1px !important;
+   margin-left: 1px !important;
 }
