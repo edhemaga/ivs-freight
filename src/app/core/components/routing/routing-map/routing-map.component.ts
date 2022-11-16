@@ -873,13 +873,21 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         );
     }
 
-    dropStops(event: CdkDragDrop<string[]>, dropArray, index) {
+    dropStops(event: CdkDragDrop<string[]>, dropArray, route) {
         moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
 
-        this.calculateDistanceBetweenStops(index);
-        this.calculateRouteWidth(
-            this.tableData[this.selectedMapIndex].routes[index]
-        );
+        console.log('dropStops', event, dropArray, route);
+
+        route.stops.map((stop, stopIndex) => {
+          stop.orderNumber = stopIndex+1;
+        });
+
+        this.getRouteShape(route);
+
+        // this.calculateDistanceBetweenStops(index);
+        // this.calculateRouteWidth(
+        //     this.tableData[this.selectedMapIndex].routes[index]
+        // );
     }
 
     showHideRoute(event, route) {
@@ -963,25 +971,29 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     console.log('deleteStopById success');
+                    
+                    route.stops.splice(index, 1);
+
+                    var stopArr = [];
+                    route.stops.map((stop, stopIndex) => {
+                        stop.orderNumber = stopIndex+1;
+
+                        var stopObj = <any>{
+                            id: stop.id ? stop.id : 0,
+                            address: stop.address,
+                            leg: null,
+                            total: null,
+                            longitude: stop.long,
+                            latitude: stop.lat,
+                            orderNumber: stop.orderNumber
+                        };
+
+                        stopArr.push(stopObj);
+                    });
 
                     if (route.stops.length > 1) {
                         this.getRouteShape(route);
                     } else {
-                        var stopArr = [];
-                        route.stops.map((stop, stopIndex) => {
-                            var stopObj = <any>{
-                                id: stop.id ? stop.id : 0,
-                                address: stop.address,
-                                leg: null,
-                                total: null,
-                                longitude: stop.long,
-                                latitude: stop.lat,
-                                orderNumber: stopIndex + 1,
-                            };
-
-                            stopArr.push(stopObj);
-                        });
-
                         var updateRouteObj = {
                             id: route.id,
                             name: route.name,
@@ -1014,12 +1026,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 },
             });
 
-        const routeIndex = this.getRouteIndexById(route.id);
+        // const routeIndex = this.getRouteIndexById(route.id);
 
-        route.stops.splice(index, 1);
+        // route.stops.splice(index, 1);
 
-        this.calculateDistanceBetweenStops(routeIndex);
-        this.calculateRouteWidth(route);
+        // this.calculateDistanceBetweenStops(routeIndex);
+        // this.calculateRouteWidth(route);
 
         this.ref.detectChanges();
         this.dropdownElement._results.map((item) => {
