@@ -140,7 +140,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
 
     ngOnDestroy(): void {
         console.log('Poziva se ngOnDestroy');
-       /*  document.removeEventListener('mouseup', this.onMouseUpHandler);
+        /*  document.removeEventListener('mouseup', this.onMouseUpHandler);
         document.removeEventListener('mousemove', this.onMouseMoveHandler);
         window.removeEventListener('resize', this.onResizeHandler);
         this.destroy$.next();
