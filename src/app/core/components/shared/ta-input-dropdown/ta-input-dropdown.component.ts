@@ -540,7 +540,7 @@ export class TaInputDropdownComponent
     }
   }
 
-  public onActiveItem(option: any): void {
+  public onActiveItem(option: any, group?: any): void {
     // Disable to picking banned or dnu user
     if (option?.dnu || option?.ban) {
       return;
@@ -599,7 +599,10 @@ export class TaInputDropdownComponent
         this.activeItem = option;
         this.getSuperControl.setValue(option.name);
         this.options = this.originalOptions;
-        this.selectedItem.emit(option);
+
+        group
+          ? this.selectedItem.emit({ ...option, ...group })
+          : this.selectedItem.emit(option);
 
         if (this.inputConfig.name !== 'RoutingAddress') {
           const timeout = setTimeout(() => {

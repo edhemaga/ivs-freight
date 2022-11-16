@@ -126,25 +126,27 @@
     >
       <div
         formArrayName="contactPhones"
-        class="contact-phone-container"
+        class="common-table-modal-container"
         *ngIf="contactPhones.length"
       >
-        <div class="contact-phone-container-label">
+        <div
+          class="common-table-modal-container-label common-table-modal-container-label-contact-modal-phone"
+        >
           <p>PHONE</p>
           <p>EXT</p>
           <p>TYPE</p>
         </div>
 
-        <div class="contact-phone-container-body">
+        <div class="common-table-modal-container-body">
           <div
             *ngFor="let contactPh of contactPhones.controls; let ind = index"
           >
             <div
               [formGroupName]="ind"
-              class="contact-phone-container-body-card"
+              class="common-table-modal-container-body-card"
             >
               <div
-                class="contact-phone-radio-btn"
+                class="common-table-modal-container-radio-btn"
                 [ngClass]="{ active: contactPh.get('primary').value }"
                 ngbTooltip
                 [mainTooltip]="
@@ -156,7 +158,9 @@
                 tooltipBackground="#424242"
                 (click)="setPrimary(contactPh, 'phone')"
               ></div>
-              <div class="contact-phone-card-content">
+              <div
+                class="common-table-modal-container-content common-table-modal-container-content-contact-modal-phone"
+              >
                 <app-ta-input
                   formControlName="phone"
                   [inputConfig]="{
@@ -172,7 +176,7 @@
                 ></app-ta-input>
 
                 <div
-                  class="phone-extension"
+                  class="common-table-modal-container-extension"
                   *ngIf="!isContactPhoneExtExist[ind]"
                   ngbTooltip
                   mainTooltip="Add Extension"
@@ -222,7 +226,7 @@
                   mainTooltip="Delete"
                   position="top"
                   tooltipBackground="#EF5350"
-                  class="contact-phone-delete"
+                  class="common-table-modal-container-delete"
                   (click)="removeContactFeature('contact-phone', ind)"
                 >
                   <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
@@ -250,23 +254,25 @@
     >
       <div
         formArrayName="contactEmails"
-        class="contact-email-container"
+        class="common-table-modal-container"
         *ngIf="contactEmails.length"
       >
-        <div class="contact-email-container-label">
+        <div
+          class="common-table-modal-container-label common-table-modal-container-label-contact-modal-email"
+        >
           <p>EMAIL</p>
           <p>TYPE</p>
         </div>
-        <div class="contact-email-container-body">
+        <div class="common-table-modal-container-body">
           <div
             *ngFor="let contactEm of contactEmails.controls; let ind = index"
           >
             <div
               [formGroupName]="ind"
-              class="contact-email-container-body-card"
+              class="common-table-modal-container-body-card"
             >
               <div
-                class="contact-email-radio-btn"
+                class="common-table-modal-container-radio-btn"
                 [ngClass]="{ active: contactEm.get('primary').value }"
                 ngbTooltip
                 [mainTooltip]="
@@ -278,7 +284,9 @@
                 tooltipBackground="#424242"
                 (click)="setPrimary(contactEm, 'email')"
               ></div>
-              <div class="contact-email-card-content">
+              <div
+                class="common-table-modal-container-content common-table-modal-container-content-contact-modal-email"
+              >
                 <app-ta-input
                   formControlName="email"
                   [inputConfig]="{
@@ -316,7 +324,7 @@
                   mainTooltip="Delete"
                   position="top"
                   tooltipBackground="#EF5350"
-                  class="contact-email-delete"
+                  class="common-table-modal-container-delete"
                   (click)="removeContactFeature('contact-email', ind)"
                 >
                   <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>

@@ -28,56 +28,57 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   public truckType: any[] = [];
   public fuelStops: any[] = [
     {
+      id: 1,
       businessName: '7-11 STORE',
       count: 238,
       stores: [
         {
-          id: 1,
+          id: 111,
           name: 15680,
           address: 'Chicago, IL 60656',
         },
         {
-          id: 2,
+          id: 222,
           name: 16898,
           address: 'Carroltion, GA 23790',
         },
         {
-          id: 3,
+          id: 333,
           name: 17000,
           address: 'Forest Parl, GA 65412',
         },
         {
-          id: 4,
+          id: 444,
           name: 17000,
           address: 'Forest Parl, GA 65412',
         },
         {
-          id: 5,
+          id: 555,
           name: 17000,
           address: 'Forest Parl, GA 65412',
         },
         {
-          id: 6,
+          id: 666,
           name: 17000,
           address: 'Forest Parl, GA 65412',
         },
         {
-          id: 7,
+          id: 777,
           name: 17000,
           address: 'Forest Parl, GA 65412',
         },
         {
-          id: 8,
+          id: 888,
           name: 17000,
           address: 'Forest Parl, GA 65412',
         },
         {
-          id: 9,
+          id: 999,
           name: 17000,
           address: 'Forest Parl, GA 65412',
         },
         {
-          id: 10,
+          id: 1000,
           name: 17000,
           address: 'Forest Parl, GA 65412',
         },
@@ -87,16 +88,17 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       isFranchise: true,
     },
     {
-      businessName: "LOVE'S",
+      id: 2,
+      businessName: 'Pilot Travel Stop',
       count: 18,
       stores: [
         {
-          id: 1,
+          id: 232,
           name: 15680,
           address: 'Chicago, IL 60656',
         },
         {
-          id: 2,
+          id: 4234,
           name: 16898,
           address: 'Carroltion, GA 23790',
         },
@@ -106,6 +108,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       isFranchise: true,
     },
     {
+      id: 3,
       businessName: 'RR HICORY HILLS (Manuelno dodat)',
       count: 0,
       stores: [],
@@ -301,6 +304,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       }
       case 'fuel': {
         this.selectedFuelStop = event;
+
         break;
       }
       case 'fuel-items': {
