@@ -486,6 +486,25 @@
 .note-details-holder{
     padding-right: 5px;
     padding-left: 4px;
+
+    .note-container {
+        .note-header {
+            .note-label{
+                color: #919191 !important;
+
+                &:hover{
+                    color: #6c6c6c !important;
+                }
+            }
+
+            &.active{
+                .note-label{
+                    color: #6c6c6c !important;
+                }
+            }
+        }
+    }
+    
 }
 
 .divider-employment {
