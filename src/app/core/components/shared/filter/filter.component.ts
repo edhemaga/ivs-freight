@@ -1,4 +1,4 @@
-import { Subject, takeUntil } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import {
     Component,
@@ -16,11 +16,16 @@ import {
 import {
     FormBuilder,
     FormGroup,
+    Validators,
+    FormArray,
+    FormControl,
 } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import {
     addressValidation,
+    combinedSingleLimitValidation,
 } from '../ta-input/ta-input.regex-validations';
+import { card_component_animation } from '../animations/card-component.animations';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
 import {
@@ -163,6 +168,35 @@ import {
                     ])
                 ),
             ]),
+        ]),
+        trigger('showAnimation', [
+            state(
+                'true',
+                style({
+                    height: '*',
+                    overflow: 'auto',
+                    opacity: 1,
+                })
+            ),
+            state(
+                'false',
+                style({
+                    height: '10px',
+                    overflow: 'hidden',
+                    opacity: '0.5',
+                })
+            ),
+            state(
+                'null',
+                style({
+                    height: '0px',
+                    overflow: 'hidden',
+                })
+            ),
+            transition('false <=> true', [
+                animate('200ms cubic-bezier(0, 0, 0.60, 1.99)'),
+            ]),
+            transition('true <=> false', [animate('200ms ease')]),
         ]),
     ],
 })
@@ -1230,6 +1264,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
     @Output() setFilter = new EventEmitter<any>();
 
     resizeObserver: ResizeObserver;
+
+    isAnimated: any = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -2584,7 +2620,34 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     onFilterClose() {
+        if (!this.activeFilter) {
+            return false;
+        }
+
+        if (this.isAnimated) {
+            this.isAnimated = true;
+            this.cdRef.detectChanges();
+            this.autoClose.tooltip.open();
+        }
+
         this.activeFilter = false;
+
+        let mainElementHolder;
+
+        if (this.type == 'timeFilter') {
+            mainElementHolder = document.querySelector('.time-filter-holder');
+        } else {
+            mainElementHolder = document.querySelector('.filter-holder');
+        }
+
+        mainElementHolder?.classList.add('closeFilterAnimation');
+
+        setTimeout(() => {
+            this.isAnimated = false;
+            this.autoClose.tooltip.close();
+            mainElementHolder?.classList.remove('closeFilterAnimation');
+        }, 190);
+
         if (this.defFilterHolder && this.type != 'stateFilter') {
             let mainArray: any[] = [];
             switch (this.type) {
@@ -2720,6 +2783,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     onFilterShown() {
         this.activeFilter = true;
+        this.isAnimated = true;
         let filterSearchHead = document.querySelector('.search-input-header');
         let filterTextHead = document.querySelector('.filter-text-part');
         filterSearchHead?.classList.remove('activeSearch');
