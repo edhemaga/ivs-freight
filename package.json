@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "dev": "lite-server",
-    "svg:preview": "node src/app/svg-definitions/svg-converter.js"
+    "svg:preview": "node src/app/svg-definitions/svg-converter.js",
+    "format": "npx prettier \"src/**/*.{js,ts,html,scss}\" --write"
   },
   "private": true,
   "dependencies": {
