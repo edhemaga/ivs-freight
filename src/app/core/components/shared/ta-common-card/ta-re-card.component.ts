@@ -4,56 +4,63 @@ import { card_component_animation } from '../animations/card-component.animation
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 @Component({
-    selector: 'app-ta-re-card',
-    templateUrl: './ta-re-card.component.html',
-    styleUrls: ['./ta-re-card.component.scss'],
-    animations: [card_component_animation('showHideCardBody')],
+  selector: 'app-ta-re-card',
+  templateUrl: './ta-re-card.component.html',
+  styleUrls: ['./ta-re-card.component.scss'],
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class TaReCardComponent implements OnInit {
-    @Input() public cardNameCommon: string;
-    @Input() public cardDocumentCounter: number;
-    @Input() public isCardOpen: boolean = true;
-    @Input() public hasSvg: string = '';
-    @Input() public options: any = [];
-    @Input() public hasCopyIcon: boolean = false;
-    @Input() public expDateClose: any;
-    @Input() public voidedDate: any;
-    @Input() public hasFooter: boolean = true;
-    @Input() public settingsIcon: boolean = false;
-    @Input() public haveHeaderText: boolean = false;
-    @Input() public haveDots: boolean = true;
-    @Output() resizePage = new EventEmitter<boolean>();
-    @Input() public animationsDisabled = false;
-    @Input() public stateNameShort: string = '';
-    @Input() public stateNameLong: string = '';
-    @Input() public optionsId: number;
-    @Input() public shortName: string = '';
-    @Input() public stateTooltipName: string = '';
-    @Input() public cardSecondName: string = '';
-    @Output() public dropActions = new EventEmitter<any>();
-    @Input() public weeklyWidth: string = '';
-    @Input() public setPositionDrop: boolean;
-    @Input() isDeactivated: any;
-    @Input() noteIcons: string = '';
-    @Input() cardNameCurrent: string;
-    @Input() statusActive: number;
-    @Input() paddingDots: string = '11px 8px 0 12px';
-    @Output() clickedCard = new EventEmitter<any>();
-    @Output() dataDropDopwn = new EventEmitter<any>();
-    @Input() hasToggler: boolean;
-    @Input() public testDate: any;
-    @Input() public mainData: any;
-    public data: any;
-    public resPage: boolean = false;
-    public copiedCommon: boolean = false;
-    constructor(
-        private clipboard: Clipboard,
-        private DetailsDataService: DetailsDataService
-    ) {}
+  @Input() public cardNameCommon: string;
+  @Input() public cardDocumentCounter: number;
+  @Input() public isCardOpen: boolean = true;
+  @Input() public hasSvg: string = '';
+  @Input() public options: any = [];
+  @Input() public hasCopyIcon: boolean = false;
+  @Input() public expDateClose: any;
+  @Input() public voidedDate: any;
+  @Input() public hasFooter: boolean = true;
+  @Input() public settingsIcon: boolean = false;
+  @Input() public haveHeaderText: boolean = false;
+  @Input() public haveDots: boolean = true;
+  @Output() resizePage = new EventEmitter<boolean>();
+  @Input() public animationsDisabled = false;
+  @Input() public stateNameShort: string = '';
+  @Input() public stateNameLong: string = '';
+  @Input() public optionsId: number;
+  @Input() public shortName: string = '';
+  @Input() public stateTooltipName: string = '';
+  @Input() public cardSecondName: string = '';
+  @Output() public dropActions = new EventEmitter<any>();
+  @Input() public weeklyWidth: string = '';
+  @Input() public setPositionDrop: boolean;
+  @Input() isDeactivated: any;
+  @Input() noteIcons: string = '';
+  @Input() cardNameCurrent: string;
+  @Input() statusActive: number;
+  @Input() paddingDots: string = '11px 8px 0 12px';
+  @Output() clickedCard = new EventEmitter<any>();
+  @Output() dataDropDopwn = new EventEmitter<any>();
+  @Input() hasToggler: boolean;
+  @Input() public testDate: any;
+  @Input() public mainData: any;
+  public data: any;
+  public resPage: boolean = false;
+  public copiedCommon: boolean = false;
+  constructor(
+    private clipboard: Clipboard,
+    private DetailsDataService: DetailsDataService
+  ) {}
 
-    ngOnInit(): void {
-        this.CloseCard();
+  ngOnInit(): void {
+    this.CloseCard();
+  }
+
+  public CloseCard() {
+    let currentDate = moment().format('MM/DD/YYYY');
+    if (moment(this.expDateClose).isBefore(currentDate) || this.isDeactivated) {
+      this.isCardOpen = false;
     }
+  }
 
   public sendData(data: any) {
     this.data = data;
@@ -117,5 +124,29 @@ export class TaReCardComponent implements OnInit {
             action.hide = false;
           }
         }
+      });
+    } else if (this.cardNameCurrent == 'truckRegistration') {
+      let expDate = moment(this.mainData?.expDate).format('MM/DD/YYYY');
+      this.options.actions.map((action, index) => {
+        if (currentDate > expDate) {
+          if (index == 3) {
+            action.disabled = false;
+          } else if (index == 4) {
+            action.disabled = true;
+          } else if (index == 9) {
+            action.hide = true;
+          }
+        } else {
+          if (index == 3) {
+            action.disabled = true;
+          } else if (index == 4) {
+            action.disabled = false;
+          } else if (index == 9) {
+            action.hide = false;
+          }
+        }
+      });
+    } else if (this.cardNameCurrent == 'cdl') {
     }
+  }
 }
