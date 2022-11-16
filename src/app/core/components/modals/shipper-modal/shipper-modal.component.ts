@@ -639,7 +639,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       .getShipperById(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (reasponse: ShipperResponse) => {
+        next: (reasponse: any /*ShipperResponse*/) => {
           this.shipperForm.patchValue({
             businessName: reasponse.businessName,
             phone: reasponse.phone,

@@ -13,6 +13,7 @@ import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/lo
 import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
 import { UpdateLoadCommand } from '../../../../../../appcoretruckassist/model/updateLoadCommand';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',
@@ -97,12 +98,20 @@ export class LoadTService {
     );
   }
 
-  public createLoad(data: CreateLoadCommand): Observable<CreateResponse> {
-    return this.loadServices.apiLoadPost(data);
+  public createLoad(data: any /*CreateLoadCommand*/): Observable<CreateResponse> {
+    const sortedParams = getFunctionParams(
+      this.loadServices.apiLoadPost,
+      data
+    );
+    return this.loadServices.apiLoadPost(...sortedParams);
   }
 
-  public updateLoad(data: UpdateLoadCommand): Observable<any> {
-    return this.loadServices.apiLoadPut(data);
+  public updateLoad(data: any /*UpdateLoadCommand*/): Observable<any> {
+    const sortedParams = getFunctionParams(
+      this.loadServices.apiLoadPut,
+      data
+    );
+    return this.loadServices.apiLoadPut(...sortedParams);
   }
 
   public deleteLoadById(id: number): Observable<any> {
