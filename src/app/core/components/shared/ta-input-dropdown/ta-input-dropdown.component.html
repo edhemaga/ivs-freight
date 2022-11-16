@@ -80,7 +80,7 @@
     [ngbPopover]="taInputDropdownPopover"
     [placement]="['bottom-left']"
     [container]="'body'"
-    [autoClose]="'outside'"
+    [autoClose]="template === 'fuel-franchise' ? 'outside' : true"
     [incorrectValue]="incorrectValue"
     [selectedDropdownLabelColor]="
       inputConfig.dropdownLabel

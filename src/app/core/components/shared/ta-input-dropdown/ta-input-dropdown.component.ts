@@ -260,13 +260,13 @@ export class TaInputDropdownComponent
         if (this.labelMode !== 'Color') {
           // Focus Out
           if (!action) {
-            this.popoverRef.open();
-            console.log('actictw ', this.activeItem);
+            if (this.template !== 'fuel-franchise') {
+              this.popoverRef.open();
+            }
+
             // Prevent user to typing dummmy data if activeItem doesn't exist
             if (this.activeItem) {
-              this.getSuperControl.setValue(
-                this.activeItem ? this.activeItem.name : null
-              );
+              this.getSuperControl.setValue(this.activeItem.name);
             } else {
               const index = this.originalOptions.findIndex(
                 (item) => item.name === this.getSuperControl.value
@@ -511,7 +511,6 @@ export class TaInputDropdownComponent
         }
 
         if (this.template === 'fuel-franchise') {
-          console.log('options: ', this.originalOptions);
           this.options = this.originalOptions.map((element) => {
             return {
               ...element,
