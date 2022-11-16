@@ -3,8 +3,7 @@ import {
     RoadsideInspectionListResponse,
     ViolationService,
 } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { UpdateRoadsideInspectionCommand } from '../../../../../../../appcoretruckassist/model/updateRoadsideInspectionCommand';
+import { Observable } from 'rxjs';
 import { RoadsideInspectionResponse } from '../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
 
 @Injectable({

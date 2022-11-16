@@ -1,4 +1,4 @@
-import { filter, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import {
     Component,
@@ -16,16 +16,11 @@ import {
 import {
     FormBuilder,
     FormGroup,
-    Validators,
-    FormArray,
-    FormControl,
 } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import {
     addressValidation,
-    combinedSingleLimitValidation,
 } from '../ta-input/ta-input.regex-validations';
-import { card_component_animation } from '../animations/card-component.animations';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
 import {

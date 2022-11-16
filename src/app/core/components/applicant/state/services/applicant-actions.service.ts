@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 

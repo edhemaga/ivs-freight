@@ -1,7 +1,6 @@
 import { ParkingListResponse } from './../../../../../../../../appcoretruckassist/model/parkingListResponse';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { DriverListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CompanyParkingService } from './company-parking.service';

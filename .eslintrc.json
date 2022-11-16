@@ -13,8 +13,10 @@
                 "plugin:@angular-eslint/template/process-inline-templates",
                 "prettier"
             ],
+            "plugins": ["unused-imports"],
             "rules": {
                 "indent": "off",
+                "unused-imports/no-unused-imports": "error",
                 "@angular-eslint/component-selector": [
                     "error",
                     {
