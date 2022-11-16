@@ -16,6 +16,7 @@ import {
     ApplicantResponse,
     DisclosureReleaseFeedbackResponse,
     UpdateDisclosureReleaseCommand,
+    CreateDisclosureReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -187,7 +188,7 @@ export class Step10Component implements OnInit, OnDestroy {
         };
 
         this.applicantActionsService
-            .createDisclosureAndRelease(saveData)
+            .updateDisclosureAndRelease(saveData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -225,7 +226,36 @@ export class Step10Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
-        this.router.navigate([`/application/${this.applicantId}/11`]);
+        const saveData: CreateDisclosureReviewCommand = {
+            applicantId: this.applicantId,
+        };
+
+        this.applicantActionsService
+            .createDisclosureAndReleaseReview(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/application/${this.applicantId}/11`,
+                    ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                disclosureRelease: {
+                                    ...store.applicant.disclosureRelease,
+                                    reviewed: true,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     ngOnDestroy(): void {
