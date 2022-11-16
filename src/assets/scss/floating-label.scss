@@ -1,186 +1,78 @@
-@import "src/theme/variables";
+@import 'src/theme/variables';
 
 :root {
-  --input-padding-x: 6px;
-  --input-padding-y: 6px;
+    --input-padding-x: 6px;
+    --input-padding-y: 6px;
 }
 
 .form-label-group {
-  .required-notice,
-  .required-notice.invalid-length {
-    color: #ff8080;
-  }
-
-  .required-notice.invalid-length {
-    color: #ff8080;
-  }
-
-  input {
-    &:hover {
-      ~ .required-notice,
-      ~ .required-notice.invalid-length {
-        color: #ff6a6a;
-      }
-
-      ~ .required-notice {
-        color: #ff6a6a;
-      }
+    .required-notice,
+    .required-notice.invalid-length {
+        color: #ff8080;
     }
 
-    &:focus {
-      ~ .required-notice.invalid-length {
-        color: #ff6a6a;
-      }
-
-      ~ .required-notice {
-        color: #ff6a6a !important;
-      }
-    }
-  }
-}
-
-form .form-control {
-  border: none;
-  border-radius: 2px;
-
-  &.input-control {
-    height: 26px;
-    line-height: 26px;
-    border: none;
-    padding: 0 0 0 6px;
-    background-color: #f3f3f3;
-    transition: 0.3s;
-    color: #b7b7b7;
-    font-weight: 400;
-
-    &:hover {
-      cursor: text;
-      background-color: #eeeeee;
-      color: #919191;
-      transition: 0.3s;
+    .required-notice.invalid-length {
+        color: #ff8080;
     }
 
-    &:focus {
-      cursor: text;
-      background-color: #919191;
-      //color: #fff;
-      transition: 0.3s;
-    }
-  }
-
-  &.required {
-    &.ng-invalid.ng-touched {
-      //border-right: 3px solid #ff5d5d;
-      cursor: text;
-      // background-image: url("../../assets/img/form-validation/x-icon-light-red.svg") !important;
-      background-repeat: no-repeat;
-      background-position: right 6px bottom 8px;
-      transition: background-image 0.3s;
-
-      &.address-input,
-      &.email-input,
-      &.password-input,
-      &.phone-input,
-      &.name-input,
-      &.company-input {
-        background: none !important;
-        background-repeat: no-repeat;
-      }
-
-      &:hover {
-        cursor: text;
-        // background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
-        background-repeat: no-repeat;
-        background-position: right 6px bottom 8px;
-        transition: background-image 0.3s;
-
-        &.address-input,
-        &.email-input,
-        &.password-input,
-        &.phone-input,
-        &.name-input,
-        &.company-input {
-          background: none !important;
-          background-repeat: no-repeat;
-        }
-      }
-
-      &:focus {
-        cursor: text;
-        background-color: #ff5d5d;
-        color: #fff;
-        // background-image: url("../../assets/img/form-validation/x-icon.svg");
-        background-repeat: no-repeat;
-        background-position: right 6px bottom 8px;
-        transition: background-image 0.3s;
-        outline: none !important;
-
-        &.address-input,
-        &.email-input,
-        &.password-input,
-        &.phone-input,
-        &.name-input,
-        &.company-input {
-          background: none !important;
-          background-repeat: no-repeat;
-          outline: none !important;
-        }
-
+    input {
         &:hover {
-          // background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
-          background-repeat: no-repeat !important;
-          background-position: right 6px bottom 8px;
-          transition: background-image 0.3s;
+            ~ .required-notice,
+            ~ .required-notice.invalid-length {
+                color: #ff6a6a;
+            }
 
-          &.address-input,
-          &.email-input,
-          &.password-input,
-          &.phone-input,
-          &.name-input,
-          &.company-input {
-            background: none !important;
-            background-repeat: no-repeat;
-          }
-        }
-      }
-
-      &.focused {
-        // background-image: url("../../assets/img/form-validation/x-icon.svg");
-        background-repeat: no-repeat;
-        background-position: right 6px bottom 8px;
-        transition: background-image 0.3s;
-
-        &.address-input,
-        &.email-input,
-        &.password-input,
-        &.phone-input,
-        &.name-input,
-        &.company-input {
-          background: none !important;
-          background-repeat: no-repeat;
+            ~ .required-notice {
+                color: #ff6a6a;
+            }
         }
 
         &:focus {
-          cursor: text;
-          background-color: #ff5d5d;
-          color: #fff;
-          // background-image: url("../../assets/img/form-validation/x-icon.svg");
-          background-repeat: no-repeat;
-          background-position: right 6px bottom 8px;
-          transition: background-image 0.3s;
+            ~ .required-notice.invalid-length {
+                color: #ff6a6a;
+            }
 
-          &.address-input,
-          &.email-input,
-          &.password-input,
-          &.phone-input,
-          &.name-input,
-          &.company-input {
-            background: none !important;
-            background-repeat: no-repeat;
-          }
+            ~ .required-notice {
+                color: #ff6a6a !important;
+            }
+        }
+    }
+}
 
-          &:hover {
-            // background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
+form .form-control {
+    border: none;
+    border-radius: 2px;
+
+    &.input-control {
+        height: 26px;
+        line-height: 26px;
+        border: none;
+        padding: 0 0 0 6px;
+        background-color: #f3f3f3;
+        transition: 0.3s;
+        color: #b7b7b7;
+        font-weight: 400;
+
+        &:hover {
+            cursor: text;
+            background-color: #eeeeee;
+            color: #919191;
+            transition: 0.3s;
+        }
+
+        &:focus {
+            cursor: text;
+            background-color: #919191;
+            //color: #fff;
+            transition: 0.3s;
+        }
+    }
+
+    &.required {
+        &.ng-invalid.ng-touched {
+            //border-right: 3px solid #ff5d5d;
+            cursor: text;
+            // background-image: url("../../assets/img/form-validation/x-icon-light-red.svg") !important;
             background-repeat: no-repeat;
             background-position: right 6px bottom 8px;
             transition: background-image 0.3s;
@@ -191,708 +83,816 @@ form .form-control {
             &.phone-input,
             &.name-input,
             &.company-input {
-              background: none !important;
-              background-repeat: no-repeat;
+                background: none !important;
+                background-repeat: no-repeat;
             }
-          }
+
+            &:hover {
+                cursor: text;
+                // background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
+                background-repeat: no-repeat;
+                background-position: right 6px bottom 8px;
+                transition: background-image 0.3s;
+
+                &.address-input,
+                &.email-input,
+                &.password-input,
+                &.phone-input,
+                &.name-input,
+                &.company-input {
+                    background: none !important;
+                    background-repeat: no-repeat;
+                }
+            }
+
+            &:focus {
+                cursor: text;
+                background-color: #ff5d5d;
+                color: #fff;
+                // background-image: url("../../assets/img/form-validation/x-icon.svg");
+                background-repeat: no-repeat;
+                background-position: right 6px bottom 8px;
+                transition: background-image 0.3s;
+                outline: none !important;
+
+                &.address-input,
+                &.email-input,
+                &.password-input,
+                &.phone-input,
+                &.name-input,
+                &.company-input {
+                    background: none !important;
+                    background-repeat: no-repeat;
+                    outline: none !important;
+                }
+
+                &:hover {
+                    // background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
+                    background-repeat: no-repeat !important;
+                    background-position: right 6px bottom 8px;
+                    transition: background-image 0.3s;
+
+                    &.address-input,
+                    &.email-input,
+                    &.password-input,
+                    &.phone-input,
+                    &.name-input,
+                    &.company-input {
+                        background: none !important;
+                        background-repeat: no-repeat;
+                    }
+                }
+            }
+
+            &.focused {
+                // background-image: url("../../assets/img/form-validation/x-icon.svg");
+                background-repeat: no-repeat;
+                background-position: right 6px bottom 8px;
+                transition: background-image 0.3s;
+
+                &.address-input,
+                &.email-input,
+                &.password-input,
+                &.phone-input,
+                &.name-input,
+                &.company-input {
+                    background: none !important;
+                    background-repeat: no-repeat;
+                }
+
+                &:focus {
+                    cursor: text;
+                    background-color: #ff5d5d;
+                    color: #fff;
+                    // background-image: url("../../assets/img/form-validation/x-icon.svg");
+                    background-repeat: no-repeat;
+                    background-position: right 6px bottom 8px;
+                    transition: background-image 0.3s;
+
+                    &.address-input,
+                    &.email-input,
+                    &.password-input,
+                    &.phone-input,
+                    &.name-input,
+                    &.company-input {
+                        background: none !important;
+                        background-repeat: no-repeat;
+                    }
+
+                    &:hover {
+                        // background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
+                        background-repeat: no-repeat;
+                        background-position: right 6px bottom 8px;
+                        transition: background-image 0.3s;
+
+                        &.address-input,
+                        &.email-input,
+                        &.password-input,
+                        &.phone-input,
+                        &.name-input,
+                        &.company-input {
+                            background: none !important;
+                            background-repeat: no-repeat;
+                        }
+                    }
+                }
+
+                &:hover {
+                    cursor: text;
+                    // background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
+                    background-repeat: no-repeat;
+                    background-position: right 6px bottom 8px;
+                    transition: background-image 0.3s;
+                }
+            }
+
+            &:focus {
+                cursor: text;
+                background-color: #ff6a6a;
+                //color: #fff;
+                // background-image: url("../../assets/img/form-validation/x-icon.svg");
+                background-repeat: no-repeat;
+                background-position: right 6px bottom 8px;
+                transition: background-image 0.3s;
+            }
+        }
+
+        &.ng-valid {
+            &::-moz-selection {
+                background-color: rgba(255, 255, 255, 0.4);
+            }
+
+            &::selection {
+                background-color: rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        &.ng-valid.ng-touched {
+            //transition: background-image 0.3s;
+
+            &.address-input,
+            &.email-input,
+            &.password-input,
+            &.phone-input,
+            &.name-input,
+            &.company-input {
+                background: none !important;
+                background-repeat: no-repeat;
+            }
+
+            &:hover {
+                &.typing {
+                    .clear-button {
+                        width: 18px;
+                        height: 18px;
+                        margin: 0;
+                        background: none;
+                        display: flex;
+                        align-items: center;
+                        transition: all 0.2s ease-in;
+                        cursor: pointer;
+                    }
+
+                    &.field-focused {
+                        background-image: none !important;
+                    }
+
+                    &.touched-invalid {
+                        background-image: none !important;
+
+                        .clear-button {
+                            position: relative;
+                            left: -6px;
+                            // background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
+                            background-size: 18px 18px;
+                            transition: all 0.2s ease-in;
+                            background-repeat: no-repeat;
+
+                            &:hover {
+                                width: 22px;
+                                height: 22px;
+                                position: relative;
+                                left: -6px;
+                                // background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
+                                background-size: 22px 22px;
+                                transition: all 0.2s ease-in;
+                                background-repeat: no-repeat;
+                            }
+                        }
+                    }
+
+                    .clear-button {
+                        position: relative;
+                        left: -6px;
+                        // background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
+                        background-size: 18px 18px;
+                        transition: all 0.2s ease-in;
+                        background-repeat: no-repeat;
+                    }
+                }
+            }
+
+            &:focus {
+                cursor: text;
+                background-color: #778fbb;
+                //color: #fff;
+                // background-image: url("../../assets/img/form-validation/check-icon.svg") !important;
+                background-repeat: no-repeat !important;
+                background-position: right 6px bottom 8px;
+                transition: background-image 0.3s;
+
+                &.address-input,
+                &.email-input,
+                &.password-input,
+                &.phone-input,
+                &.name-input,
+                &.company-input {
+                    background: none !important;
+                    background-repeat: no-repeat;
+                }
+
+                &.typing {
+                    .clear-button {
+                        width: 18px;
+                        height: 18px;
+                        margin: 0;
+                        background: none;
+                        display: flex;
+                        align-items: center;
+                        transition: all 0.2s ease-in;
+                        cursor: pointer;
+                    }
+
+                    &.field-focused {
+                        background-image: none !important;
+                    }
+
+                    &.touched-invalid {
+                        background-image: none !important;
+
+                        .clear-button {
+                            position: relative;
+                            left: -6px;
+                            // background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
+                            background-size: 18px 18px;
+                            transition: all 0.2s ease-in;
+                            background-repeat: no-repeat;
+
+                            &:hover {
+                                width: 22px;
+                                height: 22px;
+                                position: relative;
+                                left: -6px;
+                                // background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
+                                background-size: 22px 22px;
+                                transition: all 0.2s ease-in;
+                                background-repeat: no-repeat;
+                            }
+                        }
+                    }
+
+                    .clear-button {
+                        position: relative;
+                        left: -6px;
+                        // background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
+                        background-size: 18px 18px;
+                        transition: all 0.2s ease-in;
+                        background-repeat: no-repeat;
+                    }
+                }
+            }
+        }
+
+        &.ng-invalid.ng-untouched.ng-dirty {
+            //border-right: 3px solid #ff5d5d;
+            &:focus {
+                cursor: text;
+                background-color: #ff5d5d;
+                //color: #fff;
+                // background-image: url("../../assets/img/form-validation/x-icon.svg");
+                background-repeat: no-repeat;
+                background-position: right 6px bottom 8px;
+                transition: background-image 0.3s;
+
+                &.address-input,
+                &.email-input,
+                &.password-input,
+                &.phone-input,
+                &.name-input,
+                &.company-input {
+                    background: none !important;
+                    background-repeat: no-repeat;
+                }
+            }
+        }
+
+        &.ng-valid.ng-untouched.ng-dirty {
+            //border-right: 3px solid #28529f;
+
+            &.address-input,
+            &.email-input,
+            &.password-input,
+            &.phone-input,
+            &.name-input,
+            &.company-input {
+                background: none !important;
+                background-repeat: no-repeat;
+            }
+
+            &:focus {
+                cursor: text;
+                //background-color: #28529f;
+                color: #fff;
+                transition: 0.3s;
+            }
+        }
+    }
+}
+
+form .form-control {
+    &.required.ng-valid.ng-dirty.ng-touched {
+        &.address-input,
+        &.email-input,
+        &.password-input,
+        &.phone-input,
+        &.name-input,
+        &.company-input {
+            background: none !important;
+        }
+
+        // background-image: url("../../assets/img/form-validation/check-icon-light-blue.svg");
+        background-repeat: no-repeat;
+        background-position: right 6px bottom 8px;
+        transition: background-image 0.3s;
+
+        &:hover {
+            //background-image: url('../../assets/img/form-validation/check-icon-blue.svg');
+            background-repeat: no-repeat;
+            background-position: right 6px bottom 8px;
+            transition: background-image 0.3s;
+
+            &.typing {
+                .clear-button {
+                    width: 18px;
+                    height: 18px;
+                    margin: 0;
+                    background: none;
+                    display: flex;
+                    align-items: center;
+                    transition: all 0.2s ease-in;
+                    cursor: pointer;
+                }
+
+                &.field-focused {
+                    background-image: none !important;
+                }
+
+                &.touched-invalid {
+                    background-image: none !important;
+
+                    .clear-button {
+                        position: relative;
+                        left: -6px;
+                        // background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
+                        background-size: 18px 18px;
+                        transition: all 0.2s ease-in;
+                        background-repeat: no-repeat;
+
+                        &:hover {
+                            width: 22px;
+                            height: 22px;
+                            position: relative;
+                            left: -6px;
+                            // background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
+                            background-size: 22px 22px;
+                            transition: all 0.2s ease-in;
+                            background-repeat: no-repeat;
+                        }
+                    }
+                }
+
+                .clear-button {
+                    position: relative;
+                    left: -6px;
+                    // background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
+                    background-size: 18px 18px;
+                    transition: all 0.2s ease-in;
+                    background-repeat: no-repeat;
+                }
+            }
+        }
+    }
+}
+
+form .form-control {
+    &.required.ng-invalid.ng-dirty.ng-touched {
+        &:hover {
+            // background-image: url("../../assets/img/form-validation/x-icon-red.svg");
+            background-repeat: no-repeat;
+            background-position: right 6px bottom 8px;
+            transition: background-image 0.3s;
+        }
+    }
+}
+
+form .form-control {
+    &.ng-dirty.ng-invalid.ng-touched.ng-has-value {
+        // background-image: url("../../assets/img/form-validation/x-icon.svg");
+        background-repeat: no-repeat;
+        background-position: right 6px bottom 8px;
+        transition: background-image 0.3s;
+
+        &.address-input,
+        &.email-input,
+        &.password-input,
+        &.phone-input,
+        &.name-input,
+        &.company-input {
+            background: none !important;
+            background-repeat: no-repeat;
+        }
+
+        &.focused {
+            &.address-input,
+            &.email-input,
+            &.password-input,
+            &.phone-input,
+            &.name-input,
+            &.company-input {
+                background: none !important;
+                background-repeat: no-repeat;
+            }
+        }
+
+        &:focus {
+            &.address-input,
+            &.email-input,
+            &.password-input,
+            &.phone-input,
+            &.name-input,
+            &.company-input {
+                background: none !important;
+                background-repeat: no-repeat;
+            }
         }
 
         &:hover {
-          cursor: text;
-          // background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
-          background-repeat: no-repeat;
-          background-position: right 6px bottom 8px;
-          transition: background-image 0.3s;
-        }
-      }
-
-      &:focus {
-        cursor: text;
-        background-color: #ff6a6a;
-        //color: #fff;
-        // background-image: url("../../assets/img/form-validation/x-icon.svg");
-        background-repeat: no-repeat;
-        background-position: right 6px bottom 8px;
-        transition: background-image 0.3s;
-      }
-    }
-
-    &.ng-valid {
-      &::-moz-selection {
-        background-color: rgba(255, 255, 255, 0.4);
-      }
-
-      &::selection {
-        background-color: rgba(255, 255, 255, 0.4);
-      }
-    }
-
-    &.ng-valid.ng-touched {
-      //transition: background-image 0.3s;
-
-      &.address-input,
-      &.email-input,
-      &.password-input,
-      &.phone-input,
-      &.name-input,
-      &.company-input {
-        background: none !important;
-        background-repeat: no-repeat;
-      }
-
-      &:hover {
-        &.typing {
-          .clear-button {
-            width: 18px;
-            height: 18px;
-            margin: 0;
-            background: none;
-            display: flex;
-            align-items: center;
-            transition: all 0.2s ease-in;
-            cursor: pointer;
-          }
-
-          &.field-focused {
-            background-image: none !important;
-          }
-
-          &.touched-invalid {
-            background-image: none !important;
-
-            .clear-button {
-              position: relative;
-              left: -6px;
-              // background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
-              background-size: 18px 18px;
-              transition: all 0.2s ease-in;
-              background-repeat: no-repeat;
-
-              &:hover {
-                width: 22px;
-                height: 22px;
-                position: relative;
-                left: -6px;
-                // background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
-                background-size: 22px 22px;
-                transition: all 0.2s ease-in;
-                background-repeat: no-repeat;
-              }
-            }
-          }
-
-          .clear-button {
-            position: relative;
-            left: -6px;
-            // background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
-            background-size: 18px 18px;
-            transition: all 0.2s ease-in;
+            // background-image: url("../../assets/img/form-validation/x-icon.svg");
             background-repeat: no-repeat;
-          }
+            background-position: right 6px bottom 8px;
+            transition: background-image 0.3s;
         }
-      }
-
-      &:focus {
-        cursor: text;
-        background-color: #778fbb;
-        //color: #fff;
-        // background-image: url("../../assets/img/form-validation/check-icon.svg") !important;
-        background-repeat: no-repeat !important;
-        background-position: right 6px bottom 8px;
-        transition: background-image 0.3s;
-
-        &.address-input,
-        &.email-input,
-        &.password-input,
-        &.phone-input,
-        &.name-input,
-        &.company-input {
-          background: none !important;
-          background-repeat: no-repeat;
-        }
-
-        &.typing {
-          .clear-button {
-            width: 18px;
-            height: 18px;
-            margin: 0;
-            background: none;
-            display: flex;
-            align-items: center;
-            transition: all 0.2s ease-in;
-            cursor: pointer;
-          }
-
-          &.field-focused {
-            background-image: none !important;
-          }
-
-          &.touched-invalid {
-            background-image: none !important;
-
-            .clear-button {
-              position: relative;
-              left: -6px;
-              // background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
-              background-size: 18px 18px;
-              transition: all 0.2s ease-in;
-              background-repeat: no-repeat;
-
-              &:hover {
-                width: 22px;
-                height: 22px;
-                position: relative;
-                left: -6px;
-                // background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
-                background-size: 22px 22px;
-                transition: all 0.2s ease-in;
-                background-repeat: no-repeat;
-              }
-            }
-          }
-
-          .clear-button {
-            position: relative;
-            left: -6px;
-            // background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
-            background-size: 18px 18px;
-            transition: all 0.2s ease-in;
-            background-repeat: no-repeat;
-          }
-        }
-      }
     }
-
-    &.ng-invalid.ng-untouched.ng-dirty {
-      //border-right: 3px solid #ff5d5d;
-      &:focus {
-        cursor: text;
-        background-color: #ff5d5d;
-        //color: #fff;
-        // background-image: url("../../assets/img/form-validation/x-icon.svg");
-        background-repeat: no-repeat;
-        background-position: right 6px bottom 8px;
-        transition: background-image 0.3s;
-
-        &.address-input,
-        &.email-input,
-        &.password-input,
-        &.phone-input,
-        &.name-input,
-        &.company-input {
-          background: none !important;
-          background-repeat: no-repeat;
-        }
-      }
-    }
-
-    &.ng-valid.ng-untouched.ng-dirty {
-      //border-right: 3px solid #28529f;
-
-      &.address-input,
-      &.email-input,
-      &.password-input,
-      &.phone-input,
-      &.name-input,
-      &.company-input {
-        background: none !important;
-        background-repeat: no-repeat;
-      }
-
-      &:focus {
-        cursor: text;
-        //background-color: #28529f;
-        color: #fff;
-        transition: 0.3s;
-      }
-    }
-  }
-}
-
-form .form-control {
-  &.required.ng-valid.ng-dirty.ng-touched {
-    &.address-input,
-    &.email-input,
-    &.password-input,
-    &.phone-input,
-    &.name-input,
-    &.company-input {
-      background: none !important;
-    }
-
-    // background-image: url("../../assets/img/form-validation/check-icon-light-blue.svg");
-    background-repeat: no-repeat;
-    background-position: right 6px bottom 8px;
-    transition: background-image 0.3s;
-
-    &:hover {
-      //background-image: url('../../assets/img/form-validation/check-icon-blue.svg');
-      background-repeat: no-repeat;
-      background-position: right 6px bottom 8px;
-      transition: background-image 0.3s;
-
-      &.typing {
-        .clear-button {
-          width: 18px;
-          height: 18px;
-          margin: 0;
-          background: none;
-          display: flex;
-          align-items: center;
-          transition: all 0.2s ease-in;
-          cursor: pointer;
-        }
-
-        &.field-focused {
-          background-image: none !important;
-        }
-
-        &.touched-invalid {
-          background-image: none !important;
-
-          .clear-button {
-            position: relative;
-            left: -6px;
-            // background-image: url("../../assets/img/form-validation/x-icon-invalid-focus-in.svg") !important;
-            background-size: 18px 18px;
-            transition: all 0.2s ease-in;
-            background-repeat: no-repeat;
-
-            &:hover {
-              width: 22px;
-              height: 22px;
-              position: relative;
-              left: -6px;
-              // background-image: url("../../assets/img/form-validation/x-icon-background-hover.svg") !important;
-              background-size: 22px 22px;
-              transition: all 0.2s ease-in;
-              background-repeat: no-repeat;
-            }
-          }
-        }
-
-        .clear-button {
-          position: relative;
-          left: -6px;
-          // background-image: url("../../assets/img/form-validation/x-icon-background.svg") !important;
-          background-size: 18px 18px;
-          transition: all 0.2s ease-in;
-          background-repeat: no-repeat;
-        }
-      }
-    }
-  }
-}
-
-form .form-control {
-  &.required.ng-invalid.ng-dirty.ng-touched {
-    &:hover {
-      // background-image: url("../../assets/img/form-validation/x-icon-red.svg");
-      background-repeat: no-repeat;
-      background-position: right 6px bottom 8px;
-      transition: background-image 0.3s;
-    }
-  }
-}
-
-form .form-control {
-  &.ng-dirty.ng-invalid.ng-touched.ng-has-value {
-    // background-image: url("../../assets/img/form-validation/x-icon.svg");
-    background-repeat: no-repeat;
-    background-position: right 6px bottom 8px;
-    transition: background-image 0.3s;
-
-    &.address-input,
-    &.email-input,
-    &.password-input,
-    &.phone-input,
-    &.name-input,
-    &.company-input {
-      background: none !important;
-      background-repeat: no-repeat;
-    }
-
-    &.focused {
-      &.address-input,
-      &.email-input,
-      &.password-input,
-      &.phone-input,
-      &.name-input,
-      &.company-input {
-        background: none !important;
-        background-repeat: no-repeat;
-      }
-    }
-
-    &:focus {
-      &.address-input,
-      &.email-input,
-      &.password-input,
-      &.phone-input,
-      &.name-input,
-      &.company-input {
-        background: none !important;
-        background-repeat: no-repeat;
-      }
-    }
-
-    &:hover {
-      // background-image: url("../../assets/img/form-validation/x-icon.svg");
-      background-repeat: no-repeat;
-      background-position: right 6px bottom 8px;
-      transition: background-image 0.3s;
-    }
-  }
 }
 
 form {
-  .ng-select {
-    .ng-clear-wrapper {
-      .ng-clear {
-        color: #dadada;
-      }
-    }
-  }
-
-  .ng-select-container {
-    background-color: #f3f3f3;
-    border-radius: 2px;
-    height: 26px;
-    overflow: visible !important;
-    line-height: 26px;
-
-    &:after {
-      border-bottom: none !important;
-    }
-
-    &:hover {
-      background-color: rgb(234, 234, 234, 1);
-      transition: 0.3s;
-
-      &:after {
-        border-bottom: none !important;
-      }
-    }
-
-    .ng-value-container .ng-placeholder {
-      position: absolute !important;
-      bottom: 0;
-      left: 8px;
-      transition: 0.3s;
-    }
-
-    .ng-value-container .ng-placeholder {
-      transition: 0.3s !important;
-    }
-
-    .ng-select-container .ng-clear-wrapper {
-      bottom: -2px;
-    }
-
-    &.ng-has-value {
-      color: #b7b7b7;
-    }
-  }
-
-  .ng-select-opened,
-  .ng-select-focused {
-    .ng-select-container {
-      background-color: #919191;
-      color: #fff;
-
-      .ng-arrow-wrapper::after {
-        color: #fff;
-        opacity: 1;
-      }
-
-      .ng-input > input {
-        color: #fff;
-      }
-    }
-
-    &.ng-invalid.ng-touched {
-      .ng-select-container {
-        background-color: #ff5d5d;
-        opacity: 1;
-        color: #fff;
-
-        .ng-input > input {
-          color: #fff;
+    .ng-select {
+        .ng-clear-wrapper {
+            .ng-clear {
+                color: #dadada;
+            }
         }
-      }
-    }
-  }
-
-  .ng-select-focused:not(.required-field) .ng-clear-wrapper .ng-clear {
-    color: #fff;
-  }
-
-  .ng-select.ng-select-multiple {
-    .ng-arrow-wrapper::after {
-      right: 8px;
-      top: 0;
-    }
-  }
-
-  ng-select:hover .ng-select-container &:after {
-    border-bottom: none !important;
-  }
-
-  ng-select:hover {
-    .ng-value-container .ng-placeholder {
-      transition: 0.3s !important;
-      color: #606060;
     }
 
-    .ng-arrow-wrapper::after {
-      transition: 0.3s;
-    }
-  }
-
-  .form-control:disabled,
-  .form-control[readonly],
-  .form-control[readonly] ~ label,
-  .form-control:disabled ~ label {
-    pointer-events: none;
-    opacity: 0.6;
-  }
-
-  // Select polje
-  .required-field.ng-invalid.ng-touched {
     .ng-select-container {
-      cursor: text;
-      // background-image: url("../../assets/img/form-validation/x-icon-light-red.svg") !important;
-      background-repeat: no-repeat;
-      background-position: right 25px bottom 8px;
-      transition: background-image 0.3s;
+        background-color: #f3f3f3;
+        border-radius: 2px;
+        height: 26px;
+        overflow: visible !important;
+        line-height: 26px;
 
-      &:hover {
-        cursor: text;
-        // background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
-        background-repeat: no-repeat;
-        background-position: right 25px bottom 8px;
-        transition: background-image 0.3s;
-      }
-
-      &:focus {
-        cursor: text;
-        background-color: #ff5d5d;
-        color: #fff;
-        // background-image: url("../../assets/img/form-validation/x-icon.svg");
-        background-repeat: no-repeat;
-        background-position: right 25px bottom 8px;
-        transition: background-image 0.3s;
+        &:after {
+            border-bottom: none !important;
+        }
 
         &:hover {
-          // background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
-          background-repeat: no-repeat;
-          background-position: right 25px bottom 8px;
-          transition: background-image 0.3s;
-        }
-      }
+            background-color: rgb(234, 234, 234, 1);
+            transition: 0.3s;
 
-      &.ng-select-focused {
-        .ng-clear-wrapper .ng-clear,
-        .ng-arrow-wrapper::after {
-          color: #fff;
-          opacity: 1;
-        }
-      }
-
-      &.ng-select-focused {
-        .ng-clear-wrapper .ng-clear,
-        .ng-arrow-wrapper::after {
-          color: #606060;
-          opacity: 1;
-        }
-      }
-    }
-  }
-
-  .required-field.ng-valid.ng-touched {
-    &.ng-select-opened,
-    &.ng-select-focused {
-      .ng-select-container {
-        background-color: #778fbb;
-
-        input {
-          &::-moz-selection {
-            background-color: rgba(255, 255, 255, 0.4);
-          }
-
-          &::selection {
-            background-color: rgba(255, 255, 255, 0.4);
-          }
+            &:after {
+                border-bottom: none !important;
+            }
         }
 
-        .ng-clear-wrapper .ng-clear,
-        .ng-arrow-wrapper::after {
-          color: #fff;
-          opacity: 1;
+        .ng-value-container .ng-placeholder {
+            position: absolute !important;
+            bottom: 0;
+            left: 8px;
+            transition: 0.3s;
         }
-      }
+
+        .ng-value-container .ng-placeholder {
+            transition: 0.3s !important;
+        }
+
+        .ng-select-container .ng-clear-wrapper {
+            bottom: -2px;
+        }
+
+        &.ng-has-value {
+            color: #b7b7b7;
+        }
     }
 
-    .ng-select-container {
-      //border-right: 3px solid #28529f;
+    .ng-select-opened,
+    .ng-select-focused {
+        .ng-select-container {
+            background-color: #919191;
+            color: #fff;
+
+            .ng-arrow-wrapper::after {
+                color: #fff;
+                opacity: 1;
+            }
+
+            .ng-input > input {
+                color: #fff;
+            }
+        }
+
+        &.ng-invalid.ng-touched {
+            .ng-select-container {
+                background-color: #ff5d5d;
+                opacity: 1;
+                color: #fff;
+
+                .ng-input > input {
+                    color: #fff;
+                }
+            }
+        }
     }
-  }
+
+    .ng-select-focused:not(.required-field) .ng-clear-wrapper .ng-clear {
+        color: #fff;
+    }
+
+    .ng-select.ng-select-multiple {
+        .ng-arrow-wrapper::after {
+            right: 8px;
+            top: 0;
+        }
+    }
+
+    ng-select:hover .ng-select-container &:after {
+        border-bottom: none !important;
+    }
+
+    ng-select:hover {
+        .ng-value-container .ng-placeholder {
+            transition: 0.3s !important;
+            color: #606060;
+        }
+
+        .ng-arrow-wrapper::after {
+            transition: 0.3s;
+        }
+    }
+
+    .form-control:disabled,
+    .form-control[readonly],
+    .form-control[readonly] ~ label,
+    .form-control:disabled ~ label {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    // Select polje
+    .required-field.ng-invalid.ng-touched {
+        .ng-select-container {
+            cursor: text;
+            // background-image: url("../../assets/img/form-validation/x-icon-light-red.svg") !important;
+            background-repeat: no-repeat;
+            background-position: right 25px bottom 8px;
+            transition: background-image 0.3s;
+
+            &:hover {
+                cursor: text;
+                // background-image: url("../../assets/img/form-validation/x-icon-red.svg") !important;
+                background-repeat: no-repeat;
+                background-position: right 25px bottom 8px;
+                transition: background-image 0.3s;
+            }
+
+            &:focus {
+                cursor: text;
+                background-color: #ff5d5d;
+                color: #fff;
+                // background-image: url("../../assets/img/form-validation/x-icon.svg");
+                background-repeat: no-repeat;
+                background-position: right 25px bottom 8px;
+                transition: background-image 0.3s;
+
+                &:hover {
+                    // background-image: url("../../assets/img/form-validation/x-icon.svg") !important;
+                    background-repeat: no-repeat;
+                    background-position: right 25px bottom 8px;
+                    transition: background-image 0.3s;
+                }
+            }
+
+            &.ng-select-focused {
+                .ng-clear-wrapper .ng-clear,
+                .ng-arrow-wrapper::after {
+                    color: #fff;
+                    opacity: 1;
+                }
+            }
+
+            &.ng-select-focused {
+                .ng-clear-wrapper .ng-clear,
+                .ng-arrow-wrapper::after {
+                    color: #606060;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .required-field.ng-valid.ng-touched {
+        &.ng-select-opened,
+        &.ng-select-focused {
+            .ng-select-container {
+                background-color: #778fbb;
+
+                input {
+                    &::-moz-selection {
+                        background-color: rgba(255, 255, 255, 0.4);
+                    }
+
+                    &::selection {
+                        background-color: rgba(255, 255, 255, 0.4);
+                    }
+                }
+
+                .ng-clear-wrapper .ng-clear,
+                .ng-arrow-wrapper::after {
+                    color: #fff;
+                    opacity: 1;
+                }
+            }
+        }
+
+        .ng-select-container {
+            //border-right: 3px solid #28529f;
+        }
+    }
 }
 
 .required-notice {
-  position: absolute;
-  font-size: 10px;
-  right: 0;
-  bottom: -13px;
-  line-height: 1;
-  font-weight: 600;
+    position: absolute;
+    font-size: 10px;
+    right: 0;
+    bottom: -13px;
+    line-height: 1;
+    font-weight: 600;
 }
 
 .form-label-group {
-  position: relative;
-  margin-bottom: 1.75rem;
-  transition: 0.3s;
-
-  &:hover {
+    position: relative;
+    margin-bottom: 1.75rem;
     transition: 0.3s;
-  }
+
+    &:hover {
+        transition: 0.3s;
+    }
 }
 
 .form-label-group > input,
 .form-label-group > label {
-  padding: var(--input-padding-y) var(--input-padding-x);
-  height: 45px;
+    padding: var(--input-padding-y) var(--input-padding-x);
+    height: 45px;
 }
 
 .ng-select.ng-valid .ng-select-container.ng-has-value .ng-placeholder {
-  color: #b7b7b7 !important;
+    color: #b7b7b7 !important;
 }
 
 .ng-select.ng-select-focused
-  .ng-select-container
-  .ng-value-container
-  .ng-placeholder {
-  color: #919191 !important;
+    .ng-select-container
+    .ng-value-container
+    .ng-placeholder {
+    color: #919191 !important;
 }
 
 .form-label-group > label {
-  position: absolute;
-  display: block;
-  width: 100%;
-  margin-bottom: 0;
-  line-height: 20px;
-  color: #b7b7b7;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  //transition: all 0.1s ease -in -out;
-  padding: 0;
-  height: auto;
-  top: 2px;
-  left: 4px;
-  font-weight: 400;
-  transition: all 0.3s ease-in-out;
+    position: absolute;
+    display: block;
+    width: 100%;
+    margin-bottom: 0;
+    line-height: 20px;
+    color: #b7b7b7;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    //transition: all 0.1s ease -in -out;
+    padding: 0;
+    height: auto;
+    top: 2px;
+    left: 4px;
+    font-weight: 400;
+    transition: all 0.3s ease-in-out;
 }
 
 .required-label {
-  color: #919191;
+    color: #919191;
 
-  &:after {
-    content: "*";
-    font-size: 0.9rem;
-    color: #ff8080;
-    margin-left: 4px;
-  }
+    &:after {
+        content: '*';
+        font-size: 0.9rem;
+        color: #ff8080;
+        margin-left: 4px;
+    }
 }
 
 .form-label-group input::-webkit-input-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input:-ms-input-placeholder {
-  color: transparent !important;
+    color: transparent !important;
 }
 
 .form-label-group input::-ms-input-placeholder {
-  color: transparent !important;
+    color: transparent !important;
 }
 
 .form-label-group input::-moz-placeholder {
-  color: transparent !important;
-  opacity: 0 !important;
+    color: transparent !important;
+    opacity: 0 !important;
 }
 
 .form-label-group input::placeholder {
-  color: transparent !important;
+    color: transparent !important;
 }
 
 .form-label-group input:not(:placeholder-shown) {
-  padding: 0 0 0 6px;
+    padding: 0 0 0 6px;
 }
 
 .form-label-group input:not(:placeholder-shown) ~ label {
-  &.required-label {
-    top: -20px;
-  }
+    &.required-label {
+        top: -20px;
+    }
 
-  top: -20px;
-  //color: #606060 !important;
-  font-size: 10px;
-  font-weight: 600;
-  transition: 0.3s;
+    top: -20px;
+    //color: #606060 !important;
+    font-size: 10px;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
 .form-label-group input:focus ~ label {
-  &.required-label {
-    top: -20px;
-  }
+    &.required-label {
+        top: -20px;
+    }
 
-  top: -20px;
-  color: #919191 !important;
-  font-size: 10px;
-  font-weight: 600;
-  transition: 0.3s;
+    top: -20px;
+    color: #919191 !important;
+    font-size: 10px;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
 .form-label-group input:hover ~ label {
-  transition: 0.3s;
+    transition: 0.3s;
 }
 
 .modal-nav-tabs {
-  .nav-item {
-    margin-bottom: 0;
-    width: 50%;
-    text-align: center;
-  }
+    .nav-item {
+        margin-bottom: 0;
+        width: 50%;
+        text-align: center;
+    }
 }
 
 .form-label-group.input-icon {
-  background-color: #f3f3f3;
-  transition: 0.3s;
-  border-radius: 3px;
+    background-color: #f3f3f3;
+    transition: 0.3s;
+    border-radius: 3px;
 }
 
 .form-control:focus {
-  outline: none !important;
+    outline: none !important;
 }
 
 form .form-control.input-control {
-  height: 26px;
-  line-height: 26px;
-  border: none;
-  padding: 0 0 0 6px;
-  background-color: #f3f3f3;
-  transition: 0.3s;
-  color: #b7b7b7;
-  font-weight: 400;
+    height: 26px;
+    line-height: 26px;
+    border: none;
+    padding: 0 0 0 6px;
+    background-color: #f3f3f3;
+    transition: 0.3s;
+    color: #b7b7b7;
+    font-weight: 400;
 
-  &.password-field-wrapper {
-    // background-image: url("../../assets/img/form-icons/password/key.svg");
-    background-size: 18px 12px;
-    background-repeat: no-repeat;
-    background-position: calc(100% - 6px) 6px;
+    &.password-field-wrapper {
+        // background-image: url("../../assets/img/form-icons/password/key.svg");
+        background-size: 18px 12px;
+        background-repeat: no-repeat;
+        background-position: calc(100% - 6px) 6px;
 
-    &.field-focused {
-      // background-image: url("../../assets/img/form-icons/password/focus-password.svg") !important;
+        &.field-focused {
+            // background-image: url("../../assets/img/form-icons/password/focus-password.svg") !important;
+        }
     }
-  }
 }

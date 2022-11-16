@@ -1,4 +1,4 @@
-@import "src/theme/variables.scss";
+@import 'src/theme/variables.scss';
 
 // Constants
 $color-white-light: #f3f3f3;
@@ -29,1041 +29,1041 @@ $border-radius: 3px;
 $transition: all 0.3s ease-in-out;
 
 p {
-  margin-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
 .desc {
-  &::-moz-selection {
-    color: $color-gray-dark;
-    background: rgb(108, 108, 108, 0.2);
-  }
-  &::selection {
-    color: $color-gray-dark;
-    background: rgb(108, 108, 108, 0.2);
-  }
+    &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
 }
 
 .details-container-items {
-  display: grid;
-  grid-template-columns: 440px repeat(4, 335px);
-  -moz-column-gap: 12px;
-  column-gap: 12px;
-  row-gap: 12px;
+    display: grid;
+    grid-template-columns: 440px repeat(4, 335px);
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    row-gap: 12px;
 }
 // Common Class
 .details-component {
-  display: grid;
-  grid-auto-flow: column;
-  column-gap: 12px;
-  row-gap: 12px;
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 12px;
+    row-gap: 12px;
 
-  // BODY
-  .truck-wrapper {
-    background-color: $color-white;
-    border-radius: $border-radius;
-    margin-bottom: 8px;
-    width: 440px;
-    height: 226px;
-    p {
-      margin: 0px;
-    }
-
-    .truck-card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .truck-card-name {
-        color: $color-gray-dark;
-        font-size: $font-size18;
-        font-weight: $font-medium;
-        position: relative;
-        top: 1px;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+    // BODY
+    .truck-wrapper {
+        background-color: $color-white;
+        border-radius: $border-radius;
+        margin-bottom: 8px;
+        width: 440px;
+        height: 226px;
+        p {
+            margin: 0px;
         }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+
+        .truck-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .truck-card-name {
+                color: $color-gray-dark;
+                font-size: $font-size18;
+                font-weight: $font-medium;
+                position: relative;
+                top: 1px;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
         }
-      }
+
+        //   // Note
+        .details-page-row-5 {
+            margin-top: 8px;
+        }
+
+        //   // PDF - big
+        .details-page-row-7 {
+            height: 236px;
+            width: 100%;
+            margin: 22px 0px;
+        }
+
+        .show-details {
+            font-size: $font-size12;
+            font-weight: $font-bold;
+            color: $color-blue-light;
+            text-decoration: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            &:hover {
+                transition: $transition;
+                cursor: pointer;
+                text-decoration: underline;
+                color: $color-blue;
+            }
+        }
     }
 
-    //   // Note
-    .details-page-row-5 {
-      margin-top: 8px;
+    .details-cards {
+        border-radius: 3px;
+        overflow: hidden;
+        width: 440px;
+        background-color: $color-white;
+        padding: 9px 6px;
     }
-
-    //   // PDF - big
-    .details-page-row-7 {
-      height: 236px;
-      width: 100%;
-      margin: 22px 0px;
-    }
-
-    .show-details {
-      font-size: $font-size12;
-      font-weight: $font-bold;
-      color: $color-blue-light;
-      text-decoration: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
-      &:hover {
-        transition: $transition;
-        cursor: pointer;
-        text-decoration: underline;
-        color: $color-blue;
-      }
-    }
-  }
-
-  .details-cards {
-    border-radius: 3px;
-    overflow: hidden;
-    width: 440px;
-    background-color: $color-white;
-    padding: 9px 6px;
-  }
 }
 .assignTo {
-  display: grid;
-  grid-template-columns: 202px 202px;
-  column-gap: 12px;
-  padding: 0 6px;
-  .assignTo-vehicle {
-    svg {
-      width: 55px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      &:hover {
-        path {
-          fill: #6c6c6c !important;
-        }
-      }
-      path {
-        fill: #aaaaaa;
-      }
-    }
-  }
-  .first {
+    display: grid;
+    grid-template-columns: 202px 202px;
+    column-gap: 12px;
+    padding: 0 6px;
     .assignTo-vehicle {
-      svg {
+        svg {
+            width: 55px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            &:hover {
+                path {
+                    fill: #6c6c6c !important;
+                }
+            }
+            path {
+                fill: #aaaaaa;
+            }
+        }
+    }
+    .first {
+        .assignTo-vehicle {
+            svg {
+                display: flex;
+                align-items: center;
+            }
+        }
+        &:hover {
+            .open-modal-icon {
+                display: block;
+                position: relative;
+                bottom: 4px;
+                height: 18px;
+                width: 18px;
+                svg {
+                    cursor: pointer;
+                    &:hover {
+                        path {
+                            fill: #6c6c6c;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .second {
+        .icon-text-wrapper-cmp {
+            position: relative;
+            top: 1px;
+        }
+        .assignTo-vehicle {
+            svg {
+                display: flex;
+            }
+        }
+        &:hover {
+            .open-modal-icon2 {
+                display: block;
+                height: 18px;
+                width: 18px;
+                position: relative;
+                bottom: 4px;
+                svg {
+                    cursor: pointer;
+                    &:hover {
+                        path {
+                            fill: #6c6c6c;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .assignTo-item {
+        background-color: $color-white-dark;
+        border-radius: 3px;
+        width: 100%;
         display: flex;
         align-items: center;
-      }
-    }
-    &:hover {
-      .open-modal-icon {
-        display: block;
-        position: relative;
-        bottom: 4px;
-        height: 18px;
-        width: 18px;
-        svg {
-          cursor: pointer;
-          &:hover {
-            path {
-              fill: #6c6c6c;
-            }
-          }
+        .icon-text-wrapper-cmp {
+            display: flex;
+            align-items: center;
+            padding-left: 6px;
+            margin: 7px 0px;
         }
-      }
-    }
-  }
-  .second {
-    .icon-text-wrapper-cmp {
-      position: relative;
-      top: 1px;
-    }
-    .assignTo-vehicle {
-      svg {
-        display: flex;
-      }
-    }
-    &:hover {
-      .open-modal-icon2 {
-        display: block;
-        height: 18px;
-        width: 18px;
-        position: relative;
-        bottom: 4px;
-        svg {
-          cursor: pointer;
-          &:hover {
-            path {
-              fill: #6c6c6c;
-            }
-          }
+        .semi-tooltip {
+            width: 55px;
+            height: 20px;
         }
-      }
-    }
-  }
-  .assignTo-item {
-    background-color: $color-white-dark;
-    border-radius: 3px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    .icon-text-wrapper-cmp {
-      display: flex;
-      align-items: center;
-      padding-left: 6px;
-      margin: 7px 0px;
-    }
-    .semi-tooltip {
-      width: 55px;
-      height: 20px;
-    }
-    svg {
-      fill: #aaaaaa;
-      object-fit: fill;
-      height: 20px;
-      width: 55px;
-    }
-    .open-modal-icon {
-      display: none;
-    }
-    .open-modal-icon2 {
-      display: none;
-    }
-    .assignTo-vehicle {
-      margin-right: 6px;
-      position: relative;
-      bottom: 0px;
-    }
+        svg {
+            fill: #aaaaaa;
+            object-fit: fill;
+            height: 20px;
+            width: 55px;
+        }
+        .open-modal-icon {
+            display: none;
+        }
+        .open-modal-icon2 {
+            display: none;
+        }
+        .assignTo-vehicle {
+            margin-right: 6px;
+            position: relative;
+            bottom: 0px;
+        }
 
-    .assignTo-value {
-      font-size: $font-size18;
-      font-weight: $font-medium;
-      color: $color-gray-dark;
-      line-height: 16px;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
+        .assignTo-value {
+            font-size: $font-size18;
+            font-weight: $font-medium;
+            color: $color-gray-dark;
+            line-height: 16px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+        p {
+            margin: 0 !important;
+        }
     }
-    p {
-      margin: 0 !important;
-    }
-  }
 }
 .item-cards {
-  .ta-card-header {
-    padding-top: 6px !important;
-    padding-bottom: 6px !important;
-    padding-right: 6px !important;
-  }
+    .ta-card-header {
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+        padding-right: 6px !important;
+    }
 }
 .cards-container {
-  padding: 0 6px;
-  .card-body-cdl {
-    display: grid;
-    padding: 0 10px;
-    .card-restriction-endorsment {
-      display: grid;
-      grid-template-columns: 110px 131px;
-      column-gap: 53px;
-      height: 44px;
-      .item-card-wrapper {
-        display: flex;
-        .restriction-item-value {
-          .value-name {
-            font-size: 14px !important;
-            font-weight: 400 !important;
-            color: #6c6c6c;
-          }
-          &:not(:first-child) {
-            .value-name:before {
-              content: ", ";
+    padding: 0 6px;
+    .card-body-cdl {
+        display: grid;
+        padding: 0 10px;
+        .card-restriction-endorsment {
+            display: grid;
+            grid-template-columns: 110px 131px;
+            column-gap: 53px;
+            height: 44px;
+            .item-card-wrapper {
+                display: flex;
+                .restriction-item-value {
+                    .value-name {
+                        font-size: 14px !important;
+                        font-weight: 400 !important;
+                        color: #6c6c6c;
+                    }
+                    &:not(:first-child) {
+                        .value-name:before {
+                            content: ', ';
+                        }
+                    }
+                }
             }
-          }
         }
-      }
-    }
-    .card-item-name {
-      font-size: 11px;
-      color: #6c6c6c;
-      font-weight: $font-bold;
-      height: 15px;
-      margin-bottom: 2px;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-    }
-    .card-item-value {
-      font-size: $font-size14;
-      font-weight: 400;
-      color: #6c6c6c;
-      white-space: nowrap;
-      height: 18px;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-      &:hover {
-        color: #3c3c3c;
-      }
-    }
-    .card-row-issued {
-      display: grid;
-      grid-template-columns: 32px 32px 32px;
-      column-gap: 49px;
-      margin-top: 12px;
-    }
-    .card-row-endor {
-      display: grid;
-      grid-template-columns: 141px 141px;
-      column-gap: 21px;
-    }
-    .card-row-progress {
-      margin-top: 12px;
-    }
-    .card-restriction {
-      display: flex;
-      flex-direction: column;
-      margin-top: 10px;
-      .restriction-name {
-        font-size: 11px;
-        font-weight: $font-bold;
-        color: #6c6c6c;
-        height: 15px;
-        &::-moz-selection {
-          color: #6c6c6c;
-          background: rgb(108, 108, 108, 0.2);
+        .card-item-name {
+            font-size: 11px;
+            color: #6c6c6c;
+            font-weight: $font-bold;
+            height: 15px;
+            margin-bottom: 2px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
         }
-        &::selection {
-          color: #6c6c6c;
-          background: rgb(108, 108, 108, 0.2);
+        .card-item-value {
+            font-size: $font-size14;
+            font-weight: 400;
+            color: #6c6c6c;
+            white-space: nowrap;
+            height: 18px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &:hover {
+                color: #3c3c3c;
+            }
         }
-      }
-      .span-value {
-        &::-moz-selection {
-          color: #6c6c6c !important;
-          background: rgb(108, 108, 108, 0.2) !important;
+        .card-row-issued {
+            display: grid;
+            grid-template-columns: 32px 32px 32px;
+            column-gap: 49px;
+            margin-top: 12px;
         }
-        &::selection {
-          color: #6c6c6c !important;
-          background: rgb(108, 108, 108, 0.2) !important;
+        .card-row-endor {
+            display: grid;
+            grid-template-columns: 141px 141px;
+            column-gap: 21px;
         }
-      }
-      .restriction-item-value {
-        font-size: $font-size14;
-        font-weight: 400;
-        color: #6c6c6c;
-        height: 18px;
-        white-space: nowrap;
-        margin-bottom: 2px;
-        margin-top: 2px;
-        &::-moz-selection {
-          color: #6c6c6c !important;
-          background: rgb(108, 108, 108, 0.2) !important;
+        .card-row-progress {
+            margin-top: 12px;
         }
-        &::selection {
-          color: #6c6c6c !important;
-          background: rgb(108, 108, 108, 0.2) !important;
-        }
-        .value-name {
-          font-size: $font-size14;
-          font-weight: $font-semibold;
+        .card-restriction {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+            .restriction-name {
+                font-size: 11px;
+                font-weight: $font-bold;
+                color: #6c6c6c;
+                height: 15px;
+                &::-moz-selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                &::selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+            .span-value {
+                &::-moz-selection {
+                    color: #6c6c6c !important;
+                    background: rgb(108, 108, 108, 0.2) !important;
+                }
+                &::selection {
+                    color: #6c6c6c !important;
+                    background: rgb(108, 108, 108, 0.2) !important;
+                }
+            }
+            .restriction-item-value {
+                font-size: $font-size14;
+                font-weight: 400;
+                color: #6c6c6c;
+                height: 18px;
+                white-space: nowrap;
+                margin-bottom: 2px;
+                margin-top: 2px;
+                &::-moz-selection {
+                    color: #6c6c6c !important;
+                    background: rgb(108, 108, 108, 0.2) !important;
+                }
+                &::selection {
+                    color: #6c6c6c !important;
+                    background: rgb(108, 108, 108, 0.2) !important;
+                }
+                .value-name {
+                    font-size: $font-size14;
+                    font-weight: $font-semibold;
 
-          color: #6c6c6c;
-          &::-moz-selection {
-            color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-          }
-          &::selection {
-            color: #6c6c6c;
-            background: rgb(108, 108, 108, 0.2);
-          }
+                    color: #6c6c6c;
+                    &::-moz-selection {
+                        color: #6c6c6c;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                    &::selection {
+                        color: #6c6c6c;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+            }
         }
-      }
+        .endorsement {
+            margin-top: 12px;
+        }
     }
-    .endorsement {
-      margin-top: 12px;
-    }
-  }
 }
 .perfomance {
-  display: flex !important;
-  flex-direction: column;
+    display: flex !important;
+    flex-direction: column;
 
-  .common-template-item-name {
-    font-size: $font-size14 !important;
-    font-weight: $font-semibold !important;
-  }
-  .common-template-item-value {
-    font-size: $font-size18 !important;
-    font-weight: $font-semibold !important;
-  }
+    .common-template-item-name {
+        font-size: $font-size14 !important;
+        font-weight: $font-semibold !important;
+    }
+    .common-template-item-value {
+        font-size: $font-size18 !important;
+        font-weight: $font-semibold !important;
+    }
 }
 .card-pdf {
-  padding: 0 10px;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
+    padding: 0 10px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
 
-  &.disabled {
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+    &.disabled {
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
 }
 // Progress bar details
 .card-details-progress-container {
-  .table-progress-cotnainer {
-    display: flex !important;
-    flex-direction: column !important;
+    .table-progress-cotnainer {
+        display: flex !important;
+        flex-direction: column !important;
 
-    .table-progress {
-      order: 1 !important;
-      width: 100% !important;
-      height: 8px !important;
+        .table-progress {
+            order: 1 !important;
+            width: 100% !important;
+            height: 8px !important;
+        }
+
+        .table-progress-panel {
+            order: -1 !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            color: #6c6c6c !important;
+
+            .progress-text {
+                margin: 2px 0px !important;
+            }
+        }
     }
-
-    .table-progress-panel {
-      order: -1 !important;
-      display: flex !important;
-      justify-content: space-between !important;
-      color: #6c6c6c !important;
-
-      .progress-text {
-        margin: 2px 0px !important;
-      }
-    }
-  }
 }
 
 .status-container {
-  padding-top: 12px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: -12px !important;
-  .status-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .status-item {
-      height: 18px;
-
-      .p-status {
-        font-size: $font-size14;
-        font-weight: 700;
-        color: #919191;
-        &::-moz-selection {
-          color: #919191;
-          background: rgb(145, 145, 145, 0.2);
-        }
-        &::selection {
-          color: #919191;
-          background: rgb(145, 145, 145, 0.2);
-        }
-        .note-textarea {
-          color: #6c6c6c !important;
-          font-weight: 500 !important;
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-    
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-    
-          span {
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
-            }
-    
-            &::selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
-            }
-          }
-    
-          span[style*="color: rgb(83, 107, 194)"],
-          span[style*="color: rgb(83, 107, 194)"] span {
-            &::-moz-selection {
-              color: $bw6-2 !important;
-              background: rgb(83, 107, 194, 0.2) !important;
-            }
-    
-            &::selection {
-              color: $bw6-2;
-              background: rgb(83, 107, 194, 0.2) !important;
-            }
-          }
-    
-          span[style*="color: rgb(38, 166, 144)"],
-          span[style*="color: rgb(38, 166, 144)"] span {
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(38, 166, 144, 0.2) !important;
-            }
-    
-            &::selection {
-              color: $bw6-2;
-              background: rgb(38, 166, 144, 0.2) !important;
-            }
-          }
-    
-          span[style*="color: rgb(239, 83, 80)"],
-          span[style*="color: rgb(239, 83, 80)"] span {
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(239, 83, 80, 0.2) !important;
-            }
-    
-            &::selection {
-              color: $bw6-2;
-              background: rgb(239, 83, 80, 0.2) !important;
-            }
-          }
-    
-          span[style*="color: rgb(255, 167, 38)"],
-          span[style*="color: rgb(255, 167, 38)"] span {
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(255, 167, 38, 0.2) !important;
-            }
-    
-            &::selection {
-              color: $bw6-2;
-              background: rgb(255, 167, 38, 0.2) !important;
-            }
-          }
-    
-          span[style*="color: rgb(83, 107, 194)"],
-          span[style*="color: rgb(83, 107, 194)"] span {
-            &::-moz-selection {
-              color: $bw6-2 !important;
-              background: rgb(83, 107, 194, 0.2) !important;
-            }
-    
-            &::selection {
-              color: $bw6-2;
-              background: rgb(83, 107, 194, 0.2) !important;
-            }
-          }
-    
-          span[style*="color: rgb(38, 166, 144)"],
-          span[style*="color: rgb(38, 166, 144)"] span {
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(38, 166, 144, 0.2) !important;
-            }
-    
-            &::selection {
-              color: $bw6-2;
-              background: rgb(38, 166, 144, 0.2) !important;
-            }
-          }
-    
-          span[style*="color: rgb(239, 83, 80)"],
-          span[style*="color: rgb(239, 83, 80)"] span {
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(239, 83, 80, 0.2) !important;
-            }
-    
-            &::selection {
-              color: $bw6-2;
-              background: rgb(239, 83, 80, 0.2) !important;
-            }
-          }
-    
-          span[style*="color: rgb(255, 167, 38)"],
-          span[style*="color: rgb(255, 167, 38)"] span {
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(255, 167, 38, 0.2) !important;
-            }
-    
-            &::selection {
-              color: $bw6-2;
-              background: rgb(255, 167, 38, 0.2) !important;
-            }
-          }
-        }
-      }
-    }
-  }
-  .status-items {
-    .item-wrapper {
-      display: grid;
-      grid-template-columns: 119px 137px 78px;
-      grid-column-gap: 40px;
-      align-content: center;
-      justify-content: center;
-
-      .svg-text {
-        display: flex;
-        align-items: center;
-        .employment {
-          margin-left: 6px;
-          position: relative;
-          bottom: -2px;
-        }
-      }
-      .duration {
-        text-align: right;
-      }
-      p {
-        font-size: 14px;
-        font-weight: 400;
-        color: #6c6c6c;
-        white-space: nowrap;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(108, 108, 108, 0.2);
-        }
-        span {
-          &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-          }
-          &::selection {
-            color: $color-gray-dark;
-            background: rgb(108, 108, 108, 0.2);
-          }
-        }
-      }
-    }
-  }
-}
-.charts-template {
-  display: grid;
-  grid-template-columns: 215px 1fr;
-  grid-row-gap: 12px;
-  row-gap: 12px;
-  margin-bottom: 12px;
-  padding-left: 6px;
-  padding-right: 6px;
-  .charts-template-item {
+    padding-top: 12px;
     display: flex;
     flex-direction: column;
+    margin-bottom: -12px !important;
+    .status-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .status-item {
+            height: 18px;
 
-    .icon-name-item {
-      display: flex;
-      align-items: baseline;
-      height: 18px;
-      .charts-template-item-name {
-        margin-left: 6px;
-      }
-    }
-    .charts-template-item-name {
-      font-size: $font-size12;
-      font-weight: $font-semibold;
-      color: $color-gray-dark;
+            .p-status {
+                font-size: $font-size14;
+                font-weight: 700;
+                color: #919191;
+                &::-moz-selection {
+                    color: #919191;
+                    background: rgb(145, 145, 145, 0.2);
+                }
+                &::selection {
+                    color: #919191;
+                    background: rgb(145, 145, 145, 0.2);
+                }
+                .note-textarea {
+                    color: #6c6c6c !important;
+                    font-weight: 500 !important;
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
 
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-    }
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
 
-    .charts-template-item-value {
-      font-size: $font-size18;
-      font-weight: $font-semibold;
-      color: $color-gray-dark;
-      width: 220px;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
+                    span {
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
 
-      p {
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                    }
+
+                    span[style*='color: rgb(83, 107, 194)'],
+                    span[style*='color: rgb(83, 107, 194)'] span {
+                        &::-moz-selection {
+                            color: $bw6-2 !important;
+                            background: rgb(83, 107, 194, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(83, 107, 194, 0.2) !important;
+                        }
+                    }
+
+                    span[style*='color: rgb(38, 166, 144)'],
+                    span[style*='color: rgb(38, 166, 144)'] span {
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(38, 166, 144, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(38, 166, 144, 0.2) !important;
+                        }
+                    }
+
+                    span[style*='color: rgb(239, 83, 80)'],
+                    span[style*='color: rgb(239, 83, 80)'] span {
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(239, 83, 80, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(239, 83, 80, 0.2) !important;
+                        }
+                    }
+
+                    span[style*='color: rgb(255, 167, 38)'],
+                    span[style*='color: rgb(255, 167, 38)'] span {
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(255, 167, 38, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(255, 167, 38, 0.2) !important;
+                        }
+                    }
+
+                    span[style*='color: rgb(83, 107, 194)'],
+                    span[style*='color: rgb(83, 107, 194)'] span {
+                        &::-moz-selection {
+                            color: $bw6-2 !important;
+                            background: rgb(83, 107, 194, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(83, 107, 194, 0.2) !important;
+                        }
+                    }
+
+                    span[style*='color: rgb(38, 166, 144)'],
+                    span[style*='color: rgb(38, 166, 144)'] span {
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(38, 166, 144, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(38, 166, 144, 0.2) !important;
+                        }
+                    }
+
+                    span[style*='color: rgb(239, 83, 80)'],
+                    span[style*='color: rgb(239, 83, 80)'] span {
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(239, 83, 80, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(239, 83, 80, 0.2) !important;
+                        }
+                    }
+
+                    span[style*='color: rgb(255, 167, 38)'],
+                    span[style*='color: rgb(255, 167, 38)'] span {
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(255, 167, 38, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(255, 167, 38, 0.2) !important;
+                        }
+                    }
+                }
+            }
         }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-      }
-
-      .hidden-svg-eye {
-        margin-left: 6px;
-        position: relative;
-        bottom: 1px;
-      }
     }
-  }
+    .status-items {
+        .item-wrapper {
+            display: grid;
+            grid-template-columns: 119px 137px 78px;
+            grid-column-gap: 40px;
+            align-content: center;
+            justify-content: center;
+
+            .svg-text {
+                display: flex;
+                align-items: center;
+                .employment {
+                    margin-left: 6px;
+                    position: relative;
+                    bottom: -2px;
+                }
+            }
+            .duration {
+                text-align: right;
+            }
+            p {
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+                white-space: nowrap;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                span {
+                    &::-moz-selection {
+                        color: $color-gray-dark;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                    &::selection {
+                        color: $color-gray-dark;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+            }
+        }
+    }
+}
+.charts-template {
+    display: grid;
+    grid-template-columns: 215px 1fr;
+    grid-row-gap: 12px;
+    row-gap: 12px;
+    margin-bottom: 12px;
+    padding-left: 6px;
+    padding-right: 6px;
+    .charts-template-item {
+        display: flex;
+        flex-direction: column;
+
+        .icon-name-item {
+            display: flex;
+            align-items: baseline;
+            height: 18px;
+            .charts-template-item-name {
+                margin-left: 6px;
+            }
+        }
+        .charts-template-item-name {
+            font-size: $font-size12;
+            font-weight: $font-semibold;
+            color: $color-gray-dark;
+
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+
+        .charts-template-item-value {
+            font-size: $font-size18;
+            font-weight: $font-semibold;
+            color: $color-gray-dark;
+            width: 220px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+
+            p {
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+
+            .hidden-svg-eye {
+                margin-left: 6px;
+                position: relative;
+                bottom: 1px;
+            }
+        }
+    }
 }
 .second-progress {
-  margin-bottom: 16px;
+    margin-bottom: 16px;
 }
 
 .truck-details-wrapper {
-  margin-left: 16px;
-  .truck {
-    svg {
-      width: 132px;
-      height: 48px;
+    margin-left: 16px;
+    .truck {
+        svg {
+            width: 132px;
+            height: 48px;
+        }
     }
-  }
-  .details-header-avatar {
-    display: flex;
-    align-items: center;
-    height: 48px;
-    margin-top: 14px;
-
-    .model-name {
-      flex-direction: column;
-      margin-left: 12px;
-      margin-top: 12px;
-
-      p {
-        font-size: 14px;
-        font-weight: 500;
-        color: #6c6c6c;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(108, 108, 108, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(108, 108, 108, 0.2);
-        }
-      }
-      .svg-wrapper {
-        height: 14px;
+    .details-header-avatar {
         display: flex;
-        align-items: flex-end;
-        margin-bottom: 2px;
-      }
-      svg {
-        path {
-          fill: #aaaaaa;
-          object-fit: fill;
+        align-items: center;
+        height: 48px;
+        margin-top: 14px;
+
+        .model-name {
+            flex-direction: column;
+            margin-left: 12px;
+            margin-top: 12px;
+
+            p {
+                font-size: 14px;
+                font-weight: 500;
+                color: #6c6c6c;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+            .svg-wrapper {
+                height: 14px;
+                display: flex;
+                align-items: flex-end;
+                margin-bottom: 2px;
+            }
+            svg {
+                path {
+                    fill: #aaaaaa;
+                    object-fit: fill;
+                }
+                rect {
+                    fill: #aaaaaa;
+                }
+            }
         }
-        rect {
-          fill: #aaaaaa;
+    }
+    .details-header-data {
+        margin-top: 14px;
+        .details-header-data-item {
+            display: flex;
+            height: 18px;
+            align-items: center;
+            p {
+                font-size: 18px;
+                color: #6c6c6c;
+                font-weight: 400;
+            }
         }
-      }
+        .second {
+            margin-top: 14px;
+            margin-bottom: 14px;
+            p {
+                font-size: 14px !important;
+                color: #6c6c6c;
+                font-weight: 400;
+                position: relative;
+                bottom: -1px;
+            }
+            // .light-green {
+            //   margin-right: 29px;
+            // }
+            .date {
+                margin-left: 8px !important;
+                position: relative;
+            }
+        }
     }
-  }
-  .details-header-data {
-    margin-top: 14px;
-    .details-header-data-item {
-      display: flex;
-      height: 18px;
-      align-items: center;
-      p {
-        font-size: 18px;
-        color: #6c6c6c;
-        font-weight: 400;
-      }
-    }
-    .second {
-      margin-top: 14px;
-      margin-bottom: 14px;
-      p {
-        font-size: 14px !important;
-        color: #6c6c6c;
-        font-weight: 400;
+    .vin-text {
+        margin-left: 6px !important;
+        margin-right: 37px;
         position: relative;
-        bottom: -1px;
-      }
-      // .light-green {
-      //   margin-right: 29px;
-      // }
-      .date {
-        margin-left: 8px !important;
-        position: relative;
-      }
+        bottom: -1px !important;
     }
-  }
-  .vin-text {
-    margin-left: 6px !important;
-    margin-right: 37px;
-    position: relative;
-    bottom: -1px !important;
-  }
 }
 .common-template {
-  display: grid;
-  grid-template-columns: 215px 1fr;
-  row-gap: 12px;
-  padding: 0 10px;
-  // margin-top: -7px;
-  .common-item-wrapper {
-    display: flex;
-    align-items: center;
-    height: 40px;
-  }
-  .common-template-item {
-    display: flex;
-    flex-direction: column;
-    &::-moz-selection {
-      color: $color-gray-dark;
-      background: rgb(108, 108, 108, 0.2);
+    display: grid;
+    grid-template-columns: 215px 1fr;
+    row-gap: 12px;
+    padding: 0 10px;
+    // margin-top: -7px;
+    .common-item-wrapper {
+        display: flex;
+        align-items: center;
+        height: 40px;
     }
-    &::selection {
-      color: $color-gray-dark;
-      background: rgb(108, 108, 108, 0.2);
-    }
-    .icon-name-item {
-      display: flex;
-      align-items: center;
-      height: 18px;
-      .common-template-item-name {
-        margin-left: 6px;
-      }
-    }
-    .common-template-item-name {
-      font-size: $font-size12;
-      font-weight: $font-semibold;
-      color: $color-gray-dark;
-
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-    }
-
-    .common-template-item-value {
-      font-size: $font-size14;
-      font-weight: 400;
-      color: $color-gray-dark;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-      }
-
-      p {
+    .common-template-item {
+        display: flex;
+        flex-direction: column;
         &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
         }
         &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
         }
-      }
+        .icon-name-item {
+            display: flex;
+            align-items: center;
+            height: 18px;
+            .common-template-item-name {
+                margin-left: 6px;
+            }
+        }
+        .common-template-item-name {
+            font-size: $font-size12;
+            font-weight: $font-semibold;
+            color: $color-gray-dark;
 
-      .hidden-svg-eye {
-        margin-left: 6px;
-        position: relative;
-        bottom: 1px;
-      }
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+
+        .common-template-item-value {
+            font-size: $font-size14;
+            font-weight: 400;
+            color: $color-gray-dark;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+
+            p {
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+
+            .hidden-svg-eye {
+                margin-left: 6px;
+                position: relative;
+                bottom: 1px;
+            }
+        }
     }
-  }
 }
 
 .divider {
-  margin: 0;
-  height: 2px;
-  width: 100%;
-  border-radius: 1px;
-  background-color: #f3f3f3;
+    margin: 0;
+    height: 2px;
+    width: 100%;
+    border-radius: 1px;
+    background-color: #f3f3f3;
 }
 
 .note-cards {
-  .note-body {
-    // height: 40px !important;
-    padding: 0 2px !important;
-    // margin-bottom: 7px !important;
-    .note-textarea {
-      color: #6c6c6c !important;
-      font-weight: 400 !important;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
+    .note-body {
+        // height: 40px !important;
+        padding: 0 2px !important;
+        // margin-bottom: 7px !important;
+        .note-textarea {
+            color: #6c6c6c !important;
+            font-weight: 400 !important;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
     }
-  }
 }
 .vin-text {
-  &::-moz-selection {
-    color: $color-gray-dark;
-    background: rgb(108, 108, 108, 0.2);
-  }
-  &::selection {
-    color: $color-gray-dark;
-    background: rgb(108, 108, 108, 0.2);
-  }
+    &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
 }
 .no-data-driver-details {
-  font-size: 14px;
-  font-weight: 400;
-  padding: 0 10px;
-  color: #b7b7b7;
-  &::-moz-selection {
+    font-size: 14px;
+    font-weight: 400;
+    padding: 0 10px;
     color: #b7b7b7;
-    background: rgb(183, 183, 183, 0.2);
-  }
-  &::selection {
-    color: #b7b7b7;
-    background: rgb(183, 183, 183, 0.2);
-  }
+    &::-moz-selection {
+        color: #b7b7b7;
+        background: rgb(183, 183, 183, 0.2);
+    }
+    &::selection {
+        color: #b7b7b7;
+        background: rgb(183, 183, 183, 0.2);
+    }
 }
 
 .mileage-template {
-  display: grid;
-  grid-template-columns: 130px 130px 130px;
-  row-gap: 10px;
-  column-gap: 10px;
-  padding: 0 10px;
-  .mileage-template-item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    .mileage-template-item-name {
-      color: $color-gray-dark;
-      font-size: 11px;
-      font-weight: 700;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
+    display: grid;
+    grid-template-columns: 130px 130px 130px;
+    row-gap: 10px;
+    column-gap: 10px;
+    padding: 0 10px;
+    .mileage-template-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        .mileage-template-item-name {
+            color: $color-gray-dark;
+            font-size: 11px;
+            font-weight: 700;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+        .mileage-template-item-value {
+            color: $color-gray-dark;
+            font-size: 18px;
+            font-weight: 500;
+            margin-top: -3px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
     }
-    .mileage-template-item-value {
-      color: $color-gray-dark;
-      font-size: 18px;
-      font-weight: 500;
-      margin-top: -3px;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-    }
-  }
 }
 .owner-items {
-  display: flex;
-  align-items: center;
-  height: 18px;
-  .card-icon {
-    display: none;
-    cursor: pointer;
-    margin-left: 6px;
-  }
-  .information-value {
-    font-size: 14px;
-    font-weight: 400;
-    color: $color-gray-dark;
-    margin-left: 6px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    &::-moz-selection {
-      color: $color-gray-dark;
-      background: rgb(108, 108, 108, 0.2);
-    }
-    &::selection {
-      color: $color-gray-dark;
-      background: rgb(108, 108, 108, 0.2);
-    }
-  }
-  &:hover {
+    display: flex;
+    align-items: center;
+    height: 18px;
     .card-icon {
-      display: flex;
+        display: none;
+        cursor: pointer;
+        margin-left: 6px;
     }
-  }
+    .information-value {
+        font-size: 14px;
+        font-weight: 400;
+        color: $color-gray-dark;
+        margin-left: 6px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+    &:hover {
+        .card-icon {
+            display: flex;
+        }
+    }
 }
 .copied {
-  .vin-text {
-    animation-duration: 1500ms;
-    animation-name: change;
-  }
-  .information-value {
-    animation-duration: 1500ms;
-    animation-name: change;
-  }
-  .card-icon {
-    svg {
-      path {
+    .vin-text {
         animation-duration: 1500ms;
-        animation-name: changeSVG;
-        &:hover {
-          animation-duration: 1500ms;
-          animation-name: changeSVG;
-        }
-      }
+        animation-name: change;
     }
-  }
+    .information-value {
+        animation-duration: 1500ms;
+        animation-name: change;
+    }
+    .card-icon {
+        svg {
+            path {
+                animation-duration: 1500ms;
+                animation-name: changeSVG;
+                &:hover {
+                    animation-duration: 1500ms;
+                    animation-name: changeSVG;
+                }
+            }
+        }
+    }
 }
 .hide-show {
-  font-size: $font-size14;
-  color: #6d82c7;
-  font-weight: $font-semibold;
-  margin-left: 6px;
-  cursor: pointer;
-  &::-moz-selection {
+    font-size: $font-size14;
     color: #6d82c7;
-    background: rgb(83, 107, 194, 0.2);
-  }
-  &::selection {
-    color: #6d82c7;
-    background: rgb(83, 107, 194, 0.2);
-  }
-  &:hover {
-    color: #536bc2;
-  }
+    font-weight: $font-semibold;
+    margin-left: 6px;
+    cursor: pointer;
+    &::-moz-selection {
+        color: #6d82c7;
+        background: rgb(83, 107, 194, 0.2);
+    }
+    &::selection {
+        color: #6d82c7;
+        background: rgb(83, 107, 194, 0.2);
+    }
+    &:hover {
+        color: #536bc2;
+    }
 }
 .bind-height {
-  max-height: fit-content !important;
+    max-height: fit-content !important;
 }
 .card-width {
-  width: 335px;
+    width: 335px;
 }
 .icons-details {
-  margin-right: 6px;
+    margin-right: 6px;
 }
 .date-details-svg {
-  margin-left: 29px;
+    margin-left: 29px;
 }

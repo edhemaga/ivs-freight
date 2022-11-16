@@ -6,37 +6,38 @@ import { FuelTService } from '../fuel.service';
 import { FuelState } from './fuel-state.store';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class FuelResolver implements Resolve<FuelState> {
-  constructor(private fuelService: FuelTService) {}
+    constructor(private fuelService: FuelTService) {}
 
-  resolve(): Observable<FuelState> {
-    const fuelTransactions$ = this.fuelService.getFuelTransactionsList(
-      undefined,
-      1,
-      25
-    );
-
-    const fuelStops$ = this.fuelService.getFuelStopsList(1, 25);
-
-    return forkJoin({
-      fuelTransactions: fuelTransactions$,
-      fuelStops: fuelStops$,
-    }).pipe(
-      tap((data) => {
-        localStorage.setItem(
-          'fuelTableCount',
-          JSON.stringify({
-            fuelTransactions: data.fuelTransactions.pagination.count,
-            fuelStops: data.fuelStops.pagination.count,
-          })
+    resolve(): Observable<FuelState> {
+        const fuelTransactions$ = this.fuelService.getFuelTransactionsList(
+            undefined,
+            1,
+            25
         );
 
-        this.fuelService.updateStoreFuelTransactionsList =
-          data.fuelTransactions;
-        this.fuelService.updateStoreFuelStopList = data.fuelStops;
-      })
-    );
-  }
+        const fuelStops$ = this.fuelService.getFuelStopsList(1, 25);
+
+        return forkJoin({
+            fuelTransactions: fuelTransactions$,
+            fuelStops: fuelStops$,
+        }).pipe(
+            tap((data) => {
+                localStorage.setItem(
+                    'fuelTableCount',
+                    JSON.stringify({
+                        fuelTransactions:
+                            data.fuelTransactions.pagination.count,
+                        fuelStops: data.fuelStops.pagination.count,
+                    })
+                );
+
+                this.fuelService.updateStoreFuelTransactionsList =
+                    data.fuelTransactions;
+                this.fuelService.updateStoreFuelStopList = data.fuelStops;
+            })
+        );
+    }
 }

@@ -1,39 +1,44 @@
 <div class="truckassist-history-data-panel">
-  <div class="truckassist-data-form">
-    <div *ngFor="let gi of items; let i = index" class="container truckassist-data-form-item p-0">
-      <div *ngIf="i === 0" class="row header-panel m-0">
-        <div class="col-sm p-0 ta-font-bold">
-          Start Date
-        </div>
-        <div class="col-sm p-0 ta-font-bold">
-          End Date
-        </div>
-        <div class="col-auto history-delete-container p-0"></div>
-      </div>
-      <div *ngIf="gi.header" class="row m-0">
-        <div class="col-sm header-label ta-font-bold p-0">
-          {{ gi.header }}
-        </div>
-      </div>
-      <div
-        (mouseout)="item.showDelete = false;"
-        (mouseover)="item.showDelete = true;"
-        *ngFor="let item of gi.data; let j = index"
-        class="row m-0 row-container"
-      >
+    <div class="truckassist-data-form">
         <div
-          (mouseout)="item.showStartDateAction = false"
-          (mouseover)="item.showStartDateAction = true"
-          class="col-auto p-0"
+            *ngFor="let gi of items; let i = index"
+            class="container truckassist-data-form-item p-0"
         >
-          <div
-            [ngClass]="{ 'row-item-edit': item.editStartDate, 'hover-disable': !status }"
-            class="row-item item-left"
-          >
-            <span [class]="{ 'd-none': item.editStartDate }" class="date-span ta-font-regular">
-              {{ item.startDate | date: 'shortDate' }}</span
+            <div *ngIf="i === 0" class="row header-panel m-0">
+                <div class="col-sm p-0 ta-font-bold">Start Date</div>
+                <div class="col-sm p-0 ta-font-bold">End Date</div>
+                <div class="col-auto history-delete-container p-0"></div>
+            </div>
+            <div *ngIf="gi.header" class="row m-0">
+                <div class="col-sm header-label ta-font-bold p-0">
+                    {{ gi.header }}
+                </div>
+            </div>
+            <div
+                (mouseout)="item.showDelete = false"
+                (mouseover)="item.showDelete = true"
+                *ngFor="let item of gi.data; let j = index"
+                class="row m-0 row-container"
             >
-            <!-- <kendo-datepicker
+                <div
+                    (mouseout)="item.showStartDateAction = false"
+                    (mouseover)="item.showStartDateAction = true"
+                    class="col-auto p-0"
+                >
+                    <div
+                        [ngClass]="{
+                            'row-item-edit': item.editStartDate,
+                            'hover-disable': !status
+                        }"
+                        class="row-item item-left"
+                    >
+                        <span
+                            [class]="{ 'd-none': item.editStartDate }"
+                            class="date-span ta-font-regular"
+                        >
+                            {{ item.startDate | date: 'shortDate' }}</span
+                        >
+                        <!-- <kendo-datepicker
               #startDate
               (keyup.enter)="saveData(i, j, true)"
               [(ngModel)]="item.startDate"
@@ -52,74 +57,92 @@
               name="check-in"
             >
             </kendo-datepicker> -->
-            <div class="row-tools">
-              <button
-                (click)="item.editStartDate = false"
-                [class]="{
-                  'd-none': !item.editStartDate || !status,
-                  'custom-datepicker': true
-                }"
-                appTooltip="Cancel"
-                class="action-btn action-btn-left"
-                position="bottom-right"
-                tooltipBackground="#6C6C6C"
-                tooltipColor="#FFFFFF"
-              >
-                <svg-icon
-                  [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
-                  src="assets/img/svgs/table/element-close.svg"
-                ></svg-icon>
-              </button>
-              <button
-                (click)="saveData(i, j, true)"
-                [class]="{
-                  'd-none': !item.editStartDate || !status,
-                  'custom-datepicker': true
-                }"
-                appTooltip="Save"
-                class="action-btn"
-                position="bottom-right"
-                tooltipBackground="#5673AA"
-                tooltipColor="#FFFFFF"
-              >
-                <svg-icon
-                  [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
-                  src="assets/img/svgs/table/element-check.svg"
-                ></svg-icon>
-              </button>
+                        <div class="row-tools">
+                            <button
+                                (click)="item.editStartDate = false"
+                                [class]="{
+                                    'd-none': !item.editStartDate || !status,
+                                    'custom-datepicker': true
+                                }"
+                                appTooltip="Cancel"
+                                class="action-btn action-btn-left"
+                                position="bottom-right"
+                                tooltipBackground="#6C6C6C"
+                                tooltipColor="#FFFFFF"
+                            >
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': '16',
+                                        'height.px': '16'
+                                    }"
+                                    src="assets/img/svgs/table/element-close.svg"
+                                ></svg-icon>
+                            </button>
+                            <button
+                                (click)="saveData(i, j, true)"
+                                [class]="{
+                                    'd-none': !item.editStartDate || !status,
+                                    'custom-datepicker': true
+                                }"
+                                appTooltip="Save"
+                                class="action-btn"
+                                position="bottom-right"
+                                tooltipBackground="#5673AA"
+                                tooltipColor="#FFFFFF"
+                            >
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': '16',
+                                        'height.px': '16'
+                                    }"
+                                    src="assets/img/svgs/table/element-check.svg"
+                                ></svg-icon>
+                            </button>
 
-              <button
-                (click)="editStartDate(i, j)"
-                [class]="{
-                  'd-none': !item.showStartDateAction || item.editStartDate || !status
-                }"
-                appTooltip="Edit"
-                class="action-btn action-btn-left"
-                position="bottom-right"
-                tooltipBackground="#5673AA"
-                tooltipColor="#FFFFFF"
-              >
-                <svg-icon
-                  [src]="'assets/img/svgs/edit-pencil.svg'"
-                  [svgStyle]="{ 'width.px': '12', 'height.px': '12' }"
-                ></svg-icon>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div
-          (mouseout)="item.showEndDateAction = false"
-          (mouseover)="item.showEndDateAction = true"
-          class="col-auto p-0"
-        >
-          <div
-            [ngClass]="{ 'row-item-edit': item.editEndDate, 'hover-disable': !status }"
-            class="row-item"
-          >
-            <span [class]="{ 'd-none': item.editEndDate }" class="date-span ta-font-regular">
-              {{ item.endDate | date: 'shortDate' }}</span
-            >
-            <!-- <kendo-datepicker
+                            <button
+                                (click)="editStartDate(i, j)"
+                                [class]="{
+                                    'd-none':
+                                        !item.showStartDateAction ||
+                                        item.editStartDate ||
+                                        !status
+                                }"
+                                appTooltip="Edit"
+                                class="action-btn action-btn-left"
+                                position="bottom-right"
+                                tooltipBackground="#5673AA"
+                                tooltipColor="#FFFFFF"
+                            >
+                                <svg-icon
+                                    [src]="'assets/img/svgs/edit-pencil.svg'"
+                                    [svgStyle]="{
+                                        'width.px': '12',
+                                        'height.px': '12'
+                                    }"
+                                ></svg-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    (mouseout)="item.showEndDateAction = false"
+                    (mouseover)="item.showEndDateAction = true"
+                    class="col-auto p-0"
+                >
+                    <div
+                        [ngClass]="{
+                            'row-item-edit': item.editEndDate,
+                            'hover-disable': !status
+                        }"
+                        class="row-item"
+                    >
+                        <span
+                            [class]="{ 'd-none': item.editEndDate }"
+                            class="date-span ta-font-regular"
+                        >
+                            {{ item.endDate | date: 'shortDate' }}</span
+                        >
+                        <!-- <kendo-datepicker
               #endDate
               (keyup.enter)="saveData(i, j, false)"
               [(ngModel)]="item.endDate"
@@ -134,89 +157,112 @@
               name="check-in"
             >
             </kendo-datepicker> -->
-            <div class="row-tools">
-              <button
-                (click)="item.editEndDate = false"
-                [class]="{ 'd-none': !item.editEndDate || !status, 'custom-datepicker': true }"
-                appTooltip="Cancel"
-                class="action-btn close-btn"
-                position="bottom-right"
-                tooltipBackground="#6C6C6C"
-                tooltipColor="#FFFFFF"
-              >
-                <svg-icon
-                  [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
-                  src="assets/img/svgs/table/element-close.svg"
-                ></svg-icon>
-              </button>
-              <button
-                (click)="saveData(i, j, false)"
-                [class]="{ 'd-none': !item.editEndDate || !status, 'custom-datepicker': true }"
-                appTooltip="Save"
-                class="action-btn"
-                position="bottom-right"
-                tooltipBackground="#5673AA"
-                tooltipColor="#FFFFFF"
-              >
-                <svg-icon
-                  [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
-                  src="assets/img/svgs/table/element-check.svg"
-                ></svg-icon>
-              </button>
-              <button
-                (click)="editEndDate(i, j)"
-                [class]="{
-                  'd-none': !item.showEndDateAction || item.editEndDate || !status
-                }"
-                appTooltip="Edit"
-                class="action-btn"
-                position="bottom-right"
-                tooltipBackground="#5673AA"
-                tooltipColor="#FFFFFF"
-              >
-                <svg-icon
-                  [src]="'assets/img/svgs/edit-pencil.svg'"
-                  [svgStyle]="{ 'width.px': '12', 'height.px': '12' }"
-                ></svg-icon>
-              </button>
+                        <div class="row-tools">
+                            <button
+                                (click)="item.editEndDate = false"
+                                [class]="{
+                                    'd-none': !item.editEndDate || !status,
+                                    'custom-datepicker': true
+                                }"
+                                appTooltip="Cancel"
+                                class="action-btn close-btn"
+                                position="bottom-right"
+                                tooltipBackground="#6C6C6C"
+                                tooltipColor="#FFFFFF"
+                            >
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': '16',
+                                        'height.px': '16'
+                                    }"
+                                    src="assets/img/svgs/table/element-close.svg"
+                                ></svg-icon>
+                            </button>
+                            <button
+                                (click)="saveData(i, j, false)"
+                                [class]="{
+                                    'd-none': !item.editEndDate || !status,
+                                    'custom-datepicker': true
+                                }"
+                                appTooltip="Save"
+                                class="action-btn"
+                                position="bottom-right"
+                                tooltipBackground="#5673AA"
+                                tooltipColor="#FFFFFF"
+                            >
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': '16',
+                                        'height.px': '16'
+                                    }"
+                                    src="assets/img/svgs/table/element-check.svg"
+                                ></svg-icon>
+                            </button>
+                            <button
+                                (click)="editEndDate(i, j)"
+                                [class]="{
+                                    'd-none':
+                                        !item.showEndDateAction ||
+                                        item.editEndDate ||
+                                        !status
+                                }"
+                                appTooltip="Edit"
+                                class="action-btn"
+                                position="bottom-right"
+                                tooltipBackground="#5673AA"
+                                tooltipColor="#FFFFFF"
+                            >
+                                <svg-icon
+                                    [src]="'assets/img/svgs/edit-pencil.svg'"
+                                    [svgStyle]="{
+                                        'width.px': '12',
+                                        'height.px': '12'
+                                    }"
+                                ></svg-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col history-delete-container p-0">
+                    <button
+                        (click)="hideDialog(i, j)"
+                        [class]="{
+                            'd-none':
+                                gi.data.length === 1 ||
+                                !item.showDelete ||
+                                item.editEndDate ||
+                                item.editStartDate ||
+                                !status
+                        }"
+                        appTooltip="Delete"
+                        class="action-btn remove-btn p-0 m-0"
+                        position="bottom-right"
+                        tooltipBackground="#FF5D5D"
+                        tooltipColor="#FFFFFF"
+                    >
+                        <svg-icon
+                            [src]="'assets/img/svgs/table/element-trash.svg'"
+                            [svgStyle]="{
+                                'width.px': '12.83',
+                                'height.px': '14',
+                                fill: 'rgb(255, 93, 93)'
+                            }"
+                        ></svg-icon>
+                        <div
+                            [ngClass]="{
+                                'animation-dropdown-dialog-delete-history':
+                                    item.showDialog
+                            }"
+                            class="popup-delete-history-item"
+                        >
+                            <app-delete-dropdown-dialog
+                                (actionEvent)="removeData($event, i, j)"
+                                [dialog]="'Are you sure you want to delete?'"
+                            ></app-delete-dropdown-dialog>
+                        </div>
+                    </button>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="col history-delete-container p-0">
-          <button
-            (click)="hideDialog(i, j)"
-            [class]="{
-              'd-none':
-                gi.data.length === 1 ||
-                !item.showDelete ||
-                item.editEndDate ||
-                item.editStartDate ||
-                !status
-            }"
-            appTooltip="Delete"
-            class="action-btn remove-btn p-0 m-0"
-            position="bottom-right"
-            tooltipBackground="#FF5D5D"
-            tooltipColor="#FFFFFF"
-          >
-            <svg-icon
-              [src]="'assets/img/svgs/table/element-trash.svg'"
-              [svgStyle]="{ 'width.px': '12.83', 'height.px': '14', fill: 'rgb(255, 93, 93)' }"
-            ></svg-icon>
-            <div
-              [ngClass]="{
-                'animation-dropdown-dialog-delete-history': item.showDialog
-              }"
-              class="popup-delete-history-item"
-            >
-              <app-delete-dropdown-dialog
-                (actionEvent)="removeData($event, i, j)"
-                [dialog]="'Are you sure you want to delete?'"
-              ></app-delete-dropdown-dialog>
-            </div>
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
 </div>

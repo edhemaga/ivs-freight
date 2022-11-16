@@ -1,24 +1,23 @@
-.range-slider-holder
-{
-    .ngx-slider-selection-bar{
+.range-slider-holder {
+    .ngx-slider-selection-bar {
         width: auto !important;
     }
 
-    .input-values-holder{
+    .input-values-holder {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
         padding-bottom: 20px;
 
-        .milesInputHolder{
+        .milesInputHolder {
             width: 141px;
             height: 41px;
-            
-            .milesInput{
-              width: 90px;
-              outline: none;
+
+            .milesInput {
+                width: 90px;
+                outline: none;
             }
-          }
+        }
     }
 }

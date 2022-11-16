@@ -1,103 +1,110 @@
 <div
-  class="all_note_holder"
-  [class.closed_main_holder]="!openedAll && noteOpened"
-  [class.opened_main_all_holder]="openedAll"
-  #t2="ngbPopover"
-  [ngbPopover]="note_popover"
-  [autoClose]="'outside'"
-  [container]="'body'"
-  [placement]="'left-top'"
-  popoverClass="my-note-popover"
-  triggers="manual"
-  (click)="openedAll ? toggleNote(note, t2) : ''"
+    class="all_note_holder"
+    [class.closed_main_holder]="!openedAll && noteOpened"
+    [class.opened_main_all_holder]="openedAll"
+    #t2="ngbPopover"
+    [ngbPopover]="note_popover"
+    [autoClose]="'outside'"
+    [container]="'body'"
+    [placement]="'left-top'"
+    popoverClass="my-note-popover"
+    triggers="manual"
+    (click)="openedAll ? toggleNote(note, t2) : ''"
 >
-  <div
-    class="note_button_hold"
-    *ngIf="!openedAll && (noteOpened || (!noteOpened && !savingNote))"
-    [ngClass]="{
-      'note-normal-icon': !openedAll,
-      'note-note-empty': !note && !openedAll,
-      'note-all-expanded': noteOpened
-    }"
-    [tooltipBackground]="!note ? '' : '#6C6C6C'"
-    ngbTooltip
-    [mainTooltip]="
-      note && noteOpened ? 'Edit Note' : note && !noteOpened ? 'View Note' : ''
-    "
-    position="bottom"
-  >
-    <svg-icon
-      #t2="ngbPopover"
-      [ngbPopover]="note_popover"
-      [autoClose]="'outside'"
-      class="note-btn"
-      [container]="'body'"
-      [placement]="'left-top'"
-      popoverClass="my-note-popover"
-      triggers="manual"
-      (click)="toggleNote(note, t2)"
-      (hidden)="popoverClosed()"
-      src="assets/svg/truckassist-table/note/{{ noteIcon }}"
+    <div
+        class="note_button_hold"
+        *ngIf="!openedAll && (noteOpened || (!noteOpened && !savingNote))"
+        [ngClass]="{
+            'note-normal-icon': !openedAll,
+            'note-note-empty': !note && !openedAll,
+            'note-all-expanded': noteOpened
+        }"
+        [tooltipBackground]="!note ? '' : '#6C6C6C'"
+        ngbTooltip
+        [mainTooltip]="
+            note && noteOpened
+                ? 'Edit Note'
+                : note && !noteOpened
+                ? 'View Note'
+                : ''
+        "
+        position="bottom"
     >
-    </svg-icon>
-  </div>
-  <div class="spinner" *ngIf="!openedAll && !noteOpened && savingNote">
-    <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>
-  </div>
-  <div
-    *ngIf="openedAll"
-    [innerHTML]="note | safeHtml"
-    class="note_inner_text"
-  ></div>
+        <svg-icon
+            #t2="ngbPopover"
+            [ngbPopover]="note_popover"
+            [autoClose]="'outside'"
+            class="note-btn"
+            [container]="'body'"
+            [placement]="'left-top'"
+            popoverClass="my-note-popover"
+            triggers="manual"
+            (click)="toggleNote(note, t2)"
+            (hidden)="popoverClosed()"
+            src="assets/svg/truckassist-table/note/{{ noteIcon }}"
+        >
+        </svg-icon>
+    </div>
+    <div class="spinner" *ngIf="!openedAll && !noteOpened && savingNote">
+        <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>
+    </div>
+    <div
+        *ngIf="openedAll"
+        [innerHTML]="note | safeHtml"
+        class="note_inner_text"
+    ></div>
 </div>
 
 <ng-template #note_popover let-data="data">
-  <div
-    class="kendo-editor-note-wrapper"
-    [class.opened_all_hold]="openedAll"
-    [class.closed_note_hold]="!openedAll && noteOpened"
-  >
     <div
-      [class.expanded]="isExpanded"
-      class="k-widget k-editor custom_editor"
-      [ngStyle]="{ width: noteWidth + 'px' }"
+        class="kendo-editor-note-wrapper"
+        [class.opened_all_hold]="openedAll"
+        [class.closed_note_hold]="!openedAll && noteOpened"
     >
-      <div
-        (blur)="prepareForTextRange()"
-        (focus)="checkFocus($event)"
-        (input)="valueChange($event.target.innerHTML)"
-        @noteLongAnimation
-        [@.disabled]="openedAll || parking || noteOpened"
-        [class.not_expanded]="!isExpanded"
-        [class.parking_text_hold]="parking"
-        [class.opened_all_editor]="openedAll"
-        [innerHTML]="note | safeHtml"
-        class="editor"
-        (keydown)="maxLimitForContenteditableDiv($event, 250)"
-        contenteditable="true"
-        id="main_editor"
-      ></div>
-      <div class="container_separate" *ngIf="isExpanded">
-        <div class="container_separate_inner"></div>
-      </div>
-      <div class="spinner" *ngIf="savingNote && isExpanded">
-        <app-ta-spinner [size]="'small'" [color]="'blueDark'"></app-ta-spinner>
-      </div>
-      <div
-        class="note_container"
-        (click)="preventMouseDown($event)"
-        *ngIf="isExpanded"
-      >
-        <app-ta-note-container
-          [isExpanded]="isExpanded"
-          [range]="range"
-          [selectionTaken]="selectionTaken"
-          [value]="value"
-          [parking]="parking"
-          [popoverNote]="true"
-          [selectedEditor]="main_editor?.nativeElement"
-        ></app-ta-note-container>
-      </div>
+        <div
+            [class.expanded]="isExpanded"
+            class="k-widget k-editor custom_editor"
+            [ngStyle]="{ width: noteWidth + 'px' }"
+        >
+            <div
+                (blur)="prepareForTextRange()"
+                (focus)="checkFocus($event)"
+                (input)="valueChange($event.target.innerHTML)"
+                @noteLongAnimation
+                [@.disabled]="openedAll || parking || noteOpened"
+                [class.not_expanded]="!isExpanded"
+                [class.parking_text_hold]="parking"
+                [class.opened_all_editor]="openedAll"
+                [innerHTML]="note | safeHtml"
+                class="editor"
+                (keydown)="maxLimitForContenteditableDiv($event, 250)"
+                contenteditable="true"
+                id="main_editor"
+            ></div>
+            <div class="container_separate" *ngIf="isExpanded">
+                <div class="container_separate_inner"></div>
+            </div>
+            <div class="spinner" *ngIf="savingNote && isExpanded">
+                <app-ta-spinner
+                    [size]="'small'"
+                    [color]="'blueDark'"
+                ></app-ta-spinner>
+            </div>
+            <div
+                class="note_container"
+                (click)="preventMouseDown($event)"
+                *ngIf="isExpanded"
+            >
+                <app-ta-note-container
+                    [isExpanded]="isExpanded"
+                    [range]="range"
+                    [selectionTaken]="selectionTaken"
+                    [value]="value"
+                    [parking]="parking"
+                    [popoverNote]="true"
+                    [selectedEditor]="main_editor?.nativeElement"
+                ></app-ta-note-container>
+            </div>
+        </div>
     </div>
-  </div>
 </ng-template>

@@ -4,11 +4,8 @@ import { TaSpinnerComponent } from './ta-spinner.component';
 import { LottieModule } from 'ngx-lottie';
 
 @NgModule({
-  declarations: [TaSpinnerComponent],
-  imports: [
-    CommonModule,
-    LottieModule
-  ],
-  exports: [TaSpinnerComponent],
+    declarations: [TaSpinnerComponent],
+    imports: [CommonModule, LottieModule],
+    exports: [TaSpinnerComponent],
 })
 export class TaSpinnerModule {}
