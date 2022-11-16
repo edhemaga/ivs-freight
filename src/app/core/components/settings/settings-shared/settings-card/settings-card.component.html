@@ -1,313 +1,350 @@
 <div *ngIf="hasCard" class="settings-card">
-  <div
-    class="settings-card-header"
-    [ngClass]="{
-      'last-item': !hasLine && !isCardOpen
-    }"
-    (click)="onCardOpen()"
-  >
-    <div class="settings-card-header-leftSide">
-      <app-ta-counter
-        *ngIf="cardCount"
-        [count]="cardCount"
-        [countColor]="'#6C6C6C'"
-        [countBackground]="'#F7F7F7'"
-        [countHeight]="'24px'"
-        [countWidth]="'24px'"
-        [countTextBottomPosition]="'-2px'"
-      >
-      </app-ta-counter>
-      <p class="settings-card-header-name">{{ cardName }}</p>
+    <div
+        class="settings-card-header"
+        [ngClass]="{
+            'last-item': !hasLine && !isCardOpen
+        }"
+        (click)="onCardOpen()"
+    >
+        <div class="settings-card-header-leftSide">
+            <app-ta-counter
+                *ngIf="cardCount"
+                [count]="cardCount"
+                [countColor]="'#6C6C6C'"
+                [countBackground]="'#F7F7F7'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+                [countTextBottomPosition]="'-2px'"
+            >
+            </app-ta-counter>
+            <p class="settings-card-header-name">{{ cardName }}</p>
+        </div>
+
+        <div class="settings-card-header-rightSide">
+            <div *ngIf="cardStatus" class="settings-card-status">
+                {{ cardStatus }}
+            </div>
+            <svg-icon
+                *ngIf="data?.name !== 'Fuel Station'"
+                class="settings-card-arrow"
+                [ngClass]="{ rotate: isCardOpen }"
+                src="assets/svg/common/ic_arrow-down.svg"
+            ></svg-icon>
+        </div>
     </div>
+    <div
+        [@openCloseBodyCard]="isCardOpen ? 'true' : 'false'"
+        class="settings-card-body"
+        [ngClass]="{ 'no-line': !hasLine }"
+    >
+        <div [ngSwitch]="cardTemplate">
+            <!-- Common Template -->
+            <div *ngSwitchCase="'commonTemplate'" class="settings-template">
+                <div
+                    class="settings-template-data"
+                    *ngFor="let item of data; trackBy: identity"
+                >
+                    <p class="settings-template-name">{{ item.name }}</p>
+                    <p class="settings-template-value">{{ item.value }}</p>
+                </div>
+            </div>
+            <!-- Bank Account Template -->
+            <div *ngSwitchCase="'bankAccountTemplate'">
+                <div class="settings-template">
+                    <div
+                        class="settings-template-data"
+                        *ngFor="
+                            let item of data;
+                            let ind = index;
+                            trackBy: identity
+                        "
+                    >
+                        <p class="settings-template-name bank">
+                            {{ item.name }}
+                        </p>
 
-    <div class="settings-card-header-rightSide">
-      <div *ngIf="cardStatus" class="settings-card-status">
-        {{ cardStatus }}
-      </div>
-      <svg-icon
-        *ngIf="data?.name !== 'Fuel Station'"
-        class="settings-card-arrow"
-        [ngClass]="{ 'rotate': isCardOpen }"
-        src="assets/svg/common/ic_arrow-down.svg"
-      ></svg-icon>
+                        <svg-icon
+                            *ngIf="ind === 0"
+                            class="settings-template-svg"
+                            src="{{ item.value }}"
+                        ></svg-icon>
+
+                        <p *ngIf="ind === 1" class="settings-template-value">
+                            {{ item.value }}
+                        </p>
+
+                        <div *ngIf="ind === 2" class="settings-template-eye">
+                            <p class="hidden-text-eye">
+                                {{
+                                    accountText
+                                        ? accountText
+                                        : hiddenPassword(item.value, 4)
+                                }}
+                            </p>
+                            <svg-icon
+                                (click)="showHideValue(item.value)"
+                                class="hidden-svg-eye"
+                                src="{{
+                                    isAccountVisible
+                                        ? 'assets/svg/common/ic_eye-visible.svg'
+                                        : 'assets/svg/common/ic_eye-hidden.svg'
+                                }}"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bank Card Template -->
+            <div *ngSwitchCase="'bankCardTemplate'">
+                <div class="bankcard-template">
+                    <div class="bankcard-template-header">
+                        <p
+                            *ngFor="
+                                let item of bankCardHeaders;
+                                trackBy: identity
+                            "
+                        >
+                            {{ item }}
+                        </p>
+                    </div>
+                    <div
+                        *ngFor="
+                            let item of data;
+                            let ind = index;
+                            trackBy: identity
+                        "
+                        class="bankcard-template-data"
+                        [ngClass]="{ first: ind === 0 }"
+                    >
+                        <p class="bankcard-template-nickname">
+                            {{ item.nickName }}
+                        </p>
+                        <div class="bankcard-template-card">
+                            <svg-icon
+                                class="bankcard-template-svg"
+                                src="{{ item.cardPicture }}"
+                            ></svg-icon>
+                            <p class="bankcard-template-value">
+                                {{ item.cardNumber }}
+                            </p>
+                        </div>
+                        <div class="bankcard-template-cvc">{{ item.cvc }}</div>
+                        <div class="bankcard-template-exp">
+                            {{ item.expiration }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Payroll Template -->
+            <div *ngSwitchCase="'payrollTemplate'" class="payroll-template">
+                <div
+                    class="payroll-template-data"
+                    *ngFor="let item of data; trackBy: identity"
+                >
+                    <p class="payroll-template-name">{{ item.name }}</p>
+                    <p class="payroll-template-value">{{ item.value }}</p>
+                </div>
+            </div>
+            <!-- Insurance Policy -->
+            <div *ngSwitchCase="'insuranceTemplate'">
+                <div class="insurance-template-data">
+                    <div class="insurance-template-data-top">
+                        <div class="insurance-agency">
+                            <div class="insurer-name">
+                                {{ data.insurerName }}
+                            </div>
+                            <div class="insurer-rating">{{ data.rating }}</div>
+                        </div>
+                        <p class="insurer-numberOfPolicy">
+                            {{ data.numberOfPolicy }}
+                        </p>
+                    </div>
+                    <div class="insurance-template-data-bottom">
+                        <div
+                            class="insurance-field"
+                            *ngFor="let item of data.fields; trackBy: identity"
+                        >
+                            <div class="insurance-field-name">
+                                {{ item.name }}
+                            </div>
+                            <div class="insurance-field-value">
+                                {{ item.value }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Parking Template -->
+            <div *ngSwitchCase="'parkingTemplate'">
+                <div class="parking-template-data">
+                    <div class="parking-template-item">
+                        <p class="parking-template-number">
+                            {{ data.parking_slot }}
+                        </p>
+                        <p class="parking-template-text">Parking Slot</p>
+                    </div>
+                    <div class="parking-template-item">
+                        <p class="parking-template-number">
+                            {{ data.parking_slot_full }}
+                        </p>
+                        <p class="parking-template-text">Full Parking Slot</p>
+                    </div>
+                    <div class="parking-template-item">
+                        <svg-icon
+                            class="parking-template-svg"
+                            [ngClass]="{ disabled: !data.security_camera }"
+                            src="assets/svg/common/ic_security-camera.svg"
+                        ></svg-icon>
+                        <p
+                            class="parking-template-text"
+                            [ngClass]="{ 'cross-out': !data.security_camera }"
+                        >
+                            Security Camera
+                        </p>
+                    </div>
+                    <div class="parking-template-item">
+                        <svg-icon
+                            class="parking-template-svg"
+                            [ngClass]="{ disabled: !data.gate }"
+                            src="assets/svg/common/ic_security-gate.svg"
+                        ></svg-icon>
+                        <p
+                            class="parking-template-text"
+                            [ngClass]="{ 'cross-out': !data.gate }"
+                        >
+                            Gate
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Office Template -->
+            <div *ngSwitchCase="'officeTemplate'">
+                <div class="office-template-data">
+                    <div class="office-template-item">
+                        <svg-icon
+                            class="office-template-svg"
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                        <p class="office-template-value">{{ data.phone }}</p>
+                    </div>
+                    <div class="office-template-item">
+                        <svg-icon
+                            class="office-template-svg"
+                            src="assets/svg/common/ic_phone-extension.svg"
+                        ></svg-icon>
+                        <p class="office-template-value">
+                            {{ data.phone_ext }}
+                        </p>
+                    </div>
+                    <div class="office-template-item office-template-email">
+                        <svg-icon
+                            class="office-template-svg"
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                        <p class="office-template-value">{{ data.email }}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Repair Shop Template -->
+            <div *ngSwitchCase="'repairShopTemplate'">
+                <div
+                    class="repair-shop-template-data"
+                    [ngClass]="{ 'no-line': !hasLine }"
+                >
+                    <div
+                        class="repair-shop-template-item"
+                        *ngFor="let item of data; trackBy: identity"
+                    >
+                        <svg-icon
+                            class="repair-shop-template-svg"
+                            [ngClass]="{ disabled: !item.isUsefulService }"
+                            src="{{ item.svg }}"
+                        ></svg-icon>
+                        <p
+                            class="repair-shop-template-text"
+                            [ngClass]="{ 'cross-out': !item.isUsefulService }"
+                        >
+                            {{ item.name }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Terminal  Template -->
+            <div *ngSwitchCase="'terminalTemplate'">
+                <div
+                    class="terminal-template-data"
+                    *ngIf="!['Parking', 'Fuel Station'].includes(data.name)"
+                >
+                    <div class="terminal-template-item">
+                        <svg-icon
+                            class="terminal-template-svg"
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                        <p class="terminal-template-value">{{ data.phone }}</p>
+                    </div>
+                    <div class="terminal-template-item">
+                        <svg-icon
+                            class="terminal-template-svg"
+                            src="assets/svg/common/ic_phone-extension.svg"
+                        ></svg-icon>
+                        <p class="terminal-template-value">
+                            {{ data.phone_ext }}
+                        </p>
+                    </div>
+                    <div class="terminal-template-item terminal-template-email">
+                        <svg-icon
+                            class="terminal-template-svg"
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                        <p class="terminal-template-value">{{ data.email }}</p>
+                    </div>
+                </div>
+                <!-- Parking card -->
+                <div
+                    class="parking-template-data"
+                    *ngIf="data.name === 'Parking'"
+                >
+                    <div class="parking-template-item">
+                        <p class="parking-template-number">
+                            {{ data.parking_slot }}
+                        </p>
+                        <p class="parking-template-text">Parking Slot</p>
+                    </div>
+                    <div class="parking-template-item">
+                        <p class="parking-template-number">
+                            {{ data.parking_slot_full }}
+                        </p>
+                        <p class="parking-template-text">Full Parking Slot</p>
+                    </div>
+                    <div class="parking-template-item">
+                        <svg-icon
+                            class="parking-template-svg"
+                            [ngClass]="{ disabled: !data.security_camera }"
+                            src="assets/svg/common/ic_security-camera.svg"
+                        ></svg-icon>
+                        <p
+                            class="parking-template-text"
+                            [ngClass]="{ 'cross-out': !data.security_camera }"
+                        >
+                            Security Camera
+                        </p>
+                    </div>
+                    <div class="parking-template-item">
+                        <svg-icon
+                            class="parking-template-svg"
+                            [ngClass]="{ disabled: !data.gate }"
+                            src="assets/svg/common/ic_security-gate.svg"
+                        ></svg-icon>
+                        <p
+                            class="parking-template-text"
+                            [ngClass]="{ 'cross-out': !data.gate }"
+                        >
+                            Gate
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div
-    [@openCloseBodyCard]="isCardOpen ? 'true' : 'false'"
-    class="settings-card-body"
-    [ngClass]="{'no-line': !hasLine }"
-  >
-    <div [ngSwitch]="cardTemplate">
-      <!-- Common Template -->
-      <div *ngSwitchCase="'commonTemplate'" class="settings-template">
-        <div
-          class="settings-template-data"
-          *ngFor="let item of data; trackBy: identity"
-        >
-          <p class="settings-template-name">{{ item.name }}</p>
-          <p class="settings-template-value">{{ item.value }}</p>
-        </div>
-      </div>
-      <!-- Bank Account Template -->
-      <div *ngSwitchCase="'bankAccountTemplate'">
-        <div class="settings-template">
-          <div
-            class="settings-template-data"
-            *ngFor="
-              let item of data;
-              let ind = index;
-              trackBy: identity
-            "
-          >
-            <p class="settings-template-name bank">{{ item.name }}</p>
-
-            <svg-icon
-              *ngIf="ind === 0"
-              class="settings-template-svg"
-              src="{{ item.value }}"
-            ></svg-icon>
-
-            <p *ngIf="ind === 1" class="settings-template-value">
-              {{ item.value }}
-            </p>
-
-            <div *ngIf="ind === 2" class="settings-template-eye">
-              <p class="hidden-text-eye"> {{accountText ? accountText : hiddenPassword(item.value, 4)}} </p>
-              <svg-icon
-                (click)="showHideValue(item.value)"
-                class="hidden-svg-eye"
-                src="{{
-                  isAccountVisible
-                    ? 'assets/svg/common/ic_eye-visible.svg'
-                    : 'assets/svg/common/ic_eye-hidden.svg'
-                }}"
-              ></svg-icon>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Bank Card Template -->
-      <div *ngSwitchCase="'bankCardTemplate'">
-        <div class="bankcard-template">
-          <div class="bankcard-template-header">
-            <p
-              *ngFor="
-                let item of bankCardHeaders;
-                trackBy: identity
-              "
-            >
-              {{ item }}
-            </p>
-          </div>
-          <div
-            *ngFor="
-              let item of data;
-              let ind = index;
-              trackBy: identity
-            "
-            class="bankcard-template-data"
-            [ngClass]="{ first: ind === 0 }"
-          >
-            <p class="bankcard-template-nickname">{{ item.nickName }}</p>
-            <div class="bankcard-template-card">
-              <svg-icon
-                class="bankcard-template-svg"
-                src="{{ item.cardPicture }}"
-              ></svg-icon>
-              <p class="bankcard-template-value">{{ item.cardNumber }}</p>
-            </div>
-            <div class="bankcard-template-cvc">{{ item.cvc }}</div>
-            <div class="bankcard-template-exp">{{ item.expiration }}</div>
-          </div>
-        </div>
-      </div>
-      <!-- Payroll Template -->
-      <div *ngSwitchCase="'payrollTemplate'" class="payroll-template">
-        <div
-          class="payroll-template-data"
-          *ngFor="let item of data; trackBy: identity"
-        >
-          <p class="payroll-template-name">{{ item.name }}</p>
-          <p class="payroll-template-value">{{ item.value }}</p>
-        </div>
-      </div>
-      <!-- Insurance Policy -->
-      <div *ngSwitchCase="'insuranceTemplate'">
-        <div class="insurance-template-data">
-          <div class="insurance-template-data-top">
-            <div class="insurance-agency">
-              <div class="insurer-name">{{ data.insurerName }}</div>
-              <div class="insurer-rating">{{ data.rating }}</div>
-            </div>
-            <p class="insurer-numberOfPolicy">{{ data.numberOfPolicy }}</p>
-          </div>
-          <div class="insurance-template-data-bottom">
-            <div
-              class="insurance-field"
-              *ngFor="let item of data.fields; trackBy: identity"
-            >
-              <div class="insurance-field-name">{{ item.name }}</div>
-              <div class="insurance-field-value">{{ item.value }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Parking Template -->
-      <div *ngSwitchCase="'parkingTemplate'">
-        <div class="parking-template-data">
-          <div class="parking-template-item">
-            <p class="parking-template-number">{{ data.parking_slot }}</p>
-            <p class="parking-template-text">Parking Slot</p>
-          </div>
-          <div class="parking-template-item">
-            <p class="parking-template-number">{{ data.parking_slot_full }}</p>
-            <p class="parking-template-text">Full Parking Slot</p>
-          </div>
-          <div class="parking-template-item">
-            <svg-icon
-              class="parking-template-svg"
-              [ngClass]="{ disabled: !data.security_camera }"
-              src="assets/svg/common/ic_security-camera.svg"
-            ></svg-icon>
-            <p
-              class="parking-template-text"
-              [ngClass]="{ 'cross-out': !data.security_camera }"
-            >
-              Security Camera
-            </p>
-          </div>
-          <div class="parking-template-item">
-            <svg-icon
-              class="parking-template-svg"
-              [ngClass]="{ disabled: !data.gate }"
-              src="assets/svg/common/ic_security-gate.svg"
-            ></svg-icon>
-            <p
-              class="parking-template-text"
-              [ngClass]="{ 'cross-out': !data.gate }"
-            >
-              Gate
-            </p>
-          </div>
-        </div>
-      </div>
-      <!-- Office Template -->
-      <div *ngSwitchCase="'officeTemplate'">
-        <div class="office-template-data">
-          <div class="office-template-item">
-            <svg-icon
-              class="office-template-svg"
-              src="assets/svg/common/ic_phone.svg"
-            ></svg-icon>
-            <p class="office-template-value">{{ data.phone }}</p>
-          </div>
-          <div class="office-template-item">
-            <svg-icon
-              class="office-template-svg"
-              src="assets/svg/common/ic_phone-extension.svg"
-            ></svg-icon>
-            <p class="office-template-value">{{ data.phone_ext }}</p>
-          </div>
-          <div class="office-template-item office-template-email">
-            <svg-icon
-              class="office-template-svg"
-              src="assets/svg/common/ic_email.svg"
-            ></svg-icon>
-            <p class="office-template-value">{{ data.email }}</p>
-          </div>
-        </div>
-      </div>
-      <!-- Repair Shop Template -->
-      <div *ngSwitchCase="'repairShopTemplate'">
-        <div
-          class="repair-shop-template-data"
-          [ngClass]="{ 'no-line': !hasLine }"
-        >
-          <div
-            class="repair-shop-template-item"
-            *ngFor="let item of data; trackBy: identity"
-          >
-            <svg-icon
-              class="repair-shop-template-svg"
-              [ngClass]="{ disabled: !item.isUsefulService }"
-              src="{{ item.svg }}"
-            ></svg-icon>
-            <p
-              class="repair-shop-template-text"
-              [ngClass]="{ 'cross-out': !item.isUsefulService }"
-            >
-              {{ item.name }}
-            </p>
-          </div>
-        </div>
-      </div>
-      <!-- Terminal  Template -->
-      <div *ngSwitchCase="'terminalTemplate'">
-        <div
-          class="terminal-template-data"
-          *ngIf="!['Parking', 'Fuel Station'].includes(data.name)"
-        >
-          <div class="terminal-template-item">
-            <svg-icon
-              class="terminal-template-svg"
-              src="assets/svg/common/ic_phone.svg"
-            ></svg-icon>
-            <p class="terminal-template-value">{{ data.phone }}</p>
-          </div>
-          <div class="terminal-template-item">
-            <svg-icon
-              class="terminal-template-svg"
-              src="assets/svg/common/ic_phone-extension.svg"
-            ></svg-icon>
-            <p class="terminal-template-value">{{ data.phone_ext }}</p>
-          </div>
-          <div class="terminal-template-item terminal-template-email">
-            <svg-icon
-              class="terminal-template-svg"
-              src="assets/svg/common/ic_email.svg"
-            ></svg-icon>
-            <p class="terminal-template-value">{{ data.email }}</p>
-          </div>
-        </div>
-        <!-- Parking card -->
-        <div class="parking-template-data" *ngIf="data.name === 'Parking'">
-          <div class="parking-template-item">
-            <p class="parking-template-number">{{ data.parking_slot }}</p>
-            <p class="parking-template-text">Parking Slot</p>
-          </div>
-          <div class="parking-template-item">
-            <p class="parking-template-number">{{ data.parking_slot_full }}</p>
-            <p class="parking-template-text">Full Parking Slot</p>
-          </div>
-          <div class="parking-template-item">
-            <svg-icon
-              class="parking-template-svg"
-              [ngClass]="{ disabled: !data.security_camera }"
-              src="assets/svg/common/ic_security-camera.svg"
-            ></svg-icon>
-            <p
-              class="parking-template-text"
-              [ngClass]="{ 'cross-out': !data.security_camera }"
-            >
-              Security Camera
-            </p>
-          </div>
-          <div class="parking-template-item">
-            <svg-icon
-              class="parking-template-svg"
-              [ngClass]="{ disabled: !data.gate }"
-              src="assets/svg/common/ic_security-gate.svg"
-            ></svg-icon>
-            <p
-              class="parking-template-text"
-              [ngClass]="{ 'cross-out': !data.gate }"
-            >
-              Gate
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="hasLine" class="settings-line"></div>
+    <div *ngIf="hasLine" class="settings-line"></div>
 </div>

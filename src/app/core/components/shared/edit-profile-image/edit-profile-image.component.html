@@ -1,23 +1,25 @@
 <div class="d-flex justify-content-between">
-  <div class="avatar-container d-flex justify-content-center align-items-center">
-    <span aria-hidden="true" class="profile-icon">
-      <div *ngIf="!avatarError" class="user-avatar-container">
-        <img
-          alt="avatar"
-          (error)="avatarError = true"
-          [ngClass]="{ 'd-none': avatarError }"
-          [src]="src"
-          class="cursor-pointer user-avatar"
-        />
-      </div>
-      <svg-icon
-        *ngIf="avatarError"
-        [src]="'assets/img/svgs/profile/user-avatar.svg'"
-        [svgStyle]="{ 'width.px': '77', 'height.px': '77' }"
-        class="cursor-pointer"
-      ></svg-icon>
+    <div
+        class="avatar-container d-flex justify-content-center align-items-center"
+    >
+        <span aria-hidden="true" class="profile-icon">
+            <div *ngIf="!avatarError" class="user-avatar-container">
+                <img
+                    alt="avatar"
+                    (error)="avatarError = true"
+                    [ngClass]="{ 'd-none': avatarError }"
+                    [src]="src"
+                    class="cursor-pointer user-avatar"
+                />
+            </div>
+            <svg-icon
+                *ngIf="avatarError"
+                [src]="'assets/img/svgs/profile/user-avatar.svg'"
+                [svgStyle]="{ 'width.px': '77', 'height.px': '77' }"
+                class="cursor-pointer"
+            ></svg-icon>
 
-      <!-- <button
+            <!-- <button
         class="avatar-edit-btn"
         aria-label="Edit Avatar"
         appTaTooltip="Edit Profile Picture"
@@ -29,60 +31,66 @@
           [svgStyle]="{ 'width.px': '26', 'height.px': '26' }"
         ></svg-icon>
       </button> -->
-    </span>
-  </div>
-
-  <div *ngIf="showUploadZone" class="edit-image-container">
-    <div [hidden]="showDropzone" class="d-fex">
-      <div class="d-flex mb-3">
-        <img alt="cropped-image" #croppie="croppie" (update)="handleUpdate($event)" [croppieOptions]="croppieOptions"/>
-      </div>
-
-      <div class="d-flex justify-content-between mb-2">
-        <ng5-slider
-          (valueChange)="zooming($event)"
-          [(value)]="slideInit"
-          [options]="options"
-          class="slider"
-        ></ng5-slider>
-        <div class="tool-panel">
-          <span (click)="saveImage()" class="check-btn">
-            <svg-icon
-              [src]="'assets/img/svgs/profile/check.svg'"
-              [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-              class="cursor-pointer"
-            ></svg-icon>
-          </span>
-          <span (click)="onRemove()" class="close-btn">
-            <svg-icon
-              [src]="'assets/img/svgs/profile/close.svg'"
-              [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-              class="cursor-pointer"
-            ></svg-icon>
-          </span>
-        </div>
-      </div>
+        </span>
     </div>
 
-    <div *ngIf="showUploadZone && showDropzone">
-      <div
-        (change)="onSelect($event)"
-        [accept]="'image/gif, image/jpeg, image/png'"
-        [multiple]="false"
-        class="image-upload-area"
-        ngx-dropzone
-      >
-        <div class="d-flex flex-column image-upload-holder">
-          <span class="image-attach-icon small-gear"></span>
-          <span class="image-attach-icon large-gear"></span>
-          <span class="image-attach-icon jpg-icon"></span>
-          <span class="image-attach-icon png-icon"></span>
-          <span class="image-attach-icon large-cloude"></span>
-          <span class="image-attach-icon small-cloude"></span>
-          <span class="image-attach-icon drag-image-text">Drag image here or click to add</span>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div *ngIf="showUploadZone" class="edit-image-container">
+        <div [hidden]="showDropzone" class="d-fex">
+            <div class="d-flex mb-3">
+                <img
+                    alt="cropped-image"
+                    #croppie="croppie"
+                    (update)="handleUpdate($event)"
+                    [croppieOptions]="croppieOptions"
+                />
+            </div>
 
+            <div class="d-flex justify-content-between mb-2">
+                <ng5-slider
+                    (valueChange)="zooming($event)"
+                    [(value)]="slideInit"
+                    [options]="options"
+                    class="slider"
+                ></ng5-slider>
+                <div class="tool-panel">
+                    <span (click)="saveImage()" class="check-btn">
+                        <svg-icon
+                            [src]="'assets/img/svgs/profile/check.svg'"
+                            [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                            class="cursor-pointer"
+                        ></svg-icon>
+                    </span>
+                    <span (click)="onRemove()" class="close-btn">
+                        <svg-icon
+                            [src]="'assets/img/svgs/profile/close.svg'"
+                            [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                            class="cursor-pointer"
+                        ></svg-icon>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="showUploadZone && showDropzone">
+            <div
+                (change)="onSelect($event)"
+                [accept]="'image/gif, image/jpeg, image/png'"
+                [multiple]="false"
+                class="image-upload-area"
+                ngx-dropzone
+            >
+                <div class="d-flex flex-column image-upload-holder">
+                    <span class="image-attach-icon small-gear"></span>
+                    <span class="image-attach-icon large-gear"></span>
+                    <span class="image-attach-icon jpg-icon"></span>
+                    <span class="image-attach-icon png-icon"></span>
+                    <span class="image-attach-icon large-cloude"></span>
+                    <span class="image-attach-icon small-cloude"></span>
+                    <span class="image-attach-icon drag-image-text"
+                        >Drag image here or click to add</span
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

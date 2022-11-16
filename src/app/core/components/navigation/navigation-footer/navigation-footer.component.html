@@ -1,61 +1,66 @@
 <div class="nav-footer" [ngClass]="{ 'nav-footer-width': isNavigationHovered }">
-  <div
-    *ngFor="let item of footerData; trackBy: identity; let ind = index"
-    class="nav-footer-item"
-    [ngClass]="{
-      'nav-footer-item-scaleWidth': !isNavigationHovered,
-      show: isNavigationHovered
-    }"
-    (click)="onAction(ind, 'Open User Panel')"
-    [routerLink]="item.route"
-    routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
-  >
     <div
-      class="nav-footer-hover"
-      [ngClass]="{ 'nav-footer-hover-user': ind === 2 }"
-    ></div>
-
-    <div *ngIf="isActiveFooterRoute(item)" class="nav-item-active-box"></div>
-
-    <img
-      class="nav-footer-image"
-      [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
-      [src]="item.image"
-      [alt]="item.text.userName"
-    />
-    <div
-      class="nav-footer-rightSide"
-      [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
-    >
-      <p
-        class="nav-footer-text"
-        *ngIf="!(item.text | userData) && isNavigationHovered"
-      >
-        {{ item.text }}
-      </p>
-
-      <div
-        class="nav-footer-user"
-        *ngIf="(item.text | userData) && isNavigationHovered"
-      >
-        <p class="nav-footer-user-company">{{ item.text.companyName }}</p>
-        <p class="nav-footer-user-name">{{ item.text.userName }}</p>
-      </div>
-    </div>
-    <div
-      *ngIf="currentUserStatus && (item.text | userData)"
-      class="status-marker-container"
-    >
-      <div
+        *ngFor="let item of footerData; trackBy: identity; let ind = index"
+        class="nav-footer-item"
         [ngClass]="{
-          'status-active': currentUserStatus === 'active',
-          'status-online': currentUserStatus === 'online',
-          'status-away': currentUserStatus === 'away',
-          'status-busy': currentUserStatus === 'busy',
-          'status-offline': currentUserStatus === 'offline'
+            'nav-footer-item-scaleWidth': !isNavigationHovered,
+            show: isNavigationHovered
         }"
-        class="status-marker"
-      ></div>
+        (click)="onAction(ind, 'Open User Panel')"
+        [routerLink]="item.route"
+        routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
+    >
+        <div
+            class="nav-footer-hover"
+            [ngClass]="{ 'nav-footer-hover-user': ind === 2 }"
+        ></div>
+
+        <div
+            *ngIf="isActiveFooterRoute(item)"
+            class="nav-item-active-box"
+        ></div>
+
+        <img
+            class="nav-footer-image"
+            [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
+            [src]="item.image"
+            [alt]="item.text.userName"
+        />
+        <div
+            class="nav-footer-rightSide"
+            [@showHideDetails]="isNavigationHovered ? 'true' : 'false'"
+        >
+            <p
+                class="nav-footer-text"
+                *ngIf="!(item.text | userData) && isNavigationHovered"
+            >
+                {{ item.text }}
+            </p>
+
+            <div
+                class="nav-footer-user"
+                *ngIf="(item.text | userData) && isNavigationHovered"
+            >
+                <p class="nav-footer-user-company">
+                    {{ item.text.companyName }}
+                </p>
+                <p class="nav-footer-user-name">{{ item.text.userName }}</p>
+            </div>
+        </div>
+        <div
+            *ngIf="currentUserStatus && (item.text | userData)"
+            class="status-marker-container"
+        >
+            <div
+                [ngClass]="{
+                    'status-active': currentUserStatus === 'active',
+                    'status-online': currentUserStatus === 'online',
+                    'status-away': currentUserStatus === 'away',
+                    'status-busy': currentUserStatus === 'busy',
+                    'status-offline': currentUserStatus === 'offline'
+                }"
+                class="status-marker"
+            ></div>
+        </div>
     </div>
-  </div>
 </div>

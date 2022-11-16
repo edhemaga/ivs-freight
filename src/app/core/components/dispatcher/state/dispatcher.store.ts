@@ -7,12 +7,12 @@ export interface DispatcherState extends EntityState<IDispatcher, string> {}
 export function createInitialState(): DispatcherState {
     return {
         modal: [],
-        dispatchList: []
+        dispatchList: [],
     };
-  }
+}
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 @StoreConfig({ name: 'dispatchboard' })
 export class DispatcherStore extends EntityStore<DispatcherState> {

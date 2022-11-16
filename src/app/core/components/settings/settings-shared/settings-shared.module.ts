@@ -6,8 +6,8 @@ import { SettingsTabPlaceholderComponent } from './settings-tab-placeholder/sett
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, TruckassistProgressExpirationModule],
-  declarations: [SettingsCardComponent, SettingsTabPlaceholderComponent],
-  exports: [SettingsCardComponent, SettingsTabPlaceholderComponent],
+    imports: [CommonModule, SharedModule, TruckassistProgressExpirationModule],
+    declarations: [SettingsCardComponent, SettingsTabPlaceholderComponent],
+    exports: [SettingsCardComponent, SettingsTabPlaceholderComponent],
 })
 export class SettingsSharedModule {}

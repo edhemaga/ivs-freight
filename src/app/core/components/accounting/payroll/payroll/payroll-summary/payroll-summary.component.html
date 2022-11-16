@@ -1,166 +1,184 @@
 <div class="summary-main-holder">
-  <div class="sumary-header d-flex justify-content-between">
-    <div class="user-left-info d-flex">
-      <div class="user-avatar"></div>
-      <div class="user-info">
-        <div class="user-name">Aleksandar Djordjevic</div>
-        <div class="payroll-info">#LA59OSK</div>
-        <div class="working-info">
-          <div class="working-info-hold">
-            <div class="title">Period</div>
-            <div class="period">01/12/20</div>
-          </div>
-          <div class="working-info-hold">
-            <div class="title">Term</div>
-            <div class="period">Weekly</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="summary-info">
-      <div class="summary-info-boxes">
-        <div class="summary-box">
-          <div class="title">MI Pay</div>
-          <div class="value">$2,342.21</div>
-        </div>
-        <div class="summary-box bonus">
-          <div class="title">Bonus</div>
-          <div class="value">$280.00</div>
-        </div>
-        <div class="summary-box salary">
-          <div class="title">Salary</div>
-          <div class="value">$2,622.21</div>
-        </div>
-        <div class="summary-box credit">
-          <div class="title">Credit</div>
-          <div class="value">$478.35</div>
-        </div>
-        <div class="summary-box deduction">
-          <div class="title">Deduction</div>
-          <div class="value">$156.03</div>
-        </div>
-      </div>
-      <div class="summary-total d-flex justify-content-between">
-        <div class="title">Total</div>
-        <div class="value">$2,953.27</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="summary-body">
-    <div class="summary-table">
-      <div class="summary-table-head">
-        <div class="left-buttons">
-          <div class="info-item">
-            <span>12</span>
-          </div>
-          <div class="value-item">Stop</div>
-
-          <div class="info-item">
-            <span>3</span>
-          </div>
-          <div class="value-item">Load</div>
-
-          <div class="info-item small-font">
-            <span>+1 day</span>
-          </div>
-        </div>
-        <div class="right-buttons">
-          <div class="info-item small-font">
-            <div class="first-value">Empty</div>
-            <span>$0.50</span>
-          </div>
-          <div class="info-item small-font">
-            <div class="first-value">Loaded</div>
-            <span>$0.70</span>
-          </div>
-          <button class="white-part-buttons">
-            <svg-icon src="assets/img/svgs/payroll/pencil.svg"></svg-icon>
-          </button>
-        </div>
-      </div>
-      <div class="summary-main-table">
-        <table cellspacing="0" width="100%">
-          <thead>
-          <tr>
-            <th>#</th>
-            <th>Stop</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th class="text-right">Leg</th>
-            <th class="text-right">Loaded</th>
-            <th class="text-right">Empty</th>
-            <th class="text-right">Miles</th>
-            <th class="text-right">Subtotal</th>
-          </tr>
-          </thead>
-          <tbody
-            (cdkDropListDropped)="onDrop($event)"
-            [cdkDropListSortPredicate]="containerPredictPosition"
-            cdkDropList
-          >
-          <ng-template [ngForOf]="data" let-i="index" let-items ngFor>
-            <tr
-              (cdkDragStarted)="cdkDragStarted($event, i)"
-              (cdkDropListEntered)="enterDropList($event)"
-              *ngIf="items.isDraggable"
-              [cdkDragPreviewClass]="'line-drag-row'"
-              cdkDrag
-              cdkDragBoundary=".account_details_table"
-              cdkDragHandle
-              cdkDragLockAxis="y"
-              class="dragg_row drag-item">
-              <td colspan="5">Total</td>
-              <td class="text-right">$1,382.7</td>
-              <td class="text-right">$503.4</td>
-              <td class="text-right">$1,893.18</td>
-              <td class="text-right">$1,893.18</td>
-            </tr>
-
-            <tr
-              (cdkDropListEntered)="enterDropList($event)"
-              *ngIf="!items.isDraggable"
-              [cdkDragDisabled]="true"
-              [ngClass]="{ 'previous-payroll': items.isLast }"
-              cdkDrag
-              cdkDragHandle
-              cdkDragLockAxis="y"
-              class="{{items.pointType}}"
-            >
-              <td class="index-holder">
-                <div class="item-index">{{i}}</div>
-              </td>
-              <td>
-                <div class="load-location d-flex">
-                  <div class="load-count {{items.pointType}}">{{items.pointCount}}</div>
-                  <div class="load-loaction-text">Morton, MS 65005</div>
+    <div class="sumary-header d-flex justify-content-between">
+        <div class="user-left-info d-flex">
+            <div class="user-avatar"></div>
+            <div class="user-info">
+                <div class="user-name">Aleksandar Djordjevic</div>
+                <div class="payroll-info">#LA59OSK</div>
+                <div class="working-info">
+                    <div class="working-info-hold">
+                        <div class="title">Period</div>
+                        <div class="period">01/12/20</div>
+                    </div>
+                    <div class="working-info-hold">
+                        <div class="title">Term</div>
+                        <div class="period">Weekly</div>
+                    </div>
                 </div>
-              </td>
-              <td>
-                <div class="table-item">05/09/21</div>
-              </td>
-              <td>
-                <div class="table-item">10:37 PM</div>
-              </td>
-              <td>
-                <div class="table-item text-right">0.0</div>
-              </td>
-              <td>
-                <div class="table-item text-right">0.0</div>
-              </td>
-              <td>
-                <div class="table-item text-right">0.0</div>
-              </td>
-              <td>
-                <div class="table-item text-right">0.0</div>
-              </td>
-              <td>
-                <div class="table-item bold text-right">$0.00</div>
-              </td>
-            </tr>
-          </ng-template>
+            </div>
+        </div>
+        <div class="summary-info">
+            <div class="summary-info-boxes">
+                <div class="summary-box">
+                    <div class="title">MI Pay</div>
+                    <div class="value">$2,342.21</div>
+                </div>
+                <div class="summary-box bonus">
+                    <div class="title">Bonus</div>
+                    <div class="value">$280.00</div>
+                </div>
+                <div class="summary-box salary">
+                    <div class="title">Salary</div>
+                    <div class="value">$2,622.21</div>
+                </div>
+                <div class="summary-box credit">
+                    <div class="title">Credit</div>
+                    <div class="value">$478.35</div>
+                </div>
+                <div class="summary-box deduction">
+                    <div class="title">Deduction</div>
+                    <div class="value">$156.03</div>
+                </div>
+            </div>
+            <div class="summary-total d-flex justify-content-between">
+                <div class="title">Total</div>
+                <div class="value">$2,953.27</div>
+            </div>
+        </div>
+    </div>
 
-          <!-- <tr
+    <div class="summary-body">
+        <div class="summary-table">
+            <div class="summary-table-head">
+                <div class="left-buttons">
+                    <div class="info-item">
+                        <span>12</span>
+                    </div>
+                    <div class="value-item">Stop</div>
+
+                    <div class="info-item">
+                        <span>3</span>
+                    </div>
+                    <div class="value-item">Load</div>
+
+                    <div class="info-item small-font">
+                        <span>+1 day</span>
+                    </div>
+                </div>
+                <div class="right-buttons">
+                    <div class="info-item small-font">
+                        <div class="first-value">Empty</div>
+                        <span>$0.50</span>
+                    </div>
+                    <div class="info-item small-font">
+                        <div class="first-value">Loaded</div>
+                        <span>$0.70</span>
+                    </div>
+                    <button class="white-part-buttons">
+                        <svg-icon
+                            src="assets/img/svgs/payroll/pencil.svg"
+                        ></svg-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="summary-main-table">
+                <table cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Stop</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th class="text-right">Leg</th>
+                            <th class="text-right">Loaded</th>
+                            <th class="text-right">Empty</th>
+                            <th class="text-right">Miles</th>
+                            <th class="text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody
+                        (cdkDropListDropped)="onDrop($event)"
+                        [cdkDropListSortPredicate]="containerPredictPosition"
+                        cdkDropList
+                    >
+                        <ng-template
+                            [ngForOf]="data"
+                            let-i="index"
+                            let-items
+                            ngFor
+                        >
+                            <tr
+                                (cdkDragStarted)="cdkDragStarted($event, i)"
+                                (cdkDropListEntered)="enterDropList($event)"
+                                *ngIf="items.isDraggable"
+                                [cdkDragPreviewClass]="'line-drag-row'"
+                                cdkDrag
+                                cdkDragBoundary=".account_details_table"
+                                cdkDragHandle
+                                cdkDragLockAxis="y"
+                                class="dragg_row drag-item"
+                            >
+                                <td colspan="5">Total</td>
+                                <td class="text-right">$1,382.7</td>
+                                <td class="text-right">$503.4</td>
+                                <td class="text-right">$1,893.18</td>
+                                <td class="text-right">$1,893.18</td>
+                            </tr>
+
+                            <tr
+                                (cdkDropListEntered)="enterDropList($event)"
+                                *ngIf="!items.isDraggable"
+                                [cdkDragDisabled]="true"
+                                [ngClass]="{ 'previous-payroll': items.isLast }"
+                                cdkDrag
+                                cdkDragHandle
+                                cdkDragLockAxis="y"
+                                class="{{ items.pointType }}"
+                            >
+                                <td class="index-holder">
+                                    <div class="item-index">{{ i }}</div>
+                                </td>
+                                <td>
+                                    <div class="load-location d-flex">
+                                        <div
+                                            class="load-count {{
+                                                items.pointType
+                                            }}"
+                                        >
+                                            {{ items.pointCount }}
+                                        </div>
+                                        <div class="load-loaction-text">
+                                            Morton, MS 65005
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="table-item">05/09/21</div>
+                                </td>
+                                <td>
+                                    <div class="table-item">10:37 PM</div>
+                                </td>
+                                <td>
+                                    <div class="table-item text-right">0.0</div>
+                                </td>
+                                <td>
+                                    <div class="table-item text-right">0.0</div>
+                                </td>
+                                <td>
+                                    <div class="table-item text-right">0.0</div>
+                                </td>
+                                <td>
+                                    <div class="table-item text-right">0.0</div>
+                                </td>
+                                <td>
+                                    <div class="table-item bold text-right">
+                                        $0.00
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+
+                        <!-- <tr
               cdkDrag
               cdkDragLockAxis="y"
               [class.low_opacity]="tableCurrentIndex < i"
@@ -594,181 +612,199 @@
               <td class="text-right">$1,893.18</td>
               <td class="text-right">$1,893.18</td>
           </tr> -->
-          </tbody>
-        </table>
-      </div>
-      <div class="total-deductions">
-        <div class="total-del-item">
-          <div class="total-del-header d-flex">
-            <span>3</span>
-            <div class="title">Credit</div>
-          </div>
-          <div class="total-del-table">
-            <table width="100%">
-              <thead>
-              <tr>
-                <th>#</th>
-                <th>Details</th>
-                <th class="text-right">Subtotal</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>1</td>
-                <td>
-                  <div class="ded-description">
-                    <div class="main">Truck #34876 Supplies</div>
-                    <div class="date">05/09/21</div>
-                  </div>
-                </td>
-                <td>$365.42</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>
-                  <div class="ded-description">
-                    <div class="main">Lorem Ipsum Dolor Sit</div>
-                    <div class="date">05/09/21</div>
-                  </div>
-                </td>
-                <td>$365.42</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>
-                  <div class="ded-description">
-                    <div class="main">Repair #52-780</div>
-                    <div class="date">05/09/21</div>
-                  </div>
-                </td>
-                <td>$365.42</td>
-              </tr>
-              <tr class="drag-item">
-                <td class="bold colored">
-                  <div>Total</div>
-                </td>
-                <td>-$427.30</td>
-                <td class="bold">$792.90</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="total-del-item bonus">
-          <div class="total-del-header d-flex">
-            <span>3</span>
-            <div class="title">Bonus</div>
-          </div>
-          <div class="total-del-table">
-            <table width="100%">
-              <thead>
-              <tr>
-                <th>#</th>
-                <th>Details</th>
-                <th class="text-right">Subtotal</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>1</td>
-                <td>
-                  <div class="ded-description">
-                    <div class="main">Truck #34876 Supplies</div>
-                    <div class="date">05/09/21</div>
-                  </div>
-                </td>
-                <td>$365.42</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>
-                  <div class="ded-description">
-                    <div class="main">Lorem Ipsum Dolor Sit</div>
-                    <div class="date">05/09/21</div>
-                  </div>
-                </td>
-                <td>$365.42</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>
-                  <div class="ded-description">
-                    <div class="main">Repair #52-780</div>
-                    <div class="date">05/09/21</div>
-                  </div>
-                </td>
-                <td>$365.42</td>
-              </tr>
-              <tr class="drag-item">
-                <td class="bold colored">
-                  <div>Total</div>
-                </td>
-                <td>-$427.30</td>
-                <td class="bold">$792.90</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="total-del-item deduction">
-          <div class="total-del-header d-flex">
-            <span>3</span>
-            <div class="title">Bonus</div>
-          </div>
-          <div class="total-del-table">
-            <table width="100%">
-              <thead>
-              <tr>
-                <th>#</th>
-                <th>Details</th>
-                <th class="text-right">Subtotal</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>1</td>
-                <td>
-                  <div class="ded-description">
-                    <div class="main">Truck #34876 Supplies</div>
-                    <div class="date">05/09/21</div>
-                  </div>
-                </td>
-                <td>$365.42</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>
-                  <div class="ded-description">
-                    <div class="main">Lorem Ipsum Dolor Sit</div>
-                    <div class="date">05/09/21</div>
-                  </div>
-                </td>
-                <td>$365.42</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>
-                  <div class="ded-description">
-                    <div class="main">Repair #52-780</div>
-                    <div class="date">05/09/21</div>
-                  </div>
-                </td>
-                <td>$365.42</td>
-              </tr>
-              <tr class="drag-item">
-                <td class="bold colored">
-                  <div>Total</div>
-                </td>
-                <td>-$427.30</td>
-                <td class="bold">$792.90</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="deduction-map">
-        <!-- <agm-map
+                    </tbody>
+                </table>
+            </div>
+            <div class="total-deductions">
+                <div class="total-del-item">
+                    <div class="total-del-header d-flex">
+                        <span>3</span>
+                        <div class="title">Credit</div>
+                    </div>
+                    <div class="total-del-table">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Details</th>
+                                    <th class="text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <div class="ded-description">
+                                            <div class="main">
+                                                Truck #34876 Supplies
+                                            </div>
+                                            <div class="date">05/09/21</div>
+                                        </div>
+                                    </td>
+                                    <td>$365.42</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>
+                                        <div class="ded-description">
+                                            <div class="main">
+                                                Lorem Ipsum Dolor Sit
+                                            </div>
+                                            <div class="date">05/09/21</div>
+                                        </div>
+                                    </td>
+                                    <td>$365.42</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>
+                                        <div class="ded-description">
+                                            <div class="main">
+                                                Repair #52-780
+                                            </div>
+                                            <div class="date">05/09/21</div>
+                                        </div>
+                                    </td>
+                                    <td>$365.42</td>
+                                </tr>
+                                <tr class="drag-item">
+                                    <td class="bold colored">
+                                        <div>Total</div>
+                                    </td>
+                                    <td>-$427.30</td>
+                                    <td class="bold">$792.90</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="total-del-item bonus">
+                    <div class="total-del-header d-flex">
+                        <span>3</span>
+                        <div class="title">Bonus</div>
+                    </div>
+                    <div class="total-del-table">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Details</th>
+                                    <th class="text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <div class="ded-description">
+                                            <div class="main">
+                                                Truck #34876 Supplies
+                                            </div>
+                                            <div class="date">05/09/21</div>
+                                        </div>
+                                    </td>
+                                    <td>$365.42</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>
+                                        <div class="ded-description">
+                                            <div class="main">
+                                                Lorem Ipsum Dolor Sit
+                                            </div>
+                                            <div class="date">05/09/21</div>
+                                        </div>
+                                    </td>
+                                    <td>$365.42</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>
+                                        <div class="ded-description">
+                                            <div class="main">
+                                                Repair #52-780
+                                            </div>
+                                            <div class="date">05/09/21</div>
+                                        </div>
+                                    </td>
+                                    <td>$365.42</td>
+                                </tr>
+                                <tr class="drag-item">
+                                    <td class="bold colored">
+                                        <div>Total</div>
+                                    </td>
+                                    <td>-$427.30</td>
+                                    <td class="bold">$792.90</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="total-del-item deduction">
+                    <div class="total-del-header d-flex">
+                        <span>3</span>
+                        <div class="title">Bonus</div>
+                    </div>
+                    <div class="total-del-table">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Details</th>
+                                    <th class="text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <div class="ded-description">
+                                            <div class="main">
+                                                Truck #34876 Supplies
+                                            </div>
+                                            <div class="date">05/09/21</div>
+                                        </div>
+                                    </td>
+                                    <td>$365.42</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>
+                                        <div class="ded-description">
+                                            <div class="main">
+                                                Lorem Ipsum Dolor Sit
+                                            </div>
+                                            <div class="date">05/09/21</div>
+                                        </div>
+                                    </td>
+                                    <td>$365.42</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>
+                                        <div class="ded-description">
+                                            <div class="main">
+                                                Repair #52-780
+                                            </div>
+                                            <div class="date">05/09/21</div>
+                                        </div>
+                                    </td>
+                                    <td>$365.42</td>
+                                </tr>
+                                <tr class="drag-item">
+                                    <td class="bold colored">
+                                        <div>Total</div>
+                                    </td>
+                                    <td>-$427.30</td>
+                                    <td class="bold">$792.90</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="deduction-map">
+                <!-- <agm-map
           [clickableIcons]="false"
           [controlSize]="20"
           [restriction]="mapRestrictions"
@@ -777,7 +813,7 @@
           [zoom]="1"
         >
         </agm-map> -->
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

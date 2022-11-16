@@ -1,196 +1,193 @@
 @import 'src/theme/variables';
 * {
-  font-family: $main-font, $fallback-font;
+    font-family: $main-font, $fallback-font;
 }
 
 p {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .form-control:focus {
-  box-shadow: none !important;
-  outline: none;
+    box-shadow: none !important;
+    outline: none;
 }
 
 .payment-type {
-  &.col-12, &.col-6 {
-    padding-left: 6px;
-    padding-right: 6px;
-  }
+    &.col-12,
+    &.col-6 {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
 }
 
 .btn-primary {
-  input {
-    display: none;
-  }
+    input {
+        display: none;
+    }
 }
 
-
 ::ng-deep .tooltip {
-  .arrow::before {
-    display: none;
-  }
+    .arrow::before {
+        display: none;
+    }
 }
 
 ::ng-deep .tooltip-inner {
-  background-color: $white;
-  color: $muted;
-  height: 17px;
-  display: flex;
-  align-items: center;
-  border-radius: 2px;
-  font-size: 10px;
-  font-weight: 600;
-  box-shadow: $box-shadow;
+    background-color: $white;
+    color: $muted;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 600;
+    box-shadow: $box-shadow;
 }
 
 .form-label-group {
-  ng-select {
-    width: 100%;
-  }
+    ng-select {
+        width: 100%;
+    }
 }
 
 .btn-primary {
-  font-size: 11px !important;
-  border-radius: 3px;
-  padding: 0.1rem 0.45rem !important;
-  background-color: $bw-9 !important;
-  transition: 0.25s;
-  font-weight: 600;
-  border: none;
+    font-size: 11px !important;
+    border-radius: 3px;
+    padding: 0.1rem 0.45rem !important;
+    background-color: $bw-9 !important;
+    transition: 0.25s;
+    font-weight: 600;
+    border: none;
 }
 
 .choice-wrapper {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .note-label-wrapper {
-  background-color: #FFFFFF;
-  font-weight: 600;
-  color: #6C6C6C;
-  margin: 0 -12px;
-  padding: 0 12px;
-  transition: 0.3s;
-  cursor: pointer;
-  height: 32px;
-  line-height: 32px;
-  user-select: none;
+    background-color: #ffffff;
+    font-weight: 600;
+    color: #6c6c6c;
+    margin: 0 -12px;
+    padding: 0 12px;
+    transition: 0.3s;
+    cursor: pointer;
+    height: 32px;
+    line-height: 32px;
+    user-select: none;
 }
 
 .dropzone-label-wrapper {
-  background-color: #FFFFFF;
-  font-weight: 700;
-  color: #6C6C6C;
-  margin: 0 -16px;
-  padding: 6px 18px;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-  height: 30px;
-  user-select: none;
+    background-color: #ffffff;
+    font-weight: 700;
+    color: #6c6c6c;
+    margin: 0 -16px;
+    padding: 6px 18px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    height: 30px;
+    user-select: none;
 }
 
-
 textarea.input-custom-textarea.form-textarea {
-  font-size: 12px;
-  padding: 0;
-  margin-top: 6px;
-  resize: none;
-  color: $bw4;
-  width: 100% !important;
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
+    font-size: 12px;
+    padding: 0;
+    margin-top: 6px;
+    resize: none;
+    color: $bw4;
+    width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
 
-  &::placeholder {
-    color: $bw-9 !important;
-  }
+    &::placeholder {
+        color: $bw-9 !important;
+    }
 }
 
 .note-visible {
-  max-height: 60px;
-  transition: 0.3s;
+    max-height: 60px;
+    transition: 0.3s;
 }
 
 .note-hidden {
-  max-height: 0;
-  overflow: hidden;
-  transition: 0.3s;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.3s;
 }
 
 .dropzone-visible {
-  height: auto;
-  transition: all 0.3s ease-in-out;
-  padding-top: 12px;
-  position: relative;
-  right: 5px;
+    height: auto;
+    transition: all 0.3s ease-in-out;
+    padding-top: 12px;
+    position: relative;
+    right: 5px;
 }
 
 .dropzone-hidden {
-  height: 0;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
+    height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
 }
 
 .note-label-wrapper,
 .dropzone-label-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .note-wrapper.hidden-note .down-icon,
 .dropzone-wrapper.hidden-dropzone .down-icon {
-  transform: rotate(0deg);
-  transition: 0.3s all;
+    transform: rotate(0deg);
+    transition: 0.3s all;
 }
 
 .note-wrapper.visible-note .down-icon,
 .dropzone-wrapper.visible-dropzone .down-icon {
-  transform: rotate(180deg);
-  transition: 0.3s all;
+    transform: rotate(180deg);
+    transition: 0.3s all;
 }
 
-
-
 .notifications-holder {
-  margin-bottom: 28px;
+    margin-bottom: 28px;
 
-  p {
-    margin-right: 20px;
-    margin-bottom: 0;
-  }
-
-  .multiple-choices-wrapper {
-    .btn-group {
-      position: relative;
-      display: inline-flex;
-      vertical-align: middle;
-      margin-right: 6px;
-
-      .btn.btn-primary:not(:disabled):not(.disabled) {
-        background-color: $ceil-blue !important;
-        transition: 0.25s;
-        font-weight: 600;
-      }
-
-      .btn.btn-primary:not(:disabled):not(.disabled).active {
-        background-color: $bw-9 !important;
-      }
-
-      .btn.btn-primary:not(:disabled):not(.disabled):hover {
-        opacity: 1;
-        transition: 0.25s;
-      }
-
-      .btn:not(:disabled):not(.disabled) {
-        cursor: pointer;
-      }
+    p {
+        margin-right: 20px;
+        margin-bottom: 0;
     }
-  }
+
+    .multiple-choices-wrapper {
+        .btn-group {
+            position: relative;
+            display: inline-flex;
+            vertical-align: middle;
+            margin-right: 6px;
+
+            .btn.btn-primary:not(:disabled):not(.disabled) {
+                background-color: $ceil-blue !important;
+                transition: 0.25s;
+                font-weight: 600;
+            }
+
+            .btn.btn-primary:not(:disabled):not(.disabled).active {
+                background-color: $bw-9 !important;
+            }
+
+            .btn.btn-primary:not(:disabled):not(.disabled):hover {
+                opacity: 1;
+                transition: 0.25s;
+            }
+
+            .btn:not(:disabled):not(.disabled) {
+                cursor: pointer;
+            }
+        }
+    }
 }
 
 .choice-wrapper.twic-choice label {
-  width: 66px;
+    width: 66px;
 }

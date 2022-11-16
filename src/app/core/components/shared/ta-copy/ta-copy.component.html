@@ -1,51 +1,60 @@
 <div class="app-ta-copy-wrapper">
-  <div class="icon-text-cont" [ngClass]="{ copied: textCopied }">
-    <div
-      class="copy-value"
-      [ngStyle]="{
-        color: textColor,
-        'font-size': textFontSize,
-        'font-weight': textFontWeight
-      }"
-    >
-     <span *ngIf="!accountCompany" class="copy-text">{{ hasEye ? (copyValue | hideAccount: "account":isVisible) : copyValue }}</span> 
-     <span *ngIf="accountCompany" class="copy-text">{{ hasEye ? (copyValue | hidePassword: "account":isVisible) : copyValue }}</span> 
+    <div class="icon-text-cont" [ngClass]="{ copied: textCopied }">
+        <div
+            class="copy-value"
+            [ngStyle]="{
+                color: textColor,
+                'font-size': textFontSize,
+                'font-weight': textFontWeight
+            }"
+        >
+            <span *ngIf="!accountCompany" class="copy-text">{{
+                hasEye
+                    ? (copyValue | hideAccount: 'account':isVisible)
+                    : copyValue
+            }}</span>
+            <span *ngIf="accountCompany" class="copy-text">{{
+                hasEye
+                    ? (copyValue | hidePassword: 'account':isVisible)
+                    : copyValue
+            }}</span>
+        </div>
+        <div class="app-icon-copy">
+            <span
+                *ngIf="hasEye"
+                tooltipBackground="#6c6c6c"
+                ngbTooltip
+                [autoClose]="false"
+                [mainTooltip]="
+                    isVisible ? 'Hide Account Number' : 'Show Account Number'
+                "
+                position="top"
+                (click)="isVisible = !isVisible"
+            >
+                <svg-icon
+                    (click)="showHide(isVisible)"
+                    class="hidden-svg-eyes"
+                    src="{{
+                        isVisible
+                            ? 'assets/svg/common/ic_eye-visible.svg'
+                            : 'assets/svg/common/ic_eye-hidden.svg'
+                    }}"
+                ></svg-icon>
+            </span>
+            <span
+                [tooltipBackground]="textCopied ? '#536BC2' : '#6c6c6c'"
+                ngbTooltip
+                [mainTooltip]="textCopied ? 'Copied' : 'Copy'"
+                position="top"
+                [autoClose]="false"
+                (click)="copyText(copyValue)"
+            >
+                <svg-icon
+                    class="card-icon-copy"
+                    src="assets/svg/common/ic_copy.svg"
+                    (mouseleave)="textCopied = false"
+                ></svg-icon>
+            </span>
+        </div>
     </div>
-    <div class="app-icon-copy">
-    <span
-     *ngIf="hasEye"
-      tooltipBackground="#6c6c6c"
-      ngbTooltip
-      [autoClose]="false"
-      [mainTooltip]="isVisible ? 'Hide Account Number' : 'Show Account Number'"
-      position="top"
-      (click)="isVisible = !isVisible"
-    >
-      <svg-icon
-      (click)="showHide(isVisible)"
-        class="hidden-svg-eyes"
-        src="{{
-          isVisible
-            ? 'assets/svg/common/ic_eye-visible.svg'
-            : 'assets/svg/common/ic_eye-hidden.svg'
-        }}"
-      ></svg-icon>
-    </span>
-    <span
-      [tooltipBackground]="textCopied ? '#536BC2' : '#6c6c6c'"
-      ngbTooltip
-      [mainTooltip]="textCopied ? 'Copied' : 'Copy'"
-      position="top"
-      [autoClose]="false"
-      (click)="copyText(copyValue)"
-    >
-      <svg-icon
-        class="card-icon-copy"
-       
-        src="assets/svg/common/ic_copy.svg"
-        (mouseleave)="textCopied = false"
-      ></svg-icon>
-    </span>
-  </div>
-  </div>
 </div>

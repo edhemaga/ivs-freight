@@ -1,40 +1,47 @@
-<div class="dispatch-parking" [class.parking_opened]="dispatcherStoreService.parkingOpened">
-  <div
-    class="parking-items"
-    *ngFor="let parking of parkingData"
-    [class.opened]="parking.open"
-  >
-    <div class="parking-title">
-        {{ parking.parkingName }}</div>
-    <div class="parking-table">
-      <table>
-        <tbody>
-          <tr *ngFor="let slots of parking.bigSlots"> 
-            <td class="parking_number">
-              <div class="inside">
-                  <span>{{slots.parkingNumb}}</span>
-              </div>
-            </td>
-            <td class="truck">
-              <div class="inside" 
-                [class.no-background]="slots.truckNumber === null"
-                [ngClass]="'truck_' + slots.truck_color"
-                >
-                <button
-                  *ngIf="slots.truckNumber === null"
-                  class="btn-transparent dispatch-bottom-add add-row"
-                >
-                  <svg-icon
-                    appTooltip="Add Truck"
-                    class="icon-hover-blue-22 cursor-pointer d-flex"
-                    main_id="addTruck"
-                    position="bottom-right"
-                    src="assets/svg/dispatchboard/add.svg"
-                    tooltipBackground="#919191"
-                  >
-                  </svg-icon>
-                </button>
-                <!-- <ng-select
+<div
+    class="dispatch-parking"
+    [class.parking_opened]="dispatcherStoreService.parkingOpened"
+>
+    <div
+        class="parking-items"
+        *ngFor="let parking of parkingData"
+        [class.opened]="parking.open"
+    >
+        <div class="parking-title">
+            {{ parking.parkingName }}
+        </div>
+        <div class="parking-table">
+            <table>
+                <tbody>
+                    <tr *ngFor="let slots of parking.bigSlots">
+                        <td class="parking_number">
+                            <div class="inside">
+                                <span>{{ slots.parkingNumb }}</span>
+                            </div>
+                        </td>
+                        <td class="truck">
+                            <div
+                                class="inside"
+                                [class.no-background]="
+                                    slots.truckNumber === null
+                                "
+                                [ngClass]="'truck_' + slots.truck_color"
+                            >
+                                <button
+                                    *ngIf="slots.truckNumber === null"
+                                    class="btn-transparent dispatch-bottom-add add-row"
+                                >
+                                    <svg-icon
+                                        appTooltip="Add Truck"
+                                        class="icon-hover-blue-22 cursor-pointer d-flex"
+                                        main_id="addTruck"
+                                        position="bottom-right"
+                                        src="assets/svg/dispatchboard/add.svg"
+                                        tooltipBackground="#919191"
+                                    >
+                                    </svg-icon>
+                                </button>
+                                <!-- <ng-select
                   #truckDropdown
                   (change)="addTruck($event, item.id, truckDropdown, rowIndex)"
                   *ngIf="truckSelectOpened == rowIndex"
@@ -60,38 +67,43 @@
                     }}</span>
                   </ng-template>
                 </ng-select> -->
-                <span *ngIf="slots.truckNumber">
-                  {{slots.truckNumber}}
-                  <div class="dispatcher-close">
-                      <svg-icon
-                        (click)="updateTruck(undefined, item)"
-                        src="assets/svg/dispatchboard/close.svg"
-                      >
-                      </svg-icon>
-                  </div>
-                </span>
-              </div>
-            </td>
-            <td class="trailer">
-              <div class="inside" 
-                [class.no-background]="slots.trailerNumber === null"
-                [ngClass]="'trailer_' + slots.trailer_color"
-                >
-                <button
-                *ngIf="slots.trailerNumber === null"
-                class="btn-transparent dispatch-bottom-add add-row"
-              >
-                <svg-icon
-                  appTooltip="Add Trailer"
-                  class="icon-hover-blue-22 cursor-pointer d-flex"
-                  main_id="addTruck"
-                  position="bottom-right"
-                  src="assets/svg/dispatchboard/add.svg"
-                  tooltipBackground="#919191"
-                >
-                </svg-icon>
-              </button>
-              <!-- <ng-select
+                                <span *ngIf="slots.truckNumber">
+                                    {{ slots.truckNumber }}
+                                    <div class="dispatcher-close">
+                                        <svg-icon
+                                            (click)="
+                                                updateTruck(undefined, item)
+                                            "
+                                            src="assets/svg/dispatchboard/close.svg"
+                                        >
+                                        </svg-icon>
+                                    </div>
+                                </span>
+                            </div>
+                        </td>
+                        <td class="trailer">
+                            <div
+                                class="inside"
+                                [class.no-background]="
+                                    slots.trailerNumber === null
+                                "
+                                [ngClass]="'trailer_' + slots.trailer_color"
+                            >
+                                <button
+                                    *ngIf="slots.trailerNumber === null"
+                                    class="btn-transparent dispatch-bottom-add add-row"
+                                >
+                                    <svg-icon
+                                        appTooltip="Add Trailer"
+                                        class="icon-hover-blue-22 cursor-pointer d-flex"
+                                        main_id="addTruck"
+                                        position="bottom-right"
+                                        src="assets/svg/dispatchboard/add.svg"
+                                        tooltipBackground="#919191"
+                                    >
+                                    </svg-icon>
+                                </button>
+                                <!-- <ng-select
                 #truckDropdown
                 (change)="addTruck($event, item.id, truckDropdown, rowIndex)"
                 *ngIf="truckSelectOpened == rowIndex"
@@ -117,29 +129,31 @@
                   }}</span>
                 </ng-template>
               </ng-select> -->
-              <span *ngIf="slots.trailerNumber">
-                  {{slots.trailerNumber}}
-                  <div class="dispatcher-close">
-                      <svg-icon
-                        (click)="updateTruck(undefined, item)"
-                        src="assets/svg/dispatchboard/close.svg"
-                      >
-                      </svg-icon>
-                  </div>  
-              </span>
-              </div>
-            </td>
-            <td class="note">
-              <app-ta-note
-              [note]="slots.note"
-              [openedAll]="true"
-              [parking]="true"
-              >
-              </app-ta-note>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                                <span *ngIf="slots.trailerNumber">
+                                    {{ slots.trailerNumber }}
+                                    <div class="dispatcher-close">
+                                        <svg-icon
+                                            (click)="
+                                                updateTruck(undefined, item)
+                                            "
+                                            src="assets/svg/dispatchboard/close.svg"
+                                        >
+                                        </svg-icon>
+                                    </div>
+                                </span>
+                            </div>
+                        </td>
+                        <td class="note">
+                            <app-ta-note
+                                [note]="slots.note"
+                                [openedAll]="true"
+                                [parking]="true"
+                            >
+                            </app-ta-note>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>

@@ -8,17 +8,13 @@ import { SharedModule } from '../shared/shared.module';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 import { FilterRoutesPipe } from './filter-routes.pipe';
 
-
 @NgModule({
-  declarations: [
-    RoutingMapComponent,
-    FilterRoutesPipe
-  ],
-  imports: [
-    CommonModule,
-    RoutingRoutingModule,
-    SharedModule,
-    TruckassistTableModule
-  ]
+    declarations: [RoutingMapComponent, FilterRoutesPipe],
+    imports: [
+        CommonModule,
+        RoutingRoutingModule,
+        SharedModule,
+        TruckassistTableModule,
+    ],
 })
-export class RoutingModule { }
+export class RoutingModule {}

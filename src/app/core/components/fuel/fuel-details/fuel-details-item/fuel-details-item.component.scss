@@ -1,361 +1,361 @@
-@import "../fuel-details.component.scss";
+@import '../fuel-details.component.scss';
 app-fuel-details-item {
-  .fuel-price-template {
-    display: grid;
-    grid-template-columns: 195px 130px;
-    column-gap: 26px;
-    padding: 0 10px;
-    .fuel-price-wrapper {
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-      .fuel-price-name {
-        font-size: 12px;
-        font-weight: 700;
-        color: #6c6c6c;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+    .fuel-price-template {
+        display: grid;
+        grid-template-columns: 195px 130px;
+        column-gap: 26px;
+        padding: 0 10px;
+        .fuel-price-wrapper {
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            .fuel-price-name {
+                font-size: 12px;
+                font-weight: 700;
+                color: #6c6c6c;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+            .fuel-price-value {
+                font-size: 18px;
+                font-weight: 700;
+                color: #6c6c6c;
+                margin-top: -2px;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
         }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-      }
-      .fuel-price-value {
-        font-size: 18px;
-        font-weight: 700;
-        color: #6c6c6c;
-        margin-top: -2px;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-      }
     }
-  }
-  .charts-template {
-    display: grid;
-    grid-template-columns: 215px 1fr;
-    grid-row-gap: 12px;
-    row-gap: 12px;
-    margin-bottom: 12px;
-    padding-left: 6px;
-    padding-right: 6px;
-    .charts-template-item {
-      display: flex;
-      flex-direction: column;
+    .charts-template {
+        display: grid;
+        grid-template-columns: 215px 1fr;
+        grid-row-gap: 12px;
+        row-gap: 12px;
+        margin-bottom: 12px;
+        padding-left: 6px;
+        padding-right: 6px;
+        .charts-template-item {
+            display: flex;
+            flex-direction: column;
 
-      .icon-name-item {
+            .icon-name-item {
+                display: flex;
+                align-items: baseline;
+                height: 18px;
+                .charts-template-item-name {
+                    margin-left: 6px;
+                }
+            }
+            .charts-template-item-name {
+                font-size: $font-size12;
+                font-weight: $font-semibold;
+                color: $color-gray-dark;
+
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+
+            .charts-template-item-value {
+                font-size: $font-size18;
+                font-weight: $font-semibold;
+                color: $color-gray-dark;
+                width: 220px;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+
+                p {
+                    &::-moz-selection {
+                        color: $color-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+                    &::selection {
+                        color: $color-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+                }
+
+                .hidden-svg-eye {
+                    margin-left: 6px;
+                    position: relative;
+                    bottom: 1px;
+                }
+            }
+        }
+    }
+    .perfomance {
+        display: flex !important;
+        flex-direction: column;
+    }
+    .ppg-icon-fuel {
         display: flex;
-        align-items: baseline;
-        height: 18px;
-        .charts-template-item-name {
-          margin-left: 6px;
+        align-items: center;
+        .ppg-icon {
+            margin-right: 4px;
+            svg {
+                display: flex;
+                path {
+                    fill: yellow !important;
+                }
+            }
         }
-      }
-      .charts-template-item-name {
-        font-size: $font-size12;
-        font-weight: $font-semibold;
-        color: $color-gray-dark;
-
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-      }
-
-      .charts-template-item-value {
-        font-size: $font-size18;
-        font-weight: $font-semibold;
-        color: $color-gray-dark;
-        width: 220px;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-
-        p {
-          &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
-          &::selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
-        }
-
-        .hidden-svg-eye {
-          margin-left: 6px;
-          position: relative;
-          bottom: 1px;
-        }
-      }
     }
-  }
-  .perfomance {
-    display: flex !important;
-    flex-direction: column;
-  }
-  .ppg-icon-fuel {
-    display: flex;
-    align-items: center;
-    .ppg-icon {
-      margin-right: 4px;
-      svg {
-        display: flex;
-        path {
-          fill: yellow !important;
+    .blue-background {
+        .items-header-fuel {
+            border-radius: 2px;
+            background-color: #e0eaf8 !important;
+            margin-top: 2px !important;
+            margin-bottom: 2px !important;
+            padding: 4px 4px !important;
+            .unit-fuel {
+                position: relative;
+                line-height: 20px;
+                // top: -1px;
+            }
+            .date-fuel {
+                position: relative;
+                line-height: 20px;
+                // top: -1px;
+            }
+            .cost {
+                position: relative;
+                line-height: 20px;
+                // top: -1px;
+            }
         }
-      }
     }
-  }
-  .blue-background {
-    .items-header-fuel {
-      border-radius: 2px;
-      background-color: #e0eaf8 !important;
-      margin-top: 2px !important;
-      margin-bottom: 2px !important;
-      padding: 4px 4px !important;
-      .unit-fuel {
+    .note-cards {
+        padding: 0 7px;
+        .note-body {
+            padding: 0 2px !important;
+            // margin-bottom: 7px !important;
+            .note-textarea {
+                color: #6c6c6c !important;
+                font-weight: 500 !important;
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                span[style*='color: rgb(83, 107, 194)'],
+                span[style*='color: rgb(83, 107, 194)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2 !important;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(38, 166, 144)'],
+                span[style*='color: rgb(38, 166, 144)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(239, 83, 80)'],
+                span[style*='color: rgb(239, 83, 80)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(255, 167, 38)'],
+                span[style*='color: rgb(255, 167, 38)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(83, 107, 194)'],
+                span[style*='color: rgb(83, 107, 194)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2 !important;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(38, 166, 144)'],
+                span[style*='color: rgb(38, 166, 144)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(239, 83, 80)'],
+                span[style*='color: rgb(239, 83, 80)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(255, 167, 38)'],
+                span[style*='color: rgb(255, 167, 38)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+                }
+            }
+        }
+    }
+    .fuel-vehicle-icon {
         position: relative;
-        line-height: 20px;
-        // top: -1px;
-      }
-      .date-fuel {
-        position: relative;
-        line-height: 20px;
-        // top: -1px;
-      }
-      .cost {
-        position: relative;
-        line-height: 20px;
-        // top: -1px;
-      }
+        bottom: 3px;
     }
-  }
-  .note-cards {
-    padding: 0 7px;
-    .note-body {
-      padding: 0 2px !important;
-      // margin-bottom: 7px !important;
-      .note-textarea {
-        color: #6c6c6c !important;
-        font-weight: 500 !important;
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
+    .fuel-items {
+        &:last-child {
+            .divider {
+                display: none;
+            }
         }
-  
-        &::selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
-        }
-  
-        span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-        }
-  
-        span[style*="color: rgb(83, 107, 194)"],
-        span[style*="color: rgb(83, 107, 194)"] span {
-          &::-moz-selection {
-            color: $bw6-2 !important;
-            background: rgb(83, 107, 194, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(83, 107, 194, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(38, 166, 144)"],
-        span[style*="color: rgb(38, 166, 144)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(38, 166, 144, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(38, 166, 144, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(239, 83, 80)"],
-        span[style*="color: rgb(239, 83, 80)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(239, 83, 80, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(239, 83, 80, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(255, 167, 38)"],
-        span[style*="color: rgb(255, 167, 38)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(255, 167, 38, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(255, 167, 38, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(83, 107, 194)"],
-        span[style*="color: rgb(83, 107, 194)"] span {
-          &::-moz-selection {
-            color: $bw6-2 !important;
-            background: rgb(83, 107, 194, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(83, 107, 194, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(38, 166, 144)"],
-        span[style*="color: rgb(38, 166, 144)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(38, 166, 144, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(38, 166, 144, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(239, 83, 80)"],
-        span[style*="color: rgb(239, 83, 80)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(239, 83, 80, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(239, 83, 80, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(255, 167, 38)"],
-        span[style*="color: rgb(255, 167, 38)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(255, 167, 38, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(255, 167, 38, 0.2) !important;
-          }
-        }
-      }
-    }
-  }
-  .fuel-vehicle-icon {
-    position: relative;
-    bottom: 3px;
-  }
-  .fuel-items {
-    &:last-child {
-      .divider {
-        display: none;
-      }
-    }
-  }
-
-  .fuel-price-colors-container {
-    .fuel-price-text-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 4px;
-      .fuel-price-text {
-        font-size: 11px;
-        font-weight: 500;
-        color: #aaaaaa;
-        line-height: 14px;
-
-        &::-moz-selection {
-          color: #aaaaaa;
-          background: #aaaaaa33;
-        }
-        &::selection {
-          color: #aaaaaa;
-          background: #aaaaaa33;
-        }
-      }
     }
 
-    .fuel-price-colors {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 168px;
+    .fuel-price-colors-container {
+        .fuel-price-text-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4px;
+            .fuel-price-text {
+                font-size: 11px;
+                font-weight: 500;
+                color: #aaaaaa;
+                line-height: 14px;
 
-      .fuel-price-level {
-        width: 32px;
-        height: 8px;
-
-        &.first-color {
-          border-radius: 2px 0 0 2px;
+                &::-moz-selection {
+                    color: #aaaaaa;
+                    background: #aaaaaa33;
+                }
+                &::selection {
+                    color: #aaaaaa;
+                    background: #aaaaaa33;
+                }
+            }
         }
 
-        &.last-color {
-          border-radius: 0 2px 2px 0;
+        .fuel-price-colors {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 168px;
+
+            .fuel-price-level {
+                width: 32px;
+                height: 8px;
+
+                &.first-color {
+                    border-radius: 2px 0 0 2px;
+                }
+
+                &.last-color {
+                    border-radius: 0 2px 2px 0;
+                }
+            }
+
+            .fuel-price-svg {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+
+                transform: translate(-50%, -50%);
+
+                svg {
+                    #Ellipse_635 {
+                        fill: #fff;
+                    }
+
+                    #Ellipse_636 {
+                        fill: #fff;
+                        stroke: #fec107;
+                    }
+                }
+            }
         }
-      }
-
-      .fuel-price-svg {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-
-        transform: translate(-50%, -50%);
-
-        svg {
-          #Ellipse_635 {
-            fill: #fff;
-          }
-
-          #Ellipse_636 {
-            fill: #fff;
-            stroke: #fec107;
-          }
-        }
-      }
     }
-  }
 }

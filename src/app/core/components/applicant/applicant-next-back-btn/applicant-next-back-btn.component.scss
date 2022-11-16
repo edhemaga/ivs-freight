@@ -1,111 +1,111 @@
 @import 'src/theme/variables.scss';
 
 .step-btn {
-  outline: none;
-  border: none;
-  height: 52px;
-  background-color: transparent;
-  padding: 0;
+    outline: none;
+    border: none;
+    height: 52px;
+    background-color: transparent;
+    padding: 0;
 
-  .step-text {
-    height: 18px;
-    color: $bw6-2;
-    font-size: 14px;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-  }
-
-  .step-next-text {
-    margin-right: 12px;
-  }
-
-  .step-back-text {
-    margin-left: 12px;
-  }
-
-  .step-icon {
-    svg {
-      rect {
-        transition: fill 0.2s ease-in-out;
-        fill: $ta-light-grey-6;
-      }
+    .step-text {
+        height: 18px;
+        color: $bw6-2;
+        font-size: 14px;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
     }
-  }
 
-  &.filled-correctly {
+    .step-next-text {
+        margin-right: 12px;
+    }
+
+    .step-back-text {
+        margin-left: 12px;
+    }
+
     .step-icon {
-      svg {
-        rect {
-          fill: $ta-light-blue;
+        svg {
+            rect {
+                transition: fill 0.2s ease-in-out;
+                fill: $ta-light-grey-6;
+            }
         }
-      }
+    }
+
+    &.filled-correctly {
+        .step-icon {
+            svg {
+                rect {
+                    fill: $ta-light-blue;
+                }
+            }
+        }
+
+        &:hover {
+            .step-icon {
+                svg {
+                    rect {
+                        fill: $ta-blue;
+                    }
+                }
+            }
+        }
     }
 
     &:hover {
-      .step-icon {
-        svg {
-          rect {
-            fill: $ta-blue;
-          }
+        .step-text {
+            visibility: visible;
+            opacity: 1;
         }
-      }
-    }
-  }
 
-  &:hover {
-    .step-text {
-      visibility: visible;
-      opacity: 1;
-    }
-
-    .step-icon {
-      svg {
-        rect {
-          fill: $bw5;
+        .step-icon {
+            svg {
+                rect {
+                    fill: $bw5;
+                }
+            }
         }
-      }
-    }
-  }
-
-  &:disabled,
-  &[disabled] {
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
-
-    .step-text {
-      visibility: hidden;
-      opacity: 0;
     }
 
-    .step-icon {
-      svg {
-        rect {
-          fill: $bw2;
+    &:disabled,
+    &[disabled] {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+
+        .step-text {
+            visibility: hidden;
+            opacity: 0;
         }
-      }
-    }
-  }
 
-  &.review-btn {
-    .step-icon {
-      svg {
-        rect {
-          fill: $ta-review-green;
+        .step-icon {
+            svg {
+                rect {
+                    fill: $bw2;
+                }
+            }
         }
-      }
     }
 
-    &:hover {
-      .step-icon {
-        svg {
-          rect {
-            fill: $ta-review-green-2;
-          }
+    &.review-btn {
+        .step-icon {
+            svg {
+                rect {
+                    fill: $ta-review-green;
+                }
+            }
         }
-      }
+
+        &:hover {
+            .step-icon {
+                svg {
+                    rect {
+                        fill: $ta-review-green-2;
+                    }
+                }
+            }
+        }
     }
-  }
 }
