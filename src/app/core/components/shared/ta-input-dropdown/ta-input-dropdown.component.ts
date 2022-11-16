@@ -756,6 +756,16 @@ export class TaInputDropdownComponent
     return item.id;
   }
 
+  public toggleNestedList(option: any) {
+    if (option.open) {
+      option.open = false;
+      return;
+    }
+    this.options.filter((item) => (item.open = false));
+
+    option.open = !option.open;
+  }
+
   // ----------------------------------  Multiselect Dropdown ----------------------------------
   public onMultiselectSelect(option: any): void {
     this.isMultiSelectInputFocus = false;

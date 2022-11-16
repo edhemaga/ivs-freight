@@ -5,6 +5,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from '../../../../services/form/form.service';
+import { FuelTService } from '../../../fuel/state/fuel.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import { GetFuelModalResponse } from '../../../../../../../appcoretruckassist/model/getFuelModalResponse';
 import {
   priceValidation,
   fullNameValidation,
@@ -23,22 +26,108 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   public fuelForm: FormGroup;
 
   public truckType: any[] = [];
-  public fuelStops: any[] = [];
-  public storeType: any[] = [];
+  public fuelStops: any[] = [
+    {
+      businessName: '7-11 STORE',
+      count: 238,
+      stores: [
+        {
+          id: 1,
+          name: 15680,
+          address: 'Chicago, IL 60656',
+        },
+        {
+          id: 2,
+          name: 16898,
+          address: 'Carroltion, GA 23790',
+        },
+        {
+          id: 3,
+          name: 17000,
+          address: 'Forest Parl, GA 65412',
+        },
+        {
+          id: 4,
+          name: 17000,
+          address: 'Forest Parl, GA 65412',
+        },
+        {
+          id: 5,
+          name: 17000,
+          address: 'Forest Parl, GA 65412',
+        },
+        {
+          id: 6,
+          name: 17000,
+          address: 'Forest Parl, GA 65412',
+        },
+        {
+          id: 7,
+          name: 17000,
+          address: 'Forest Parl, GA 65412',
+        },
+        {
+          id: 8,
+          name: 17000,
+          address: 'Forest Parl, GA 65412',
+        },
+        {
+          id: 9,
+          name: 17000,
+          address: 'Forest Parl, GA 65412',
+        },
+        {
+          id: 10,
+          name: 17000,
+          address: 'Forest Parl, GA 65412',
+        },
+      ],
+      open: false,
+      hover: false,
+      isFranchise: true,
+    },
+    {
+      businessName: "LOVE'S",
+      count: 18,
+      stores: [
+        {
+          id: 1,
+          name: 15680,
+          address: 'Chicago, IL 60656',
+        },
+        {
+          id: 2,
+          name: 16898,
+          address: 'Carroltion, GA 23790',
+        },
+      ],
+      open: true,
+      hover: false,
+      isFranchise: true,
+    },
+    {
+      businessName: 'RR HICORY HILLS (Manuelno dodat)',
+      count: 0,
+      stores: [],
+      open: false,
+      hover: false,
+      isFranchise: false,
+    },
+  ];
 
   public fuelItemsDropdown: any[] = [];
 
   public selectedTruckType: any = null;
   public selectedFuelStop: any = null;
-  public selectedStoreType: any = null;
 
   public selectedFuelItemsFormArray: any[] = [];
   public fuelItemsCounter: number = 0;
-
   public subtotal: { id: number; value: number }[] = [];
   public quantity: any[] = [];
 
   public hoverRowTable: boolean[] = [];
+
+  public documents: any[] = [];
 
   public isFormDirty: boolean;
 
@@ -46,11 +135,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private formService: FormService
+    private formService: FormService,
+    private fuelService: FuelTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
     this.createForm();
+    this.getModalDropdowns();
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
@@ -69,7 +161,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       date: [null, Validators.required],
       time: [null, Validators.required],
       fuelStopId: [null, Validators.required],
-      storeId: [null],
       fuelItems: this.formBuilder.array([]),
     });
 
@@ -81,9 +172,41 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onModalAction(data: { action: string; bool: boolean }) {
+    switch (data.action) {
+      case 'close': {
+        break;
+      }
+      case 'save': {
+        if (this.fuelForm.invalid || !this.isFormDirty) {
+          this.inputService.markInvalid(this.fuelForm);
+          return;
+        }
+        if (this.editData) {
+          this.updateFuel(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
+        } else {
+          this.addFuel();
+          this.modalService.setModalSpinner({ action: null, status: true });
+        }
+        break;
+      }
+      case 'delete': {
+        this.deleteFuelById(this.editData.id);
+        this.modalService.setModalSpinner({ action: 'delete', status: true });
+
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   public get fuelItems(): FormArray {
     return this.fuelForm.get('fuelItems') as FormArray;
   }
+
   private createFuelItems(data?: {
     id: number;
     itemId?: string;
@@ -93,12 +216,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   }): FormGroup {
     return this.formBuilder.group({
       id: [data?.id ? data?.id : null],
-      itemId: [data?.itemId ? data?.itemId : null], // Validators.required
-      qty: [[data?.qty ? data?.qty : null], Validators.required],
-      price: [
-        [data?.price ? data?.price : null],
-        [Validators.required, ...priceValidation],
-      ],
+      itemId: [data?.itemId ? data?.itemId : null, Validators.required],
+      qty: [data?.qty ? data?.qty : null],
+      price: [[data?.price ? data?.price : null], [...priceValidation]],
       subtotal: [[data?.subtotal ? data?.subtotal : null]],
     });
   }
@@ -173,38 +293,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onModalAction(data: { action: string; bool: boolean }) {
-    switch (data.action) {
-      case 'close': {
-        break;
-      }
-      case 'save': {
-        if (this.fuelForm.invalid || !this.isFormDirty) {
-          this.inputService.markInvalid(this.fuelForm);
-          return;
-        }
-        if (this.editData) {
-          this.updateFuel(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
-        } else {
-          this.addFuel();
-          this.modalService.setModalSpinner({ action: null, status: true });
-        }
-        break;
-      }
-      case 'delete': {
-        if (this.editData) {
-          this.deleteFuelById(this.editData.id);
-          this.modalService.setModalSpinner({ action: 'delete', status: true });
-        }
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  }
-
   public onSelectDropDown(event: any, action: string, index?: number) {
     switch (action) {
       case 'truck': {
@@ -215,10 +303,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.selectedFuelStop = event;
         break;
       }
-      case 'store': {
-        this.selectedStoreType = event;
-        break;
-      }
       case 'fuel-items': {
         this.selectedFuelItemsFormArray[index] = event;
         break;
@@ -227,6 +311,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public onFilesEvent(event: any) {
+    this.documents = event.files;
   }
 
   public drop(event: CdkDragDrop<any[]>) {
@@ -246,6 +334,20 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   private deleteFuelById(id: number) {}
 
   private editFuel(id: number) {}
+
+  private getModalDropdowns() {
+    this.fuelService
+      .getFuelTransactionModalDropdowns()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: GetFuelModalResponse) => {
+          console.log(res);
+        },
+        error: (error: any) => {
+          this.notificationService.error('Error', error);
+        },
+      });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

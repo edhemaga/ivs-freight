@@ -39,6 +39,11 @@
         }
       }
 
+      &-fuel-franchise {
+        padding: 4px;
+        max-height: none;
+      }
+
       //------------------------ Default Template ------------------------
       .dropdown-option {
         padding: 3px 4px;
@@ -49,7 +54,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: #cccccc;
+        color: #ffffff;
 
         &.dropdown-option-hovered {
           background-color: #1d1d1d;
@@ -114,7 +119,7 @@
           position: relative;
 
           &:hover {
-            color: #3551b7;
+            color: #3074d3;
           }
 
           .labels-template-text {
@@ -129,18 +134,16 @@
           position: relative;
 
           &:hover {
-            color: #3551b7;
+            color: #3074d3;
             transition: all 0.3s ease-in-out;
           }
 
           // Higlight text
           .highlight-text-45632 {
             font-weight: 700;
-            color: #ffffff !important;
-
+            transition: all 0.3s ease-in-out;
             &:hover {
-              color: #3551b7 !important;
-              transition: all 0.3s ease-in-out;
+              color: #3074d3 !important;
             }
           }
 
@@ -155,18 +158,16 @@
           position: relative;
 
           &:hover {
-            color: #3551b7;
+            color: #3074d3;
             transition: all 0.3s ease-in-out;
           }
 
           // Higlight text
           .highlight-text-45632 {
             font-weight: 700;
-            color: #ffffff !important;
-
+            transition: all 0.3s ease-in-out;
             &:hover {
-              color: #3551b7 !important;
-              transition: all 0.3s ease-in-out;
+              color: #3074d3 !important;
             }
           }
 
@@ -204,11 +205,9 @@
         // Higlight text
         .highlight-text-45632 {
           font-weight: 700;
-          color: #ffffff !important;
-
+          transition: all 0.3s ease-in-out;
           &:hover {
-            color: #3551b7 !important;
-            transition: all 0.3s ease-in-out;
+            color: #3074d3 !important;
           }
         }
 
@@ -315,7 +314,7 @@
               height: 16px;
               border-radius: 20px;
               background-color: rgb(204, 204, 204, 0.2);
-              color: #cccccc;
+              color: #aaaaaa;
               text-align: center;
               font-size: 11px;
               font-weight: 500;
@@ -325,15 +324,16 @@
 
           &:hover {
             .labels-template-text {
-              color: #cccccc;
+              color: #aaaaaa;
 
               &.add-new {
-                color: #3551b7;
+                color: #3074d3;
               }
             }
 
             .labels-template-counter {
               background-color: rgb(204, 204, 204, 0.2);
+              color: #dadada;
             }
           }
         }
@@ -347,7 +347,7 @@
               color: #6f9ee0;
 
               &:hover {
-                color: #3551b7;
+                color: #3074d3;
                 transition: all 0.3s ease-in-out;
               }
             }
@@ -370,7 +370,7 @@
             height: 16px;
             border-radius: 20px;
             background-color: rgb(204, 204, 204, 0.2);
-            color: #cccccc;
+            color: #aaaaaa;
             font-size: 11px;
             font-weight: 500;
             text-align: center;
@@ -387,7 +387,7 @@
           &:hover {
             .option-counter {
               background-color: rgb(204, 204, 204, 0.2);
-              color: #cccccc;
+              color: rgb(204, 204, 204, 0.2);
             }
           }
         }
@@ -400,11 +400,17 @@
           justify-content: center;
           height: auto;
           min-height: 26px;
+          border-radius: 2px;
 
           .fuel-franchise-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0 2px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
 
             .fuel-franchise-header-right-side {
               display: flex;
@@ -416,11 +422,15 @@
                 height: 16px;
                 border-radius: 20px;
                 background-color: rgb(204, 204, 204, 0.2);
-                color: #cccccc;
+                color: #aaaaaa;
                 font-size: 11px;
                 font-weight: 500;
                 text-align: center;
                 padding: 0 4.5px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
               }
 
               .header-arrow {
@@ -433,7 +443,7 @@
                   transform: rotate(0deg);
                   transition: all 0.3s ease-in-out;
                   path {
-                    fill: #919191;
+                    fill: #aaaaaa;
                   }
                 }
 
@@ -447,7 +457,7 @@
                 &:hover {
                   svg {
                     path {
-                      fill: #919191;
+                      fill: #dadada;
                     }
                   }
                 }
@@ -460,6 +470,7 @@
             flex-direction: column;
             justify-content: center;
             gap: 4px;
+            max-height: 237px;
 
             .fuel-franchise-single-store {
               height: 26px;
@@ -469,23 +480,112 @@
               justify-content: space-between;
               padding-left: 3px;
               padding-right: 24px;
+              padding: 3px 26px 4px 4px;
 
               .fuel-franchise-store-name {
                 font-size: 14px;
                 font-weight: 400;
-                height: 18px;
+                height: 19px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                color: #ffffff;
               }
 
               .fuel-franchise-store-address {
                 font-size: 11px;
                 font-weight: 500;
                 line-height: 14px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                color: #cccccc;
+              }
+
+              &:hover {
+                color: #ffffff;
+                background-color: #1d1d1d;
+              }
+            }
+
+            &.scroll {
+              transition: all 0.3s ease-in-out;
+              overflow-y: scroll !important;
+              scrollbar-width: none !important; /* Firefox */
+
+              &::-webkit-scrollbar {
+                width: 3px;
+              }
+              &::-webkit-scrollbar-thumb {
+                background-color: transparent;
+                border: 6px solid #aaaaaa;
+                border-radius: 1px;
+              }
+              &::-webkit-scrollbar-track {
+                padding: 0;
+                position: relative;
+                right: 0;
+                top: 0;
+                background: transparent;
+              }
+
+              .fuel-franchise-single-store {
+                padding: 3px 22px 4px 4px;
               }
             }
           }
 
           &.active-stores {
             background-color: rgb(170, 170, 170, 0.1);
+
+            .fuel-franchise-main-header {
+              color: #ffffff;
+              font-weight: 700;
+            }
+
+            &:hover {
+              background-color: rgb(170, 170, 170, 0.1);
+              color: #dadada;
+            }
+          }
+
+          &.active-stores-header-hover {
+            &:hover {
+              background-color: #2f2f2f;
+              position: relative;
+
+              .fuel-franchise-header {
+                color: #ffffff;
+                background-color: #1d1d1d;
+                font-weight: 700;
+                position: relative;
+              }
+
+              .helper-hover-container {
+                content: "";
+                width: 105%;
+                height: 26px;
+                background-color: #1d1d1d;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                border-radius: 2px;
+              }
+
+              .fuel-franchise-header {
+                .fuel-franchise-header-right-side {
+                  .header-arrow {
+                    svg {
+                      path {
+                        fill: #dadada;
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
 
@@ -756,6 +856,10 @@
 
       &.w-col-275 {
         width: 275px;
+      }
+
+      &.w-col-256 {
+        width: 256px;
       }
 
       &.w-col-251 {
@@ -1066,11 +1170,9 @@
                   // Higlight text
                   .highlight-text-45632 {
                     font-weight: 700;
-                    color: #ffffff !important;
-
+                    transition: all 0.3s ease-in-out;
                     &:hover {
-                      color: #3551b7 !important;
-                      transition: all 0.3s ease-in-out;
+                      color: #3074d3 !important;
                     }
                   }
                 }
@@ -1096,11 +1198,9 @@
               // Higlight text
               .highlight-text-45632 {
                 font-weight: 700;
-                color: #ffffff !important;
-
+                transition: all 0.3s ease-in-out;
                 &:hover {
-                  color: #3551b7 !important;
-                  transition: all 0.3s ease-in-out;
+                  color: #3074d3 !important;
                 }
               }
 
@@ -1113,7 +1213,7 @@
                 position: relative;
 
                 &:hover {
-                  color: #3551b7;
+                  color: #3074d3;
                   transition: all 0.3s ease-in-out;
                 }
 
@@ -1168,18 +1268,16 @@
                 position: relative;
 
                 &:hover {
-                  color: #3551b7;
+                  color: #3074d3;
                   transition: all 0.3s ease-in-out;
                 }
 
                 // Higlight text
                 .highlight-text-45632 {
                   font-weight: 700;
-                  color: #ffffff !important;
-
+                  transition: all 0.3s ease-in-out;
                   &:hover {
-                    color: #3551b7 !important;
-                    transition: all 0.3s ease-in-out;
+                    color: #3074d3 !important;
                   }
                 }
               }
@@ -1245,7 +1343,7 @@
         border-radius: 2px;
         white-space: nowrap;
         text-overflow: ellipsis;
-        color: #cccccc;
+        color: #ffffff;
         display: flex;
         gap: 4px;
 
@@ -1260,7 +1358,6 @@
 
         &:hover {
           background-color: #1d1d1d;
-          color: #ffffff;
           border-radius: 2px;
           cursor: pointer;
         }

@@ -80,6 +80,7 @@
     [ngbPopover]="taInputDropdownPopover"
     [placement]="['bottom-left']"
     [container]="'body'"
+    [autoClose]="'outside'"
     [incorrectValue]="incorrectValue"
     [selectedDropdownLabelColor]="
       inputConfig.dropdownLabel
@@ -110,7 +111,8 @@
     [ngClass]="{
       scroll: options | taDropdownCount: template,
       'dropdown-options-groups':
-        template === 'groups' || template === 'load-broker-contact'
+        template === 'groups' || template === 'load-broker-contact',
+      'dropdown-options-fuel-franchise': template === 'fuel-franchise'
     }"
     (scroll)="onScrollDropdown($event.target)"
   >
@@ -125,7 +127,6 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
-            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
@@ -156,7 +157,6 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
-            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id,
             trailerContainer: option.name === 'Container',
             semisleeper: option.name === 'Semi w/Sleeper',
@@ -291,7 +291,6 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
-            'add-new-divider': option.name === 'Add New' && options.length > 1,
             'active-label':
               option.id === activeItem?.id && labelMode === 'Label'
           }"
@@ -314,9 +313,7 @@
             <div
               class="labels-template-text"
               [ngClass]="{
-                'add-new': option.name === 'Add New',
-                'add-new-divider':
-                  option.name === 'Add New' && options.length > 1
+                'add-new': option.name === 'Add New'
               }"
               [innerHtml]="
                 option.name
@@ -349,7 +346,6 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
-            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id,
             'active-repair-truck-trailer': option?.status === 1
           }"
@@ -465,7 +461,6 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
-            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
@@ -506,8 +501,7 @@
             *ngIf="options.length !== 1 && options[0].name !== 'No Results'"
             class="dropdown-group-header"
             [ngClass]="{
-              'add-new': option.name === 'Add New',
-              'add-new-divider': option.name === 'Add New' && options.length > 1
+              'add-new': option.name === 'Add New'
             }"
           >
             {{
@@ -569,7 +563,6 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
-            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
@@ -599,30 +592,107 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
-            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active:
               option.id ===
               (activeItem?.duplicateId
                 ? activeItem?.duplicateId
-                : activeItem?.id),
-            'active-repair-truck-trailer': option?.status === 1,
-            routing_dropdown: inputConfig.name == 'RoutingAddress'
+                : activeItem?.id)
           }"
           (click)="onActiveItem(option)"
         >
-          <span>
-            {{
+          <span
+            [innerHtml]="
               option.name
-                | taHighlight
-                  : [{ index: 45632, text: getSuperControl.value }]
-                  : false
-            }}
+                | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+            "
+          >
           </span>
           <span
             *ngIf="option.name !== 'Add New' && option.name !== 'No Results'"
             class="option-counter"
-            >{{ option.count }}</span
+            [innerHtml]="option.count"
           >
+          </span>
+        </div>
+      </div>
+      <!--------------------------- Fuel Franchise Template --------------------------->
+      <div *ngSwitchCase="'fuel-franchise'">
+        <div
+          *ngFor="let option of options; trackBy: identity"
+          class="dropdown-option dropdown-option-fuel-franchise"
+          [ngClass]="{
+            disabled: option?.disabled,
+            'no-result':
+              options.length === 1 && options[0].name === 'No Results',
+            'active-stores': option.open,
+            'active-stores-header-hover': option.hover && option.open
+          }"
+          (click)="onActiveItem(option)"
+        >
+          <div class="helper-hover-container"></div>
+          <div
+            class="fuel-franchise-header"
+            (click)="toggleNestedList(option)"
+            (mouseenter)="option.hover = true"
+            (mouseleave)="option.hover = false"
+          >
+            <span
+              class="fuel-franchise-main-header"
+              [innerHtml]="
+                option.businessName
+                  | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+              "
+            >
+            </span>
+            <div
+              *ngIf="option.isFranchise"
+              class="fuel-franchise-header-right-side"
+            >
+              <span
+                *ngIf="
+                  option.name !== 'Add New' && option.name !== 'No Results'
+                "
+                class="option-counter"
+              >
+                {{ option.count }}
+              </span>
+              <svg-icon
+                class="header-arrow"
+                [ngClass]="{ rotate: option.open }"
+                src="assets/svg/common/ic_arrow_down_updated.svg"
+              ></svg-icon>
+            </div>
+          </div>
+
+          <div
+            *ngIf="option.isFranchise && option.open"
+            class="fuel-franchise-stores"
+            [ngClass]="{ scroll: option.stores.length > 7 }"
+          >
+            <div
+              *ngFor="let store of option.stores"
+              class="fuel-franchise-single-store"
+            >
+              <span
+                class="fuel-franchise-store-name"
+                [innerHtml]="
+                  store.name
+                    | taHighlight
+                      : [{ index: 45632, text: getSuperControl.value }]
+                "
+              >
+              </span>
+              <span
+                class="fuel-franchise-store-address"
+                [innerHtml]="
+                  store.address
+                    | taHighlight
+                      : [{ index: 45632, text: getSuperControl.value }]
+                "
+              >
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <!--------------------------- Default Template - Render Only Text --------------------------->
@@ -635,7 +705,6 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
-            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active:
               option.id ===
               (activeItem?.duplicateId

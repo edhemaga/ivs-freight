@@ -20,7 +20,7 @@
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
-            label: 'Truck #',
+            label: 'Truck',
             isRequired: true,
             isDropdown: true,
             dropdownWidthClass: 'w-col-216'
@@ -76,44 +76,30 @@
       </div>
     </div>
     <div class="row last-row">
-      <div class="col-8">
+      <div class="col-12">
         <app-ta-input-dropdown
           formControlName="fuelStopId"
+          [template]="'fuel-franchise'"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
             label: 'Fuel Stop',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-296'
+            dropdownWidthClass: 'w-col-456'
           }"
           [options]="fuelStops"
           [activeItem]="selectedFuelStop"
           (selectedItem)="onSelectDropDown($event, 'fuel')"
         ></app-ta-input-dropdown>
       </div>
-      <div class="col-4">
-        <app-ta-input-dropdown
-          formControlName="storeId"
-          [inputConfig]="{
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Store #',
-            isDropdown: true,
-            dropdownWidthClass: 'w-col-148'
-          }"
-          [options]="storeType"
-          [activeItem]="selectedStoreType"
-          (selectedItem)="onSelectDropDown($event, 'store')"
-        ></app-ta-input-dropdown>
-      </div>
     </div>
     <!-- Fake Table Card -->
     <app-ta-custom-card
       [hasCounter]="fuelItems.length ? fuelItems.length : 0"
-      [cardName]="'Items'"
+      [cardName]="'Item'"
+      [headerSvgEnabled]="true"
       [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-      [hasArrow]="false"
       [isCommentData]="true"
       [isCardOpen]="fuelItems.length > 0"
       [hasBodyData]="fuelItems.length > 0"
@@ -130,8 +116,8 @@
         <div class="common-fake-table-label">
           <p>#</p>
           <p>ITEM <span>*</span></p>
-          <p>QTY <span>*</span></p>
-          <p>PRICE <span>*</span></p>
+          <p>QTY</p>
+          <p>PRICE</p>
           <p>SUBTOTAL</p>
         </div>
         <div class="common-fake-table-body">
@@ -214,5 +200,18 @@
         </p>
       </div>
     </app-ta-custom-card>
+
+    <div class="ta-card-body-overflow-none">
+      <app-ta-custom-card
+        [hasCounter]="documents.length ? documents.length : 0"
+        [cardName]="'Documents'"
+        [isCardOpen]="documents.length > 0"
+      >
+        <app-ta-upload-files
+          [files]="documents"
+          (onFileEvent)="onFilesEvent($event)"
+        ></app-ta-upload-files>
+      </app-ta-custom-card>
+    </div>
   </form>
 </app-ta-modal>

@@ -14,20 +14,24 @@
       font-size: 12px;
 
       &::-moz-selection {
-        background-color: #919191 !important;
+        background-color: rgb(145, 145, 145, 0.2) !important;
+        color: #919191 !important;
       }
 
       &::selection {
-        background-color: #919191 !important;
+        background-color: rgb(145, 145, 145, 0.2) !important;
+        color: #919191 !important;
       }
     }
 
     &::-moz-selection {
-      background-color: #919191 !important;
+      background-color: rgb(145, 145, 145, 0.2) !important;
+      color: #919191 !important;
     }
 
     &::selection {
-      background-color: #919191 !important;
+      background-color: rgb(145, 145, 145, 0.2) !important;
+      color: #919191 !important;
     }
   }
 }
@@ -105,17 +109,15 @@
       font-size: 14px;
       font-weight: 600;
       color: #919191;
+
       &:nth-child(1) {
         padding-left: 11px;
       }
 
-      &::-moz-selection {
-        background-color: #919191 !important;
-      }
-
-      &::selection {
-        background-color: #919191 !important;
-      }
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
     }
     .fuel-subtotal {
       justify-self: flex-end;
@@ -151,6 +153,7 @@
       }
     }
     &:hover {
+      cursor: -webkit-grab;
       cursor: grab;
     }
 
