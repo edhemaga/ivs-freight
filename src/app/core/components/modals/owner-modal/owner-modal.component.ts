@@ -34,10 +34,9 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerTService } from '../../owner/state/owner.service';
 import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
-import { forkJoin, Subject, takeUntil, merge } from 'rxjs';
+import { Subject, takeUntil, merge } from 'rxjs';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
-import { first, take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-owner-modal',

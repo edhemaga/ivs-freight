@@ -8,8 +8,6 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { RoadsideActiveQuery } from '../state/roadside-state/roadside-active/roadside-active.query';
-import { RoadsideInspectionResponse } from 'appcoretruckassist';
 import { RoadsideMinimalListQuery } from '../state/roadside-details-state/roadside-minimal-list-state/roadside-minimal.query';
 
 @Component({
