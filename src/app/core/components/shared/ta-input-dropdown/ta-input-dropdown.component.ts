@@ -419,7 +419,11 @@ export class TaInputDropdownComponent
 
   private search(searchText: string): void {
     // Single Dropdown
-    if (this.template !== 'groups' && this.template !== 'load-broker-contact') {
+    if (
+      !['groups', 'load-broker-contact', 'fuel-franchise'].includes(
+        this.template
+      )
+    ) {
       if (
         searchText?.length &&
         this.getSuperControl.value &&
@@ -501,6 +505,21 @@ export class TaInputDropdownComponent
               ...element,
               contacts: element?.contacts?.filter((subElement) =>
                 subElement.name.toLowerCase().includes(searchText.toLowerCase())
+              ),
+            };
+          });
+        }
+
+        if (this.template === 'fuel-franchise') {
+          console.log('options: ', this.originalOptions);
+          this.options = this.originalOptions.map((element) => {
+            return {
+              ...element,
+              stores: element?.stores?.filter((subElement) =>
+                subElement.name
+                  .toString()
+                  .toLowerCase()
+                  .includes(searchText.toLowerCase())
               ),
             };
           });

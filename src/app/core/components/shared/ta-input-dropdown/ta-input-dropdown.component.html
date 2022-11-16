@@ -673,7 +673,7 @@
             [ngClass]="{ scroll: option.stores.length > 7 }"
           >
             <div
-              *ngFor="let store of option.stores"
+              *ngFor="let store of option.stores; trackBy: identity"
               class="fuel-franchise-single-store"
               [ngClass]="{ active: activeItem?.id === store?.id }"
               (click)="onActiveItem(store)"
