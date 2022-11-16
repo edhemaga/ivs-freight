@@ -261,19 +261,24 @@ export class TaInputDropdownComponent
           // Focus Out
           if (!action) {
             this.popoverRef.open();
-
+            console.log('actictw ', this.activeItem);
             // Prevent user to typing dummmy data if activeItem doesn't exist
             if (this.activeItem) {
-              this.getSuperControl.setValue(this.activeItem.name);
+              this.getSuperControl.setValue(
+                this.activeItem ? this.activeItem.name : null
+              );
             } else {
               const index = this.originalOptions.findIndex(
                 (item) => item.name === this.getSuperControl.value
               );
+
               if (index === -1) {
                 this.onClearSearch();
               }
             }
-            this.popoverRef.close();
+            if (this.template !== 'fuel-franchise') {
+              this.popoverRef.close();
+            }
           }
           // Focus In
           else {
@@ -588,6 +593,13 @@ export class TaInputDropdownComponent
           }, 200);
         }
       }
+    }
+
+    if (this.template === 'fuel-franchise') {
+      const timeout = setTimeout(() => {
+        this.popoverRef.close();
+        clearTimeout(timeout);
+      }, 100);
     }
   }
 

@@ -402,6 +402,7 @@
           min-height: 26px;
           border-radius: 2px;
 
+          // Franchise Header
           .fuel-franchise-header {
             display: flex;
             align-items: center;
@@ -465,6 +466,7 @@
             }
           }
 
+          // Franchise Stores
           .fuel-franchise-stores {
             display: flex;
             flex-direction: column;
@@ -504,9 +506,30 @@
                 color: #cccccc;
               }
 
+              &.active {
+                .fuel-franchise-store-name,
+                .fuel-franchise-store-address {
+                  color: #6f9ee0 !important;
+                }
+
+                .highlight-text-45632 {
+                  font-weight: 700;
+                  transition: all 0.3s ease-in-out;
+                }
+              }
+
               &:hover {
                 color: #ffffff;
                 background-color: #1d1d1d;
+
+                // Higlight text
+                &.active {
+                  .fuel-franchise-store-name,
+                  .fuel-franchise-store-address {
+                    color: #3074d3 !important;
+                    font-weight: 700;
+                  }
+                }
               }
             }
 

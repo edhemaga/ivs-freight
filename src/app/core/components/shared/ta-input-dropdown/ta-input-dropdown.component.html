@@ -627,9 +627,11 @@
             'active-stores': option.open,
             'active-stores-header-hover': option.hover && option.open
           }"
-          (click)="onActiveItem(option)"
         >
+          <!-- Hover Container -->
           <div class="helper-hover-container"></div>
+
+          <!-- Franchise Header -->
           <div
             class="fuel-franchise-header"
             (click)="toggleNestedList(option)"
@@ -664,6 +666,7 @@
             </div>
           </div>
 
+          <!-- Franchise Stores -->
           <div
             *ngIf="option.isFranchise && option.open"
             class="fuel-franchise-stores"
@@ -672,6 +675,8 @@
             <div
               *ngFor="let store of option.stores"
               class="fuel-franchise-single-store"
+              [ngClass]="{ active: activeItem?.id === store?.id }"
+              (click)="onActiveItem(store)"
             >
               <span
                 class="fuel-franchise-store-name"
