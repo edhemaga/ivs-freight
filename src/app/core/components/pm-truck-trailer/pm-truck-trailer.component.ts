@@ -44,6 +44,7 @@ export class PmTruckTrailerComponent implements OnInit {
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                showGeneralPmBtn: true,
                 viewModeOptions: [
                     { name: 'List', active: this.activeViewMode === 'List' },
                     { name: 'Card', active: this.activeViewMode === 'Card' },
@@ -203,6 +204,7 @@ export class PmTruckTrailerComponent implements OnInit {
         if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
             this.sendPMData();
+        } else if (event.action === 'open-modal') {
         } else if (event.action === 'open-general-pm') {
             if (this.selectedTab === 'active') {
                 this.modalService.openModal(
