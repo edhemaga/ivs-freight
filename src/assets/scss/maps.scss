@@ -20,9 +20,9 @@
         height: 2px;
         width: 100%;
         margin-top: 8px;
-    
+
         background: $ta-light-grey-4;
-    
+
         border-radius: 1px;
     }
 
@@ -33,7 +33,7 @@
         .gm-bundled-control {
             right: 34px !important;
             bottom: 58px !important;
-            
+
             .gmnoprint {
                 width: 26px;
                 height: 50px;
@@ -69,10 +69,10 @@
         .si-shadow-frame {
             box-shadow: none;
         }
-        
+
         .si-float-wrapper {
             z-index: 998;
-            
+
             pointer-events: none;
 
             &:has(.show-marker-dropdown) {
@@ -87,7 +87,7 @@
 
             padding: 0px;
             overflow: visible;
-            background: none!important;
+            background: none !important;
 
             .si-content {
                 max-width: none !important;
@@ -101,7 +101,7 @@
                 }
             }
         }
-        
+
         .marker-business-name {
             font-size: 18px;
             font-weight: 700;
@@ -112,20 +112,20 @@
             &::-moz-selection {
                 color: $bw6-2;
                 background: #6c6c6c33;
-              }
+            }
             &::selection {
                 color: $bw6-2;
                 background: #6c6c6c33;
             }
         }
-        
+
         .marker-expanded-view {
             overflow: hidden;
             opacity: 1;
 
             transition: height 0.15s ease-in-out;
 
-            &.unopened{
+            &.unopened {
                 transition: height 0.15s ease-in-out;
             }
         }
@@ -144,11 +144,11 @@
             bottom: 8px;
 
             cursor: pointer;
-            
+
             .marker-expand-svg {
                 display: inline-block;
                 transition: all 0.15s ease-in-out;
-                
+
                 &:hover {
                     svg {
                         path {
@@ -176,7 +176,7 @@
                 }
             }
         }
-        
+
         .marker-expanded-info-container {
             margin-top: 12px;
         }
@@ -197,7 +197,7 @@
 
         .marker-info-container-all {
             padding-left: 4px;
-            
+
             .show-more {
                 //top: 7px;
                 height: 18px;
@@ -208,12 +208,12 @@
                 }
             }
         }
-        
+
         .marker-info-container {
             display: flex;
             margin-top: 12px;
         }
-        
+
         .marker-info-svg {
             margin-right: 6px;
         }
@@ -233,18 +233,18 @@
 
     &:hover {
         .marker-tooltip {
-            color: #3C3C3C;
+            color: #3c3c3c;
 
             .orange-text {
-                color: #FF9800 !important;
+                color: #ff9800 !important;
             }
 
             .red-text {
-                color: #F44336 !important;
+                color: #f44336 !important;
             }
 
             .blue-text {
-                color: #3551B7 !important;
+                color: #3551b7 !important;
             }
         }
 
@@ -258,7 +258,7 @@
             &.permanently-closed-icon {
                 svg {
                     #Ellipse_6005 {
-                        fill: #F44336;
+                        fill: #f44336;
                     }
                 }
             }
@@ -266,7 +266,7 @@
             &.fuel-marker {
                 svg {
                     #Ellipse_6005 {
-                        fill: #FFB300;
+                        fill: #ffb300;
                     }
                 }
             }
@@ -280,7 +280,8 @@
     color: $bw6-2;
     //color: #F44336 !important;
     //margin-left: 15px;
-    text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white, -1px 1px 0px $white;
+    text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white,
+        -1px 1px 0px $white;
     text-transform: uppercase;
     font-size: 11px !important;
     line-height: 12px;
@@ -335,7 +336,7 @@
             &.has-liked-icon {
                 svg {
                     path {
-                        fill: #4DB6A2;
+                        fill: #4db6a2;
                     }
                 }
 
@@ -347,11 +348,11 @@
                     }
                 }
             }
-            
+
             &.has-disliked-icon {
                 svg {
                     path {
-                        fill: #E57373;
+                        fill: #e57373;
                     }
                 }
 
@@ -367,7 +368,6 @@
     }
 }
 
-        
 .marker-info-text {
     font-size: 14px;
     line-height: 18px;
@@ -376,7 +376,7 @@
     &::-moz-selection {
         color: $bw6-2;
         background: #6c6c6c33;
-      }
+    }
     &::selection {
         color: $bw6-2;
         background: #6c6c6c33;
@@ -386,7 +386,7 @@
         &::-moz-selection {
             color: $bw6-2;
             background: #6c6c6c33;
-          }
+        }
         &::selection {
             color: $bw6-2;
             background: #6c6c6c33;
@@ -404,7 +404,7 @@
     &::-moz-selection {
         color: $bw6-2;
         background: #6c6c6c33;
-      }
+    }
     &::selection {
         color: $bw6-2;
         background: #6c6c6c33;
@@ -423,7 +423,7 @@
     &::-moz-selection {
         color: $bw6-2;
         background: #6c6c6c33;
-      }
+    }
     &::selection {
         color: $bw6-2;
         background: #6c6c6c33;
@@ -459,7 +459,7 @@
                     height: 18px;
 
                     path {
-                        fill: #AAAAAA;
+                        fill: #aaaaaa;
                     }
                 }
             }
@@ -468,7 +468,7 @@
                 .dropdown-dots {
                     svg {
                         path {
-                            fill: #6C6C6C;
+                            fill: #6c6c6c;
                         }
                     }
                 }
@@ -478,10 +478,10 @@
                 .dropdown-dots {
                     svg {
                         path {
-                            fill: #6C6C6C !important;
+                            fill: #6c6c6c !important;
                         }
                     }
-                
+
                     &:hover {
                         svg {
                             path {
@@ -490,8 +490,8 @@
                         }
                     }
                 }
-              }
-          }
+            }
+        }
     }
 }
 
@@ -504,7 +504,7 @@
 }
 
 .red-text {
-    color: #EF5350!important;
+    color: #ef5350 !important;
 }
 
 .marker-distance-left {
@@ -599,7 +599,7 @@
         &:hover {
             svg {
                 #Ellipse_6005 {
-                    fill: #F44336;
+                    fill: #f44336;
                 }
             }
         }
@@ -623,7 +623,7 @@
     &.fuel-marker {
         svg {
             #Ellipse_6005 {
-                fill: #FEC107;
+                fill: #fec107;
             }
         }
     }
@@ -638,7 +638,7 @@
         &:hover {
             svg {
                 #Ellipse_6005 {
-                    fill: #6C6C6C;
+                    fill: #6c6c6c;
                 }
             }
         }
@@ -681,19 +681,20 @@
 }
 
 // marker label
-.gm-style div[aria-hidden = "true"] {
+.gm-style div[aria-hidden='true'] {
     width: 90px;
 
     color: $bw6-2 !important;
     //color: #F44336 !important;
     margin-left: 124px;
-    text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white, -1px 1px 0px $white;
+    text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white,
+        -1px 1px 0px $white;
     text-transform: uppercase;
     font-size: 11px !important;
     line-height: 12px;
     font-weight: 600;
     text-align: left;
-    font-family: "Montserrat", "sans-serif" !important;
+    font-family: 'Montserrat', 'sans-serif' !important;
 
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -711,32 +712,32 @@
 
 @-webkit-keyframes fade-in-scale-animation {
     0% {
-      transform: scale(0.6);
+        transform: scale(0.6);
     }
     100% {
-      transform: scale(1);
+        transform: scale(1);
     }
 }
-  
+
 @keyframes fade-in-scale-animation {
     0% {
-      transform: scale(0.6);
+        transform: scale(0.6);
     }
     100% {
-      transform: scale(1);
+        transform: scale(1);
     }
 }
 
 .orange-text {
-    color: #FFA726 !important;
+    color: #ffa726 !important;
 }
 
 .red-text {
-    color: #EF5350 !important;
+    color: #ef5350 !important;
 }
 
 .blue-text {
-    color: #536BC2 !important;
+    color: #536bc2 !important;
 }
 
 .lowercase {
@@ -768,7 +769,7 @@
 
         &.vehicles-number {
             .marker-like-text {
-                color: #6C6C6C !important;
+                color: #6c6c6c !important;
             }
 
             svg {
@@ -780,82 +781,82 @@
 
         &.injury-number {
             .marker-like-text {
-                color: #FFA726 !important;
+                color: #ffa726 !important;
             }
 
             svg {
                 path {
-                    fill: #FFB74D;
+                    fill: #ffb74d;
                 }
             }
         }
 
         &.fatality-number {
             .marker-like-text {
-                color: #EF5350 !important;
+                color: #ef5350 !important;
             }
 
             svg {
                 path {
-                    fill: #E57373;
+                    fill: #e57373;
                 }
             }
         }
 
         &.towing {
             .marker-like-text {
-                color: #536BC2 !important;
+                color: #536bc2 !important;
             }
 
             svg {
                 path {
-                    fill: #6D82C7;
+                    fill: #6d82c7;
                 }
             }
 
             &.inactive {
                 text-decoration: line-through;
-                text-decoration-color: #CCCCCC;
+                text-decoration-color: #cccccc;
             }
         }
 
         &.hazard {
             .marker-like-text {
-                color: #536BC2 !important;
+                color: #536bc2 !important;
             }
 
             svg {
                 path {
-                    fill: #6D82C7;
+                    fill: #6d82c7;
                 }
             }
 
             &.inactive {
                 text-decoration: line-through;
-                text-decoration-color: #CCCCCC;
+                text-decoration-color: #cccccc;
             }
         }
 
         &.violation-number {
             .marker-like-text {
-                color: #536BC2 !important;
+                color: #536bc2 !important;
             }
 
             svg {
                 path {
-                    fill: #6D82C7;
+                    fill: #6d82c7;
                 }
-            }   
+            }
         }
 
         &.inactive {
             .marker-like-text {
-                color: #CCCCCC !important;
+                color: #cccccc !important;
             }
 
             svg {
                 path {
-                    fill: #DADADA;
+                    fill: #dadada;
                 }
             }
         }
@@ -878,12 +879,10 @@
 
     svg {
         rect {
-            fill: #FEC107;
+            fill: #fec107;
         }
     }
 }
-
-
 
 .map-zoom-controls {
     position: absolute;
@@ -916,7 +915,7 @@
 
             svg {
                 path {
-                    fill: #AAAAAA;
+                    fill: #aaaaaa;
                 }
             }
 

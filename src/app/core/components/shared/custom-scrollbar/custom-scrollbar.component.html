@@ -1,40 +1,40 @@
 <div
-  class="custom-scrollbar-holder"
-  #contentHolder
-  (cdkObserveContent)="projectContentChanged($event)"
-  [class.activeToolbar]="showScrollbar"
+    class="custom-scrollbar-holder"
+    #contentHolder
+    (cdkObserveContent)="projectContentChanged($event)"
+    [class.activeToolbar]="showScrollbar"
 >
-  <ng-content></ng-content>
-  <!-- Vertical Scroll Bar -->
-  <div
-    class="right-bar-scroll"
-    *ngIf="showScrollbar && scrollBarOptions.showVerticalScrollBar"
-  >
+    <ng-content></ng-content>
+    <!-- Vertical Scroll Bar -->
     <div
-      class="right-bar"
-      #bar
-      [ngStyle]="{ height: scrollHeight + 'px' }"
-      (mousedown)="setDraggingStart($event)"
-      (mouseup)="isMouseDown = false"
-    ></div>
-  </div>
+        class="right-bar-scroll"
+        *ngIf="showScrollbar && scrollBarOptions.showVerticalScrollBar"
+    >
+        <div
+            class="right-bar"
+            #bar
+            [ngStyle]="{ height: scrollHeight + 'px' }"
+            (mousedown)="setDraggingStart($event)"
+            (mouseup)="isMouseDown = false"
+        ></div>
+    </div>
 
-  <!-- Horizontal Scroll Bar -->
-  <div
-    class="horizontal-scroll-bar"
-    [ngStyle]="{
-      left: tableNotPinedBoundingRect?.left - 74 + 'px',
-      width: tableNotPinedBoundingRect?.width + 'px'
-    }"
-    *ngIf="showScrollbar && scrollBarOptions.showHorizontalScrollBar"
-  >
-    <!-- [ngStyle]="{ height: scrollHeight + 'px' }" -->
+    <!-- Horizontal Scroll Bar -->
     <div
-      class="horizontal-bar"
-      #bar
-      [ngStyle]="{ width: tableScrollWidth + 'px' }"
-      (mousedown)="setDraggingStart($event)"
-      (mouseup)="isMouseDown = false"
-    ></div>
-  </div>
+        class="horizontal-scroll-bar"
+        [ngStyle]="{
+            left: tableNotPinedBoundingRect?.left - 74 + 'px',
+            width: tableNotPinedBoundingRect?.width + 'px'
+        }"
+        *ngIf="showScrollbar && scrollBarOptions.showHorizontalScrollBar"
+    >
+        <!-- [ngStyle]="{ height: scrollHeight + 'px' }" -->
+        <div
+            class="horizontal-bar"
+            #bar
+            [ngStyle]="{ width: tableScrollWidth + 'px' }"
+            (mousedown)="setDraggingStart($event)"
+            (mouseup)="isMouseDown = false"
+        ></div>
+    </div>
 </div>

@@ -1,60 +1,60 @@
-@import "../../settings.global.scss";
+@import '../../settings.global.scss';
 
 .settings-toolbar-card {
-  height: 32px;
-  width: 100%;
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  padding: 7px 4px;
-  background-color: $settings-background;
+    height: 32px;
+    width: 100%;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding: 7px 4px;
+    background-color: $settings-background;
 
-  &.card-toolbar-first {
-    background-color: transparent;
-    padding: 0px;
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
-    pointer-events: none !important;
-    cursor: none !important;
-  }
+    &.card-toolbar-first {
+        background-color: transparent;
+        padding: 0px;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+        pointer-events: none !important;
+        cursor: none !important;
+    }
 
-  &.active {
-    background-color: $settings-gray !important;
+    &.active {
+        background-color: $settings-gray !important;
+
+        .toolbar-card-svg {
+            svg {
+                path {
+                    fill: $settings-background !important;
+                }
+            }
+        }
+
+        .toolbar-card-name {
+            color: $settings-background !important;
+        }
+    }
 
     .toolbar-card-svg {
-      svg {
-        path {
-          fill: $settings-background !important;
-        }
-      }
+        margin-right: 4px;
+        position: relative;
+        bottom: 1px;
     }
 
     .toolbar-card-name {
-      color: $settings-background !important;
+        font-weight: $settings-font-extrabold;
+        color: $settings-gray;
+        font-size: 14px;
+
+        &.card-toolbar-first-name {
+            font-size: 26px;
+            font-weight: $settings-font-black;
+        }
     }
-  }
 
-  .toolbar-card-svg {
-    margin-right: 4px;
-    position: relative;
-    bottom: 1px;
-  }
-
-  .toolbar-card-name {
-    font-weight: $settings-font-extrabold;
-    color: $settings-gray;
-    font-size: 14px;
-
-    &.card-toolbar-first-name {
-      font-size: 26px;
-      font-weight: $settings-font-black;
+    &:hover {
+        transition: $settings-transition;
+        cursor: pointer;
     }
-  }
-
-  &:hover {
-    transition: $settings-transition;
-    cursor: pointer;
-  }
 }

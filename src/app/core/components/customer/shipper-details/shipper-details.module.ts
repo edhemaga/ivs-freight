@@ -7,16 +7,12 @@ import { ShipperDetailsRoutes } from './shipper-details.routing';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    ShipperDetailsComponent,
-    ShipperDetailsSingleComponent,
-    ShipperCardViewComponent,
-  ],
-  exports: [ShipperCardViewComponent,SharedModule ],
-  imports: [
-    CommonModule,
-    ShipperDetailsRoutes,
-    SharedModule
-  ],
+    declarations: [
+        ShipperDetailsComponent,
+        ShipperDetailsSingleComponent,
+        ShipperCardViewComponent,
+    ],
+    exports: [ShipperCardViewComponent, SharedModule],
+    imports: [CommonModule, ShipperDetailsRoutes, SharedModule],
 })
 export class ShipperDetailsModule {}

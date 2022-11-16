@@ -5,27 +5,27 @@ import { TrailerMinimalResolver } from './state/trailer-minimal-list-state/trail
 import { TrailerTableComponent } from './trailer-table/trailer-table.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: TrailerTableComponent,
-    data: { title: 'Trailer' },
-  },
-  {
-    path: ':id/details',
-    loadChildren: () =>
-      import('./trailer-details/trailer-details.module').then(
-        (m) => m.TrailerDetailsModule
-      ),
-    resolve: {
-      trailer: TrailerItemResolver,
-      trailerMinimal: TrailerMinimalResolver,
+    {
+        path: '',
+        component: TrailerTableComponent,
+        data: { title: 'Trailer' },
     },
-    data: { title: 'Trailer details' },
-  },
+    {
+        path: ':id/details',
+        loadChildren: () =>
+            import('./trailer-details/trailer-details.module').then(
+                (m) => m.TrailerDetailsModule
+            ),
+        resolve: {
+            trailer: TrailerItemResolver,
+            trailerMinimal: TrailerMinimalResolver,
+        },
+        data: { title: 'Trailer details' },
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
 export class TrailerRoutingModule {}

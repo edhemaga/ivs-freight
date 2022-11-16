@@ -1,6 +1,6 @@
 @import 'src/theme/variables.scss';
 
-.table-container{
+.table-container {
     width: calc(100% - 74px);
     position: absolute;
     top: 0;
@@ -18,9 +18,9 @@
             height: 2px;
             width: 100%;
             margin-top: 8px;
-        
+
             background: $ta-light-grey-4;
-        
+
             border-radius: 1px;
         }
 
@@ -43,7 +43,7 @@
                     transition: height 0.2s ease-in-out;
                 }
             }
-            
+
             .marker-business-name {
                 font-size: 18px;
                 font-weight: 700;
@@ -51,14 +51,14 @@
                 text-transform: uppercase;
                 line-height: 22px;
             }
-            
+
             .marker-expanded-view {
                 transition: height 0.2s ease-in-out;
 
-                &.unopened{
+                &.unopened {
                     height: 0px;
                     transition: height 0.2s ease-in-out;
-                  }
+                }
             }
 
             .marker-title {
@@ -75,11 +75,11 @@
                 bottom: 8px;
 
                 cursor: pointer;
-                
+
                 .marker-expand-svg {
                     display: inline-block;
                     transition: all 0.2s ease-in-out;
-                    
+
                     &:hover {
                         svg {
                             path {
@@ -90,7 +90,7 @@
 
                     &.rotate {
                         transform: rotate(180deg);
-    
+
                         svg {
                             path {
                                 fill: $bc1;
@@ -107,7 +107,7 @@
                     }
                 }
             }
-            
+
             .marker-expanded-info-container {
                 margin-top: 12px;
             }
@@ -127,7 +127,7 @@
 
             .marker-info-container-all {
                 padding-left: 4px;
-                
+
                 .show-more {
                     top: 7px;
                     .table-dropdown-container {
@@ -135,12 +135,12 @@
                     }
                 }
             }
-            
+
             .marker-info-container {
                 display: flex;
                 margin-top: 12px;
             }
-            
+
             .marker-info-svg {
                 margin-right: 6px;
             }
@@ -148,13 +148,14 @@
     }
 }
 
-.gm-style div[aria-hidden = "true"] {
+.gm-style div[aria-hidden='true'] {
     width: 90px;
 
     color: $ta-blue-2 !important;
     //color: #F44336 !important;
     margin-left: 120px;
-    text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white, -1px 1px 0px $white;
+    text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white,
+        -1px 1px 0px $white;
     text-transform: uppercase;
     font-size: 11px !important;
     line-height: 12px;
@@ -166,12 +167,12 @@
     overflow: hidden;
 
     @supports (-webkit-line-clamp: 2) {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: initial;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: initial;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
 }
 
@@ -232,7 +233,7 @@
                     padding-left: 4px;
 
                     &.search-results-text {
-                        color: #536BC2;
+                        color: #536bc2;
                         font-weight: 400;
                     }
 
@@ -257,9 +258,9 @@
                     .map-list-sort-category {
                         font-weight: 500;
                         padding: 4px 6px;
-    
+
                         text-align: right;
-    
+
                         &:hover {
                             background: $ta-light-grey-4;
                             cursor: pointer;
@@ -283,17 +284,17 @@
             overflow-y: scroll;
             transition: 0.2s;
 
-            &::-webkit-scrollbar{
+            &::-webkit-scrollbar {
                 width: 4px;
             }
 
             &::-webkit-scrollbar-thumb {
-                background-color: #AAAAAA;
-                border: 4px solid #AAAAAA;
+                background-color: #aaaaaa;
+                border: 4px solid #aaaaaa;
                 border-radius: 1px;
             }
-    
-            &::-webkit-scrollbar-track{
+
+            &::-webkit-scrollbar-track {
                 width: 4px;
                 background-color: $white;
             }
@@ -312,7 +313,7 @@
                 }
 
                 &:hover {
-                    background: #F7F7F7;
+                    background: #f7f7f7;
                 }
 
                 &.map-list-card-selected {
@@ -321,7 +322,7 @@
                     &:hover {
                         background: $ta-light-grey;
                     }
-                    
+
                     .marker-info-text {
                         color: $ta-light-grey-3;
                     }
@@ -329,11 +330,12 @@
                     .marker-like-text {
                         color: $ta-light-grey-3;
                     }
-                    
+
                     .map-list-card-address {
                         color: $bw6-2;
-                        
-                        .address-text, .marker-bold-text {
+
+                        .address-text,
+                        .marker-bold-text {
                             &::-moz-selection {
                                 color: $bw6-2;
                                 background: #6c6c6c33;
@@ -355,7 +357,7 @@
                         &:hover {
                             svg {
                                 path {
-                                    fill: #4DB6A2;
+                                    fill: #4db6a2;
                                 }
                             }
                         }
@@ -367,7 +369,8 @@
                     line-height: 14px;
                     color: $ta-light-grey-2;
 
-                    .address-text, .marker-bold-text {
+                    .address-text,
+                    .marker-bold-text {
                         &::-moz-selection {
                             color: $ta-light-grey-2;
                             background: #aaaaaa33;
@@ -380,7 +383,7 @@
                 }
             }
         }
-        
+
         &.map-list-short {
             height: 50%;
         }
@@ -433,7 +436,7 @@
     .marker-rating {
         margin-right: 12px;
         cursor: pointer;
-    
+
         .marker-rating-svg {
             margin-right: 4px;
 
@@ -448,16 +451,15 @@
     }
 }
 
-            
 .marker-info-text {
     font-size: 14px;
     line-height: 18px;
     color: $bw6-2;
-    
+
     &::-moz-selection {
         color: $bw6-2;
         background: #6c6c6c33;
-      }
+    }
     &::selection {
         color: $bw6-2;
         background: #6c6c6c33;
@@ -527,7 +529,7 @@
             }
             path:last-child {
                 fill: $bc1;
-                
+
                 &:hover {
                     fill: $ta-blue-2;
                 }
@@ -537,10 +539,10 @@
 }
 
 .sort-dropdown {
-    background: $white!important;
+    background: $white !important;
 }
 
-.sort-filter-holder{
+.sort-filter-holder {
     width: 169px;
     border-radius: 3px;
     background-color: $white;
@@ -548,12 +550,12 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    
+
     box-shadow: $box-shadow;
     overflow: hidden;
     user-select: none;
-    
-    .sort-items-holder{
+
+    .sort-items-holder {
         width: 100%;
         background-color: $white;
         display: flex;
@@ -563,7 +565,7 @@
         padding: 2px 2px 0px 2px;
         box-sizing: border-box;
 
-        .sort-items{
+        .sort-items {
             width: 100%;
             min-height: 26px;
             border-radius: 2px;
@@ -578,9 +580,9 @@
             line-height: 22px;
             margin-bottom: 2px;
 
-            &:hover{
+            &:hover {
                 cursor: pointer;
-                background-color: #F7F7F7;
+                background-color: #f7f7f7;
                 color: $ta-light-grey-3 !important;
             }
         }
@@ -599,7 +601,7 @@
                     }
                 }
 
-                &:hover{
+                &:hover {
                     color: $primary !important;
                 }
             }
@@ -612,7 +614,7 @@
 }
 
 .red-text {
-    color: #EF5350;
+    color: #ef5350;
 }
 
 .marker-distance-left {

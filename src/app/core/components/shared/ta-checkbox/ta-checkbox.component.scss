@@ -1,245 +1,245 @@
 .ta-checkbox-container {
-  display: inline-block;
-  position: relative;
-  top: 1px;
-
-  label {
-    display: flex;
-    align-items: center;
-  }
-
-  /* Hide the default checkbox */
-  .ta-checkbox {
-    visibility: hidden;
-    cursor: pointer;
-  }
-
-  /* Create a custom checkbox */
-  .ta-mark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 14px;
-    width: 14px;
-    background-color: #cccccc;
-    border-radius: 2px;
-    cursor: pointer;
-
-    /* Create the mark/indicator (hidden when not checked) */
-    &::after {
-      content: "";
-      position: absolute;
-      display: none;
-      left: 4px;
-      top: 1px;
-      width: 6px;
-      height: 9px;
-      border: solid #ffffff;
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
-    }
-
-    &.invalid {
-      background-color: #e57373;
-      &:hover {
-        transition: all 0.3s ease-in-out;
-        background-color: #ef5350 !important;
-      }
-    }
-
-    &.disabled {
-      background-color: #97a8dc !important;
-
-      &:hover {
-        transition: all 0.3s ease-in-out;
-        background-color: #97a8dc !important;
-      }
-    }
-  }
-
-  &:hover .ta-checkbox ~ .ta-mark {
-    background-color: #919191;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .ta-checkbox:checked ~ .ta-checkbox-label {
-    color: #2f2f2f !important;
-  }
-
-  .ta-checkbox:checked ~ .ta-mark {
-    background-color: #3074d3;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .ta-checkbox:checked:hover ~ .ta-mark {
-    background-color: #536bc2;
-    transition: all 0.3s ease-in-out;
-  }
-
-  /* Show the mark when checked */
-  .ta-checkbox:checked ~ .ta-mark:after {
-    display: block;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .ta-checkbox-svg {
-    margin-left: 12px;
-    margin-right: 4px;
-  }
-
-  .ta-checkbox-label {
-    cursor: pointer;
-    color: #6c6c6c;
-    font-weight: 800;
-    font-size: 14px;
-    margin-left: 6px;
+    display: inline-block;
     position: relative;
-    line-height: 14px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    top: 1px;
 
-    &-required {
-      color: #f44336;
-    }
-  }
-
-  // -------------------------- Custom Class --------------------------------
-  &.disabled {
-    pointer-events: none !important;
-    svg-icon {
-      position: relative;
-      bottom: 1px;
-      width: 14px;
-      height: 15px;
-      line-height: 14px;
-
-      svg {
-        path {
-          fill: #dadada !important;
-        }
-      }
-    }
-
-    .ta-checkbox-label {
-      color: #dadada !important;
-    }
-
-    &.disabled-valid {
-      svg {
-        path {
-          fill: #6d82c7 !important;
-        }
-      }
-
-      .ta-checkbox-label {
-        font-weight: 500;
-        color: #6c6c6c !important;
-      }
-    }
-  }
-
-  &.medium {
-    .ta-checkbox-label {
-      font-weight: 500;
-      color: #6c6c6c;
-    }
-  }
-
-  &.regular {
     label {
-      line-height: 17px;
+        display: flex;
+        align-items: center;
     }
 
-    .ta-checkbox-label {
-      font-weight: 400;
-      color: #6c6c6c;
-    }
-  }
-
-  &.regular-small {
-    .ta-checkbox-label {
-      font-weight: 400;
-      font-size: 12px;
-      color: #919191;
-    }
-  }
-
-  &.billing-address {
-    margin-bottom: 12px;
-    position: relative;
-    left: 6px;
-    top: 0px;
-
-    &.checked {
-      margin-bottom: 22px;
-    }
-  }
-
-  &.shipper-hours {
-    margin-bottom: 10px;
-    position: relative;
-    left: 6px;
-    top: 0px;
-  }
-
-  &.bold-12 {
-    .ta-checkbox-label {
-      font-weight: 700;
-      font-size: 12px;
-    }
-  }
-
-  &.bold-14 {
-    .ta-checkbox-label {
-      font-weight: 700;
-      font-size: 14px;
-    }
-  }
-
-  &.regular-14 {
-    .ta-checkbox-label {
-      font-weight: 400;
-      font-size: 14px;
-    }
-  }
-
-  &.disclosure-release {
-    &:hover {
-      .ta-checkbox-label {
-        color: #3c3c3c;
-      }
+    /* Hide the default checkbox */
+    .ta-checkbox {
+        visibility: hidden;
+        cursor: pointer;
     }
 
-    .ta-checkbox-label {
-      font-weight: 400;
-      font-size: 14px;
-      color: #6c6c6c;
-    }
-  }
+    /* Create a custom checkbox */
+    .ta-mark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 14px;
+        width: 14px;
+        background-color: #cccccc;
+        border-radius: 2px;
+        cursor: pointer;
 
-  &.applicant-feedback {
+        /* Create the mark/indicator (hidden when not checked) */
+        &::after {
+            content: '';
+            position: absolute;
+            display: none;
+            left: 4px;
+            top: 1px;
+            width: 6px;
+            height: 9px;
+            border: solid #ffffff;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        &.invalid {
+            background-color: #e57373;
+            &:hover {
+                transition: all 0.3s ease-in-out;
+                background-color: #ef5350 !important;
+            }
+        }
+
+        &.disabled {
+            background-color: #97a8dc !important;
+
+            &:hover {
+                transition: all 0.3s ease-in-out;
+                background-color: #97a8dc !important;
+            }
+        }
+    }
+
+    &:hover .ta-checkbox ~ .ta-mark {
+        background-color: #919191;
+        transition: all 0.3s ease-in-out;
+    }
+
     .ta-checkbox:checked ~ .ta-checkbox-label {
-      color: #919191 !important;
+        color: #2f2f2f !important;
+    }
+
+    .ta-checkbox:checked ~ .ta-mark {
+        background-color: #3074d3;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .ta-checkbox:checked:hover ~ .ta-mark {
+        background-color: #536bc2;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Show the mark when checked */
+    .ta-checkbox:checked ~ .ta-mark:after {
+        display: block;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .ta-checkbox-svg {
+        margin-left: 12px;
+        margin-right: 4px;
     }
 
     .ta-checkbox-label {
-      font-weight: 700 !important;
-      font-size: 12px !important;
-      color: #919191 !important;
-    }
-  }
+        cursor: pointer;
+        color: #6c6c6c;
+        font-weight: 800;
+        font-size: 14px;
+        margin-left: 6px;
+        position: relative;
+        line-height: 14px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
 
-  &.applicant-disclosure-release-feedback {
-    .ta-checkbox:checked ~ .ta-checkbox-label {
-      color: #919191 !important;
+        &-required {
+            color: #f44336;
+        }
     }
 
-    .ta-checkbox-label {
-      font-weight: 400 !important;
-      font-size: 14px !important;
-      color: #919191 !important;
+    // -------------------------- Custom Class --------------------------------
+    &.disabled {
+        pointer-events: none !important;
+        svg-icon {
+            position: relative;
+            bottom: 1px;
+            width: 14px;
+            height: 15px;
+            line-height: 14px;
+
+            svg {
+                path {
+                    fill: #dadada !important;
+                }
+            }
+        }
+
+        .ta-checkbox-label {
+            color: #dadada !important;
+        }
+
+        &.disabled-valid {
+            svg {
+                path {
+                    fill: #6d82c7 !important;
+                }
+            }
+
+            .ta-checkbox-label {
+                font-weight: 500;
+                color: #6c6c6c !important;
+            }
+        }
     }
-  }
+
+    &.medium {
+        .ta-checkbox-label {
+            font-weight: 500;
+            color: #6c6c6c;
+        }
+    }
+
+    &.regular {
+        label {
+            line-height: 17px;
+        }
+
+        .ta-checkbox-label {
+            font-weight: 400;
+            color: #6c6c6c;
+        }
+    }
+
+    &.regular-small {
+        .ta-checkbox-label {
+            font-weight: 400;
+            font-size: 12px;
+            color: #919191;
+        }
+    }
+
+    &.billing-address {
+        margin-bottom: 12px;
+        position: relative;
+        left: 6px;
+        top: 0px;
+
+        &.checked {
+            margin-bottom: 22px;
+        }
+    }
+
+    &.shipper-hours {
+        margin-bottom: 10px;
+        position: relative;
+        left: 6px;
+        top: 0px;
+    }
+
+    &.bold-12 {
+        .ta-checkbox-label {
+            font-weight: 700;
+            font-size: 12px;
+        }
+    }
+
+    &.bold-14 {
+        .ta-checkbox-label {
+            font-weight: 700;
+            font-size: 14px;
+        }
+    }
+
+    &.regular-14 {
+        .ta-checkbox-label {
+            font-weight: 400;
+            font-size: 14px;
+        }
+    }
+
+    &.disclosure-release {
+        &:hover {
+            .ta-checkbox-label {
+                color: #3c3c3c;
+            }
+        }
+
+        .ta-checkbox-label {
+            font-weight: 400;
+            font-size: 14px;
+            color: #6c6c6c;
+        }
+    }
+
+    &.applicant-feedback {
+        .ta-checkbox:checked ~ .ta-checkbox-label {
+            color: #919191 !important;
+        }
+
+        .ta-checkbox-label {
+            font-weight: 700 !important;
+            font-size: 12px !important;
+            color: #919191 !important;
+        }
+    }
+
+    &.applicant-disclosure-release-feedback {
+        .ta-checkbox:checked ~ .ta-checkbox-label {
+            color: #919191 !important;
+        }
+
+        .ta-checkbox-label {
+            font-weight: 400 !important;
+            font-size: 14px !important;
+            color: #919191 !important;
+        }
+    }
 }

@@ -1,4 +1,4 @@
-import { NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { AccountingRoutingModule } from './accounting-routing.module';
@@ -8,14 +8,18 @@ import { AccountingPayrollComponent } from './accounting-payroll/accounting-payr
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 
 @NgModule({
-  declarations: [
-    AccountingIndexComponent,
-    PayrollComponent,
-    AccountingPayrollComponent
-  ],
-  imports: [CommonModule, AccountingRoutingModule, SharedModule, TruckassistTableModule],
-  entryComponents: [AccountingIndexComponent],
-  exports: [AccountingIndexComponent],
+    declarations: [
+        AccountingIndexComponent,
+        PayrollComponent,
+        AccountingPayrollComponent,
+    ],
+    imports: [
+        CommonModule,
+        AccountingRoutingModule,
+        SharedModule,
+        TruckassistTableModule,
+    ],
+    entryComponents: [AccountingIndexComponent],
+    exports: [AccountingIndexComponent],
 })
-export class AccountingModule {
-}
+export class AccountingModule {}

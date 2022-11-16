@@ -1,1078 +1,1260 @@
 <div class="dashboard-performance-holder">
-  <div class="dashboard-performance-header">
-    <div class="dashboard-performance-title">Performance</div>
-    <div class="dashboard-performance-toolbar">
-      <div class="dashboard-performance-switch-holder">
-        <app-ta-tab-switch
-          [tabs]="dashboardSwitchTabs"
-          (switchClicked)="changeDashboardTabs($event)"
-          [type]="'performance-switch'"
-        >
-        </app-ta-tab-switch>
-      </div>
-      <div class="dashboard-performance-border"></div>
-      <app-ta-time-period
-        #timePeriod
-        (selectTimePeriod)="selectTimePeriod($event)"
-      >
-      </app-ta-time-period>
-    </div>
-  </div>
-  <div class="dashboard-performance-body">
-    <div
-      class="dashboard-performance-body-left-holder dashboard-performance-{{
-        selectedColors['income']
-      }}-box"
-      (mouseenter)="hoverFocusCard('income', selectedColors['income'])"
-      (mouseleave)="hoverFocusCard('income', '')"
-      (click)="setColor('income')"
-    >
-      <div
-        ngbTooltip
-        mainTooltip="Hide from chart"
-        position="top"
-        tooltipBackground="#6C6C6C"
-        class="dashboard-performance-left-close"
-        *ngIf="backgroundCards?.length < 9"
-      >
-        <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-      </div>
-      <div class="dashboard-performance-body-title-holder">
-        <div class="dashboard-performance-body-title-circle"></div>
-        <div class="dashboard-performance-body-title">NET INCOME</div>
-      </div>
-      <div class="dashboard-performance-body-price-holder">$320.56K</div>
-      <div class="dashboard-performance-body-range-holder">
-        <div class="dashboard-performance-body-range"></div>
-      </div>
-      <div class="dashboard-performance-body-items-holder">
-        <div class="dashboard-performance-body-items-price">$462.57K</div>
-        <div class="dashboard-performance-body-trend-holder">
-          <div class="dashboard-performance-body-trend-down">
-            <svg-icon
-              src="assets/svg/common/dashboard/trend-down-with-frame.svg"
-            ></svg-icon>
-          </div>
-          <div class="dashboard-performance-body-trend-price">-$138.01K</div>
-          <div class="dashboard-performance-body-trend-percent">-27.5%</div>
+    <div class="dashboard-performance-header">
+        <div class="dashboard-performance-title">Performance</div>
+        <div class="dashboard-performance-toolbar">
+            <div class="dashboard-performance-switch-holder">
+                <app-ta-tab-switch
+                    [tabs]="dashboardSwitchTabs"
+                    (switchClicked)="changeDashboardTabs($event)"
+                    [type]="'performance-switch'"
+                >
+                </app-ta-tab-switch>
+            </div>
+            <div class="dashboard-performance-border"></div>
+            <app-ta-time-period
+                #timePeriod
+                (selectTimePeriod)="selectTimePeriod($event)"
+            >
+            </app-ta-time-period>
         </div>
-        <div class="dashboard-performance-body-items-text">LAST MONTH</div>
-      </div>
-      <div class="dashboard-performance-body-items-holder">
-        <div class="dashboard-performance-body-items-price">$283.32K</div>
-        <div class="dashboard-performance-body-trend-holder">
-          <div class="dashboard-performance-body-trend-down trend-up">
-            <svg-icon
-              src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-            ></svg-icon>
-          </div>
-          <div class="dashboard-performance-body-trend-price">+$37.24K</div>
-          <div class="dashboard-performance-body-trend-percent">+4.9%</div>
-        </div>
-        <div class="dashboard-performance-body-items-text">MONTHLY AVERAGE</div>
-      </div>
     </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['revenue']
-      }}-box"
-      (mouseenter)="hoverFocusCard('revenue', selectedColors['revenue'])"
-      (mouseleave)="hoverFocusCard('revenue', '')"
-      (click)="setColor('revenue')"
-      [class.active]="selectedColors['revenue']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">REVENUE</div>
+    <div class="dashboard-performance-body">
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-left-holder dashboard-performance-{{
+                selectedColors['income']
+            }}-box"
+            (mouseenter)="hoverFocusCard('income', selectedColors['income'])"
+            (mouseleave)="hoverFocusCard('income', '')"
+            (click)="setColor('income')"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+            <div
+                ngbTooltip
+                mainTooltip="Hide from chart"
+                position="top"
+                tooltipBackground="#6C6C6C"
+                class="dashboard-performance-left-close"
+                *ngIf="backgroundCards?.length < 9"
+            >
+                <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+            </div>
+            <div class="dashboard-performance-body-title-holder">
+                <div class="dashboard-performance-body-title-circle"></div>
+                <div class="dashboard-performance-body-title">NET INCOME</div>
+            </div>
+            <div class="dashboard-performance-body-price-holder">$320.56K</div>
+            <div class="dashboard-performance-body-range-holder">
+                <div class="dashboard-performance-body-range"></div>
+            </div>
+            <div class="dashboard-performance-body-items-holder">
+                <div class="dashboard-performance-body-items-price">
+                    $462.57K
+                </div>
+                <div class="dashboard-performance-body-trend-holder">
+                    <div class="dashboard-performance-body-trend-down">
+                        <svg-icon
+                            src="assets/svg/common/dashboard/trend-down-with-frame.svg"
+                        ></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-trend-price">
+                        -$138.01K
+                    </div>
+                    <div class="dashboard-performance-body-trend-percent">
+                        -27.5%
+                    </div>
+                </div>
+                <div class="dashboard-performance-body-items-text">
+                    LAST MONTH
+                </div>
+            </div>
+            <div class="dashboard-performance-body-items-holder">
+                <div class="dashboard-performance-body-items-price">
+                    $283.32K
+                </div>
+                <div class="dashboard-performance-body-trend-holder">
+                    <div class="dashboard-performance-body-trend-down trend-up">
+                        <svg-icon
+                            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                        ></svg-icon>
+                    </div>
+                    <div class="dashboard-performance-body-trend-price">
+                        +$37.24K
+                    </div>
+                    <div class="dashboard-performance-body-trend-percent">
+                        +4.9%
+                    </div>
+                </div>
+                <div class="dashboard-performance-body-items-text">
+                    MONTHLY AVERAGE
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">
-        $642.30K
-      </div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div class="dashboard-performance-body-right-cards-trend-up">
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +5.37K
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+        <div
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['revenue']
+            }}-box"
+            (mouseenter)="hoverFocusCard('revenue', selectedColors['revenue'])"
+            (mouseleave)="hoverFocusCard('revenue', '')"
+            (click)="setColor('revenue')"
+            [class.active]="selectedColors['revenue']"
+        >
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    REVENUE
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                $642.30K
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div class="dashboard-performance-body-right-cards-trend-up">
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +5.37K
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+5.37K</div>
                 <div class="dashboard-performance-body-right-cards-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['load']
-      }}-box"
-      (mouseenter)="hoverFocusCard('load', selectedColors['load'])"
-      (mouseleave)="hoverFocusCard('load', '')"
-      (click)="setColor('load')"
-      [class.active]="selectedColors['load']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">LOAD</div>
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
+        </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['load']
+            }}-box"
+            (mouseenter)="hoverFocusCard('load', selectedColors['load'])"
+            (mouseleave)="hoverFocusCard('load', '')"
+            (click)="setColor('load')"
+            [class.active]="selectedColors['load']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">37</div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div class="dashboard-performance-body-right-cards-trend-up">
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +3
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    LOAD
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                37
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div class="dashboard-performance-body-right-cards-trend-up">
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +3
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+3</div>
                 <div class="dashboard-performance-body-right-cards-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['miles']
-      }}-box"
-      (mouseenter)="hoverFocusCard('miles', selectedColors['miles'])"
-      (mouseleave)="hoverFocusCard('miles', '')"
-      (click)="setColor('miles')"
-      [class.active]="selectedColors['miles']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">MILES</div>
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
+        </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['miles']
+            }}-box"
+            (mouseenter)="hoverFocusCard('miles', selectedColors['miles'])"
+            (mouseleave)="hoverFocusCard('miles', '')"
+            (click)="setColor('miles')"
+            [class.active]="selectedColors['miles']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">
-        15.35K
-      </div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div class="dashboard-performance-body-right-cards-trend-up">
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +2.06K
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    MILES
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                15.35K
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div class="dashboard-performance-body-right-cards-trend-up">
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +2.06K
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+2.06K</div>
                 <div class="dashboard-performance-body-right-cards-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['fuel']
-      }}-box"
-      (mouseenter)="hoverFocusCard('fuel', selectedColors['fuel'])"
-      (mouseleave)="hoverFocusCard('fuel', '')"
-      (click)="setColor('fuel')"
-      [class.active]="selectedColors['fuel']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">
-          FUEL GALLON
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
         </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['fuel']
+            }}-box"
+            (mouseenter)="hoverFocusCard('fuel', selectedColors['fuel'])"
+            (mouseleave)="hoverFocusCard('fuel', '')"
+            (click)="setColor('fuel')"
+            [class.active]="selectedColors['fuel']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">
-        2.35K
-      </div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div
-          class="dashboard-performance-body-right-cards-trend-up red-trend-up"
-        >
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +237.5
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    FUEL GALLON
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                2.35K
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-trend-up red-trend-up"
+                >
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +237.5
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+237.5K</div>
                 <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['fuel-cost']
-      }}-box"
-      (mouseenter)="hoverFocusCard('fuel-cost', selectedColors['fuel-cost'])"
-      (mouseleave)="hoverFocusCard('fuel-cost', '')"
-      (click)="setColor('fuel-cost')"
-      [class.active]="selectedColors['fuel-cost']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">
-          FUEL COST
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
         </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['fuel-cost']
+            }}-box"
+            (mouseenter)="
+                hoverFocusCard('fuel-cost', selectedColors['fuel-cost'])
+            "
+            (mouseleave)="hoverFocusCard('fuel-cost', '')"
+            (click)="setColor('fuel-cost')"
+            [class.active]="selectedColors['fuel-cost']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">
-        $19.30K
-      </div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div
-          class="dashboard-performance-body-right-cards-trend-up red-trend-up"
-        >
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +2.37K
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    FUEL COST
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                $19.30K
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-trend-up red-trend-up"
+                >
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +2.37K
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+2.37K</div>
                 <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['repair']
-      }}-box"
-      (mouseenter)="hoverFocusCard('income', selectedColors['repair'])"
-      (mouseleave)="hoverFocusCard('repair', '')"
-      (click)="setColor('repair')"
-      [class.active]="selectedColors['repair']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">
-          REPAIR COST
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
         </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['repair']
+            }}-box"
+            (mouseenter)="hoverFocusCard('income', selectedColors['repair'])"
+            (mouseleave)="hoverFocusCard('repair', '')"
+            (click)="setColor('repair')"
+            [class.active]="selectedColors['repair']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">
-        $8.34K
-      </div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div class="dashboard-performance-body-right-cards-trend-up">
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-down-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          -$768.3
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    REPAIR COST
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                $8.34K
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div class="dashboard-performance-body-right-cards-trend-up">
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-down-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    -$768.3
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+768.3K</div>
                 <div class="dashboard-performance-body-right-cards-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['roadside']
-      }}-box"
-      (mouseenter)="hoverFocusCard('roadside', selectedColors['roadside'])"
-      (mouseleave)="hoverFocusCard('roadside', '')"
-      (click)="setColor('roadside')"
-      [class.active]="selectedColors['roadside']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">
-          ROADSIDE INSP.
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
         </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['roadside']
+            }}-box"
+            (mouseenter)="
+                hoverFocusCard('roadside', selectedColors['roadside'])
+            "
+            (mouseleave)="hoverFocusCard('roadside', '')"
+            (click)="setColor('roadside')"
+            [class.active]="selectedColors['roadside']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">47</div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div class="dashboard-performance-body-right-cards-trend-up">
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +5
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    ROADSIDE INSP.
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                47
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div class="dashboard-performance-body-right-cards-trend-up">
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +5
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+5</div>
                 <div class="dashboard-performance-body-right-cards-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['violation']
-      }}-box"
-      (mouseenter)="hoverFocusCard('violation', selectedColors['violation'])"
-      (mouseleave)="hoverFocusCard('violation', '')"
-      (click)="setColor('violation')"
-      [class.active]="selectedColors['violation']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">
-          VIOLATION
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
         </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['violation']
+            }}-box"
+            (mouseenter)="
+                hoverFocusCard('violation', selectedColors['violation'])
+            "
+            (mouseleave)="hoverFocusCard('violation', '')"
+            (click)="setColor('violation')"
+            [class.active]="selectedColors['violation']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">5</div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div
-          class="dashboard-performance-body-right-cards-trend-up red-trend-up"
-        >
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +1
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    VIOLATION
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                5
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-trend-up red-trend-up"
+                >
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +1
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+1</div>
                 <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['accident']
-      }}-box"
-      (mouseenter)="hoverFocusCard('accident', selectedColors['accident'])"
-      (mouseleave)="hoverFocusCard('accident', '')"
-      (click)="setColor('accident')"
-      [class.active]="selectedColors['accident']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">ACCIDENT</div>
-        <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
-        >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
         </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">0</div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+        <div
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['accident']
+            }}-box"
+            (mouseenter)="
+                hoverFocusCard('accident', selectedColors['accident'])
+            "
+            (mouseleave)="hoverFocusCard('accident', '')"
+            (click)="setColor('accident')"
+            [class.active]="selectedColors['accident']"
+        >
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    ACCIDENT
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                0
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+2.37K</div>
                 <div class="dashboard-performance-body-right-cards-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div
-        class="dashboard-performance-body-right-cards-text-holder different-width"
-      >
-        SAME AS LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['expences']
-      }}-box"
-      (mouseenter)="hoverFocusCard('expences', selectedColors['expences'])"
-      (mouseleave)="hoverFocusCard('expences', '')"
-      (click)="setColor('expences')"
-      [class.active]="selectedColors['expences']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">EXPENCES</div>
+            <div
+                class="dashboard-performance-body-right-cards-text-holder different-width"
+            >
+                SAME AS LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
+        </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['expences']
+            }}-box"
+            (mouseenter)="
+                hoverFocusCard('expences', selectedColors['expences'])
+            "
+            (mouseleave)="hoverFocusCard('expences', '')"
+            (click)="setColor('expences')"
+            [class.active]="selectedColors['expences']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">
-        $322.25K
-      </div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div
-          class="dashboard-performance-body-right-cards-trend-up red-trend-up"
-        >
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +8.37K
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    EXPENCES
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                $322.25K
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-trend-up red-trend-up"
+                >
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +8.37K
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+8.37K</div>
                 <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['driver']
-      }}-box"
-      (mouseenter)="hoverFocusCard('driver', selectedColors['driver'])"
-      (mouseleave)="hoverFocusCard('driver', '')"
-      (click)="setColor('driver')"
-      [class.active]="selectedColors['driver']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">DRIVER</div>
-        <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
-        >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
         </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">3</div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+        <div
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['driver']
+            }}-box"
+            (mouseenter)="hoverFocusCard('driver', selectedColors['driver'])"
+            (mouseleave)="hoverFocusCard('driver', '')"
+            (click)="setColor('driver')"
+            [class.active]="selectedColors['driver']"
+        >
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    DRIVER
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                3
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+2.37K</div>
                 <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div
-        class="dashboard-performance-body-right-cards-text-holder different-width"
-      >
-        SAME AS LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['truck']
-      }}-box"
-      (mouseenter)="hoverFocusCard('truck', selectedColors['truck'])"
-      (mouseleave)="hoverFocusCard('truck', '')"
-      (click)="setColor('truck')"
-      [class.active]="selectedColors['truck']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">TRUCK</div>
+            <div
+                class="dashboard-performance-body-right-cards-text-holder different-width"
+            >
+                SAME AS LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
+        </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['truck']
+            }}-box"
+            (mouseenter)="hoverFocusCard('truck', selectedColors['truck'])"
+            (mouseleave)="hoverFocusCard('truck', '')"
+            (click)="setColor('truck')"
+            [class.active]="selectedColors['truck']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">5</div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div
-          class="dashboard-performance-body-right-cards-trend-up red-trend-up"
-        >
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-down-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          -2
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    TRUCK
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                5
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-trend-up red-trend-up"
+                >
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-down-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    -2
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">-2</div>
                 <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['trailer']
-      }}-box"
-      (mouseenter)="hoverFocusCard('trailer', selectedColors['trailer'])"
-      (mouseleave)="hoverFocusCard('trailer', '')"
-      (click)="setColor('trailer')"
-      [class.active]="selectedColors['trailer']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">TRAILER</div>
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
+        </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['trailer']
+            }}-box"
+            (mouseenter)="hoverFocusCard('trailer', selectedColors['trailer'])"
+            (mouseleave)="hoverFocusCard('trailer', '')"
+            (click)="setColor('trailer')"
+            [class.active]="selectedColors['trailer']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">2</div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div
-          class="dashboard-performance-body-right-cards-trend-up red-trend-up"
-        >
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-down-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">4</div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    TRAILER
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                2
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-trend-up red-trend-up"
+                >
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-down-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    4
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">4</div>
                 <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['owner']
-      }}-box"
-      (mouseenter)="hoverFocusCard('owner', selectedColors['owner'])"
-      (mouseleave)="hoverFocusCard('owner', '')"
-      (click)="setColor('owner')"
-      [class.active]="selectedColors['owner']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">OWNER</div>
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
+        </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['owner']
+            }}-box"
+            (mouseenter)="hoverFocusCard('owner', selectedColors['owner'])"
+            (mouseleave)="hoverFocusCard('owner', '')"
+            (click)="setColor('owner')"
+            [class.active]="selectedColors['owner']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">1</div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div class="dashboard-performance-body-right-cards-trend-up">
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +1
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    OWNER
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                1
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div class="dashboard-performance-body-right-cards-trend-up">
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +1
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+1</div>
                 <div class="dashboard-performance-body-right-cards-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['user']
-      }}-box"
-      (mouseenter)="hoverFocusCard('user', selectedColors['user'])"
-      (mouseleave)="hoverFocusCard('user', '')"
-      (click)="setColor('user')"
-      [class.active]="selectedColors['user']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">USER</div>
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
+        </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['user']
+            }}-box"
+            (mouseenter)="hoverFocusCard('user', selectedColors['user'])"
+            (mouseleave)="hoverFocusCard('user', '')"
+            (click)="setColor('user')"
+            [class.active]="selectedColors['user']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">0</div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div
-          class="dashboard-performance-body-right-cards-trend-up red-trend-up"
-        >
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-down-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          -6
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    USER
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                0
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-trend-up red-trend-up"
+                >
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-down-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    -6
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">-6</div>
                 <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['repair-shop']
-      }}-box"
-      (mouseenter)="
-        hoverFocusCard('repair-shop', selectedColors['repair-shop'])
-      "
-      (mouseleave)="hoverFocusCard('repair-shop', '')"
-      (click)="setColor('repair-shop')"
-      [class.active]="selectedColors['repair-shop']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">
-          REPAIR SHOP
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
         </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['repair-shop']
+            }}-box"
+            (mouseenter)="
+                hoverFocusCard('repair-shop', selectedColors['repair-shop'])
+            "
+            (mouseleave)="hoverFocusCard('repair-shop', '')"
+            (click)="setColor('repair-shop')"
+            [class.active]="selectedColors['repair-shop']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">12</div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div class="dashboard-performance-body-right-cards-trend-up">
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +4
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    REPAIR SHOP
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                12
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div class="dashboard-performance-body-right-cards-trend-up">
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +4
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+4</div>
                 <div class="dashboard-performance-body-right-cards-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['broker']
-      }}-box"
-      (mouseenter)="hoverFocusCard('broker', selectedColors['broker'])"
-      (mouseleave)="hoverFocusCard('broker', '')"
-      (click)="setColor('broker')"
-      [class.active]="selectedColors['broker']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">BROKER</div>
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
+        </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['broker']
+            }}-box"
+            (mouseenter)="hoverFocusCard('broker', selectedColors['broker'])"
+            (mouseleave)="hoverFocusCard('broker', '')"
+            (click)="setColor('broker')"
+            [class.active]="selectedColors['broker']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">7</div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div
-          class="dashboard-performance-body-right-cards-trend-up red-trend-up"
-        >
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-down-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          -1
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    BROKER
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                7
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-trend-up red-trend-up"
+                >
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-down-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    -1
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">-1</div>
                 <div class="dashboard-performance-body-right-cards-trend-up red-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-down-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
-    </div>
-    <div
-      class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
-        selectedColors['shipper']
-      }}-box"
-      (mouseenter)="hoverFocusCard('shipper', selectedColors['shipper'])"
-      (mouseleave)="hoverFocusCard('shipper', '')"
-      (click)="setColor('shipper')"
-      [class.active]="selectedColors['shipper']"
-    >
-      <div class="dashboard-performance-body-right-cards-title-holder">
-        <div class="dashboard-performance-body-right-cards-title-circle"></div>
-        <div class="dashboard-performance-body-right-cards-title">SHIPPER</div>
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
+        </div>
         <div
-          ngbTooltip
-          mainTooltip="Hide from chart"
-          position="top"
-          tooltipBackground="#6C6C6C"
-          class="dashboard-performance-right-close"
-          *ngIf="backgroundCards?.length < 9"
+            class="dashboard-performance-body-right-cards-holder dashboard-performance-{{
+                selectedColors['shipper']
+            }}-box"
+            (mouseenter)="hoverFocusCard('shipper', selectedColors['shipper'])"
+            (mouseleave)="hoverFocusCard('shipper', '')"
+            (click)="setColor('shipper')"
+            [class.active]="selectedColors['shipper']"
         >
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dashboard-performance-body-right-cards-price-holder">35</div>
-      <div class="dashboard-performance-body-right-cards-trend-holder">
-        <div class="dashboard-performance-body-right-cards-trend-up">
-          <svg-icon
-            src="assets/svg/common/dashboard/trend-up-with-frame.svg"
-          ></svg-icon>
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-number">
-          +12
-        </div>
-        <div class="dashboard-performance-body-right-cards-trend-loss">
-          -50%
-        </div>
-      </div>
-      <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
+            <div class="dashboard-performance-body-right-cards-title-holder">
+                <div
+                    class="dashboard-performance-body-right-cards-title-circle"
+                ></div>
+                <div class="dashboard-performance-body-right-cards-title">
+                    SHIPPER
+                </div>
+                <div
+                    ngbTooltip
+                    mainTooltip="Hide from chart"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    class="dashboard-performance-right-close"
+                    *ngIf="backgroundCards?.length < 9"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/x.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+            <div class="dashboard-performance-body-right-cards-price-holder">
+                35
+            </div>
+            <div class="dashboard-performance-body-right-cards-trend-holder">
+                <div class="dashboard-performance-body-right-cards-trend-up">
+                    <svg-icon
+                        src="assets/svg/common/dashboard/trend-up-with-frame.svg"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="dashboard-performance-body-right-cards-trend-number"
+                >
+                    +12
+                </div>
+                <div class="dashboard-performance-body-right-cards-trend-loss">
+                    -50%
+                </div>
+            </div>
+            <!-- <div class="dashboard-performance-body-right-cards-trend-holder-hover">
                 <div class="dashboard-performance-body-right-cards-trend-number different-padding">+12</div>
                 <div class="dashboard-performance-body-right-cards-trend-up">
                     <svg-icon src="assets/svg/common/dashboard/trend-up-with-frame.svg"></svg-icon>
                 </div>
                 <div class="dashboard-performance-body-right-cards-trend-loss">-50.0%</div> 
             </div> -->
-      <div class="dashboard-performance-body-right-cards-text-holder">
-        LAST MONTH
-      </div>
-      <div class="dashboard-performance-body-right-cards-text-hover">
-        MONTHLY AVERAGE
-      </div>
+            <div class="dashboard-performance-body-right-cards-text-holder">
+                LAST MONTH
+            </div>
+            <div class="dashboard-performance-body-right-cards-text-hover">
+                MONTHLY AVERAGE
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <div class="dahsboard_chart_container">
-  <div class="dahsboard_charts_holder">
-    <div class="line_chart_title_hold">
-      <div class="dashboard_chart_title">March, 2023</div>
-      <div
-        class="dashboard_chart_average_hold"
-        *ngIf="topChart.focusCardHovered"
-      >
-        <div class="chart_average_icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="3"
-            viewBox="0 0 22 3"
-          >
-            <path
-              id="Path_38850"
-              data-name="Path 38850"
-              d="M-20422-21150h22"
-              transform="translate(20422 21151.5)"
-              fill="none"
-              [attr.stroke]="topChart.averageLineCover"
-              stroke-width="3"
-              stroke-dasharray="3 3"
-            />
-          </svg>
+    <div class="dahsboard_charts_holder">
+        <div class="line_chart_title_hold">
+            <div class="dashboard_chart_title">March, 2023</div>
+            <div
+                class="dashboard_chart_average_hold"
+                *ngIf="topChart.focusCardHovered"
+            >
+                <div class="chart_average_icon">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="3"
+                        viewBox="0 0 22 3"
+                    >
+                        <path
+                            id="Path_38850"
+                            data-name="Path 38850"
+                            d="M-20422-21150h22"
+                            transform="translate(20422 21151.5)"
+                            fill="none"
+                            [attr.stroke]="topChart.averageLineCover"
+                            stroke-width="3"
+                            stroke-dasharray="3 3"
+                        />
+                    </svg>
+                </div>
+                <div class="chart_average_title">
+                    Daily avg. <span>$67.42K</span>
+                </div>
+            </div>
         </div>
-        <div class="chart_average_title">Daily avg. <span>$67.42K</span></div>
-      </div>
-    </div>
-    <div
-      class="dashboard_performance_charts"
-      (mouseleave)="removeOtherChartHover()"
-    >
-      <app-ta-chart
-        #topChart
-        [chartConfig]="lineChartConfig"
-        [axesProperties]="lineAxes"
-        [legendAttributes]="{}"
-      >
-      </app-ta-chart>
-      <app-ta-chart
-        #bottomChart
-        [chartConfig]="barChartConfig"
-        [axesProperties]="barAxes"
-        [legendAttributes]="{}"
-        (hoverOtherChart)="hoverLineChart($event)"
-      >
-      </app-ta-chart>
-    </div>
-    <div class="dashboard_chart_data">
-      <div class="chart_data_inner separate_inner">
-        <div class="chart_data_icon round_dark_grey">
-          <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+        <div
+            class="dashboard_performance_charts"
+            (mouseleave)="removeOtherChartHover()"
+        >
+            <app-ta-chart
+                #topChart
+                [chartConfig]="lineChartConfig"
+                [axesProperties]="lineAxes"
+                [legendAttributes]="{}"
+            >
+            </app-ta-chart>
+            <app-ta-chart
+                #bottomChart
+                [chartConfig]="barChartConfig"
+                [axesProperties]="barAxes"
+                [legendAttributes]="{}"
+                (hoverOtherChart)="hoverLineChart($event)"
+            >
+            </app-ta-chart>
         </div>
-        <div class="chart_data_text">Price per Gallon</div>
-      </div>
-      <div class="chart_data_inner">
-        <div class="chart_data_icon round_light_grey">
-          <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+        <div class="dashboard_chart_data">
+            <div class="chart_data_inner separate_inner">
+                <div class="chart_data_icon round_dark_grey">
+                    <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                </div>
+                <div class="chart_data_text">Price per Gallon</div>
+            </div>
+            <div class="chart_data_inner">
+                <div class="chart_data_icon round_light_grey">
+                    <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                </div>
+                <div class="chart_data_text">Load Rate per Mile</div>
+            </div>
         </div>
-        <div class="chart_data_text">Load Rate per Mile</div>
-      </div>
     </div>
-  </div>
 </div>

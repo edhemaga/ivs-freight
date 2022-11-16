@@ -6,56 +6,61 @@ import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
-  selector: 'app-helper-forgot-password',
-  templateUrl: './helper-forgot-password.component.html',
-  styleUrls: ['./helper-forgot-password.component.scss'],
+    selector: 'app-helper-forgot-password',
+    templateUrl: './helper-forgot-password.component.html',
+    styleUrls: ['./helper-forgot-password.component.scss'],
 })
 export class HelperForgotPasswordComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
-  private verifyData: { emailHash: string; code: string };
+    private destroy$ = new Subject<void>();
+    private verifyData: { emailHash: string; code: string };
 
-  constructor(
-    private route: ActivatedRoute,
-    private authStoreService: AuthStoreService,
-    private notification: NotificationService,
-    private router: Router
-  ) {}
+    constructor(
+        private route: ActivatedRoute,
+        private authStoreService: AuthStoreService,
+        private notification: NotificationService,
+        private router: Router
+    ) {}
 
-  ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.verifyData = {
-        emailHash: params['EmailHash'],
-        code: params['Code'],
-      };
-    });
+    ngOnInit(): void {
+        this.route.queryParams.subscribe((params) => {
+            this.verifyData = {
+                emailHash: params['EmailHash'],
+                code: params['Code'],
+            };
+        });
 
-    this.verifyData = {
-      emailHash: this.verifyData.emailHash.split(' ').join('+'),
-      code: this.verifyData.code.split(' ').join('+'),
-    };
+        this.verifyData = {
+            emailHash: this.verifyData.emailHash.split(' ').join('+'),
+            code: this.verifyData.code.split(' ').join('+'),
+        };
 
-    this.onVerifyForgotPassword();
-  }
+        this.onVerifyForgotPassword();
+    }
 
-  private onVerifyForgotPassword(): void {
-    this.authStoreService
-      .verifyForgotPassword(this.verifyData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (res: any) => {
-          this.authStoreService.getForgotPasswordToken(res.token);
+    private onVerifyForgotPassword(): void {
+        this.authStoreService
+            .verifyForgotPassword(this.verifyData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: any) => {
+                    this.authStoreService.getForgotPasswordToken(res.token);
 
-          this.notification.success('Verifying successful', 'Success');
-          this.router.navigate(['/auth/forgot-password/create-new-password']);
-        },
-        error: () => {
-          this.notification.error('Verifying unsuccessful', 'Error');
-        },
-      });
-  }
+                    this.notification.success(
+                        'Verifying successful',
+                        'Success'
+                    );
+                    this.router.navigate([
+                        '/auth/forgot-password/create-new-password',
+                    ]);
+                },
+                error: () => {
+                    this.notification.error('Verifying unsuccessful', 'Error');
+                },
+            });
+    }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

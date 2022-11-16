@@ -1,196 +1,230 @@
 <div class="dashboard-pickup-holder">
-  <div class="dashboard-pickup-header-holder">
-    <div class="dashboard-pickup-title-holder">
-      <div class="dashboard-pickup-title">{{ pickupTitle }} by State</div>
-      <div
-        class="dashboard-pickup-arrow-down"
-        #t3="ngbPopover"
-        [ngbPopover]="topTenPopover"
-        [placement]="['bottom']"
-        [popoverClass]="'toptenpopovermain pickuppopovermain'"
-        autoClose="outside"
-        [container]="'body'"
-        [ngClass]="{ 'active-options': t3?.isOpen() }"
-      >
-        <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
-      </div>
-    </div>
-    <div class="dashboard-pickup-toolbar-holder">
-      <div class="dashboard-pickup-toolbar-items-holder">
-        <div class="dashboard-pickup-toolbar-switch-left">
-          <app-ta-tab-switch
-            [tabs]="stateSwitchTabsType1"
-            (switchClicked)="changeStateSwitchTabs($event, true)"
-          ></app-ta-tab-switch>
-        </div>
-        <div class="dashboard-pickup-toolbar-border"></div>
-        <div class="dashboard-pickup-toolbar-icons-holder">
-          <app-truckassist-search
-            [selectedTabData]="searchDashboardOptions"
-          ></app-truckassist-search>
-        </div>
-        <div class="dashboard-pickup-toolbar-border"></div>
-        <div
-          class="dashboard-pickup-toolbar-filter-selected"
-          (click)="clearSelected()"
-          *ngIf="selectedStates?.length"
-        >
-          Clear Selection
-        </div>
-      </div>
-      <div class="dashboard-pickup-toolbar-items-holder">
-        <div class="dashboard-pickup-toolbar-switch-right">
-          <app-ta-tab-switch
-            [tabs]="pickupSwitch"
-            (switchClicked)="changeStateSwitchTabs($event)"
-          ></app-ta-tab-switch>
-        </div>
-        <div class="dashboard-pickup-toolbar-border margin-right"></div>
-        <app-ta-time-period
-          #timePeriod
-          (selectTimePeriod)="selectTimePeriod($event)"
-        >
-        </app-ta-time-period>
-      </div>
-    </div>
-  </div>
-  <div class="dashboard-pickup-body-holder">
-    <div class="pickup_main_holder">
-      <div class="dashboard_state_list_holder">
-        <div class="dashboard-pickup-body-state-list-holder">
-          <div
-            *ngFor="let item of pickupStateList; let indx = index"
-            class="dashboard-pickup-body-state-list-items-holder"
-            (click)="selectStateCompare($event, item, indx)"
-            (mouseenter)="hoverState(indx)"
-            (mouseleave)="removeStateHover()"
-          >
+    <div class="dashboard-pickup-header-holder">
+        <div class="dashboard-pickup-title-holder">
+            <div class="dashboard-pickup-title">{{ pickupTitle }} by State</div>
             <div
-              class="dashboard-pickup-body-state-list-items state-compare-{{
-                compareColor[item.id]
-              }}"
+                class="dashboard-pickup-arrow-down"
+                #t3="ngbPopover"
+                [ngbPopover]="topTenPopover"
+                [placement]="['bottom']"
+                [popoverClass]="'toptenpopovermain pickuppopovermain'"
+                autoClose="outside"
+                [container]="'body'"
+                [ngClass]="{ 'active-options': t3?.isOpen() }"
             >
-              <div class="dashboard-pickup-body-state-list-frame">
-                <div class="dashboard-pickup-body-state-list-id">
-                  {{ item.id }}
+                <svg-icon
+                    src="assets/svg/common/fill_arrow_down.svg"
+                ></svg-icon>
+            </div>
+        </div>
+        <div class="dashboard-pickup-toolbar-holder">
+            <div class="dashboard-pickup-toolbar-items-holder">
+                <div class="dashboard-pickup-toolbar-switch-left">
+                    <app-ta-tab-switch
+                        [tabs]="stateSwitchTabsType1"
+                        (switchClicked)="changeStateSwitchTabs($event, true)"
+                    ></app-ta-tab-switch>
                 </div>
+                <div class="dashboard-pickup-toolbar-border"></div>
+                <div class="dashboard-pickup-toolbar-icons-holder">
+                    <app-truckassist-search
+                        [selectedTabData]="searchDashboardOptions"
+                    ></app-truckassist-search>
+                </div>
+                <div class="dashboard-pickup-toolbar-border"></div>
                 <div
-                  class="dashboard-pickup-body-state-list-remove"
-                  (click)="removeFromStateList($event, indx, item)"
+                    class="dashboard-pickup-toolbar-filter-selected"
+                    (click)="clearSelected()"
+                    *ngIf="selectedStates?.length"
                 >
-                  <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                    Clear Selection
                 </div>
-                <div
-                  class="dashboard-pickup-body-state-list-circle"
-                  [ngStyle]="{
-                    'background-color': '#' + pickupCircleColor[indx]
-                  }"
-                ></div>
-                <div class="dashboard-pickup-body-state-list-name">
-                  {{ item.name }}
-                </div>
-              </div>
-              <div class="dashboard-pickup-body-state-list-frame">
-                <div class="dashboard-pickup-body-state-list-price">
-                  {{ item.price }}
-                </div>
-                <div class="dashboard-pickup-body-state-list-percent">
-                  {{ item.percent }}
-                </div>
-              </div>
             </div>
-            <div
-              class="dashboard-pickup-body-state-list-border"
-              [class.list_line_hidden]="!compareColor[item.id]"
-            ></div>
-          </div>
-          <div class="state_empty_state_holder" *ngIf="!pickupStateList.length">
-            <div class="main_empty_state_holder">
-              <div class="empty_state_title">
-                Pickup list is empty
-              </div>
-              <div class="empty_state_title_bottom">
-                Please create load
-              </div>
-              <div class="empty_state_image">
-                <svg-icon src="assets/svg/common/dashboard_empty_state.svg"></svg-icon>
-              </div>
-              <div class="empty_add_button">
-                <div class="add_text">Create Load</div>
-              </div>
+            <div class="dashboard-pickup-toolbar-items-holder">
+                <div class="dashboard-pickup-toolbar-switch-right">
+                    <app-ta-tab-switch
+                        [tabs]="pickupSwitch"
+                        (switchClicked)="changeStateSwitchTabs($event)"
+                    ></app-ta-tab-switch>
+                </div>
+                <div class="dashboard-pickup-toolbar-border margin-right"></div>
+                <app-ta-time-period
+                    #timePeriod
+                    (selectTimePeriod)="selectTimePeriod($event)"
+                >
+                </app-ta-time-period>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="dashboard_state_map_holder">
-        <div class="state_all_holder">
-          <div class="state_hold_main">
-            <div class="state_data_hold">
-              <div class="state_data_info">
-                <div class="state_data_info_name left">More</div>
-                <div class="state_data_info_name">Less</div>
-              </div>
-              <div class="state_data_legend">
-                <svg-icon src="assets/svg/common/state_data.svg"></svg-icon>
-              </div>
-              <div class="stat_no_data_hold">
-                <div class="state_no_data_icon">
-                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                </div>
-                <div class="state_no_data_text">No Data</div>
-              </div>
-            </div>
-          </div>
-          <app-dashboard-state-tracking></app-dashboard-state-tracking>
-        </div>
-      </div>
-      <div class="dashboard_state_bar_holder">
-        <div class="bar_chart_holder">
-          <div class="chart_top_line_holder">
-            <div class="chart_line_title">March, 2023 - March, 2025</div>
-            <div
-              class="chart_legend_hold"
-              [ngStyle]="{ opacity: selectedStates?.length ? '0' : '1' }"
-            >
-              <div class="chart_legend_line line_sep">
-                <div class="chart_legend_dot round_dark_grey">
-                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                </div>
-                <div class="chart_legend_title">Top 10</div>
-              </div>
-              <div class="chart_legend_line">
-                <div class="chart_legend_dot round_light_grey">
-                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                </div>
-                <div class="chart_legend_title">All Others</div>
-              </div>
-            </div>
-          </div>
-          <app-ta-chart
-            #statesBarChart
-            [chartConfig]="barChartConfig"
-            [axesProperties]="barAxes"
-            [legendAttributes]="{}"
-          >
-          </app-ta-chart>
-        </div>
-      </div>
     </div>
-  </div>
+    <div class="dashboard-pickup-body-holder">
+        <div class="pickup_main_holder">
+            <div class="dashboard_state_list_holder">
+                <div class="dashboard-pickup-body-state-list-holder">
+                    <div
+                        *ngFor="let item of pickupStateList; let indx = index"
+                        class="dashboard-pickup-body-state-list-items-holder"
+                        (click)="selectStateCompare($event, item, indx)"
+                        (mouseenter)="hoverState(indx)"
+                        (mouseleave)="removeStateHover()"
+                    >
+                        <div
+                            class="dashboard-pickup-body-state-list-items state-compare-{{
+                                compareColor[item.id]
+                            }}"
+                        >
+                            <div class="dashboard-pickup-body-state-list-frame">
+                                <div
+                                    class="dashboard-pickup-body-state-list-id"
+                                >
+                                    {{ item.id }}
+                                </div>
+                                <div
+                                    class="dashboard-pickup-body-state-list-remove"
+                                    (click)="
+                                        removeFromStateList($event, indx, item)
+                                    "
+                                >
+                                    <svg-icon
+                                        src="assets/svg/truckassist-table/x.svg"
+                                    ></svg-icon>
+                                </div>
+                                <div
+                                    class="dashboard-pickup-body-state-list-circle"
+                                    [ngStyle]="{
+                                        'background-color':
+                                            '#' + pickupCircleColor[indx]
+                                    }"
+                                ></div>
+                                <div
+                                    class="dashboard-pickup-body-state-list-name"
+                                >
+                                    {{ item.name }}
+                                </div>
+                            </div>
+                            <div class="dashboard-pickup-body-state-list-frame">
+                                <div
+                                    class="dashboard-pickup-body-state-list-price"
+                                >
+                                    {{ item.price }}
+                                </div>
+                                <div
+                                    class="dashboard-pickup-body-state-list-percent"
+                                >
+                                    {{ item.percent }}
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="dashboard-pickup-body-state-list-border"
+                            [class.list_line_hidden]="!compareColor[item.id]"
+                        ></div>
+                    </div>
+                    <div
+                        class="state_empty_state_holder"
+                        *ngIf="!pickupStateList.length"
+                    >
+                        <div class="main_empty_state_holder">
+                            <div class="empty_state_title">
+                                Pickup list is empty
+                            </div>
+                            <div class="empty_state_title_bottom">
+                                Please create load
+                            </div>
+                            <div class="empty_state_image">
+                                <svg-icon
+                                    src="assets/svg/common/dashboard_empty_state.svg"
+                                ></svg-icon>
+                            </div>
+                            <div class="empty_add_button">
+                                <div class="add_text">Create Load</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard_state_map_holder">
+                <div class="state_all_holder">
+                    <div class="state_hold_main">
+                        <div class="state_data_hold">
+                            <div class="state_data_info">
+                                <div class="state_data_info_name left">
+                                    More
+                                </div>
+                                <div class="state_data_info_name">Less</div>
+                            </div>
+                            <div class="state_data_legend">
+                                <svg-icon
+                                    src="assets/svg/common/state_data.svg"
+                                ></svg-icon>
+                            </div>
+                            <div class="stat_no_data_hold">
+                                <div class="state_no_data_icon">
+                                    <svg-icon
+                                        src="assets/svg/common/round_blue.svg"
+                                    ></svg-icon>
+                                </div>
+                                <div class="state_no_data_text">No Data</div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-dashboard-state-tracking></app-dashboard-state-tracking>
+                </div>
+            </div>
+            <div class="dashboard_state_bar_holder">
+                <div class="bar_chart_holder">
+                    <div class="chart_top_line_holder">
+                        <div class="chart_line_title">
+                            March, 2023 - March, 2025
+                        </div>
+                        <div
+                            class="chart_legend_hold"
+                            [ngStyle]="{
+                                opacity: selectedStates?.length ? '0' : '1'
+                            }"
+                        >
+                            <div class="chart_legend_line line_sep">
+                                <div class="chart_legend_dot round_dark_grey">
+                                    <svg-icon
+                                        src="assets/svg/common/round_blue.svg"
+                                    ></svg-icon>
+                                </div>
+                                <div class="chart_legend_title">Top 10</div>
+                            </div>
+                            <div class="chart_legend_line">
+                                <div class="chart_legend_dot round_light_grey">
+                                    <svg-icon
+                                        src="assets/svg/common/round_blue.svg"
+                                    ></svg-icon>
+                                </div>
+                                <div class="chart_legend_title">All Others</div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-ta-chart
+                        #statesBarChart
+                        [chartConfig]="barChartConfig"
+                        [axesProperties]="barAxes"
+                        [legendAttributes]="{}"
+                    >
+                    </app-ta-chart>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <ng-template #topTenPopover let-data="data">
-  <div class="top-ten-popover-holder">
-    <div
-      *ngFor="let item of popoverState; let indx = index"
-      class="top-ten-popover-items-holder"
-      [ngClass]="{ active: item.active }"
-      (click)="changeState(item)"
-    >
-      {{ item.name.toUpperCase() }}
-      <div class="popover-icon-holder">
-        <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
-      </div>
+    <div class="top-ten-popover-holder">
+        <div
+            *ngFor="let item of popoverState; let indx = index"
+            class="top-ten-popover-items-holder"
+            [ngClass]="{ active: item.active }"
+            (click)="changeState(item)"
+        >
+            {{ item.name.toUpperCase() }}
+            <div class="popover-icon-holder">
+                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+            </div>
+        </div>
     </div>
-  </div>
 </ng-template>

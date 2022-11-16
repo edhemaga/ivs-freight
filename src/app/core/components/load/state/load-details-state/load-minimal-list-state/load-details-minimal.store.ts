@@ -3,12 +3,12 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { LoadResponse } from '../../../../../../../../appcoretruckassist/model/loadResponse';
 
 export interface LoadMinimalListState
-  extends EntityState<LoadResponse, number> {}
+    extends EntityState<LoadResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'loadMinimalList' })
 export class LoadMinimalListStore extends EntityStore<LoadMinimalListState> {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 }

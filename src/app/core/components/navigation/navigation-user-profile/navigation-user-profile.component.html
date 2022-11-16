@@ -1,77 +1,79 @@
 <div class="user-panel" *ngIf="isUserPanelOpen && isNavigationHovered">
-  <div
-    class="user-content"
-    *ngFor="let item of userNavigationData; trackBy: identity"
-    (click)="onAction(item)"
-  >
-    <div class="user-content-hover"></div>
-    <svg-icon
-      [ngClass]="{
-        'user-content-logout': item.name === 'Logout',
-        'user-content-status': item.name === 'User status'
-      }"
-      class="user-content-svg"
-      src="{{
-        item.name === 'User status'
-          ? currentUserStatus === 'online'
-            ? item.image
-            : 'assets/svg/common/ic_verify-check.svg'
-          : item.image
-      }}"
-    ></svg-icon>
-    <p
-      *ngIf="item.name !== 'User status'"
-      class="user-content-text"
-      [ngClass]="{ 'user-content-logout': item.name === 'Logout' }"
+    <div
+        class="user-content"
+        *ngFor="let item of userNavigationData; trackBy: identity"
+        (click)="onAction(item)"
     >
-      {{ item.name }}
-    </p>
-    <p
-      *ngIf="item.name === 'User status' && currentUserStatus === 'online'"
-      class="user-content-text user-content-text-status"
-    >
-      Set <b>Busy</b> Status
-    </p>
-    <p
-      *ngIf="item.name === 'User status' && currentUserStatus === 'busy'"
-      class="user-content-text user-content-text-status"
-    >
-      Set <b>Active</b> Status
-    </p>
-  </div>
-
-  <div class="panel-user" (click)="onUserPanelClose()">
-    <img
-      class="panel-image"
-      [src]="
-        loggedUser?.avatar
-          ? loggedUser.avatar
-          : 'assets/svg/common/ic_profile.svg'
-      "
-      [alt]="
-        loggedUser.firstName
-          .substring(0, 1)
-          .concat(' ', loggedUser.lastName.substring(0, 1))
-      "
-    />
-    <div class="panel-name">
-      <p class="nav-footer-user-company">{{ loggedUser.companyName }}</p>
-      <p class="nav-footer-user-name">
-        {{ loggedUser.firstName.concat(" ", loggedUser.lastName) }}
-      </p>
+        <div class="user-content-hover"></div>
+        <svg-icon
+            [ngClass]="{
+                'user-content-logout': item.name === 'Logout',
+                'user-content-status': item.name === 'User status'
+            }"
+            class="user-content-svg"
+            src="{{
+                item.name === 'User status'
+                    ? currentUserStatus === 'online'
+                        ? item.image
+                        : 'assets/svg/common/ic_verify-check.svg'
+                    : item.image
+            }}"
+        ></svg-icon>
+        <p
+            *ngIf="item.name !== 'User status'"
+            class="user-content-text"
+            [ngClass]="{ 'user-content-logout': item.name === 'Logout' }"
+        >
+            {{ item.name }}
+        </p>
+        <p
+            *ngIf="
+                item.name === 'User status' && currentUserStatus === 'online'
+            "
+            class="user-content-text user-content-text-status"
+        >
+            Set <b>Busy</b> Status
+        </p>
+        <p
+            *ngIf="item.name === 'User status' && currentUserStatus === 'busy'"
+            class="user-content-text user-content-text-status"
+        >
+            Set <b>Active</b> Status
+        </p>
     </div>
 
-    <div *ngIf="currentUserStatus" class="status-marker-container">
-      <div
-        [ngClass]="{
-          'status-active': currentUserStatus === 'active',
-          'status-online': currentUserStatus === 'online',
-          'status-away': currentUserStatus === 'away',
-          'status-busy': currentUserStatus === 'busy',
-          'status-offline': currentUserStatus === 'offline'
-        }"
-        class="status-marker"
-      ></div>
+    <div class="panel-user" (click)="onUserPanelClose()">
+        <img
+            class="panel-image"
+            [src]="
+                loggedUser?.avatar
+                    ? loggedUser.avatar
+                    : 'assets/svg/common/ic_profile.svg'
+            "
+            [alt]="
+                loggedUser.firstName
+                    .substring(0, 1)
+                    .concat(' ', loggedUser.lastName.substring(0, 1))
+            "
+        />
+        <div class="panel-name">
+            <p class="nav-footer-user-company">{{ loggedUser.companyName }}</p>
+            <p class="nav-footer-user-name">
+                {{ loggedUser.firstName.concat(' ', loggedUser.lastName) }}
+            </p>
+        </div>
+
+        <div *ngIf="currentUserStatus" class="status-marker-container">
+            <div
+                [ngClass]="{
+                    'status-active': currentUserStatus === 'active',
+                    'status-online': currentUserStatus === 'online',
+                    'status-away': currentUserStatus === 'away',
+                    'status-busy': currentUserStatus === 'busy',
+                    'status-offline': currentUserStatus === 'offline'
+                }"
+                class="status-marker"
+            ></div>
+        </div>
     </div>
-  </div>
 </div>

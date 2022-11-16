@@ -6,32 +6,32 @@ import { DriverMinimalResolver } from './state/driver-details-minimal-list-state
 import { DriverItemResolver } from './state/driver-details-state/driver.items.resolver';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: DriverTableComponent,
-    data: { title: 'Driver' },
-  },
-  {
-    path: ':id/details',
-    loadChildren: () =>
-      import('./driver-details/driver-details.module').then(
-        (m) => m.DriverDetailsModule
-      ),
-      resolve:{
-        driver:DriverItemResolver,
-        driverMinimal:DriverMinimalResolver
-      },
-    data: { title: 'Driver Details' },
-  },
-  {
-    path: 'card',
-    component: DriverCardComponent,
-    data: {title: 'Driver Cards'},
-  }
+    {
+        path: '',
+        component: DriverTableComponent,
+        data: { title: 'Driver' },
+    },
+    {
+        path: ':id/details',
+        loadChildren: () =>
+            import('./driver-details/driver-details.module').then(
+                (m) => m.DriverDetailsModule
+            ),
+        resolve: {
+            driver: DriverItemResolver,
+            driverMinimal: DriverMinimalResolver,
+        },
+        data: { title: 'Driver Details' },
+    },
+    {
+        path: 'card',
+        component: DriverCardComponent,
+        data: { title: 'Driver Cards' },
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
 export class DriverRoutingModule {}
