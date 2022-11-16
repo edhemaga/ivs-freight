@@ -12,9 +12,8 @@
       z-index: 1000;
       max-height: 198px;
       width: 100%;
-      background-color: #ffffff;
+      background-color: #2f2f2f;
       border-radius: 2px;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15) !important;
       padding: 2px;
       overflow: hidden;
 
@@ -28,7 +27,7 @@
         }
         &::-webkit-scrollbar-thumb {
           background-color: transparent;
-          border: 6px solid #e5e5e5;
+          border: 6px solid #aaaaaa;
           border-radius: 1px;
         }
         &::-webkit-scrollbar-track {
@@ -50,12 +49,11 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        background-color: #ffffff;
-        color: #6c6c6c;
+        color: #cccccc;
 
         &.dropdown-option-hovered {
-          background-color: #f3f3f3;
-          color: #3c3c3c;
+          background-color: #1d1d1d;
+          color: #ffffff;
           border-radius: 2px;
           cursor: pointer;
 
@@ -83,8 +81,8 @@
         }
 
         &:hover {
-          background-color: #f3f3f3;
-          color: #3c3c3c;
+          background-color: #1d1d1d;
+          color: #ffffff;
           border-radius: 2px;
           cursor: pointer;
 
@@ -103,22 +101,14 @@
         }
 
         &.no-result {
-          height: 18px;
+          height: 19px;
           font-size: 11px;
           font-weight: 600;
           padding: 1.5px 4px;
-          color: #b7b7b7;
-
-          &:hover {
-            background-color: transparent !important;
-            color: #b7b7b7 !important;
-            transition: all 0.3s ease-in-out;
-            cursor: auto;
-          }
         }
 
         &.add-new {
-          color: #536bc2;
+          color: #6f9ee0;
           font-weight: 600;
           transition: all 0.3s ease-in-out;
           position: relative;
@@ -128,27 +118,14 @@
           }
 
           .labels-template-text {
-            color: #536bc2;
+            color: #6f9ee0;
             font-weight: 600 !important;
             transition: all 0.3s ease-in-out;
-          }
-
-          &-divider {
-            &::after {
-              content: "";
-              position: absolute;
-              bottom: 0;
-              left: 0px;
-              height: 2px;
-              width: 100%;
-              background-color: #f3f3f3;
-              border-radius: 1px;
-            }
           }
         }
 
         &.active-repair-truck-trailer {
-          color: #536bc2;
+          color: #6f9ee0;
           position: relative;
 
           &:hover {
@@ -158,7 +135,8 @@
 
           // Higlight text
           .highlight-text-45632 {
-            background-color: transparent;
+            font-weight: 700;
+            color: #ffffff !important;
 
             &:hover {
               color: #3551b7 !important;
@@ -173,7 +151,7 @@
 
         &.active,
         &.active-label {
-          color: #536bc2;
+          color: #6f9ee0;
           position: relative;
 
           &:hover {
@@ -183,7 +161,8 @@
 
           // Higlight text
           .highlight-text-45632 {
-            background-color: transparent;
+            font-weight: 700;
+            color: #ffffff !important;
 
             &:hover {
               color: #3551b7 !important;
@@ -217,7 +196,7 @@
             left: 0px;
             height: 2px;
             width: 100%;
-            background-color: #f3f3f3;
+            background-color: rgb(170, 170, 170, 0.2);
             border-radius: 1px;
           }
         }
@@ -225,10 +204,10 @@
         // Higlight text
         .highlight-text-45632 {
           font-weight: 700;
-          background-color: transparent;
+          color: #ffffff !important;
 
           &:hover {
-            color: #3c3c3c;
+            color: #3551b7 !important;
             transition: all 0.3s ease-in-out;
           }
         }
@@ -312,7 +291,7 @@
             .labels-template-vertical-divider {
               width: 1px;
               height: 15px;
-              background-color: #dadada;
+              background-color: rgb(170, 170, 170, 0.2);
               content: "";
               margin: 0 6px;
             }
@@ -335,8 +314,8 @@
               width: 22px;
               height: 16px;
               border-radius: 20px;
-              background-color: #b7b7b7;
-              color: #ffffff;
+              background-color: rgb(204, 204, 204, 0.2);
+              color: #cccccc;
               text-align: center;
               font-size: 11px;
               font-weight: 500;
@@ -345,10 +324,8 @@
           }
 
           &:hover {
-            background-color: #f3f3f3;
-
             .labels-template-text {
-              color: #3c3c3c;
+              color: #cccccc;
 
               &.add-new {
                 color: #3551b7;
@@ -356,7 +333,7 @@
             }
 
             .labels-template-counter {
-              background-color: #919191;
+              background-color: rgb(204, 204, 204, 0.2);
             }
           }
         }
@@ -367,7 +344,7 @@
           align-items: center;
           .details-template-text {
             &.active {
-              color: #536bc2;
+              color: #6f9ee0;
 
               &:hover {
                 color: #3551b7;
@@ -392,8 +369,8 @@
             min-width: 22px;
             height: 16px;
             border-radius: 20px;
-            background-color: #b7b7b7;
-            color: #ffffff;
+            background-color: rgb(204, 204, 204, 0.2);
+            color: #cccccc;
             font-size: 11px;
             font-weight: 500;
             text-align: center;
@@ -409,9 +386,106 @@
 
           &:hover {
             .option-counter {
-              background-color: #919191;
-              color: #ffffff;
+              background-color: rgb(204, 204, 204, 0.2);
+              color: #cccccc;
             }
+          }
+        }
+
+        //------------------------ Fuel Franchise Template ------------------------
+
+        &-fuel-franchise {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          height: auto;
+          min-height: 26px;
+
+          .fuel-franchise-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .fuel-franchise-header-right-side {
+              display: flex;
+              align-items: center;
+              gap: 6px;
+
+              .option-counter {
+                min-width: 22px;
+                height: 16px;
+                border-radius: 20px;
+                background-color: rgb(204, 204, 204, 0.2);
+                color: #cccccc;
+                font-size: 11px;
+                font-weight: 500;
+                text-align: center;
+                padding: 0 4.5px;
+              }
+
+              .header-arrow {
+                width: 18px;
+                height: 18px;
+                line-height: 15px;
+                transition: all 0.3s ease-in-out;
+
+                svg {
+                  transform: rotate(0deg);
+                  transition: all 0.3s ease-in-out;
+                  path {
+                    fill: #919191;
+                  }
+                }
+
+                &.rotate {
+                  svg {
+                    transform: rotate(180deg);
+                    transition: all 0.3s ease-in-out;
+                  }
+                }
+
+                &:hover {
+                  svg {
+                    path {
+                      fill: #919191;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .fuel-franchise-stores {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+
+            .fuel-franchise-single-store {
+              height: 26px;
+              border-radius: 2px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding-left: 3px;
+              padding-right: 24px;
+
+              .fuel-franchise-store-name {
+                font-size: 14px;
+                font-weight: 400;
+                height: 18px;
+              }
+
+              .fuel-franchise-store-address {
+                font-size: 11px;
+                font-weight: 500;
+                line-height: 14px;
+              }
+            }
+          }
+
+          &.active-stores {
+            background-color: rgb(170, 170, 170, 0.1);
           }
         }
 
@@ -600,10 +674,6 @@
         width: 429px;
       }
 
-      &.w-col-422 {
-        width: 422px;
-      }
-
       &.w-col-418 {
         width: 418px;
       }
@@ -632,10 +702,6 @@
         width: 403px;
       }
 
-      &.w-col-402 {
-        width: 402px;
-      }
-
       &.w-col-397 {
         width: 397px;
       }
@@ -660,10 +726,6 @@
         width: 334px;
       }
 
-      &.w-col-332 {
-        width: 332px;
-      }
-
       &.w-col-310 {
         width: 310px;
       }
@@ -672,16 +734,16 @@
         width: 308px;
       }
 
+      &.w-col-302 {
+        width: 302px;
+      }
+
       &.w-col-297 {
         width: 297px;
       }
 
       &.w-col-296 {
         width: 296px;
-      }
-
-      &.w-col-291 {
-        width: 291px;
       }
 
       &.w-col-288 {
@@ -696,14 +758,6 @@
         width: 275px;
       }
 
-      &.w-col-273 {
-        width: 273px;
-      }
-
-      &.w-col-256 {
-        width: 256px;
-      }
-
       &.w-col-251 {
         width: 251px;
       }
@@ -716,10 +770,6 @@
         width: 246px;
       }
 
-      &.w-col-245 {
-        width: 245px;
-      }
-
       &.w-col-242 {
         width: 242px;
       }
@@ -728,20 +778,12 @@
         width: 234px;
       }
 
-      &.w-col-231 {
-        width: 231px;
-      }
-
       &.w-col-229 {
         width: 229px;
       }
 
       &.w-col-228 {
         width: 228px;
-      }
-
-      &.w-col-227 {
-        width: 227px;
       }
 
       &.w-col-226 {
@@ -758,6 +800,10 @@
 
       &.w-col-211 {
         width: 211px;
+      }
+
+      &.w-col-202 {
+        width: 202px;
       }
 
       &.w-col-201 {
@@ -804,21 +850,8 @@
         width: 174px;
       }
 
-      &.w-col-168 {
-        width: 168px;
-      }
-
       &.w-col-167 {
         width: 166px;
-      }
-
-      &.w-col-166 {
-        width: 166px;
-      }
-
-      &.w-col-165 {
-        width: 165px;
-        max-height: 304px;
       }
 
       &.w-col-164 {
@@ -830,6 +863,10 @@
         width: 163px;
       }
 
+      &.w-col-162 {
+        width: 162px;
+      }
+
       &.w-col-156 {
         width: 156px;
       }
@@ -838,20 +875,12 @@
         width: 148px;
       }
 
-      &.w-col-145 {
-        width: 145px;
-      }
-
-      &.w-col-140 {
-        width: 140px;
+      &.w-col-144 {
+        width: 144px;
       }
 
       &.w-col-139 {
         width: 139px;
-      }
-
-      &.w-col-138 {
-        width: 138px;
       }
 
       &.w-col-136 {
@@ -862,6 +891,10 @@
         width: 134px;
       }
 
+      &.w-col-133 {
+        width: 133px;
+      }
+
       &.w-col-130 {
         width: 130px;
       }
@@ -870,20 +903,8 @@
         width: 129px;
       }
 
-      &.w-col-128 {
-        width: 128px;
-      }
-
-      &.w-col-126 {
-        width: 126px;
-      }
-
       &.w-col-120 {
         width: 120px;
-      }
-
-      &.w-col-118 {
-        width: 118px;
       }
 
       &.w-col-114 {
@@ -950,10 +971,6 @@
         width: 66px;
       }
 
-      &.w-col-302 {
-        width: 302px;
-      }
-
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
       &.dropdown-options-groups {
         max-height: 198px;
@@ -974,7 +991,7 @@
             bottom: -3px;
             height: 2px;
             width: 96%;
-            background-color: #f3f3f3;
+            background-color: rgb(170, 170, 170, 0.2);
           }
 
           &:last-child {
@@ -993,7 +1010,7 @@
 
           .dropdown-group-header {
             font-size: 11px;
-            color: #cccccc;
+            color: rgb(204, 204, 204, 0.4);
             font-weight: 700;
             text-transform: uppercase;
             line-height: 14px;
@@ -1002,17 +1019,12 @@
 
             &::-moz-selection {
               background-color: rgb(204, 204, 204, 0.2) !important;
-              color: #cccccc !important;
+              color: rgb(204, 204, 204, 0.4) !important;
             }
 
             &::selection {
               background-color: rgb(204, 204, 204, 0.2) !important;
-              color: #cccccc !important;
-            }
-
-            &::-moz-selection {
-              background-color: rgb(204, 204, 204, 0.2) !important;
-              color: #cccccc !important;
+              color: rgb(204, 204, 204, 0.4) !important;
             }
           }
 
@@ -1024,7 +1036,8 @@
             border-radius: 2px;
 
             &:hover {
-              background-color: #f3f3f3;
+              background-color: #1d1d1d;
+              color: #ffffff !important;
               cursor: pointer;
               transition: all 0.3s ease-in-out;
 
@@ -1052,7 +1065,8 @@
                 &.active {
                   // Higlight text
                   .highlight-text-45632 {
-                    background-color: transparent;
+                    font-weight: 700;
+                    color: #ffffff !important;
 
                     &:hover {
                       color: #3551b7 !important;
@@ -1060,14 +1074,6 @@
                     }
                   }
                 }
-              }
-            }
-
-            &.no-result {
-              height: 18px;
-              padding: 0px !important;
-              &:hover {
-                background-color: transparent !important;
               }
             }
 
@@ -1083,23 +1089,27 @@
             .dropdown-subgroup-text {
               font-size: 14px;
               font-weight: 400;
-              color: #6c6c6c;
+              color: #cccccc;
               display: block;
               width: 100%;
 
               // Higlight text
               .highlight-text-45632 {
                 font-weight: 700;
-                background-color: transparent;
+                color: #ffffff !important;
 
                 &:hover {
-                  color: #3c3c3c;
+                  color: #3551b7 !important;
                   transition: all 0.3s ease-in-out;
                 }
               }
 
+              &:hover {
+                color: #ffffff !important;
+              }
+
               &.active {
-                color: #536bc2;
+                color: #6f9ee0;
                 position: relative;
 
                 &:hover {
@@ -1113,21 +1123,6 @@
                   content: url("../..//assets/svg/common/ic_confirm.svg");
                   width: 14px;
                   height: 10px;
-                }
-              }
-
-              &.no-result {
-                height: 20px;
-                font-size: 11px;
-                font-weight: 600;
-                padding: 1.5px 4px;
-                color: #b7b7b7;
-
-                &:hover {
-                  background-color: transparent !important;
-                  color: #b7b7b7 !important;
-                  transition: all 0.3s ease-in-out;
-                  cursor: auto;
                 }
               }
             }
@@ -1169,7 +1164,7 @@
 
             .dropdown-subgroup-text {
               &.active-without-check {
-                color: #536bc2;
+                color: #6f9ee0;
                 position: relative;
 
                 &:hover {
@@ -1179,7 +1174,8 @@
 
                 // Higlight text
                 .highlight-text-45632 {
-                  background-color: transparent;
+                  font-weight: 700;
+                  color: #ffffff !important;
 
                   &:hover {
                     color: #3551b7 !important;
@@ -1210,9 +1206,8 @@
       z-index: 1000;
       max-height: 198px;
       width: 100%;
-      background-color: #ffffff;
+      background-color: #2f2f2f;
       border-radius: 2px;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
       padding: 2px;
       overflow: hidden;
 
@@ -1224,11 +1219,13 @@
         &::-webkit-scrollbar {
           width: 3px;
         }
+
         &::-webkit-scrollbar-thumb {
           background-color: transparent;
-          border: 6px solid #e5e5e5;
+          border: 6px solid #aaaaaa;
           border-radius: 1px;
         }
+
         &::-webkit-scrollbar-track {
           padding: 0;
           position: relative;
@@ -1248,14 +1245,13 @@
         border-radius: 2px;
         white-space: nowrap;
         text-overflow: ellipsis;
-        background-color: #ffffff;
-        color: #6c6c6c;
+        color: #cccccc;
         display: flex;
         gap: 4px;
 
         &::-moz-selection {
-          color: #6c6c6c;
-          background-color: rgb(108, 108, 108, 0.2);
+          color: #ffffff;
+          background-color: rgb(255, 255, 255, 0.2);
         }
 
         &:nth-last-child(1) {
@@ -1263,21 +1259,21 @@
         }
 
         &:hover {
-          background-color: #f3f3f3;
-          color: #3c3c3c;
+          background-color: #1d1d1d;
+          color: #ffffff;
           border-radius: 2px;
           cursor: pointer;
         }
 
         &.add-option {
-          color: #536bc2;
+          color: #6f9ee0;
           font-weight: 600;
 
           &::after {
             content: "";
             height: 2px;
             width: 100%;
-            background-color: #f3f3f3;
+            background-color: rgb(170, 170, 170, 0.2);
             border-radius: 1px;
             position: absolute;
             bottom: 0px;
