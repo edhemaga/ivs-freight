@@ -36,7 +36,7 @@ export class InputErrorPipe implements PipeTransform {
         errorMessageValue = "Passwords don't match.";
       }
 
-      if (value['fuelStoreNumber']) {
+      if (value['fuelStore']) {
         errorMessageValue = 'Store already added.';
       }
 

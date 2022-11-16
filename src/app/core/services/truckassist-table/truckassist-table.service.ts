@@ -4,6 +4,7 @@ import {
   TableConfigResponse,
   TableConfigService,
   TableType,
+  UpdateTableConfigCommand,
 } from 'appcoretruckassist';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
@@ -69,22 +70,17 @@ export class TruckassistTableService {
 
   constructor(private tableColumnsConfigService: TableConfigService) {}
 
-  // ------------------------------ Table Back Service Methods --------------------------------
+  // ------------------------------ Table Back Service Methods -------------------------------- 
 
-  sendTableConfig(
-    tableConfig: any /*CreateTableConfigCommand*/
+  updateTableConfig(
+    tableConfig: UpdateTableConfigCommand
   ): Observable<object> {
-    // return this.tableColumnsConfigService.apiTableconfigPost(tableConfig);
-    return of();
+    return this.tableColumnsConfigService.apiTableconfigPut(tableConfig);
   }
 
-  getTableConfig(tableType: TableType): Observable<TableConfigResponse> {
+  getTableConfig(tableType: any): Observable<TableConfigResponse> {
+    console.log('Poziva se getTableConfig za: '  + tableType)
     return this.tableColumnsConfigService.apiTableconfigTableTypeGet(tableType);
-  }
-
-  deleteTableConfig(tableType: TableType): Observable<TableConfigResponse> {
-    // return this.tableColumnsConfigService.apiTableconfigTableTypeDelete(tableType);
-    return of();
   }
 
   // ------------------------------ Table Custom Service Methods --------------------------------
