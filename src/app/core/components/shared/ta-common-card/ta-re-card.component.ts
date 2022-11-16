@@ -64,7 +64,7 @@ export class TaReCardComponent implements OnInit {
 
   public sendData(data: any) {
     this.data = data;
-    this.DetailsDataService.setCdlNum(this.cardNameCommon);
+    this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
     this.dataDropDopwn.emit(data);
   }
   public toggleCard(event: any) {
