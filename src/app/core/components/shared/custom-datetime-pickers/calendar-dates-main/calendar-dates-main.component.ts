@@ -8,9 +8,7 @@ import {
     OnChanges,
     forwardRef,
 } from '@angular/core';
-import {
-    VIRTUAL_SCROLL_STRATEGY,
-} from '@angular/cdk/scrolling';
+import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import {
     CalendarStrategy,
     STARTING_YEAR,

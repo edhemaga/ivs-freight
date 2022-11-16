@@ -5,10 +5,7 @@ import { ModalService } from '../../ta-modal/modal.service';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckTService } from '../../../truck/state/truck.service';
-import {
-    TruckListResponse,
-    CreateRouteCommand,
-} from 'appcoretruckassist';
+import { TruckListResponse, CreateRouteCommand } from 'appcoretruckassist';
 import { RoutingStateService } from '../../../routing/state/routing-state/routing-state.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
 

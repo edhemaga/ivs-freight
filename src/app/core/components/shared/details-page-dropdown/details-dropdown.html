@@ -1,96 +1,96 @@
 <div
-  #t2="ngbPopover"
-  (click)="toggleDropdown(t2)"
-  (hidden)="dropdownClosed()"
-  [autoClose]="'outside'"
-  [ngbPopover]="dropdownPopover"
-  [placement]="placement"
-  class="details-dropdown-container"
-  [ngClass]="{ 'active-drop': dropDownActive === id, 'rightRotation' : leftIcon, 'leftRotation' : !leftIcon }"
-  popoverClass="details-dropdown-popover {{customClassDropDown}}"
-  triggers="manual"
-  [container]="'body'"
-  (hidden)="dropDownActive = -1"
-  container="body"
+    #t2="ngbPopover"
+    (click)="toggleDropdown(t2)"
+    (hidden)="dropdownClosed()"
+    [autoClose]="'outside'"
+    [ngbPopover]="dropdownPopover"
+    [placement]="placement"
+    class="details-dropdown-container"
+    [ngClass]="{ 'active-drop': dropDownActive === id, 'rightRotation' : leftIcon, 'leftRotation' : !leftIcon }"
+    popoverClass="details-dropdown-popover {{customClassDropDown}}"
+    triggers="manual"
+    [container]="'body'"
+    (hidden)="dropDownActive = -1"
+    container="body"
 >
-  <svg-icon
-    class="dropdown-dots"
-    src="assets/svg/common/horizontal-dropdown-dots.svg"
-  ></svg-icon>
+    <svg-icon
+        class="dropdown-dots"
+        src="assets/svg/common/horizontal-dropdown-dots.svg"
+    ></svg-icon>
 </div>
 
 <ng-template #dropdownPopover let-data="data">
-  <div class="dropdown-main-popover-body">
-    <div class="details-dropdown-body">
-      <div
-        *ngFor="let action of options;let i=index; trackBy:identity"
-        class="autoClass"
-      >
-        <div
-          class="action-holder"
-          @showAnimation
-          [@.disabled]="isAnimated"
-          [class.leftIcon]="leftIcon"
-          [class.disabledAction]="action.disabled"
-          [class.disabledActionMain]="action.disabled"
-          *ngIf="action.title != 'border' && action.title != 'Add New' && action.title != 'Request' && action.title != 'Report' && !action.hide"
-          (click)="onAction(action,$event)"
-        >
-          <div class="action-select-holder">
-            <div class="actionTitle">{{action.title}}</div>
+    <div class="dropdown-main-popover-body">
+        <div class="details-dropdown-body">
             <div
-              class="actionIcon"
-              [class.redIcon]="action.redIcon"
-              [class.blueIcon]="action.blueIcon"
-              [class.greenIcon]="action.greenIcon"
+                *ngFor="let action of options;let i=index; trackBy:identity"
+                class="autoClass"
             >
-              <svg-icon src="{{action.svg}}"></svg-icon>
+                <div
+                    class="action-holder"
+                    @showAnimation
+                    [@.disabled]="isAnimated"
+                    [class.leftIcon]="leftIcon"
+                    [class.disabledAction]="action.disabled"
+                    [class.disabledActionMain]="action.disabled"
+                    *ngIf="action.title != 'border' && action.title != 'Add New' && action.title != 'Request' && action.title != 'Report' && !action.hide"
+                    (click)="onAction(action,$event)"
+                >
+                    <div class="action-select-holder">
+                        <div class="actionTitle">{{action.title}}</div>
+                        <div
+                            class="actionIcon"
+                            [class.redIcon]="action.redIcon"
+                            [class.blueIcon]="action.blueIcon"
+                            [class.greenIcon]="action.greenIcon"
+                        >
+                            <svg-icon src="{{action.svg}}"></svg-icon>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="action-holder subTypeHolder"
+                    @showAnimation
+                    [@.disabled]="isAnimated"
+                    [class.leftIcon]="leftIcon"
+                    [class.hoveredSubtype]="subtypeHovered == i && action.openSubtype"
+                    [class.disabledAction]="action.disabled"
+                    [class.openedSubtype]="action.openSubtype"
+                    *ngIf="action.title == 'Add New' || action.title == 'Request' || action.title == 'Report' "
+                >
+                    <div
+                        class="action-select-holder"
+                        (click)="openSubtype(i)"
+                        (mouseleave)="subtypeHovered = false"
+                        (mouseover)="subtypeHovered = i"
+                    >
+                        <div class="actionTitle">{{action.title}}</div>
+                        <div class="actionIcon arrowIcon">
+                            <svg-icon src="{{action.svg}}"></svg-icon>
+                        </div>
+                    </div>
+                    <div
+                        class="subtype-holder"
+                        [@SubtypeAnimation]="action.openSubtype ? true : false"
+                    >
+                        <div
+                            class="subtypeTitle"
+                            *ngFor="let sub of action.subType"
+                            (click)="subTypeAction(action,sub,$event)"
+                        >
+                            {{sub.subName}}
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="border-holder"
+                    @borderShowAnimation
+                    [@.disabled]="isAnimated"
+                    *ngIf="action.title == 'border'"
+                >
+                    <div class="action-border-line"></div>
+                </div>
             </div>
-          </div>
         </div>
-        <div
-          class="action-holder subTypeHolder"
-          @showAnimation
-          [@.disabled]="isAnimated"
-          [class.leftIcon]="leftIcon"
-          [class.hoveredSubtype]="subtypeHovered == i && action.openSubtype"
-          [class.disabledAction]="action.disabled"
-          [class.openedSubtype]="action.openSubtype"
-          *ngIf="action.title == 'Add New' || action.title == 'Request' || action.title == 'Report' "
-        >
-          <div
-            class="action-select-holder"
-            (click)="openSubtype(i)"
-            (mouseleave)="subtypeHovered = false"
-            (mouseover)="subtypeHovered = i"
-          >
-            <div class="actionTitle">{{action.title}}</div>
-            <div class="actionIcon arrowIcon">
-              <svg-icon src="{{action.svg}}"></svg-icon>
-            </div>
-          </div>
-          <div
-            class="subtype-holder"
-            [@SubtypeAnimation]="action.openSubtype ? true : false"
-          >
-            <div
-              class="subtypeTitle"
-              *ngFor="let sub of action.subType"
-              (click)="subTypeAction(action,sub,$event)"
-            >
-              {{sub.subName}}
-            </div>
-          </div>
-        </div>
-        <div
-          class="border-holder"
-          @borderShowAnimation
-          [@.disabled]="isAnimated"
-          *ngIf="action.title == 'border'"
-        >
-          <div class="action-border-line"></div>
-        </div>
-      </div>
     </div>
-  </div>
 </ng-template>
