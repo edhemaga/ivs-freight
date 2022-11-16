@@ -14,43 +14,13 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
 import { TrailerTService } from '../state/trailer.service';
-import {
-    animate,
-    style,
-    transition,
-    trigger,
-    state,
-    keyframes,
-} from '@angular/animations';
 
 @Component({
     selector: 'app-trailer-details-card',
     templateUrl: './trailer-details-card.component.html',
     styleUrls: ['./trailer-details-card.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [
-        card_component_animation('showHideCardBody'),
-        trigger('ownerDetailsAnimation', [
-            state(
-                'true',
-                style({
-                    height: '*',
-                    overflow: 'hidden',
-                    opacity: 1,
-                })
-            ),
-            state(
-                'false',
-                style({
-                    height: '0px',
-                    overflow: 'hidden',
-                    opacity: 0,
-                })
-            ),
-            transition('false <=> true', [animate('0.2s ease')]),
-            transition('true <=> false', [animate('0.2s ease')]),
-        ]),
-    ],
+    animations: [card_component_animation('showHideCardBody')],
 })
 export class TrailerDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy

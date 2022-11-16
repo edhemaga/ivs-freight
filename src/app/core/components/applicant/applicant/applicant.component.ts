@@ -20,7 +20,7 @@ import { SelectedMode } from '../state/enum/selected-mode.enum';
 export class ApplicantComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode = SelectedMode.APPLICANT;
+    public selectedMode = SelectedMode.REVIEW;
 
     public menuItems: INavigation[] = [
         {
@@ -107,9 +107,9 @@ export class ApplicantComponent implements OnInit, OnDestroy {
         { id: 5, isReviewed: false, hasIncorrectAnswer: false },
         { id: 6, isReviewed: false, hasIncorrectAnswer: false },
         { id: 7, isReviewed: false, hasIncorrectAnswer: false },
-        { id: 8, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 9, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 10, isReviewed: true, hasIncorrectAnswer: false },
+        { id: 8, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 9, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 10, isReviewed: false, hasIncorrectAnswer: false },
     ];
 
     feedbackStoreArr = [
@@ -138,6 +138,8 @@ export class ApplicantComponent implements OnInit, OnDestroy {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
+                console.log('RES', res);
+
                 res = JSON.parse(JSON.stringify(res));
 
                 if (this.selectedMode === SelectedMode.REVIEW) {
@@ -289,6 +291,42 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                                         ? true
                                         : false,
                                     hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 8) {
+                                const driverRightsReview =
+                                    res?.driverRight?.reviewed;
+
+                                return {
+                                    ...item,
+                                    isReviewed: driverRightsReview
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 9) {
+                                const disclosureAndReleaseReview =
+                                    res?.disclosureRelease?.reviewed;
+
+                                return {
+                                    ...item,
+                                    isReviewed: disclosureAndReleaseReview
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 10) {
+                                const autorizationReview =
+                                    res?.authorization?.reviewed;
+
+                                return {
+                                    ...item,
+                                    isReviewed: autorizationReview
+                                        ? true
+                                        : false,
                                 };
                             }
 

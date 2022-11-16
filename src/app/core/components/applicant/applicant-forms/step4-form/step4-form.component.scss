@@ -98,6 +98,8 @@
         margin-top: 25px;
 
         .add-btn {
+            position: relative;
+            bottom: 1px;
             height: 26px;
             line-height: 18px;
             padding: 4px 8px;
@@ -108,6 +110,11 @@
             color: $ta-blue;
             background: $ta-gray-01;
             transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
 
             &:hover {
                 color: $white;
@@ -123,11 +130,6 @@
             }
 
             &.disabled {
-                -webkit-user-select: none !important;
-                -moz-user-select: none !important;
-                -ms-user-select: none !important;
-                user-select: none !important;
-
                 cursor: auto;
                 background: $ta-light-grey-4;
                 color: $bw4;
@@ -162,6 +164,8 @@
             margin-bottom: 32px;
 
             .add-btn {
+                position: relative;
+                bottom: 1px;
                 height: 26px;
                 padding: 4px 8px;
                 border: none;
@@ -171,6 +175,11 @@
                 color: $ta-blue;
                 background: $ta-gray-01;
                 transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
 
                 &:hover {
                     color: $white;
@@ -186,11 +195,6 @@
                 }
 
                 &.disabled {
-                    -webkit-user-select: none !important;
-                    -moz-user-select: none !important;
-                    -ms-user-select: none !important;
-                    user-select: none !important;
-
                     cursor: auto;
                     background: $ta-light-grey-4;
                     color: $bw4;
