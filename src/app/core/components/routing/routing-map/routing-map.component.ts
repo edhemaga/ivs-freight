@@ -933,7 +933,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             this.getRouteShape(route);
           } else {
             var stopArr = [];
-            route.stops.map((stop) => {
+            route.stops.map((stop, stopIndex) => {
               var stopObj = <any>{
                 id: stop.id ? stop.id : 0,
                 address: stop.address,
@@ -941,6 +941,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 total: null,
                 longitude: stop.long,
                 latitude: stop.lat,
+                orderNumber: stopIndex+1 
               };
 
               stopArr.push(stopObj);
@@ -1180,7 +1181,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         var stopArr = [];
         this.tableData[this.selectedMapIndex].routes[
           this.focusedRouteIndex
-        ].stops.map((stop) => {
+        ].stops.map((stop, stopIndex) => {
           var stopObj = <any>{
             id: stop.id ? stop.id : 0,
             address: stop.address,
@@ -1188,6 +1189,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             total: null,
             longitude: stop.long,
             latitude: stop.lat,
+            orderNumber: stopIndex+1 
           };
 
           stopArr.push(stopObj);
@@ -1474,14 +1476,14 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       );
 
       const newRoute = JSON.parse(JSON.stringify(route));
-      newRoute.id = lastId + 1;
+      newRoute.id = 0;
       newRoute.isFocused = false;
       newRoute.expanded = false;
       newRoute.expandFinished = false;
       newRoute.hover = false;
       newRoute.nameHover = false;
       newRoute.stops.map((stop) => {
-        stop.isSelected = false;
+        stop.id = 0;
       });
 
       newRoute.color = this.findRouteColor();
@@ -1492,8 +1494,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
       this.showHideDuplicate();
 
+      console.log('duplicate route', this.tableData[this.selectedMapIndex]);
+
       const newData: any = {
-        name: route.name,
+        name: newRoute.name,
         mapId: this.tableData[this.selectedMapIndex].id,
       };
       this.routingService
@@ -1505,10 +1509,14 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
             var updateRouteObj = {
               id: res.id,
-              name: route.name,
-              shape: route.shape,
-              stops: route.stops,
+              name: newRoute.name,
+              shape: newRoute.shape,
+              stops: newRoute.stops,
             };
+
+            console.log('duplicate route', route);
+            console.log('duplicate newRoute', newRoute);
+            console.log('duplicate updateRouteObj', updateRouteObj);
       
             this.routingService
               .updateRoute(updateRouteObj)
@@ -1578,10 +1586,63 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       });
 
       setTimeout(() => {
+        var stopsCopy = JSON.parse(JSON.stringify(route.stops));
+
         route.stops = route.stops.reverse();
 
-        this.calculateDistanceBetweenStops(routeIndex);
-        this.calculateRouteWidth(route);
+        // route.stops.map((stop, stopIndex) => {
+        //   stop.orderNumber = stopsCopy[stopIndex].orderNumber;
+        // });
+
+        var stopArr = [];
+        route.stops.map((stop, stopIndex) => {
+          stop.orderNumber = stopsCopy[stopIndex].orderNumber;
+
+          var stopObj = <any>{
+            id: stop.id,
+            address: stop.address,
+            leg: stop.leg,
+            total: stop.total,
+            longitude: stop.long,
+            latitude: stop.lat,
+            orderNumber: stop.orderNumber
+          };
+
+          stopArr.push(stopObj);
+        });
+
+        this.getRouteShape(route);
+
+        // var updateRouteObj = {
+        //   id: route.id,
+        //   name: route.name,
+        //   shape: route.shape,
+        //   stops: stopArr,
+        // };
+        // console.log('updateRouteObj', updateRouteObj);
+
+        // this.routingService
+        //   .updateRoute(updateRouteObj)
+        //   .pipe(takeUntil(this.destroy$))
+        //   .subscribe({
+        //     next: () => {
+        //       this.notificationService.success(
+        //         'Successfuly updated route.',
+        //         'Success'
+        //       );
+        //     },
+        //     error: () => {
+        //       this.notificationService.error(
+        //         "Can't update route.",
+        //         'Error'
+        //       );
+        //     },
+        //   });
+
+        console.log('reverse route.stops', route.stops);
+
+        //this.calculateDistanceBetweenStops(routeIndex);
+        //this.calculateRouteWidth(route);
         this.ref.detectChanges();
       }, 200);
     }
@@ -2730,6 +2791,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
               long: stop.longitude,
               leg: stop.leg,
               total: stop.total,
+              orderNumber: stop.orderNumber
             };
 
             stopsArr.push(stopObj);
@@ -2745,6 +2807,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             stopTime: '',
             mpg: '',
             fuelPrice: '',
+            shape: route.shape,
             stops: stopsArr,
             color: this.findRouteColor(),
             isFocused: this.focusedRouteIndex == index,
@@ -2868,7 +2931,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   getRouteShape(route) {
     var stopsLatLong = [];
     var stopArr = [];
-    route.stops.map((stop) => {
+    route.stops.map((stop, stopIndex) => {
       stopsLatLong.push({ latitude: stop.lat, longitude: stop.long });
 
       var stopObj = <any>{
@@ -2878,6 +2941,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         total: null,
         longitude: stop.long,
         latitude: stop.lat,
+        orderNumber: stop.orderNumber ? stop.orderNumber : stopIndex+1 
       };
 
       stopArr.push(stopObj);
