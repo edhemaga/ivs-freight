@@ -9,11 +9,16 @@ import { SettingsComponent } from './settings.component';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 
 @NgModule({
-  imports: [CommonModule, SettingsRoutingModule, SharedModule, TruckassistTableModule],
-  declarations: [
-    SettingsComponent,
-    SettingsToolbarComponent,
-    SettingsToollbarCardComponent,
-  ],
+    imports: [
+        CommonModule,
+        SettingsRoutingModule,
+        SharedModule,
+        TruckassistTableModule,
+    ],
+    declarations: [
+        SettingsComponent,
+        SettingsToolbarComponent,
+        SettingsToollbarCardComponent,
+    ],
 })
 export class SettingsModule {}

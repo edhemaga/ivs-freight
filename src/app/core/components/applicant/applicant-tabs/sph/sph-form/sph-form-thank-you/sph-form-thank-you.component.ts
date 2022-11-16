@@ -3,16 +3,16 @@ import { Component, OnInit } from '@angular/core';
 import moment from 'moment';
 
 @Component({
-  selector: 'app-sph-form-thank-you',
-  templateUrl: './sph-form-thank-you.component.html',
-  styleUrls: ['./sph-form-thank-you.component.scss'],
+    selector: 'app-sph-form-thank-you',
+    templateUrl: './sph-form-thank-you.component.html',
+    styleUrls: ['./sph-form-thank-you.component.scss'],
 })
 export class SphFormThankYouComponent implements OnInit {
-  public copyrightYear: number;
+    public copyrightYear: number;
 
-  constructor() {}
+    constructor() {}
 
-  ngOnInit(): void {
-    this.copyrightYear = moment().year();
-  }
+    ngOnInit(): void {
+        this.copyrightYear = moment().year();
+    }
 }

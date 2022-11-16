@@ -4,10 +4,7 @@ import { ShipperItemState, ShipperItemStore } from './shipper-details.store';
 
 @Injectable({ providedIn: 'root' })
 export class ShipperDetailsQuery extends QueryEntity<ShipperItemState> {
-  constructor(
-    protected shipperItemStore: ShipperItemStore
-  ) {
-    super(shipperItemStore);
-  }
-  
+    constructor(protected shipperItemStore: ShipperItemStore) {
+        super(shipperItemStore);
+    }
 }

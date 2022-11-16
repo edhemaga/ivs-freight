@@ -5,17 +5,17 @@ import { TodoResponse } from 'appcoretruckassist';
 export interface TodoState extends EntityState<TodoResponse[], number> {}
 
 export function createInitialState(): TodoState {
-  return {
-    todoList: [],
-  };
+    return {
+        todoList: [],
+    };
 }
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 @StoreConfig({ name: 'todo' })
 export class TodoStore extends EntityStore<TodoState> {
-  constructor() {
-    super(createInitialState());
-  }
+    constructor() {
+        super(createInitialState());
+    }
 }

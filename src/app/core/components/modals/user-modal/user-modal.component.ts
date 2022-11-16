@@ -1,22 +1,22 @@
 import {
-  accountBankValidation,
-  addressUnitValidation,
-  addressValidation,
-  bankValidation,
-  departmentValidation,
-  firstNameValidation,
-  lastNameValidation,
-  phoneExtension,
-  routingBankValidation,
-  salaryValidation,
+    accountBankValidation,
+    addressUnitValidation,
+    addressValidation,
+    bankValidation,
+    departmentValidation,
+    firstNameValidation,
+    lastNameValidation,
+    phoneExtension,
+    routingBankValidation,
+    salaryValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewEncapsulation,
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewEncapsulation,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
@@ -28,266 +28,281 @@ import { BankVerificationService } from '../../../services/BANK-VERIFICATION/ban
 import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
-  selector: 'app-user-modal',
-  templateUrl: './user-modal.component.html',
-  styleUrls: ['./user-modal.component.scss'],
-  animations: [tab_modal_animation('animationTabsModal')],
-  encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, BankVerificationService],
+    selector: 'app-user-modal',
+    templateUrl: './user-modal.component.html',
+    styleUrls: ['./user-modal.component.scss'],
+    animations: [tab_modal_animation('animationTabsModal')],
+    encapsulation: ViewEncapsulation.None,
+    providers: [ModalService, BankVerificationService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
-  @Input() editData: any;
+    private destroy$ = new Subject<void>();
+    @Input() editData: any;
 
-  public userForm: FormGroup;
+    public userForm: FormGroup;
 
-  public selectedTab: number = 1;
-  public tabs: any[] = [
-    {
-      id: 1,
-      name: 'Basic',
-    },
-    {
-      id: 2,
-      name: 'Additional',
-    },
-  ];
+    public selectedTab: number = 1;
+    public tabs: any[] = [
+        {
+            id: 1,
+            name: 'Basic',
+        },
+        {
+            id: 2,
+            name: 'Additional',
+        },
+    ];
 
-  public animationObject = {
-    value: this.selectedTab,
-    params: { height: '0px' },
-  };
-
-  public typeOfEmploye = [
-    {
-      id: 998,
-      label: 'employe',
-      value: 'user',
-      name: 'User',
-      checked: true,
-    },
-    {
-      id: 999,
-      label: 'employe',
-      value: 'admin',
-      name: 'Admin',
-      checked: false,
-    },
-  ];
-
-  public typeOfPayroll = [
-    {
-      id: 300,
-      label: 'payroll',
-      value: '1099',
-      name: '1099',
-      checked: true,
-    },
-    {
-      id: 301,
-      label: 'payroll',
-      value: 'W-2',
-      name: 'W-2',
-      checked: false,
-    },
-  ];
-  public labelsBank: any[] = [];
-  public departments: any[] = [];
-  public offices: any[] = [];
-
-  public selectedDepartment: any = null;
-  public selectedOffice: any = null;
-  public selectedBank: any = null;
-
-  public selectedAddress: AddressEntity = null;
-  public isPhoneExtExist: boolean = false;
-
-  public isBankSelected: boolean = false;
-
-  public isDirty: boolean;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private inputService: TaInputService,
-    private modalService: ModalService,
-    private bankVerificationService: BankVerificationService,
-    private notificationService: NotificationService
-  ) {}
-
-  ngOnInit() {
-    this.createForm();
-    this.onBankSelected();
-
-    if (this.editData) {
-      this.editUserById(this.editData.id);
-    }
-  }
-
-  private createForm() {
-    this.userForm = this.formBuilder.group({
-      firstName: [null, [Validators.required, ...firstNameValidation]],
-      lastName: [null, [Validators.required, ...lastNameValidation]],
-      address: [null, [...addressValidation]],
-      addressUnit: [null, [...addressUnitValidation]],
-      personalPhone: [null, [phoneFaxRegex, Validators.required]],
-      personalEmail: [null],
-      departmentId: [null, [Validators.required, ...departmentValidation]],
-      mainOfficeId: [null],
-      userType: [null],
-      employePhone: [null, [phoneFaxRegex, Validators.required]],
-      employePhoneExt: [null, [...phoneExtension]],
-      employeEmail: [null, [Validators.required]],
-      isIncludePayroll: [false],
-      salary: [null, salaryValidation],
-      startDate: [null],
-      payrollType: [null],
-      bankId: [null, [...bankValidation]],
-      routingNumber: [null, routingBankValidation],
-      accountNumber: [null, accountBankValidation],
-      note: [null],
-    });
-
-    this.inputService.customInputValidator(
-      this.userForm.get('personalEmail'),
-      'email',
-      this.destroy$
-    );
-
-    this.inputService.customInputValidator(
-      this.userForm.get('employeEmail'),
-      'email',
-      this.destroy$
-    );
-  }
-
-  public onModalAction(data: { action: string; bool: boolean }): void {
-    switch (data.action) {
-      case 'close': {
-        break;
-      }
-      case 'save': {
-        if (this.userForm.invalid) {
-          this.inputService.markInvalid(this.userForm);
-          return;
-        }
-        if (this.editData) {
-          this.updateUser(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
-        } else {
-          this.addUser();
-          this.modalService.setModalSpinner({ action: null, status: true });
-        }
-        break;
-      }
-      case 'delete': {
-        if (this.editData) {
-          this.deleteUserById(this.editData.id);
-          this.modalService.setModalSpinner({ action: 'delete', status: true });
-        }
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  }
-
-  public tabChange(event: any): void {
-    this.selectedTab = event.id;
-    let dotAnimation = document.querySelector('.animation-two-tabs');
-    this.animationObject = {
-      value: this.selectedTab,
-      params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+    public animationObject = {
+        value: this.selectedTab,
+        params: { height: '0px' },
     };
-  }
 
-  public onHandleAddress(event: {
-    address: AddressEntity;
-    valid: boolean;
-  }): void {
-    if (event.valid) this.selectedAddress = event.address;
-  }
+    public typeOfEmploye = [
+        {
+            id: 998,
+            label: 'employe',
+            value: 'user',
+            name: 'User',
+            checked: true,
+        },
+        {
+            id: 999,
+            label: 'employe',
+            value: 'admin',
+            name: 'Admin',
+            checked: false,
+        },
+    ];
 
-  private onBankSelected(): void {
-    this.userForm
-      .get('bankId')
-      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe((value) => {
-        this.isBankSelected = this.bankVerificationService.onSelectBank(
-          this.selectedBank ? this.selectedBank.name : value,
-          this.userForm.get('routingNumber'),
-          this.userForm.get('accountNumber')
-        );
-      });
-  }
+    public typeOfPayroll = [
+        {
+            id: 300,
+            label: 'payroll',
+            value: '1099',
+            name: '1099',
+            checked: true,
+        },
+        {
+            id: 301,
+            label: 'payroll',
+            value: 'W-2',
+            name: 'W-2',
+            checked: false,
+        },
+    ];
+    public labelsBank: any[] = [];
+    public departments: any[] = [];
+    public offices: any[] = [];
 
-  public onTypeOfEmploye(event: any) {}
+    public selectedDepartment: any = null;
+    public selectedOffice: any = null;
+    public selectedBank: any = null;
 
-  public onTypeOfPayroll(event: any) {}
+    public selectedAddress: AddressEntity = null;
+    public isPhoneExtExist: boolean = false;
 
-  public onSelectDropdown(event: any, action: string) {
-    switch (action) {
-      case 'department': {
-        this.selectedDepartment = event;
-        break;
-      }
-      case 'office': {
-        this.selectedOffice = event;
-        break;
-      }
-      case 'bank': {
-        this.selectedBank = event;
-        if (!event) {
-          this.userForm.get('bankId').patchValue(null);
+    public isBankSelected: boolean = false;
+
+    public isDirty: boolean;
+
+    constructor(
+        private formBuilder: FormBuilder,
+        private inputService: TaInputService,
+        private modalService: ModalService,
+        private bankVerificationService: BankVerificationService,
+        private notificationService: NotificationService
+    ) {}
+
+    ngOnInit() {
+        this.createForm();
+        this.onBankSelected();
+
+        if (this.editData) {
+            this.editUserById(this.editData.id);
         }
-        break;
-      }
-      default: {
-        break;
-      }
     }
-  }
 
-  public onSaveNewBank(bank: { data: any; action: string }) {
-    this.selectedBank = bank.data;
+    private createForm() {
+        this.userForm = this.formBuilder.group({
+            firstName: [null, [Validators.required, ...firstNameValidation]],
+            lastName: [null, [Validators.required, ...lastNameValidation]],
+            address: [null, [...addressValidation]],
+            addressUnit: [null, [...addressUnitValidation]],
+            personalPhone: [null, [phoneFaxRegex, Validators.required]],
+            personalEmail: [null],
+            departmentId: [
+                null,
+                [Validators.required, ...departmentValidation],
+            ],
+            mainOfficeId: [null],
+            userType: [null],
+            employePhone: [null, [phoneFaxRegex, Validators.required]],
+            employePhoneExt: [null, [...phoneExtension]],
+            employeEmail: [null, [Validators.required]],
+            isIncludePayroll: [false],
+            salary: [null, salaryValidation],
+            startDate: [null],
+            payrollType: [null],
+            bankId: [null, [...bankValidation]],
+            routingNumber: [null, routingBankValidation],
+            accountNumber: [null, accountBankValidation],
+            note: [null],
+        });
 
-    this.bankVerificationService
-      .createBank({ name: this.selectedBank.name })
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (res: CreateResponse) => {
-          this.notificationService.success(
-            'Successfuly add new bank',
-            'Success'
-          );
-          this.selectedBank = {
-            id: res.id,
-            name: this.selectedBank.name,
-          };
-          this.labelsBank = [...this.labelsBank, this.selectedBank];
-        },
-        error: () => {
-          this.notificationService.error("Can't add new bank", 'Error');
-        },
-      });
-  }
+        this.inputService.customInputValidator(
+            this.userForm.get('personalEmail'),
+            'email',
+            this.destroy$
+        );
 
-  private updateUser(id: number) {}
+        this.inputService.customInputValidator(
+            this.userForm.get('employeEmail'),
+            'email',
+            this.destroy$
+        );
+    }
 
-  private addUser() {}
+    public onModalAction(data: { action: string; bool: boolean }): void {
+        switch (data.action) {
+            case 'close': {
+                break;
+            }
+            case 'save': {
+                if (this.userForm.invalid) {
+                    this.inputService.markInvalid(this.userForm);
+                    return;
+                }
+                if (this.editData) {
+                    this.updateUser(this.editData.id);
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                    });
+                } else {
+                    this.addUser();
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                    });
+                }
+                break;
+            }
+            case 'delete': {
+                if (this.editData) {
+                    this.deleteUserById(this.editData.id);
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                    });
+                }
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
 
-  private deleteUserById(id: number) {}
+    public tabChange(event: any): void {
+        this.selectedTab = event.id;
+        let dotAnimation = document.querySelector('.animation-two-tabs');
+        this.animationObject = {
+            value: this.selectedTab,
+            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+        };
+    }
 
-  private editUserById(id: number) {}
+    public onHandleAddress(event: {
+        address: AddressEntity;
+        valid: boolean;
+    }): void {
+        if (event.valid) this.selectedAddress = event.address;
+    }
 
-  // Checkbox Card
-  public payrollCheckboxCard: boolean = true;
-  public toggleCheckboxCard() {
-    this.payrollCheckboxCard = !this.payrollCheckboxCard;
-  }
+    private onBankSelected(): void {
+        this.userForm
+            .get('bankId')
+            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .subscribe((value) => {
+                this.isBankSelected = this.bankVerificationService.onSelectBank(
+                    this.selectedBank ? this.selectedBank.name : value,
+                    this.userForm.get('routingNumber'),
+                    this.userForm.get('accountNumber')
+                );
+            });
+    }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+    public onTypeOfEmploye(event: any) {}
+
+    public onTypeOfPayroll(event: any) {}
+
+    public onSelectDropdown(event: any, action: string) {
+        switch (action) {
+            case 'department': {
+                this.selectedDepartment = event;
+                break;
+            }
+            case 'office': {
+                this.selectedOffice = event;
+                break;
+            }
+            case 'bank': {
+                this.selectedBank = event;
+                if (!event) {
+                    this.userForm.get('bankId').patchValue(null);
+                }
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    public onSaveNewBank(bank: { data: any; action: string }) {
+        this.selectedBank = bank.data;
+
+        this.bankVerificationService
+            .createBank({ name: this.selectedBank.name })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: CreateResponse) => {
+                    this.notificationService.success(
+                        'Successfuly add new bank',
+                        'Success'
+                    );
+                    this.selectedBank = {
+                        id: res.id,
+                        name: this.selectedBank.name,
+                    };
+                    this.labelsBank = [...this.labelsBank, this.selectedBank];
+                },
+                error: () => {
+                    this.notificationService.error(
+                        "Can't add new bank",
+                        'Error'
+                    );
+                },
+            });
+    }
+
+    private updateUser(id: number) {}
+
+    private addUser() {}
+
+    private deleteUserById(id: number) {}
+
+    private editUserById(id: number) {}
+
+    // Checkbox Card
+    public payrollCheckboxCard: boolean = true;
+    public toggleCheckboxCard() {
+        this.payrollCheckboxCard = !this.payrollCheckboxCard;
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

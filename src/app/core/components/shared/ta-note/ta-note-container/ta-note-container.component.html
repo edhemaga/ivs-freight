@@ -1,104 +1,106 @@
 <div
-  [class.active]="isExpanded"
-  [class.parking_editor_menu]="parking"
-  [class.opened_parking_editor]="parking && showCollorPattern"
-  class="editor_menu"
+    [class.active]="isExpanded"
+    [class.parking_editor_menu]="parking"
+    [class.opened_parking_editor]="parking && showCollorPattern"
+    class="editor_menu"
 >
-  <div
-    class="font_editor"
-    [class.parking_font_editor]="parking"
-    *ngIf="!parking || (parking && !showCollorPattern)"
-  >
     <div
-      (click)="executeEditor('bold')"
-      [class.active]="activeOptions.bold"
-      [tooltipBackground]="'#6C6C6C'"
-      ngbTooltip
-      [mainTooltip]="'Bold'"
-      position="bottom"
-      class="editor_buttons bold_text"
+        class="font_editor"
+        [class.parking_font_editor]="parking"
+        *ngIf="!parking || (parking && !showCollorPattern)"
     >
-      <svg-icon
-        src="assets/svg/truckassist-table/note/bold-icon.svg"
-      ></svg-icon>
-    </div>
-    <div
-      (click)="executeEditor('italic')"
-      [class.active]="activeOptions.italic"
-      [tooltipBackground]="'#6C6C6C'"
-      ngbTooltip
-      [mainTooltip]="'Italic'"
-      position="bottom"
-      class="editor_buttons italic_text"
-    >
-      <svg-icon
-        src="assets/svg/truckassist-table/note/italic-icon.svg"
-      ></svg-icon>
-    </div>
-    <div
-      (click)="executeEditor('underline')"
-      [class.active]="activeOptions.underline"
-      [tooltipBackground]="'#6C6C6C'"
-      ngbTooltip
-      [mainTooltip]="'Underline'"
-      position="bottom"
-      class="editor_buttons underline_text"
-    >
-      <svg-icon
-        src="assets/svg/truckassist-table/note/underline-icon.svg"
-      ></svg-icon>
-    </div>
-    <div class="note_border_line" *ngIf="!parking"></div>
-  </div>
-  <div
-    (click)="togglePattern()"
-    [class.no_opacity]="showCollorPattern"
-    [class.parking_tooltip]="parking && showCollorPattern"
-    class="editor_buttons text_color"
-    [class.popover_text_color]="popoverNote"
-  >
-    <div
-      class="colors_patter"
-      id="colors_patter"
-      [class.closed_pattern]="!closedPattern"
-      [class.input_note]="!popoverNote"
-    >
-      <div
-        (click)="executeEditor('foreColor', paternCol.color, indx)"
-        *ngFor="let paternCol of containerColors; let indx = index"
-        [style.backgroundColor]="paternCol.color"
-        [class.hide_elements]="indx != 0 && !showCollorPattern"
-        [tooltipBackground]="indx != 0 && !showCollorPattern ? '' : '#6C6C6C'"
-        ngbTooltip
-        [mainTooltip]="
-          indx == 0 && !showCollorPattern
-            ? 'Select Color'
-            : indx != 0 && !showCollorPattern
-            ? ''
-            : paternCol.name
-        "
-        position="bottom"
-        class="editor_buttons text_color opened_text_color"
-        [class.popover_text_color]="popoverNote"
-        [ngStyle]="{
-          opacity: !showCollorPattern && indx != 0 ? 0 : 1
-        }"
-      >
         <div
-          class="color_picker_arrow"
-          [class.flip_arrow]="
-            (!popoverNote && showCollorPattern) ||
-            (popoverNote && !showCollorPattern)
-          "
-          [class.active]="showCollorPattern"
-          *ngIf="indx == 0"
+            (click)="executeEditor('bold')"
+            [class.active]="activeOptions.bold"
+            [tooltipBackground]="'#6C6C6C'"
+            ngbTooltip
+            [mainTooltip]="'Bold'"
+            position="bottom"
+            class="editor_buttons bold_text"
         >
-          <svg-icon
-            src="assets/svg/truckassist-table/arrow-columns-drop.svg"
-          ></svg-icon>
+            <svg-icon
+                src="assets/svg/truckassist-table/note/bold-icon.svg"
+            ></svg-icon>
         </div>
-      </div>
+        <div
+            (click)="executeEditor('italic')"
+            [class.active]="activeOptions.italic"
+            [tooltipBackground]="'#6C6C6C'"
+            ngbTooltip
+            [mainTooltip]="'Italic'"
+            position="bottom"
+            class="editor_buttons italic_text"
+        >
+            <svg-icon
+                src="assets/svg/truckassist-table/note/italic-icon.svg"
+            ></svg-icon>
+        </div>
+        <div
+            (click)="executeEditor('underline')"
+            [class.active]="activeOptions.underline"
+            [tooltipBackground]="'#6C6C6C'"
+            ngbTooltip
+            [mainTooltip]="'Underline'"
+            position="bottom"
+            class="editor_buttons underline_text"
+        >
+            <svg-icon
+                src="assets/svg/truckassist-table/note/underline-icon.svg"
+            ></svg-icon>
+        </div>
+        <div class="note_border_line" *ngIf="!parking"></div>
     </div>
-  </div>
-  <div class="note_border_line" *ngIf="!parking && !popoverNote"></div>
+    <div
+        (click)="togglePattern()"
+        [class.no_opacity]="showCollorPattern"
+        [class.parking_tooltip]="parking && showCollorPattern"
+        class="editor_buttons text_color"
+        [class.popover_text_color]="popoverNote"
+    >
+        <div
+            class="colors_patter"
+            id="colors_patter"
+            [class.closed_pattern]="!closedPattern"
+            [class.input_note]="!popoverNote"
+        >
+            <div
+                (click)="executeEditor('foreColor', paternCol.color, indx)"
+                *ngFor="let paternCol of containerColors; let indx = index"
+                [style.backgroundColor]="paternCol.color"
+                [class.hide_elements]="indx != 0 && !showCollorPattern"
+                [tooltipBackground]="
+                    indx != 0 && !showCollorPattern ? '' : '#6C6C6C'
+                "
+                ngbTooltip
+                [mainTooltip]="
+                    indx == 0 && !showCollorPattern
+                        ? 'Select Color'
+                        : indx != 0 && !showCollorPattern
+                        ? ''
+                        : paternCol.name
+                "
+                position="bottom"
+                class="editor_buttons text_color opened_text_color"
+                [class.popover_text_color]="popoverNote"
+                [ngStyle]="{
+                    opacity: !showCollorPattern && indx != 0 ? 0 : 1
+                }"
+            >
+                <div
+                    class="color_picker_arrow"
+                    [class.flip_arrow]="
+                        (!popoverNote && showCollorPattern) ||
+                        (popoverNote && !showCollorPattern)
+                    "
+                    [class.active]="showCollorPattern"
+                    *ngIf="indx == 0"
+                >
+                    <svg-icon
+                        src="assets/svg/truckassist-table/arrow-columns-drop.svg"
+                    ></svg-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="note_border_line" *ngIf="!parking && !popoverNote"></div>
 </div>
