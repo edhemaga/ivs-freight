@@ -4,26 +4,26 @@ import { Subject } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class AppLeadBoardService {
-  public newFuel = new Subject<void>();
-  public editAddFuel = new Subject<void>();
+    public newFuel = new Subject<void>();
+    public editAddFuel = new Subject<void>();
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  get load() {
-    return this.newFuel;
-  }
+    get load() {
+        return this.newFuel;
+    }
 
-  get editedLoad() {
-    return this.editAddFuel;
-  }
+    get editedLoad() {
+        return this.editAddFuel;
+    }
 
-  getLeadBoardList(type: string, critearia: string, period: string) {
-    return this.http.get(
-      environment.API_ENDPOINT +
-        `leaderboard/${type}/list/${critearia}/${period}`
-    );
-  }
+    getLeadBoardList(type: string, critearia: string, period: string) {
+        return this.http.get(
+            environment.API_ENDPOINT +
+                `leaderboard/${type}/list/${critearia}/${period}`
+        );
+    }
 }

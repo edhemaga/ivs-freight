@@ -6,23 +6,22 @@ import { DebugElement } from '@angular/core';
 import { MapSettingsModalComponent } from './map-settings-modal.component';
 
 describe('MapSettingsModalComponent', () => {
-  let component: MapSettingsModalComponent;
-  let fixture: ComponentFixture<MapSettingsModalComponent>;
+    let component: MapSettingsModalComponent;
+    let fixture: ComponentFixture<MapSettingsModalComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ MapSettingsModalComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [MapSettingsModalComponent],
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(MapSettingsModalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(MapSettingsModalComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

@@ -1,521 +1,521 @@
-@import "../truck-details.component.scss";
+@import '../truck-details.component.scss';
 app-truck-details-item {
-  .truck-toolbar-plus {
-    svg {
-      rect {
-        width: 18px;
+    .truck-toolbar-plus {
+        svg {
+            rect {
+                width: 18px;
+                height: 18px;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            #Rectangle_565255 {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .fuel-item {
+        margin-left: -5px;
+    }
+
+    // Note template
+
+    .truck-card-line {
+        margin: 0;
+        height: 2px;
+        margin-top: 6px;
+        margin-bottom: 8px;
+        margin-right: -6px;
+        margin-left: -6px !important;
+        border-radius: 1px;
+        background-color: $color-white-light;
+    }
+    .size18 {
+        font-weight: $font-medium !important;
+        font-size: $font-size18 !important;
+    }
+    .single-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 18px;
-        &:hover {
-          cursor: pointer;
-        }
-      }
-      #Rectangle_565255 {
-        margin-right: 10px;
-      }
+        margin-bottom: 10px;
     }
-  }
-
-  .fuel-item {
-    margin-left: -5px;
-  }
-
-  // Note template
-
-  .truck-card-line {
-    margin: 0;
-    height: 2px;
-    margin-top: 6px;
-    margin-bottom: 8px;
-    margin-right: -6px;
-    margin-left: -6px !important;
-    border-radius: 1px;
-    background-color: $color-white-light;
-  }
-  .size18 {
-    font-weight: $font-medium !important;
-    font-size: $font-size18 !important;
-  }
-  .single-icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 18px;
-    margin-bottom: 10px;
-  }
-  .icon {
-    margin-left: 6px;
-  }
-
-  .driver-details-multiple-pdf {
-    justify-content: center;
-    .files-count {
-      display: none;
-    }
-  }
-  .details-page-row-5 {
-    margin-top: 8px;
-  }
-  //   // PDF - big
-  .details-page-row-7 {
-    height: 343px !important;
-    width: 100%;
-    margin: 12px 0px;
-  }
-  .note-item {
-    display: flex;
-    flex-direction: column;
-    margin-left: 4px;
-    height: 40px;
-    .note-body {
-      padding-left: 4px !important;
-    }
-    .note-textarea {
-      color: #6c6c6c !important;
-      font-weight: 500 !important;
-      &::-moz-selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      &::selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
-        }
-      }
-
-      span[style*="color: rgb(83, 107, 194)"],
-      span[style*="color: rgb(83, 107, 194)"] span {
-        &::-moz-selection {
-          color: $bw6-2 !important;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(38, 166, 144)"],
-      span[style*="color: rgb(38, 166, 144)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(239, 83, 80)"],
-      span[style*="color: rgb(239, 83, 80)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(255, 167, 38)"],
-      span[style*="color: rgb(255, 167, 38)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(83, 107, 194)"],
-      span[style*="color: rgb(83, 107, 194)"] span {
-        &::-moz-selection {
-          color: $bw6-2 !important;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(38, 166, 144)"],
-      span[style*="color: rgb(38, 166, 144)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(239, 83, 80)"],
-      span[style*="color: rgb(239, 83, 80)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(255, 167, 38)"],
-      span[style*="color: rgb(255, 167, 38)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
-      }
-    }
-  }
-  .files-item {
-    display: flex;
-    flex-direction: column;
-    padding: 0 8px;
-    margin-bottom: 16px;
-  }
-  .carousel-buttons-control {
-    &.prev {
-      left: -2px !important;
+    .icon {
+        margin-left: 6px;
     }
 
-    &.next {
-      right: -2px !important;
+    .driver-details-multiple-pdf {
+        justify-content: center;
+        .files-count {
+            display: none;
+        }
     }
-  }
-
-  .acc-number {
-    display: flex;
-    align-items: center;
-    .hidden-svg-eye {
-      margin-left: 5px;
+    .details-page-row-5 {
+        margin-top: 8px;
     }
-  }
-  .revenue {
-    margin-left: 4px;
-  }
-  .bank-card {
-    .header-text.no-counter {
-      margin: 4px !important;
+    //   // PDF - big
+    .details-page-row-7 {
+        height: 343px !important;
+        width: 100%;
+        margin: 12px 0px;
     }
-  }
-  .owner-history-container {
-    padding: 0 10px;
-    // margin-top: -7px;
-    .status-container {
-      padding-top: 0 !important;
+    .note-item {
+        display: flex;
+        flex-direction: column;
+        margin-left: 4px;
+        height: 40px;
+        .note-body {
+            padding-left: 4px !important;
+        }
+        .note-textarea {
+            color: #6c6c6c !important;
+            font-weight: 500 !important;
+            &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+
+            span[style*='color: rgb(83, 107, 194)'],
+            span[style*='color: rgb(83, 107, 194)'] span {
+                &::-moz-selection {
+                    color: $bw6-2 !important;
+                    background: rgb(83, 107, 194, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(83, 107, 194, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(38, 166, 144)'],
+            span[style*='color: rgb(38, 166, 144)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(38, 166, 144, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(38, 166, 144, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(239, 83, 80)'],
+            span[style*='color: rgb(239, 83, 80)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(239, 83, 80, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(239, 83, 80, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(255, 167, 38)'],
+            span[style*='color: rgb(255, 167, 38)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(255, 167, 38, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(255, 167, 38, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(83, 107, 194)'],
+            span[style*='color: rgb(83, 107, 194)'] span {
+                &::-moz-selection {
+                    color: $bw6-2 !important;
+                    background: rgb(83, 107, 194, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(83, 107, 194, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(38, 166, 144)'],
+            span[style*='color: rgb(38, 166, 144)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(38, 166, 144, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(38, 166, 144, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(239, 83, 80)'],
+            span[style*='color: rgb(239, 83, 80)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(239, 83, 80, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(239, 83, 80, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(255, 167, 38)'],
+            span[style*='color: rgb(255, 167, 38)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(255, 167, 38, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(255, 167, 38, 0.2) !important;
+                }
+            }
+        }
     }
-    .item-wrapper {
-      grid-template-columns: 122px 132px 75px !important;
-      .employment {
-        font-weight: $font-semibold !important;
-        width: 155px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
+    .files-item {
+        display: flex;
+        flex-direction: column;
+        padding: 0 8px;
+        margin-bottom: 16px;
     }
-  }
-  .note-wrapper {
-    padding-left: 5px;
-    padding-right: 9px;
-    .note-body {
-      padding-left: 4px !important;
-      margin-top: 8px;
+    .carousel-buttons-control {
+        &.prev {
+            left: -2px !important;
+        }
+
+        &.next {
+            right: -2px !important;
+        }
     }
-    .note-textarea {
-      color: #6c6c6c !important;
-      &::-moz-selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
 
-      &::selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
+    .acc-number {
+        display: flex;
+        align-items: center;
+        .hidden-svg-eye {
+            margin-left: 5px;
         }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
-        }
-      }
-
-      span[style*="color: rgb(83, 107, 194)"],
-      span[style*="color: rgb(83, 107, 194)"] span {
-        &::-moz-selection {
-          color: $bw6-2 !important;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(38, 166, 144)"],
-      span[style*="color: rgb(38, 166, 144)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(239, 83, 80)"],
-      span[style*="color: rgb(239, 83, 80)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(255, 167, 38)"],
-      span[style*="color: rgb(255, 167, 38)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(83, 107, 194)"],
-      span[style*="color: rgb(83, 107, 194)"] span {
-        &::-moz-selection {
-          color: $bw6-2 !important;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(83, 107, 194, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(38, 166, 144)"],
-      span[style*="color: rgb(38, 166, 144)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(38, 166, 144, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(239, 83, 80)"],
-      span[style*="color: rgb(239, 83, 80)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(239, 83, 80, 0.2) !important;
-        }
-      }
-
-      span[style*="color: rgb(255, 167, 38)"],
-      span[style*="color: rgb(255, 167, 38)"] span {
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(255, 167, 38, 0.2) !important;
-        }
-      }
     }
-  }
-  .note-cards-lease {
-    .note-body {
-      height: 23px !important;
-      padding: 0 9px !important;
-      .note-textarea {
-        color: #6c6c6c !important;
-        font-weight: 500 !important;
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
-        }
-  
-        &::selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
-        }
-  
-        span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-        }
-  
-        span[style*="color: rgb(83, 107, 194)"],
-        span[style*="color: rgb(83, 107, 194)"] span {
-          &::-moz-selection {
-            color: $bw6-2 !important;
-            background: rgb(83, 107, 194, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(83, 107, 194, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(38, 166, 144)"],
-        span[style*="color: rgb(38, 166, 144)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(38, 166, 144, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(38, 166, 144, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(239, 83, 80)"],
-        span[style*="color: rgb(239, 83, 80)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(239, 83, 80, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(239, 83, 80, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(255, 167, 38)"],
-        span[style*="color: rgb(255, 167, 38)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(255, 167, 38, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(255, 167, 38, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(83, 107, 194)"],
-        span[style*="color: rgb(83, 107, 194)"] span {
-          &::-moz-selection {
-            color: $bw6-2 !important;
-            background: rgb(83, 107, 194, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(83, 107, 194, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(38, 166, 144)"],
-        span[style*="color: rgb(38, 166, 144)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(38, 166, 144, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(38, 166, 144, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(239, 83, 80)"],
-        span[style*="color: rgb(239, 83, 80)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(239, 83, 80, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(239, 83, 80, 0.2) !important;
-          }
-        }
-  
-        span[style*="color: rgb(255, 167, 38)"],
-        span[style*="color: rgb(255, 167, 38)"] span {
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(255, 167, 38, 0.2) !important;
-          }
-  
-          &::selection {
-            color: $bw6-2;
-            background: rgb(255, 167, 38, 0.2) !important;
-          }
-        }
-      }
+    .revenue {
+        margin-left: 4px;
     }
-  }
+    .bank-card {
+        .header-text.no-counter {
+            margin: 4px !important;
+        }
+    }
+    .owner-history-container {
+        padding: 0 10px;
+        // margin-top: -7px;
+        .status-container {
+            padding-top: 0 !important;
+        }
+        .item-wrapper {
+            grid-template-columns: 122px 132px 75px !important;
+            .employment {
+                font-weight: $font-semibold !important;
+                width: 155px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+    .note-wrapper {
+        padding-left: 5px;
+        padding-right: 9px;
+        .note-body {
+            padding-left: 4px !important;
+            margin-top: 8px;
+        }
+        .note-textarea {
+            color: #6c6c6c !important;
+            &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+
+            span[style*='color: rgb(83, 107, 194)'],
+            span[style*='color: rgb(83, 107, 194)'] span {
+                &::-moz-selection {
+                    color: $bw6-2 !important;
+                    background: rgb(83, 107, 194, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(83, 107, 194, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(38, 166, 144)'],
+            span[style*='color: rgb(38, 166, 144)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(38, 166, 144, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(38, 166, 144, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(239, 83, 80)'],
+            span[style*='color: rgb(239, 83, 80)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(239, 83, 80, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(239, 83, 80, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(255, 167, 38)'],
+            span[style*='color: rgb(255, 167, 38)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(255, 167, 38, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(255, 167, 38, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(83, 107, 194)'],
+            span[style*='color: rgb(83, 107, 194)'] span {
+                &::-moz-selection {
+                    color: $bw6-2 !important;
+                    background: rgb(83, 107, 194, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(83, 107, 194, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(38, 166, 144)'],
+            span[style*='color: rgb(38, 166, 144)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(38, 166, 144, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(38, 166, 144, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(239, 83, 80)'],
+            span[style*='color: rgb(239, 83, 80)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(239, 83, 80, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(239, 83, 80, 0.2) !important;
+                }
+            }
+
+            span[style*='color: rgb(255, 167, 38)'],
+            span[style*='color: rgb(255, 167, 38)'] span {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(255, 167, 38, 0.2) !important;
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(255, 167, 38, 0.2) !important;
+                }
+            }
+        }
+    }
+    .note-cards-lease {
+        .note-body {
+            height: 23px !important;
+            padding: 0 9px !important;
+            .note-textarea {
+                color: #6c6c6c !important;
+                font-weight: 500 !important;
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                span[style*='color: rgb(83, 107, 194)'],
+                span[style*='color: rgb(83, 107, 194)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2 !important;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(38, 166, 144)'],
+                span[style*='color: rgb(38, 166, 144)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(239, 83, 80)'],
+                span[style*='color: rgb(239, 83, 80)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(255, 167, 38)'],
+                span[style*='color: rgb(255, 167, 38)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(83, 107, 194)'],
+                span[style*='color: rgb(83, 107, 194)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2 !important;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(38, 166, 144)'],
+                span[style*='color: rgb(38, 166, 144)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(239, 83, 80)'],
+                span[style*='color: rgb(239, 83, 80)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(255, 167, 38)'],
+                span[style*='color: rgb(255, 167, 38)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+                }
+            }
+        }
+    }
 }

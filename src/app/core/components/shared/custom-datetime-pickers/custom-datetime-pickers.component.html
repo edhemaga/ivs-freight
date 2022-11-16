@@ -1,66 +1,93 @@
 <div class="temp_inp_holder">
-  <div>
-    <div
-      class="pickers_holder">
-      <div
-        *ngIf="calendarMainType == 'date'"
-        class="date_picker"
-      >
-        <app-date-calendars 
-          [listPreview]="listPreview"
-          [dateTime]="dateTime"
-          (setListPreviewValue)="setListPreview($event)"
-        ></app-date-calendars>
-      </div>
-      <div *ngIf="calendarMainType == 'time'" class="time_picker">
-        <div class="time_picker_head d-flex">
-          <div class="selected_time">{{selectedTime}}</div>
-          <div class="sel_now" (click)="setDefaultTime()">Default</div>
+    <div>
+        <div class="pickers_holder">
+            <div *ngIf="calendarMainType == 'date'" class="date_picker">
+                <app-date-calendars
+                    [listPreview]="listPreview"
+                    [dateTime]="dateTime"
+                    (setListPreviewValue)="setListPreview($event)"
+                ></app-date-calendars>
+            </div>
+            <div *ngIf="calendarMainType == 'time'" class="time_picker">
+                <div class="time_picker_head d-flex">
+                    <div class="selected_time">{{ selectedTime }}</div>
+                    <div class="sel_now" (click)="setDefaultTime()">
+                        Default
+                    </div>
+                </div>
+                <div class="time_picker_body">
+                    <div class="picker_body_head">
+                        <div [class.active]="hoveredItem == 'hours'">Hours</div>
+                        <div [class.active]="hoveredItem == 'minutes'">
+                            Minute
+                        </div>
+                        <div [class.active]="hoveredItem == 'times'">AM/PM</div>
+                    </div>
+                    <div class="picker_body">
+                        <div
+                            #hourScroll
+                            (mouseout)="hoveredItem = null"
+                            (mouseover)="hoveredItem = 'hours'"
+                            (scroll)="onScroll($event, 'hourScroll')"
+                            class="scroll_pickers"
+                        >
+                            <div
+                                *ngFor="let hour of hourTimes; let indx = index"
+                                class="scroll_item"
+                                (click)="onScroll($event, 'hourScroll', indx)"
+                            >
+                                {{ hour }}
+                            </div>
+                        </div>
+                        <div
+                            #minutesScroll
+                            (mouseout)="hoveredItem = null"
+                            (mouseover)="hoveredItem = 'minutes'"
+                            (scroll)="onScroll($event, 'minutesScroll')"
+                            class="scroll_pickers"
+                        >
+                            <div
+                                *ngFor="
+                                    let minutes of timeMinutes;
+                                    let indx = index
+                                "
+                                class="scroll_item"
+                                (click)="
+                                    onScroll($event, 'minutesScroll', indx)
+                                "
+                            >
+                                {{ minutes }}
+                            </div>
+                        </div>
+                        <div
+                            #pmAmScroll
+                            (mouseout)="hoveredItem = null"
+                            (mouseover)="hoveredItem = 'times'"
+                            (scroll)="onScroll($event, 'pmAmScroll')"
+                            class="scroll_pickers"
+                        >
+                            <div
+                                *ngFor="let when of timeOfDay; let indx = index"
+                                class="scroll_item"
+                                (click)="onScroll($event, 'pmAmScroll', indx)"
+                            >
+                                {{ when }}
+                            </div>
+                        </div>
+                        <div class="picker_line">
+                            <span>:</span>
+                        </div>
+                    </div>
+                    <div class="picker_buttons">
+                        <div (click)="closePopup()" class="pick_button">
+                            Cancel
+                        </div>
+                        <div (click)="setTime()" class="pick_button set_button">
+                            Set
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="time_picker_body">
-          <div class="picker_body_head">
-            <div [class.active]="hoveredItem == 'hours'">Hours</div>
-            <div [class.active]="hoveredItem == 'minutes'">Minute</div>
-            <div [class.active]="hoveredItem == 'times'">AM/PM</div>
-          </div>
-          <div class="picker_body">
-            <div
-              #hourScroll
-              (mouseout)="hoveredItem = null"
-              (mouseover)="hoveredItem = 'hours'"
-              (scroll)="onScroll($event, 'hourScroll')"
-              class="scroll_pickers"
-            >
-              <div *ngFor="let hour of hourTimes; let indx = index" class="scroll_item" (click)="onScroll($event, 'hourScroll', indx)">{{hour}}</div>
-            </div>
-            <div
-              #minutesScroll
-              (mouseout)="hoveredItem = null"
-              (mouseover)="hoveredItem = 'minutes'"
-              (scroll)="onScroll($event, 'minutesScroll')"
-              class="scroll_pickers">
-              <div *ngFor="let minutes of timeMinutes; let indx = index" class="scroll_item" (click)="onScroll($event, 'minutesScroll', indx)">
-                {{minutes}}
-              </div>
-            </div>
-            <div
-              #pmAmScroll
-              (mouseout)="hoveredItem = null"
-              (mouseover)="hoveredItem = 'times'"
-              (scroll)="onScroll($event, 'pmAmScroll')"
-              class="scroll_pickers">
-              <div *ngFor="let when of timeOfDay; let indx = index" class="scroll_item" (click)="onScroll($event, 'pmAmScroll', indx)">{{when}}</div>
-            </div>
-            <div class="picker_line">
-              <span>:</span>
-            </div>
-          </div>
-          <div class="picker_buttons">
-            <div (click)="closePopup()" class="pick_button">Cancel</div>
-            <div (click)="setTime()" class="pick_button set_button">Set</div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
