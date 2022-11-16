@@ -130,7 +130,6 @@ export class InputAddressDropdownComponent
                         this.inputDropdown.inputRef.focusInput
                     ) {
                         this.getSuperControl.setErrors({ invalid: true });
-
                         const addressData = {
                             address: {},
                             valid: false,

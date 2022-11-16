@@ -14,11 +14,11 @@ import {
     SecurityContext,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { Subject, takeUntil } from 'rxjs';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-map-list',

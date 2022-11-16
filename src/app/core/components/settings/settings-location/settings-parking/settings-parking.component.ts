@@ -10,7 +10,6 @@ import { ConfirmationService } from '../../../modals/confirmation-modal/confirma
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { CompanyParkingService } from './parking-state/company-parking.service';
 import { ActivatedRoute } from '@angular/router';
-import { calculateParkingSlot } from 'src/app/core/utils/methods.calculations';
 @Component({
     selector: 'app-settings-parking',
     templateUrl: './settings-parking.component.html',
