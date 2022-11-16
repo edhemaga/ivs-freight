@@ -9,7 +9,6 @@ import {
 import { FormControl } from '@angular/forms';
 import { LoadResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { LoadMinimalListQuery } from '../state/load-details-state/load-minimal-list-state/load-details-minimal.query';
 
 @Component({
@@ -25,7 +24,6 @@ export class LoadCardViewComponent implements OnInit, OnChanges {
   public loadDropdowns: any[] = [];
   public loadList: any[] = this.lmquery.getAll();
   constructor(
-    private imageBase64Service: ImageBase64Service,
     private lmquery: LoadMinimalListQuery,
     private detailsPageDriverSer: DetailsPageService
   ) {}

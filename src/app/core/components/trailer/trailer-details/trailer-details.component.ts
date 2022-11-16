@@ -1,6 +1,5 @@
 import { TrailersMinimalListStore } from './../state/trailer-minimal-list-state/trailer-minimal.store';
 import { TrailersMinimalListQuery } from './../state/trailer-minimal-list-state/trailer-minimal.query';
-import { TrailerItemStore } from './../state/trailer-details-state/trailer-details.store';
 import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +15,6 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
 import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
@@ -46,7 +44,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     private trailerDetailListQuery: TrailersDetailsListQuery,
     private dropService: DropDownService,
     private confirmationService: ConfirmationService,
-    private trailerItemStore: TrailerItemStore,
     private trailerMinimalQuery: TrailersMinimalListQuery,
     private trailerMinimalStore: TrailersMinimalListStore,
     private DetailsDataService: DetailsDataService

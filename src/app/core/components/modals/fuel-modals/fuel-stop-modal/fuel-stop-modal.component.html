@@ -47,6 +47,7 @@
           [options]="fuelStops"
           [activeItem]="selectedFuelStop"
           (selectedItem)="onSelectDropdown($event, 'fuel-stop')"
+          (pagination)="paginationPage($event)"
           (saveItem)="onSaveNewFuelStop($event)"
         ></app-ta-input-dropdown>
       </div>
@@ -60,9 +61,9 @@
             textTransform: 'uppercase',
             minLength: 2,
             maxLength: 32,
+            isRequired: selectedFuelStop,
             isDisabled:
-              !fuelStopForm.get('fuelStopFranchiseId').value ||
-              !selectedFuelStop
+              !selectedFuelStop || (editData?.type === 'edit' && !companyId)
           }"
         ></app-ta-input>
       </div>
@@ -87,7 +88,8 @@
             mask: '(000) 000-0000',
             maxLength: 14,
             isRequired: true,
-            isDisabled: selectedFuelStop && editData?.type === 'edit'
+            isDisabled:
+              selectedFuelStop && editData?.type === 'edit' && !companyId
           }"
         ></app-ta-input>
       </div>
@@ -100,7 +102,8 @@
             label: 'Fax',
             mask: '(000) 000-0000',
             placeholderIcon: 'fax',
-            isDisabled: selectedFuelStop && editData?.type === 'edit'
+            isDisabled:
+              selectedFuelStop && editData?.type === 'edit' && !companyId
           }"
         ></app-ta-input>
       </div>
@@ -116,10 +119,11 @@
             isRequired: true,
             placeholderIcon: 'address',
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-510',
+            dropdownWidthClass: 'w-col-456',
             minLength: 6,
             maxLength: 256,
-            isDisabled: selectedFuelStop && editData?.type === 'edit'
+            isDisabled:
+              selectedFuelStop && editData?.type === 'edit' && !companyId
           }"
           [placeholderType]="'longAddress'"
           [activeAddress]="selectedAddress"

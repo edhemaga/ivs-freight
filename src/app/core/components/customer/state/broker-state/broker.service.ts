@@ -14,7 +14,6 @@ import {
   UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { Observable, tap, of, Subject, takeUntil } from 'rxjs';
-import { BrokerQuery } from './broker.query';
 import { BrokerStore } from './broker.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
@@ -35,7 +34,6 @@ export class BrokerTService implements OnDestroy {
     private ratingReviewService: RatingReviewService,
     private tableService: TruckassistTableService,
     private brokerMinimalStore: BrokerMinimalListStore,
-    private brokerQuery: BrokerQuery,
     private brokerMinimalQuery: BrokerMinimalListQuery,
     private bls: BrokerDetailsListStore
   ) {}
@@ -177,9 +175,9 @@ export class BrokerTService implements OnDestroy {
 
   // Delete Broker List
   public deleteBrokerList(brokersToDelete: any[]): Observable<any> {
-    let deleteOnBack = brokersToDelete.map((broker: any) => {
-      return broker.id;
-    });
+    // let deleteOnBack = brokersToDelete.map((broker: any) => {
+    //   return broker.id;
+    // });
 
     // return this.brokerService.apiBrokerListDelete({ ids: deleteOnBack }).pipe(
     //   tap(() => {

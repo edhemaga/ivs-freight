@@ -147,7 +147,6 @@ export class TaReCardComponent implements OnInit {
         }
       });
     } else if (this.cardNameCurrent == 'cdl') {
-      console.log('--cdl card opened--');
     }
   }
 }

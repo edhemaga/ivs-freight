@@ -13,26 +13,23 @@ import {
 import { FormControl } from '@angular/forms';
 import { DriverResponse } from 'appcoretruckassist';
 import moment from 'moment';
-import { Subject, takeUntil, filter, take } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import {
-  Confirmation,
   ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { CdlTService } from '../../state/cdl.service';
-import { DriverTService } from '../../state/driver.service';
 import { MedicalTService } from '../../state/medical.service';
 import { MvrTService } from '../../state/mvr.service';
 import { TestTService } from '../../state/test.service';
 import { DriverCdlModalComponent } from '../../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
-import { DriversDetailsListQuery } from '../../state/driver-details-list-state/driver-details-list.query';
 
 @Component({
   selector: 'app-driver-details-item',
@@ -76,7 +73,6 @@ export class DriverDetailsItemComponent
   public currentIndex: number;
   public activeCdl: any;
   constructor(
-    private driverService: DriverTService,
     private cdlService: CdlTService,
     private medicalService: MedicalTService,
     private mvrService: MvrTService,
@@ -85,8 +81,7 @@ export class DriverDetailsItemComponent
     private notificationService: NotificationService,
     private tableService: TruckassistTableService,
     private dropDownService: DropDownService,
-    private modalService: ModalService,
-    private driverList: DriversDetailsListQuery
+    private modalService: ModalService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -200,7 +195,6 @@ export class DriverDetailsItemComponent
     data?.cdls?.map((item) => {
       let endDate = moment(item.expDate);
       let daysDiff = endDate.diff(moment(), 'days');
-      let isBefore = moment(item.expDate).isBefore(moment());
 
       if (moment(item.expDate).isBefore(moment())) {
         this.expiredCard.push(true);

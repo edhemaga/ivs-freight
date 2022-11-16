@@ -82,7 +82,7 @@ export class TruckassistTableToolbarComponent
   timeOutToaggleColumn: any;
   columnsOptions: any[] = [];
   isMapShowning: boolean = false;
-  tableConfigurationType: string = '';
+  tableConfigurationType: TableType;
   showResetOption: boolean;
 
   constructor(private tableService: TruckassistTableService) {}
@@ -244,7 +244,7 @@ export class TruckassistTableToolbarComponent
     this.tableService.sendDeleteSelectedRows(this.tableRowsSelected);
   }
 
-  // Get Tab Data For Selected Tab
+  // Get Tab Data For Selected Tabs
   getSelectedTabTableData() {
     if (this.tableData.length) {
       this.activeTableData = this.tableData.find(
@@ -260,6 +260,8 @@ export class TruckassistTableToolbarComponent
     if (optionsPopup.isOpen()) {
       optionsPopup.close();
     } else {
+      this.getActiveTableData();
+
       optionsPopup.open({});
     }
 
@@ -284,6 +286,26 @@ export class TruckassistTableToolbarComponent
         toaggleUnlockTable: true,
       });
 
+      if (this.tableLocked) {
+        const tableConfig = localStorage.getItem(
+          `table-${this.tableConfigurationType}-Configuration`
+        );
+
+        if (tableConfig) {
+          this.tableService
+            .updateTableConfig({
+              tableType: this.tableConfigurationType,
+              config: tableConfig,
+            })
+            .subscribe(() => {
+              console.log(
+                'Kreira se konfiguracija zato sto se lock-uje tabela, za tabelu: ' +
+                  this.tableConfigurationType
+              );
+            });
+        }
+      }
+
       /* if (!this.tableLocked) {
         this.setInactivityTimer();
       } else {
@@ -292,14 +314,17 @@ export class TruckassistTableToolbarComponent
     } else if (action.text === 'Columns') {
       action.active = !action.active;
     } else if (action.text === 'Reset Columns') {
-      localStorage.removeItem(
+      /* localStorage.removeItem(
         `table-${this.tableConfigurationType}-Configuration`
       );
 
-      this.tableService.sendResetColumns(true);
+      this.tableService.sendResetColumns(true); */
 
-      /* this.tableService
-        .deleteTableConfig(this.tableConfigurationType as TableType)
+      this.tableService
+        .updateTableConfig({
+          tableType: this.tableConfigurationType,
+          config: null,
+        })
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           console.log(
@@ -311,7 +336,7 @@ export class TruckassistTableToolbarComponent
           );
 
           this.tableService.sendResetColumns(true);
-        }); */
+        });
     } else {
       alert('Treba da se odradi!');
     }
@@ -376,5 +401,23 @@ export class TruckassistTableToolbarComponent
     this.tableService.sendToaggleColumn(null);
     this.tableService.sendResetColumns(false);
     clearTimeout(this.inactiveTimeOutInterval);
+
+    const tableConfig = localStorage.getItem(
+      `table-${this.tableConfigurationType}-Configuration`
+    );
+
+    if (tableConfig) {
+      this.tableService
+        .updateTableConfig({
+          tableType: this.tableConfigurationType,
+          config: tableConfig,
+        })
+        .subscribe(() => {
+          console.log(
+            'Kreira se konfiguracija zato sto se napusta tabela, za tabelu: ' +
+              this.tableConfigurationType
+          );
+        });
+    }
   }
 }

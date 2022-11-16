@@ -14,10 +14,7 @@ import {
 } from '@angular/forms';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  DoCheck,
   ElementRef,
   Input,
   OnDestroy,

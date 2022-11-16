@@ -2,11 +2,6 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export type SortDirection = 'asc' | 'desc' | '';
-const rotate: { [key: string]: SortDirection } = {
-  asc: 'desc',
-  desc: '',
-  '': 'asc',
-};
 
 @Injectable({
   providedIn: 'root',

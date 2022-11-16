@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -38,7 +37,7 @@ import { ImageBase64Service } from '../../../utils/base64.image';
   ],
 })
 export class TaInputComponent
-  implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
+  implements OnInit, OnDestroy, ControlValueAccessor
 {
   private destroy$ = new Subject<void>();
   @ViewChild('input', { static: true }) public input: ElementRef;
@@ -203,19 +202,6 @@ export class TaInputComponent
     this.inputResetService.resetInputSubject.next(false);
 
     this.resetDateTimeInputs();
-  }
-
-  ngAfterViewInit() {
-    // const timeout = setTimeout(() => {
-    //   if (
-    //     this.inputConfig.autoFocus &&
-    //     ['datepicker', 'timepicker'].includes(this.inputConfig.name) &&
-    //     !this.getSuperControl.value
-    //   ) {
-    //     this.toggleDropdownOptions();
-    //   }
-    //   clearTimeout(timeout);
-    // }, 600);
   }
 
   public setTimeDateInput(date) {

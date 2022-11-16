@@ -1,10 +1,7 @@
-import {
-  CdkVirtualScrollViewport,
-  VirtualScrollStrategy,
-} from '@angular/cdk/scrolling';
-import { Subject } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import {CdkVirtualScrollViewport, VirtualScrollStrategy} from "@angular/cdk/scrolling";
+import {Subject} from "rxjs";
+import {distinctUntilChanged} from "rxjs/operators";
+import {Injectable} from "@angular/core";
 
 export const STARTING_YEAR = 1905;
 export const RANGE = 2352;
@@ -15,27 +12,27 @@ const CYCLE = getCycle();
 export const CYCLE_HEIGHT = reduceCycle();
 
 function getCycle(): ReadonlyArray<ReadonlyArray<number>> {
-  return Array.from({ length: 28 }, (_, i) =>
-    Array.from({ length: 12 }, (_, month) => FULL_SIZE)
+  return Array.from({length: 28}, (_, i) =>
+    Array.from({length: 12}, (_, month) => FULL_SIZE)
   );
 }
 
 function reduceCycle(lastYear: number = 28, lastMonth: number = 12): number {
   return CYCLE.reduce(
     (total, year, yearIndex) =>
-      yearIndex <= lastYear
-        ? total +
-          year.reduce(
-            (sum, month, monthIndex) =>
-              yearIndex < lastYear ||
-              (yearIndex === lastYear && monthIndex < lastMonth)
-                ? sum + month
-                : sum,
-            0
-          )
-        : total,
-    0
-  );
+      yearIndex <= lastYear ? 
+          total +
+              year.reduce(
+                (sum, month, monthIndex) =>
+                  yearIndex < lastYear ||
+                  (yearIndex === lastYear && monthIndex < lastMonth)
+                    ? sum + month
+                    : sum,
+                0
+              )
+        : 
+      total
+    , 0);
 }
 
 /**
@@ -45,7 +42,10 @@ function reduceCycle(lastYear: number = 28, lastMonth: number = 12): number {
  */
 @Injectable()
 export class TableStrategy implements VirtualScrollStrategy {
-  constructor() {}
+
+  constructor(){
+
+  }
 
   private index$ = new Subject<any>();
   scrolledIndexChange = this.index$.pipe(distinctUntilChanged());
@@ -69,11 +69,14 @@ export class TableStrategy implements VirtualScrollStrategy {
   }
 
   /** These do not matter for this case */
-  onDataLengthChanged() {}
+  onDataLengthChanged() {
+  }
 
-  onContentRendered() {}
+  onContentRendered() {
+  }
 
-  onRenderedOffsetChanged() {}
+  onRenderedOffsetChanged() {
+  }
 
   scrollToIndex(index: number, behavior: ScrollBehavior) {
     if (this.viewport) {
@@ -92,13 +95,12 @@ export class TableStrategy implements VirtualScrollStrategy {
     // koliko je scrolovano
     const offset = viewport.measureScrollOffset();
 
-    const { start, end } = viewport.getRenderedRange();
+    const {start, end} = viewport.getRenderedRange();
     const viewportSize = window.innerHeight;
 
     const dataLength = viewport.getDataLength();
-
-    const newRange = { start, end };
-    const firstVisibleIndex = this.getIndexForOffset(offset);
+  
+    const newRange = {start, end};
 
     const startOffsetIndex = FULL_SIZE * start;
 
@@ -110,8 +112,8 @@ export class TableStrategy implements VirtualScrollStrategy {
         this.getIndexForOffset(offset + viewportSize + BUFFER)
       );
     } else {
-      const endBuffer = FULL_SIZE * end - offset - viewportSize;
-
+      const endBuffer = (FULL_SIZE * end) - offset - viewportSize;
+    
       if (endBuffer < BUFFER && end !== dataLength) {
         newRange.start = Math.max(0, this.getIndexForOffset(offset - BUFFER));
         newRange.end = Math.min(

@@ -312,9 +312,7 @@
     >
       <div class="scroll-container">
         <th
-          [resizeColumn]="
-            column.resizable && !locked && i !== notPinedColumns.length - 1
-          "
+          [resizeColumn]="column.resizable && !locked"
           [index]="i"
           [tableColumn]="column"
           [tableSection]="'not-pined'"

@@ -10,8 +10,12 @@ import {
 } from '../../../../../assets/utils/settings/accounting-fuel-columns';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { AfterViewInit } from '@angular/core';
-import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
+import { FuelQuery } from '../state/fule-state/fuel-state.query';
+import {
+  FuelStopListResponse,
+  FuelTransactionListResponse,
+} from 'appcoretruckassist';
 
 @Component({
   selector: 'app-fuel-table',
@@ -61,13 +65,30 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
+  fuelTransactionList: FuelTransactionListResponse;
+  fuelStopList: FuelStopListResponse;
 
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
-    private thousandSeparator: TaThousandSeparatorPipe
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private fuelQuery: FuelQuery
   ) {}
   ngOnInit(): void {
+    // Get Fuel Transactions From Store
+    this.fuelQuery.fuelTransactions$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.fuelTransactionList = data.pagination.data;
+      });
+
+    // Get Fuel Stops From Store
+    this.fuelQuery.fuelStops$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.fuelStopList = data.pagination.data;
+      });
+
     this.sendFuelData();
 
     // Reset Columns
@@ -247,25 +268,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
           }, 900); */
         }
       });
-
-    // Map
-    this.sortTypes = [
-      { name: 'Business Name', id: 1, sortName: 'name' },
-      { name: 'Location', id: 2, sortName: 'location', isHidden: true },
-      { name: 'Favorites', id: 8, sortName: 'favorites' },
-      { name: 'Fuel Price', id: 9, sortName: 'fuelPrice' },
-      { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
-      { name: 'Purchase', id: 6, sortName: 'purchase' },
-      { name: 'Total Cost', id: 7, sortName: 'cost' },
-    ];
-
-    this.activeSortType = this.sortTypes[0];
-
-    this.sortBy = this.sortDirection
-      ? this.activeSortType.sortName +
-        (this.sortDirection[0]?.toUpperCase() +
-          this.sortDirection?.substr(1).toLowerCase())
-      : '';
   }
 
   ngAfterViewInit(): void {
@@ -352,11 +354,19 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
   sendFuelData() {
     this.initTableOptions();
 
+    const fuelCount = JSON.parse(localStorage.getItem('fuelTableCount'));
+
+    console.log('Fuel Transactions Data');
+    console.log(this.fuelTransactionList);
+
+    console.log('Fuel Stops Data');
+    console.log(this.fuelStopList);
+
     this.tableData = [
       {
         title: 'Transactions',
         field: 'active',
-        length: 1,
+        length: fuelCount.fuelTransactions,
         data: [{}],
         gridNameTitle: 'Fuel',
         tableConfiguration: 'FUEL_TRANSACTION',
@@ -366,7 +376,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Stop',
         field: 'inactive',
-        length: 1,
+        length: fuelCount.fuelStops,
         data: [{}],
         gridNameTitle: 'Fuel',
         tableConfiguration: 'FUEL_STOP',
@@ -381,13 +391,18 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setFuelData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
-    });
+    if (td.data.length) {
+      this.viewData = td.data;
+
+      this.viewData = this.viewData.map((data) => {
+        data.isSelected = false;
+        return data;
+      });
+    } else {
+      this.viewData = [];
+    }
   }
 
   onToolBarAction(event: any) {
@@ -410,7 +425,19 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onTableHeadActions(event: any) {}
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        /*  this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.pageIndex = 1;
+        this.backFilterQuery.sort = event.direction;
+
+        this.driverBackFilter(this.backFilterQuery); */
+      } else {
+        this.sendFuelData();
+      }
+    }
+  }
 
   onTableBodyActions(event: any) {
     if (event.type === 'edit') {

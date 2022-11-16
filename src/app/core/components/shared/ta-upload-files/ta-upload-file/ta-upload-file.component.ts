@@ -15,13 +15,11 @@ import {
   Subject,
   takeUntil,
   debounceTime,
-  distinct,
   distinctUntilChanged,
 } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
-import { ByteConvertPipe } from 'src/app/core/pipes/byte-convert.pipe';
 
 export interface UploadFile {
   fileName: string;
@@ -31,7 +29,6 @@ export interface UploadFile {
   size?: number | string;
   tag?: string;
   realFile?: File;
-  fileSize?: number;
 }
 @Component({
   selector: 'app-ta-upload-file',
@@ -39,7 +36,7 @@ export interface UploadFile {
   styleUrls: ['./ta-upload-file.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [UrlExtensionPipe, ByteConvertPipe],
+  providers: [UrlExtensionPipe],
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -50,7 +47,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   @Input() hasNumberOfPages: boolean = false;
   @Input() activePage: number = 1;
   @Input() tags: any[] = [];
-  @Input() type: string; // modal | table | details | todo
+  @Input() type: string; // modal | table | details
 
   @Output() fileAction: EventEmitter<{ file: UploadFile; action: string }> =
     new EventEmitter<{ file: UploadFile; action: string }>(null);
@@ -69,7 +66,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
   public editFile: boolean = false;
   public fileNewName: FormControl = new FormControl();
-  public numberOfFilePages: string = '0 pages';
+  public numberOfFilePages: string = '0';
 
   public isFileDelete: boolean = false;
 
@@ -79,7 +76,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
   constructor(
     private inputService: TaInputService,
-    private urlExt: UrlExtensionPipe
+    private urlExt: UrlExtensionPipe,
   ) {}
 
   ngOnInit(): void {
@@ -109,8 +106,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   public afterLoadComplete(pdf: PDFDocumentProxy) {
     this.numberOfFilePages =
       pdf._pdfInfo.numPages === 1
-        ? pdf._pdfInfo.numPages.toString().concat(' ', 'page')
-        : pdf._pdfInfo.numPages.toString().concat(' ', 'pages');
+        ? pdf._pdfInfo.numPages.toString().concat(' ', 'PAGE')
+        : pdf._pdfInfo.numPages.toString().concat(' ', 'PAGES');
   }
 
   public onAction(action: string) {

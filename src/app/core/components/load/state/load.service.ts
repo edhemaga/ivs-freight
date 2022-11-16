@@ -9,22 +9,17 @@ import {
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/model/loadMinimalListResponse';
-import { LoadDetailsListQuery } from './load-details-state/load-details-list-state/load-d-list.query';
-import { LoadDetailsListStore } from './load-details-state/load-details-list-state/load-d-list.store';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
 import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
 import { UpdateLoadCommand } from '../../../../../../appcoretruckassist/model/updateLoadCommand';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoadTService {
   constructor(
-    private loadServices: LoadService,
-    private ldlStore: LoadDetailsListStore,
-    private ldlQuery: LoadDetailsListQuery
+    private loadServices: LoadService
   ) {}
 
   // Get Load List
@@ -55,7 +50,7 @@ export class LoadTService {
       dispatcherId,
       dispatchId,
       brokerId
-      //dateFrom,
+      // // dateFrom,
       // dateTo,
       // revenueFrom,
       // revenueTo,
@@ -103,13 +98,11 @@ export class LoadTService {
   }
 
   public createLoad(data: CreateLoadCommand): Observable<CreateResponse> {
-    const sortedParams = getFunctionParams(this.loadServices.apiLoadPost, data);
-    return this.loadServices.apiLoadPost(...sortedParams);
+    return this.loadServices.apiLoadPost(data);
   }
 
   public updateLoad(data: UpdateLoadCommand): Observable<any> {
-    const sortedParams = getFunctionParams(this.loadServices.apiLoadPut, data);
-    return this.loadServices.apiLoadPut(...sortedParams);
+    return this.loadServices.apiLoadPut(data);
   }
 
   public deleteLoadById(id: number): Observable<any> {

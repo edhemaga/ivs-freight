@@ -225,9 +225,9 @@ export class DriverTService {
   }
 
   public deleteDriverList(driversToDelete: any[]): Observable<any> {
-    let deleteOnBack = driversToDelete.map((driver: any) => {
-      return driver.id;
-    });
+    // let deleteOnBack = driversToDelete.map((driver: any) => {
+    //   return driver.id;
+    // });
 
     // return this.driverService.apiDriverListDelete({ ids: deleteOnBack }).pipe(
     //   tap(() => {

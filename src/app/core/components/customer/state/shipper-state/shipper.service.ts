@@ -1,5 +1,4 @@
 import {
-  ShipperMinimalListState,
   ShipperMinimalListStore,
 } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
 import { ShipperService } from './../../../../../../../appcoretruckassist/api/shipper.service';
@@ -18,7 +17,6 @@ import {
 } from 'appcoretruckassist';
 import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
-import { ShipperQuery } from './shipper.query';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperDetailsListStore } from './shipper-details-state/shipper-details-list-state/shipper-details-list.store';
@@ -182,9 +180,9 @@ export class ShipperTService implements OnDestroy {
 
   // Delete Shipper List
   public deleteShipperList(shippersToDelete: any[]): Observable<any> {
-    let deleteOnBack = shippersToDelete.map((shipper: any) => {
-      return shipper.id;
-    });
+    // let deleteOnBack = shippersToDelete.map((shipper: any) => {
+    //   return shipper.id;
+    // });
 
     // return this.shipperService.apiShipperListDelete({ ids: deleteOnBack }).pipe(
     //   tap(() => {

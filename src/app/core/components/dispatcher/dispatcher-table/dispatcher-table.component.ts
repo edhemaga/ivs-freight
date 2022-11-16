@@ -132,10 +132,10 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   openAddLoad(id: any) {}
 
   addLoad() {
-    const data = {
-      type: 'new',
-      id: null,
-    };
+    // const data = {
+    //   type: 'new',
+    //   id: null,
+    // };
   }
 
   openDispatchHistory() {}
@@ -176,7 +176,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       return item;
     });
 
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    //const user = JSON.parse(localStorage.getItem('currentUser'));
     this.dispatcherItems.unshift({
       dispatchCount: fullDispatchCount,
       id: -1,

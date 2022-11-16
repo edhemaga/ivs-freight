@@ -176,7 +176,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   }
 
   private updateMVR() {
-    const { issueDate, driver, note } = this.mvrForm.value;
+    const { issueDate, note } = this.mvrForm.value;
     const documents = this.documents.map((item) => {
       return item.realFile;
     });
@@ -207,7 +207,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   }
 
   private addMVR() {
-    const { issueDate, driver, note } = this.mvrForm.value;
+    const { issueDate, note } = this.mvrForm.value;
     const documents = this.documents.map((item) => {
       return item.realFile;
     });

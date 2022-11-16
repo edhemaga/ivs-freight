@@ -9,8 +9,6 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
-import * as $ from 'jquery';
-
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ThankYouComponent } from './thank-you-page/thank-you.component';

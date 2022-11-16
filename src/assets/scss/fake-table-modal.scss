@@ -417,10 +417,10 @@
           margin-left: 133px;
         }
         &:nth-child(4) {
-          margin-left: 41px;
+          margin-left: 48px;
         }
         &:nth-child(5) {
-          margin-left: 36px;
+          margin-left: 29px;
         }
         &:nth-child(6) {
           margin-left: 30px;
@@ -432,7 +432,7 @@
     }
     .common-fake-table-body {
       .common-fake-table-card {
-        grid-template-columns: 100px 190px 55px 42px 44.5px 44.5px 1fr;
+        grid-template-columns: 94px 195px 55px 42px 44.5px 44.5px 1fr;
         align-items: center;
         padding-left: 6px;
         padding-right: 0px;
@@ -442,6 +442,15 @@
           font-size: 14px;
           font-weight: 400;
           color: #919191;
+
+          &::-moz-selection {
+            background-color: rgb(145, 145, 145, 0.2);
+            color: #919191;
+          }
+          &::selection {
+            background-color: rgb(145, 145, 145, 0.2);
+            color: #919191;
+          }
         }
 
         .violation-category {
@@ -454,10 +463,53 @@
             position: relative;
             bottom: 1px;
           }
+
+          .violation-category-text {
+            &::-moz-selection {
+              background-color: rgb(145, 145, 145, 0.2);
+              color: #919191;
+            }
+            &::selection {
+              background-color: rgb(145, 145, 145, 0.2);
+              color: #919191;
+            }
+          }
+        }
+
+        .violation-sw {
+          justify-self: center;
+
+          &.additional-position {
+            position: relative;
+            left: 3px;
+          }
+
+          .violation-sw-additional {
+            color: #ffb74d;
+            font-size: 14px;
+            font-weight: 400;
+            position: relative;
+            right: 3px;
+
+            &::-moz-selection {
+              background-color: rgb(255, 183, 77, 0.2);
+              color: #ffb74d;
+            }
+            &::selection {
+              background-color: rgb(255, 183, 77, 0.2);
+              color: #ffb74d;
+            }
+          }
         }
 
         .violation-oos {
           justify-self: center;
+
+          svg {
+            path {
+              fill: #cccccc;
+            }
+          }
 
           &.active {
             svg {
@@ -467,8 +519,15 @@
             }
           }
         }
+
         .violation-sms {
           justify-self: center;
+
+          svg {
+            path {
+              fill: #cccccc;
+            }
+          }
         }
       }
     }

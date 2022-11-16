@@ -14,6 +14,15 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
+import { RoadsideService } from '../../safety/violation/state/roadside.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from '../../../utils/methods.calculations';
+import { AccidentTService } from '../../safety/accident/state/accident.service';
+import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
 
 @Component({
   selector: 'app-violation-modal',
@@ -107,41 +116,41 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
   public selectedViolationCustomer: any = null;
   public labelsViolationCustomer: any[] = [];
 
+  public selectedCounty: any = null;
+  public labelsCounty: any[] = [];
+
   public documents: any[] = [];
 
   public isFormDirty: boolean;
+
+  public violationModalName: string = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private formService: FormService
+    private formService: FormService,
+    private roadsideService: RoadsideService,
+    private accidentTService: AccidentTService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
     this.createForm();
+    this.getModalDropdowns();
 
     if (this.editData) {
       this.editViolationById(this.editData.id);
     }
-
-    this.addViolation({
-      code: '392.2-SLLS3',
-      category: 'Vehicle Maintenance',
-      unit: 'Trailer',
-      sw: '10+2',
-      oos: true,
-      sms: false,
-      description: 'Allowing or requiring a driver to use i…',
-    });
   }
 
   private createForm() {
     this.violationForm = this.formBuilder.group({
       report: [null, Validators.required],
+      categoryReport: [null],
       inspectionLevel: [null],
       hmInspectionType: [null],
-      country: [null],
+      county: [null],
       state: [null],
       startTime: [null],
       endTime: [null],
@@ -182,7 +191,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       facility: [null],
       highway: [null],
       milePost: [null],
-      location: [null, [...addressValidation]],
+      origin: [null, [...addressValidation]],
       destination: [null, [...addressValidation]],
       customer: [null],
       boL: [null],
@@ -242,6 +251,9 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     oos: boolean;
     sms: boolean;
     description: string;
+    extraDescription: string;
+    basic: string;
+    reason: string;
   }) {
     return this.formBuilder.group({
       code: [data.code],
@@ -251,19 +263,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       oos: [data.oos],
       sms: [data.sms],
       description: [data.description, [...descriptionValidation]],
+      extraDescription: [data.extraDescription, [...descriptionValidation]],
+      basic: [data.basic],
+      reason: [data.reason],
     });
-  }
-
-  public addViolation(data: {
-    code: string;
-    category: string;
-    unit: string;
-    sw: string;
-    oos: boolean;
-    sms: boolean;
-    description: string;
-  }) {
-    this.violations.push(this.createViolation(data));
   }
 
   public onHandleAddress(
@@ -289,8 +292,20 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSelectDropDown(event: any) {
-    this.selectedViolationCustomer = event;
+  public onSelectDropDown(event: any, action: string) {
+    switch (action) {
+      case 'customer': {
+        this.selectedViolationCustomer = event;
+        break;
+      }
+      case 'county': {
+        this.selectedCounty = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   public onFilesEvent(event) {
@@ -305,9 +320,335 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
-  private updateViolation(id: number) {}
+  private updateViolation(id: number) {
+    const { ...form } = this.violationForm.value;
 
-  private editViolationById(id: number) {}
+    const newData: any = {
+      id: id,
+      report: form.report,
+      categoryReport: form.categoryReport,
+      inspectionLevel: form.inspectionLevel,
+      hMInspectionType: form.hmInspectionType,
+      country: this.selectedCounty ? this.selectedCounty.id : null,
+      state: form.state,
+      startTime: form.startTime,
+      endTime: form.endTime,
+      date: form.date ? convertDateToBackend(form.date) : null,
+      driverId: null,
+      driverFullName: form.driverName,
+      driverLicenceNo: form.driverLicenceNumber,
+      driverState: form.driverState,
+      driverDateOfBirth: form.driverDOB
+        ? convertDateToBackend(form.driverDOB)
+        : null,
+      coDriverFullName: form.coDriverName,
+      coDriverLicenceNo: form.coDriverLicenceNumber,
+      coDriverState: form.coDriverState,
+      coDriverDateOfBirth: form.coDriverDOB
+        ? convertDateToBackend(form.coDriverDOB)
+        : null,
+      truckUnit: form.truck_Unit,
+      truckType: form.truck_Type,
+      truckMake: form.truck_Make,
+      truckPlateNo: form.truck_PlateNo,
+      truckState: form.truck_State,
+      truckVIN: form.truck_VIN,
+      trailerUnit: form.trailer_Unit,
+      trailerType: form.trailer_Type,
+      trailerMake: form.trailer_Make,
+      trailerPlateNo: form.trailer_PlateNo,
+      trailerState: form.trailer_State,
+      trailerVIN: form.trailer_VIN,
+      violations: this.premmapedViolations(), //ViolationCommand
+      note: form.note,
+      policeDepartment: form.policeDepartment,
+      policeOfficer: form.policeOfficer,
+      badgeNo: form.badgeNo,
+      addressCity: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.city
+        : null,
+      addressState: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.state
+        : null,
+      addressCounty: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.county
+        : null,
+      addressAddress: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.address
+        : null,
+      addressStreet: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.street
+        : null,
+      addressStreetNumber: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.streetNumber
+        : null,
+      addressCountry: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.country
+        : null,
+      addressZipCode: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.zipCode
+        : null,
+      addressStateShortName: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.stateShortName
+        : null,
+      addressAddressUnit: this.selectedAuthorityAddress
+        ? this.selectedAuthorityAddress.addressUnit
+        : null,
+      phone: form.phone,
+      fax: form.fax,
+      facility: form.facility,
+      highway: form.highway,
+      milePost: form.milePost,
+      originCity: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.city
+        : null,
+      originState: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.state
+        : null,
+      originCounty: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.county
+        : null,
+      originAddress: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.address
+        : null,
+      originStreet: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.street
+        : null,
+      originStreetNumber: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.streetNumber
+        : null,
+      originCountry: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.country
+        : null,
+      originZipCode: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.zipCode
+        : null,
+      originStateShortName: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.stateShortName
+        : null,
+      originAddressUnit: this.selectedAuthorityOrigin
+        ? this.selectedAuthorityOrigin.addressUnit
+        : null,
+      destinationCity: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.city
+        : null,
+      destinationState: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.state
+        : null,
+      destinationCounty: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.county
+        : null,
+      destinationAddress: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.address
+        : null,
+      destinationStreet: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.street
+        : null,
+      destinationStreetNumber: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.streetNumber
+        : null,
+      destinationCountry: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.country
+        : null,
+      destinationZipCode: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.zipCode
+        : null,
+      destinationStateShortName: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.stateShortName
+        : null,
+      destinationAddressUnit: this.selectedAuthorityDestination
+        ? this.selectedAuthorityDestination.addressUnit
+        : null,
+      brokerId: this.selectedViolationCustomer
+        ? this.selectedViolationCustomer.id
+        : null,
+      boL: form.boL,
+      cargo: form.cargo,
+      specialChecks: this.premmapedSpecialChecks(),
+      files: [],
+      filesForDeleteIds: [],
+    };
+
+    this.roadsideService
+      .updateRoadside(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Success',
+            'Successfully update roadside.'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: (err: any) => {
+          this.notificationService.error('Error', err);
+        },
+      });
+  }
+
+  private editViolationById(id: number) {
+    this.roadsideService
+      .getRoadsideById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: RoadsideInspectionResponse) => {
+          this.violationForm.patchValue({
+            report: res.report,
+            categoryReport: res.categoryReport ? res.categoryReport.name : null,
+            inspectionLevel: res.inspectionLevel,
+            hmInspectionType: res.hmInspectionType,
+            county: null, //TODO: Wait for backend
+            state: res.state ? res.state.stateShortName : null,
+            startTime: res.startTime,
+            endTime: res.endTime,
+            date: res.date ? convertDateFromBackend(res.date) : null,
+            // Driver
+            driverName: res.driver_FullName,
+            driverLicenceNumber: res.driver_LicenceNo,
+            driverState: res.driver_State,
+            driverDOB: res.driver_DateOfBirth
+              ? convertDateFromBackend(res.driver_DateOfBirth)
+              : null,
+            // Co Driver
+            coDriverName: res.coDriver_FullName,
+            coDriverLicenceNumber: res.coDriver_LicenceNo,
+            coDriverState: res.coDriver_State,
+            coDriverDOB: res.coDriver_DateOfBirth
+              ? convertDateFromBackend(res.coDriver_DateOfBirth)
+              : null,
+            // Truck
+            truck_Unit: res.truck_Unit,
+            truck_Type: res.truck_Type,
+            truck_Make: res.truck_Make,
+            truck_PlateNo: res.truck_PlateNo,
+            truck_State: res.truck_State,
+            truck_VIN: res.truck_VIN,
+            // Trailer
+            trailer_Unit: res.trailer_Unit,
+            trailer_Type: res.trailer_Type,
+            trailer_Make: res.trailer_Make,
+            trailer_PlateNo: res.trailer_PlateNo,
+            trailer_State: res.trailer_State,
+            trailer_VIN: res.trailer_VIN,
+            // Violation
+            violations: [],
+            note: res.note,
+            policeDepartment: res.policeDepartment,
+            policeOfficer: res.policeOfficer,
+            badgeNo: res.badgeNo,
+            address: res.address ? res.address.address : null,
+            phone: res.phone,
+            fax: res.fax,
+            facility: res.facility,
+            highway: res.highway,
+            milePost: res.milePost,
+            origin: res.origin ? res.origin.address : null,
+            destination: res.destination ? res.destination.address : null,
+            customer: res.broker ? res.broker.businessName : null,
+            boL: res.boL,
+            cargo: res.cargo,
+          });
+
+          this.selectedAuthorityAddress = res.address;
+          this.selectedAuthorityOrigin = res.origin;
+          this.selectedAuthorityDestination = res.destination;
+          this.selectedViolationCustomer = res.broker;
+
+          this.violationModalName = res.report;
+
+          if (res.violations.length) {
+            for (let i = 0; i < res.violations.length; i++) {
+              this.violations.push(
+                this.createViolation({
+                  code: res.violations[i].code,
+                  category: res.violations[i].category,
+                  unit: res.violations[i].unit,
+                  sw: res.violations[i].sw,
+                  oos: res.violations[i].oos,
+                  sms: res.violations[i].sms,
+                  description: res.violations[i].description,
+                  extraDescription: res.violations[i].extraDescription
+                    ? res.violations[i].description?.concat(
+                        '.',
+                        res.violations[i].extraDescription
+                      )
+                    : res.violations[i].description,
+                  basic: res.violations[i].basic,
+                  reason: res.violations[i].reason,
+                })
+              );
+            }
+          }
+
+          if (res.specialChecks.length) {
+            for (let i = 0; i < this.specialChecks.length; i++) {
+              for (let j = 0; j < res.specialChecks.length; j++) {
+                if (
+                  this.specialChecks[i].name ===
+                  res.specialChecks[j].specialChecks.name
+                ) {
+                  this.specialChecks[i].active = res.specialChecks[j].active;
+                  break;
+                }
+              }
+            }
+          }
+        },
+        error: (err: any) => {
+          this.notificationService.error('Error', err);
+        },
+      });
+  }
+
+  private getModalDropdowns() {
+    this.accidentTService
+      .getModalDropdowns()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: AccidentModalResponse) => {
+          this.labelsViolationCustomer = res.brokers.map((item) => {
+            return {
+              id: item.id,
+              name: item.businessName,
+            };
+          });
+        },
+        error: (err: any) => {
+          this.notificationService.error('Error', err);
+        },
+      });
+  }
+
+  private premmapedSpecialChecks() {
+    return this.specialChecks.map((item) => {
+      return {
+        specialCheck: {
+          id: item.id,
+          name: item.name,
+        },
+        active: item.active,
+      };
+    });
+  }
+
+  private premmapedViolations() {
+    return this.violations.controls.map((item) => {
+      return {
+        code: item.get('code').value,
+        category: item.get('category').value,
+        unit: item.get('unit').value,
+        sw: item.get('sw').value,
+        oos: item.get('oos').value,
+        sms: item.get('sms').value,
+        description: item.get('description').value,
+        extraDescription: item
+          .get('extraDescription')
+          .value.replace(item.get('description').value, ''),
+        basic: item.get('basic').value,
+        reason: item.get('reason').value,
+      };
+    });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

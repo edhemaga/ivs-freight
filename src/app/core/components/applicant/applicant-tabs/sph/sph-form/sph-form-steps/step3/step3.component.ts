@@ -22,7 +22,6 @@ import {
 } from '../../../../../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
 
 import { ApplicantSphFormQuery } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.query';
 import { ApplicantSphFormStore } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.store';
@@ -198,7 +197,6 @@ export class Step3Component implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private inputService: TaInputService,
-    private applicantActionsService: ApplicantActionsService,
     private applicantSphFormStore: ApplicantSphFormStore,
     private applicantSphFormQuery: ApplicantSphFormQuery
   ) {}

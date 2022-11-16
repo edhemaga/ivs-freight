@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-  CreateTableConfigCommand,
+  // CreateTableConfigCommand,
   TableConfigResponse,
   TableConfigService,
   TableType,
+  UpdateTableConfigCommand,
 } from 'appcoretruckassist';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -69,20 +70,17 @@ export class TruckassistTableService {
 
   constructor(private tableColumnsConfigService: TableConfigService) {}
 
-  // ------------------------------ Table Back Service Methods --------------------------------
+  // ------------------------------ Table Back Service Methods -------------------------------- 
 
-  sendTableConfig(tableConfig: CreateTableConfigCommand): Observable<object> {
-    return this.tableColumnsConfigService.apiTableconfigPost(tableConfig);
+  updateTableConfig(
+    tableConfig: UpdateTableConfigCommand
+  ): Observable<object> {
+    return this.tableColumnsConfigService.apiTableconfigPut(tableConfig);
   }
 
-  getTableConfig(tableType: TableType): Observable<TableConfigResponse> {
+  getTableConfig(tableType: any): Observable<TableConfigResponse> {
+    console.log('Poziva se getTableConfig za: '  + tableType)
     return this.tableColumnsConfigService.apiTableconfigTableTypeGet(tableType);
-  }
-
-  deleteTableConfig(tableType: TableType): Observable<TableConfigResponse> {
-    return this.tableColumnsConfigService.apiTableconfigTableTypeDelete(
-      tableType
-    );
   }
 
   // ------------------------------ Table Custom Service Methods --------------------------------

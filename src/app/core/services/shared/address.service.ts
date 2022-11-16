@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { flatMap, Observable, Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { GeolocationService } from './../../../../../appcoretruckassist/api/geolocation.service';
-import { AddressListResponse } from './../../../../../appcoretruckassist/model/addressListResponse';
 
 @Injectable({
   providedIn: 'root',
