@@ -25,10 +25,10 @@ $input-blue-color-4: #bdcaeb;
 $input-blue-color-5: #d4dff4;
 $input-blue-color-6: #6f9ee0; // required-check (valid)
 $input-blue-color-7: rgb(
-  111,
-  158,
-  224,
-  0.2
+    111,
+    158,
+    224,
+    0.2
 ); // state when input valid and focus out
 $input-blue-color-8: rgb(111, 158, 224, 0.4); // placeholder-icon divider
 $input-blue-color-9: rgb(111, 158, 224, 0);
@@ -41,10 +41,10 @@ $input-red-color-5: #ef9a9a; // :: component empty-focus-required
 $input-red-color-6: #ffcdd2; // :: placeholder-icon, clear, dropdown
 $input-red-color-7: #ffe1e4; // :: input-error-selection
 $input-red-color-8: rgb(
-  229,
-  115,
-  115,
-  0.2
+    229,
+    115,
+    115,
+    0.2
 ); // state when input invalid and focus out
 $input-red-color-9: rgb(239, 83, 80, 0.4); // placeholder-icon divider
 

@@ -1,116 +1,116 @@
 .dashboard-map-holder {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex-direction: column;
-
-  .dashboard-map-header-holder {
     width: 100%;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 18px;
+    align-items: flex-start;
+    flex-direction: column;
 
-    .dashboard-map-header-title-holder {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      padding-right: 12px;
-      box-sizing: border-box;
+    .dashboard-map-header-holder {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 18px;
 
-      .dashboard-map-header-title {
-        font-size: 26px;
-        font-weight: 900;
-        color: #919191;
-        padding-right: 8px;
+        .dashboard-map-header-title-holder {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-right: 12px;
+            box-sizing: border-box;
+
+            .dashboard-map-header-title {
+                font-size: 26px;
+                font-weight: 900;
+                color: #919191;
+                padding-right: 8px;
+                box-sizing: border-box;
+                &::-moz-selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+                &::selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+            }
+
+            .dashboard-map-header-arrow-down {
+                width: 18px;
+                height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg-icon {
+                    svg {
+                        display: flex;
+
+                        path {
+                            fill: #919191;
+                        }
+                    }
+                }
+            }
+        }
+
+        .dashboard-map-header-toolbar-holder {
+            width: 100%;
+            flex: 1;
+            height: 32px;
+            border-radius: 3px;
+            background-color: #fff;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            .dashboard-map-switch-holder {
+                height: 32px;
+            }
+
+            .dashboard-map-toolbar-border {
+                width: 2px;
+                height: 24px;
+                border-radius: 1px;
+                background-color: #f3f3f3;
+                margin: 0px 4px;
+            }
+
+            .dashboard-map-toolbar-icons-holder {
+                width: auto;
+                height: 32px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg-icon {
+                    svg {
+                        display: flex;
+                        width: 18px;
+                        height: 18px;
+
+                        path {
+                            fill: #aaaaaa;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .dashboard-map-body-holder {
+        width: 100%;
+        height: 560px;
+        border-radius: 3px;
+        background-color: #fff;
+        padding: 6px;
         box-sizing: border-box;
-        &::-moz-selection {
-          background: #91919133;
-          color: #919191;
-        }
-        &::selection {
-          background: #91919133;
-          color: #919191;
-        }
-      }
-
-      .dashboard-map-header-arrow-down {
-        width: 18px;
-        height: 18px;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        overflow: hidden;
 
-        svg-icon {
-          svg {
-            display: flex;
-
-            path {
-              fill: #919191;
-            }
-          }
+        agm-map {
+            width: 100%;
+            height: 100%;
         }
-      }
     }
-
-    .dashboard-map-header-toolbar-holder {
-      width: 100%;
-      flex: 1;
-      height: 32px;
-      border-radius: 3px;
-      background-color: #fff;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      .dashboard-map-switch-holder {
-        height: 32px;
-      }
-
-      .dashboard-map-toolbar-border {
-        width: 2px;
-        height: 24px;
-        border-radius: 1px;
-        background-color: #f3f3f3;
-        margin: 0px 4px;
-      }
-
-      .dashboard-map-toolbar-icons-holder {
-        width: auto;
-        height: 32px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        svg-icon {
-          svg {
-            display: flex;
-            width: 18px;
-            height: 18px;
-
-            path {
-              fill: #aaaaaa;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .dashboard-map-body-holder {
-    width: 100%;
-    height: 560px;
-    border-radius: 3px;
-    background-color: #fff;
-    padding: 6px;
-    box-sizing: border-box;
-    display: flex;
-    overflow: hidden;
-
-    agm-map {
-      width: 100%;
-      height: 100%;
-    }
-  }
 }

@@ -1,486 +1,553 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="step-title text-center ta-font-bold">Traffic violations</h1>
+    <h1 class="step-title text-center ta-font-bold">Traffic violations</h1>
 
-  <h3
-    class="step-subtitle text-center ta-font-bold"
-    [ngStyle]="{
-      color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-    }"
-  >
-    If no violating during this 3 year period
-  </h3>
-
-  <!-- FORM SECTION -->
-
-  <div class="d-flex flex-column form-section">
-    <!-- PAST TWELVE MONTHS VIOLATIONS -->
-
-    <div
-      [formGroup]="trafficViolationsForm"
-      class="d-flex justify-content-center past-months-violations-container"
-    >
-      <app-ta-checkbox
-        formControlName="noViolationsForPastTwelveMonths"
-        [name]="'noViolationsForPastTwelveMonths'"
-        [label]="'No traffic violations for past 12 months'"
-        [customClass]="
-          selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
-        "
-        [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
-      ></app-ta-checkbox>
-    </div>
-
-    <div
-      class="d-flex flex-column align-items-center"
-      *ngIf="
-        !trafficViolationsForm.get('noViolationsForPastTwelveMonths').value
-      "
-    >
-      <!-- NOT BEEN CONVICTED -->
-
-      <div
-        class="d-flex flex-column align-items-center justify-content-center not-been-convicted-container"
-        [formGroup]="notBeenConvictedForm"
-      >
-        <app-ta-checkbox
-          formControlName="notBeenConvicted"
-          [name]="'notBeenConvicted'"
-          [label]="
-            'I certify I have not been convicted or forfeited bond or collateral on account'
-          "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
-          "
-          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
-        >
-        </app-ta-checkbox>
-        <p
-          class="m-0 ta-font-bold"
-          [ngStyle]="{
-            color:
-              !notBeenConvictedForm.get('notBeenConvicted').value ||
-              selectedMode === 'FEEDBACK_MODE'
-                ? '#6c6c6c'
-                : '#2f2f2f',
-            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
-          }"
-          (click)="handleCheckboxParagraphClick('notBeenConvicted')"
-        >
-          of any violation required to be listed during the past 3 years.
-        </p>
-      </div>
-
-      <!-- LICENSE -->
-
-      <div
-        class="d-flex flex-column justify-content-center license-view-container"
-        *ngIf="lastValidLicense.license"
-      >
-        <div
-          class="d-flex align-items-center"
-          [ngClass]="
-            selectedMode === 'FEEDBACK_MODE'
-              ? 'title-container title-container-feedback'
-              : 'title-container'
-          "
-        >
-          <div class="d-flex align-items-center license-title-box">
-            <p class="m-0 ta-font-bold">LICENSE # <span>*</span></p>
-          </div>
-          <div class="d-flex align-items-center state-title-box">
-            <p class="m-0 ta-font-bold">STATE <span>*</span></p>
-          </div>
-          <div class="d-flex align-items-center class-title-box">
-            <p class="m-0 ta-font-bold">CLASS <span>*</span></p>
-          </div>
-          <div class="d-flex align-items-center date-title-box">
-            <p class="m-0 ta-font-bold">EXP. DATE <span>*</span></p>
-          </div>
-        </div>
-
-        <div
-          class="d-flex align-items-center"
-          [ngClass]="
-            selectedMode === 'FEEDBACK_MODE'
-              ? 'license-info-container license-info-container-feedback'
-              : 'license-info-container'
-          "
-        >
-          <div class="d-flex align-items-center license-box">
-            <p class="m-0 ta-font-regular">
-              {{ lastValidLicense?.license }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center state-box">
-            <p class="m-0 ta-font-regular">
-              {{ lastValidLicense?.state }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center class-box">
-            <p class="m-0 ta-font-regular">
-              {{ lastValidLicense?.classType }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center date-box">
-            <p class="m-0 ta-font-regular">
-              {{ lastValidLicense?.expDate }}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- ONLY LICENSE -->
-
-      <div
-        class="d-flex justify-content-center only-license-container"
-        [formGroup]="onlyOneHoldLicenseForm"
-      >
-        <app-ta-checkbox
-          formControlName="onlyOneHoldLicense"
-          [name]="'onlyOneHoldLicense'"
-          [label]="
-            'I further certify that the above license is the only one I hold.'
-          "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
-          "
-          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
-        >
-        </app-ta-checkbox>
-      </div>
-
-      <!-- CREATED VIOLATIONS DATA -->
-
-      <div
-        class="d-flex flex-column justify-content-center violations-view-container"
+    <h3
+        class="step-subtitle text-center ta-font-bold"
         [ngStyle]="{
-          'margin-bottom': isEditing ? '0' : '32px'
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
         }"
-        *ngIf="violationsArray.length"
-        [formGroup]="violationsForm"
-      >
+    >
+        If no violating during this 3 year period
+    </h3>
+
+    <!-- FORM SECTION -->
+
+    <div class="d-flex flex-column form-section">
+        <!-- PAST TWELVE MONTHS VIOLATIONS -->
+
         <div
-          class="d-flex flex-column"
-          *ngFor="
-            let violation of violationsArray;
-            let i = index;
-            trackBy: trackByIdentity
-          "
+            [formGroup]="trafficViolationsForm"
+            class="d-flex justify-content-center past-months-violations-container"
         >
-          <div
-            class="d-flex align-items-center title-container"
+            <app-ta-checkbox
+                formControlName="noViolationsForPastTwelveMonths"
+                [name]="'noViolationsForPastTwelveMonths'"
+                [label]="'No traffic violations for past 12 months'"
+                [customClass]="
+                    selectedMode === 'FEEDBACK_MODE'
+                        ? 'applicant-feedback'
+                        : 'bold-12'
+                "
+                [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
+            ></app-ta-checkbox>
+        </div>
+
+        <div
+            class="d-flex flex-column align-items-center"
             *ngIf="
-              (violationsArray.length > 0 && helperIndex !== 0 && i === 0) ||
-              (helperIndex === 0 && i === 1) ||
-              (i === helperIndex + 1 && selectedViolationIndex > -1)
+                !trafficViolationsForm.get('noViolationsForPastTwelveMonths')
+                    .value
             "
-          >
-            <div class="d-flex align-items-center date-title-box">
-              <p class="m-0 ta-font-bold">DATE <span>*</span></p>
-            </div>
-            <div class="d-flex align-items-center vehicle-title-box">
-              <p class="m-0 ta-font-bold">VEHICLE TYPE <span>*</span></p>
-            </div>
-            <div class="d-flex align-items-center location-title-box">
-              <p class="m-0 ta-font-bold">LOCATION <span>*</span></p>
-            </div>
-            <div class="d-flex align-items-center description-title-box">
-              <p class="m-0 ta-font-bold">
-                DESCRIPTION OF VIOLATION <span>*</span>
-              </p>
-            </div>
-          </div>
-
-          <div
-            class="d-flex align-items-center violation-info-container line-container"
-            *ngIf="!violation.isEditingViolation"
-          >
-            <div class="d-flex align-items-center info-btn-container">
-              <div
-                class="d-flex align-items-center"
-                [ngStyle]="{
-                  cursor: selectedMode === 'REVIEW_MODE' ? 'pointer' : 'auto'
-                }"
-                (click)="selectedMode === 'REVIEW_MODE' && onCardReview(i)"
-              >
-                <div class="d-flex align-items-center date-box">
-                  <p class="m-0 ta-font-regular">
-                    {{ violation.date }}
-                  </p>
-                </div>
-
-                <div class="d-flex align-items-center vehicle-box">
-                  <p class="m-0 ta-font-regular">
-                    {{ violation.vehicleType }}
-                  </p>
-                </div>
-
-                <div class="d-flex align-items-center location-box">
-                  <p
-                    class="m-0 ta-font-regular d-inline-block text-truncate"
-                    style="max-width: 123px"
-                    ngbTooltip
-                    [mainTooltip]="violation.location.address"
-                    tooltipBackground="#6C6C6C"
-                    position="bottom-left"
-                  >
-                    {{ violation.location.address }}
-                  </p>
-                </div>
-
-                <div
-                  class="d-flex align-items-center description-box"
-                  [ngStyle]="{
-                    width: selectedMode === 'FEEDBACK_MODE' ? '168px' : '187px'
-                  }"
-                >
-                  <p
-                    class="m-0 ta-font-regular d-inline-block text-truncate"
-                    style="max-width: 185px"
-                    ngbTooltip
-                    [mainTooltip]="violation.description"
-                    tooltipBackground="#6C6C6C"
-                    position="bottom-left"
-                  >
-                    {{ violation.description }}
-                  </p>
-                </div>
-              </div>
-
-              <div
-                class="d-flex align-items-center btn-container"
-                [ngClass]="{
-                  active: selectedMode === 'REVIEW_MODE'
-                }"
-              >
-                <div
-                  ngbTooltip
-                  mainTooltip="Edit"
-                  tooltipBackground="#6C6C6C"
-                  position="top"
-                >
-                  <svg-icon
-                    class="edit-icon"
-                    src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                    [svgStyle]="{
-                      'width.px': 18,
-                      'height.px': 18
-                    }"
-                    (click)="onEditViolation(i)"
-                  ></svg-icon>
-                </div>
-
-                <div
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  tooltipBackground="#EF5350"
-                  position="top"
-                >
-                  <svg-icon
-                    class="delete-icon"
-                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                    [svgStyle]="{
-                      'width.px': 18,
-                      'height.px': 18
-                    }"
-                    (click)="onDeleteViolation(i)"
-                  ></svg-icon>
-                </div>
-
-                <div *ngIf="selectedMode === 'REVIEW_MODE'">
-                  <div
-                    class="review-icon-box"
-                    ngbTooltip
-                    mainTooltip="Mark Incorrect"
-                    tooltipBackground="#F44336"
-                    position="top"
-                  >
-                    <svg-icon
-                      class="review-icon"
-                      [ngClass]="{
-                        active:
-                          openAnnotationArray[i].displayAnnotationButton ||
-                          openAnnotationArray[i].displayAnnotationTextArea
-                      }"
-                      src="assets/svg/ic_x.svg"
-                      [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                      }"
-                      (click)="
-                        openAnnotationArray[i].lineInputs[0]
-                          ? incorrectInput($event, 0, i, 'card')
-                          : onCardReview(i)
-                      "
-                    ></svg-icon>
-                  </div>
-                </div>
-
-                <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
-                  <div
-                    class="feedback-icon-box"
-                    ngbTooltip
-                    mainTooltip="Marked Incorrect"
-                    tooltipBackground="#F44336"
-                    position="top"
-                  >
-                    <svg-icon
-                      class="feedback-icon"
-                      src="assets/svg/common/ic_danger.svg"
-                      [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                      }"
-                    ></svg-icon>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- REVIEW AND FEEDBACK -->
+        >
+            <!-- NOT BEEN CONVICTED -->
 
             <div
-              class="review-feedback-container"
-              *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-              "
+                class="d-flex flex-column align-items-center justify-content-center not-been-convicted-container"
+                [formGroup]="notBeenConvictedForm"
             >
-              <app-applicant-review-feedback
-                [formControlName]="'cardReview' + (i + 1)"
-                [displayAnnotationButton]="
-                  openAnnotationArray[i].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                  openAnnotationArray[i].displayAnnotationTextArea
-                "
-                [lineIndex]="i"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="'Check the number'"
-                [cardsLength]="violationsArray.length"
-                [cardsType]="'trafficViolations'"
-                [cardIndex]="i"
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-              ></app-applicant-review-feedback>
+                <app-ta-checkbox
+                    formControlName="notBeenConvicted"
+                    [name]="'notBeenConvicted'"
+                    [label]="
+                        'I certify I have not been convicted or forfeited bond or collateral on account'
+                    "
+                    [customClass]="
+                        selectedMode === 'FEEDBACK_MODE'
+                            ? 'applicant-feedback'
+                            : 'bold-12'
+                    "
+                    [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
+                >
+                </app-ta-checkbox>
+                <p
+                    class="m-0 ta-font-bold"
+                    [ngStyle]="{
+                        color:
+                            !notBeenConvictedForm.get('notBeenConvicted')
+                                .value || selectedMode === 'FEEDBACK_MODE'
+                                ? '#6c6c6c'
+                                : '#2f2f2f',
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
+                    }"
+                    (click)="handleCheckboxParagraphClick('notBeenConvicted')"
+                >
+                    of any violation required to be listed during the past 3
+                    years.
+                </p>
             </div>
-          </div>
-          <div
-            class="d-flex flex-column violations-view-form"
-            *ngIf="violation.isEditingViolation"
-          >
-            <app-step5-form
-              [mode]="selectedMode"
-              [isEditing]="isEditing"
-              [formValuesToPatch]="formValuesToPatch"
-              [isReviewingCard]="isReviewingCard"
-              (formValuesEmitter)="getViolationFormValues($event)"
-              (cancelFormEditingEmitter)="cancelViolationEditing($event)"
-              (saveFormEditingEmitter)="saveEditedViolation($event)"
-              (cancelFormReviewingEmitter)="cancelViolationReview($event)"
-              (cardOpenAnnotationArrayValuesEmitter)="
-                onGetCardOpenAnnotationArrayValues($event)
-              "
-            ></app-step5-form>
-          </div>
+
+            <!-- LICENSE -->
+
+            <div
+                class="d-flex flex-column justify-content-center license-view-container"
+                *ngIf="lastValidLicense.license"
+            >
+                <div
+                    class="d-flex align-items-center"
+                    [ngClass]="
+                        selectedMode === 'FEEDBACK_MODE'
+                            ? 'title-container title-container-feedback'
+                            : 'title-container'
+                    "
+                >
+                    <div class="d-flex align-items-center license-title-box">
+                        <p class="m-0 ta-font-bold">LICENSE # <span>*</span></p>
+                    </div>
+                    <div class="d-flex align-items-center state-title-box">
+                        <p class="m-0 ta-font-bold">STATE <span>*</span></p>
+                    </div>
+                    <div class="d-flex align-items-center class-title-box">
+                        <p class="m-0 ta-font-bold">CLASS <span>*</span></p>
+                    </div>
+                    <div class="d-flex align-items-center date-title-box">
+                        <p class="m-0 ta-font-bold">EXP. DATE <span>*</span></p>
+                    </div>
+                </div>
+
+                <div
+                    class="d-flex align-items-center"
+                    [ngClass]="
+                        selectedMode === 'FEEDBACK_MODE'
+                            ? 'license-info-container license-info-container-feedback'
+                            : 'license-info-container'
+                    "
+                >
+                    <div class="d-flex align-items-center license-box">
+                        <p class="m-0 ta-font-regular">
+                            {{ lastValidLicense?.license }}
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center state-box">
+                        <p class="m-0 ta-font-regular">
+                            {{ lastValidLicense?.state }}
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center class-box">
+                        <p class="m-0 ta-font-regular">
+                            {{ lastValidLicense?.classType }}
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center date-box">
+                        <p class="m-0 ta-font-regular">
+                            {{ lastValidLicense?.expDate }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONLY LICENSE -->
+
+            <div
+                class="d-flex justify-content-center only-license-container"
+                [formGroup]="onlyOneHoldLicenseForm"
+            >
+                <app-ta-checkbox
+                    formControlName="onlyOneHoldLicense"
+                    [name]="'onlyOneHoldLicense'"
+                    [label]="
+                        'I further certify that the above license is the only one I hold.'
+                    "
+                    [customClass]="
+                        selectedMode === 'FEEDBACK_MODE'
+                            ? 'applicant-feedback'
+                            : 'bold-12'
+                    "
+                    [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
+                >
+                </app-ta-checkbox>
+            </div>
+
+            <!-- CREATED VIOLATIONS DATA -->
+
+            <div
+                class="d-flex flex-column justify-content-center violations-view-container"
+                [ngStyle]="{
+                    'margin-bottom': isEditing ? '0' : '32px'
+                }"
+                *ngIf="violationsArray.length"
+                [formGroup]="violationsForm"
+            >
+                <div
+                    class="d-flex flex-column"
+                    *ngFor="
+                        let violation of violationsArray;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="d-flex align-items-center title-container"
+                        *ngIf="
+                            (violationsArray.length > 0 &&
+                                helperIndex !== 0 &&
+                                i === 0) ||
+                            (helperIndex === 0 && i === 1) ||
+                            (i === helperIndex + 1 &&
+                                selectedViolationIndex > -1)
+                        "
+                    >
+                        <div class="d-flex align-items-center date-title-box">
+                            <p class="m-0 ta-font-bold">DATE <span>*</span></p>
+                        </div>
+                        <div
+                            class="d-flex align-items-center vehicle-title-box"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                VEHICLE TYPE <span>*</span>
+                            </p>
+                        </div>
+                        <div
+                            class="d-flex align-items-center location-title-box"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                LOCATION <span>*</span>
+                            </p>
+                        </div>
+                        <div
+                            class="d-flex align-items-center description-title-box"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                DESCRIPTION OF VIOLATION <span>*</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="d-flex align-items-center violation-info-container line-container"
+                        *ngIf="!violation.isEditingViolation"
+                    >
+                        <div
+                            class="d-flex align-items-center info-btn-container"
+                        >
+                            <div
+                                class="d-flex align-items-center"
+                                [ngStyle]="{
+                                    cursor:
+                                        selectedMode === 'REVIEW_MODE'
+                                            ? 'pointer'
+                                            : 'auto'
+                                }"
+                                (click)="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                        onCardReview(i)
+                                "
+                            >
+                                <div class="d-flex align-items-center date-box">
+                                    <p class="m-0 ta-font-regular">
+                                        {{ violation.date }}
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="d-flex align-items-center vehicle-box"
+                                >
+                                    <p class="m-0 ta-font-regular">
+                                        {{ violation.vehicleType }}
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="d-flex align-items-center location-box"
+                                >
+                                    <p
+                                        class="m-0 ta-font-regular d-inline-block text-truncate"
+                                        style="max-width: 123px"
+                                        ngbTooltip
+                                        [mainTooltip]="
+                                            violation.location.address
+                                        "
+                                        tooltipBackground="#6C6C6C"
+                                        position="bottom-left"
+                                    >
+                                        {{ violation.location.address }}
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="d-flex align-items-center description-box"
+                                    [ngStyle]="{
+                                        width:
+                                            selectedMode === 'FEEDBACK_MODE'
+                                                ? '168px'
+                                                : '187px'
+                                    }"
+                                >
+                                    <p
+                                        class="m-0 ta-font-regular d-inline-block text-truncate"
+                                        style="max-width: 185px"
+                                        ngbTooltip
+                                        [mainTooltip]="violation.description"
+                                        tooltipBackground="#6C6C6C"
+                                        position="bottom-left"
+                                    >
+                                        {{ violation.description }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center btn-container"
+                                [ngClass]="{
+                                    active: selectedMode === 'REVIEW_MODE'
+                                }"
+                            >
+                                <div
+                                    ngbTooltip
+                                    mainTooltip="Edit"
+                                    tooltipBackground="#6C6C6C"
+                                    position="top"
+                                >
+                                    <svg-icon
+                                        class="edit-icon"
+                                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                        (click)="onEditViolation(i)"
+                                    ></svg-icon>
+                                </div>
+
+                                <div
+                                    ngbTooltip
+                                    mainTooltip="Delete"
+                                    tooltipBackground="#EF5350"
+                                    position="top"
+                                >
+                                    <svg-icon
+                                        class="delete-icon"
+                                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                        (click)="onDeleteViolation(i)"
+                                    ></svg-icon>
+                                </div>
+
+                                <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                                    <div
+                                        class="review-icon-box"
+                                        ngbTooltip
+                                        mainTooltip="Mark Incorrect"
+                                        tooltipBackground="#F44336"
+                                        position="top"
+                                    >
+                                        <svg-icon
+                                            class="review-icon"
+                                            [ngClass]="{
+                                                active:
+                                                    openAnnotationArray[i]
+                                                        .displayAnnotationButton ||
+                                                    openAnnotationArray[i]
+                                                        .displayAnnotationTextArea
+                                            }"
+                                            src="assets/svg/ic_x.svg"
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                            (click)="
+                                                openAnnotationArray[i]
+                                                    .lineInputs[0]
+                                                    ? incorrectInput(
+                                                          $event,
+                                                          0,
+                                                          i,
+                                                          'card'
+                                                      )
+                                                    : onCardReview(i)
+                                            "
+                                        ></svg-icon>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
+                                    <div
+                                        class="feedback-icon-box"
+                                        ngbTooltip
+                                        mainTooltip="Marked Incorrect"
+                                        tooltipBackground="#F44336"
+                                        position="top"
+                                    >
+                                        <svg-icon
+                                            class="feedback-icon"
+                                            src="assets/svg/common/ic_danger.svg"
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                        ></svg-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- REVIEW AND FEEDBACK -->
+
+                        <div
+                            class="review-feedback-container"
+                            *ngIf="
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
+                            "
+                        >
+                            <app-applicant-review-feedback
+                                [formControlName]="'cardReview' + (i + 1)"
+                                [displayAnnotationButton]="
+                                    openAnnotationArray[i]
+                                        .displayAnnotationButton
+                                "
+                                [displayAnnotationTextArea]="
+                                    openAnnotationArray[i]
+                                        .displayAnnotationTextArea
+                                "
+                                [lineIndex]="i"
+                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                                [feedbackText]="'Check the number'"
+                                [cardsLength]="violationsArray.length"
+                                [cardsType]="'trafficViolations'"
+                                [cardIndex]="i"
+                                (annotationBtnClickEvent)="
+                                    getAnnotationBtnClickValue($event)
+                                "
+                            ></app-applicant-review-feedback>
+                        </div>
+                    </div>
+
+                    <div
+                        *ngIf="violation.isEditingViolation"
+                        class="d-flex flex-column violations-view-form"
+                        [ngStyle]="{
+                            margin:
+                                i !== 0
+                                    ? '32px auto 0 auto'
+                                    : '10px auto 0 auto'
+                        }"
+                    >
+                        <app-step5-form
+                            [mode]="selectedMode"
+                            [isEditing]="isEditing"
+                            [formValuesToPatch]="formValuesToPatch"
+                            [isReviewingCard]="isReviewingCard"
+                            (formValuesEmitter)="getViolationFormValues($event)"
+                            (cancelFormEditingEmitter)="
+                                cancelViolationEditing($event)
+                            "
+                            (saveFormEditingEmitter)="
+                                saveEditedViolation($event)
+                            "
+                            (cancelFormReviewingEmitter)="
+                                cancelViolationReview($event)
+                            "
+                            (cardOpenAnnotationArrayValuesEmitter)="
+                                onGetCardOpenAnnotationArrayValues($event)
+                            "
+                        ></app-step5-form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATE, VEHICLE TYPE, LOCATION -->
+
+            <form
+                *ngIf="
+                    (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
+                    (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
+                "
+            >
+                <app-step5-form
+                    [mode]="selectedMode"
+                    [isEditing]="isEditing"
+                    [markFormInvalid]="markFormInvalid"
+                    [formValuesToPatch]="formValuesToPatch"
+                    [isReviewingCard]="isReviewingCard"
+                    (formValuesEmitter)="getViolationFormValues($event)"
+                    (formStatusEmitter)="onGetFormStatus($event)"
+                    (markInvalidEmitter)="onMarkInvalidEmit($event)"
+                    (lastFormValuesEmitter)="onGetLastFormValues($event)"
+                    (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
+                    (openAnnotationArrayValuesEmitter)="
+                        onGetOpenAnnotationArrayValues($event)
+                    "
+                ></app-step5-form>
+            </form>
+
+            <!-- CERTIFY -->
+
+            <div
+                class="d-flex flex-column align-items-center justify-content-center certify-container"
+                [formGroup]="certifyForm"
+                [ngStyle]="{
+                    'margin-top': isEditing ? '22px' : '0'
+                }"
+            >
+                <app-ta-checkbox
+                    formControlName="certify"
+                    [name]="'certify'"
+                    [label]="
+                        'I certify that the following is a true and complete list of traffic violations (other than parking'
+                    "
+                    [customClass]="
+                        selectedMode === 'FEEDBACK_MODE'
+                            ? 'applicant-feedback'
+                            : 'bold-12'
+                    "
+                    [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
+                >
+                </app-ta-checkbox>
+                <p
+                    class="m-0 ta-font-bold"
+                    [ngStyle]="{
+                        color:
+                            !certifyForm.get('certify').value ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? '#6c6c6c'
+                                : '#2f2f2f',
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
+                    }"
+                    (click)="handleCheckboxParagraphClick('certify')"
+                >
+                    tickets) for which I have been convicted or forfeited bond
+                    or collateral during the past 3 years.
+                </p>
+            </div>
         </div>
-      </div>
-
-      <!-- DATE, VEHICLE TYPE, LOCATION -->
-
-      <form
-        *ngIf="
-          (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
-          (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
-        "
-      >
-        <app-step5-form
-          [mode]="selectedMode"
-          [isEditing]="isEditing"
-          [markFormInvalid]="markFormInvalid"
-          [formValuesToPatch]="formValuesToPatch"
-          [isReviewingCard]="isReviewingCard"
-          (formValuesEmitter)="getViolationFormValues($event)"
-          (formStatusEmitter)="onGetFormStatus($event)"
-          (markInvalidEmitter)="onMarkInvalidEmit($event)"
-          (lastFormValuesEmitter)="onGetLastFormValues($event)"
-          (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
-          (openAnnotationArrayValuesEmitter)="
-            onGetOpenAnnotationArrayValues($event)
-          "
-        ></app-step5-form>
-      </form>
-
-      <!-- CERTIFY -->
-
-      <div
-        class="d-flex flex-column align-items-center justify-content-center certify-container"
-        [formGroup]="certifyForm"
-        [ngStyle]="{
-          'margin-top': isEditing ? '22px' : '0'
-        }"
-      >
-        <app-ta-checkbox
-          formControlName="certify"
-          [name]="'certify'"
-          [label]="
-            'I certify that the following is a true and complete list of traffic violations (other than parking'
-          "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
-          "
-          [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
-        >
-        </app-ta-checkbox>
-        <p
-          class="m-0 ta-font-bold"
-          [ngStyle]="{
-            color:
-              !certifyForm.get('certify').value ||
-              selectedMode === 'FEEDBACK_MODE'
-                ? '#6c6c6c'
-                : '#2f2f2f',
-            cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
-          }"
-          (click)="handleCheckboxParagraphClick('certify')"
-        >
-          tickets) for which I have been convicted or forfeited bond or
-          collateral during the past 3 years.
-        </p>
-      </div>
     </div>
-  </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center next-btn-container"
+    class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn
-    [nextStep]="true"
-    [filledCorrectly]="
-      selectedMode === 'APPLICANT_MODE' &&
-      notBeenConvictedForm.valid &&
-      onlyOneHoldLicenseForm.valid &&
-      certifyForm.valid &&
-      formStatus === 'VALID'
-    "
-    [hasIncorrectFields]="
-      selectedMode === 'REVIEW_MODE' &&
-      (hasIncorrectFields || cardsWithIncorrectFields)
-    "
-    [mode]="selectedMode"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [nextStep]="true"
+        [filledCorrectly]="
+            selectedMode === 'APPLICANT_MODE' &&
+            notBeenConvictedForm.valid &&
+            onlyOneHoldLicenseForm.valid &&
+            certifyForm.valid &&
+            formStatus === 'VALID'
+        "
+        [hasIncorrectFields]="
+            selectedMode === 'REVIEW_MODE' &&
+            (hasIncorrectFields || cardsWithIncorrectFields)
+        "
+        [mode]="selectedMode"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center back-btn-container"
+    class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn
-    [backStep]="true"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [backStep]="true"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>

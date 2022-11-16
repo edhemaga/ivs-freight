@@ -3,27 +3,24 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
 // import { DashboardStoreService } from './dashboard.service';
- 
+
 //import { ProductService } from '../product/product.service';
- 
+
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class DashboardResolverService implements Resolve<any> {
-  constructor(
-      // private dashboardStoreService: DashboardStoreService, 
-      // private dashboardQuery: DashboardQuery
-      ) {}
-  resolve(route: ActivatedRouteSnapshot): Observable<any> {
-      // if( this.dashboardQuery.dashboardStatistics.todayObject ){
-      //   return this.dashboardQuery.dashboardStatistics;
-      // }else{
-      //   return this.dashboardStoreService.getDashboardStats().pipe(
-      //       tap(products => {
-      //           this.dashboardStoreService.dashStats = products;
-      //       })
-      //   );
-      // }
-      return of(true);
-  }
+    constructor() {} // private dashboardQuery: DashboardQuery // private dashboardStoreService: DashboardStoreService,
+    resolve(route: ActivatedRouteSnapshot): Observable<any> {
+        // if( this.dashboardQuery.dashboardStatistics.todayObject ){
+        //   return this.dashboardQuery.dashboardStatistics;
+        // }else{
+        //   return this.dashboardStoreService.getDashboardStats().pipe(
+        //       tap(products => {
+        //           this.dashboardStoreService.dashStats = products;
+        //       })
+        //   );
+        // }
+        return of(true);
+    }
 }

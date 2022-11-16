@@ -1,345 +1,408 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="m-0 step-title text-center ta-font-bold">Work Experience</h1>
+    <h1 class="m-0 step-title text-center ta-font-bold">Work Experience</h1>
 
-  <!-- TOP SECTION -->
+    <!-- TOP SECTION -->
 
-  <div
-    class="d-flex justify-content-center text-center"
-    [ngClass]="
-      selectedMode === 'FEEDBACK_MODE' ? 'top-section-feedback' : 'top-section'
-    "
-  >
-    <p class="m-0 ta-font-regular">
-      In accordance with 391.21 & .23 of the Federal Motor Carrier Safety
-      Regulations (FMCSR), an applicant must list all<br />previous work
-      experience for the three (3) years prior to the date of application shown
-      on page one, as well as all<br />commercial driving experience for seven
-      (7) years prior to those three years, for a total of 10 years.
-    </p>
-  </div>
-
-  <!-- MID SECTION -->
-
-  <div
-    class="d-flex justify-content-center text-center mid-section"
-    [ngStyle]="{
-      'margin-bottom': workExperienceArray.length ? '22px' : '32px'
-    }"
-  >
-    <h5
-      class="m-0 ta-font-bold"
-      [ngClass]="
-        selectedMode === 'FEEDBACK_MODE'
-          ? 'step-subtitle step-subtitle-feedback'
-          : 'step-subtitle'
-      "
+    <div
+        class="d-flex justify-content-center text-center"
+        [ngClass]="
+            selectedMode === 'FEEDBACK_MODE'
+                ? 'top-section-feedback'
+                : 'top-section'
+        "
     >
-      Please list starting with most recent employer, use add employer link if
-      needed
-    </h5>
-  </div>
+        <p class="m-0 ta-font-regular">
+            In accordance with 391.21 & .23 of the Federal Motor Carrier Safety
+            Regulations (FMCSR), an applicant must list all<br />previous work
+            experience for the three (3) years prior to the date of application
+            shown on page one, as well as all<br />commercial driving experience
+            for seven (7) years prior to those three years, for a total of 10
+            years.
+        </p>
+    </div>
 
-  <!-- FORM SECTION -->
+    <!-- MID SECTION -->
 
-  <div
-    class="d-flex justify-content-center"
-    *ngIf="!workExperienceForm.get('noWorkExperience').value"
-    [formGroup]="workExperienceForm"
-  >
-    <div class="d-flex justify-content-center flex-column">
-      <div
-        class="d-flex flex-column history-panel-container"
-        *ngIf="workExperienceArray.length"
-        [ngStyle]="{ 'margin-bottom': isReviewingCard ? 0 : '32px' }"
-      >
-        <!-- CREATED WORK HISTORY DATA -->
-
-        <div
-          class="d-flex flex-column"
-          *ngFor="
-            let workHistory of workExperienceArray;
-            let i = index;
-            trackBy: trackByIdentity
-          "
-        >
-          <div
-            class="d-flex align-items-center history-title-container"
-            *ngIf="
-              (workExperienceArray.length > 0 &&
-                helperIndex !== 0 &&
-                i === 0) ||
-              (helperIndex === 0 && i === 1) ||
-              (i === helperIndex + 1 && selectedWorkExperienceIndex > -1)
+    <div
+        class="d-flex justify-content-center text-center mid-section"
+        [ngStyle]="{
+            'margin-bottom': workExperienceArray.length ? '22px' : '32px'
+        }"
+    >
+        <h5
+            class="m-0 ta-font-bold"
+            [ngClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                    ? 'step-subtitle step-subtitle-feedback'
+                    : 'step-subtitle'
             "
-          >
-            <div class="d-flex align-items-center employer-title-container">
-              <p class="m-0 ta-font-bold">
-                current or last employer <span>*</span>
-              </p>
-            </div>
-            <div class="d-flex align-items-center from-title-container">
-              <p class="m-0 ta-font-bold">from <span>*</span></p>
-            </div>
-            <div class="d-flex align-items-center to-title-container">
-              <p class="m-0 ta-font-bold">to <span>*</span></p>
-            </div>
-          </div>
-          <div
-            class="d-flex align-items-center history-panel line-container"
-            *ngIf="!workHistory.isEditingWorkHistory"
-          >
-            <div class="d-flex align-items-center info-btn-container">
-              <div
-                class="d-flex align-items-center"
-                [ngStyle]="{
-                  cursor: selectedMode === 'REVIEW_MODE' ? 'pointer' : 'auto'
-                }"
-                (click)="selectedMode === 'REVIEW_MODE' && onCardReview(i)"
-              >
-                <div class="d-flex align-items-center history-employer">
-                  <p class="m-0 ta-font-regular">{{ workHistory.employer }}</p>
-                </div>
-                <div class="d-flex align-items-center history-from-date">
-                  <p class="m-0 ta-font-regular">{{ workHistory.fromDate }}</p>
-                </div>
-                <div
-                  class="d-flex align-items-center history-to-date"
-                  [ngStyle]="{
-                    'margin-right':
-                      selectedMode === 'FEEDBACK_MODE' ? '18px' : '20px',
-                    width: selectedMode !== 'APPLICANT_MODE' ? '90px' : '108px'
-                  }"
-                >
-                  <p class="m-0 ta-font-regular">{{ workHistory.toDate }}</p>
-                </div>
-              </div>
-              <div
-                class="d-flex align-items-center btn-container"
-                [ngClass]="{
-                  active: selectedMode === 'REVIEW_MODE'
-                }"
-              >
-                <div
-                  ngbTooltip
-                  mainTooltip="Edit"
-                  tooltipBackground="#6C6C6C"
-                  position="top"
-                >
-                  <svg-icon
-                    class="edit-icon"
-                    src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                    [svgStyle]="{
-                      'width.px': 18,
-                      'height.px': 18
-                    }"
-                    (click)="onEditWorkExperience(i)"
-                  ></svg-icon>
-                </div>
+        >
+            Please list starting with most recent employer, use add employer
+            link if needed
+        </h5>
+    </div>
+
+    <!-- FORM SECTION -->
+
+    <div
+        class="d-flex justify-content-center"
+        *ngIf="!workExperienceForm.get('noWorkExperience').value"
+        [formGroup]="workExperienceForm"
+    >
+        <div class="d-flex justify-content-center flex-column">
+            <div
+                class="d-flex flex-column history-panel-container"
+                *ngIf="workExperienceArray.length"
+                [ngStyle]="{ 'margin-bottom': isReviewingCard ? 0 : '32px' }"
+            >
+                <!-- CREATED WORK HISTORY DATA -->
 
                 <div
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  tooltipBackground="#EF5350"
-                  position="top"
+                    class="d-flex flex-column"
+                    *ngFor="
+                        let workHistory of workExperienceArray;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
                 >
-                  <svg-icon
-                    class="delete-icon"
-                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                    [svgStyle]="{
-                      'width.px': 18,
-                      'height.px': 18
-                    }"
-                    (click)="onDeleteWorkExperience(i)"
-                  ></svg-icon>
-                </div>
-                <div *ngIf="selectedMode === 'REVIEW_MODE'">
-                  <div
-                    class="review-icon-box"
-                    ngbTooltip
-                    mainTooltip="Mark Incorrect"
-                    tooltipBackground="#F44336"
-                    position="top"
-                  >
-                    <svg-icon
-                      class="review-icon"
-                      [ngClass]="{
-                        active:
-                          openAnnotationArray[i].displayAnnotationButton ||
-                          openAnnotationArray[i].displayAnnotationTextArea
-                      }"
-                      src="assets/svg/ic_x.svg"
-                      [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                      }"
-                      (click)="
-                        openAnnotationArray[i].lineInputs[0]
-                          ? incorrectInput($event, 0, i, 'card')
-                          : onCardReview(i)
-                      "
-                    ></svg-icon>
-                  </div>
-                </div>
-                <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
-                  <div
-                    class="feedback-icon-box"
-                    ngbTooltip
-                    mainTooltip="Marked Incorrect"
-                    tooltipBackground="#F44336"
-                    position="top"
-                  >
-                    <svg-icon
-                      class="feedback-icon"
-                      src="assets/svg/common/ic_danger.svg"
-                      [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                      }"
-                    ></svg-icon>
-                  </div>
-                </div>
-              </div>
-            </div>
+                    <div
+                        class="d-flex align-items-center history-title-container"
+                        *ngIf="
+                            (workExperienceArray.length > 0 &&
+                                helperIndex !== 0 &&
+                                i === 0) ||
+                            (helperIndex === 0 && i === 1) ||
+                            (i === helperIndex + 1 &&
+                                selectedWorkExperienceIndex > -1)
+                        "
+                    >
+                        <div
+                            class="d-flex align-items-center employer-title-container"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                current or last employer <span>*</span>
+                            </p>
+                        </div>
+                        <div
+                            class="d-flex align-items-center from-title-container"
+                        >
+                            <p class="m-0 ta-font-bold">from <span>*</span></p>
+                        </div>
+                        <div
+                            class="d-flex align-items-center to-title-container"
+                        >
+                            <p class="m-0 ta-font-bold">to <span>*</span></p>
+                        </div>
+                    </div>
+                    <div
+                        class="d-flex align-items-center history-panel line-container"
+                        *ngIf="!workHistory.isEditingWorkHistory"
+                    >
+                        <div
+                            class="d-flex align-items-center info-btn-container"
+                        >
+                            <div
+                                class="d-flex align-items-center"
+                                [ngStyle]="{
+                                    cursor:
+                                        selectedMode === 'REVIEW_MODE'
+                                            ? 'pointer'
+                                            : 'auto'
+                                }"
+                                (click)="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                        onCardReview(i)
+                                "
+                            >
+                                <div
+                                    class="d-flex align-items-center history-employer"
+                                >
+                                    <p class="m-0 ta-font-regular">
+                                        {{ workHistory.employer }}
+                                    </p>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center history-from-date"
+                                >
+                                    <p class="m-0 ta-font-regular">
+                                        {{ workHistory.fromDate }}
+                                    </p>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center history-to-date"
+                                    [ngStyle]="{
+                                        'margin-right':
+                                            selectedMode === 'FEEDBACK_MODE'
+                                                ? '18px'
+                                                : '20px',
+                                        width:
+                                            selectedMode !== 'APPLICANT_MODE'
+                                                ? '90px'
+                                                : '108px'
+                                    }"
+                                >
+                                    <p class="m-0 ta-font-regular">
+                                        {{ workHistory.toDate }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="d-flex align-items-center btn-container"
+                                [ngClass]="{
+                                    active: selectedMode === 'REVIEW_MODE'
+                                }"
+                            >
+                                <div
+                                    ngbTooltip
+                                    mainTooltip="Edit"
+                                    tooltipBackground="#6C6C6C"
+                                    position="top"
+                                >
+                                    <svg-icon
+                                        class="edit-icon"
+                                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                        (click)="onEditWorkExperience(i)"
+                                    ></svg-icon>
+                                </div>
 
-            <!-- REVIEW AND FEEDBACK -->
+                                <div
+                                    ngbTooltip
+                                    mainTooltip="Delete"
+                                    tooltipBackground="#EF5350"
+                                    position="top"
+                                >
+                                    <svg-icon
+                                        class="delete-icon"
+                                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                        (click)="onDeleteWorkExperience(i)"
+                                    ></svg-icon>
+                                </div>
+                                <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                                    <div
+                                        class="review-icon-box"
+                                        ngbTooltip
+                                        mainTooltip="Mark Incorrect"
+                                        tooltipBackground="#F44336"
+                                        position="top"
+                                    >
+                                        <svg-icon
+                                            class="review-icon"
+                                            [ngClass]="{
+                                                active:
+                                                    openAnnotationArray[i]
+                                                        .displayAnnotationButton ||
+                                                    openAnnotationArray[i]
+                                                        .displayAnnotationTextArea
+                                            }"
+                                            src="assets/svg/ic_x.svg"
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                            (click)="
+                                                openAnnotationArray[i]
+                                                    .lineInputs[0]
+                                                    ? incorrectInput(
+                                                          $event,
+                                                          0,
+                                                          i,
+                                                          'card'
+                                                      )
+                                                    : onCardReview(i)
+                                            "
+                                        ></svg-icon>
+                                    </div>
+                                </div>
+                                <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
+                                    <div
+                                        class="feedback-icon-box"
+                                        ngbTooltip
+                                        mainTooltip="Marked Incorrect"
+                                        tooltipBackground="#F44336"
+                                        position="top"
+                                    >
+                                        <svg-icon
+                                            class="feedback-icon"
+                                            src="assets/svg/common/ic_danger.svg"
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                        ></svg-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- REVIEW AND FEEDBACK -->
+
+                        <div
+                            class="review-feedback-container"
+                            *ngIf="
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
+                            "
+                        >
+                            <app-applicant-review-feedback
+                                [formControlName]="'cardReview' + (i + 1)"
+                                [displayAnnotationButton]="
+                                    openAnnotationArray[i]
+                                        .displayAnnotationButton
+                                "
+                                [displayAnnotationTextArea]="
+                                    openAnnotationArray[i]
+                                        .displayAnnotationTextArea
+                                "
+                                [lineIndex]="i"
+                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                                [feedbackText]="'Check the number'"
+                                [cardsLength]="workExperienceArray.length"
+                                [cardsType]="'workExperience'"
+                                [cardIndex]="i"
+                                (annotationBtnClickEvent)="
+                                    getAnnotationBtnClickValue($event)
+                                "
+                            ></app-applicant-review-feedback>
+                        </div>
+                    </div>
+
+                    <div
+                        *ngIf="workHistory.isEditingWorkHistory"
+                        class="d-flex flex-column history-panel-form"
+                        [ngStyle]="{
+                            margin:
+                                i !== 0
+                                    ? '32px auto 0 auto'
+                                    : '10px auto 0 auto'
+                        }"
+                    >
+                        <app-step2-form
+                            [mode]="selectedMode"
+                            [isEditing]="isEditing"
+                            [formValuesToPatch]="formValuesToPatch"
+                            [isReviewingCard]="isReviewingCard"
+                            [stepFeedbackValues]="stepFeedbackValues"
+                            (formValuesEmitter)="
+                                getWorkExperienceFormValues($event)
+                            "
+                            (cancelFormEditingEmitter)="
+                                cancelWorkExperienceEditing($event)
+                            "
+                            (saveFormEditingEmitter)="
+                                saveEditedWorkExperience($event)
+                            "
+                            (cancelFormReviewingEmitter)="
+                                cancelWorkExperienceReview($event)
+                            "
+                            (cardOpenAnnotationArrayValuesEmitter)="
+                                onGetCardOpenAnnotationArrayValues($event)
+                            "
+                        ></app-step2-form>
+                    </div>
+                </div>
+            </div>
 
             <div
-              class="review-feedback-container"
-              *ngIf="
+                *ngIf="
+                    ((selectedMode === 'APPLICANT_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE') &&
+                        !isEditing) ||
+                    (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
+                "
+            >
+                <app-step2-form
+                    [mode]="selectedMode"
+                    [isEditing]="isEditing"
+                    [markFormInvalid]="markFormInvalid"
+                    [markInnerFormInvalid]="markInnerFormInvalid"
+                    [formValuesToPatch]="formValuesToPatch"
+                    [isReviewingCard]="isReviewingCard"
+                    [stepFeedbackValues]="stepFeedbackValues"
+                    (formValuesEmitter)="getWorkExperienceFormValues($event)"
+                    (formStatusEmitter)="onGetFormStatus($event)"
+                    (innerFormStatusEmitter)="onGetInnerFormStatus($event)"
+                    (markInvalidEmitter)="onMarkInvalidEmit($event)"
+                    (markInnerFormInvalidEmitter)="
+                        onMarkInnerInvalidEmit($event)
+                    "
+                    (lastFormValuesEmitter)="onGetLastFormValues($event)"
+                    (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
+                    (openAnnotationArrayValuesEmitter)="
+                        onGetOpenAnnotationArrayValues($event)
+                    "
+                ></app-step2-form>
+            </div>
+        </div>
+    </div>
+
+    <!-- WORK EXPERIENCE CHECKBOX -->
+
+    <div
+        class="d-flex justify-content-center work-experience-group"
+        [formGroup]="workExperienceForm"
+        [ngStyle]="{
+            'margin-top':
+                selectedMode === 'APPLICANT_MODE'
+                    ? '12px'
+                    : selectedMode === 'REVIEW_MODE' &&
+                      workExperienceArray[workExperienceArray.length - 1]
+                          ?.isEditingWorkHistory
+                    ? 0
+                    : '22px'
+        }"
+        *ngIf="!isEditing"
+    >
+        <app-ta-checkbox
+            formControlName="noWorkExperience"
+            [name]="'noWorkExperience'"
+            [label]="'I don’t have work experience'"
+            [customClass]="'bold-12'"
+            [disabledStillCheckMark]="
                 selectedMode === 'REVIEW_MODE' ||
                 selectedMode === 'FEEDBACK_MODE'
-              "
-            >
-              <app-applicant-review-feedback
-                [formControlName]="'cardReview' + (i + 1)"
-                [displayAnnotationButton]="
-                  openAnnotationArray[i].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                  openAnnotationArray[i].displayAnnotationTextArea
-                "
-                [lineIndex]="i"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="'Check the number'"
-                [cardsLength]="workExperienceArray.length"
-                [cardsType]="'workExperience'"
-                [cardIndex]="i"
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-              ></app-applicant-review-feedback>
-            </div>
-          </div>
-
-          <div
-            class="d-flex flex-column history-panel-form"
-            *ngIf="workHistory.isEditingWorkHistory"
-          >
-            <app-step2-form
-              [mode]="selectedMode"
-              [isEditing]="isEditing"
-              [formValuesToPatch]="formValuesToPatch"
-              [isReviewingCard]="isReviewingCard"
-              [stepFeedbackValues]="stepFeedbackValues"
-              (formValuesEmitter)="getWorkExperienceFormValues($event)"
-              (cancelFormEditingEmitter)="cancelWorkExperienceEditing($event)"
-              (saveFormEditingEmitter)="saveEditedWorkExperience($event)"
-              (cancelFormReviewingEmitter)="cancelWorkExperienceReview($event)"
-              (cardOpenAnnotationArrayValuesEmitter)="
-                onGetCardOpenAnnotationArrayValues($event)
-              "
-            ></app-step2-form>
-          </div>
-        </div>
-      </div>
-
-      <div
-        *ngIf="
-          ((selectedMode === 'APPLICANT_MODE' ||
-            selectedMode === 'FEEDBACK_MODE') &&
-            !isEditing) ||
-          (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
-        "
-      >
-        <app-step2-form
-          [mode]="selectedMode"
-          [isEditing]="isEditing"
-          [markFormInvalid]="markFormInvalid"
-          [markInnerFormInvalid]="markInnerFormInvalid"
-          [formValuesToPatch]="formValuesToPatch"
-          [isReviewingCard]="isReviewingCard"
-          [stepFeedbackValues]="stepFeedbackValues"
-          (formValuesEmitter)="getWorkExperienceFormValues($event)"
-          (formStatusEmitter)="onGetFormStatus($event)"
-          (innerFormStatusEmitter)="onGetInnerFormStatus($event)"
-          (markInvalidEmitter)="onMarkInvalidEmit($event)"
-          (markInnerFormInvalidEmitter)="onMarkInnerInvalidEmit($event)"
-          (lastFormValuesEmitter)="onGetLastFormValues($event)"
-          (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
-          (openAnnotationArrayValuesEmitter)="
-            onGetOpenAnnotationArrayValues($event)
-          "
-        ></app-step2-form>
-      </div>
+            "
+        ></app-ta-checkbox>
     </div>
-  </div>
-
-  <!-- WORK EXPERIENCE CHECKBOX -->
-
-  <div
-    class="d-flex justify-content-center work-experience-group"
-    [formGroup]="workExperienceForm"
-    [ngStyle]="{
-      'margin-top':
-        selectedMode === 'APPLICANT_MODE'
-          ? '12px'
-          : selectedMode === 'REVIEW_MODE' &&
-            workExperienceArray[workExperienceArray.length - 1]
-              ?.isEditingWorkHistory
-          ? 0
-          : '22px'
-    }"
-    *ngIf="!isEditing"
-  >
-    <app-ta-checkbox
-      formControlName="noWorkExperience"
-      [name]="'noWorkExperience'"
-      [label]="'I don’t have work experience'"
-      [customClass]="'bold-12'"
-      [disabledStillCheckMark]="
-        selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-      "
-    ></app-ta-checkbox>
-  </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center next-btn-container"
+    class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn
-    [nextStep]="true"
-    [filledCorrectly]="
-      selectedMode === 'APPLICANT_MODE' &&
-      workExperienceForm.valid &&
-      formStatus === 'VALID' &&
-      innerFormStatus === 'VALID'
-    "
-    [hasIncorrectFields]="
-      selectedMode === 'REVIEW_MODE' &&
-      (hasIncorrectFields || cardsWithIncorrectFields)
-    "
-    [mode]="selectedMode"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [nextStep]="true"
+        [filledCorrectly]="
+            workExperienceForm.valid &&
+            ((selectedMode === 'APPLICANT_MODE' &&
+                formStatus === 'VALID' &&
+                innerFormStatus === 'VALID') ||
+                (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
+        "
+        [hasIncorrectFields]="
+            selectedMode === 'REVIEW_MODE' &&
+            (hasIncorrectFields || cardsWithIncorrectFields)
+        "
+        [mode]="selectedMode"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center back-btn-container"
+    class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn
-    [backStep]="true"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [backStep]="true"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>

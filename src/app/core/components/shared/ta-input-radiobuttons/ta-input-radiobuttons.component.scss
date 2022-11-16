@@ -1,74 +1,74 @@
 .ta-input-radiobutons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f3f3f3;
-  padding: 2px;
-  border-radius: 2px;
-  position: relative;
-  width: 100%;
-  height: 26px;
-
-  &.disabled {
-    background: #fbfbfb;
-  }
-
-  .radio-button-label {
-    width: 60px;
-    height: 22px;
-    cursor: pointer;
-    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background: #f3f3f3;
-    font-size: 12px;
-    text-align: center;
-    font-weight: 700;
-    padding: 2px 0px;
-
-    &.checked {
-      background-color: #ffffff !important;
-      transition: all 0.3 ease-in-out !important;
-    }
-
-    &.no-checked {
-      &:hover {
-        .radio-button-text {
-          color: #6c6c6c !important;
-          transition: all 0.3 ease-in-out !important;
-        }
-      }
-    }
+    padding: 2px;
+    border-radius: 2px;
+    position: relative;
+    width: 100%;
+    height: 26px;
 
     &.disabled {
-      pointer-events: none;
+        background: #fbfbfb;
+    }
 
-      &.checked {
-        .radio-button:checked ~ .radio-button-text {
-          color: #6d82c7;
+    .radio-button-label {
+        width: 60px;
+        height: 22px;
+        cursor: pointer;
+        border-radius: 2px;
+        background: #f3f3f3;
+        font-size: 12px;
+        text-align: center;
+        font-weight: 700;
+        padding: 2px 0px;
+
+        &.checked {
+            background-color: #ffffff !important;
+            transition: all 0.3 ease-in-out !important;
         }
-      }
 
-      &.no-checked {
-        background: transparent;
+        &.no-checked {
+            &:hover {
+                .radio-button-text {
+                    color: #6c6c6c !important;
+                    transition: all 0.3 ease-in-out !important;
+                }
+            }
+        }
+
+        &.disabled {
+            pointer-events: none;
+
+            &.checked {
+                .radio-button:checked ~ .radio-button-text {
+                    color: #6d82c7;
+                }
+            }
+
+            &.no-checked {
+                background: transparent;
+
+                .radio-button-text {
+                    color: #dadada;
+                }
+            }
+        }
+
+        .radio-button {
+            appearance: none;
+            outline: none;
+        }
+
+        .radio-button:checked ~ .radio-button-text {
+            color: #536bc2;
+            transition: all 0.3 ease-in-out;
+        }
 
         .radio-button-text {
-          color: #dadada;
+            color: #b7b7b7;
+            user-select: none !important;
         }
-      }
     }
-
-    .radio-button {
-      appearance: none;
-      outline: none;
-    }
-
-    .radio-button:checked ~ .radio-button-text {
-      color: #536bc2;
-      transition: all 0.3 ease-in-out;
-    }
-
-    .radio-button-text {
-      color: #b7b7b7;
-      user-select: none !important;
-    }
-  }
 }

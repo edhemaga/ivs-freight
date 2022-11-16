@@ -1,142 +1,154 @@
 @import 'src/theme/variables.scss';
 
 .ssn-card-container {
-  min-height: 100vh;
-  background: $white;
+    min-height: 100vh;
+    background: $white;
 
-  .title {
-    color: $ta-blue;
-    font-size: 32px;
-    height: 39px;
-    margin-top: 4px !important;
-    margin-bottom: 12px !important;
-
-    &::-moz-selection {
-      color: $ta-blue;
-      background: rgb(83, 107, 194, 0.2);
-    }
-
-    &::selection {
-      color: $ta-blue;
-      background: rgb(83, 107, 194, 0.2);
-    }
-  }
-
-  .subtitle {
-    color: $bw6-2;
-    font-size: 14px;
-    line-height: 22px;
-    margin-bottom: 22px !important;
-
-    &::-moz-selection {
-      color: $bw6-2;
-      background: rgb(108, 108, 108, 0.2);
-    }
-
-    &::selection {
-      color: $bw6-2;
-      background: rgb(108, 108, 108, 0.2);
-    }
-
-    span {
-      &::-moz-selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      &::selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-    }
-  }
-
-  .files-container {
-    width: 616px;
-    margin-bottom: 22px;
-
-    .line-container {
-      position: relative;
-
-      .review-feedback-container {
-        position: absolute;
-        top: 0;
-        right: -435px;
-        width: 429px;
-      }
-    }
-
-    .files-header {
-      border-top: 0.2px solid $ta-light-grey-4;
-      border-radius: 1px;
-      margin-bottom: 9px;
-      padding-top: 5px;
-      height: 24px;
-
-      .counter-container {
-        border-radius: 2px;
-        background: $ta-light-grey-4;
-        width: 24px;
-        height: 24px;
-
-        p {
-          font-size: 14px;
-          color: $bw6-2;
-          user-select: none;
-        }
-      }
-
-      .document-title-container {
-        .documents-title {
-          height: 18px;
-          font-size: 14px;
-          color: $bw6-2;
-          user-select: none;
-          margin-left: 4px !important;
-        }
-      }
-    }
-
-    .review-documents-container {
-      max-width: 616px;
-      width: 100%;
-    }
-  }
-
-  .privacy-container {
-    p {
-      font-size: 12px;
-      &::-moz-selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      &::selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      a {
-        text-decoration: none;
-
+    br {
         &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
         }
 
         &::selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
         }
-      }
     }
-  }
+
+    .title {
+        color: $ta-blue;
+        font-size: 32px;
+        height: 39px;
+        margin-top: 4px !important;
+        margin-bottom: 12px !important;
+
+        &::-moz-selection {
+            color: $ta-blue;
+            background: rgb(83, 107, 194, 0.2);
+        }
+
+        &::selection {
+            color: $ta-blue;
+            background: rgb(83, 107, 194, 0.2);
+        }
+    }
+
+    .subtitle {
+        color: $bw6-2;
+        font-size: 14px;
+        line-height: 22px;
+        margin-bottom: 22px !important;
+
+        &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+
+        span {
+            &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+    }
+
+    .files-container {
+        width: 616px;
+        margin-bottom: 22px;
+
+        .line-container {
+            position: relative;
+
+            .review-feedback-container {
+                position: absolute;
+                top: 0;
+                right: -435px;
+                width: 429px;
+            }
+        }
+
+        .files-header {
+            border-top: 0.2px solid $ta-light-grey-4;
+            border-radius: 1px;
+            margin-bottom: 9px;
+            padding-top: 5px;
+            height: 24px;
+
+            .counter-container {
+                border-radius: 2px;
+                background: $ta-light-grey-4;
+                width: 24px;
+                height: 24px;
+
+                p {
+                    font-size: 14px;
+                    color: $bw6-2;
+                    user-select: none;
+                }
+            }
+
+            .document-title-container {
+                .documents-title {
+                    height: 18px;
+                    font-size: 14px;
+                    color: $bw6-2;
+                    user-select: none;
+                    margin-left: 4px !important;
+                }
+            }
+        }
+
+        .review-documents-container {
+            max-width: 616px;
+            width: 100%;
+        }
+    }
+
+    .privacy-container {
+        p {
+            font-size: 12px;
+            &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            a {
+                text-decoration: none;
+
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+        }
+    }
 }
 
 .next-btn-container {
-  position: absolute;
-  top: 50%;
-  bottom: 50%;
-  transform: translate(0, -50%);
-  right: 42px;
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(0, -50%);
+    right: 42px;
 }

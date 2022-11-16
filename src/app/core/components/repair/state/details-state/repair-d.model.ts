@@ -4,8 +4,8 @@ import { RepairListResponse } from '../../../../../../../appcoretruckassist/mode
 import { RepairedVehicleListResponse } from 'appcoretruckassist';
 
 export interface IRepairD {
-  repairShop: RepairShopResponse[];
-  repairList: RepairListResponse[];
-  repairedVehicleList: RepairedVehicleListResponse[];
-  repairShopMinimal: RepairShopMinimalResponse[];
+    repairShop: RepairShopResponse[];
+    repairList: RepairListResponse[];
+    repairedVehicleList: RepairedVehicleListResponse[];
+    repairShopMinimal: RepairShopMinimalResponse[];
 }

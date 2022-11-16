@@ -1,157 +1,157 @@
 .upload-carousel {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 194px;
-
-  .ta-upload-files-carousel {
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 194px;
-    overflow: hidden;
-    border-radius: 3px;
-
-    .carousel-slider {
-      position: relative;
-      transform: translateX(0);
-      transition: all 0.5s ease-in-out;
-      display: flex;
-
-      &.multiple-slider {
-        gap: 12px;
-      }
-    }
-  }
-
-  .ta-upload-carousel-control-bg {
-    position: absolute;
-    top: 32%;
-    cursor: pointer;
-    height: 32px;
-    width: 24px;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 2px;
-    text-align: center;
-    box-shadow: 0 0 4px rgb(0 0 0 / 15%);
-    display: none;
-    transform: translate(-5%, 22%);
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      background: rgba(255, 255, 255);
-    }
-
-    &.prev {
-      left: -4px;
-      padding-right: 1px;
-    }
-
-    &.next {
-      left: 90%;
-      padding-left: 1px;
-    }
-
-    .ta-upload-files-control {
-      width: 18px;
-      height: 18px;
-      line-height: 18px;
-      svg {
-        display: flex;
-        width: 18px;
-        height: 18px;
-        line-height: 18px;
-        opacity: 0.7;
-        path {
-          fill: #aaaaaa;
-        }
-      }
-    }
-
-    &:hover {
-      transition: all 0.3s ease-in-out;
-      background: rgb(255, 255, 255, 1);
-
-      .ta-upload-files-control {
-        svg{
-          opacity: 1;
-        }
-      }
-    }
-  }
-
-  &:hover {
-    transition: all 0.3s ease-in-out;
-    .ta-upload-carousel-control-bg {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-
-  &.medium {
-    .ta-upload-carousel-control-bg {
-      &.next {
-        left: 95%;
-      }
-    }
-  }
-
-  &.large {
-    .ta-upload-carousel-control-bg {
-      &.next {
-        left: 510px;
-      }
-    }
-  }
-
-  &.driver-details-pdf {
-    grid-template-rows: 343px;
 
     .ta-upload-files-carousel {
-      grid-template-rows: 343px;
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 194px;
+        overflow: hidden;
+        border-radius: 3px;
+
+        .carousel-slider {
+            position: relative;
+            transform: translateX(0);
+            transition: all 0.5s ease-in-out;
+            display: flex;
+
+            &.multiple-slider {
+                gap: 12px;
+            }
+        }
     }
 
     .ta-upload-carousel-control-bg {
-      top: 41%;
+        position: absolute;
+        top: 32%;
+        cursor: pointer;
+        height: 32px;
+        width: 24px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 2px;
+        text-align: center;
+        box-shadow: 0 0 4px rgb(0 0 0 / 15%);
+        display: none;
+        transform: translate(-5%, 22%);
+        transition: all 0.3s ease-in-out;
 
-      &.next {
-        left: 94%;
-        padding-left: 1px;
-      }
+        &:hover {
+            background: rgba(255, 255, 255);
+        }
 
-      .ta-upload-files-control {
-        line-height: 24px;
-      }
+        &.prev {
+            left: -4px;
+            padding-right: 1px;
+        }
+
+        &.next {
+            left: 90%;
+            padding-left: 1px;
+        }
+
+        .ta-upload-files-control {
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+            svg {
+                display: flex;
+                width: 18px;
+                height: 18px;
+                line-height: 18px;
+                opacity: 0.7;
+                path {
+                    fill: #aaaaaa;
+                }
+            }
+        }
+
+        &:hover {
+            transition: all 0.3s ease-in-out;
+            background: rgb(255, 255, 255, 1);
+
+            .ta-upload-files-control {
+                svg {
+                    opacity: 1;
+                }
+            }
+        }
     }
-  }
 
-  // Carousel Button Tabs
-  .carousel-tabs-control {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    bottom: 0px;
-    left: 50%;
-    transform: translate(-55%, 18px);
-
-    .carousel-tab {
-      width: 12px;
-      height: 6px;
-      background-color: #dadada;
-      border-radius: 3px;
-      margin-left: 4px;
-
-      &.active-tab {
-        transition: all 0.3s ease-in;
-        width: 20px;
-        background-color: #919191;
-      }
+    &:hover {
+        transition: all 0.3s ease-in-out;
+        .ta-upload-carousel-control-bg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
-  }
+
+    &.medium {
+        .ta-upload-carousel-control-bg {
+            &.next {
+                left: 95%;
+            }
+        }
+    }
+
+    &.large {
+        .ta-upload-carousel-control-bg {
+            &.next {
+                left: 510px;
+            }
+        }
+    }
+
+    &.driver-details-pdf {
+        grid-template-rows: 343px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 343px;
+        }
+
+        .ta-upload-carousel-control-bg {
+            top: 41%;
+
+            &.next {
+                left: 94%;
+                padding-left: 1px;
+            }
+
+            .ta-upload-files-control {
+                line-height: 24px;
+            }
+        }
+    }
+
+    // Carousel Button Tabs
+    .carousel-tabs-control {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        transform: translate(-55%, 18px);
+
+        .carousel-tab {
+            width: 12px;
+            height: 6px;
+            background-color: #dadada;
+            border-radius: 3px;
+            margin-left: 4px;
+
+            &.active-tab {
+                transition: all 0.3s ease-in;
+                width: 20px;
+                background-color: #919191;
+            }
+        }
+    }
 }
 .ta-upload-files-carousel-right {
-  svg {
-    transform: rotate(180deg);
-  }
+    svg {
+        transform: rotate(180deg);
+    }
 }

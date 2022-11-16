@@ -1,1056 +1,1236 @@
 <div class="d-flex flex-column justify-content-center step-container">
-  <h1 class="m-0 text-center step-title ta-font-bold">Driver Application</h1>
+    <h1 class="m-0 text-center step-title ta-font-bold">Driver Application</h1>
 
-  <!-- TOP SECTION -->
+    <!-- TOP SECTION -->
 
-  <div
-    class="d-flex flex-column text-center top-section"
-    *ngIf="!personalInfoForm.get('isAgreement').value"
-  >
-    <p class="ta-font-regular">
-      In compliance with Federal and State equal opportunity laws, qualified
-      applicants are considered for all positions<br />without regard to race,
-      religion, sex national origin, age marital status, or non-job related
-      disability.
-    </p>
-    <p class="ta-font-regular">
-      I understand that information I provide regarding current and/or previous
-      employers may be used, and those<br />employer(s) will be contacted, for
-      the purpose of investigation my safety performance history as required by
-      49 CFR<br />391.23(d) and (e).
-    </p>
-  </div>
-
-  <!-- MID SECTION -->
-
-  <div
-    class="d-flex flex-column text-center mid-section"
-    [formGroup]="personalInfoForm"
-    [ngStyle]="{
-      'margin-top': !personalInfoForm.get('isAgreement').value ? '25px' : '22px'
-    }"
-  >
-    <app-ta-checkbox
-      formControlName="isAgreement"
-      [name]="'isAgreement'"
-      [label]="'I also understand that JD Freight have the right to:'"
-      [customClass]="'bold-12'"
-      [disabledStillCheckMark]="
-        selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-      "
-    ></app-ta-checkbox>
-  </div>
-
-  <!-- BOTTOM SECTION -->
-
-  <div class="d-flex flex-column text-center bottom-section">
-    <p
-      class="ta-font-regular"
-      [ngStyle]="{
-        color: !personalInfoForm.get('isAgreement').value
-          ? '#3551B7'
-          : selectedMode === 'FEEDBACK_MODE' &&
-            personalInfoForm.get('isAgreement').value
-          ? '#919191'
-          : '#6C6C6C'
-      }"
+    <div
+        class="d-flex flex-column text-center top-section"
+        *ngIf="!personalInfoForm.get('isAgreement').value"
     >
-      Review information provided by previous employers. Have errors in the
-      information corrected by<br />previous employers and for those previous
-      employers to re-send the corrected
-    </p>
+        <p class="ta-font-regular">
+            In compliance with Federal and State equal opportunity laws,
+            qualified applicants are considered for all positions<br />without
+            regard to race, religion, sex national origin, age marital status,
+            or non-job related disability.
+        </p>
+        <p class="ta-font-regular">
+            I understand that information I provide regarding current and/or
+            previous employers may be used, and those<br />employer(s) will be
+            contacted, for the purpose of investigation my safety performance
+            history as required by 49 CFR<br />391.23(d) and (e).
+        </p>
+    </div>
 
-    <p
-      class="ta-font-regular"
-      [ngStyle]="{
-        color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-      }"
+    <!-- MID SECTION -->
+
+    <div
+        class="d-flex flex-column text-center mid-section"
+        [formGroup]="personalInfoForm"
+        [ngStyle]="{
+            'margin-top': !personalInfoForm.get('isAgreement').value
+                ? '25px'
+                : '22px'
+        }"
     >
-      Information to the prospective employer, and. Have a rebuttal statement
-      attached to the alleged erroneous<br />
-      information, if the previous employer(s) and I cannot agree on the
-      accuracy of the information
-    </p>
-  </div>
-
-  <!-- FORM SECTION -->
-
-  <div
-    class="d-flex justify-content-center form-section"
-    *ngIf="personalInfoForm.get('isAgreement').value"
-  >
-    <form [formGroup]="personalInfoForm">
-      <!-- FIRST NAME, LAST NAME, DOB -->
-
-      <div class="d-flex form-input-container line-container">
-        <div class="group first-name-group">
-          <app-ta-input
-            formControlName="firstName"
-            [inputConfig]="{
-              name: 'First Name',
-              type: 'text',
-              label: 'First Name',
-              isRequired: true,
-              minLength: 2,
-              maxLength: 26,
-              textTransform: 'capitalize',
-              autoFocus: true,
-              isDisabled:
+        <app-ta-checkbox
+            formControlName="isAgreement"
+            [name]="'isAgreement'"
+            [label]="
+                'I also understand that ' + companyName + ' have the right to:'
+            "
+            [customClass]="'bold-12'"
+            [disabledStillCheckMark]="
                 selectedMode === 'REVIEW_MODE' ||
-                (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues?.isFirstNameValid),
-              incorrectInput: selectedMode === 'REVIEW_MODE'
+                selectedMode === 'FEEDBACK_MODE'
+            "
+        ></app-ta-checkbox>
+    </div>
+
+    <!-- BOTTOM SECTION -->
+
+    <div class="d-flex flex-column text-center bottom-section">
+        <p
+            class="ta-font-regular"
+            [ngClass]="{
+                'agreement-no-value': !personalInfoForm.get('isAgreement').value
             }"
-            [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
-            (incorrectEvent)="incorrectInput($event, 0, 0)"
-          ></app-ta-input>
-        </div>
-        <div class="group last-name-group">
-          <app-ta-input
-            formControlName="lastName"
-            [inputConfig]="{
-              name: 'Last Name',
-              type: 'text',
-              label: 'Last Name',
-              isRequired: true,
-              minLength: 2,
-              maxLength: 26,
-              textTransform: 'capitalize',
-              isDisabled:
-                selectedMode === 'REVIEW_MODE' ||
-                (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues?.isLastNameValid),
-              incorrectInput: selectedMode === 'REVIEW_MODE'
-            }"
-            [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
-            (incorrectEvent)="incorrectInput($event, 1, 0)"
-          ></app-ta-input>
-        </div>
-        <div class="group date-group">
-          <app-ta-input
-            formControlName="dateOfBirth"
-            [inputConfig]="{
-              name: 'datepicker',
-              type: 'text',
-              label: 'DOB',
-              placeholderIcon: 'date',
-              isRequired: true,
-              customClass: 'datetimeclass',
-              isDisabled:
-                selectedMode === 'REVIEW_MODE' ||
-                (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues?.isDoBValid),
-              incorrectInput: selectedMode === 'REVIEW_MODE'
-            }"
-            [incorrectValue]="openAnnotationArray[0].lineInputs[2]"
-            (incorrectEvent)="incorrectInput($event, 2, 0)"
-          ></app-ta-input>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div
-          class="review-feedback-container"
-          *ngIf="
-            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-          "
-        >
-          <app-applicant-review-feedback
-            formControlName="firstRowReview"
-            [displayAnnotationButton]="
-              selectedMode === 'REVIEW_MODE' &&
-              openAnnotationArray[0].displayAnnotationButton
-            "
-            [displayAnnotationTextArea]="
-              selectedMode === 'REVIEW_MODE' &&
-              openAnnotationArray[0].displayAnnotationTextArea
-            "
-            [lineIndex]="0"
-            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-            [feedbackText]="
-              selectedMode === 'FEEDBACK_MODE' &&
-              stepFeedbackValues?.personalInfoMessage
-            "
-            (annotationBtnClickEvent)="
-              selectedMode === 'REVIEW_MODE' &&
-                getAnnotationBtnClickValue($event)
-            "
-          ></app-applicant-review-feedback>
-        </div>
-      </div>
-
-      <!--  PHONE, EMAIL-->
-
-      <div class="d-flex form-input-container line-container">
-        <div class="group phone-group">
-          <app-ta-input
-            formControlName="phone"
-            [inputConfig]="{
-              name: 'Phone',
-              type: 'text',
-              label: 'Phone',
-              isRequired: true,
-              placeholderIcon: 'phone',
-              mask: '(000) 000-0000',
-              maxLength: 14,
-              isDisabled:
-                selectedMode === 'REVIEW_MODE' ||
-                (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues?.isPhoneValid),
-              incorrectInput: selectedMode === 'REVIEW_MODE'
-            }"
-            [incorrectValue]="openAnnotationArray[1].lineInputs[0]"
-            (incorrectEvent)="incorrectInput($event, 0, 1)"
-          ></app-ta-input>
-        </div>
-        <div class="group email-group">
-          <app-ta-input
-            formControlName="email"
-            [inputConfig]="{
-              name: 'Email',
-              type: 'text',
-              label: 'Email',
-              isRequired: true,
-              placeholderIcon: 'email',
-              textTransform: 'lowercase',
-              isDisabled: true,
-              minLength: 5,
-              maxLength: 64
-            }"
-          ></app-ta-input>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div
-          class="review-feedback-container"
-          *ngIf="
-            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-          "
-        >
-          <app-applicant-review-feedback
-            formControlName="secondRowReview"
-            [displayAnnotationButton]="
-              selectedMode === 'REVIEW_MODE' &&
-              openAnnotationArray[1].displayAnnotationButton
-            "
-            [displayAnnotationTextArea]="
-              selectedMode === 'REVIEW_MODE' &&
-              openAnnotationArray[1].displayAnnotationTextArea
-            "
-            [lineIndex]="1"
-            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-            [feedbackText]="
-              selectedMode === 'FEEDBACK_MODE' &&
-              stepFeedbackValues?.phoneMessage
-            "
-            (annotationBtnClickEvent)="
-              selectedMode === 'REVIEW_MODE' &&
-                getAnnotationBtnClickValue($event)
-            "
-          ></app-applicant-review-feedback>
-        </div>
-      </div>
-
-      <!-- PREVIOUS ADDRESSES -->
-
-      <div
-        class="d-flex flex-column justify-content-center previous-addresses"
-        formArrayName="previousAddresses"
-      >
-        <div class="d-flex flex-column justify-content-center">
-          <div
-            class="d-flex flex-column justify-content-center dets-container"
-            *ngFor="
-              let address of previousAddresses?.controls;
-              let i = index;
-              let last = last;
-              let first = first;
-              trackBy: trackByIdentity
-            "
             [ngStyle]="{
-              'margin-top':
-                (isEditingArray[i]?.isEditing &&
-                  isEditingMiddlePositionAddress) ||
-                (isEditingArray[i]?.isEditing &&
-                  isEditingMiddlePositionAddress &&
-                  last)
-                  ? '36px'
-                  : '0',
-              'margin-bottom':
-                isEditingArray[i]?.isEditing &&
-                isEditingMiddlePositionAddress &&
-                !last
-                  ? '22px'
-                  : isEditingArray[i]?.isEditing &&
-                    !isEditingMiddlePositionAddress &&
-                    first &&
-                    previousAddresses?.controls.length > 1
-                  ? '22px'
-                  : '2px'
+                color: !personalInfoForm.get('isAgreement').value
+                    ? '#3551B7'
+                    : selectedMode === 'FEEDBACK_MODE' &&
+                      personalInfoForm.get('isAgreement').value
+                    ? '#919191'
+                    : '#6C6C6C'
             }"
-          >
-            <div
-              class="d-flex align-items-center title-container"
-              *ngIf="
-                (previousAddresses.controls.length > 1 &&
-                  helperIndex !== 0 &&
-                  i === 0) ||
-                (helperIndex === 0 &&
-                  i === 1 &&
-                  previousAddresses.at(1).value.address)
-              "
-            >
-              <div class="address-title-container">
-                <p class="m-0 ta-font-bold">
-                  Address, City, State Zip <span>*</span>
-                </p>
-              </div>
-              <div class="address-unit-title-container">
-                <p class="m-0 ta-font-bold">Unit #</p>
-              </div>
-            </div>
+        >
+            Review information provided by previous employers. Have errors in
+            the information corrected by<br />previous employers and for those
+            previous employers to re-send the corrected
+        </p>
 
-            <div
-              class="d-flex align-items-center"
-              [formGroupName]="i"
-              [ngStyle]="{
-                'margin-top':
-                  previousAddresses?.controls.length > 1 &&
-                  last &&
-                  isEditingArray[i].isEditing &&
-                  !isLastInputDeleted
-                    ? '32px'
-                    : '0'
-              }"
-              *ngIf="
-                (previousAddresses.at(i).value.address &&
-                  !isEditingArray[i]?.isEditing) ||
-                (!previousAddresses.at(i).value.address &&
-                  isEditingArray[i]?.isEditing) ||
-                (previousAddresses.at(i).value.address &&
-                  isEditingArray[i]?.isEditing)
-              "
-            >
-              <div
-                class="d-flex align-items-center right-container line-container"
-                [ngStyle]="{
-                  'background-color': isEditingArray[i]?.isEditing
-                    ? '#ffffff'
-                    : '#F3F3F3',
-                  padding: isEditingArray[i]?.isEditing ? '0' : '4px 6px'
-                }"
-              >
-                <div
-                  class="d-flex align-items-center input-container"
-                  *ngIf="isEditingArray[i]?.isEditing"
-                >
-                  <div class="d-flex align-items-center">
-                    <div
-                      class="address-container"
-                      [ngStyle]="{
-                        width:
-                          isEditingArray[i]?.isEditing &&
-                          !isEditingArray[i]?.isEditingAddress &&
-                          !isLastInputDeleted &&
-                          !isEditingArray[i]?.isFirstAddress
-                            ? '442px'
-                            : isEditingArray[i]?.isEditing &&
-                              !isEditingArray[i]?.isEditingAddress &&
-                              isEditingArray[i]?.isFirstAddress &&
-                              previousAddresses.controls.length === 1
-                            ? '480px'
-                            : '412px'
-                      }"
-                    >
-                      <app-input-address-dropdown
-                        formControlName="address"
+        <p
+            class="ta-font-regular"
+            [ngStyle]="{
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+            }"
+        >
+            Information to the prospective employer, and. Have a rebuttal
+            statement attached to the alleged erroneous<br />
+            information, if the previous employer(s) and I cannot agree on the
+            accuracy of the information
+        </p>
+    </div>
+
+    <!-- FORM SECTION -->
+
+    <div
+        class="d-flex justify-content-center form-section"
+        *ngIf="personalInfoForm.get('isAgreement').value"
+    >
+        <form [formGroup]="personalInfoForm">
+            <!-- FIRST NAME, LAST NAME, DOB -->
+
+            <div class="d-flex form-input-container line-container">
+                <div class="group first-name-group">
+                    <app-ta-input
+                        formControlName="firstName"
                         [inputConfig]="{
-                          name: 'Address',
-                          type: 'text',
-                          label: 'Address, City, State Zip',
-                          isRequired: true,
-                          placeholderIcon: 'address',
-                          textTransform: 'capitalize',
-                          dropdownWidthClass:
-                            isEditingArray[i]?.isEditing &&
-                            !isEditingArray[i]?.isEditingAddress &&
-                            !isLastInputDeleted &&
-                            !isEditingArray[i]?.isFirstAddress
-                              ? 'w-col-442'
-                              : isEditingArray[i]?.isEditing &&
-                                !isEditingArray[i]?.isEditingAddress &&
-                                isEditingArray[i]?.isFirstAddress &&
-                                previousAddresses.controls.length === 1
-                              ? 'w-col-480'
-                              : 'w-col-412',
-                          minLength: 6,
-                          maxLength: 256,
-                          isDisabled:
-                            selectedMode === 'REVIEW_MODE' ||
-                            (selectedMode === 'FEEDBACK_MODE' &&
-                              i === previousAddresses.controls.length - 1 &&
-                              stepFeedbackValues?.isAddressValid),
-                          incorrectInput: selectedMode === 'REVIEW_MODE'
+                            name: 'First Name',
+                            type: 'text',
+                            label: 'First Name',
+                            isRequired: true,
+                            minLength: 2,
+                            maxLength: 26,
+                            textTransform: 'capitalize',
+                            autoFocus: true,
+                            isDisabled:
+                                selectedMode === 'REVIEW_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.isFirstNameValid),
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                        [placeholderType]="'longAddress'"
-                        [incorrectValue]="
-                          openAnnotationArray[6].lineInputs
-                            ? openAnnotationArray[6].lineInputs[0]
-                            : openAnnotationArray[5].lineInputs
-                            ? openAnnotationArray[5].lineInputs[0]
-                            : openAnnotationArray[4].lineInputs
-                            ? openAnnotationArray[4].lineInputs[0]
-                            : openAnnotationArray[3].lineInputs
-                            ? openAnnotationArray[3].lineInputs[0]
-                            : openAnnotationArray[2].lineInputs
-                            ? openAnnotationArray[2].lineInputs[0]
-                            : false
-                        "
-                        (incorrectEvent)="incorrectInput($event, 0, i + 2)"
-                        (selectedAddress)="
-                          handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
-                        "
-                      ></app-input-address-dropdown>
-                    </div>
-
-                    <div class="address-unit-container">
-                      <app-ta-input
-                        formControlName="addressUnit"
-                        [inputConfig]="{
-                          name: 'address-unit',
-                          type: 'text',
-                          label: 'Unit No.',
-                          minLength: 1,
-                          maxLength: 10,
-                          textTransform: 'uppercase',
-                          isDisabled:
-                            selectedMode === 'REVIEW_MODE' ||
-                            (selectedMode === 'FEEDBACK_MODE' &&
-                              i === previousAddresses.controls.length - 1 &&
-                              stepFeedbackValues?.isAddressUnitValid),
-                          incorrectInput: selectedMode === 'REVIEW_MODE'
-                        }"
-                        [incorrectValue]="
-                          openAnnotationArray[6].lineInputs
-                            ? openAnnotationArray[6].lineInputs[1]
-                            : openAnnotationArray[5].lineInputs
-                            ? openAnnotationArray[5].lineInputs[1]
-                            : openAnnotationArray[4].lineInputs
-                            ? openAnnotationArray[4].lineInputs[1]
-                            : openAnnotationArray[3].lineInputs
-                            ? openAnnotationArray[3].lineInputs[1]
-                            : openAnnotationArray[2].lineInputs
-                            ? openAnnotationArray[2].lineInputs[1]
-                            : false
-                        "
-                        (incorrectEvent)="incorrectInput($event, 1, i + 2)"
-                      ></app-ta-input>
-                    </div>
-
-                    <div
-                      class="d-flex align-items-center justify-content-center confirm-cancel-btn-container"
-                      *ngIf="
-                        isEditingArray[i]?.isEditing &&
-                        isEditingArray[i]?.isEditingAddress
-                      "
-                    >
-                      <div
-                        ngbTooltip
-                        mainTooltip="Confirm"
-                        tooltipBackground="#536BC2"
-                        position="top"
-                      >
-                        <svg-icon
-                          class="confirm-icon"
-                          src="assets/svg/ic_spec-confirm.svg"
-                          [svgStyle]="{
-                            'width.px': 26,
-                            'height.px': 26
-                          }"
-                          (click)="onConfirmEditedNewAddress(i)"
-                        ></svg-icon>
-                      </div>
-
-                      <div
-                        ngbTooltip
-                        mainTooltip="Cancel"
-                        tooltipBackground="#6C6C6C"
-                        position="top"
-                      >
-                        <svg-icon
-                          class="cancel-icon"
-                          src="assets/svg/ic_x.svg"
-                          [svgStyle]="{
-                            'width.px': 26,
-                            'height.px': 26
-                          }"
-                          (click)="onCancelEditingNewAddress(i)"
-                        ></svg-icon>
-                      </div>
-                    </div>
-
-                    <div
-                      class="d-flex align-items-center justify-content-center delete-btn-container"
-                      [ngClass]="{
-                        disabled:
-                          selectedMode === 'REVIEW_MODE' ||
-                          selectedMode === 'FEEDBACK_MODE'
-                      }"
-                      *ngIf="
-                        isEditingArray[i]?.isEditing &&
-                        !isEditingArray[i]?.isEditingAddress &&
-                        i === previousAddresses?.controls.length - 1 &&
-                        !isLastInputDeleted &&
-                        !isEditingArray[i].isFirstAddress
-                      "
-                    >
-                      <div
-                        ngbTooltip
-                        mainTooltip="Delete"
-                        tooltipBackground="#EF5350"
-                        position="top"
-                      >
-                        <svg-icon
-                          class="delete-icon"
-                          src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                          [svgStyle]="{
-                            'width.px': 18,
-                            'height.px': 18
-                          }"
-                          (click)="onRemoveNewAddress(i)"
-                        ></svg-icon>
-                      </div>
-                    </div>
-                  </div>
+                        [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
+                        (incorrectEvent)="incorrectInput($event, 0, 0)"
+                    ></app-ta-input>
                 </div>
-
-                <div class="d-flex align-items-center info-btn-container">
-                  <div
-                    class="d-flex align-items-center info-container"
-                    *ngIf="
-                      !isEditingArray[i]?.isEditing &&
-                      !isEditingArray[i]?.isEditingAddress
-                    "
-                  >
-                    <div
-                      class="d-flex align-items-center text-truncate address-container"
-                    >
-                      <svg-icon
-                        class="address-icon"
-                        src="assets/svg/common/ic_address.svg"
-                        [svgStyle]="{
-                          'width.px': 18,
-                          'height.px': 18
+                <div class="group last-name-group">
+                    <app-ta-input
+                        formControlName="lastName"
+                        [inputConfig]="{
+                            name: 'Last Name',
+                            type: 'text',
+                            label: 'Last Name',
+                            isRequired: true,
+                            minLength: 2,
+                            maxLength: 26,
+                            textTransform: 'capitalize',
+                            isDisabled:
+                                selectedMode === 'REVIEW_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.isLastNameValid),
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                      ></svg-icon>
-
-                      <div class="d-flex pipe"></div>
-
-                      <p class="m-0 ta-font-regular">
-                        {{ address.value?.address }}
-                      </p>
-                    </div>
-
-                    <div
-                      class="d-flex align-items-center address-unit-container"
-                    >
-                      <p
-                        class="d-inline-block text-truncate m-0 ta-font-regular"
-                        style="max-width: 300px"
-                      >
-                        {{ address.value?.addressUnit }}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div
-                    class="d-flex align-items-center btn-container"
-                    [ngClass]="{
-                      active: selectedMode === 'REVIEW_MODE'
-                    }"
-                    [ngStyle]="{
-                      'margin-left':
-                        selectedMode === 'APPLICANT_MODE'
-                          ? '26px'
-                          : selectedMode === 'FEEDBACK_MODE'
-                          ? '48px'
-                          : '5px'
-                    }"
-                    *ngIf="!isEditingArray[i]?.isEditing"
-                  >
-                    <div
-                      *ngIf="
-                        selectedMode === 'APPLICANT_MODE' ||
-                        (selectedMode === 'FEEDBACK_MODE' &&
-                          !stepFeedbackValues.previousAddressesReview[i]
-                            .isPreviousAddressValid)
-                      "
-                      ngbTooltip
-                      mainTooltip="Edit"
-                      tooltipBackground="#6C6C6C"
-                      position="top"
-                    >
-                      <svg-icon
-                        class="edit-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                        [svgStyle]="{
-                          'width.px': 18,
-                          'height.px': 18
+                        [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
+                        (incorrectEvent)="incorrectInput($event, 1, 0)"
+                    ></app-ta-input>
+                </div>
+                <div class="group date-group">
+                    <app-ta-input
+                        formControlName="dateOfBirth"
+                        [inputConfig]="{
+                            name: 'datepicker',
+                            type: 'text',
+                            label: 'DOB',
+                            placeholderIcon: 'date',
+                            isRequired: true,
+                            customClass: 'datetimeclass',
+                            isDisabled:
+                                selectedMode === 'REVIEW_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.isDoBValid),
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                        (click)="onEditNewAddress(i)"
-                      ></svg-icon>
-                    </div>
-
-                    <div
-                      *ngIf="selectedMode === 'APPLICANT_MODE'"
-                      ngbTooltip
-                      mainTooltip="Delete"
-                      tooltipBackground="#EF5350"
-                      position="top"
-                    >
-                      <svg-icon
-                        class="delete-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                        [svgStyle]="{
-                          'width.px': 18,
-                          'height.px': 18
-                        }"
-                        (click)="onRemoveNewAddress(i)"
-                      ></svg-icon>
-                    </div>
-
-                    <div *ngIf="selectedMode === 'REVIEW_MODE'">
-                      <div
-                        class="review-icon-box"
-                        ngbTooltip
-                        mainTooltip="Mark Incorrect"
-                        tooltipBackground="#F44336"
-                        position="top"
-                      >
-                        <svg-icon
-                          class="review-icon"
-                          [ngClass]="{
-                            active:
-                              openAnnotationArray[i + 2]
-                                .displayAnnotationButton ||
-                              openAnnotationArray[i + 2]
-                                .displayAnnotationTextArea
-                          }"
-                          src="assets/svg/ic_x.svg"
-                          [svgStyle]="{
-                            'width.px': 18,
-                            'height.px': 18
-                          }"
-                          (click)="incorrectInput($event, 0, i + 2, 'card')"
-                        ></svg-icon>
-                      </div>
-                    </div>
-                  </div>
+                        [incorrectValue]="openAnnotationArray[0].lineInputs[2]"
+                        (incorrectEvent)="incorrectInput($event, 2, 0)"
+                    ></app-ta-input>
                 </div>
 
                 <!-- REVIEW AND FEEDBACK -->
 
                 <div
-                  class="d-flex review-feedback-container"
-                  *ngIf="
-                    selectedMode === 'REVIEW_MODE' ||
-                    selectedMode === 'FEEDBACK_MODE'
-                  "
+                    class="review-feedback-container"
+                    *ngIf="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
                 >
-                  <app-applicant-review-feedback
-                    [formControlName]="'cardReview' + (i + 1)"
-                    [displayAnnotationButton]="
-                      selectedMode === 'REVIEW_MODE' &&
-                      openAnnotationArray[i + 2].displayAnnotationButton
-                    "
-                    [displayAnnotationTextArea]="
-                      selectedMode === 'REVIEW_MODE' &&
-                      openAnnotationArray[i + 2].displayAnnotationTextArea
-                    "
-                    [lineIndex]="i + 2"
-                    [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                    [feedbackText]="
-                      selectedMode === 'FEEDBACK_MODE' &&
-                      i === previousAddresses?.controls.length - 1
-                        ? stepFeedbackValues?.addressMessage
-                        : i === 3
-                        ? stepFeedbackValues?.previousAddressesReview[3]
-                            ?.previousAddressMessage
-                        : i === 2
-                        ? stepFeedbackValues?.previousAddressesReview[2]
-                            ?.previousAddressMessage
-                        : i === 1
-                        ? stepFeedbackValues?.previousAddressesReview[1]
-                            ?.previousAddressMessage
-                        : i === 0
-                        ? stepFeedbackValues?.previousAddressesReview[0]
-                            ?.previousAddressMessage
-                        : null
-                    "
-                    [cardsLength]="previousAddresses?.controls.length"
-                    [cardsType]="'addresses'"
-                    [cardIndex]="i + 2"
-                    (annotationBtnClickEvent)="
-                      selectedMode === 'REVIEW_MODE' &&
-                        getAnnotationBtnClickValue($event)
-                    "
-                  ></app-applicant-review-feedback>
+                    <app-applicant-review-feedback
+                        formControlName="firstRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[0].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[0].displayAnnotationTextArea
+                        "
+                        [lineIndex]="0"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.personalInfoMessage
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="d-flex align-items-center previous-address-btn-container"
-          [ngStyle]="{
-            'margin-top': previousAddresses?.controls.length > 0 ? '22px' : '0'
-          }"
-          *ngIf="
-            selectedMode === 'APPLICANT_MODE' &&
-            previousAddresses.controls?.length < 5
-          "
-        >
-          <h5 class="m-0 ta-font-bold previous-address-title">
-            Previous addresses for the past 3 years?
-          </h5>
-
-          <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-            (click)="onAddNewAddress()"
-            [ngClass]="{
-              disabled:
-                previousAddresses.controls.length !== 0 &&
-                !isLastAddedPreviousAddressValid &&
-                !isLastInputDeleted
-            }"
-          >
-            <svg-icon
-              class="plus-icon"
-              src="assets/svg/common/ic_plus.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-            ></svg-icon>
-
-            Add Address
-          </button>
-        </div>
-      </div>
-
-      <!-- SSN, BANK NAME -->
-
-      <div
-        class="d-flex form-input-container line-container"
-        [ngStyle]="{
-          'margin-top':
-            selectedMode !== 'APPLICANT_MODE' ||
-            (selectedMode === 'APPLICANT_MODE' &&
-              previousAddresses.controls.length === 5)
-              ? '32px'
-              : 0
-        }"
-      >
-        <div class="group ssn-group">
-          <app-ta-input
-            formControlName="ssn"
-            [inputConfig]="{
-              name: 'SSN',
-              type: 'text',
-              label: 'SSN',
-              isRequired: true,
-              mask: '000-00-0000',
-              maxLength: 11,
-              isDisabled:
-                selectedMode === 'REVIEW_MODE' ||
-                (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues?.isSsnValid),
-              incorrectInput: selectedMode === 'REVIEW_MODE'
-            }"
-            [incorrectValue]="openAnnotationArray[7].lineInputs[0]"
-            (incorrectEvent)="incorrectInput($event, 0, 7)"
-          ></app-ta-input>
-        </div>
-        <div class="group bank-group">
-          <app-ta-input-dropdown
-            formControlName="bankId"
-            [template]="'svg-template'"
-            [inputConfig]="{
-              name: 'Input Dropdown Bank Name',
-              type: 'text',
-              label: 'Bank Name',
-              minLength: 2,
-              maxLength: 64,
-              textTransform: 'uppercase',
-              isDropdown: true,
-              dropdownWidthClass: 'w-col-416',
-              isDisabled:
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-            }"
-            [activeItem]="selectedBank"
-            [options]="banksDropdownList"
-            [canAddNew]="true"
-            (saveItem)="onSaveNewBank($event)"
-            (selectedItem)="handleInputSelect($event, 'BANK')"
-          ></app-ta-input-dropdown>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div
-          class="review-feedback-container"
-          *ngIf="
-            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-          "
-        >
-          <app-applicant-review-feedback
-            formControlName="thirdRowReview"
-            [displayAnnotationButton]="
-              selectedMode === 'REVIEW_MODE' &&
-              openAnnotationArray[7].displayAnnotationButton
-            "
-            [displayAnnotationTextArea]="
-              selectedMode === 'REVIEW_MODE' &&
-              openAnnotationArray[7].displayAnnotationTextArea
-            "
-            [lineIndex]="7"
-            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-            [feedbackText]="
-              selectedMode === 'FEEDBACK_MODE' &&
-              stepFeedbackValues?.ssnBankMessage
-            "
-            (annotationBtnClickEvent)="
-              selectedMode === 'REVIEW_MODE' &&
-                getAnnotationBtnClickValue($event)
-            "
-          ></app-applicant-review-feedback>
-        </div>
-      </div>
-
-      <!-- ACCOUNT NUMBER, ROUTING NUMBER -->
-
-      <div class="d-flex form-input-container line-container">
-        <div class="group account-number-group">
-          <app-ta-input
-            formControlName="accountNumber"
-            [inputConfig]="{
-              name: 'account-bank',
-              type: 'text',
-              label: 'Account number',
-              isDisabled:
-                (selectedMode === 'APPLICANT_MODE' && !isBankSelected) ||
-                selectedMode === 'REVIEW_MODE' ||
-                (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues?.isAccountNumberValid),
-              isRequired: isBankSelected,
-              maxLength: 17,
-              minLength: 5,
-              incorrectInput: selectedMode === 'REVIEW_MODE'
-            }"
-            [incorrectValue]="openAnnotationArray[8].lineInputs[0]"
-            (incorrectEvent)="incorrectInput($event, 0, 8)"
-          ></app-ta-input>
-        </div>
-        <div class="group routing-number-group">
-          <app-ta-input
-            formControlName="routingNumber"
-            [inputConfig]="{
-              name: 'routing-bank',
-              type: 'text',
-              label: 'Routing number',
-              isDisabled:
-                (selectedMode === 'APPLICANT_MODE' && !isBankSelected) ||
-                selectedMode === 'REVIEW_MODE' ||
-                (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues?.isRoutingNumberValid),
-              isRequired: isBankSelected,
-              minLength: 9,
-              maxLength: 9,
-              incorrectInput: selectedMode === 'REVIEW_MODE'
-            }"
-            [incorrectValue]="openAnnotationArray[8].lineInputs[1]"
-            (incorrectEvent)="incorrectInput($event, 1, 8)"
-          ></app-ta-input>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div
-          class="review-feedback-container"
-          *ngIf="
-            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-          "
-        >
-          <app-applicant-review-feedback
-            formControlName="fourthRowReview"
-            [displayAnnotationButton]="
-              selectedMode === 'REVIEW_MODE' &&
-              openAnnotationArray[8].displayAnnotationButton
-            "
-            [displayAnnotationTextArea]="
-              selectedMode === 'REVIEW_MODE' &&
-              openAnnotationArray[8].displayAnnotationTextArea
-            "
-            [lineIndex]="8"
-            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-            [feedbackText]="
-              selectedMode === 'FEEDBACK_MODE' &&
-              stepFeedbackValues?.accountRoutingMessage
-            "
-            (annotationBtnClickEvent)="
-              selectedMode === 'REVIEW_MODE' &&
-                getAnnotationBtnClickValue($event)
-            "
-          ></app-applicant-review-feedback>
-        </div>
-      </div>
-
-      <!-- QUESTIONS SECTION -->
-
-      <div class="questions-section">
-        <div
-          class="d-flex flex-column question-container"
-          *ngFor="
-            let question of questions;
-            let i = index;
-            trackBy: trackByIdentity
-          "
-        >
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="question-title-box">
-              <p
-                class="m-0 ta-font-regular"
-                [ngClass]="
-                  selectedMode === 'FEEDBACK_MODE'
-                    ? 'question-title-feedback'
-                    : 'question-title'
-                "
-              >
-                {{ question.title }}
-
-                <span class="required-star">*</span>
-              </p>
             </div>
 
-            <div class="question-radios-box">
-              <app-ta-input-radiobuttons
-                #cmp
-                [buttons]="question.answerChoices"
-                [disabled]="
-                  selectedMode === 'REVIEW_MODE' ||
-                  selectedMode === 'FEEDBACK_MODE'
-                "
-                (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
-              ></app-ta-input-radiobuttons>
-            </div>
-          </div>
-
-          <!-- EXPLAIN -->
-
-          <div
-            class="d-flex explain-container line-container"
-            *ngIf="personalInfoForm.get(question.formControlName)?.value"
-            [ngStyle]="{
-              'margin-bottom': personalInfoForm.get(question.formControlName)
-                ?.value
-                ? '20px'
-                : '0'
-            }"
-          >
-            <div class="w-100">
-              <app-ta-input
-                [formControlName]="question.formControlNameExplain"
-                [inputConfig]="{
-                  name: 'Explain',
-                  type: 'text',
-                  label: 'Please explain',
-                  isRequired: true,
-                  textTransform: 'capitalize',
-                  placeholder: 'Please explain',
-                  placeholderInsteadOfLabel: true,
-                  isDisabled:
-                    selectedMode === 'REVIEW_MODE' ||
-                    (selectedMode === 'FEEDBACK_MODE' &&
-                      ((i === 0 && stepFeedbackValues?.isLegalWorkValid) ||
-                        (i === 1 && stepFeedbackValues?.isAnotherNameValid) ||
-                        (i === 2 && stepFeedbackValues?.isInMilitaryValid) ||
-                        (i === 3 && stepFeedbackValues?.isFelonyValid) ||
-                        (i === 4 && stepFeedbackValues?.isMisdemeanorValid) ||
-                        (i === 5 && stepFeedbackValues?.isDrunkDrivingValid))),
-                  incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="openAnnotationArray[i + 9].lineInputs[0]"
-                (incorrectEvent)="incorrectInput($event, 0, i + 9)"
-              ></app-ta-input>
-            </div>
-
-            <!-- REVIEW AND FEEDBACK -->
+            <!--  PHONE, EMAIL-->
 
             <div
-              class="review-feedback-container"
-              *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-              "
+                class="d-flex form-input-container line-container"
+                [ngStyle]="{
+                    'margin-bottom': isEditingMiddlePositionAddress
+                        ? '53px'
+                        : '32px'
+                }"
             >
-              <app-applicant-review-feedback
-                [formControlName]="'questionReview' + (i + 1)"
-                [displayAnnotationButton]="
-                  selectedMode === 'REVIEW_MODE' &&
-                  openAnnotationArray[i + 9].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                  selectedMode === 'REVIEW_MODE' &&
-                  openAnnotationArray[i + 9].displayAnnotationTextArea
-                "
-                [lineIndex]="i + 9"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                  selectedMode === 'FEEDBACK_MODE' && i === 0
-                    ? stepFeedbackValues?.legalWorkMessage
-                    : i === 1
-                    ? stepFeedbackValues?.anotherNameMessage
-                    : i === 2
-                    ? stepFeedbackValues?.inMilitaryMessage
-                    : i === 3
-                    ? stepFeedbackValues?.felonyMessage
-                    : i === 4
-                    ? stepFeedbackValues?.misdemeanorMessage
-                    : i === 5
-                    ? stepFeedbackValues?.drunkDrivingMessage
-                    : null
-                "
-                (annotationBtnClickEvent)="
-                  selectedMode === 'REVIEW_MODE' &&
-                    getAnnotationBtnClickValue($event)
-                "
-              ></app-applicant-review-feedback>
+                <div class="group phone-group">
+                    <app-ta-input
+                        formControlName="phone"
+                        [inputConfig]="{
+                            name: 'Phone',
+                            type: 'text',
+                            label: 'Phone',
+                            isRequired: true,
+                            placeholderIcon: 'phone',
+                            mask: '(000) 000-0000',
+                            maxLength: 14,
+                            isDisabled:
+                                selectedMode === 'REVIEW_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.isPhoneValid),
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
+                        }"
+                        [incorrectValue]="openAnnotationArray[1].lineInputs[0]"
+                        (incorrectEvent)="incorrectInput($event, 0, 1)"
+                    ></app-ta-input>
+                </div>
+                <div class="group email-group">
+                    <app-ta-input
+                        formControlName="email"
+                        [inputConfig]="{
+                            name: 'Email',
+                            type: 'text',
+                            label: 'Email',
+                            isRequired: true,
+                            placeholderIcon: 'email',
+                            textTransform: 'lowercase',
+                            isDisabled: true,
+                            minLength: 5,
+                            maxLength: 64
+                        }"
+                    ></app-ta-input>
+                </div>
+
+                <!-- REVIEW AND FEEDBACK -->
+
+                <div
+                    class="review-feedback-container"
+                    *ngIf="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                    <app-applicant-review-feedback
+                        formControlName="secondRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[1].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[1].displayAnnotationTextArea
+                        "
+                        [lineIndex]="1"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.phoneMessage
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
+
+            <!-- PREVIOUS ADDRESSES -->
+
+            <div
+                class="d-flex flex-column justify-content-center previous-addresses"
+                formArrayName="previousAddresses"
+            >
+                <div class="d-flex flex-column justify-content-center">
+                    <div
+                        class="d-flex flex-column justify-content-center dets-container"
+                        *ngFor="
+                            let address of previousAddresses?.controls;
+                            let i = index;
+                            let last = last;
+                            let first = first;
+                            trackBy: trackByIdentity
+                        "
+                        [ngStyle]="{
+                            'margin-top':
+                                (isEditingArray[i]?.isEditing &&
+                                    isEditingMiddlePositionAddress &&
+                                    i !== 0) ||
+                                (isEditingArray[i]?.isEditing &&
+                                    isEditingMiddlePositionAddress &&
+                                    last)
+                                    ? '36px'
+                                    : '0',
+                            'margin-bottom':
+                                isEditingArray[i]?.isEditing &&
+                                isEditingMiddlePositionAddress &&
+                                !last
+                                    ? '22px'
+                                    : isEditingArray[i]?.isEditing &&
+                                      !isEditingMiddlePositionAddress &&
+                                      first &&
+                                      previousAddresses?.controls.length > 1
+                                    ? '22px'
+                                    : '2px'
+                        }"
+                    >
+                        <div
+                            class="d-flex align-items-center title-container"
+                            *ngIf="
+                                (previousAddresses.controls.length > 1 &&
+                                    helperIndex !== 0 &&
+                                    i === 0) ||
+                                (helperIndex === 0 &&
+                                    i === 1 &&
+                                    previousAddresses.at(1).value.address)
+                            "
+                        >
+                            <div class="address-title-container">
+                                <p class="m-0 ta-font-bold">
+                                    Address, City, State Zip <span>*</span>
+                                </p>
+                            </div>
+                            <div class="address-unit-title-container">
+                                <p class="m-0 ta-font-bold">Unit #</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="d-flex align-items-center"
+                            [formGroupName]="i"
+                            [ngStyle]="{
+                                'margin-top':
+                                    previousAddresses?.controls.length > 1 &&
+                                    last &&
+                                    isEditingArray[i].isEditing &&
+                                    !isLastInputDeleted
+                                        ? '32px'
+                                        : '0'
+                            }"
+                            *ngIf="
+                                (previousAddresses.at(i).value.address &&
+                                    !isEditingArray[i]?.isEditing) ||
+                                (!previousAddresses.at(i).value.address &&
+                                    isEditingArray[i]?.isEditing) ||
+                                (previousAddresses.at(i).value.address &&
+                                    isEditingArray[i]?.isEditing)
+                            "
+                        >
+                            <div
+                                class="d-flex align-items-center right-container line-container"
+                                [ngStyle]="{
+                                    'background-color': isEditingArray[i]
+                                        ?.isEditing
+                                        ? '#ffffff'
+                                        : '#F3F3F3',
+                                    padding: isEditingArray[i]?.isEditing
+                                        ? '0'
+                                        : '4px 6px'
+                                }"
+                            >
+                                <div
+                                    class="d-flex align-items-center input-container"
+                                    *ngIf="isEditingArray[i]?.isEditing"
+                                >
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="address-container"
+                                            [ngStyle]="{
+                                                width:
+                                                    previousAddresses.controls
+                                                        .length === 1 ||
+                                                    (isEditingArray[i]
+                                                        ?.isEditing &&
+                                                        !isEditingArray[i]
+                                                            ?.isEditingAddress &&
+                                                        isEditingArray[i]
+                                                            ?.isFirstAddress &&
+                                                        previousAddresses
+                                                            .controls.length ===
+                                                            1)
+                                                        ? '480px'
+                                                        : isEditingArray[i]
+                                                              ?.isEditing &&
+                                                          !isEditingArray[i]
+                                                              ?.isEditingAddress &&
+                                                          !isLastInputDeleted &&
+                                                          !isEditingArray[i]
+                                                              ?.isFirstAddress
+                                                        ? '442px'
+                                                        : '412px'
+                                            }"
+                                        >
+                                            <app-input-address-dropdown
+                                                formControlName="address"
+                                                [inputConfig]="{
+                                                    name: 'Address',
+                                                    type: 'text',
+                                                    label: 'Address, City, State Zip',
+                                                    isRequired: true,
+                                                    placeholderIcon: 'address',
+                                                    textTransform: 'capitalize',
+                                                    dropdownWidthClass:
+                                                        isEditingArray[i]
+                                                            ?.isEditing &&
+                                                        !isEditingArray[i]
+                                                            ?.isEditingAddress &&
+                                                        !isLastInputDeleted &&
+                                                        !isEditingArray[i]
+                                                            ?.isFirstAddress
+                                                            ? 'w-col-442'
+                                                            : isEditingArray[i]
+                                                                  ?.isEditing &&
+                                                              !isEditingArray[i]
+                                                                  ?.isEditingAddress &&
+                                                              isEditingArray[i]
+                                                                  ?.isFirstAddress &&
+                                                              previousAddresses
+                                                                  .controls
+                                                                  .length === 1
+                                                            ? 'w-col-480'
+                                                            : 'w-col-412',
+                                                    minLength: 6,
+                                                    maxLength: 256,
+                                                    isDisabled:
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            i ===
+                                                                previousAddresses
+                                                                    .controls
+                                                                    .length -
+                                                                    1 &&
+                                                            stepFeedbackValues?.isAddressValid),
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [placeholderType]="
+                                                    'longAddress'
+                                                "
+                                                [incorrectValue]="
+                                                    openAnnotationArray[6]
+                                                        .lineInputs
+                                                        ? openAnnotationArray[6]
+                                                              .lineInputs[0]
+                                                        : openAnnotationArray[5]
+                                                              .lineInputs
+                                                        ? openAnnotationArray[5]
+                                                              .lineInputs[0]
+                                                        : openAnnotationArray[4]
+                                                              .lineInputs
+                                                        ? openAnnotationArray[4]
+                                                              .lineInputs[0]
+                                                        : openAnnotationArray[3]
+                                                              .lineInputs
+                                                        ? openAnnotationArray[3]
+                                                              .lineInputs[0]
+                                                        : openAnnotationArray[2]
+                                                              .lineInputs
+                                                        ? openAnnotationArray[2]
+                                                              .lineInputs[0]
+                                                        : false
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput(
+                                                        $event,
+                                                        0,
+                                                        i + 2
+                                                    )
+                                                "
+                                                (selectedAddress)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'PREVIOUS-ADDRESS',
+                                                        i
+                                                    )
+                                                "
+                                            ></app-input-address-dropdown>
+                                        </div>
+
+                                        <div class="address-unit-container">
+                                            <app-ta-input
+                                                formControlName="addressUnit"
+                                                [inputConfig]="{
+                                                    name: 'address-unit',
+                                                    type: 'text',
+                                                    label: 'Unit No.',
+                                                    minLength: 1,
+                                                    maxLength: 10,
+                                                    textTransform: 'uppercase',
+                                                    isDisabled:
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            i ===
+                                                                previousAddresses
+                                                                    .controls
+                                                                    .length -
+                                                                    1 &&
+                                                            stepFeedbackValues?.isAddressUnitValid),
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[6]
+                                                        .lineInputs
+                                                        ? openAnnotationArray[6]
+                                                              .lineInputs[1]
+                                                        : openAnnotationArray[5]
+                                                              .lineInputs
+                                                        ? openAnnotationArray[5]
+                                                              .lineInputs[1]
+                                                        : openAnnotationArray[4]
+                                                              .lineInputs
+                                                        ? openAnnotationArray[4]
+                                                              .lineInputs[1]
+                                                        : openAnnotationArray[3]
+                                                              .lineInputs
+                                                        ? openAnnotationArray[3]
+                                                              .lineInputs[1]
+                                                        : openAnnotationArray[2]
+                                                              .lineInputs
+                                                        ? openAnnotationArray[2]
+                                                              .lineInputs[1]
+                                                        : false
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput(
+                                                        $event,
+                                                        1,
+                                                        i + 2
+                                                    )
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+
+                                        <div
+                                            class="d-flex align-items-center justify-content-center confirm-cancel-btn-container"
+                                            *ngIf="
+                                                isEditingArray[i]?.isEditing &&
+                                                isEditingArray[i]
+                                                    ?.isEditingAddress
+                                            "
+                                        >
+                                            <div
+                                                ngbTooltip
+                                                mainTooltip="Confirm"
+                                                tooltipBackground="#536BC2"
+                                                position="top"
+                                            >
+                                                <svg-icon
+                                                    class="confirm-icon"
+                                                    src="assets/svg/ic_spec-confirm.svg"
+                                                    [svgStyle]="{
+                                                        'width.px': 26,
+                                                        'height.px': 26
+                                                    }"
+                                                    (click)="
+                                                        onConfirmEditedNewAddress(
+                                                            i
+                                                        )
+                                                    "
+                                                ></svg-icon>
+                                            </div>
+
+                                            <div
+                                                ngbTooltip
+                                                mainTooltip="Cancel"
+                                                tooltipBackground="#6C6C6C"
+                                                position="top"
+                                            >
+                                                <svg-icon
+                                                    class="cancel-icon"
+                                                    src="assets/svg/ic_x.svg"
+                                                    [svgStyle]="{
+                                                        'width.px': 26,
+                                                        'height.px': 26
+                                                    }"
+                                                    (click)="
+                                                        onCancelEditingNewAddress(
+                                                            i
+                                                        )
+                                                    "
+                                                ></svg-icon>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="d-flex align-items-center justify-content-center delete-btn-container"
+                                            [ngClass]="{
+                                                disabled:
+                                                    selectedMode ===
+                                                        'REVIEW_MODE' ||
+                                                    selectedMode ===
+                                                        'FEEDBACK_MODE'
+                                            }"
+                                            *ngIf="
+                                                previousAddresses?.controls
+                                                    .length !== 1 &&
+                                                isEditingArray[i]?.isEditing &&
+                                                !isEditingArray[i]
+                                                    ?.isEditingAddress &&
+                                                !isLastInputDeleted &&
+                                                !isEditingArray[i]
+                                                    .isFirstAddress
+                                            "
+                                        >
+                                            <div
+                                                ngbTooltip
+                                                mainTooltip="Delete"
+                                                tooltipBackground="#EF5350"
+                                                position="top"
+                                            >
+                                                <svg-icon
+                                                    class="delete-icon"
+                                                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                                    [svgStyle]="{
+                                                        'width.px': 18,
+                                                        'height.px': 18
+                                                    }"
+                                                    (click)="
+                                                        onRemoveNewAddress(i)
+                                                    "
+                                                ></svg-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="d-flex align-items-center info-btn-container"
+                                >
+                                    <div
+                                        class="d-flex align-items-center info-container"
+                                        *ngIf="
+                                            !isEditingArray[i]?.isEditing &&
+                                            !isEditingArray[i]?.isEditingAddress
+                                        "
+                                    >
+                                        <div
+                                            class="d-flex align-items-center text-truncate address-container"
+                                        >
+                                            <svg-icon
+                                                class="address-icon"
+                                                src="assets/svg/common/ic_address.svg"
+                                                [svgStyle]="{
+                                                    'width.px': 18,
+                                                    'height.px': 18
+                                                }"
+                                            ></svg-icon>
+
+                                            <div class="d-flex pipe"></div>
+
+                                            <p class="m-0 ta-font-regular">
+                                                {{ address.value?.address }}
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            class="d-flex align-items-center address-unit-container"
+                                        >
+                                            <p
+                                                class="d-inline-block text-truncate m-0 ta-font-regular"
+                                                style="max-width: 300px"
+                                            >
+                                                {{ address.value?.addressUnit }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="d-flex align-items-center btn-container"
+                                        [ngClass]="{
+                                            active:
+                                                selectedMode === 'REVIEW_MODE'
+                                        }"
+                                        [ngStyle]="{
+                                            'margin-left':
+                                                selectedMode ===
+                                                'APPLICANT_MODE'
+                                                    ? '26px'
+                                                    : selectedMode ===
+                                                      'FEEDBACK_MODE'
+                                                    ? '48px'
+                                                    : '5px'
+                                        }"
+                                        *ngIf="!isEditingArray[i]?.isEditing"
+                                    >
+                                        <div
+                                            *ngIf="
+                                                selectedMode ===
+                                                    'APPLICANT_MODE' ||
+                                                (selectedMode ===
+                                                    'FEEDBACK_MODE' &&
+                                                    !stepFeedbackValues
+                                                        .previousAddressesReview[
+                                                        i
+                                                    ].isPreviousAddressValid)
+                                            "
+                                            ngbTooltip
+                                            mainTooltip="Edit"
+                                            tooltipBackground="#6C6C6C"
+                                            position="top"
+                                        >
+                                            <svg-icon
+                                                class="edit-icon"
+                                                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                                                [svgStyle]="{
+                                                    'width.px': 18,
+                                                    'height.px': 18
+                                                }"
+                                                (click)="onEditNewAddress(i)"
+                                            ></svg-icon>
+                                        </div>
+
+                                        <div
+                                            *ngIf="
+                                                selectedMode ===
+                                                'APPLICANT_MODE'
+                                            "
+                                            ngbTooltip
+                                            mainTooltip="Delete"
+                                            tooltipBackground="#EF5350"
+                                            position="top"
+                                        >
+                                            <svg-icon
+                                                class="delete-icon"
+                                                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                                [svgStyle]="{
+                                                    'width.px': 18,
+                                                    'height.px': 18
+                                                }"
+                                                (click)="onRemoveNewAddress(i)"
+                                            ></svg-icon>
+                                        </div>
+
+                                        <div
+                                            *ngIf="
+                                                selectedMode === 'REVIEW_MODE'
+                                            "
+                                        >
+                                            <div
+                                                class="review-icon-box"
+                                                ngbTooltip
+                                                mainTooltip="Mark Incorrect"
+                                                tooltipBackground="#F44336"
+                                                position="top"
+                                            >
+                                                <svg-icon
+                                                    class="review-icon"
+                                                    [ngClass]="{
+                                                        active:
+                                                            openAnnotationArray[
+                                                                i + 2
+                                                            ]
+                                                                .displayAnnotationButton ||
+                                                            openAnnotationArray[
+                                                                i + 2
+                                                            ]
+                                                                .displayAnnotationTextArea
+                                                    }"
+                                                    src="assets/svg/ic_x.svg"
+                                                    [svgStyle]="{
+                                                        'width.px': 18,
+                                                        'height.px': 18
+                                                    }"
+                                                    (click)="
+                                                        incorrectInput(
+                                                            $event,
+                                                            0,
+                                                            i + 2,
+                                                            'card'
+                                                        )
+                                                    "
+                                                ></svg-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- REVIEW AND FEEDBACK -->
+
+                                <div
+                                    class="d-flex review-feedback-container"
+                                    *ngIf="
+                                        selectedMode === 'REVIEW_MODE' ||
+                                        selectedMode === 'FEEDBACK_MODE'
+                                    "
+                                >
+                                    <app-applicant-review-feedback
+                                        [formControlName]="
+                                            'cardReview' + (i + 1)
+                                        "
+                                        [displayAnnotationButton]="
+                                            selectedMode === 'REVIEW_MODE' &&
+                                            openAnnotationArray[i + 2]
+                                                .displayAnnotationButton
+                                        "
+                                        [displayAnnotationTextArea]="
+                                            selectedMode === 'REVIEW_MODE' &&
+                                            openAnnotationArray[i + 2]
+                                                .displayAnnotationTextArea
+                                        "
+                                        [lineIndex]="i + 2"
+                                        [isFeedback]="
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                        [feedbackText]="
+                                            selectedMode === 'FEEDBACK_MODE' &&
+                                            i ===
+                                                previousAddresses?.controls
+                                                    .length -
+                                                    1
+                                                ? stepFeedbackValues?.addressMessage
+                                                : i === 3
+                                                ? stepFeedbackValues
+                                                      ?.previousAddressesReview[3]
+                                                      ?.previousAddressMessage
+                                                : i === 2
+                                                ? stepFeedbackValues
+                                                      ?.previousAddressesReview[2]
+                                                      ?.previousAddressMessage
+                                                : i === 1
+                                                ? stepFeedbackValues
+                                                      ?.previousAddressesReview[1]
+                                                      ?.previousAddressMessage
+                                                : i === 0
+                                                ? stepFeedbackValues
+                                                      ?.previousAddressesReview[0]
+                                                      ?.previousAddressMessage
+                                                : null
+                                        "
+                                        [cardsLength]="
+                                            previousAddresses?.controls.length
+                                        "
+                                        [cardsType]="'addresses'"
+                                        [cardIndex]="i + 2"
+                                        (annotationBtnClickEvent)="
+                                            selectedMode === 'REVIEW_MODE' &&
+                                                getAnnotationBtnClickValue(
+                                                    $event
+                                                )
+                                        "
+                                    ></app-applicant-review-feedback>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="d-flex align-items-center previous-address-btn-container"
+                    [ngStyle]="{
+                        'margin-top':
+                            previousAddresses?.controls.length > 0
+                                ? '22px'
+                                : '0'
+                    }"
+                    *ngIf="
+                        selectedMode === 'APPLICANT_MODE' &&
+                        previousAddresses.controls?.length < 5
+                    "
+                >
+                    <h5 class="m-0 ta-font-bold previous-address-title">
+                        Previous addresses for the past 3 years?
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="d-flex align-items-center ta-font-bold add-btn"
+                        (click)="onAddNewAddress()"
+                        [ngClass]="{
+                            disabled:
+                                !isLastAddedPreviousAddressValid &&
+                                !isLastInputDeleted
+                        }"
+                    >
+                        <svg-icon
+                            class="plus-icon"
+                            src="assets/svg/truckassist-table/plus-icon.svg"
+                        ></svg-icon>
+
+                        <p class="m-0 ta-font-bold">Add Address</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SSN, BANK NAME -->
+
+            <div
+                class="d-flex form-input-container line-container"
+                [ngStyle]="{
+                    'margin-top':
+                        selectedMode !== 'APPLICANT_MODE' ||
+                        (selectedMode === 'APPLICANT_MODE' &&
+                            previousAddresses.controls.length === 5)
+                            ? '32px'
+                            : 0
+                }"
+            >
+                <div class="group ssn-group">
+                    <app-ta-input
+                        formControlName="ssn"
+                        [inputConfig]="{
+                            name: 'SSN',
+                            type: 'text',
+                            label: 'SSN',
+                            isRequired: true,
+                            mask: '000-00-0000',
+                            maxLength: 11,
+                            isDisabled:
+                                selectedMode === 'REVIEW_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.isSsnValid),
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
+                        }"
+                        [incorrectValue]="openAnnotationArray[7].lineInputs[0]"
+                        (incorrectEvent)="incorrectInput($event, 0, 7)"
+                    ></app-ta-input>
+                </div>
+                <div class="group bank-group">
+                    <app-ta-input-dropdown
+                        formControlName="bankId"
+                        [template]="'svg-template'"
+                        [inputConfig]="{
+                            name: 'Input Dropdown Bank Name',
+                            type: 'text',
+                            label: 'Bank Name',
+                            minLength: 2,
+                            maxLength: 64,
+                            textTransform: 'uppercase',
+                            isDropdown: true,
+                            dropdownWidthClass: 'w-col-416',
+                            isDisabled:
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
+                        }"
+                        [activeItem]="selectedBank"
+                        [options]="banksDropdownList"
+                        [canAddNew]="true"
+                        (saveItem)="onSaveNewBank($event)"
+                        (selectedItem)="handleInputSelect($event, 'BANK')"
+                    ></app-ta-input-dropdown>
+                </div>
+
+                <!-- REVIEW AND FEEDBACK -->
+
+                <div
+                    class="review-feedback-container"
+                    *ngIf="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                    <app-applicant-review-feedback
+                        formControlName="thirdRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[7].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[7].displayAnnotationTextArea
+                        "
+                        [lineIndex]="7"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.ssnBankMessage
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
+            </div>
+
+            <!-- ACCOUNT NUMBER, ROUTING NUMBER -->
+
+            <div class="d-flex form-input-container line-container">
+                <div class="group account-number-group">
+                    <app-ta-input
+                        formControlName="accountNumber"
+                        [inputConfig]="{
+                            name: 'account-bank',
+                            type: 'text',
+                            label: 'Account number',
+                            isDisabled:
+                                (selectedMode === 'APPLICANT_MODE' &&
+                                    !isBankSelected) ||
+                                selectedMode === 'REVIEW_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.isAccountNumberValid),
+                            isRequired: isBankSelected,
+                            maxLength: 17,
+                            minLength: 5,
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
+                        }"
+                        [incorrectValue]="openAnnotationArray[8].lineInputs[0]"
+                        (incorrectEvent)="incorrectInput($event, 0, 8)"
+                    ></app-ta-input>
+                </div>
+                <div class="group routing-number-group">
+                    <app-ta-input
+                        formControlName="routingNumber"
+                        [inputConfig]="{
+                            name: 'routing-bank',
+                            type: 'text',
+                            label: 'Routing number',
+                            isDisabled:
+                                (selectedMode === 'APPLICANT_MODE' &&
+                                    !isBankSelected) ||
+                                selectedMode === 'REVIEW_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.isRoutingNumberValid),
+                            isRequired: isBankSelected,
+                            minLength: 9,
+                            maxLength: 9,
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
+                        }"
+                        [incorrectValue]="openAnnotationArray[8].lineInputs[1]"
+                        (incorrectEvent)="incorrectInput($event, 1, 8)"
+                    ></app-ta-input>
+                </div>
+
+                <!-- REVIEW AND FEEDBACK -->
+
+                <div
+                    class="review-feedback-container"
+                    *ngIf="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                    <app-applicant-review-feedback
+                        formControlName="fourthRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[8].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[8].displayAnnotationTextArea
+                        "
+                        [lineIndex]="8"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.accountRoutingMessage
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
+            </div>
+
+            <!-- QUESTIONS SECTION -->
+
+            <div class="questions-section">
+                <div
+                    class="d-flex flex-column question-container"
+                    *ngFor="
+                        let question of questions;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="d-flex align-items-center justify-content-between"
+                    >
+                        <div class="question-title-box">
+                            <p
+                                class="m-0 ta-font-regular"
+                                [ngClass]="
+                                    selectedMode === 'FEEDBACK_MODE'
+                                        ? 'question-title-feedback'
+                                        : 'question-title'
+                                "
+                            >
+                                {{ question.title }}
+
+                                <span class="required-star">*</span>
+                            </p>
+                        </div>
+
+                        <div class="question-radios-box">
+                            <app-ta-input-radiobuttons
+                                #cmp
+                                [buttons]="question.answerChoices"
+                                [disabled]="
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    selectedMode === 'FEEDBACK_MODE'
+                                "
+                                (changedValue)="
+                                    handleInputSelect($event, 'ANSWER-CHOICE')
+                                "
+                            ></app-ta-input-radiobuttons>
+                        </div>
+                    </div>
+
+                    <!-- EXPLAIN -->
+
+                    <div
+                        class="d-flex explain-container line-container"
+                        *ngIf="
+                            personalInfoForm.get(question.formControlName)
+                                ?.value
+                        "
+                        [ngStyle]="{
+                            'margin-bottom': personalInfoForm.get(
+                                question.formControlName
+                            )?.value
+                                ? '20px'
+                                : '0'
+                        }"
+                    >
+                        <div class="w-100">
+                            <app-ta-input
+                                [formControlName]="
+                                    question.formControlNameExplain
+                                "
+                                [inputConfig]="{
+                                    name: 'Explain',
+                                    type: 'text',
+                                    label: 'Please explain',
+                                    isRequired: true,
+                                    textTransform: 'capitalize',
+                                    placeholder: 'Please explain',
+                                    placeholderInsteadOfLabel: true,
+                                    isDisabled:
+                                        selectedMode === 'REVIEW_MODE' ||
+                                        (selectedMode === 'FEEDBACK_MODE' &&
+                                            ((i === 0 &&
+                                                stepFeedbackValues?.isLegalWorkValid) ||
+                                                (i === 1 &&
+                                                    stepFeedbackValues?.isAnotherNameValid) ||
+                                                (i === 2 &&
+                                                    stepFeedbackValues?.isInMilitaryValid) ||
+                                                (i === 3 &&
+                                                    stepFeedbackValues?.isFelonyValid) ||
+                                                (i === 4 &&
+                                                    stepFeedbackValues?.isMisdemeanorValid) ||
+                                                (i === 5 &&
+                                                    stepFeedbackValues?.isDrunkDrivingValid))),
+                                    incorrectInput:
+                                        selectedMode === 'REVIEW_MODE'
+                                }"
+                                [incorrectValue]="
+                                    openAnnotationArray[i + 9].lineInputs[0]
+                                "
+                                (incorrectEvent)="
+                                    incorrectInput($event, 0, i + 9)
+                                "
+                            ></app-ta-input>
+                        </div>
+
+                        <!-- REVIEW AND FEEDBACK -->
+
+                        <div
+                            class="review-feedback-container"
+                            *ngIf="
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
+                            "
+                        >
+                            <app-applicant-review-feedback
+                                [formControlName]="'questionReview' + (i + 1)"
+                                [displayAnnotationButton]="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                    openAnnotationArray[i + 9]
+                                        .displayAnnotationButton
+                                "
+                                [displayAnnotationTextArea]="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                    openAnnotationArray[i + 9]
+                                        .displayAnnotationTextArea
+                                "
+                                [lineIndex]="i + 9"
+                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                                [feedbackText]="
+                                    selectedMode === 'FEEDBACK_MODE' && i === 0
+                                        ? stepFeedbackValues?.legalWorkMessage
+                                        : i === 1
+                                        ? stepFeedbackValues?.anotherNameMessage
+                                        : i === 2
+                                        ? stepFeedbackValues?.inMilitaryMessage
+                                        : i === 3
+                                        ? stepFeedbackValues?.felonyMessage
+                                        : i === 4
+                                        ? stepFeedbackValues?.misdemeanorMessage
+                                        : i === 5
+                                        ? stepFeedbackValues?.drunkDrivingMessage
+                                        : null
+                                "
+                                (annotationBtnClickEvent)="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                        getAnnotationBtnClickValue($event)
+                                "
+                            ></app-applicant-review-feedback>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center next-btn-container"
+    class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn
-    [nextStep]="true"
-    [mode]="selectedMode"
-    [filledCorrectly]="
-      personalInfoForm.valid &&
-      (selectedMode === 'APPLICANT_MODE' ||
-        (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
-    "
-    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [nextStep]="true"
+        [mode]="selectedMode"
+        [filledCorrectly]="
+            personalInfoForm.valid &&
+            (selectedMode === 'APPLICANT_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
+        "
+        [hasIncorrectFields]="
+            selectedMode === 'REVIEW_MODE' && hasIncorrectFields
+        "
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>

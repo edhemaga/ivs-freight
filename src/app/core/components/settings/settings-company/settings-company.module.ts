@@ -20,28 +20,28 @@ import { SettingsSharedModule } from '../settings-shared/settings-shared.module'
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    SharedModule,
-    SettingsCompanyRoutes,
-    SharedModule,
-    SettingsSharedModule,
-    TruckassistProgressExpirationModule,
-  ],
-  exports: [SharedModule],
-  declarations: [
-    SettingsCompanyComponent,
-    SettingsGeneralComponent,
-    SettingsPayrollComponent,
-    SettingsInsurancepolicyComponent,
-    SettingsFactoringComponent,
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        SharedModule,
+        SettingsCompanyRoutes,
+        SharedModule,
+        SettingsSharedModule,
+        TruckassistProgressExpirationModule,
+    ],
+    exports: [SharedModule],
+    declarations: [
+        SettingsCompanyComponent,
+        SettingsGeneralComponent,
+        SettingsPayrollComponent,
+        SettingsInsurancepolicyComponent,
+        SettingsFactoringComponent,
 
-    SettingsNodataComponent,
-    //Modals
-    SettingsBasicModalComponent,
-    SettingsInsurancePolicyModalComponent,
-    SettingsFactoringModalComponent,
-  ],
+        SettingsNodataComponent,
+        //Modals
+        SettingsBasicModalComponent,
+        SettingsInsurancePolicyModalComponent,
+        SettingsFactoringModalComponent,
+    ],
 })
 export class SettingsCompanyModule {}

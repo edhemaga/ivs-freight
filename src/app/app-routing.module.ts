@@ -41,344 +41,365 @@ import { AccidentActiveResolver } from './core/components/safety/accident/state/
 import { AccidentInactiveResolver } from './core/components/safety/accident/state/accident-state/accident-inactive/accident-inactive.resolver';
 import { AccidentNonReportedResolver } from './core/components/safety/accident/state/accident-state/accident-non-reported/accident-non-reported.resolver';
 import { ApplicantResolver } from './core/components/applicant/state/resolver/applicant.resolver';
+import { ApplicantSphFormResolver } from './core/components/applicant/state/resolver/applicant-sph-form.resolver';
 import { FuelResolver } from './core/components/fuel/state/fule-state/fuel-state.resolver';
 
 const routes: Routes = [
-  // Auth Routes
-  {
-    path: 'auth',
-    loadChildren: () =>
-      import('./core/components/authentication/auth.module').then(
-        (m) => m.AuthModule
-      ),
-  },
-  {
-    path: 'api/account/signupuser',
-    component: HelperSignupUserComponent,
-    data: { title: 'Helper Component Route' },
-  },
-  {
-    path: 'api/account/verifyowner',
-    component: HelperComponent,
-    data: { title: 'Helper Component Route' },
-  },
-  {
-    path: 'api/account/verifyforgotpassword',
-    component: HelperForgotPasswordComponent,
-    data: { title: 'Helper Component Route' },
-  },
-  {
-    path: 'dashboard',
-    loadChildren: () =>
-      import('./core/components/dashboard/dashboard.module').then(
-        (m) => m.DashboardModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: { dashboard: DashboardResolverService },
-  },
-  {
-    path: 'dispatcher',
-    loadChildren: () =>
-      import('./core/components/dispatcher/dispatcher.module').then(
-        (m) => m.DispatcherModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: { dispatcher: DispatcherResolverService },
-  },
-  {
-    path: 'settings',
-    loadChildren: () =>
-      import('./core/components/settings/settings.module').then(
-        (m) => m.SettingsModule
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'user',
-    loadChildren: () =>
-      import('./core/components/user/user.module').then((m) => m.UserModule),
-    data: { title: 'User' },
-    resolve: {
-      user: UserResolver,
+    // Auth Routes
+    {
+        path: 'auth',
+        loadChildren: () =>
+            import('./core/components/authentication/auth.module').then(
+                (m) => m.AuthModule
+            ),
     },
-  },
-  {
-    path: 'load',
-    loadChildren: () =>
-      import('./core/components/load/load.module').then((m) => m.LoadModule),
-    canActivate: [AuthGuard],
-    resolve: {
-      loadTemplate: LoadTemplateResolver,
-      loadPanding: LoadPandingResolver,
-      loadActive: LoadActiveResolver,
-      loadClosed: LoadClosedResolver,
+    {
+        path: 'api/account/signupuser',
+        component: HelperSignupUserComponent,
+        data: { title: 'Helper Component Route' },
     },
-  },
-  {
-    path: 'driver',
-    loadChildren: () =>
-      import('./core/components/driver/driver.module').then(
-        (m) => m.DriverModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: {
-      driverActive: DriverActiveResolver,
-      driverInactive: DriverInactiveResolver,
+    {
+        path: 'api/account/verifyowner',
+        component: HelperComponent,
+        data: { title: 'Helper Component Route' },
     },
-  },
-  {
-    path: 'truck',
-    loadChildren: () =>
-      import('./core/components/truck/truck.module').then((m) => m.TruckModule),
-    canActivate: [AuthGuard],
-    resolve: {
-      truckActive: TruckActiveResolver,
-      truckInactive: TruckInactiveResolver,
+    {
+        path: 'api/account/verifyforgotpassword',
+        component: HelperForgotPasswordComponent,
+        data: { title: 'Helper Component Route' },
     },
-  },
-  {
-    path: 'trailer',
-    loadChildren: () =>
-      import('./core/components/trailer/trailer.module').then(
-        (m) => m.TrailerModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: {
-      trailerActive: TrailerActiveResolver,
-      trailerInactive: TrailerInactiveResolver,
+    {
+        path: 'dashboard',
+        loadChildren: () =>
+            import('./core/components/dashboard/dashboard.module').then(
+                (m) => m.DashboardModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: { dashboard: DashboardResolverService },
     },
-  },
-  {
-    path: 'customer',
-    loadChildren: () =>
-      import('./core/components/customer/customer.module').then(
-        (m) => m.CustomerModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: { broker: BrokerResolver, shipper: ShipperResolver },
-  },
-  {
-    path: 'repair',
-    loadChildren: () =>
-      import('./core/components/repair/repair.module').then(
-        (m) => m.RepairModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: {
-      repairTruck: RepairTruckResolver,
-      repairTrailer: RepairTrailerResolver,
-      repairShop: ShopResolver,
+    {
+        path: 'dispatcher',
+        loadChildren: () =>
+            import('./core/components/dispatcher/dispatcher.module').then(
+                (m) => m.DispatcherModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: { dispatcher: DispatcherResolverService },
     },
-  },
-  {
-    path: 'pm',
-    loadChildren: () =>
-      import('./core/components/pm-truck-trailer/pm-truck-trailer.module').then(
-        (m) => m.PmTruckTrailerModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: {
-      pmTrailer: pmTrailerResolver,
-      pmTruck: pmTruckResolver,
+    {
+        path: 'settings',
+        loadChildren: () =>
+            import('./core/components/settings/settings.module').then(
+                (m) => m.SettingsModule
+            ),
+        canActivate: [AuthGuard],
     },
-  },
-  {
-    path: 'fuel',
-    loadChildren: () =>
-      import('./core/components/fuel/fuel.module').then((m) => m.FuelModule),
-    canActivate: [AuthGuard],
-    resolve: {
-      fuel: FuelResolver,
+    {
+        path: 'user',
+        loadChildren: () =>
+            import('./core/components/user/user.module').then(
+                (m) => m.UserModule
+            ),
+        data: { title: 'User' },
+        resolve: {
+            user: UserResolver,
+        },
     },
-  },
-  {
-    path: 'owner',
-    loadChildren: () =>
-      import('./core/components/owner/owner.module').then((m) => m.OwnerModule),
-    canActivate: [AuthGuard],
-    resolve: {
-      ownerActive: OwnerActiveResolver,
-      ownerInactive: OwnerInactiveResolver,
+    {
+        path: 'load',
+        loadChildren: () =>
+            import('./core/components/load/load.module').then(
+                (m) => m.LoadModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            loadTemplate: LoadTemplateResolver,
+            loadPanding: LoadPandingResolver,
+            loadActive: LoadActiveResolver,
+            loadClosed: LoadClosedResolver,
+        },
     },
-  },
-  {
-    path: 'account',
-    loadChildren: () =>
-      import('./core/components/account/account.module').then(
-        (m) => m.AccountModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: {
-      account: AccountResolver,
+    {
+        path: 'driver',
+        loadChildren: () =>
+            import('./core/components/driver/driver.module').then(
+                (m) => m.DriverModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            driverActive: DriverActiveResolver,
+            driverInactive: DriverInactiveResolver,
+        },
     },
-  },
-  {
-    path: 'contact',
-    loadChildren: () =>
-      import('./core/components/contacts/contacts.module').then(
-        (m) => m.ContactsModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: {
-      contact: ContactResolver,
+    {
+        path: 'truck',
+        loadChildren: () =>
+            import('./core/components/truck/truck.module').then(
+                (m) => m.TruckModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            truckActive: TruckActiveResolver,
+            truckInactive: TruckInactiveResolver,
+        },
     },
-  },
-  {
-    path: 'routing',
-    loadChildren: () =>
-      import('./core/components/routing/routing.module').then(
-        (m) => m.RoutingModule
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'tools/calendar',
-    loadChildren: () =>
-      import('./core/components/calendar/calendar.module').then(
-        (m) => m.CalendarModule
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'safety/violation',
-    loadChildren: () =>
-      import('./core/components/safety/violation/violation.module').then(
-        (m) => m.ViolationModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: {
-      roadsideActive: RoadsideActiveResolver,
-      roadsideInactive: RoadsideInactiveResolver,
+    {
+        path: 'trailer',
+        loadChildren: () =>
+            import('./core/components/trailer/trailer.module').then(
+                (m) => m.TrailerModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            trailerActive: TrailerActiveResolver,
+            trailerInactive: TrailerInactiveResolver,
+        },
     },
-  },
-  {
-    path: 'safety/accident',
-    loadChildren: () =>
-      import('./core/components/safety/accident/accident.module').then(
-        (m) => m.AccidentModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: {
-      accidentActive: AccidentActiveResolver,
-      accidentInactive: AccidentInactiveResolver,
-      accidentNonReported: AccidentNonReportedResolver,
+    {
+        path: 'customer',
+        loadChildren: () =>
+            import('./core/components/customer/customer.module').then(
+                (m) => m.CustomerModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: { broker: BrokerResolver, shipper: ShipperResolver },
     },
-  },
-  {
-    path: 'tools/todo',
-    loadChildren: () =>
-      import('./core/components/to-do/to-do.module').then((m) => m.ToDoModule),
-    canActivate: [AuthGuard],
-    resolve: { todo: TodoResolverService },
-  },
-  {
-    path: 'applicant/welcome',
-    component: ApplicantWelcomeScreenComponent,
-    data: { title: 'Welcome Screen' },
-  },
-  {
-    path: 'applicant/end',
-    component: ApplicantEndScreenComponent,
-    data: { title: 'End Screen' },
-  },
-  {
-    path: 'application/:id',
-    loadChildren: () =>
-      import('./core/components/applicant/applicant.module').then(
-        (m) => m.ApplicantModule
-      ),
-    canActivate: [AuthGuard],
-    resolve: { applicant: ApplicantResolver },
-  },
-  {
-    path: 'medical-certificate/:id',
-    loadChildren: () =>
-      import(
-        './core/components/applicant/applicant-tabs/medical-certificate/medical-certificate.module'
-      ).then((m) => m.MedicalCertificateModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'mvr-authorization/:id',
-    loadChildren: () =>
-      import(
-        './core/components/applicant/applicant-tabs/mvr-authorization/mvr-authorization.module'
-      ).then((m) => m.MvrAuthorizationModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'psp-authorization/:id',
-    loadChildren: () =>
-      import(
-        './core/components/applicant/applicant-tabs/psp-authorization/psp-authorization.module'
-      ).then((m) => m.PspAuthorizationModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'sph/:id',
-    loadChildren: () =>
-      import('./core/components/applicant/applicant-tabs/sph/sph.module').then(
-        (m) => m.SphModule
-      ),
+    {
+        path: 'repair',
+        loadChildren: () =>
+            import('./core/components/repair/repair.module').then(
+                (m) => m.RepairModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            repairTruck: RepairTruckResolver,
+            repairTrailer: RepairTrailerResolver,
+            repairShop: ShopResolver,
+        },
+    },
+    {
+        path: 'pm',
+        loadChildren: () =>
+            import(
+                './core/components/pm-truck-trailer/pm-truck-trailer.module'
+            ).then((m) => m.PmTruckTrailerModule),
+        canActivate: [AuthGuard],
+        resolve: {
+            pmTrailer: pmTrailerResolver,
+            pmTruck: pmTruckResolver,
+        },
+    },
+    {
+        path: 'fuel',
+        loadChildren: () =>
+            import('./core/components/fuel/fuel.module').then(
+                (m) => m.FuelModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            fuel: FuelResolver,
+        },
+    },
+    {
+        path: 'owner',
+        loadChildren: () =>
+            import('./core/components/owner/owner.module').then(
+                (m) => m.OwnerModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            ownerActive: OwnerActiveResolver,
+            ownerInactive: OwnerInactiveResolver,
+        },
+    },
+    {
+        path: 'account',
+        loadChildren: () =>
+            import('./core/components/account/account.module').then(
+                (m) => m.AccountModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            account: AccountResolver,
+        },
+    },
+    {
+        path: 'contact',
+        loadChildren: () =>
+            import('./core/components/contacts/contacts.module').then(
+                (m) => m.ContactsModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            contact: ContactResolver,
+        },
+    },
+    {
+        path: 'routing',
+        loadChildren: () =>
+            import('./core/components/routing/routing.module').then(
+                (m) => m.RoutingModule
+            ),
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'tools/calendar',
+        loadChildren: () =>
+            import('./core/components/calendar/calendar.module').then(
+                (m) => m.CalendarModule
+            ),
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'safety/violation',
+        loadChildren: () =>
+            import('./core/components/safety/violation/violation.module').then(
+                (m) => m.ViolationModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            roadsideActive: RoadsideActiveResolver,
+            roadsideInactive: RoadsideInactiveResolver,
+        },
+    },
+    {
+        path: 'safety/accident',
+        loadChildren: () =>
+            import('./core/components/safety/accident/accident.module').then(
+                (m) => m.AccidentModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: {
+            accidentActive: AccidentActiveResolver,
+            accidentInactive: AccidentInactiveResolver,
+            accidentNonReported: AccidentNonReportedResolver,
+        },
+    },
+    {
+        path: 'tools/todo',
+        loadChildren: () =>
+            import('./core/components/to-do/to-do.module').then(
+                (m) => m.ToDoModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: { todo: TodoResolverService },
+    },
+    {
+        path: 'applicant/welcome',
+        component: ApplicantWelcomeScreenComponent,
+        data: { title: 'Welcome Screen' },
+    },
+    {
+        path: 'applicant/end',
+        component: ApplicantEndScreenComponent,
+        data: { title: 'End Screen' },
+    },
+    {
+        path: 'application/:id',
+        loadChildren: () =>
+            import('./core/components/applicant/applicant.module').then(
+                (m) => m.ApplicantModule
+            ),
+        canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
+    },
+    {
+        path: 'medical-certificate/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/medical-certificate/medical-certificate.module'
+            ).then((m) => m.MedicalCertificateModule),
+        canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
+    },
+    {
+        path: 'mvr-authorization/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/mvr-authorization/mvr-authorization.module'
+            ).then((m) => m.MvrAuthorizationModule),
+        canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
+    },
+    {
+        path: 'psp-authorization/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/psp-authorization/psp-authorization.module'
+            ).then((m) => m.PspAuthorizationModule),
+        canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
+    },
+    {
+        path: 'sph/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/sph/sph.module'
+            ).then((m) => m.SphModule),
 
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'sph-form/1',
-    loadChildren: () =>
-      import(
-        './core/components/applicant/applicant-tabs/sph/sph-form/sph-form.module'
-      ).then((m) => m.SphFormModule),
+        canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
+    },
+    {
+        path: 'sph-form/1',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/sph/sph-form/sph-form.module'
+            ).then((m) => m.SphFormModule),
 
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'sph-form-end',
-    component: SphFormThankYouComponent,
-    data: { title: 'End Screen' },
-  },
-  {
-    path: 'hos-rules/:id',
-    loadChildren: () =>
-      import(
-        './core/components/applicant/applicant-tabs/hos-rules/hos-rules.module'
-      ).then((m) => m.HosRulesModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'ssn-card/:id',
-    loadChildren: () =>
-      import(
-        './core/components/applicant/applicant-tabs/ssn-card/ssn-card.module'
-      ).then((m) => m.SsnCardModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'cdl-card/:id',
-    loadChildren: () =>
-      import(
-        './core/components/applicant/applicant-tabs/cdl-card/cdl-card.module'
-      ).then((m) => m.CdlCardModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'accounting',
-    loadChildren: () =>
-      import('./core/components/accounting/accounting.module').then(
-        (m) => m.AccountingModule
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'catalog',
-    component: SvgDefinitionsComponent,
-  },
+        canActivate: [AuthGuard],
+        resolve: { applicantSphForm: ApplicantSphFormResolver },
+    },
+    {
+        path: 'sph-form-end',
+        component: SphFormThankYouComponent,
+        data: { title: 'End Screen' },
+    },
+    {
+        path: 'hos-rules/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/hos-rules/hos-rules.module'
+            ).then((m) => m.HosRulesModule),
+        canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
+    },
+    {
+        path: 'ssn-card/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/ssn-card/ssn-card.module'
+            ).then((m) => m.SsnCardModule),
+        canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
+    },
+    {
+        path: 'cdl-card/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/cdl-card/cdl-card.module'
+            ).then((m) => m.CdlCardModule),
+        canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
+    },
+    {
+        path: 'accounting',
+        loadChildren: () =>
+            import('./core/components/accounting/accounting.module').then(
+                (m) => m.AccountingModule
+            ),
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'catalog',
+        component: SvgDefinitionsComponent,
+    },
 
-  { path: '**', redirectTo: 'dashboard' },
+    { path: '**', redirectTo: 'dashboard' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule],
 })
 export class AppRoutingModule {}
