@@ -8,7 +8,12 @@ import { SsnCardRoutingModule } from './ssn-card-routing.module';
 import { ApplicantModule } from './../../applicant.module';
 
 @NgModule({
-  declarations: [SsnCardComponent],
-  imports: [CommonModule, SharedModule, SsnCardRoutingModule, ApplicantModule],
+    declarations: [SsnCardComponent],
+    imports: [
+        CommonModule,
+        SharedModule,
+        SsnCardRoutingModule,
+        ApplicantModule,
+    ],
 })
 export class SsnCardModule {}

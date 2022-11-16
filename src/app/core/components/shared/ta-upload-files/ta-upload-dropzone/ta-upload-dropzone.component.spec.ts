@@ -6,23 +6,22 @@ import { DebugElement } from '@angular/core';
 import { TaUploadDropzoneComponent } from './ta-upload-dropzone.component';
 
 describe('TaUploadDropzoneComponent', () => {
-  let component: TaUploadDropzoneComponent;
-  let fixture: ComponentFixture<TaUploadDropzoneComponent>;
+    let component: TaUploadDropzoneComponent;
+    let fixture: ComponentFixture<TaUploadDropzoneComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ TaUploadDropzoneComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [TaUploadDropzoneComponent],
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TaUploadDropzoneComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(TaUploadDropzoneComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

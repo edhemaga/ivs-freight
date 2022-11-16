@@ -1,242 +1,256 @@
 <app-ta-modal
-  [modalTitle]="'Profile Update'"
-  [isModalValid]="profileUserForm.valid && isFormDirty"
-  [profileUpdateText]="true"
-  (action)="onModalAction($event)"
+    [modalTitle]="'Profile Update'"
+    [isModalValid]="profileUserForm.valid && isFormDirty"
+    [profileUpdateText]="true"
+    (action)="onModalAction($event)"
 >
-  <div origin>
-    <app-ta-tab-switch
-      [tabs]="tabs"
-      (switchClicked)="tabChange($event)"
-      [type]="'type1-modal-popup'"
-    >
-    </app-ta-tab-switch>
+    <div origin>
+        <app-ta-tab-switch
+            [tabs]="tabs"
+            (switchClicked)="tabChange($event)"
+            [type]="'type1-modal-popup'"
+        >
+        </app-ta-tab-switch>
 
-    <form
-      [formGroup]="profileUserForm"
-      class="form-container form-container-without-mb"
-      [ngClass]="{ 'tab-2': selectedTab === 2 }"
-    >
-      <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
-        <!-------------------------------- Basic Tab -------------------------------->
-        <div class="m-tab" *ngIf="selectedTab === 1">
-          <div class="row">
-            <div class="col-6">
-              <app-ta-input
-                formControlName="firstName"
-                [inputConfig]="{
-                  name: 'First name',
-                  type: 'text',
-                  label: 'First Name',
-                  isRequired: true,
-                  minLength: 2,
-                  maxLength: 26,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-6">
-              <app-ta-input
-                formControlName="lastName"
-                [inputConfig]="{
-                  name: 'Last name',
-                  type: 'text',
-                  label: 'Last Name',
-                  isRequired: true,
-                  minLength: 2,
-                  maxLength: 26,
-                  textTransform: 'capitalize'
-                }"
-              ></app-ta-input>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-5">
-              <app-ta-input
-                formControlName="phone"
-                [inputConfig]="{
-                  name: 'Phone',
-                  type: 'text',
-                  label: 'Phone',
-                  placeholderIcon: 'phone',
-                  mask: '(000) 000-0000',
-                  maxLength: 14
-                }"
-              ></app-ta-input>
-            </div>
-            <div class="col-7">
-              <app-ta-input
-                formControlName="email"
-                [inputConfig]="{
-                  name: 'Email',
-                  type: 'text',
-                  label: 'Email',
-                  isDisabled: true,
-                  placeholderIcon: 'email',
-                  minLength: 5,
-                  maxLength: 64,
-                  textTransform: 'lowercase'
-                }"
-              ></app-ta-input>
-            </div>
-          </div>
-          <div class="row last-row">
-            <div class="col-10">
-              <app-input-address-dropdown
-                formControlName="address"
-                [inputConfig]="{
-                  name: 'Address',
-                  type: 'text',
-                  label: 'Address, City, State Zip',
-                  isRequired: true,
-                  placeholderIcon: 'address',
+        <form
+            [formGroup]="profileUserForm"
+            class="form-container form-container-without-mb"
+            [ngClass]="{ 'tab-2': selectedTab === 2 }"
+        >
+            <div
+                class="animation-two-tabs"
+                [@animationTabsModal]="animationObject"
+            >
+                <!-------------------------------- Basic Tab -------------------------------->
+                <div class="m-tab" *ngIf="selectedTab === 1">
+                    <div class="row">
+                        <div class="col-6">
+                            <app-ta-input
+                                formControlName="firstName"
+                                [inputConfig]="{
+                                    name: 'First name',
+                                    type: 'text',
+                                    label: 'First Name',
+                                    isRequired: true,
+                                    minLength: 2,
+                                    maxLength: 26,
+                                    textTransform: 'capitalize'
+                                }"
+                            ></app-ta-input>
+                        </div>
+                        <div class="col-6">
+                            <app-ta-input
+                                formControlName="lastName"
+                                [inputConfig]="{
+                                    name: 'Last name',
+                                    type: 'text',
+                                    label: 'Last Name',
+                                    isRequired: true,
+                                    minLength: 2,
+                                    maxLength: 26,
+                                    textTransform: 'capitalize'
+                                }"
+                            ></app-ta-input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            <app-ta-input
+                                formControlName="phone"
+                                [inputConfig]="{
+                                    name: 'Phone',
+                                    type: 'text',
+                                    label: 'Phone',
+                                    placeholderIcon: 'phone',
+                                    mask: '(000) 000-0000',
+                                    maxLength: 14
+                                }"
+                            ></app-ta-input>
+                        </div>
+                        <div class="col-7">
+                            <app-ta-input
+                                formControlName="email"
+                                [inputConfig]="{
+                                    name: 'Email',
+                                    type: 'text',
+                                    label: 'Email',
+                                    isDisabled: true,
+                                    placeholderIcon: 'email',
+                                    minLength: 5,
+                                    maxLength: 64,
+                                    textTransform: 'lowercase'
+                                }"
+                            ></app-ta-input>
+                        </div>
+                    </div>
+                    <div class="row last-row">
+                        <div class="col-10">
+                            <app-input-address-dropdown
+                                formControlName="address"
+                                [inputConfig]="{
+                                    name: 'Address',
+                                    type: 'text',
+                                    label: 'Address, City, State Zip',
+                                    isRequired: true,
+                                    placeholderIcon: 'address',
 
-                  textTransform: 'capitalize',
-                  dropdownWidthClass: 'w-col-376',
-                  minLength: 6,
-                  maxLength: 256
-                }"
-                [placeholderType]="'longAddress'"
-                [activeAddress]="selectedAddress"
-                (selectedAddress)="onHandleAddress($event)"
-              ></app-input-address-dropdown>
-            </div>
-            <div class="col-2">
-              <app-ta-input
-                formControlName="addressUnit"
-                [inputConfig]="{
-                  name: 'address-unit',
-                  type: 'text',
-                  label: 'Unit #',
-                  textTransform: 'uppercase',
-                  minLength: 1,
-                  maxLength: 10
-                }"
-              ></app-ta-input>
-            </div>
-          </div>
-          <!-- IsOwner -->
-          <div class="custom-checkbox-card">
-            <div class="divider"></div>
-            <div
-              class="checkbox-card-header"
-              [ngClass]="{
-                pointer: profileUserForm.get('createNewPassword').value
-              }"
-            >
-              <app-ta-checkbox
-                formControlName="createNewPassword"
-                [label]="'Create New Password'"
-              ></app-ta-checkbox>
-              <svg-icon
-                class="checkbox-card-header-arrow"
-                src="assets/svg/common/ic_arrow_down_updated.svg"
-                [ngClass]="{
-                  visible: profileUserForm.get('createNewPassword').value,
-                  rotate: !passwordCheckboxCard
-                }"
-                (click)="toggleCheckboxCard()"
-              ></svg-icon>
-            </div>
-            <div
-              *ngIf="
-                profileUserForm.get('createNewPassword').value &&
-                passwordCheckboxCard
-              "
-              class="checkbox-card-body"
-              [ngClass]="{
-                active: profileUserForm.get('createNewPassword').value
-              }"
-            >
-              <div
-                *ngIf="!setNewPassword"
-                class="profile-update-old-password-row"
-              >
-                <app-ta-input
-                  formControlName="oldPassword"
-                  [inputConfig]="{
-                    name: 'Password',
-                    type: 'password',
-                    label: 'Password',
-                    placeholderIcon: 'password',
-                    isRequired: true,
-                    autocomplete: 'off',
-                    minLength: 8,
-                    maxLength: 64,
-                    loadingSpinner: {
-                      size: 'small',
-                      color: 'white',
-                      isLoading: loadingOldPassword
-                    }
-                  }"
-                ></app-ta-input>
-                <p *ngIf="!userPasswordTyping" class="old-password-message">
-                  Before you set new password please confirm current.
-                </p>
-                <div
-                  class="old-password-checkmark"
-                  [ngClass]="{
-                    valid: correctPassword
-                  }"
-                  (click)="onSetNewPassword()"
-                >
-                  <p>CONFIRM</p>
+                                    textTransform: 'capitalize',
+                                    dropdownWidthClass: 'w-col-376',
+                                    minLength: 6,
+                                    maxLength: 256
+                                }"
+                                [placeholderType]="'longAddress'"
+                                [activeAddress]="selectedAddress"
+                                (selectedAddress)="onHandleAddress($event)"
+                            ></app-input-address-dropdown>
+                        </div>
+                        <div class="col-2">
+                            <app-ta-input
+                                formControlName="addressUnit"
+                                [inputConfig]="{
+                                    name: 'address-unit',
+                                    type: 'text',
+                                    label: 'Unit #',
+                                    textTransform: 'uppercase',
+                                    minLength: 1,
+                                    maxLength: 10
+                                }"
+                            ></app-ta-input>
+                        </div>
+                    </div>
+                    <!-- IsOwner -->
+                    <div class="custom-checkbox-card">
+                        <div class="divider"></div>
+                        <div
+                            class="checkbox-card-header"
+                            [ngClass]="{
+                                pointer:
+                                    profileUserForm.get('createNewPassword')
+                                        .value
+                            }"
+                        >
+                            <app-ta-checkbox
+                                formControlName="createNewPassword"
+                                [label]="'Create New Password'"
+                            ></app-ta-checkbox>
+                            <svg-icon
+                                class="checkbox-card-header-arrow"
+                                src="assets/svg/common/ic_arrow_down_updated.svg"
+                                [ngClass]="{
+                                    visible:
+                                        profileUserForm.get('createNewPassword')
+                                            .value,
+                                    rotate: !passwordCheckboxCard
+                                }"
+                                (click)="toggleCheckboxCard()"
+                            ></svg-icon>
+                        </div>
+                        <div
+                            *ngIf="
+                                profileUserForm.get('createNewPassword')
+                                    .value && passwordCheckboxCard
+                            "
+                            class="checkbox-card-body"
+                            [ngClass]="{
+                                active: profileUserForm.get('createNewPassword')
+                                    .value
+                            }"
+                        >
+                            <div
+                                *ngIf="!setNewPassword"
+                                class="profile-update-old-password-row"
+                            >
+                                <app-ta-input
+                                    formControlName="oldPassword"
+                                    [inputConfig]="{
+                                        name: 'Password',
+                                        type: 'password',
+                                        label: 'Password',
+                                        placeholderIcon: 'password',
+                                        isRequired: true,
+                                        autocomplete: 'off',
+                                        minLength: 8,
+                                        maxLength: 64,
+                                        loadingSpinner: {
+                                            size: 'small',
+                                            color: 'white',
+                                            isLoading: loadingOldPassword
+                                        }
+                                    }"
+                                ></app-ta-input>
+                                <p
+                                    *ngIf="!userPasswordTyping"
+                                    class="old-password-message"
+                                >
+                                    Before you set new password please confirm
+                                    current.
+                                </p>
+                                <div
+                                    class="old-password-checkmark"
+                                    [ngClass]="{
+                                        valid: correctPassword
+                                    }"
+                                    (click)="onSetNewPassword()"
+                                >
+                                    <p>CONFIRM</p>
+                                </div>
+                            </div>
+                            <div *ngIf="setNewPassword">
+                                <div class="row row-mb-22">
+                                    <div class="col-6">
+                                        <app-ta-input
+                                            formControlName="newPassword"
+                                            [inputConfig]="{
+                                                name: 'Password',
+                                                type: 'password',
+                                                label: 'New Password',
+                                                placeholderIcon: 'password',
+                                                isRequired: true,
+                                                autocomplete: 'off',
+                                                minLength: 8,
+                                                maxLength: 64,
+                                                customClass: 'line-input-26'
+                                            }"
+                                        ></app-ta-input>
+                                    </div>
+                                    <div class="col-6">
+                                        <app-ta-input
+                                            formControlName="password"
+                                            [inputConfig]="{
+                                                name: 'Password',
+                                                type: 'password',
+                                                label: 'Confirm Password',
+                                                placeholderIcon: 'password',
+                                                isRequired: true,
+                                                autocomplete: 'off',
+                                                minLength: 8,
+                                                maxLength: 64,
+                                                customClass: 'line-input-26'
+                                            }"
+                                        ></app-ta-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div *ngIf="setNewPassword">
-                <div class="row row-mb-22">
-                  <div class="col-6">
-                    <app-ta-input
-                      formControlName="newPassword"
-                      [inputConfig]="{
-                        name: 'Password',
-                        type: 'password',
-                        label: 'New Password',
-                        placeholderIcon: 'password',
-                        isRequired: true,
-                        autocomplete: 'off',
-                        minLength: 8,
-                        maxLength: 64,
-                        customClass: 'line-input-26'
-                      }"
-                    ></app-ta-input>
-                  </div>
-                  <div class="col-6">
-                    <app-ta-input
-                      formControlName="password"
-                      [inputConfig]="{
-                        name: 'Password',
-                        type: 'password',
-                        label: 'Confirm Password',
-                        placeholderIcon: 'password',
-                        isRequired: true,
-                        autocomplete: 'off',
-                        minLength: 8,
-                        maxLength: 64,
-                        customClass: 'line-input-26'
-                      }"
-                    ></app-ta-input>
-                  </div>
+                <!-------------------------------- Additional Tab -------------------------------->
+                <div class="m-tab" *ngIf="selectedTab === 2">
+                    <app-ta-custom-card
+                        [cardName]="'Profile Picture'"
+                        [isCardOpen]="true"
+                    >
+                        <app-ta-logo-change
+                            [imageUrl]="
+                                this.profileUserForm.get('avatar').value
+                            "
+                            [croppieOptions]="croppieOptions"
+                            (validationEvent)="onImageValidation($event)"
+                            (base64ImageEvent)="onUploadImage($event)"
+                        ></app-ta-logo-change>
+                    </app-ta-custom-card>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-        <!-------------------------------- Additional Tab -------------------------------->
-        <div class="m-tab" *ngIf="selectedTab === 2">
-          <app-ta-custom-card
-            [cardName]="'Profile Picture'"
-            [isCardOpen]="true"
-          >
-            <app-ta-logo-change
-              [imageUrl]="this.profileUserForm.get('avatar').value"
-              [croppieOptions]="croppieOptions"
-              (validationEvent)="onImageValidation($event)"
-              (base64ImageEvent)="onUploadImage($event)"
-            ></app-ta-logo-change>
-          </app-ta-custom-card>
-        </div>
-      </div>
-    </form>
-  </div>
+        </form>
+    </div>
 </app-ta-modal>

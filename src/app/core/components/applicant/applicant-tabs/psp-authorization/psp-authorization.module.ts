@@ -8,12 +8,12 @@ import { PspAuthorizationRoutingModule } from './psp-authorization-routing.modul
 import { ApplicantModule } from './../../applicant.module';
 
 @NgModule({
-  declarations: [PspAuthorizationComponent],
-  imports: [
-    CommonModule,
-    SharedModule,
-    PspAuthorizationRoutingModule,
-    ApplicantModule,
-  ],
+    declarations: [PspAuthorizationComponent],
+    imports: [
+        CommonModule,
+        SharedModule,
+        PspAuthorizationRoutingModule,
+        ApplicantModule,
+    ],
 })
 export class PspAuthorizationModule {}

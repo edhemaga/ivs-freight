@@ -1,4 +1,4 @@
-.main-toast-holder{
+.main-toast-holder {
     position: relative;
     width: max-content;
     min-width: 200px;
@@ -10,42 +10,42 @@
     margin-bottom: 10px;
     margin-left: 0px;
     user-select: none;
-    transition: all 0.300s ease;
-    
+    transition: all 0.3s ease;
+
     display: flex;
     flex-wrap: nowrap;
-    
-    &.wide-toast-message{
+
+    &.wide-toast-message {
         //width: 340px;
     }
 
-    &.movedLeft{
+    &.movedLeft {
         margin-left: 142px;
     }
 
-    .main-messages-holder{
+    .main-messages-holder {
         min-width: 152px;
     }
 
-    .buttons_holder{
+    .buttons_holder {
         display: flex;
         flex-wrap: nowrap;
     }
 
-    .toast-title{
+    .toast-title {
         margin-right: 22px;
         font-size: 11px;
         font-weight: bold;
         line-height: 14px;
-        color: #FFF;
+        color: #fff;
         opacity: 0.7;
     }
 
-    .toast-message{
+    .toast-message {
         width: 100%;
         margin-right: 22px;
-        font-size: 14px; 
-        color: #FFFFFF;
+        font-size: 14px;
+        color: #ffffff;
         line-height: 18px;
         opacity: 0.7;
         font-weight: 600;
@@ -55,11 +55,11 @@
         white-space: nowrap;
     }
 
-    .errorMessage{
+    .errorMessage {
         //width: 75%;
     }
 
-    .closeToastrBtn{
+    .closeToastrBtn {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -70,34 +70,32 @@
         cursor: pointer;
         svg {
             path {
-              fill: #FFFFFF;
-              opacity: 0.7;
+                fill: #ffffff;
+                opacity: 0.7;
             }
-          }
-
-
-       
-        &:hover{
-          opacity: 1;
-
-          svg {
-            path {
-                opacity: 1;
-            }
-          }
         }
-     }
 
-    .retryButton{
-       // display: none;
+        &:hover {
+            opacity: 1;
+
+            svg {
+                path {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .retryButton {
+        // display: none;
         margin-right: 8px;
         svg {
             height: 16.2px;
             width: 13.69;
         }
-    } 
+    }
 
-    .animation-holder{
+    .animation-holder {
         position: absolute;
         top: 8px;
         right: 8px;
@@ -108,30 +106,28 @@
         width: 32px;
     }
 
-    &:hover{
-        .toast-title{
+    &:hover {
+        .toast-title {
             opacity: 1;
         }
 
-        .toast-message{
+        .toast-message {
             opacity: 1;
         }
     }
 }
 
-.retryClass{
-    
+.retryClass {
     background-color: #424242 !important;
-  
-    .closeToastrBtn{
-        &:hover{
-            background-color: #2E2E2E;
-          }
+
+    .closeToastrBtn {
+        &:hover {
+            background-color: #2e2e2e;
         }
-  
-    .toast-title{
-        color: #6F9EE0;
+    }
+
+    .toast-title {
+        color: #6f9ee0;
         opacity: 1;
     }
 }
-

@@ -6,11 +6,11 @@ export interface RoutingStateState extends EntityState<RoutingState> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'routing-state' })
-export class RoutingStateStore extends EntityStore<RoutingStateState, RoutingState> {
-
-  constructor() {
-    super();
-  }
-
+export class RoutingStateStore extends EntityStore<
+    RoutingStateState,
+    RoutingState
+> {
+    constructor() {
+        super();
+    }
 }
-

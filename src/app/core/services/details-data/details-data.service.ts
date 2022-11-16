@@ -2,50 +2,50 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class DetailsDataService {
-  private leftSideMenuStatus = new BehaviorSubject<boolean>(false);
-  public leftSideMenuChanges = this.leftSideMenuStatus.asObservable();
+    private leftSideMenuStatus = new BehaviorSubject<boolean>(false);
+    public leftSideMenuChanges = this.leftSideMenuStatus.asObservable();
 
-  public mainData: any;
-  public cdlNum: any;
-  public leftMenuOpened: any = false;
-  public stopName: any;
+    public mainData: any;
+    public cdlNum: any;
+    public leftMenuOpened: any = false;
+    public stopName: any;
 
-  constructor() {}
+    constructor() {}
 
-  setNewData(newData) {
-    this.mainData = newData;
-  }
-
-  public updateLeftMenuStatus(leftSideMenuStatus: boolean) {
-    this.leftSideMenuStatus.next(leftSideMenuStatus);
-  }
-
-  changeDnuStatus(type, status) {
-    if (type == 'dnu') {
-      this.mainData.dnu = status;
-    } else if (type == 'ban') {
-      this.mainData.ban = status;
-    } else if (type == 'status') {
-      this.mainData.status = status;
+    setNewData(newData) {
+        this.mainData = newData;
     }
-  }
 
-  setCdlNum(mod) {
-    this.cdlNum = mod;
-  }
-
-  changeRateStatus(type, mod) {
-    if (type == 'like') {
-      this.mainData.raiting.hasLiked = mod;
-    } else {
-      this.mainData.raiting.hasDislike = mod;
+    public updateLeftMenuStatus(leftSideMenuStatus: boolean) {
+        this.leftSideMenuStatus.next(leftSideMenuStatus);
     }
-  }
 
-  setStopName(mod){
-    this.stopName = mod;
-  }
+    changeDnuStatus(type, status) {
+        if (type == 'dnu') {
+            this.mainData.dnu = status;
+        } else if (type == 'ban') {
+            this.mainData.ban = status;
+        } else if (type == 'status') {
+            this.mainData.status = status;
+        }
+    }
+
+    setCdlNum(mod) {
+        this.cdlNum = mod;
+    }
+
+    changeRateStatus(type, mod) {
+        if (type == 'like') {
+            this.mainData.raiting.hasLiked = mod;
+        } else {
+            this.mainData.raiting.hasDislike = mod;
+        }
+    }
+
+    setStopName(mod) {
+        this.stopName = mod;
+    }
 }
