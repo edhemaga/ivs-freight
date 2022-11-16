@@ -149,7 +149,8 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
         }
         if (allowSave) {
             this.savedValue = this.value;
-            this.getSuperControl.patchValue(this.value);
+            const val = !this.value || this.value == '' ? null : this.value;
+            this.getSuperControl.patchValue(val);
         }
         if (
             this.noteType == 'details-card' &&

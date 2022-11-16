@@ -35,7 +35,9 @@
         <app-ta-checkbox
             formControlName="isAgreement"
             [name]="'isAgreement'"
-            [label]="'I also understand that JD Freight have the right to:'"
+            [label]="
+                'I also understand that ' + companyName + ' have the right to:'
+            "
             [customClass]="'bold-12'"
             [disabledStillCheckMark]="
                 selectedMode === 'REVIEW_MODE' ||
@@ -49,6 +51,9 @@
     <div class="d-flex flex-column text-center bottom-section">
         <p
             class="ta-font-regular"
+            [ngClass]="{
+                'agreement-no-value': !personalInfoForm.get('isAgreement').value
+            }"
             [ngStyle]="{
                 color: !personalInfoForm.get('isAgreement').value
                     ? '#3551B7'
@@ -185,7 +190,14 @@
 
             <!--  PHONE, EMAIL-->
 
-            <div class="d-flex form-input-container line-container">
+            <div
+                class="d-flex form-input-container line-container"
+                [ngStyle]="{
+                    'margin-bottom': isEditingMiddlePositionAddress
+                        ? '53px'
+                        : '32px'
+                }"
+            >
                 <div class="group phone-group">
                     <app-ta-input
                         formControlName="phone"
@@ -276,7 +288,8 @@
                         [ngStyle]="{
                             'margin-top':
                                 (isEditingArray[i]?.isEditing &&
-                                    isEditingMiddlePositionAddress) ||
+                                    isEditingMiddlePositionAddress &&
+                                    i !== 0) ||
                                 (isEditingArray[i]?.isEditing &&
                                     isEditingMiddlePositionAddress &&
                                     last)
@@ -358,24 +371,26 @@
                                             class="address-container"
                                             [ngStyle]="{
                                                 width:
-                                                    isEditingArray[i]
+                                                    previousAddresses.controls
+                                                        .length === 1 ||
+                                                    (isEditingArray[i]
                                                         ?.isEditing &&
-                                                    !isEditingArray[i]
-                                                        ?.isEditingAddress &&
-                                                    !isLastInputDeleted &&
-                                                    !isEditingArray[i]
-                                                        ?.isFirstAddress
-                                                        ? '442px'
+                                                        !isEditingArray[i]
+                                                            ?.isEditingAddress &&
+                                                        isEditingArray[i]
+                                                            ?.isFirstAddress &&
+                                                        previousAddresses
+                                                            .controls.length ===
+                                                            1)
+                                                        ? '480px'
                                                         : isEditingArray[i]
                                                               ?.isEditing &&
                                                           !isEditingArray[i]
                                                               ?.isEditingAddress &&
-                                                          isEditingArray[i]
-                                                              ?.isFirstAddress &&
-                                                          previousAddresses
-                                                              .controls
-                                                              .length === 1
-                                                        ? '480px'
+                                                          !isLastInputDeleted &&
+                                                          !isEditingArray[i]
+                                                              ?.isFirstAddress
+                                                        ? '442px'
                                                         : '412px'
                                             }"
                                         >
@@ -587,13 +602,11 @@
                                                         'FEEDBACK_MODE'
                                             }"
                                             *ngIf="
+                                                previousAddresses?.controls
+                                                    .length !== 1 &&
                                                 isEditingArray[i]?.isEditing &&
                                                 !isEditingArray[i]
                                                     ?.isEditingAddress &&
-                                                i ===
-                                                    previousAddresses?.controls
-                                                        .length -
-                                                        1 &&
                                                 !isLastInputDeleted &&
                                                 !isEditingArray[i]
                                                     .isFirstAddress
@@ -861,25 +874,20 @@
 
                     <button
                         type="button"
-                        class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+                        class="d-flex align-items-center ta-font-bold add-btn"
                         (click)="onAddNewAddress()"
                         [ngClass]="{
                             disabled:
-                                previousAddresses.controls.length !== 0 &&
                                 !isLastAddedPreviousAddressValid &&
                                 !isLastInputDeleted
                         }"
                     >
                         <svg-icon
                             class="plus-icon"
-                            src="assets/svg/common/ic_plus.svg"
-                            [svgStyle]="{
-                                'width.px': 18,
-                                'height.px': 18
-                            }"
+                            src="assets/svg/truckassist-table/plus-icon.svg"
                         ></svg-icon>
 
-                        Add Address
+                        <p class="m-0 ta-font-bold">Add Address</p>
                     </button>
                 </div>
             </div>

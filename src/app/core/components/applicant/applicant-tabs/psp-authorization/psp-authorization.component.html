@@ -39,7 +39,7 @@
                 >
                     <p class="m-0 ta-font-regular">
                         In connection with your application for employment with
-                        <span class="ta-font-bold">JD FREIGHT</span>
+                        <span class="ta-font-bold">{{ companyName }}</span>
                         (“Prospective Employer”), Prospective Employer, its
                         employees, agents or contractors may obtain one or more
                         reports regarding your driving, and safety inspection
@@ -143,13 +143,10 @@
                             [label]="
                                 'Please confirm that you have read and understood the content of this notice'
                             "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-feedback'
-                                    : 'bold-12'
-                            "
+                            [customClass]="'bold-12'"
                             [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
                             "
                         >
                         </app-ta-checkbox>
@@ -190,15 +187,14 @@
                             formControlName="isAuthorize"
                             [name]="'isAuthorize'"
                             [label]="
-                                'I authorize JD FREIGHT (“Prospective Employer”) to access the FMCSA Pre-Employment Screening Program (PSP)'
+                                'I authorize ' +
+                                companyName +
+                                ' (“Prospective Employer”) to access the FMCSA Pre-Employment Screening Program (PSP)'
                             "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-disclosure-release-feedback'
-                                    : 'disclosure-release'
-                            "
+                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
                             "
                         >
                         </app-ta-checkbox>
@@ -206,16 +202,13 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    pspAuthorizationForm.get('isAuthorize')
-                                        .value
-                                        ? '#3c3c3c'
-                                        : selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6c6c6c',
+                                color: pspAuthorizationForm.get('isAuthorize')
+                                    .value
+                                    ? '#3c3c3c'
+                                    : '#6c6c6c',
                                 cursor:
-                                    selectedMode === 'REVIEW_MODE'
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    selectedMode === 'FEEDBACK_MODE'
                                         ? 'auto'
                                         : 'pointer'
                             }"
@@ -246,13 +239,10 @@
                             [label]="
                                 'I further understand that neither the Prospective Employer nor the FMCSA contractor supplying the crash and'
                             "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-disclosure-release-feedback'
-                                    : 'disclosure-release'
-                            "
+                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
                             "
                         >
                         </app-ta-checkbox>
@@ -260,17 +250,14 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    pspAuthorizationForm.get(
-                                        'isFurtherUnderstand'
-                                    ).value
-                                        ? '#3c3c3c'
-                                        : selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6c6c6c',
+                                color: pspAuthorizationForm.get(
+                                    'isFurtherUnderstand'
+                                ).value
+                                    ? '#3c3c3c'
+                                    : '#6c6c6c',
                                 cursor:
-                                    selectedMode === 'REVIEW_MODE'
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    selectedMode === 'FEEDBACK_MODE'
                                         ? 'auto'
                                         : 'pointer'
                             }"
@@ -305,13 +292,10 @@
                             [label]="
                                 'I understand that any crash or inspection in which I was involved will display on my PSP report. Since the PSP'
                             "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-disclosure-release-feedback'
-                                    : 'disclosure-release'
-                            "
+                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
                             "
                         >
                         </app-ta-checkbox>
@@ -319,16 +303,13 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    pspAuthorizationForm.get('isPspReport')
-                                        .value
-                                        ? '#3c3c3c'
-                                        : selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6c6c6c',
+                                color: pspAuthorizationForm.get('isPspReport')
+                                    .value
+                                    ? '#3c3c3c'
+                                    : '#6c6c6c',
                                 cursor:
-                                    selectedMode === 'REVIEW_MODE'
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    selectedMode === 'FEEDBACK_MODE'
                                         ? 'auto'
                                         : 'pointer'
                             }"
@@ -357,13 +338,10 @@
                             [label]="
                                 'I have read the above Disclosure Regarding Background Reports provided to me by Prospective Employer and'
                             "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-disclosure-release-feedback'
-                                    : 'disclosure-release'
-                            "
+                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
                             "
                         >
                         </app-ta-checkbox>
@@ -371,17 +349,14 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    pspAuthorizationForm.get(
-                                        'isDisclosureRegardingReport'
-                                    ).value
-                                        ? '#3c3c3c'
-                                        : selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6c6c6c',
+                                color: pspAuthorizationForm.get(
+                                    'isDisclosureRegardingReport'
+                                ).value
+                                    ? '#3c3c3c'
+                                    : '#6c6c6c',
                                 cursor:
-                                    selectedMode === 'REVIEW_MODE'
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    selectedMode === 'FEEDBACK_MODE'
                                         ? 'auto'
                                         : 'pointer'
                             }"
@@ -513,20 +488,12 @@
 
                     <!-- SIGNATURE PAD -->
 
-                    <div
-                        class="d-flex signature-pad-container"
-                        *ngIf="selectedMode === 'APPLICANT_MODE'"
-                    >
+                    <div class="d-flex signature-pad-container">
                         <app-applicant-signature-pad
+                            [mode]="selectedMode"
+                            [signatureImgSrc]="signatureImgSrc"
                             (signatureEmitter)="onSignatureAction($event)"
                         ></app-applicant-signature-pad>
-                    </div>
-
-                    <div
-                        class="d-flex justify-content-center align-items-center signature-image-container"
-                        *ngIf="selectedMode !== 'APPLICANT_MODE'"
-                    >
-                        <img src="" alt="signature" />
                     </div>
                 </form>
             </div>

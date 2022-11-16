@@ -156,7 +156,9 @@
     <app-applicant-next-back-btn
         [nextStep]="true"
         [lastStep]="true"
-        [filledCorrectly]="selectedMode === 'APPLICANT_MODE' && true"
+        [filledCorrectly]="
+            selectedMode === 'APPLICANT_MODE' && ssnCardForm.valid
+        "
         [hasIncorrectFields]="
             selectedMode === 'REVIEW_MODE' && hasIncorrectFields
         "

@@ -112,6 +112,7 @@
             'dropdown-options-groups':
                 template === 'groups' || template === 'load-broker-contact'
         }"
+        (scroll)="onScrollDropdown($event.target)"
     >
         <div [ngSwitch]="template">
             <!--------------------------- SVG Template (Render svgs or text if svgs doesn't exist ) --------------------------->

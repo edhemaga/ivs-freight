@@ -468,7 +468,7 @@ export class AccidentTableComponent
                 this.modalService.openModal(
                     AccidentModalComponent,
                     { size: 'large-xl' },
-                    { id: 21, type: 'edit' }
+                    { id: event.id, type: 'edit', data: event.data }
                 );
             }
         }

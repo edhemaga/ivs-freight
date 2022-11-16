@@ -4,6 +4,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import {
     AfterViewInit,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnChanges,
@@ -77,6 +78,11 @@ export class TaInputDropdownComponent
 
     @Output() placeholderIconEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
+
+    @Output('pagination') paginationEvent: EventEmitter<number> =
+        new EventEmitter<number>();
+
+    public paginationNumber: number = 0;
 
     public originalOptions: any[] = [];
 
@@ -188,6 +194,14 @@ export class TaInputDropdownComponent
                 this.popoverRef.open();
                 clearTimeout(timeout);
             }, 450);
+        }
+    }
+
+    public onScrollDropdown(event: any) {
+        if (event.scrollTop + event.offsetHeight === event.scrollHeight) {
+            this.paginationNumber += 1;
+
+            this.paginationEvent.emit(this.paginationNumber);
         }
     }
 

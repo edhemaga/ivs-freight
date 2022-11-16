@@ -246,7 +246,7 @@ export class TruckassistTableToolbarComponent
         this.tableService.sendDeleteSelectedRows(this.tableRowsSelected);
     }
 
-    // Get Tab Data For Selected Tab
+    // Get Tab Data For Selected Tabs
     getSelectedTabTableData() {
         if (this.tableData.length) {
             this.activeTableData = this.tableData.find(
@@ -293,12 +293,19 @@ export class TruckassistTableToolbarComponent
                     `table-${this.tableConfigurationType}-Configuration`
                 );
 
-                this.tableService
-                    .sendTableConfig({
-                        tableType: this.tableConfigurationType,
-                        config: tableConfig,
-                    })
-                    .subscribe(() => {});
+                if (tableConfig) {
+                    this.tableService
+                        .updateTableConfig({
+                            tableType: this.tableConfigurationType,
+                            config: tableConfig,
+                        })
+                        .subscribe(() => {
+                            console.log(
+                                'Kreira se konfiguracija zato sto se lock-uje tabela, za tabelu: ' +
+                                    this.tableConfigurationType
+                            );
+                        });
+                }
             }
 
             /* if (!this.tableLocked) {
@@ -309,26 +316,30 @@ export class TruckassistTableToolbarComponent
         } else if (action.text === 'Columns') {
             action.active = !action.active;
         } else if (action.text === 'Reset Columns') {
-            localStorage.removeItem(
-                `table-${this.tableConfigurationType}-Configuration`
-            );
+            /* localStorage.removeItem(
+        `table-${this.tableConfigurationType}-Configuration`
+      );
 
-            this.tableService.sendResetColumns(true);
+      this.tableService.sendResetColumns(true); */
 
-            /* this.tableService
-        .deleteTableConfig(this.tableConfigurationType)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          console.log(
-            'Brise se konfiguracija tabele: ' + this.tableConfigurationType
-          );
+            this.tableService
+                .updateTableConfig({
+                    tableType: this.tableConfigurationType,
+                    config: null,
+                })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                    console.log(
+                        'Brise se konfiguracija tabele: ' +
+                            this.tableConfigurationType
+                    );
 
-          localStorage.removeItem(
-            `table-${this.tableConfigurationType}-Configuration`
-          );
+                    localStorage.removeItem(
+                        `table-${this.tableConfigurationType}-Configuration`
+                    );
 
-          this.tableService.sendResetColumns(true);
-        }); */
+                    this.tableService.sendResetColumns(true);
+                });
         } else {
             alert('Treba da se odradi!');
         }
@@ -400,11 +411,16 @@ export class TruckassistTableToolbarComponent
 
         if (tableConfig) {
             this.tableService
-                .sendTableConfig({
+                .updateTableConfig({
                     tableType: this.tableConfigurationType,
                     config: tableConfig,
                 })
-                .subscribe(() => {});
+                .subscribe(() => {
+                    console.log(
+                        'Kreira se konfiguracija zato sto se napusta tabela, za tabelu: ' +
+                            this.tableConfigurationType
+                    );
+                });
         }
     }
 }

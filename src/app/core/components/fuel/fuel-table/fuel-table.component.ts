@@ -65,7 +65,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
-    fuelData: FuelTransactionListResponse | FuelStopListResponse;
+    fuelTransactionList: FuelTransactionListResponse;
+    fuelStopList: FuelStopListResponse;
 
     constructor(
         private modalService: ModalService,
@@ -74,6 +75,20 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private fuelQuery: FuelQuery
     ) {}
     ngOnInit(): void {
+        // Get Fuel Transactions From Store
+        this.fuelQuery.fuelTransactions$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                this.fuelTransactionList = data.pagination.data;
+            });
+
+        // Get Fuel Stops From Store
+        this.fuelQuery.fuelStops$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                this.fuelStopList = data.pagination.data;
+            });
+
         this.sendFuelData();
 
         // Reset Columns
@@ -259,25 +274,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
           }, 900); */
                 }
             });
-
-        // Map
-        this.sortTypes = [
-            { name: 'Business Name', id: 1, sortName: 'name' },
-            { name: 'Location', id: 2, sortName: 'location', isHidden: true },
-            { name: 'Favorites', id: 8, sortName: 'favorites' },
-            { name: 'Fuel Price', id: 9, sortName: 'fuelPrice' },
-            { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
-            { name: 'Purchase', id: 6, sortName: 'purchase' },
-            { name: 'Total Cost', id: 7, sortName: 'cost' },
-        ];
-
-        this.activeSortType = this.sortTypes[0];
-
-        this.sortBy = this.sortDirection
-            ? this.activeSortType.sortName +
-              (this.sortDirection[0]?.toUpperCase() +
-                  this.sortDirection?.substr(1).toLowerCase())
-            : '';
     }
 
     ngAfterViewInit(): void {
@@ -366,14 +362,18 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const fuelCount = JSON.parse(localStorage.getItem('fuelTableCount'));
 
-        this.getTabData();
+        console.log('Fuel Transactions Data');
+        console.log(this.fuelTransactionList);
+
+        console.log('Fuel Stops Data');
+        console.log(this.fuelStopList);
 
         this.tableData = [
             {
                 title: 'Transactions',
                 field: 'active',
                 length: fuelCount.fuelTransactions,
-                data: this.fuelData,
+                data: [{}],
                 gridNameTitle: 'Fuel',
                 tableConfiguration: 'FUEL_TRANSACTION',
                 isActive: this.selectedTab === 'active',
@@ -383,7 +383,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 title: 'Stop',
                 field: 'inactive',
                 length: fuelCount.fuelStops,
-                data: this.fuelData,
+                data: [{}],
                 gridNameTitle: 'Fuel',
                 tableConfiguration: 'FUEL_STOP',
                 isActive: this.selectedTab === 'inactive',
@@ -391,27 +391,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
 
-        console.log(this.tableData);
-
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setFuelData(td);
-    }
-
-    getTabData() {
-        if (this.selectedTab === 'active') {
-            return this.fuelQuery.fuelTransactions$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((data) => {
-                    this.fuelData = data.pagination.data;
-                });
-        } else {
-            return this.fuelQuery.fuelStops$
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((data) => {
-                    this.fuelData = data.pagination.data;
-                });
-        }
     }
 
     setFuelData(td: any) {
