@@ -12,10 +12,7 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 import { AfterViewInit } from '@angular/core';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { FuelQuery } from '../state/fule-state/fuel-state.query';
-import {
-    FuelStopListResponse,
-    FuelTransactionListResponse,
-} from 'appcoretruckassist';
+import { FuelStopResponse, FuelTransactionResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-table',
@@ -65,8 +62,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
-    fuelTransactionList: FuelTransactionListResponse;
-    fuelStopList: FuelStopListResponse;
+    fuelTransactionList: FuelTransactionResponse[];
+    fuelStopList: FuelStopResponse[];
 
     constructor(
         private modalService: ModalService,

@@ -66,7 +66,6 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
     removeResizer() {
         this.renderer.removeClass(this.resizer, 'resise-btn');
         this.renderer.removeChild(this.column, this.resizer);
-        this.renderer.destroy();
     }
 
     onMouseDown = (event: MouseEvent) => {
