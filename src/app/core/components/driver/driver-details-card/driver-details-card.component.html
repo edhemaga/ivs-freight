@@ -1,1098 +1,1351 @@
 <div *ngIf="driver" class="cards-item-wrapper-1">
-  <app-ta-details-header-card
-    [tooltipNext]="'Next Driver'"
-    [tooltipPrevious]="'Previous Driver'"
-    [searchName]="'Driver is Owner'"
-    [cardDetailsDate]="driver.hired | formatDateP"
-    [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"
-    [statusInactive]="driver.status"
-    [options]="driversDropdowns"
-    [sortOptions]="'active-drivers'"
-    [searchInputName]="'Search Driver'"
-    (selectValue)="onSelectedDriver($event)"
-    (changeEvent)="onChangeDriver($event)"
-    [hasArrow]="hideArrow"
-    [optionsDrop]="dropData"
-    [haveDropSVG]="true"
-    (dropActions)="onDriverActions($event)"
-  >
-    <div class="driver-container">
-      <div class="driver-personal">
-        <div class="driver-avatar">
-          <img
-            *ngIf="driver?.avatar"
-            class="driver-avatar-svg"
-            [src]="imageBase64Service.sanitizer(driver?.avatar)"
-            alt="driver-image"
-          />
-          <app-profile-images
-            *ngIf="!driver?.avatar"
-            [indx]="0"
-            [size]="'large'"
-            [type]="'driver'"
-          ></app-profile-images>
-        </div>
-        <div class="driver-information">
-          <div class="information-item">
-            <svg-icon
-              class="information-svg"
-              src="assets/svg/common/ic_ssn.svg"
-            ></svg-icon>
-            <app-ta-copy [textFontSize]="'18px'" [copyValue]="driver?.ssn">
-            </app-ta-copy>
-          </div>
-          <div class="information-item">
-            <svg-icon
-              class="information-svg"
-              src="assets/svg/common/ic_phone.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="driver?.phone"> </app-ta-copy>
-          </div>
-          <div class="information-item">
-            <svg-icon
-              class="information-svg"
-              src="assets/svg/common/ic_email.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="driver?.email"> </app-ta-copy>
-          </div>
-        </div>
-      </div>
-    </div>
-  </app-ta-details-header-card>
-  <div
-    class="wrapper-additional-cards"
-    [ngClass]="{ 'bind-heigth': !templateCard }"
-  >
-    <div class="details-cards">
-      <!-- assignedTo -->
-      <app-ta-custom-card
-        [cardName]="
-          driver.status == 1 ? 'Assigned To' : 'View Dispatch History'
-        "
-        [hasDivider]="false"
-        [tooltipName]="'Dispatch History'"
-        [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
-        [isCardOpen]="true"
-        [bodyTemplate]="'card'"
-        class="first-custom-card"
-      >
-        <div class="assignTo">
-          <div class="assignTo-item first">
-            <div class="icon-text-wrapper-cmp">
-              <span
-                tooltipBackground="#6c6c6c"
-                ngbTooltip
-                mainTooltip="Semi Truck"
-                position="top"
-                class="semi-tooltip"
-              >
-                <svg-icon
-                  class="assignTo-vehicle"
-                  src="assets/svg/common/trucks/ic_truck_semi-wSleeper.svg"
-                >
-                </svg-icon>
-              </span>
-              <span class="assignTo-value">36545</span>
-            </div>
-
-            <span
-              tooltipBackground="#6c6c6c"
-              ngbTooltip
-              mainTooltip="View in Modal"
-              position="top"
-              style="margin-left: 40px"
-            >
-              <svg-icon
-                class="open-modal-icon"
-                src="assets/svg/common/arrow_top_right.svg"
-              ></svg-icon>
-            </span>
-          </div>
-          <div class="assignTo-item second">
-            <div class="icon-text-wrapper-cmp">
-              <span
-                tooltipBackground="#6c6c6c"
-                ngbTooltip
-                mainTooltip="Container"
-                position="top"
-                class="semi-tooltip"
-              >
-                <svg-icon
-                  class="assignTo-vehicle"
-                  src="assets/svg/common/trailers/ic_trailer_container.svg"
-                ></svg-icon>
-              </span>
-              <span class="assignTo-value container-value"> R4578 </span>
-            </div>
-            <span
-              style="margin-left: 33px"
-              tooltipBackground="#6c6c6c"
-              ngbTooltip
-              mainTooltip="View in Modal"
-              position="top"
-            >
-              <svg-icon
-                class="open-modal-icon2"
-                src="assets/svg/common/arrow_top_right.svg"
-              ></svg-icon>
-            </span>
-          </div>
-        </div>
-      </app-ta-custom-card>
-
-      <!-- Additional info -->
-      <app-ta-custom-card
-        class="item-cards"
-        [bodyTemplate]="'card'"
-        [cardName]="'Additional info'"
-        [isCardOpen]="false"
-      >
-        <div class="additional-container">
-          <div class="addres-wrapper">
-            <div class="addres-name">Address</div>
-            <div class="addres-value-icon">
-              <div class="addres-value">
-                {{ driver.address.address }}
-              </div>
-              <span
-                tooltipBackground="#6c6c6c"
-                ngbTooltip
-                mainTooltip="Open in Places"
-                position="top"
-              >
-                <svg-icon
-                  class="address-icon"
-                  src="assets/svg/common/ic_address.svg"
-                >
-                </svg-icon>
-              </span>
-            </div>
-          </div>
-          <div class="addres-wrapper addres-second">
-            <div class="addres-name">Date of Birth</div>
-            <div class="addres-value">
-              {{ driver.dateOfBirth | formatDateP }}
-            </div>
-          </div>
-        </div>
-      </app-ta-custom-card>
-
-      <!-- Off Duty Location-->
-      <app-ta-custom-card
-        [hasCounter]="driver.offDutyLocations.length"
-        [cardName]="'Off Duty Location'"
-        [isCardOpen]="false"
-        *ngIf="driver.offDutyLocations.length"
-        [bodyTemplate]="'card'"
-        class="item-cards"
-      >
-        <div
-          *ngIf="driver.offDutyLocations === ''"
-          class="no-data-driver-details"
-        >
-          No Added Location
-        </div>
-        <div
-          class="additional-container"
-          *ngFor="let offDuty of driver.offDutyLocations; trackBy: identity"
-        >
-          <div *ngIf="offDuty" class="addres-wrapper">
-            <div class="addres-name">{{ offDuty?.nickname }}</div>
-            <div class="addres-value-icon">
-              <div class="addres-value">
-                {{ offDuty?.address?.address ? offDuty.address.address : "" }}
-              </div>
-              <span
-                tooltipBackground="#6c6c6c"
-                ngbTooltip
-                mainTooltip="Open in Places"
-                position="top"
-              >
-                <svg-icon
-                  class="address-icon"
-                  src="assets/svg/common/ic_address.svg"
-                >
-                </svg-icon>
-              </span>
-            </div>
-            <span *ngIf="!offDuty">No Added Location</span>
-          </div>
-        </div>
-      </app-ta-custom-card>
-
-      <!-- Employment history-->
-      <app-ta-custom-card
-        [cardName]="'Employment History'"
-        [isCardOpen]="false"
-        class="item-cards"
-        [bodyTemplate]="'card'"
-      >
-        <div class="employment-history-container">
-          <div class="years-of-service">
-            <div class="items-wrapper">
-              <div class="service-years-name">Years of Service</div>
-              <div class="service-year-value">
-                {{ yearsService }} {{ yearsService > 1 ? "years" : "year" }}
-                {{ daysService }} {{ daysService > 1 ? "days" : "day" }}
-              </div>
-            </div>
-          </div>
-          <div>
-            <div *ngIf="deactivatePeriod" class="progress-employment-history">
-              <div *ngIf="showTooltip" class="employment-tooltip">
-                <div class="emp-tooltip">
-                  <div class="emp-tooltip-value">
-                    <p class="emp-duration">
-                      {{ tooltipFormatStartDate }} -
-                      <span>{{
-                        tooltipData.endDate ? tooltipFormatEndDate : "Today"
-                      }}</span>
-                    </p>
-                    <div class="emp-text-icon">
-                      <p>
-                        {{
-                          tooltipData.isDeactivate ? "Deactivated " : "Employed"
-                        }}
-                      </p>
-                      <svg-icon
-                        class="svg-blue"
-                        src="{{
-                          tooltipData.isDeactivate
-                            ? 'assets/svg/common/ic_circle_light_blue.svg'
-                            : '  assets/svg/common/round_blue.svg'
-                        }}"
-                      ></svg-icon>
-                    </div>
-                  </div>
-                  <p class="year-working">
-                    {{ tooltipData.duration.Years }}
-                    {{ tooltipData.duration.Years > 1 ? "years" : "year" }}
-                    {{ tooltipData.duration.Days }}
-                    {{ tooltipData.duration.Days > 1 ? "days" : "day" }}
-                  </p>
+    <app-ta-details-header-card
+        [tooltipNext]="'Next Driver'"
+        [tooltipPrevious]="'Previous Driver'"
+        [searchName]="'Driver is Owner'"
+        [cardDetailsDate]="driver.hired | formatDateP"
+        [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"
+        [statusInactive]="driver.status"
+        [options]="driversDropdowns"
+        [sortOptions]="'active-drivers'"
+        [searchInputName]="'Search Driver'"
+        (selectValue)="onSelectedDriver($event)"
+        (changeEvent)="onChangeDriver($event)"
+        [hasArrow]="hideArrow"
+        [optionsDrop]="dropData"
+        [haveDropSVG]="true"
+        (dropActions)="onDriverActions($event)"
+    >
+        <div class="driver-container">
+            <div class="driver-personal">
+                <div class="driver-avatar">
+                    <img
+                        *ngIf="driver?.avatar"
+                        class="driver-avatar-svg"
+                        [src]="imageBase64Service.sanitizer(driver?.avatar)"
+                        alt="driver-image"
+                    />
+                    <app-profile-images
+                        *ngIf="!driver?.avatar"
+                        [indx]="0"
+                        [size]="'large'"
+                        [type]="'driver'"
+                    ></app-profile-images>
                 </div>
-              </div>
-              <div class="progress-driver">
-                <div
-                  (mouseover)="mouseEnter(dat)"
-                  (mouseleave)="showTooltip = false"
-                  *ngFor="let dat of dataProggress; trackBy: identity"
-                  [ngStyle]="{
-                    'background-color':
-                      dat.isDeactivate === true ? '#d4dff4' : '#6d82c8',
-                    width: dat.activePercentage + '%'
-                  }"
-                  [ngClass]="{
-                    emp: dat.isDeactivate == false,
-                    unp: dat.isDeactivate == true
-                  }"
-                ></div>
-              </div>
-              <div *ngIf="!showMoreEmployment" class="year-employer">
-                <p>{{ firstDate }}</p>
-                <p>{{ !lastDate == "Invalid Date" ? lastDate : "Today" }}</p>
-              </div>
-            </div>
-
-            <div
-              [@showHideCardBody]="showMoreEmployment ? 'true' : 'false'"
-              class="status-container"
-            >
-              <div class="status-header">
-                <div class="status-item">
-                  <p class="p-status">STATUS</p>
-                </div>
-                <div class="status-item">
-                  <p class="p-status">FROM - TO</p>
-                </div>
-                <div class="status-item">
-                  <p class="p-status">DURATION</p>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="status-items">
-                <div
-                  *ngFor="let empH of dataProggress; trackBy: identity"
-                  class="item-wrapper"
-                >
-                  <div class="svg-text">
-                    <svg-icon
-                      class="svg-blue"
-                      src="{{
-                        empH.isDeactivate
-                          ? 'assets/svg/common/ic_circle_light_blue.svg'
-                          : '  assets/svg/common/round_blue.svg'
-                      }}"
-                    ></svg-icon>
-                    <p class="employment">
-                      {{ empH.isDeactivate ? "Deactivated " : "Employed" }}
-                    </p>
-                  </div>
-                  <p class="date-from-to">
-                    {{ empH.startDate | formatDateP }} -
-                    <span *ngIf="empH.endDate">{{
-                      empH.endDate | formatDateP
-                    }}</span>
-                    <span *ngIf="!empH.endDate">Today</span>
-                  </p>
-                  <p *ngIf="empH.duration" class="duration">
-                    {{ empH.duration.Years }} y {{ empH.duration.Days }} d
-                  </p>
-                  <div class="divider-employment"></div>
-                </div>
-              </div>
-            </div>
-            <span
-              tooltipBackground="#6c6c6c"
-              ngbTooltip
-              [mainTooltip]="showMoreEmployment ? 'Show Less' : 'Show More'"
-              position="top"
-              *ngIf="deactivatePeriod"
-            >
-              <svg-icon
-                [ngClass]="{ 'transform-arrow': showMoreEmployment }"
-                (click)="showMoreEmployment = !showMoreEmployment"
-                class="arrow-down-employment"
-                src="assets/svg/common/fill_arrow_down.svg"
-              ></svg-icon>
-            </span>
-          </div>
-        </div>
-      </app-ta-custom-card>
-
-      <!-- Owner Details-->
-      <app-ta-custom-card
-        *ngIf="driver.owner"
-        class="item-cards"
-        [bodyTemplate]="'card'"
-        [cardName]="driver.owner ? 'Owner Details' : 'Owner - Sole Proprietor'"
-        [isCardOpen]="driver.owner ? true : false"
-        [hasArrow]="driver.owner ? true : false"
-      >
-        <div *ngIf="driver.owner" class="purchase-template">
-          <div class="purchase-template-item">
-            <div class="purchase-template-item-name">Company</div>
-            <div class="purchase-icon-copy">
-              <div class="purchase-template-item-value owner-name">
-                {{ driver.owner.name }}
-              </div>
-              <span
-                tooltipBackground="#6c6c6c"
-                ngbTooltip
-                mainTooltip="View in Modal"
-                position="top"
-              >
-                <svg-icon
-                  class="card-icon"
-                  src="assets/svg/common/arrow_top_right.svg"
-                ></svg-icon>
-              </span>
-            </div>
-          </div>
-          <div class="purchase-template-item second-name">
-            <div class="purchase-template-item-name">EIN</div>
-            <div class="purchase-icon-copy">
-              <app-ta-copy [copyValue]="driver.owner.ssnEin"> </app-ta-copy>
-            </div>
-          </div>
-        </div>
-      </app-ta-custom-card>
-
-      <!-- Commission Pay-->
-      <app-ta-custom-card
-        class="item-cards"
-        [bodyTemplate]="'card'"
-        *ngIf="
-          driver?.commissionSolo ||
-          driver?.solo?.loadedMile ||
-          driver?.team?.loadedMile
-        "
-        [cardName]="driver.commissionSolo ? 'Commission Pay' : 'Mileage Pay'"
-        [isCardOpen]="true"
-      >
-        <div *ngIf="driver?.commissionSolo" class="purchase-template">
-          <div class="purchase-template-item">
-            <div class="purchase-template-item-name">Solo</div>
-            <div class="purchase-template-item-value commsion-solo">
-              {{ driver.commissionSolo }}%
-            </div>
-          </div>
-
-          <div
-            class="purchase-template-item second-name"
-            *ngIf="driver?.commissionTeam"
-          >
-            <div class="purchase-template-item-name">Team</div>
-            <div class="purchase-template-item-value commsion-solo">
-              {{ driver.commissionTeam }}%
-            </div>
-          </div>
-        </div>
-        <div class="mileage-template">
-          <div class="mileage-template-item" *ngIf="driver?.solo?.loadedMile">
-            <div class="mileage-template-item-name">Empty (Solo)</div>
-            <div class="mileage-template-item-value">
-              ${{ driver.solo.emptyMile }}
-            </div>
-          </div>
-          <div class="mileage-template-item" *ngIf="driver?.solo?.loadedMile">
-            <div class="mileage-template-item-name">Loaded (Solo)</div>
-            <div class="mileage-template-item-value">
-              ${{ driver.solo.loadedMile }}
-            </div>
-          </div>
-          <div class="mileage-template-item" *ngIf="driver?.solo?.loadedMile">
-            <div class="mileage-template-item-name">Per Stop (Solo)</div>
-            <div class="mileage-template-item-value">
-              ${{ driver.solo.perStop }}
-            </div>
-          </div>
-          <div class="mileage-template-item" *ngIf="driver?.team?.loadedMile">
-            <div class="mileage-template-item-name">Empty (Team)</div>
-            <div class="mileage-template-item-value">
-              ${{ driver.team.emptyMile }}
-            </div>
-          </div>
-          <div class="mileage-template-item" *ngIf="driver?.team?.loadedMile">
-            <div class="mileage-template-item-name">Loaded (Team)</div>
-            <div class="mileage-template-item-value">
-              ${{ driver.team.loadedMile }}
-            </div>
-          </div>
-          <div class="mileage-template-item" *ngIf="driver?.team?.loadedMile">
-            <div class="mileage-template-item-name">Per Stop (Team)</div>
-            <div class="mileage-template-item-value">
-              ${{ driver.team.perStop }}
-            </div>
-          </div>
-        </div>
-      </app-ta-custom-card>
-
-      <!-- Payroll -->
-      <app-ta-custom-card
-        [cardName]="'Payroll'"
-        [tooltipName]="'View in Modal'"
-        [isCardOpen]="true"
-        class="item-cards"
-        [bodyTemplate]="'card'"
-        [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-      >
-        <div
-          class="charts-template perfomance"
-          [class.p-0]="barChart.hoveringStatus"
-        >
-          <div *ngIf="!barChart.hoveringStatus">
-            <app-ta-tab-switch
-              [tabs]="tabsDriver"
-              (switchClicked)="changeTab($event)"
-              [type]="'type2-modal-popup'"
-            >
-            </app-ta-tab-switch>
-          </div>
-          <div id="chart">
-            <app-ta-chart
-              #barChart
-              [chartConfig]="barChartConfig"
-              [axesProperties]="barAxes"
-              [legendAttributes]="barChartLegend"
-            >
-            </app-ta-chart>
-          </div>
-        </div>
-      </app-ta-custom-card>
-
-      <!-- Bank Info-->
-      <app-ta-custom-card
-        *ngIf="driver.account"
-        [hasHeaderSvg]="'assets/svg/common/banks/' + driver.bank.logoName"
-        [cardName]="'Bank Info'"
-        [isCardOpen]="false"
-        class="item-cards"
-        [customClassHeaderSvg]="true"
-        [bodyTemplate]="'card'"
-      >
-        <div class="purchase-template">
-          <div class="purchase-template-item">
-            <div class="purchase-template-item-name">Routing</div>
-            <div class="purchase-icon-copy">
-              <app-ta-copy [copyValue]="driver?.routing"> </app-ta-copy>
-            </div>
-          </div>
-          <div class="purchase-template-item second-name">
-            <div class="purchase-template-item-name">Account</div>
-            <div class="purchase-icon-copy">
-              <app-ta-copy
-                [hasEye]="true"
-                (showHide)="isAccountVisibleDriver = !isAccountVisibleDriver"
-                [copyValue]="driver?.account"
-              >
-              </app-ta-copy>
-            </div>
-          </div>
-        </div>
-      </app-ta-custom-card>
-      <!-- Emergency Contact-->
-      <app-ta-custom-card
-        [cardName]="'Emergency Contact'"
-        [isCardOpen]="false"
-        class="item-cards"
-        [bodyTemplate]="'card'"
-      >
-        <div
-          *ngIf="!driver.emergencyContactName || !driver.emergencyContactPhone"
-          class="no-data-driver-details"
-        >
-          No Contact
-        </div>
-        <div
-          *ngIf="driver.emergencyContactName && driver.emergencyContactPhone"
-          class="purchase-template"
-        >
-          <div class="purchase-template-item">
-            <div class="purchase-template-item-name">
-              {{
-                driver?.emergencyContactRelationship
-                  ? driver.emergencyContactRelationship
-                  : "Name"
-              }}
-            </div>
-            <div class="purchase-template-item-value">
-              {{ driver.emergencyContactName }}
-            </div>
-          </div>
-          <div class="purchase-template-item second-name">
-            <div class="purchase-template-item-name">Phone</div>
-            <div class="purchase-icon-copy">
-              <app-ta-copy [copyValue]="driver.emergencyContactPhone">
-              </app-ta-copy>
-            </div>
-          </div>
-        </div>
-      </app-ta-custom-card>
-      <div class="divider"></div>
-      <div class="details-page-row-5">
-        <div class="note-item">
-          <app-ta-input-note
-            [formControl]="note"
-            [isVisibleDivider]="false"
-            [isVisibleNote]="true"
-            [isVisibleArrow]="true"
-            [minRows]="1"
-            [placeholder]="'Write something.'"
-            [customClass]="'note-small'"
-            [note]="driverObject?.note"
-            [noteType]="'details-card'"
-            [entityId]="driver.id"
-            [entityType]="'Driver'"
-          >
-          </app-ta-input-note>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="templateCard">
-      <div class="custom-card-single">
-        <app-ta-custom-card
-          [cardName]="'CDL'"
-          [isCardOpen]="false"
-          [hasDivider]="false"
-          class="item-cards"
-          [bodyTemplate]="'card'"
-          [hasCounter]="driver.cdls.length"
-          [hasPlusHeader]="true"
-          (onActionEvent)="onModalAction('CDL')"
-        >
-          <div *ngFor="let cdl of dataCDl; let i = index; trackBy: identity">
-            <app-ta-re-card
-              [options]="dataTest"
-              [cardDocumentCounter]="6"
-              (resizePage)="toggleResizePage(i, 'cdl')"
-              [cardNameCommon]="cdl?.cdlNumber"
-              [expDateClose]="cdl?.expDate | formatDateP"
-              [hasCopyIcon]="true"
-              [optionsId]="cdl.id"
-              [weeklyWidth]="'28'"
-              [cardNameCurrent]="'cdl'"
-              (clickedCard)="getNameForDrop($event)"
-              (dataDropDopwn)="getCdlById(cdl.id)"
-              [isCardOpen]="cdl.status == 1 ? true : false"
-              [isDeactivated]="cdl.dateDeactivated"
-              [stateTooltipName]="cdl.state.stateName"
-              [shortName]="cdl.state.stateShortName"
-              (dropActions)="optionsEvent($event, 'cdl')"
-              [setPositionDrop]="true"
-            >
-              <div class="cards-container">
-                <div class="card-body-cdl">
-                  <div
-                    [ngClass]="{ 'card-row-issued': cdl.dateDeactivated }"
-                    class="card-restriction-endorsment card-restriction-class"
-                  >
-                    <div class="card-restriction">
-                      <div class="restriction-name">Class</div>
-                      <div class="restriction-item-value">
-                        {{ cdl?.classType.name }}
-                      </div>
-                    </div>
-                    <div class="card-restriction">
-                      <div class="restriction-name">Issued</div>
-                      <div class="restriction-item-value">
-                        {{ cdl?.issueDate | formatDateP }}
-                      </div>
-                    </div>
-                    <div *ngIf="cdl.dateDeactivated" class="card-restriction">
-                      <div class="restriction-name">Deactivated</div>
-                      <div class="restriction-item-value">
-                        {{ cdl.dateDeactivated | formatDateP }}
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    [ngClass]="{
-                      'card-restriction-endorsment': !toggler[i + 'cdl']
-                    }"
-                  >
-                    <div class="card-restriction">
-                      <p class="restriction-name">Restriction</p>
-                      <div class="item-card-wrapper">
-                        <p
-                          class="restriction-item-value"
-                          *ngFor="
-                            let rest of cdl.cdlRestrictions;
-                            trackBy: identity
-                          "
+                <div class="driver-information">
+                    <div class="information-item">
+                        <svg-icon
+                            class="information-svg"
+                            src="assets/svg/common/ic_ssn.svg"
+                        ></svg-icon>
+                        <app-ta-copy
+                            [textFontSize]="'18px'"
+                            [copyValue]="driver?.ssn"
                         >
-                          <span class="value-name">{{ rest?.code }}</span>
-                          <span class="desc" *ngIf="toggler[i + 'cdl']"
-                            >- {{ rest?.description }}
-                          </span>
-                        </p>
-                      </div>
+                        </app-ta-copy>
                     </div>
-                    <div class="card-restriction endorsement">
-                      <p class="restriction-name">Endorsement</p>
-                      <div class="item-card-wrapper">
-                        <p
-                          class="restriction-item-value"
-                          *ngFor="
-                            let endors of cdl?.cdlEndorsements;
-                            trackBy: identity
-                          "
-                        >
-                          <span class="span-value" *ngIf="endors?.length">
-                            <span class="value-name">{{ endors?.code }}</span>
+                    <div class="information-item">
+                        <svg-icon
+                            class="information-svg"
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="driver?.phone"> </app-ta-copy>
+                    </div>
+                    <div class="information-item">
+                        <svg-icon
+                            class="information-svg"
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="driver?.email"> </app-ta-copy>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-ta-details-header-card>
+    <div
+        class="wrapper-additional-cards"
+        [ngClass]="{ 'bind-heigth': !templateCard }"
+    >
+        <div class="details-cards">
+            <!-- assignedTo -->
+            <app-ta-custom-card
+                [cardName]="
+                    driver.status == 1 ? 'Assigned To' : 'View Dispatch History'
+                "
+                [hasDivider]="false"
+                [tooltipName]="'Dispatch History'"
+                [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
+                [isCardOpen]="true"
+                [bodyTemplate]="'card'"
+                class="first-custom-card"
+            >
+                <div class="assignTo">
+                    <div class="assignTo-item first">
+                        <div class="icon-text-wrapper-cmp">
                             <span
-                              *ngIf="toggler[i + 'description']"
-                              class="desc"
-                              >- {{ endors?.description }}</span
+                                tooltipBackground="#6c6c6c"
+                                ngbTooltip
+                                mainTooltip="Semi Truck"
+                                position="top"
+                                class="semi-tooltip"
                             >
-                          </span>
-                        </p>
-                        <span class="no-driver" *ngIf="!endors?.length"
-                          >None</span
+                                <svg-icon
+                                    class="assignTo-vehicle"
+                                    src="assets/svg/common/trucks/ic_truck_semi-wSleeper.svg"
+                                >
+                                </svg-icon>
+                            </span>
+                            <span class="assignTo-value">36545</span>
+                        </div>
+
+                        <span
+                            tooltipBackground="#6c6c6c"
+                            ngbTooltip
+                            mainTooltip="View in Modal"
+                            position="top"
+                            style="margin-left: 40px"
                         >
-                      </div>
+                            <svg-icon
+                                class="open-modal-icon"
+                                src="assets/svg/common/arrow_top_right.svg"
+                            ></svg-icon>
+                        </span>
                     </div>
-                  </div>
-                  <div
-                    class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i + 'cdl'] }"
-                  >
-                    <div class="card-details-progress-container">
-                      <app-truckassist-progress-expiration
-                        [expireDate]="cdl?.expDate | formatDateP"
-                        [startDate]="cdl?.issueDate | formatDateP"
-                        [expiresSettings]="'details'"
-                        [customText]="'Exp. in'"
-                      >
-                      </app-truckassist-progress-expiration>
+                    <div class="assignTo-item second">
+                        <div class="icon-text-wrapper-cmp">
+                            <span
+                                tooltipBackground="#6c6c6c"
+                                ngbTooltip
+                                mainTooltip="Container"
+                                position="top"
+                                class="semi-tooltip"
+                            >
+                                <svg-icon
+                                    class="assignTo-vehicle"
+                                    src="assets/svg/common/trailers/ic_trailer_container.svg"
+                                ></svg-icon>
+                            </span>
+                            <span class="assignTo-value container-value">
+                                R4578
+                            </span>
+                        </div>
+                        <span
+                            style="margin-left: 33px"
+                            tooltipBackground="#6c6c6c"
+                            ngbTooltip
+                            mainTooltip="View in Modal"
+                            position="top"
+                        >
+                            <svg-icon
+                                class="open-modal-icon2"
+                                src="assets/svg/common/arrow_top_right.svg"
+                            ></svg-icon>
+                        </span>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+
+            <!-- Additional info -->
+            <app-ta-custom-card
+                class="item-cards"
+                [bodyTemplate]="'card'"
+                [cardName]="'Additional info'"
+                [isCardOpen]="false"
+            >
+                <div class="additional-container">
+                    <div class="addres-wrapper">
+                        <div class="addres-name">Address</div>
+                        <div class="addres-value-icon">
+                            <div class="addres-value">
+                                {{ driver.address.address }}
+                            </div>
+                            <span
+                                tooltipBackground="#6c6c6c"
+                                ngbTooltip
+                                mainTooltip="Open in Places"
+                                position="top"
+                            >
+                                <svg-icon
+                                    class="address-icon"
+                                    src="assets/svg/common/ic_address.svg"
+                                >
+                                </svg-icon>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="addres-wrapper addres-second">
+                        <div class="addres-name">Date of Birth</div>
+                        <div class="addres-value">
+                            {{ driver.dateOfBirth | formatDateP }}
+                        </div>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+
+            <!-- Off Duty Location-->
+            <app-ta-custom-card
+                [hasCounter]="driver.offDutyLocations.length"
+                [cardName]="'Off Duty Location'"
+                [isCardOpen]="false"
+                *ngIf="driver.offDutyLocations.length"
+                [bodyTemplate]="'card'"
+                class="item-cards"
+            >
+                <div
+                    *ngIf="driver.offDutyLocations === ''"
+                    class="no-data-driver-details"
+                >
+                    No Added Location
+                </div>
+                <div
+                    class="additional-container"
+                    *ngFor="
+                        let offDuty of driver.offDutyLocations;
+                        trackBy: identity
+                    "
+                >
+                    <div *ngIf="offDuty" class="addres-wrapper">
+                        <div class="addres-name">{{ offDuty?.nickname }}</div>
+                        <div class="addres-value-icon">
+                            <div class="addres-value">
+                                {{
+                                    offDuty?.address?.address
+                                        ? offDuty.address.address
+                                        : ''
+                                }}
+                            </div>
+                            <span
+                                tooltipBackground="#6c6c6c"
+                                ngbTooltip
+                                mainTooltip="Open in Places"
+                                position="top"
+                            >
+                                <svg-icon
+                                    class="address-icon"
+                                    src="assets/svg/common/ic_address.svg"
+                                >
+                                </svg-icon>
+                            </span>
+                        </div>
+                        <span *ngIf="!offDuty">No Added Location</span>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+
+            <!-- Employment history-->
+            <app-ta-custom-card
+                [cardName]="'Employment History'"
+                [isCardOpen]="false"
+                class="item-cards"
+                [bodyTemplate]="'card'"
+            >
+                <div class="employment-history-container">
+                    <div class="years-of-service">
+                        <div class="items-wrapper">
+                            <div class="service-years-name">
+                                Years of Service
+                            </div>
+                            <div class="service-year-value">
+                                {{ yearsService }}
+                                {{ yearsService > 1 ? 'years' : 'year' }}
+                                {{ daysService }}
+                                {{ daysService > 1 ? 'days' : 'day' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div
+                            *ngIf="deactivatePeriod"
+                            class="progress-employment-history"
+                        >
+                            <div *ngIf="showTooltip" class="employment-tooltip">
+                                <div class="emp-tooltip">
+                                    <div class="emp-tooltip-value">
+                                        <p class="emp-duration">
+                                            {{ tooltipFormatStartDate }} -
+                                            <span>{{
+                                                tooltipData.endDate
+                                                    ? tooltipFormatEndDate
+                                                    : 'Today'
+                                            }}</span>
+                                        </p>
+                                        <div class="emp-text-icon">
+                                            <p>
+                                                {{
+                                                    tooltipData.isDeactivate
+                                                        ? 'Deactivated '
+                                                        : 'Employed'
+                                                }}
+                                            </p>
+                                            <svg-icon
+                                                class="svg-blue"
+                                                src="{{
+                                                    tooltipData.isDeactivate
+                                                        ? 'assets/svg/common/ic_circle_light_blue.svg'
+                                                        : '  assets/svg/common/round_blue.svg'
+                                                }}"
+                                            ></svg-icon>
+                                        </div>
+                                    </div>
+                                    <p class="year-working">
+                                        {{ tooltipData.duration.Years }}
+                                        {{
+                                            tooltipData.duration.Years > 1
+                                                ? 'years'
+                                                : 'year'
+                                        }}
+                                        {{ tooltipData.duration.Days }}
+                                        {{
+                                            tooltipData.duration.Days > 1
+                                                ? 'days'
+                                                : 'day'
+                                        }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="progress-driver">
+                                <div
+                                    (mouseover)="mouseEnter(dat)"
+                                    (mouseleave)="showTooltip = false"
+                                    *ngFor="
+                                        let dat of dataProggress;
+                                        trackBy: identity
+                                    "
+                                    [ngStyle]="{
+                                        'background-color':
+                                            dat.isDeactivate === true
+                                                ? '#d4dff4'
+                                                : '#6d82c8',
+                                        width: dat.activePercentage + '%'
+                                    }"
+                                    [ngClass]="{
+                                        emp: dat.isDeactivate == false,
+                                        unp: dat.isDeactivate == true
+                                    }"
+                                ></div>
+                            </div>
+                            <div
+                                *ngIf="!showMoreEmployment"
+                                class="year-employer"
+                            >
+                                <p>{{ firstDate }}</p>
+                                <p>
+                                    {{
+                                        !lastDate == 'Invalid Date'
+                                            ? lastDate
+                                            : 'Today'
+                                    }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            [@showHideCardBody]="
+                                showMoreEmployment ? 'true' : 'false'
+                            "
+                            class="status-container"
+                        >
+                            <div class="status-header">
+                                <div class="status-item">
+                                    <p class="p-status">STATUS</p>
+                                </div>
+                                <div class="status-item">
+                                    <p class="p-status">FROM - TO</p>
+                                </div>
+                                <div class="status-item">
+                                    <p class="p-status">DURATION</p>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="status-items">
+                                <div
+                                    *ngFor="
+                                        let empH of dataProggress;
+                                        trackBy: identity
+                                    "
+                                    class="item-wrapper"
+                                >
+                                    <div class="svg-text">
+                                        <svg-icon
+                                            class="svg-blue"
+                                            src="{{
+                                                empH.isDeactivate
+                                                    ? 'assets/svg/common/ic_circle_light_blue.svg'
+                                                    : '  assets/svg/common/round_blue.svg'
+                                            }}"
+                                        ></svg-icon>
+                                        <p class="employment">
+                                            {{
+                                                empH.isDeactivate
+                                                    ? 'Deactivated '
+                                                    : 'Employed'
+                                            }}
+                                        </p>
+                                    </div>
+                                    <p class="date-from-to">
+                                        {{ empH.startDate | formatDateP }} -
+                                        <span *ngIf="empH.endDate">{{
+                                            empH.endDate | formatDateP
+                                        }}</span>
+                                        <span *ngIf="!empH.endDate">Today</span>
+                                    </p>
+                                    <p *ngIf="empH.duration" class="duration">
+                                        {{ empH.duration.Years }} y
+                                        {{ empH.duration.Days }} d
+                                    </p>
+                                    <div class="divider-employment"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <span
+                            tooltipBackground="#6c6c6c"
+                            ngbTooltip
+                            [mainTooltip]="
+                                showMoreEmployment ? 'Show Less' : 'Show More'
+                            "
+                            position="top"
+                            *ngIf="deactivatePeriod"
+                        >
+                            <svg-icon
+                                [ngClass]="{
+                                    'transform-arrow': showMoreEmployment
+                                }"
+                                (click)="
+                                    showMoreEmployment = !showMoreEmployment
+                                "
+                                class="arrow-down-employment"
+                                src="assets/svg/common/fill_arrow_down.svg"
+                            ></svg-icon>
+                        </span>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+
+            <!-- Owner Details-->
+            <app-ta-custom-card
+                *ngIf="driver.owner"
+                class="item-cards"
+                [bodyTemplate]="'card'"
+                [cardName]="
+                    driver.owner ? 'Owner Details' : 'Owner - Sole Proprietor'
+                "
+                [isCardOpen]="driver.owner ? true : false"
+                [hasArrow]="driver.owner ? true : false"
+            >
+                <div *ngIf="driver.owner" class="purchase-template">
+                    <div class="purchase-template-item">
+                        <div class="purchase-template-item-name">Company</div>
+                        <div class="purchase-icon-copy">
+                            <div
+                                class="purchase-template-item-value owner-name"
+                            >
+                                {{ driver.owner.name }}
+                            </div>
+                            <span
+                                tooltipBackground="#6c6c6c"
+                                ngbTooltip
+                                mainTooltip="View in Modal"
+                                position="top"
+                            >
+                                <svg-icon
+                                    class="card-icon"
+                                    src="assets/svg/common/arrow_top_right.svg"
+                                ></svg-icon>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="purchase-template-item second-name">
+                        <div class="purchase-template-item-name">EIN</div>
+                        <div class="purchase-icon-copy">
+                            <app-ta-copy [copyValue]="driver.owner.ssnEin">
+                            </app-ta-copy>
+                        </div>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+
+            <!-- Commission Pay-->
+            <app-ta-custom-card
+                class="item-cards"
+                [bodyTemplate]="'card'"
+                *ngIf="
+                    driver?.commissionSolo ||
+                    driver?.solo?.loadedMile ||
+                    driver?.team?.loadedMile
+                "
+                [cardName]="
+                    driver.commissionSolo ? 'Commission Pay' : 'Mileage Pay'
+                "
+                [isCardOpen]="true"
+            >
+                <div *ngIf="driver?.commissionSolo" class="purchase-template">
+                    <div class="purchase-template-item">
+                        <div class="purchase-template-item-name">Solo</div>
+                        <div class="purchase-template-item-value commsion-solo">
+                            {{ driver.commissionSolo }}%
+                        </div>
+                    </div>
+
+                    <div
+                        class="purchase-template-item second-name"
+                        *ngIf="driver?.commissionTeam"
+                    >
+                        <div class="purchase-template-item-name">Team</div>
+                        <div class="purchase-template-item-value commsion-solo">
+                            {{ driver.commissionTeam }}%
+                        </div>
+                    </div>
+                </div>
+                <div class="mileage-template">
+                    <div
+                        class="mileage-template-item"
+                        *ngIf="driver?.solo?.loadedMile"
+                    >
+                        <div class="mileage-template-item-name">
+                            Empty (Solo)
+                        </div>
+                        <div class="mileage-template-item-value">
+                            ${{ driver.solo.emptyMile }}
+                        </div>
                     </div>
                     <div
-                      *ngIf="cdl.dateDeactivated && cdl.showButton"
-                      class="activate-button"
-                      [ngClass]="{ 'activate-button-card': templateCard }"
+                        class="mileage-template-item"
+                        *ngIf="driver?.solo?.loadedMile"
                     >
-                      Activate
+                        <div class="mileage-template-item-name">
+                            Loaded (Solo)
+                        </div>
+                        <div class="mileage-template-item-value">
+                            ${{ driver.solo.loadedMile }}
+                        </div>
                     </div>
                     <div
-                      *ngIf="!cdl.showButton"
-                      [ngClass]="{ 'activate-button-card': templateCard }"
-                      class="activate-button"
+                        class="mileage-template-item"
+                        *ngIf="driver?.solo?.loadedMile"
                     >
-                      Renew
+                        <div class="mileage-template-item-name">
+                            Per Stop (Solo)
+                        </div>
+                        <div class="mileage-template-item-value">
+                            ${{ driver.solo.perStop }}
+                        </div>
                     </div>
-                  </div>
+                    <div
+                        class="mileage-template-item"
+                        *ngIf="driver?.team?.loadedMile"
+                    >
+                        <div class="mileage-template-item-name">
+                            Empty (Team)
+                        </div>
+                        <div class="mileage-template-item-value">
+                            ${{ driver.team.emptyMile }}
+                        </div>
+                    </div>
+                    <div
+                        class="mileage-template-item"
+                        *ngIf="driver?.team?.loadedMile"
+                    >
+                        <div class="mileage-template-item-name">
+                            Loaded (Team)
+                        </div>
+                        <div class="mileage-template-item-value">
+                            ${{ driver.team.loadedMile }}
+                        </div>
+                    </div>
+                    <div
+                        class="mileage-template-item"
+                        *ngIf="driver?.team?.loadedMile"
+                    >
+                        <div class="mileage-template-item-name">
+                            Per Stop (Team)
+                        </div>
+                        <div class="mileage-template-item-value">
+                            ${{ driver.team.perStop }}
+                        </div>
+                    </div>
                 </div>
-                <div
-                  [@showHideCardBody]="toggler[i + 'cdl'] ? 'true' : 'false'"
-                >
-                  <div class="divider"></div>
+            </app-ta-custom-card>
 
-                  <div class="details-document-container">
-                    <div class="icon-counter-wrapper">
-                      <div class="counter-text-wrapper">
-                        <app-ta-counter
-                          [countBackgroud]="'#F3F3F3'"
-                          [countHeight]="'24px'"
-                          [countWidth]="'24px'"
-                          [count]="6"
+            <!-- Payroll -->
+            <app-ta-custom-card
+                [cardName]="'Payroll'"
+                [tooltipName]="'View in Modal'"
+                [isCardOpen]="true"
+                class="item-cards"
+                [bodyTemplate]="'card'"
+                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+            >
+                <div
+                    class="charts-template perfomance"
+                    [class.p-0]="barChart.hoveringStatus"
+                >
+                    <div *ngIf="!barChart.hoveringStatus">
+                        <app-ta-tab-switch
+                            [tabs]="tabsDriver"
+                            (switchClicked)="changeTab($event)"
+                            [type]="'type2-modal-popup'"
                         >
-                        </app-ta-counter>
-                        <p class="details-document-name">Document</p>
-                      </div>
-                      <svg-icon
-                        (click)="onFileAction('download')"
-                        src="assets/svg/common/ic_download.svg"
-                      >
-                      </svg-icon>
+                        </app-ta-tab-switch>
                     </div>
-                  </div>
-                  <div class="card-pdf">
-                    <app-ta-upload-files
-                      [files]="[
-                        {
-                          name: 'truckassist - 0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          name: 'truckassist - 1',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        }
-                      ]"
-                      [customClassName]="'driver-details-pdf'"
-                      [hasCarouselBottomTabs]="true"
-                    ></app-ta-upload-files>
-                  </div>
-                  <div class="divider"></div>
-                  <div class="card-note">
-                    <app-ta-input-note
-                      [formControl]="cdlNote"
-                      [isVisibleDivider]="false"
-                      [isVisibleNote]="true"
-                      [isVisibleArrow]="false"
-                      [minRows]="1"
-                      [placeholder]="'Write something.'"
-                      [customClass]="'note-small'"
-                      [noteType]="'details-card'"
-                    >
-                    </app-ta-input-note>
-                  </div>
+                    <div id="chart">
+                        <app-ta-chart
+                            #barChart
+                            [chartConfig]="barChartConfig"
+                            [axesProperties]="barAxes"
+                            [legendAttributes]="barChartLegend"
+                        >
+                        </app-ta-chart>
+                    </div>
                 </div>
-              </div>
-            </app-ta-re-card>
-          </div>
-        </app-ta-custom-card>
-      </div>
+            </app-ta-custom-card>
 
-      <div class="custom-card-single">
-        <app-ta-custom-card
-          [cardName]="'Drug & Alcohol'"
-          [isCardOpen]="false"
-          [hasDivider]="false"
-          class="item-cards"
-          [bodyTemplate]="'card'"
-          [hasCounter]="driver.tests.length"
-          [hasPlusHeader]="true"
-          (onActionEvent)="onModalAction('DrugAlcohol')"
-        >
-          <div
-            *ngFor="let test of driver.tests; let i = index; trackBy: identity"
-          >
-            <app-ta-re-card
-              [options]="dataTest"
-              [cardNameCommon]="test?.testingDate | formatDateP"
-              (resizePage)="toggleResizePage(i, 'tests')"
-              [optionsId]="test.id"
-              [weeklyWidth]="'18'"
-              (dataDropDopwn)="getTestById(test.id)"
-              [cardNameCurrent]="'test'"
-              (clickedCard)="getNameForDrop($event)"
-              [cardSecondName]="test?.testReason.name"
-              [shortName]="test.testType.name[0]"
-              [stateTooltipName]="test.testType.name + ' Test'"
-              (dropActions)="optionsEvent($event, 'test')"
-              [setPositionDrop]="true"
+            <!-- Bank Info-->
+            <app-ta-custom-card
+                *ngIf="driver.account"
+                [hasHeaderSvg]="
+                    'assets/svg/common/banks/' + driver.bank.logoName
+                "
+                [cardName]="'Bank Info'"
+                [isCardOpen]="false"
+                class="item-cards"
+                [customClassHeaderSvg]="true"
+                [bodyTemplate]="'card'"
             >
-              <div
-                [ngClass]="{ 'second-progress': toggler[i + 'tests'] }"
-              ></div>
-              <div class="cards-container">
-                <div
-                  [@showHideCardBody]="toggler[i + 'tests'] ? 'true' : 'false'"
-                >
-                  <div class="divider"></div>
-                  <div class="details-document-container">
-                    <div class="icon-counter-wrapper">
-                      <div class="counter-text-wrapper">
-                        <app-ta-counter
-                          [countBackgroud]="'#F3F3F3'"
-                          [countHeight]="'24px'"
-                          [countWidth]="'24px'"
-                          [count]="6"
-                        >
-                        </app-ta-counter>
-                        <p class="details-document-name">Document</p>
-                      </div>
-                      <svg-icon
-                        (click)="onFileAction('download')"
-                        src="assets/svg/common/ic_download.svg"
-                      >
-                      </svg-icon>
+                <div class="purchase-template">
+                    <div class="purchase-template-item">
+                        <div class="purchase-template-item-name">Routing</div>
+                        <div class="purchase-icon-copy">
+                            <app-ta-copy [copyValue]="driver?.routing">
+                            </app-ta-copy>
+                        </div>
                     </div>
-                  </div>
-                  <div class="card-pdf">
-                    <app-ta-upload-files
-                      [files]="[
-                        {
-                          name: 'truckassist - 0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          name: 'truckassist - 1',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        }
-                      ]"
-                      [customClassName]="'driver-details-pdf'"
-                      [hasCarouselBottomTabs]="true"
-                    ></app-ta-upload-files>
-                  </div>
-                  <div class="divider"></div>
-                  <div class="card-note">
-                    <app-ta-input-note
-                      [formControl]="testNote"
-                      [isVisibleDivider]="false"
-                      [isVisibleNote]="true"
-                      [isVisibleArrow]="false"
-                      [minRows]="1"
-                      [placeholder]="'Write something.'"
-                      [customClass]="'note-small'"
-                      [noteType]="'details-card'"
-                    >
-                    </app-ta-input-note>
-                  </div>
+                    <div class="purchase-template-item second-name">
+                        <div class="purchase-template-item-name">Account</div>
+                        <div class="purchase-icon-copy">
+                            <app-ta-copy
+                                [hasEye]="true"
+                                (showHide)="
+                                    isAccountVisibleDriver =
+                                        !isAccountVisibleDriver
+                                "
+                                [copyValue]="driver?.account"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </app-ta-re-card>
-          </div>
-        </app-ta-custom-card>
-      </div>
-      <div class="custom-card-single">
-        <app-ta-custom-card
-          [cardName]="'Medical'"
-          [isCardOpen]="false"
-          [hasDivider]="false"
-          class="item-cards"
-          [bodyTemplate]="'card'"
-          [hasCounter]="driver.medicals.length"
-          [hasPlusHeader]="true"
-          (onActionEvent)="onModalAction('Medical')"
-        >
-          <div
-            *ngFor="
-              let med of driver.medicals;
-              let i = index;
-              trackBy: identity
-            "
-          >
-            <app-ta-re-card
-              [options]="dataTest"
-              [cardNameCommon]="med?.issueDate | formatDateP"
-              [expDateClose]="med?.expDate | formatDateP"
-              [optionsId]="med.id"
-              [cardNameCurrent]="'medical'"
-              (dataDropDopwn)="getMedicalById(med.id)"
-              (clickedCard)="getNameForDrop($event)"
-              (resizePage)="toggleResizePage(i, 'medicals')"
-              (dropActions)="optionsEvent($event, 'medical')"
-              [setPositionDrop]="true"
+            </app-ta-custom-card>
+            <!-- Emergency Contact-->
+            <app-ta-custom-card
+                [cardName]="'Emergency Contact'"
+                [isCardOpen]="false"
+                class="item-cards"
+                [bodyTemplate]="'card'"
             >
-              <div class="cards-container">
-                <div class="card-body-cdl">
-                  <div
-                    class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i + 'medicals'] }"
-                  >
-                    <div class="card-details-progress-container">
-                      <app-truckassist-progress-expiration
-                        [expireDate]="med?.expDate | formatDateP"
-                        [startDate]="med?.issueDate | formatDateP"
-                        [expiresSettings]="'details'"
-                      >
-                      </app-truckassist-progress-expiration>
-                    </div>
-                  </div>
+                <div
+                    *ngIf="
+                        !driver.emergencyContactName ||
+                        !driver.emergencyContactPhone
+                    "
+                    class="no-data-driver-details"
+                >
+                    No Contact
                 </div>
                 <div
-                  [@showHideCardBody]="
-                    toggler[i + 'medicals'] ? 'true' : 'false'
-                  "
+                    *ngIf="
+                        driver.emergencyContactName &&
+                        driver.emergencyContactPhone
+                    "
+                    class="purchase-template"
                 >
-                  <div class="divider"></div>
-                  <div class="details-document-container">
-                    <div class="icon-counter-wrapper">
-                      <div class="counter-text-wrapper">
-                        <app-ta-counter
-                          [countBackgroud]="'#F3F3F3'"
-                          [countHeight]="'24px'"
-                          [countWidth]="'24px'"
-                          [count]="6"
-                        >
-                        </app-ta-counter>
-                        <p class="details-document-name">Document</p>
-                      </div>
-                      <svg-icon
-                        (click)="onFileAction('download')"
-                        src="assets/svg/common/ic_download.svg"
-                      >
-                      </svg-icon>
+                    <div class="purchase-template-item">
+                        <div class="purchase-template-item-name">
+                            {{
+                                driver?.emergencyContactRelationship
+                                    ? driver.emergencyContactRelationship
+                                    : 'Name'
+                            }}
+                        </div>
+                        <div class="purchase-template-item-value">
+                            {{ driver.emergencyContactName }}
+                        </div>
                     </div>
-                  </div>
-                  <div class="card-pdf">
-                    <app-ta-upload-files
-                      [files]="[
-                        {
-                          name: 'truckassist - 0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          name: 'truckassist - 1',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        }
-                      ]"
-                      [customClassName]="'driver-details-pdf'"
-                      [hasCarouselBottomTabs]="true"
-                    ></app-ta-upload-files>
-                  </div>
-                  <div class="divider"></div>
-                  <div class="card-note">
+                    <div class="purchase-template-item second-name">
+                        <div class="purchase-template-item-name">Phone</div>
+                        <div class="purchase-icon-copy">
+                            <app-ta-copy
+                                [copyValue]="driver.emergencyContactPhone"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+            <div class="divider"></div>
+            <div class="details-page-row-5">
+                <div class="note-item">
                     <app-ta-input-note
-                      [formControl]="medicalNote"
-                      [isVisibleDivider]="false"
-                      [isVisibleNote]="true"
-                      [isVisibleArrow]="false"
-                      [minRows]="1"
-                      [placeholder]="'Write something.'"
-                      [customClass]="'note-small'"
-                      [noteType]="'details-card'"
+                        [formControl]="note"
+                        [isVisibleDivider]="false"
+                        [isVisibleNote]="true"
+                        [isVisibleArrow]="true"
+                        [minRows]="1"
+                        [placeholder]="'Write something.'"
+                        [customClass]="'note-small'"
+                        [note]="driverObject?.note"
+                        [noteType]="'details-card'"
+                        [entityId]="driver.id"
+                        [entityType]="'Driver'"
                     >
                     </app-ta-input-note>
-                  </div>
                 </div>
-              </div>
-            </app-ta-re-card>
-          </div>
-        </app-ta-custom-card>
-      </div>
+            </div>
+        </div>
+        <div *ngIf="templateCard">
+            <div class="custom-card-single">
+                <app-ta-custom-card
+                    [cardName]="'CDL'"
+                    [isCardOpen]="false"
+                    [hasDivider]="false"
+                    class="item-cards"
+                    [bodyTemplate]="'card'"
+                    [hasCounter]="driver.cdls.length"
+                    [hasPlusHeader]="true"
+                    (onActionEvent)="onModalAction('CDL')"
+                >
+                    <div
+                        *ngFor="
+                            let cdl of dataCDl;
+                            let i = index;
+                            trackBy: identity
+                        "
+                    >
+                        <app-ta-re-card
+                            [options]="dataTest"
+                            [cardDocumentCounter]="6"
+                            (resizePage)="toggleResizePage(i, 'cdl')"
+                            [cardNameCommon]="cdl?.cdlNumber"
+                            [expDateClose]="cdl?.expDate | formatDateP"
+                            [hasCopyIcon]="true"
+                            [optionsId]="cdl.id"
+                            [weeklyWidth]="'28'"
+                            [cardNameCurrent]="'cdl'"
+                            (clickedCard)="getNameForDrop($event)"
+                            (dataDropDopwn)="getCdlById(cdl.id)"
+                            [isCardOpen]="cdl.status == 1 ? true : false"
+                            [isDeactivated]="cdl.dateDeactivated"
+                            [stateTooltipName]="cdl.state.stateName"
+                            [shortName]="cdl.state.stateShortName"
+                            (dropActions)="optionsEvent($event, 'cdl')"
+                            [setPositionDrop]="true"
+                        >
+                            <div class="cards-container">
+                                <div class="card-body-cdl">
+                                    <div
+                                        [ngClass]="{
+                                            'card-row-issued':
+                                                cdl.dateDeactivated
+                                        }"
+                                        class="card-restriction-endorsment card-restriction-class"
+                                    >
+                                        <div class="card-restriction">
+                                            <div class="restriction-name">
+                                                Class
+                                            </div>
+                                            <div class="restriction-item-value">
+                                                {{ cdl?.classType.name }}
+                                            </div>
+                                        </div>
+                                        <div class="card-restriction">
+                                            <div class="restriction-name">
+                                                Issued
+                                            </div>
+                                            <div class="restriction-item-value">
+                                                {{
+                                                    cdl?.issueDate | formatDateP
+                                                }}
+                                            </div>
+                                        </div>
+                                        <div
+                                            *ngIf="cdl.dateDeactivated"
+                                            class="card-restriction"
+                                        >
+                                            <div class="restriction-name">
+                                                Deactivated
+                                            </div>
+                                            <div class="restriction-item-value">
+                                                {{
+                                                    cdl.dateDeactivated
+                                                        | formatDateP
+                                                }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        [ngClass]="{
+                                            'card-restriction-endorsment':
+                                                !toggler[i + 'cdl']
+                                        }"
+                                    >
+                                        <div class="card-restriction">
+                                            <p class="restriction-name">
+                                                Restriction
+                                            </p>
+                                            <div class="item-card-wrapper">
+                                                <p
+                                                    class="restriction-item-value"
+                                                    *ngFor="
+                                                        let rest of cdl.cdlRestrictions;
+                                                        trackBy: identity
+                                                    "
+                                                >
+                                                    <span class="value-name">{{
+                                                        rest?.code
+                                                    }}</span>
+                                                    <span
+                                                        class="desc"
+                                                        *ngIf="
+                                                            toggler[i + 'cdl']
+                                                        "
+                                                        >-
+                                                        {{ rest?.description }}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="card-restriction endorsement"
+                                        >
+                                            <p class="restriction-name">
+                                                Endorsement
+                                            </p>
+                                            <div class="item-card-wrapper">
+                                                <p
+                                                    class="restriction-item-value"
+                                                    *ngFor="
+                                                        let endors of cdl?.cdlEndorsements;
+                                                        trackBy: identity
+                                                    "
+                                                >
+                                                    <span
+                                                        class="span-value"
+                                                        *ngIf="endors?.length"
+                                                    >
+                                                        <span
+                                                            class="value-name"
+                                                            >{{
+                                                                endors?.code
+                                                            }}</span
+                                                        >
+                                                        <span
+                                                            *ngIf="
+                                                                toggler[
+                                                                    i +
+                                                                        'description'
+                                                                ]
+                                                            "
+                                                            class="desc"
+                                                            >-
+                                                            {{
+                                                                endors?.description
+                                                            }}</span
+                                                        >
+                                                    </span>
+                                                </p>
+                                                <span
+                                                    class="no-driver"
+                                                    *ngIf="!endors?.length"
+                                                    >None</span
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="card-row-progress"
+                                        [ngClass]="{
+                                            'second-progress':
+                                                toggler[i + 'cdl']
+                                        }"
+                                    >
+                                        <div
+                                            class="card-details-progress-container"
+                                        >
+                                            <app-truckassist-progress-expiration
+                                                [expireDate]="
+                                                    cdl?.expDate | formatDateP
+                                                "
+                                                [startDate]="
+                                                    cdl?.issueDate | formatDateP
+                                                "
+                                                [expiresSettings]="'details'"
+                                                [customText]="'Exp. in'"
+                                            >
+                                            </app-truckassist-progress-expiration>
+                                        </div>
+                                        <div
+                                            *ngIf="
+                                                cdl.dateDeactivated &&
+                                                cdl.showButton
+                                            "
+                                            class="activate-button"
+                                            [ngClass]="{
+                                                'activate-button-card':
+                                                    templateCard
+                                            }"
+                                        >
+                                            Activate
+                                        </div>
+                                        <div
+                                            *ngIf="!cdl.showButton"
+                                            [ngClass]="{
+                                                'activate-button-card':
+                                                    templateCard
+                                            }"
+                                            class="activate-button"
+                                        >
+                                            Renew
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    [@showHideCardBody]="
+                                        toggler[i + 'cdl'] ? 'true' : 'false'
+                                    "
+                                >
+                                    <div class="divider"></div>
 
-      <div class="custom-card-single">
-        <app-ta-custom-card
-          [cardName]="'MVR'"
-          [isCardOpen]="false"
-          [hasDivider]="false"
-          class="item-cards"
-          [bodyTemplate]="'card'"
-          [hasCounter]="driver.mvrs.length"
-          [hasPlusHeader]="true"
-          (onActionEvent)="onModalAction('MVR')"
-        >
-          <div
-            *ngFor="let mvr of driver.mvrs; let i = index; trackBy: identity"
-          >
-            <app-ta-re-card
-              [options]="dataTest"
-              [cardDocumentCounter]="6"
-              (clickedCard)="getNameForDrop($event)"
-              [cardNameCurrent]="'mvr'"
-              (dataDropDopwn)="getMvrById(mvr.id)"
-              (resizePage)="toggleResizePage(i, 'mvrs')"
-              [cardNameCommon]="mvr?.issueDate | formatDateP"
-              [expDateClose]="mvr?.issueDate | formatDateP"
-              [optionsId]="mvr.id"
-              [setPositionDrop]="true"
-              (dropActions)="optionsEvent($event, 'mvr')"
-            >
-              <div class="cards-container">
-                <div class="card-body-cdl">
-                  <div
-                    class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i + 'mvrs'] }"
-                  >
-                    <div class="card-details-progress-container">
-                      <app-truckassist-progress-expiration
-                        [startDate]="mvr?.issueDate | formatDateP"
-                        [expireDate]="mvr?.expDate | formatDateP"
-                        [expiresSettings]="'details'"
-                      >
-                      </app-truckassist-progress-expiration>
+                                    <div class="details-document-container">
+                                        <div class="icon-counter-wrapper">
+                                            <div class="counter-text-wrapper">
+                                                <app-ta-counter
+                                                    [countBackgroud]="'#F3F3F3'"
+                                                    [countHeight]="'24px'"
+                                                    [countWidth]="'24px'"
+                                                    [count]="6"
+                                                >
+                                                </app-ta-counter>
+                                                <p
+                                                    class="details-document-name"
+                                                >
+                                                    Document
+                                                </p>
+                                            </div>
+                                            <svg-icon
+                                                (click)="
+                                                    onFileAction('download')
+                                                "
+                                                src="assets/svg/common/ic_download.svg"
+                                            >
+                                            </svg-icon>
+                                        </div>
+                                    </div>
+                                    <div class="card-pdf">
+                                        <app-ta-upload-files
+                                            [files]="[
+                                                {
+                                                    name: 'truckassist - 0',
+                                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                                    extension: 'pdf'
+                                                },
+                                                {
+                                                    name: 'truckassist - 1',
+                                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                                    extension: 'pdf'
+                                                }
+                                            ]"
+                                            [customClassName]="
+                                                'driver-details-pdf'
+                                            "
+                                            [hasCarouselBottomTabs]="true"
+                                        ></app-ta-upload-files>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="card-note">
+                                        <app-ta-input-note
+                                            [formControl]="cdlNote"
+                                            [isVisibleDivider]="false"
+                                            [isVisibleNote]="true"
+                                            [isVisibleArrow]="false"
+                                            [minRows]="1"
+                                            [placeholder]="'Write something.'"
+                                            [customClass]="'note-small'"
+                                            [noteType]="'details-card'"
+                                        >
+                                        </app-ta-input-note>
+                                    </div>
+                                </div>
+                            </div>
+                        </app-ta-re-card>
                     </div>
-                  </div>
-                </div>
-                <div
-                  [@showHideCardBody]="toggler[i + 'mvrs'] ? 'true' : 'false'"
+                </app-ta-custom-card>
+            </div>
+
+            <div class="custom-card-single">
+                <app-ta-custom-card
+                    [cardName]="'Drug & Alcohol'"
+                    [isCardOpen]="false"
+                    [hasDivider]="false"
+                    class="item-cards"
+                    [bodyTemplate]="'card'"
+                    [hasCounter]="driver.tests.length"
+                    [hasPlusHeader]="true"
+                    (onActionEvent)="onModalAction('DrugAlcohol')"
                 >
-                  <div class="divider"></div>
-                  <div class="details-document-container">
-                    <div class="icon-counter-wrapper">
-                      <div class="counter-text-wrapper">
-                        <app-ta-counter
-                          [countBackgroud]="'#F3F3F3'"
-                          [countHeight]="'24px'"
-                          [countWidth]="'24px'"
-                          [count]="6"
-                        >
-                        </app-ta-counter>
-                        <p class="details-document-name">Document</p>
-                      </div>
-                      <svg-icon
-                        (click)="onFileAction('download')"
-                        src="assets/svg/common/ic_download.svg"
-                      >
-                      </svg-icon>
-                    </div>
-                  </div>
-                  <div class="card-pdf">
-                    <app-ta-upload-files
-                      [files]="[
-                        {
-                          name: 'truckassist - 0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          name: 'truckassist - 1',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        }
-                      ]"
-                      [customClassName]="'driver-details-pdf'"
-                      [hasCarouselBottomTabs]="true"
-                    ></app-ta-upload-files>
-                  </div>
-                  <div class="divider"></div>
-                  <div class="card-note">
-                    <app-ta-input-note
-                      [formControl]="mvrNote"
-                      [isVisibleDivider]="false"
-                      [isVisibleNote]="true"
-                      [isVisibleArrow]="false"
-                      [minRows]="1"
-                      [placeholder]="'Write something.'"
-                      [customClass]="'note-small'"
-                      [noteType]="'details-card'"
+                    <div
+                        *ngFor="
+                            let test of driver.tests;
+                            let i = index;
+                            trackBy: identity
+                        "
                     >
-                    </app-ta-input-note>
-                  </div>
-                </div>
-              </div>
-            </app-ta-re-card>
-          </div>
-        </app-ta-custom-card>
-      </div>
+                        <app-ta-re-card
+                            [options]="dataTest"
+                            [cardNameCommon]="test?.testingDate | formatDateP"
+                            (resizePage)="toggleResizePage(i, 'tests')"
+                            [optionsId]="test.id"
+                            [weeklyWidth]="'18'"
+                            (dataDropDopwn)="getTestById(test.id)"
+                            [cardNameCurrent]="'test'"
+                            (clickedCard)="getNameForDrop($event)"
+                            [cardSecondName]="test?.testReason.name"
+                            [shortName]="test.testType.name[0]"
+                            [stateTooltipName]="test.testType.name + ' Test'"
+                            (dropActions)="optionsEvent($event, 'test')"
+                            [setPositionDrop]="true"
+                        >
+                            <div
+                                [ngClass]="{
+                                    'second-progress': toggler[i + 'tests']
+                                }"
+                            ></div>
+                            <div class="cards-container">
+                                <div
+                                    [@showHideCardBody]="
+                                        toggler[i + 'tests'] ? 'true' : 'false'
+                                    "
+                                >
+                                    <div class="divider"></div>
+                                    <div class="details-document-container">
+                                        <div class="icon-counter-wrapper">
+                                            <div class="counter-text-wrapper">
+                                                <app-ta-counter
+                                                    [countBackgroud]="'#F3F3F3'"
+                                                    [countHeight]="'24px'"
+                                                    [countWidth]="'24px'"
+                                                    [count]="6"
+                                                >
+                                                </app-ta-counter>
+                                                <p
+                                                    class="details-document-name"
+                                                >
+                                                    Document
+                                                </p>
+                                            </div>
+                                            <svg-icon
+                                                (click)="
+                                                    onFileAction('download')
+                                                "
+                                                src="assets/svg/common/ic_download.svg"
+                                            >
+                                            </svg-icon>
+                                        </div>
+                                    </div>
+                                    <div class="card-pdf">
+                                        <app-ta-upload-files
+                                            [files]="[
+                                                {
+                                                    name: 'truckassist - 0',
+                                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                                    extension: 'pdf'
+                                                },
+                                                {
+                                                    name: 'truckassist - 1',
+                                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                                    extension: 'pdf'
+                                                }
+                                            ]"
+                                            [customClassName]="
+                                                'driver-details-pdf'
+                                            "
+                                            [hasCarouselBottomTabs]="true"
+                                        ></app-ta-upload-files>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="card-note">
+                                        <app-ta-input-note
+                                            [formControl]="testNote"
+                                            [isVisibleDivider]="false"
+                                            [isVisibleNote]="true"
+                                            [isVisibleArrow]="false"
+                                            [minRows]="1"
+                                            [placeholder]="'Write something.'"
+                                            [customClass]="'note-small'"
+                                            [noteType]="'details-card'"
+                                        >
+                                        </app-ta-input-note>
+                                    </div>
+                                </div>
+                            </div>
+                        </app-ta-re-card>
+                    </div>
+                </app-ta-custom-card>
+            </div>
+            <div class="custom-card-single">
+                <app-ta-custom-card
+                    [cardName]="'Medical'"
+                    [isCardOpen]="false"
+                    [hasDivider]="false"
+                    class="item-cards"
+                    [bodyTemplate]="'card'"
+                    [hasCounter]="driver.medicals.length"
+                    [hasPlusHeader]="true"
+                    (onActionEvent)="onModalAction('Medical')"
+                >
+                    <div
+                        *ngFor="
+                            let med of driver.medicals;
+                            let i = index;
+                            trackBy: identity
+                        "
+                    >
+                        <app-ta-re-card
+                            [options]="dataTest"
+                            [cardNameCommon]="med?.issueDate | formatDateP"
+                            [expDateClose]="med?.expDate | formatDateP"
+                            [optionsId]="med.id"
+                            [cardNameCurrent]="'medical'"
+                            (dataDropDopwn)="getMedicalById(med.id)"
+                            (clickedCard)="getNameForDrop($event)"
+                            (resizePage)="toggleResizePage(i, 'medicals')"
+                            (dropActions)="optionsEvent($event, 'medical')"
+                            [setPositionDrop]="true"
+                        >
+                            <div class="cards-container">
+                                <div class="card-body-cdl">
+                                    <div
+                                        class="card-row-progress"
+                                        [ngClass]="{
+                                            'second-progress':
+                                                toggler[i + 'medicals']
+                                        }"
+                                    >
+                                        <div
+                                            class="card-details-progress-container"
+                                        >
+                                            <app-truckassist-progress-expiration
+                                                [expireDate]="
+                                                    med?.expDate | formatDateP
+                                                "
+                                                [startDate]="
+                                                    med?.issueDate | formatDateP
+                                                "
+                                                [expiresSettings]="'details'"
+                                            >
+                                            </app-truckassist-progress-expiration>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    [@showHideCardBody]="
+                                        toggler[i + 'medicals']
+                                            ? 'true'
+                                            : 'false'
+                                    "
+                                >
+                                    <div class="divider"></div>
+                                    <div class="details-document-container">
+                                        <div class="icon-counter-wrapper">
+                                            <div class="counter-text-wrapper">
+                                                <app-ta-counter
+                                                    [countBackgroud]="'#F3F3F3'"
+                                                    [countHeight]="'24px'"
+                                                    [countWidth]="'24px'"
+                                                    [count]="6"
+                                                >
+                                                </app-ta-counter>
+                                                <p
+                                                    class="details-document-name"
+                                                >
+                                                    Document
+                                                </p>
+                                            </div>
+                                            <svg-icon
+                                                (click)="
+                                                    onFileAction('download')
+                                                "
+                                                src="assets/svg/common/ic_download.svg"
+                                            >
+                                            </svg-icon>
+                                        </div>
+                                    </div>
+                                    <div class="card-pdf">
+                                        <app-ta-upload-files
+                                            [files]="[
+                                                {
+                                                    name: 'truckassist - 0',
+                                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                                    extension: 'pdf'
+                                                },
+                                                {
+                                                    name: 'truckassist - 1',
+                                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                                    extension: 'pdf'
+                                                }
+                                            ]"
+                                            [customClassName]="
+                                                'driver-details-pdf'
+                                            "
+                                            [hasCarouselBottomTabs]="true"
+                                        ></app-ta-upload-files>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="card-note">
+                                        <app-ta-input-note
+                                            [formControl]="medicalNote"
+                                            [isVisibleDivider]="false"
+                                            [isVisibleNote]="true"
+                                            [isVisibleArrow]="false"
+                                            [minRows]="1"
+                                            [placeholder]="'Write something.'"
+                                            [customClass]="'note-small'"
+                                            [noteType]="'details-card'"
+                                        >
+                                        </app-ta-input-note>
+                                    </div>
+                                </div>
+                            </div>
+                        </app-ta-re-card>
+                    </div>
+                </app-ta-custom-card>
+            </div>
+
+            <div class="custom-card-single">
+                <app-ta-custom-card
+                    [cardName]="'MVR'"
+                    [isCardOpen]="false"
+                    [hasDivider]="false"
+                    class="item-cards"
+                    [bodyTemplate]="'card'"
+                    [hasCounter]="driver.mvrs.length"
+                    [hasPlusHeader]="true"
+                    (onActionEvent)="onModalAction('MVR')"
+                >
+                    <div
+                        *ngFor="
+                            let mvr of driver.mvrs;
+                            let i = index;
+                            trackBy: identity
+                        "
+                    >
+                        <app-ta-re-card
+                            [options]="dataTest"
+                            [cardDocumentCounter]="6"
+                            (clickedCard)="getNameForDrop($event)"
+                            [cardNameCurrent]="'mvr'"
+                            (dataDropDopwn)="getMvrById(mvr.id)"
+                            (resizePage)="toggleResizePage(i, 'mvrs')"
+                            [cardNameCommon]="mvr?.issueDate | formatDateP"
+                            [expDateClose]="mvr?.issueDate | formatDateP"
+                            [optionsId]="mvr.id"
+                            [setPositionDrop]="true"
+                            (dropActions)="optionsEvent($event, 'mvr')"
+                        >
+                            <div class="cards-container">
+                                <div class="card-body-cdl">
+                                    <div
+                                        class="card-row-progress"
+                                        [ngClass]="{
+                                            'second-progress':
+                                                toggler[i + 'mvrs']
+                                        }"
+                                    >
+                                        <div
+                                            class="card-details-progress-container"
+                                        >
+                                            <app-truckassist-progress-expiration
+                                                [startDate]="
+                                                    mvr?.issueDate | formatDateP
+                                                "
+                                                [expireDate]="
+                                                    mvr?.expDate | formatDateP
+                                                "
+                                                [expiresSettings]="'details'"
+                                            >
+                                            </app-truckassist-progress-expiration>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    [@showHideCardBody]="
+                                        toggler[i + 'mvrs'] ? 'true' : 'false'
+                                    "
+                                >
+                                    <div class="divider"></div>
+                                    <div class="details-document-container">
+                                        <div class="icon-counter-wrapper">
+                                            <div class="counter-text-wrapper">
+                                                <app-ta-counter
+                                                    [countBackgroud]="'#F3F3F3'"
+                                                    [countHeight]="'24px'"
+                                                    [countWidth]="'24px'"
+                                                    [count]="6"
+                                                >
+                                                </app-ta-counter>
+                                                <p
+                                                    class="details-document-name"
+                                                >
+                                                    Document
+                                                </p>
+                                            </div>
+                                            <svg-icon
+                                                (click)="
+                                                    onFileAction('download')
+                                                "
+                                                src="assets/svg/common/ic_download.svg"
+                                            >
+                                            </svg-icon>
+                                        </div>
+                                    </div>
+                                    <div class="card-pdf">
+                                        <app-ta-upload-files
+                                            [files]="[
+                                                {
+                                                    name: 'truckassist - 0',
+                                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                                    extension: 'pdf'
+                                                },
+                                                {
+                                                    name: 'truckassist - 1',
+                                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                                    extension: 'pdf'
+                                                }
+                                            ]"
+                                            [customClassName]="
+                                                'driver-details-pdf'
+                                            "
+                                            [hasCarouselBottomTabs]="true"
+                                        ></app-ta-upload-files>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="card-note">
+                                        <app-ta-input-note
+                                            [formControl]="mvrNote"
+                                            [isVisibleDivider]="false"
+                                            [isVisibleNote]="true"
+                                            [isVisibleArrow]="false"
+                                            [minRows]="1"
+                                            [placeholder]="'Write something.'"
+                                            [customClass]="'note-small'"
+                                            [noteType]="'details-card'"
+                                        >
+                                        </app-ta-input-note>
+                                    </div>
+                                </div>
+                            </div>
+                        </app-ta-re-card>
+                    </div>
+                </app-ta-custom-card>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

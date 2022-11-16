@@ -3,22 +3,22 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TaStatusSelectComponent } from './ta-status-select.component';
 
 describe('TaStatusSelectComponent', () => {
-  let component: TaStatusSelectComponent;
-  let fixture: ComponentFixture<TaStatusSelectComponent>;
+    let component: TaStatusSelectComponent;
+    let fixture: ComponentFixture<TaStatusSelectComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [TaStatusSelectComponent],
-    }).compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [TaStatusSelectComponent],
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TaStatusSelectComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(TaStatusSelectComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

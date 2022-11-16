@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { SettingsCardComponent } from './settings-card.component';
 
 describe('SettingsCardComponent', () => {
-  let component: SettingsCardComponent;
-  let fixture: ComponentFixture<SettingsCardComponent>;
+    let component: SettingsCardComponent;
+    let fixture: ComponentFixture<SettingsCardComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SettingsCardComponent],
-    }).compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [SettingsCardComponent],
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SettingsCardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(SettingsCardComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

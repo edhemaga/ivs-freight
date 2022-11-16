@@ -1,10 +1,10 @@
 /// <reference types="@types/googlemaps" />
 import {
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation,
+    Component,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import * as AppConst from 'src/app/const';
@@ -16,642 +16,646 @@ import { DispatcherQuery } from './../state/dispatcher.query';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-dispatcher-table',
-  templateUrl: './dispatcher-table.component.html',
-  styleUrls: ['../dispatcher.global.scss', './dispatcher-table.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-dispatcher-table',
+    templateUrl: './dispatcher-table.component.html',
+    styleUrls: [
+        '../dispatcher.global.scss',
+        './dispatcher-table.component.scss',
+    ],
+    encapsulation: ViewEncapsulation.None,
 })
 export class DispatcherTableComponent implements OnInit, OnDestroy {
-  @ViewChild(AppDispatcherTableNewComponent, { static: false })
-  dispatcherTableNew: AppDispatcherTableNewComponent;
-  @ViewChild('accordion') public accordion: any;
-  dispatcherItems: any[];
-  isBoardLocked = true;
-  panelOpenState = false;
-  truckList = AppConst.TRUCK_LIST.filter(
-    (x) =>
-      x.class != 'personalvehicle-icon' &&
-      x.class != 'motorcycle-icon' &&
-      x.class != 'bus-icon'
-  );
-  trailerList = AppConst.TRAILER_LIST;
-  legendActive = false;
-  trailerTab = false;
-  truckTab = false;
-  openAllNoteses = false;
-  tempImgObj: any;
-  dispatcher: any = 0;
-  selectedDispatcher: any;
-  sliderValue = [];
-  gridData: any = [];
-  mainGridData: any = {};
-  mainGridDataSort: any = [];
-  loadTrailers: Enums[];
-  loadTrucks: Enums[];
-  loadDrivers: Enums[];
-  manualLock: boolean;
-  public highlightingWords = [];
-  emptyRow: any = {
-    id: null,
-    loadId: null,
-    total: null,
-    truckNumber: null,
-    status: null,
-    trailerNumber: null,
-    driverName: null,
-    dispatcher: null,
-    pickup: null,
-    delivery: null,
-    note: null,
-    customer: null,
-    sort: null,
-    color: null,
-    driverId: null,
-    truckId: null,
-    hosJson: null,
-    isEmpty: true,
-  };
-  user: any;
-  idleSubscription: any;
-  lottieConfig: any = {
-    path: '/assets/img/svg-json/icon-live-def.json',
-    // path: '/assets/img/svg-json/live-board.json',
-  };
-  phoneEmailToggle = 'Email';
-  trucksPositionOnMap = [];
-  selectedDispatchers: any[] = [];
-  savedMainGridData: any;
-  private destroy$ = new Subject<void>();
-  public searchDashboardOptions = {
-    gridNameTitle: 'Dispatcher',
-  };
+    @ViewChild(AppDispatcherTableNewComponent, { static: false })
+    dispatcherTableNew: AppDispatcherTableNewComponent;
+    @ViewChild('accordion') public accordion: any;
+    dispatcherItems: any[];
+    isBoardLocked = true;
+    panelOpenState = false;
+    truckList = AppConst.TRUCK_LIST.filter(
+        (x) =>
+            x.class != 'personalvehicle-icon' &&
+            x.class != 'motorcycle-icon' &&
+            x.class != 'bus-icon'
+    );
+    trailerList = AppConst.TRAILER_LIST;
+    legendActive = false;
+    trailerTab = false;
+    truckTab = false;
+    openAllNoteses = false;
+    tempImgObj: any;
+    dispatcher: any = 0;
+    selectedDispatcher: any;
+    sliderValue = [];
+    gridData: any = [];
+    mainGridData: any = {};
+    mainGridDataSort: any = [];
+    loadTrailers: Enums[];
+    loadTrucks: Enums[];
+    loadDrivers: Enums[];
+    manualLock: boolean;
+    public highlightingWords = [];
+    emptyRow: any = {
+        id: null,
+        loadId: null,
+        total: null,
+        truckNumber: null,
+        status: null,
+        trailerNumber: null,
+        driverName: null,
+        dispatcher: null,
+        pickup: null,
+        delivery: null,
+        note: null,
+        customer: null,
+        sort: null,
+        color: null,
+        driverId: null,
+        truckId: null,
+        hosJson: null,
+        isEmpty: true,
+    };
+    user: any;
+    idleSubscription: any;
+    lottieConfig: any = {
+        path: '/assets/img/svg-json/icon-live-def.json',
+        // path: '/assets/img/svg-json/live-board.json',
+    };
+    phoneEmailToggle = 'Email';
+    trucksPositionOnMap = [];
+    selectedDispatchers: any[] = [];
+    savedMainGridData: any;
+    private destroy$ = new Subject<void>();
+    public searchDashboardOptions = {
+        gridNameTitle: 'Dispatcher',
+    };
 
-  dispatchTableList: Observable<number[]>;
-  dispatchBoardSmallList: Observable<any>;
+    dispatchTableList: Observable<number[]>;
+    dispatchBoardSmallList: Observable<any>;
 
-  constructor(
-    private dispatcherQuery: DispatcherQuery,
-    public dispatcherStoreService: DispatcherStoreService
-  ) {}
+    constructor(
+        private dispatcherQuery: DispatcherQuery,
+        public dispatcherStoreService: DispatcherStoreService
+    ) {}
 
-  openParking() {
-    this.dispatcherStoreService.parkingOpened =
-      !this.dispatcherStoreService.parkingOpened;
-  }
-
-  ngOnInit(): void {
-    this.dispatcherQuery.modalBoardListData$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((result) => {
-        //console.log("WHAT IS LIST RESULT", result);
-        this.getDispatcherData(result.dispatchBoards);
-      });
-
-    this.dispatchTableList = this.dispatcherQuery.dispatchBoardListData$;
-    this.dispatchBoardSmallList = this.dispatcherQuery.dispatchboardShortList$;
-    console.log(this.dispatchTableList);
-
-    // this.dispatcherQuery.dispatchBoardListData$
-    // .pipe(takeUntil(this.destroy$))
-    // .subscribe(result => {
-    //   console.log("WHAT IS RESULT------");
-    //   console.log(result);
-    // });
-
-    // this.dispatcherQuery.dispatchboardShortList$
-    // .pipe(takeUntil(this.destroy$))
-    // .subscribe(result => {
-    //   console.log("WHAT IS RESULT OF LISTTTTT------");
-    //   console.log(result);
-    // })
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-  openAddLoad(id: any) {}
-
-  addLoad() {
-    // const data = {
-    //   type: 'new',
-    //   id: null,
-    // };
-  }
-
-  openDispatchHistory() {}
-
-  openSideNav() {}
-
-  trailerTruck() {}
-
-  truckTrailer() {}
-
-  changeDisparcher(id: number) {
-    const dispatcherId = id;
-    if (dispatcherId > -1) {
-      this.dispatcherStoreService.getDispatchBoardByDispatcherListAndUpdate(
-        dispatcherId
-      );
-    } else {
-      this.dispatcherStoreService.getDispatchboardAllListAndUpdate();
+    openParking() {
+        this.dispatcherStoreService.parkingOpened =
+            !this.dispatcherStoreService.parkingOpened;
     }
 
-    localStorage.setItem('dispatchUserSelect', id.toString());
-  }
+    ngOnInit(): void {
+        this.dispatcherQuery.modalBoardListData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((result) => {
+                //console.log("WHAT IS LIST RESULT", result);
+                this.getDispatcherData(result.dispatchBoards);
+            });
 
-  getDispatcherData(result?) {
-    this.dispatcherItems = JSON.parse(JSON.stringify(result));
+        this.dispatchTableList = this.dispatcherQuery.dispatchBoardListData$;
+        this.dispatchBoardSmallList =
+            this.dispatcherQuery.dispatchboardShortList$;
+        console.log(this.dispatchTableList);
 
-    let fullDispatchCount = 0;
-    this.dispatcherItems.map((item) => {
-      fullDispatchCount += parseInt(item.dispatchCount);
-      if (item.teamBoard) {
-        item.dispatcher = {
-          avatar: null,
-          fullName: 'Team Board',
-          id: 1,
-        };
-      }
+        // this.dispatcherQuery.dispatchBoardListData$
+        // .pipe(takeUntil(this.destroy$))
+        // .subscribe(result => {
+        //   console.log("WHAT IS RESULT------");
+        //   console.log(result);
+        // });
 
-      return item;
-    });
+        // this.dispatcherQuery.dispatchboardShortList$
+        // .pipe(takeUntil(this.destroy$))
+        // .subscribe(result => {
+        //   console.log("WHAT IS RESULT OF LISTTTTT------");
+        //   console.log(result);
+        // })
+    }
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+    openAddLoad(id: any) {}
 
-    //const user = JSON.parse(localStorage.getItem('currentUser'));
-    this.dispatcherItems.unshift({
-      dispatchCount: fullDispatchCount,
-      id: -1,
-      selected: true,
-      dispatcher: {
-        avatar: null,
-        fullName: 'All Boards',
-        id: -1,
-      },
-    });
+    addLoad() {
+        // const data = {
+        //   type: 'new',
+        //   id: null,
+        // };
+    }
 
-    console.log(this.dispatcherItems);
+    openDispatchHistory() {}
 
-    // const previous_selected = localStorage.getItem('dispatchUserSelect');
-    // if (!previous_selected) {
-    //   const itemIndex = this.dispatcherItems.findIndex(
-    //     (item) => item.id === this.user.id
-    //   );
-    //   if (itemIndex > -1) {
-    //     this.dispatcher = this.dispatcherItems[itemIndex].id;
-    //     this.selectedDispatcher = JSON.parse(
-    //       JSON.stringify(this.dispatcherItems[itemIndex])
-    //     );
-    //   }
-    // } else {
-    //   this.selectedDispatcher = JSON.parse(
-    //     JSON.stringify(
-    //       this.dispatcherItems.find((item) => item.id == previous_selected)
-    //     )
-    //   );
-    //   this.dispatcher = parseInt(previous_selected);
+    openSideNav() {}
+
+    trailerTruck() {}
+
+    truckTrailer() {}
+
+    changeDisparcher(id: number) {
+        const dispatcherId = id;
+        if (dispatcherId > -1) {
+            this.dispatcherStoreService.getDispatchBoardByDispatcherListAndUpdate(
+                dispatcherId
+            );
+        } else {
+            this.dispatcherStoreService.getDispatchboardAllListAndUpdate();
+        }
+
+        localStorage.setItem('dispatchUserSelect', id.toString());
+    }
+
+    getDispatcherData(result?) {
+        this.dispatcherItems = JSON.parse(JSON.stringify(result));
+
+        let fullDispatchCount = 0;
+        this.dispatcherItems.map((item) => {
+            fullDispatchCount += parseInt(item.dispatchCount);
+            if (item.teamBoard) {
+                item.dispatcher = {
+                    avatar: null,
+                    fullName: 'Team Board',
+                    id: 1,
+                };
+            }
+
+            return item;
+        });
+
+        //const user = JSON.parse(localStorage.getItem('currentUser'));
+        this.dispatcherItems.unshift({
+            dispatchCount: fullDispatchCount,
+            id: -1,
+            selected: true,
+            dispatcher: {
+                avatar: null,
+                fullName: 'All Boards',
+                id: -1,
+            },
+        });
+
+        console.log(this.dispatcherItems);
+
+        // const previous_selected = localStorage.getItem('dispatchUserSelect');
+        // if (!previous_selected) {
+        //   const itemIndex = this.dispatcherItems.findIndex(
+        //     (item) => item.id === this.user.id
+        //   );
+        //   if (itemIndex > -1) {
+        //     this.dispatcher = this.dispatcherItems[itemIndex].id;
+        //     this.selectedDispatcher = JSON.parse(
+        //       JSON.stringify(this.dispatcherItems[itemIndex])
+        //     );
+        //   }
+        // } else {
+        //   this.selectedDispatcher = JSON.parse(
+        //     JSON.stringify(
+        //       this.dispatcherItems.find((item) => item.id == previous_selected)
+        //     )
+        //   );
+        //   this.dispatcher = parseInt(previous_selected);
+        // }
+    }
+
+    lockUnlockBoardAndStartTimer() {
+        this.isBoardLocked = !this.isBoardLocked;
+    }
+
+    // loteEnter(): void {
+    //   this.lottieConfig = {
+    //     ...this.lottieConfig,
+    //     path: '/assets/img/svg-json/icon-live-hov.json',
+    //   };
     // }
-  }
 
-  lockUnlockBoardAndStartTimer() {
-    this.isBoardLocked = !this.isBoardLocked;
-  }
+    // loteLeave(): void {
+    //   this.lottieConfig = {
+    //     ...this.lottieConfig,
+    //     path: '/assets/img/svg-json/icon-live-def.json',
+    //   };
+    // }
 
-  // loteEnter(): void {
-  //   this.lottieConfig = {
-  //     ...this.lottieConfig,
-  //     path: '/assets/img/svg-json/icon-live-hov.json',
-  //   };
-  // }
+    // ngOnInit(): void {
+    //   this.startSignalRConnetction();
 
-  // loteLeave(): void {
-  //   this.lottieConfig = {
-  //     ...this.lottieConfig,
-  //     path: '/assets/img/svg-json/icon-live-def.json',
-  //   };
-  // }
+    //   this.user = JSON.parse(localStorage.getItem('currentUser'));
+    //   this.setUserInactivityListener();
 
-  // ngOnInit(): void {
-  //   this.startSignalRConnetction();
+    //   this.dispatcherQuery.modalList$
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe((result) => {
+    //       console.log("dispatcherList");
+    //       console.log(result);
+    //       this.getDispatcherData(result.dispatchers);
+    //     });
 
-  //   this.user = JSON.parse(localStorage.getItem('currentUser'));
-  //   this.setUserInactivityListener();
+    //   this.dispatcherQuery.dispatchboardList$
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe((result) => {
+    //       console.log("dispatcherList");
+    //       console.log(result);
+    //     });
 
-  //   this.dispatcherQuery.modalList$
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((result) => {
-  //       console.log("dispatcherList");
-  //       console.log(result);
-  //       this.getDispatcherData(result.dispatchers);
-  //     });
+    //   this.loadService.editDispatchBoard
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe(() => {
+    //       // this.getDispatcherData();
+    //     });
 
-  //   this.dispatcherQuery.dispatchboardList$
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((result) => {
-  //       console.log("dispatcherList");
-  //       console.log(result);
-  //     });
+    //   this.shared.emitAllNoteOpened
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe((res) => {
+    //       this.openAllNoteses = res;
+    //     });
 
-  //   this.loadService.editDispatchBoard
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe(() => {
-  //       // this.getDispatcherData();
-  //     });
+    //   // this.signalrService.signalReceived
+    //   // .pipe(takeUntil(this.destroy$))
+    //   // .subscribe((resp: any) =>{
+    //   //   this.handleSignalMessage(resp);
+    //   // });
 
-  //   this.shared.emitAllNoteOpened
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((res) => {
-  //       this.openAllNoteses = res;
-  //     });
+    //   this.loadService.load
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe((res: any) => {
+    //       // this.signalrService.sendMessage({type: "loadAdded", data: [res.dispatchBoardId]});
+    //       this.getDispatcherData();
+    //     });
 
-  //   // this.signalrService.signalReceived
-  //   // .pipe(takeUntil(this.destroy$))
-  //   // .subscribe((resp: any) =>{
-  //   //   this.handleSignalMessage(resp);
-  //   // });
+    //   this.shared.emitCloseNote
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe((res) => {
+    //       ($('#collapseOne') as any).collapse('hide');
+    //       ($('#collapseTwo') as any).collapse('hide');
+    //       this.truckTab = false;
+    //       this.trailerTab = false;
+    //     });
 
-  //   this.loadService.load
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((res: any) => {
-  //       // this.signalrService.sendMessage({type: "loadAdded", data: [res.dispatchBoardId]});
-  //       this.getDispatcherData();
-  //     });
+    //   if (this.sliderValue.length === 0) {
+    //     const d = new Date();
+    //     this.sliderValue = [
+    //       {
+    //         minValue: 0,
+    //         maxValue: d.getHours() * 60 + d.getMinutes(),
+    //         type: 'inactive',
+    //       },
+    //     ];
+    //   }
+    // }
 
-  //   this.shared.emitCloseNote
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((res) => {
-  //       ($('#collapseOne') as any).collapse('hide');
-  //       ($('#collapseTwo') as any).collapse('hide');
-  //       this.truckTab = false;
-  //       this.trailerTab = false;
-  //     });
+    // startSignalRConnetction() {
+    //   this.signalrService.startConnection();
+    //   this.signalrService.addTransferGpsDataListener();
+    //   this.startHttpRequest();
 
-  //   if (this.sliderValue.length === 0) {
-  //     const d = new Date();
-  //     this.sliderValue = [
-  //       {
-  //         minValue: 0,
-  //         maxValue: d.getHours() * 60 + d.getMinutes(),
-  //         type: 'inactive',
-  //       },
-  //     ];
-  //   }
-  // }
+    //   this.signalrService.currentGpsData
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe((gpsData: any) => {
+    //       if (this.trucksPositionOnMap.length) {
+    //         for (let i = 0; i < gpsData.length; i++) {
+    //           if (
+    //             gpsData[i].latitude !== this.trucksPositionOnMap[i]?.lat ||
+    //             gpsData[i].longitude !== this.trucksPositionOnMap[i]?.long ||
+    //             (gpsData[i].motion !== this.trucksPositionOnMap[i].motion &&
+    //               this.trucksPositionOnMap)
+    //           ) {
+    //             this.trucksPositionOnMap[i] = getDataFromGpsResponse(gpsData, i);
+    //             this.gpsDataService.sendGpsDataSingleItem(
+    //               this.trucksPositionOnMap[i]
+    //             );
+    //           }
+    //         }
+    //       }
 
-  // startSignalRConnetction() {
-  //   this.signalrService.startConnection();
-  //   this.signalrService.addTransferGpsDataListener();
-  //   this.startHttpRequest();
+    //       if (!this.trucksPositionOnMap.length) {
+    //         for (let i = 0; i < gpsData.length; i++) {
+    //           this.trucksPositionOnMap.push(getDataFromGpsResponse(gpsData, i));
+    //         }
 
-  //   this.signalrService.currentGpsData
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((gpsData: any) => {
-  //       if (this.trucksPositionOnMap.length) {
-  //         for (let i = 0; i < gpsData.length; i++) {
-  //           if (
-  //             gpsData[i].latitude !== this.trucksPositionOnMap[i]?.lat ||
-  //             gpsData[i].longitude !== this.trucksPositionOnMap[i]?.long ||
-  //             (gpsData[i].motion !== this.trucksPositionOnMap[i].motion &&
-  //               this.trucksPositionOnMap)
-  //           ) {
-  //             this.trucksPositionOnMap[i] = getDataFromGpsResponse(gpsData, i);
-  //             this.gpsDataService.sendGpsDataSingleItem(
-  //               this.trucksPositionOnMap[i]
-  //             );
-  //           }
-  //         }
-  //       }
+    //         this.gpsDataService.sendGpsData(this.trucksPositionOnMap);
+    //       }
+    //     });
+    // }
 
-  //       if (!this.trucksPositionOnMap.length) {
-  //         for (let i = 0; i < gpsData.length; i++) {
-  //           this.trucksPositionOnMap.push(getDataFromGpsResponse(gpsData, i));
-  //         }
+    // lockUnlockBoardAndStartTimer() {
+    //   this.isBoardLocked = !this.isBoardLocked;
+    //   this.formatGridData();
+    //   this.initInactiveTimer();
+    // }
 
-  //         this.gpsDataService.sendGpsData(this.trucksPositionOnMap);
-  //       }
-  //     });
-  // }
+    // initInactiveTimer() {
+    //   if (!this.isBoardLocked) {
+    //     this.idleService.initilizeSessionTimeout();
+    //     if (!this.idleSubscription) {
+    //       this.setUserInactivityListener();
+    //     }
 
-  // lockUnlockBoardAndStartTimer() {
-  //   this.isBoardLocked = !this.isBoardLocked;
-  //   this.formatGridData();
-  //   this.initInactiveTimer();
-  // }
+    //     // if( this.dispatcher == -1 ) this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
+    //   } else {
+    //     if (this.idleSubscription) {
+    //       this.sortService.sortItem = [{ field: 'status' }];
+    //       this.idleSubscription.unsubscribe();
+    //       this.idleSubscription = undefined;
+    //     }
+    //     this.idleService.stopIdleListen();
+    //     // if( this.dispatcher == -1 ) this.signalrService.sendMessage({"type": "lockBoard", "user_id": this.user.id});
+    //   }
+    // }
 
-  // initInactiveTimer() {
-  //   if (!this.isBoardLocked) {
-  //     this.idleService.initilizeSessionTimeout();
-  //     if (!this.idleSubscription) {
-  //       this.setUserInactivityListener();
-  //     }
+    // setUserInactivityListener() {
+    //   this.idleSubscription = this.idleService.userIdlenessChecker
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe((status: string) => {
+    //       if (status === 'STOPPED_TIMER') {
+    //         this.isBoardLocked = !this.isBoardLocked;
+    //         this.toastr.error('Board is locked due to inactivity');
+    //         // this.signalrService.sendMessage({"type": "lockBoard", "user_id": this.user.id});
+    //         this.formatGridData();
+    //       }
+    //       // console.log(Math.floor((new Date().getTime()/ 1000) % 60));
+    //     });
+    // }
 
-  //     // if( this.dispatcher == -1 ) this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
-  //   } else {
-  //     if (this.idleSubscription) {
-  //       this.sortService.sortItem = [{ field: 'status' }];
-  //       this.idleSubscription.unsubscribe();
-  //       this.idleSubscription = undefined;
-  //     }
-  //     this.idleService.stopIdleListen();
-  //     // if( this.dispatcher == -1 ) this.signalrService.sendMessage({"type": "lockBoard", "user_id": this.user.id});
-  //   }
-  // }
+    // getDispatcherItemsData() {
+    //   this.setTruckData();
+    //   this.setTrailerData();
+    //   this.setDriverData();
+    // }
 
-  // setUserInactivityListener() {
-  //   this.idleSubscription = this.idleService.userIdlenessChecker
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((status: string) => {
-  //       if (status === 'STOPPED_TIMER') {
-  //         this.isBoardLocked = !this.isBoardLocked;
-  //         this.toastr.error('Board is locked due to inactivity');
-  //         // this.signalrService.sendMessage({"type": "lockBoard", "user_id": this.user.id});
-  //         this.formatGridData();
-  //       }
-  //       // console.log(Math.floor((new Date().getTime()/ 1000) % 60));
-  //     });
-  // }
+    // setTruckData() {
+    //   this.loadService
+    //     .getDispatchTuckList()
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe((result: any) => {
+    //       // TODO Model set
+    //       this.loadTrucks = result;
+    //     });
+    // }
 
-  // getDispatcherItemsData() {
-  //   this.setTruckData();
-  //   this.setTrailerData();
-  //   this.setDriverData();
-  // }
+    // setTrailerData() {
+    //   this.loadService
+    //     .getLoadTrailers()
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe((result: any) => {
+    //       // TODO Model set
+    //       this.loadTrailers = result;
+    //     });
+    // }
 
-  // setTruckData() {
-  //   this.loadService
-  //     .getDispatchTuckList()
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((result: any) => {
-  //       // TODO Model set
-  //       this.loadTrucks = result;
-  //     });
-  // }
+    // setDriverData() {
+    //   this.loadService
+    //     .getLoadDrivers()
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe((result: any) => {
+    //       this.loadDrivers = result;
+    //     });
+    // }
 
-  // setTrailerData() {
-  //   this.loadService
-  //     .getLoadTrailers()
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((result: any) => {
-  //       // TODO Model set
-  //       this.loadTrailers = result;
-  //     });
-  // }
+    // getDispatcherData(result?) {
+    //   this.dispatcherItems = [...result];
+    //   const user = JSON.parse(localStorage.getItem('currentUser'));
+    //   this.dispatcherItems.unshift({
+    //     id: -1,
+    //     fullName: 'Team Board'
+    //   });
+    //   this.dispatcherItems.unshift({
+    //     id: 0,
+    //     fullName: 'All Boards'
+    //   });
 
-  // setDriverData() {
-  //   this.loadService
-  //     .getLoadDrivers()
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((result: any) => {
-  //       this.loadDrivers = result;
-  //     });
-  // }
+    //   const previous_selected = localStorage.getItem('dispatchUserSelect');
+    //   if (!previous_selected) {
+    //     const itemIndex = this.dispatcherItems.findIndex(
+    //       (item) => item.id === this.user.id
+    //     );
+    //     if (itemIndex > -1) {
+    //       this.dispatcher = this.dispatcherItems[itemIndex].id;
+    //       this.selectedDispatcher = JSON.parse(
+    //         JSON.stringify(this.dispatcherItems[itemIndex])
+    //       );
+    //     }
+    //   } else {
+    //     this.selectedDispatcher = JSON.parse(
+    //       JSON.stringify(
+    //         this.dispatcherItems.find((item) => item.id == previous_selected)
+    //       )
+    //     );
+    //     this.dispatcher = parseInt(previous_selected);
+    //     this.signalrService.startConnection();
+    //     if (this.dispatcher == -1) {
+    //       // if( !this.isBoardLocked ){
+    //       //   this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
+    //       // }
+    //     }
+    //   }
 
-  // getDispatcherData(result?) {
-  //   this.dispatcherItems = [...result];
-  //   const user = JSON.parse(localStorage.getItem('currentUser'));
-  //   this.dispatcherItems.unshift({
-  //     id: -1,
-  //     fullName: 'Team Board'
-  //   });
-  //   this.dispatcherItems.unshift({
-  //     id: 0,
-  //     fullName: 'All Boards'
-  //   });
+    //   this.refreshDispatchBoard(null);
+    // }
 
-  //   const previous_selected = localStorage.getItem('dispatchUserSelect');
-  //   if (!previous_selected) {
-  //     const itemIndex = this.dispatcherItems.findIndex(
-  //       (item) => item.id === this.user.id
-  //     );
-  //     if (itemIndex > -1) {
-  //       this.dispatcher = this.dispatcherItems[itemIndex].id;
-  //       this.selectedDispatcher = JSON.parse(
-  //         JSON.stringify(this.dispatcherItems[itemIndex])
-  //       );
-  //     }
-  //   } else {
-  //     this.selectedDispatcher = JSON.parse(
-  //       JSON.stringify(
-  //         this.dispatcherItems.find((item) => item.id == previous_selected)
-  //       )
-  //     );
-  //     this.dispatcher = parseInt(previous_selected);
-  //     this.signalrService.startConnection();
-  //     if (this.dispatcher == -1) {
-  //       // if( !this.isBoardLocked ){
-  //       //   this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
-  //       // }
-  //     }
-  //   }
+    // openAddLoad(id: any) { }
 
-  //   this.refreshDispatchBoard(null);
-  // }
+    // addLoad() {
+    //   const data = {
+    //     type: 'new',
+    //     id: null,
+    //   };
+    // }
 
-  // openAddLoad(id: any) { }
+    // innactiveLock(status: boolean) {
+    //   this.isBoardLocked = status;
+    // }
 
-  // addLoad() {
-  //   const data = {
-  //     type: 'new',
-  //     id: null,
-  //   };
-  // }
+    // changeDisparcher(event: any) {
+    //   this.dispatcher = event.id;
+    //   if (this.dispatcher != -1) {
+    //     // this.signalrService.sendMessage({"type": "lockBoard", "user_id": this.user.id});
+    //     // setTimeout(() =>{
+    //     //   this.signalrService.stopConnection();
+    //     // }, 200);
+    //   } else if (this.dispatcher == -1) {
+    //     this.signalrService.startConnection();
+    //     // if( !this.isBoardLocked ){
+    //     //   this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
+    //     // }
+    //   }
 
-  // innactiveLock(status: boolean) {
-  //   this.isBoardLocked = status;
-  // }
+    //   localStorage.setItem('dispatchUserSelect', event.id);
 
-  // changeDisparcher(event: any) {
-  //   this.dispatcher = event.id;
-  //   if (this.dispatcher != -1) {
-  //     // this.signalrService.sendMessage({"type": "lockBoard", "user_id": this.user.id});
-  //     // setTimeout(() =>{
-  //     //   this.signalrService.stopConnection();
-  //     // }, 200);
-  //   } else if (this.dispatcher == -1) {
-  //     this.signalrService.startConnection();
-  //     // if( !this.isBoardLocked ){
-  //     //   this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
-  //     // }
-  //   }
+    //   this.refreshDispatchBoard();
+    // }
 
-  //   localStorage.setItem('dispatchUserSelect', event.id);
+    // public ngOnDestroy(): void {
+    //   // this.signalrService.sendMessage({"type": "lockBoard", "user_id": this.user.id});
+    //   // setTimeout(() => {
+    //   //   this.signalrService.stopConnection();
+    //   // }, 500);
+    //   this.signalrService.stopConnection();
+    //   this.destroy$.next();
+    //   this.destroy$.complete();
+    // }
 
-  //   this.refreshDispatchBoard();
-  // }
+    // openSideNav() {
+    //   if (this.accordion.nativeElement.clientWidth === 0) {
+    //     this.accordion.nativeElement.style.opacity = '1';
+    //     this.accordion.nativeElement.style.width = '190px';
+    //     this.accordion.nativeElement.style.transition = 'all 0.5s ease';
+    //   } else {
+    //     this.accordion.nativeElement.style.opacity = '0';
+    //     this.accordion.nativeElement.style.transition = 'all 0.3s ease';
+    //     setTimeout(() => {
+    //       this.accordion.nativeElement.style.width = '0px';
+    //     }, 300);
+    //   }
+    //   this.legendActive = !this.legendActive;
+    //   // this.truckTab = false;
+    //   // this.trailerTab = false;
+    // }
 
-  // public ngOnDestroy(): void {
-  //   // this.signalrService.sendMessage({"type": "lockBoard", "user_id": this.user.id});
-  //   // setTimeout(() => {
-  //   //   this.signalrService.stopConnection();
-  //   // }, 500);
-  //   this.signalrService.stopConnection();
-  //   this.destroy$.next();
-  //   this.destroy$.complete();
-  // }
+    // trailerTruck() {
+    //   this.truckTab = false;
+    //   setTimeout(() => {
+    //     this.trailerTab = !this.trailerTab;
+    //   }, 0);
+    // }
 
-  // openSideNav() {
-  //   if (this.accordion.nativeElement.clientWidth === 0) {
-  //     this.accordion.nativeElement.style.opacity = '1';
-  //     this.accordion.nativeElement.style.width = '190px';
-  //     this.accordion.nativeElement.style.transition = 'all 0.5s ease';
-  //   } else {
-  //     this.accordion.nativeElement.style.opacity = '0';
-  //     this.accordion.nativeElement.style.transition = 'all 0.3s ease';
-  //     setTimeout(() => {
-  //       this.accordion.nativeElement.style.width = '0px';
-  //     }, 300);
-  //   }
-  //   this.legendActive = !this.legendActive;
-  //   // this.truckTab = false;
-  //   // this.trailerTab = false;
-  // }
+    // truckTrailer() {
+    //   this.trailerTab = false;
+    //   setTimeout(() => {
+    //     this.truckTab = !this.truckTab;
+    //   }, 0);
+    // }
 
-  // trailerTruck() {
-  //   this.truckTab = false;
-  //   setTimeout(() => {
-  //     this.trailerTab = !this.trailerTab;
-  //   }, 0);
-  // }
+    // mouseEnterTruck(event, truck) {
+    //   this.tempImgObj = truck;
+    //   event.target.style.backgroundColor = '#' + truck.legendcolor;
+    //   event.target.children[1].style.backgroundColor = '#' + truck.legendcolor;
+    //   event.target.children[1].style.backgroundImage = `url(../../../../assets/img/svgs/${truck.type}/${truck.whiteFile})`;
+    // }
 
-  // truckTrailer() {
-  //   this.trailerTab = false;
-  //   setTimeout(() => {
-  //     this.truckTab = !this.truckTab;
-  //   }, 0);
-  // }
+    // mouseLeaveTruck(event) {
+    //   event.target.style.backgroundColor = 'unset';
+    //   event.target.children[1].style.backgroundColor = 'white';
+    //   event.target.children[1].style.backgroundImage = `url(../../../../assets/img/svgs/${this.tempImgObj.type}/${this.tempImgObj.file})`;
+    // }
 
-  // mouseEnterTruck(event, truck) {
-  //   this.tempImgObj = truck;
-  //   event.target.style.backgroundColor = '#' + truck.legendcolor;
-  //   event.target.children[1].style.backgroundColor = '#' + truck.legendcolor;
-  //   event.target.children[1].style.backgroundImage = `url(../../../../assets/img/svgs/${truck.type}/${truck.whiteFile})`;
-  // }
+    // refreshDispatchBoard(item?: any, id?: number) {
 
-  // mouseLeaveTruck(event) {
-  //   event.target.style.backgroundColor = 'unset';
-  //   event.target.children[1].style.backgroundColor = 'white';
-  //   event.target.children[1].style.backgroundImage = `url(../../../../assets/img/svgs/${this.tempImgObj.type}/${this.tempImgObj.file})`;
-  // }
+    //   if (this.dispatcher) {
+    //     id = this.dispatcher;
+    //   }
 
-  // refreshDispatchBoard(item?: any, id?: number) {
+    //   this.loadService
+    //     .getDispatchData(id)
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe(
+    //       (result: any) => {
+    //         this.gridData = result;
+    //         // TODO: Remove when filed dynamically
+    //         this.gridData.forEach((el) => {
+    //           if (el.statusId > 0 && el.route) {
+    //             const routesInfo = el.route
+    //               ? el.route.reduce(
+    //                 (routesNumb, item) => {
+    //                   if (item.PointType == 'pickup') {
+    //                     routesNumb.pickupNumber = routesNumb.pickupNumber + 1;
+    //                   } else {
+    //                     routesNumb.deliveryNumber =
+    //                       routesNumb.deliveryNumber + 1;
+    //                   }
+    //                   return routesNumb;
+    //                 },
+    //                 { pickupNumber: 0, deliveryNumber: 0 }
+    //               )
+    //               : { pickupNumber: 0, deliveryNumber: 0 };
+    //             Object.assign(el, routesInfo);
+    //           }
+    //           // el.color = this.returnRandomColor();
+    //         });
+    //         this.getDispatcherItemsData();
+    //         this.formatGridData(this.gridData);
+    //       },
+    //       (error) => { }
+    //     );
+    // }
 
-  //   if (this.dispatcher) {
-  //     id = this.dispatcher;
-  //   }
+    // updateUsersData() {
+    //   this.getDispatcherItemsData();
+    // }
 
-  //   this.loadService
-  //     .getDispatchData(id)
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe(
-  //       (result: any) => {
-  //         this.gridData = result;
-  //         // TODO: Remove when filed dynamically
-  //         this.gridData.forEach((el) => {
-  //           if (el.statusId > 0 && el.route) {
-  //             const routesInfo = el.route
-  //               ? el.route.reduce(
-  //                 (routesNumb, item) => {
-  //                   if (item.PointType == 'pickup') {
-  //                     routesNumb.pickupNumber = routesNumb.pickupNumber + 1;
-  //                   } else {
-  //                     routesNumb.deliveryNumber =
-  //                       routesNumb.deliveryNumber + 1;
-  //                   }
-  //                   return routesNumb;
-  //                 },
-  //                 { pickupNumber: 0, deliveryNumber: 0 }
-  //               )
-  //               : { pickupNumber: 0, deliveryNumber: 0 };
-  //             Object.assign(el, routesInfo);
-  //           }
-  //           // el.color = this.returnRandomColor();
-  //         });
-  //         this.getDispatcherItemsData();
-  //         this.formatGridData(this.gridData);
-  //       },
-  //       (error) => { }
-  //     );
-  // }
+    // returnRandomColor() {
+    //   const colorArr = [
+    //     'e94949',
+    //     'ffaf47',
+    //     'eec860',
+    //     '47b5ff',
+    //     '26406c',
+    //     'af88ea',
+    //     '822c97',
+    //     '48b857',
+    //     '44bec2',
+    //     '508181',
+    //     '4c83e2',
+    //     '5ba160',
+    //   ];
+    //   const offset = 0;
+    //   // Can be simplified to const range = colorArr.length + 1 - Nikola
+    //   const range = colorArr.length - 0 + 1;
+    //   const randomNumber = Math.floor(Math.random() * range) + offset;
+    //   return colorArr[randomNumber];
+    // }
 
-  // updateUsersData() {
-  //   this.getDispatcherItemsData();
-  // }
+    // openAllNotes() {
+    //   this.openAllNoteses = !this.openAllNoteses;
+    //   this.shared.emitAllNoteOpened.emit(this.openAllNoteses);
+    // }
 
-  // returnRandomColor() {
-  //   const colorArr = [
-  //     'e94949',
-  //     'ffaf47',
-  //     'eec860',
-  //     '47b5ff',
-  //     '26406c',
-  //     'af88ea',
-  //     '822c97',
-  //     '48b857',
-  //     '44bec2',
-  //     '508181',
-  //     '4c83e2',
-  //     '5ba160',
-  //   ];
-  //   const offset = 0;
-  //   // Can be simplified to const range = colorArr.length + 1 - Nikola
-  //   const range = colorArr.length - 0 + 1;
-  //   const randomNumber = Math.floor(Math.random() * range) + offset;
-  //   return colorArr[randomNumber];
-  // }
+    // formatGridData(data?: any) {
+    //   this.selectedDispatchers = [];
+    //   if (this.dispatcher != 0) {
+    //     this.selectedDispatchers.push(
+    //       this.dispatcherItems.find((item) => item.id == this.dispatcher)
+    //     );
+    //   } else {
+    //     this.selectedDispatchers = this.dispatcherItems
+    //       .filter((item) => item.id != 0)
+    //       .sort((a, b) => {
+    //         return a['id'] < b['id'] ? 1 : -1;
+    //       });
+    //   }
+    // }
 
-  // openAllNotes() {
-  //   this.openAllNoteses = !this.openAllNoteses;
-  //   this.shared.emitAllNoteOpened.emit(this.openAllNoteses);
-  // }
+    // public userUnlockedBoard(data: any): void {
+    //   this.manualLock = true;
+    // }
 
-  // formatGridData(data?: any) {
-  //   this.selectedDispatchers = [];
-  //   if (this.dispatcher != 0) {
-  //     this.selectedDispatchers.push(
-  //       this.dispatcherItems.find((item) => item.id == this.dispatcher)
-  //     );
-  //   } else {
-  //     this.selectedDispatchers = this.dispatcherItems
-  //       .filter((item) => item.id != 0)
-  //       .sort((a, b) => {
-  //         return a['id'] < b['id'] ? 1 : -1;
-  //       });
-  //   }
-  // }
+    // public handleSignalMessage(resp) {
+    //   switch (resp.type) {
+    //     case 'unclock':
+    //       if (resp.user_id != this.user.id) {
+    //         this.userUnlockedBoard(resp.data);
+    //       }
+    //       break;
+    //     case 'lockBoard':
+    //       if (resp.user_id != this.user.id) {
+    //         this.manualLock = false;
+    //       }
+    //       break;
+    //     case 'checkLock':
+    //       // if( !this.isBoardLocked && this.dispatcher == -1 ){
+    //       //   this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
+    //       // }
+    //       break;
+    //   }
+    // }
 
-  // public userUnlockedBoard(data: any): void {
-  //   this.manualLock = true;
-  // }
+    // public hoverPhoneEmail() {
+    //   this.phoneEmailToggle =
+    //     this.phoneEmailToggle == 'Email' ? 'Phone' : 'Email';
+    // }
 
-  // public handleSignalMessage(resp) {
-  //   switch (resp.type) {
-  //     case 'unclock':
-  //       if (resp.user_id != this.user.id) {
-  //         this.userUnlockedBoard(resp.data);
-  //       }
-  //       break;
-  //     case 'lockBoard':
-  //       if (resp.user_id != this.user.id) {
-  //         this.manualLock = false;
-  //       }
-  //       break;
-  //     case 'checkLock':
-  //       // if( !this.isBoardLocked && this.dispatcher == -1 ){
-  //       //   this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
-  //       // }
-  //       break;
-  //   }
-  // }
+    // openDispatchHistory() { }
 
-  // public hoverPhoneEmail() {
-  //   this.phoneEmailToggle =
-  //     this.phoneEmailToggle == 'Email' ? 'Phone' : 'Email';
-  // }
-
-  // openDispatchHistory() { }
-
-  // private startHttpRequest = () => {
-  //   this.http
-  //     .get(environment.API_ENDPOINT + 'signalr/gps')
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe();
-  // };
+    // private startHttpRequest = () => {
+    //   this.http
+    //     .get(environment.API_ENDPOINT + 'signalr/gps')
+    //     .pipe(takeUntil(this.destroy$))
+    //     .subscribe();
+    // };
 }

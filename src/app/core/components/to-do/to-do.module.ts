@@ -13,18 +13,18 @@ import { TruckassistProgressExpirationModule } from './../shared/truckassist-pro
 import { TruckassistSearchModule } from '../shared/truckassist-search/truckassist-search.module';
 
 @NgModule({
-  declarations: [ToDoListCardComponent],
-  imports: [
-    CommonModule,
-    ToDoRoutingModule,
-    AngularSvgIconModule,
-    GridsterModule,
-    AppTooltipeModule,
-    SharedModule,
-    NgxSmoothDnDModule,
-    TruckassistProgressExpirationModule,
-    TruckassistSearchModule,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [ToDoListCardComponent],
+    imports: [
+        CommonModule,
+        ToDoRoutingModule,
+        AngularSvgIconModule,
+        GridsterModule,
+        AppTooltipeModule,
+        SharedModule,
+        NgxSmoothDnDModule,
+        TruckassistProgressExpirationModule,
+        TruckassistSearchModule,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ToDoModule {}

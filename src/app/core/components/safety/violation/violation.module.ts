@@ -8,7 +8,7 @@ import { ViolationDetailsSingleComponent } from './violation-details-page/violat
 import { ViolationCardViewComponent } from './violation-card-view/violation-card-view.component';
 
 @NgModule({
-  declarations: [ViolationTableComponent],
-  imports: [CommonModule, ViolationRoutingModule, TruckassistTableModule],
+    declarations: [ViolationTableComponent],
+    imports: [CommonModule, ViolationRoutingModule, TruckassistTableModule],
 })
 export class ViolationModule {}

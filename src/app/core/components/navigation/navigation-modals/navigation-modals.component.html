@@ -1,118 +1,118 @@
 <div class="modal-nav-panel" *ngIf="isNavigationHoveredAndPanelOpen">
-  <div
-    (mouseenter)="changeTextHoverOnCloseModal = true"
-    (mouseleave)="changeTextHoverOnCloseModal = false"
-    (click)="onAction('Close Panel')"
-    class="modal-nav-close"
-  >
-    <svg-icon
-      class="modal-nav-close-svg"
-      src="assets/svg/common/ic_x.svg"
-    ></svg-icon>
-    <p class="modal-nav-close-text">
-      {{ changeTextHoverOnCloseModal ? "Close" : "Add New" }}
-    </p>
-  </div>
-
-  <div class="modal-nav-content">
-    <p class="modal-nav-header">GENERAL</p>
-    <div class="modal-nav-routes">
-      <p
-        *ngFor="
-          let item of generalNavigationData;
-          let ind = index;
-          trackBy: identity
-        "
-        (click)="onAction('Open Modal', item)"
-      >
-        {{ item.name }}
-        <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
-      </p>
+    <div
+        (mouseenter)="changeTextHoverOnCloseModal = true"
+        (mouseleave)="changeTextHoverOnCloseModal = false"
+        (click)="onAction('Close Panel')"
+        class="modal-nav-close"
+    >
+        <svg-icon
+            class="modal-nav-close-svg"
+            src="assets/svg/common/ic_x.svg"
+        ></svg-icon>
+        <p class="modal-nav-close-text">
+            {{ changeTextHoverOnCloseModal ? 'Close' : 'Add New' }}
+        </p>
     </div>
-  </div>
 
-  <div class="modal-nav-content">
-    <p class="modal-nav-header">TOOLS</p>
-    <div class="modal-nav-routes">
-      <p
-        *ngFor="
-          let item of toolsNavigationData;
-          let ind = index;
-          trackBy: identity
-        "
-        (click)="onAction('Open Modal', item)"
-      >
-        {{ item.name }}
-        <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
-      </p>
+    <div class="modal-nav-content">
+        <p class="modal-nav-header">GENERAL</p>
+        <div class="modal-nav-routes">
+            <p
+                *ngFor="
+                    let item of generalNavigationData;
+                    let ind = index;
+                    trackBy: identity
+                "
+                (click)="onAction('Open Modal', item)"
+            >
+                {{ item.name }}
+                <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
+            </p>
+        </div>
     </div>
-  </div>
 
-  <div class="modal-nav-content">
-    <p class="modal-nav-header">REPAIR</p>
-    <div class="modal-nav-routes">
-      <p
-        *ngFor="
-          let item of repairNavigationData;
-          let ind = index;
-          trackBy: identity
-        "
-        (click)="onAction('Open Modal', item)"
-      >
-        {{ item.name }}
-        <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
-      </p>
+    <div class="modal-nav-content">
+        <p class="modal-nav-header">TOOLS</p>
+        <div class="modal-nav-routes">
+            <p
+                *ngFor="
+                    let item of toolsNavigationData;
+                    let ind = index;
+                    trackBy: identity
+                "
+                (click)="onAction('Open Modal', item)"
+            >
+                {{ item.name }}
+                <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
+            </p>
+        </div>
     </div>
-  </div>
 
-  <div class="modal-nav-content">
-    <p class="modal-nav-header">FUEL</p>
-    <div class="modal-nav-routes">
-      <p
-        *ngFor="
-          let item of fuelNavigationData;
-          let ind = index;
-          trackBy: identity
-        "
-        (click)="onAction('Open Modal', item)"
-      >
-        {{ item.name }}
-        <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
-      </p>
+    <div class="modal-nav-content">
+        <p class="modal-nav-header">REPAIR</p>
+        <div class="modal-nav-routes">
+            <p
+                *ngFor="
+                    let item of repairNavigationData;
+                    let ind = index;
+                    trackBy: identity
+                "
+                (click)="onAction('Open Modal', item)"
+            >
+                {{ item.name }}
+                <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
+            </p>
+        </div>
     </div>
-  </div>
 
-  <div class="modal-nav-content">
-    <p class="modal-nav-header">SAFETY</p>
-    <div class="modal-nav-routes">
-      <p
-        *ngFor="
-          let item of safetyNavigationData;
-          let ind = index;
-          trackBy: identity
-        "
-        (click)="onAction('Open Modal', item)"
-      >
-        {{ item.name }}
-        <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
-      </p>
+    <div class="modal-nav-content">
+        <p class="modal-nav-header">FUEL</p>
+        <div class="modal-nav-routes">
+            <p
+                *ngFor="
+                    let item of fuelNavigationData;
+                    let ind = index;
+                    trackBy: identity
+                "
+                (click)="onAction('Open Modal', item)"
+            >
+                {{ item.name }}
+                <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
+            </p>
+        </div>
     </div>
-  </div>
 
-  <div class="modal-nav-content">
-    <p class="modal-nav-header">ACCOUNTING</p>
-    <div class="modal-nav-routes">
-      <p
-        *ngFor="
-          let item of accountingNavigationData;
-          let ind = index;
-          trackBy: identity
-        "
-        (click)="onAction('Open Modal', item)"
-      >
-        {{ item.name }}
-        <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
-      </p>
+    <div class="modal-nav-content">
+        <p class="modal-nav-header">SAFETY</p>
+        <div class="modal-nav-routes">
+            <p
+                *ngFor="
+                    let item of safetyNavigationData;
+                    let ind = index;
+                    trackBy: identity
+                "
+                (click)="onAction('Open Modal', item)"
+            >
+                {{ item.name }}
+                <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
+            </p>
+        </div>
     </div>
-  </div>
+
+    <div class="modal-nav-content">
+        <p class="modal-nav-header">ACCOUNTING</p>
+        <div class="modal-nav-routes">
+            <p
+                *ngFor="
+                    let item of accountingNavigationData;
+                    let ind = index;
+                    trackBy: identity
+                "
+                (click)="onAction('Open Modal', item)"
+            >
+                {{ item.name }}
+                <span [ngClass]="{ 'border-right': ind % 2 === 0 }"></span>
+            </p>
+        </div>
+    </div>
 </div>

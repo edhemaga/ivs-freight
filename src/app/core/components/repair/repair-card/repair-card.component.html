@@ -1,50 +1,57 @@
 <div class="row card-main-holder">
-  <div class="col-3">
-    <div class="details"></div>
-  </div>
-  <div class="col-9">
-    <div *ngFor="let item of repairCard; let indx = index" class="card-frame">
-      <div class="card-holder-frame" [class.active]="item.checked">
-        <div class="card-holder">
-          <div class="check-holder">
-            <label class="container1">
-              <input
-                (change)="changeChatBox($event, indx)"
-                [checked]="item.checked"
-                type="checkbox"
-              />
-              <span class="checkmark"></span>
-            </label>
-            <div *ngIf="item.active" class="active-circle">
-              <svg-icon
-                src="assets/svg/detail-cards/circle-active.svg"
-              ></svg-icon>
-            </div>
-            <div class="check-title truck-hover">Unit {{ item.unit }}</div>
-          </div>
-          <div class="dropdown">
-            <svg-icon
-              src="assets/svg/truckassist-table/dropdown/dropdown-select.svg"
-            ></svg-icon>
-          </div>
-        </div>
-        <div class="card-holder padding-between">
-          <div class="truck-card-text">
-            SHOP<span class="repair-regular"
-              >FLEET MAINTENANCE SERVICES SOM</span
-            >
-          </div>
-        </div>
-        <div class="card-holder">
-          <div class="truck-card-text">
-            DATE<span class="regular">08/01/22</span>
-          </div>
-          <div *ngIf="!item.finish" class="truck-card-text">
-            COST<span class="repair-bold">$1,181.41</span>
-          </div>
-          <div *ngIf="item.finish" class="finish-order">Finish Order</div>
-        </div>
-      </div>
+    <div class="col-3">
+        <div class="details"></div>
     </div>
-  </div>
+    <div class="col-9">
+        <div
+            *ngFor="let item of repairCard; let indx = index"
+            class="card-frame"
+        >
+            <div class="card-holder-frame" [class.active]="item.checked">
+                <div class="card-holder">
+                    <div class="check-holder">
+                        <label class="container1">
+                            <input
+                                (change)="changeChatBox($event, indx)"
+                                [checked]="item.checked"
+                                type="checkbox"
+                            />
+                            <span class="checkmark"></span>
+                        </label>
+                        <div *ngIf="item.active" class="active-circle">
+                            <svg-icon
+                                src="assets/svg/detail-cards/circle-active.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="check-title truck-hover">
+                            Unit {{ item.unit }}
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <svg-icon
+                            src="assets/svg/truckassist-table/dropdown/dropdown-select.svg"
+                        ></svg-icon>
+                    </div>
+                </div>
+                <div class="card-holder padding-between">
+                    <div class="truck-card-text">
+                        SHOP<span class="repair-regular"
+                            >FLEET MAINTENANCE SERVICES SOM</span
+                        >
+                    </div>
+                </div>
+                <div class="card-holder">
+                    <div class="truck-card-text">
+                        DATE<span class="regular">08/01/22</span>
+                    </div>
+                    <div *ngIf="!item.finish" class="truck-card-text">
+                        COST<span class="repair-bold">$1,181.41</span>
+                    </div>
+                    <div *ngIf="item.finish" class="finish-order">
+                        Finish Order
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

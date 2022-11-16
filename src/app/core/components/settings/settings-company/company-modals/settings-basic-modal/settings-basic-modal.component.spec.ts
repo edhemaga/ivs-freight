@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { SettingsBasicModalComponent } from './settings-basic-modal.component';
 
 describe('SettingsBasicModalComponent', () => {
-  let component: SettingsBasicModalComponent;
-  let fixture: ComponentFixture<SettingsBasicModalComponent>;
+    let component: SettingsBasicModalComponent;
+    let fixture: ComponentFixture<SettingsBasicModalComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SettingsBasicModalComponent],
-    }).compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [SettingsBasicModalComponent],
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SettingsBasicModalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(SettingsBasicModalComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

@@ -2,40 +2,40 @@ import { Component, Input } from '@angular/core';
 import { navigation_header_animation } from '../navigation.animation';
 import { NavigationService } from '../services/navigation.service';
 @Component({
-  selector: 'app-navigation-header',
-  templateUrl: './navigation-header.component.html',
-  styleUrls: ['./navigation-header.component.scss'],
-  animations: [navigation_header_animation('showHideDetails')],
+    selector: 'app-navigation-header',
+    templateUrl: './navigation-header.component.html',
+    styleUrls: ['./navigation-header.component.scss'],
+    animations: [navigation_header_animation('showHideDetails')],
 })
 export class NavigationHeaderComponent {
-  @Input() isNavigationHovered: boolean = false;
+    @Input() isNavigationHovered: boolean = false;
 
-  constructor(private navigationService: NavigationService) {}
+    constructor(private navigationService: NavigationService) {}
 
-  public onAction(type: string) {
-    switch (type) {
-      case 'Open Panel': {
-        this.navigationService.onDropdownActivation({
-          name: 'Modal Panel',
-          type: true,
-        });
-        break;
-      }
-      case 'Search': {
-        // TODO: search
-        break;
-      }
-      case 'Notes': {
-        // TODO: notes
-        break;
-      }
-      case 'Bell': {
-        // TODO: bell
-        break;
-      }
-      default: {
-        return;
-      }
+    public onAction(type: string) {
+        switch (type) {
+            case 'Open Panel': {
+                this.navigationService.onDropdownActivation({
+                    name: 'Modal Panel',
+                    type: true,
+                });
+                break;
+            }
+            case 'Search': {
+                // TODO: search
+                break;
+            }
+            case 'Notes': {
+                // TODO: notes
+                break;
+            }
+            case 'Bell': {
+                // TODO: bell
+                break;
+            }
+            default: {
+                return;
+            }
+        }
     }
-  }
 }

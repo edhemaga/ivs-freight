@@ -1,59 +1,59 @@
 .no-padd {
-  padding: 0 !important;
+    padding: 0 !important;
 }
 
 .fixed_margin {
-  margin-left: 0 !important;
-  margin-right: 15px;
+    margin-left: 0 !important;
+    margin-right: 15px;
 }
 
 .card {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 
-  &.transparent-col {
-    background-color: transparent;
-  }
+    &.transparent-col {
+        background-color: transparent;
+    }
 }
 
 .flexOne {
-  flex: 1;
-  margin-top: 20px;
+    flex: 1;
+    margin-top: 20px;
 }
 
 .margin_min {
-  margin-top: -42px;
+    margin-top: -42px;
 }
 
 .accounting_buttons {
-  display: flex;
-  margin-bottom: 10px;
+    display: flex;
+    margin-bottom: 10px;
 
-  .account_button {
-    flex: 1;
+    .account_button {
+        flex: 1;
 
-    background-color: #f3f3f3;
-    padding: 0 15px;
-    color: #919191;
-    height: 32px;
-    line-height: 32px;
-    border-radius: 3px;
+        background-color: #f3f3f3;
+        padding: 0 15px;
+        color: #919191;
+        height: 32px;
+        line-height: 32px;
+        border-radius: 3px;
 
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
 
-    &:first-child {
-      margin-right: 2px;
+        &:first-child {
+            margin-right: 2px;
+        }
+
+        &:last-child {
+            margin-left: 2px;
+        }
+
+        &.active {
+            background-color: #f9f9f9;
+            color: #5673aa;
+        }
     }
-
-    &:last-child {
-      margin-left: 2px;
-    }
-
-    &.active {
-      background-color: #f9f9f9;
-      color: #5673aa;
-    }
-  }
 }

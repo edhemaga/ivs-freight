@@ -3,22 +3,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavigationSubrouteCardComponent } from './navigation-subroute-card.component';
 
 describe('NavigationSubrouteCardComponent', () => {
-  let component: NavigationSubrouteCardComponent;
-  let fixture: ComponentFixture<NavigationSubrouteCardComponent>;
+    let component: NavigationSubrouteCardComponent;
+    let fixture: ComponentFixture<NavigationSubrouteCardComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [NavigationSubrouteCardComponent],
-    }).compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [NavigationSubrouteCardComponent],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NavigationSubrouteCardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(NavigationSubrouteCardComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

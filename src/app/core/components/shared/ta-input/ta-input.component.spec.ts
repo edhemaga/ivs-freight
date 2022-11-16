@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { TaInputComponent } from './ta-input.component';
 
 describe('TaInputComponent', () => {
-  let component: TaInputComponent;
-  let fixture: ComponentFixture<TaInputComponent>;
+    let component: TaInputComponent;
+    let fixture: ComponentFixture<TaInputComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [TaInputComponent],
-    }).compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [TaInputComponent],
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TaInputComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(TaInputComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

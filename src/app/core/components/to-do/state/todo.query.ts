@@ -4,16 +4,16 @@ import { QueryEntity } from '@datorama/akita';
 import { TodoState, TodoStore } from './todo.store';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class TodoQuery extends QueryEntity<TodoState> {
-  selectTodoList$ = this.select('todoList');
+    selectTodoList$ = this.select('todoList');
 
-  constructor(protected store: TodoStore) {
-    super(store);
-  }
+    constructor(protected store: TodoStore) {
+        super(store);
+    }
 
-  get todoGetTodoList() {
-    return this.getValue().todoList;
-  }
+    get todoGetTodoList() {
+        return this.getValue().todoList;
+    }
 }

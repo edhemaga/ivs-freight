@@ -1,713 +1,717 @@
-@import "src/theme/variables.scss";
+@import 'src/theme/variables.scss';
 
 .step-container {
-  padding-top: 22px;
+    padding-top: 22px;
 
-  .step-title {
-    color: $ta-blue;
-    font-size: 32px;
-    height: 39px;
+    .step-title {
+        color: $ta-blue;
+        font-size: 32px;
+        height: 39px;
 
-    &::-moz-selection {
-      color: $ta-blue;
-      background: rgb(83, 107, 194, 0.2);
-    }
-
-    &::selection {
-      color: $ta-blue;
-      background: rgb(83, 107, 194, 0.2);
-    }
-  }
-
-  .top-section {
-    margin: 12px auto 0 auto;
-
-    p {
-      width: 820px;
-      color: $bw6-2;
-      font-size: 14px;
-      margin: 0;
-      line-height: 22px;
-
-      &::-moz-selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      &::selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      &:nth-child(2) {
-        margin-top: 19px;
-      }
-    }
-  }
-
-  .mid-section {
-    margin-bottom: 12px;
-  }
-
-  .bottom-section {
-    margin: 0 auto;
-
-    p {
-      width: 820px;
-      margin: 0;
-      margin-top: 12px;
-      font-size: 14px;
-      color: $bw6-2;
-      line-height: 18px;
-
-      &::-moz-selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      &::selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      &:nth-child(1) {
-        margin-top: 0;
-      }
-    }
-  }
-
-  .form-section {
-    margin-top: 32px;
-
-    .line-container {
-      position: relative;
-
-      .review-feedback-container {
-        position: absolute;
-        top: 0;
-        right: -435px;
-        width: 429px;
-      }
-    }
-
-    .form-input-container {
-      margin-bottom: 32px;
-      width: 616px;
-
-      &:nth-child(3),
-      &:nth-child(5) {
-        margin-bottom: 22px;
-      }
-
-      .group {
-        margin-bottom: 0;
-        margin-right: 12px;
-
-        &:last-child {
-          margin-right: 0;
+        &::-moz-selection {
+            color: $ta-blue;
+            background: rgb(83, 107, 194, 0.2);
         }
-      }
 
-      .first-name-group {
-        width: 215px;
-      }
-
-      .last-name-group {
-        width: 227px;
-      }
-
-      .date-group {
-        width: 150px;
-        margin-right: 0 !important;
-      }
-
-      .phone-group {
-        width: 229px;
-      }
-
-      .email-group {
-        width: 375px;
-        margin-right: 0 !important;
-      }
-
-      .address-group {
-        width: 480px;
-      }
-
-      .address-unit-group {
-        width: 124px;
-        margin-right: 0 !important;
-      }
-
-      .ssn-group {
-        width: 187px;
-      }
-
-      .bank-group {
-        width: 416px;
-        margin-right: 0 !important;
-      }
-
-      .account-number-group {
-        width: 380px;
-      }
-
-      .routing-number-group {
-        width: 224px;
-        margin-right: 0 !important;
-      }
+        &::selection {
+            color: $ta-blue;
+            background: rgb(83, 107, 194, 0.2);
+        }
     }
 
-    .previous-addresses {
-      .dets-container {
+    .top-section {
+        margin: 12px auto 0 auto;
+
+        p {
+            width: 820px;
+            color: $bw6-2;
+            font-size: 14px;
+            margin: 0;
+            line-height: 22px;
+
+            &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &:nth-child(2) {
+                margin-top: 19px;
+            }
+        }
+    }
+
+    .mid-section {
+        margin-bottom: 12px;
+    }
+
+    .bottom-section {
+        margin: 0 auto;
+
+        p {
+            width: 820px;
+            margin: 0;
+            margin-top: 12px;
+            font-size: 14px;
+            color: $bw6-2;
+            line-height: 18px;
+
+            &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+            }
+
+            &:nth-child(1) {
+                margin-top: 0;
+            }
+        }
+    }
+
+    .form-section {
+        margin-top: 32px;
+
+        .line-container {
+            position: relative;
+
+            .review-feedback-container {
+                position: absolute;
+                top: 0;
+                right: -435px;
+                width: 429px;
+            }
+        }
+
+        .form-input-container {
+            margin-bottom: 32px;
+            width: 616px;
+
+            &:nth-child(3),
+            &:nth-child(5) {
+                margin-bottom: 22px;
+            }
+
+            .group {
+                margin-bottom: 0;
+                margin-right: 12px;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+
+            .first-name-group {
+                width: 215px;
+            }
+
+            .last-name-group {
+                width: 227px;
+            }
+
+            .date-group {
+                width: 150px;
+                margin-right: 0 !important;
+            }
+
+            .phone-group {
+                width: 229px;
+            }
+
+            .email-group {
+                width: 375px;
+                margin-right: 0 !important;
+            }
+
+            .address-group {
+                width: 480px;
+            }
+
+            .address-unit-group {
+                width: 124px;
+                margin-right: 0 !important;
+            }
+
+            .ssn-group {
+                width: 187px;
+            }
+
+            .bank-group {
+                width: 416px;
+                margin-right: 0 !important;
+            }
+
+            .account-number-group {
+                width: 380px;
+            }
+
+            .routing-number-group {
+                width: 224px;
+                margin-right: 0 !important;
+            }
+        }
+
+        .previous-addresses {
+            .dets-container {
+                width: 616px;
+
+                .title-container {
+                    .address-title-container {
+                        width: 174px;
+                        margin-left: 36px;
+                        margin-bottom: 6px;
+                        margin-right: 288px;
+
+                        p {
+                            text-transform: uppercase;
+                            height: 15px;
+                            font-size: 12px;
+                            color: $bw5;
+
+                            &::-moz-selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+
+                            &::selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+
+                            span {
+                                color: $progress-danger;
+
+                                &::-moz-selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+                            }
+                        }
+                    }
+
+                    .address-unit-title-container {
+                        width: 43px;
+
+                        p {
+                            text-transform: uppercase;
+                            height: 15px;
+                            font-size: 12px;
+                            color: $bw5;
+
+                            &::-moz-selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+
+                            &::selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+                        }
+                    }
+                }
+
+                .right-container {
+                    width: 616px;
+                    height: 26px;
+                    border-radius: 2px;
+
+                    .info-btn-container {
+                        &:hover
+                            .info-container
+                            .address-container
+                            .address-icon {
+                            svg {
+                                path {
+                                    fill: $ta-light-blue;
+                                }
+                            }
+                        }
+
+                        &:hover .info-container .address-container,
+                        &:hover .info-container .address-unit-container {
+                            p {
+                                color: $ta-light-grey-3;
+                            }
+                        }
+
+                        &:hover .info-container + .btn-container {
+                            opacity: 1 !important;
+                            visibility: visible !important;
+                        }
+
+                        &:hover .info-container + .btn-container.active {
+                            .edit-icon,
+                            .delete-icon {
+                                display: none;
+                            }
+
+                            .review-icon-box {
+                                .review-icon {
+                                    visibility: visible !important;
+                                    opacity: 1 !important;
+                                }
+                            }
+                        }
+
+                        .info-container {
+                            .address-container {
+                                width: 480px;
+                                margin-right: 12px;
+
+                                .address-icon {
+                                    svg {
+                                        path {
+                                            transition: fill 0.2s ease-in-out;
+                                            fill: $ta-blue-3;
+                                        }
+                                    }
+                                }
+
+                                .pipe {
+                                    width: 1px;
+                                    height: 14px;
+                                    margin: 2px 6px;
+                                    background-color: $ta-gray-02;
+                                }
+
+                                p {
+                                    text-transform: uppercase;
+                                    line-height: 18px;
+                                    font-size: 14px;
+                                    color: $bw6-2;
+                                    transition: color 0.2s ease-in-out;
+
+                                    &::-moz-selection {
+                                        color: $bw6-2;
+                                        background: rgb(108, 108, 108, 0.2);
+                                    }
+
+                                    &::selection {
+                                        color: $bw6-2;
+                                        background: rgb(108, 108, 108, 0.2);
+                                    }
+                                }
+                            }
+
+                            .address-unit-container {
+                                width: 42px;
+                                margin-right: 6px;
+
+                                p {
+                                    text-transform: uppercase;
+                                    font-size: 14px;
+                                    color: $bw6-2;
+                                    transition: color 0.2s ease-in-out;
+
+                                    &::-moz-selection {
+                                        color: $bw6-2;
+                                        background: rgb(108, 108, 108, 0.2);
+                                    }
+
+                                    &::selection {
+                                        color: $bw6-2;
+                                        background: rgb(108, 108, 108, 0.2);
+                                    }
+                                }
+                            }
+                        }
+
+                        .review-icon-box {
+                            margin-left: 44px;
+                        }
+
+                        .btn-container {
+                            width: 64px;
+                            visibility: hidden !important;
+                            opacity: 0;
+                            transition: opacity 0.2s ease-in-out;
+
+                            &.active {
+                                visibility: visible !important;
+                                opacity: 1 !important;
+
+                                .edit-icon,
+                                .delete-icon,
+                                .review-icon {
+                                    visibility: hidden !important;
+                                    opacity: 0 !important;
+                                    user-select: none !important;
+
+                                    &.edit-icon,
+                                    &.delete-icon {
+                                        display: none !important;
+                                    }
+
+                                    &.review-icon.active {
+                                        visibility: visible !important;
+                                        opacity: 1 !important;
+                                    }
+                                }
+                            }
+
+                            .edit-icon,
+                            .delete-icon,
+                            .review-icon {
+                                cursor: pointer;
+
+                                &:hover {
+                                    svg {
+                                        path {
+                                            transition: fill 0.2s ease-in-out;
+                                            fill: $bw6-2;
+                                        }
+                                    }
+                                }
+
+                                svg {
+                                    path {
+                                        fill: $bw4;
+                                    }
+                                }
+
+                                &.edit-icon {
+                                    margin-right: 4px;
+                                }
+
+                                &.review-icon {
+                                    svg {
+                                        path {
+                                            transition: fill 0.3s ease-in-out;
+                                            fill: $ta-red-2 !important;
+                                        }
+
+                                        rect {
+                                            transition: fill 0.3s ease-in-out;
+                                            fill: $bw2 !important;
+                                        }
+                                    }
+
+                                    &:hover {
+                                        svg {
+                                            path {
+                                                fill: $white !important;
+                                            }
+
+                                            rect {
+                                                fill: $ta-red-2 !important;
+                                            }
+                                        }
+                                    }
+
+                                    &.active {
+                                        svg {
+                                            path {
+                                                fill: $white !important;
+                                            }
+
+                                            rect {
+                                                fill: $ta-red-3 !important;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .input-container {
+                        .address-container {
+                            margin-right: 12px;
+                        }
+
+                        .address-unit-container {
+                            width: 124px;
+                            margin-right: 12px;
+                        }
+
+                        .confirm-cancel-btn-container {
+                            width: 56px;
+                            height: 26px;
+
+                            .confirm-icon,
+                            .cancel-icon {
+                                cursor: pointer;
+
+                                svg {
+                                    rect {
+                                        transition: fill 0.2s ease-in-out;
+                                        fill: $ta-light-grey-4;
+                                    }
+
+                                    path {
+                                        transition: fill 0.2s ease-in-out;
+                                        fill: $bw4;
+                                    }
+                                }
+
+                                &:hover {
+                                    svg {
+                                        rect {
+                                            fill: $bw6-2;
+                                        }
+
+                                        path {
+                                            fill: $white;
+                                        }
+                                    }
+                                }
+
+                                &.confirm-icon {
+                                    margin-right: 8px;
+                                }
+                            }
+                        }
+
+                        .delete-btn-container {
+                            width: 26px;
+                            height: 26px;
+                            border-radius: 3px;
+                            background: $ta-light-grey-5;
+                            transition: background 0.2s ease-in-out;
+                            cursor: pointer;
+
+                            &:hover {
+                                background: $bw2;
+                            }
+
+                            &:hover .delete-icon {
+                                svg {
+                                    path {
+                                        fill: $bw6-2;
+                                    }
+                                }
+                            }
+
+                            .delete-icon {
+                                cursor: pointer;
+
+                                svg {
+                                    path {
+                                        transition: fill 0.2s ease-in-out;
+                                        fill: $bw4;
+                                    }
+                                }
+                            }
+
+                            &.disabled {
+                                pointer-events: none;
+
+                                &:hover {
+                                    background: $ta-light-grey-5;
+
+                                    .delete-icon {
+                                        svg {
+                                            path {
+                                                fill: $bw4;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .previous-address-btn-container {
+                margin-bottom: 26px;
+                width: 616px;
+
+                .previous-address-title {
+                    color: $bw6-2;
+                    font-size: 14px;
+                    height: 18px;
+                    margin-right: 12px !important;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                .add-btn {
+                    width: 134px;
+                    height: 26px;
+                    line-height: 18px;
+                    padding: 4px 8px;
+                    border: none;
+                    outline: none;
+                    font-size: 14px;
+                    border-radius: 2px;
+                    color: $ta-blue;
+                    background: $ta-gray-01;
+                    transition: background 0.2s ease-in-out,
+                        color 0.2s ease-in-out;
+
+                    &:hover {
+                        color: $white;
+                        background: $ta-blue;
+                    }
+
+                    &:hover .plus-icon {
+                        svg {
+                            path {
+                                fill: $white;
+                            }
+                        }
+                    }
+
+                    &.disabled {
+                        -webkit-user-select: none !important;
+                        -moz-user-select: none !important;
+                        -ms-user-select: none !important;
+                        user-select: none !important;
+
+                        cursor: auto;
+                        background: $ta-light-grey-4;
+                        color: $bw4;
+
+                        .plus-icon {
+                            svg {
+                                path {
+                                    fill: $ta-light-grey-6;
+                                }
+                            }
+                        }
+                    }
+
+                    .plus-icon {
+                        margin-right: 6px;
+
+                        svg {
+                            path {
+                                transition: fill 0.2s ease-in-out;
+                                fill: $ta-light-blue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .questions-section {
         width: 616px;
 
-        .title-container {
-          .address-title-container {
-            width: 174px;
-            margin-left: 36px;
-            margin-bottom: 6px;
-            margin-right: 288px;
+        .question-container {
+            margin-bottom: 12px;
+            position: relative;
 
-            p {
-              text-transform: uppercase;
-              height: 15px;
-              font-size: 12px;
-              color: $bw5;
+            &:last-child {
+                margin-bottom: 0;
+            }
 
-              &::-moz-selection {
-                color: $bw5;
-                background: rgb(145, 145, 145, 0.2);
-              }
+            .review-feedback {
+                height: 26px;
+                position: absolute;
+                right: -6px;
+                top: 0;
+            }
 
-              &::selection {
-                color: $bw5;
-                background: rgb(145, 145, 145, 0.2);
-              }
-
-              span {
-                color: $progress-danger;
+            .question-title {
+                color: $bw6-2;
+                font-size: 14px;
+                line-height: 18px;
 
                 &::-moz-selection {
-                  color: $bw5;
-                  background: rgb(145, 145, 145, 0.2);
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
                 }
 
                 &::selection {
-                  color: $bw5;
-                  background: rgb(145, 145, 145, 0.2);
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
                 }
-              }
+
+                .required-star {
+                    color: $progress-danger;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
             }
-          }
 
-          .address-unit-title-container {
-            width: 43px;
-
-            p {
-              text-transform: uppercase;
-              height: 15px;
-              font-size: 12px;
-              color: $bw5;
-
-              &::-moz-selection {
+            .question-title-feedback {
                 color: $bw5;
-                background: rgb(145, 145, 145, 0.2);
-              }
+                font-size: 14px;
+                line-height: 18px;
 
-              &::selection {
-                color: $bw5;
-                background: rgb(145, 145, 145, 0.2);
-              }
-            }
-          }
-        }
-
-        .right-container {
-          width: 616px;
-          height: 26px;
-          border-radius: 2px;
-
-          .info-btn-container {
-            &:hover .info-container .address-container .address-icon {
-              svg {
-                path {
-                  fill: $ta-light-blue;
-                }
-              }
-            }
-
-            &:hover .info-container .address-container,
-            &:hover .info-container .address-unit-container {
-              p {
-                color: $ta-light-grey-3;
-              }
-            }
-
-            &:hover .info-container + .btn-container {
-              opacity: 1 !important;
-              visibility: visible !important;
-            }
-
-            &:hover .info-container + .btn-container.active {
-              .edit-icon,
-              .delete-icon {
-                display: none;
-              }
-
-              .review-icon-box {
-                .review-icon {
-                  visibility: visible !important;
-                  opacity: 1 !important;
-                }
-              }
-            }
-
-            .info-container {
-              .address-container {
-                width: 480px;
-                margin-right: 12px;
-
-                .address-icon {
-                  svg {
-                    path {
-                      transition: fill 0.2s ease-in-out;
-                      fill: $ta-blue-3;
-                    }
-                  }
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgb(145, 145, 145, 0.2);
                 }
 
-                .pipe {
-                  width: 1px;
-                  height: 14px;
-                  margin: 2px 6px;
-                  background-color: $ta-gray-02;
+                &::selection {
+                    color: $bw5;
+                    background: rgb(145, 145, 145, 0.2);
                 }
 
-                p {
-                  text-transform: uppercase;
-                  line-height: 18px;
-                  font-size: 14px;
-                  color: $bw6-2;
-                  transition: color 0.2s ease-in-out;
+                .required-star {
+                    color: $bw5;
 
-                  &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                  }
-
-                  &::selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                  }
-                }
-              }
-
-              .address-unit-container {
-                width: 42px;
-                margin-right: 6px;
-
-                p {
-                  text-transform: uppercase;
-                  font-size: 14px;
-                  color: $bw6-2;
-                  transition: color 0.2s ease-in-out;
-
-                  &::-moz-selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                  }
-
-                  &::selection {
-                    color: $bw6-2;
-                    background: rgb(108, 108, 108, 0.2);
-                  }
-                }
-              }
-            }
-
-            .review-icon-box {
-              margin-left: 44px;
-            }
-
-            .btn-container {
-              width: 64px;
-              visibility: hidden !important;
-              opacity: 0;
-              transition: opacity 0.2s ease-in-out;
-
-              &.active {
-                visibility: visible !important;
-                opacity: 1 !important;
-
-                .edit-icon,
-                .delete-icon,
-                .review-icon {
-                  visibility: hidden !important;
-                  opacity: 0 !important;
-                  user-select: none !important;
-
-                  &.edit-icon,
-                  &.delete-icon {
-                    display: none !important;
-                  }
-
-                  &.review-icon.active {
-                    visibility: visible !important;
-                    opacity: 1 !important;
-                  }
-                }
-              }
-
-              .edit-icon,
-              .delete-icon,
-              .review-icon {
-                cursor: pointer;
-
-                &:hover {
-                  svg {
-                    path {
-                      transition: fill 0.2s ease-in-out;
-                      fill: $bw6-2;
-                    }
-                  }
-                }
-
-                svg {
-                  path {
-                    fill: $bw4;
-                  }
-                }
-
-                &.edit-icon {
-                  margin-right: 4px;
-                }
-
-                &.review-icon {
-                  svg {
-                    path {
-                      transition: fill 0.3s ease-in-out;
-                      fill: $ta-red-2 !important;
+                    &::-moz-selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
                     }
 
-                    rect {
-                      transition: fill 0.3s ease-in-out;
-                      fill: $bw2 !important;
+                    &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
                     }
-                  }
-
-                  &:hover {
-                    svg {
-                      path {
-                        fill: $white !important;
-                      }
-
-                      rect {
-                        fill: $ta-red-2 !important;
-                      }
-                    }
-                  }
-
-                  &.active {
-                    svg {
-                      path {
-                        fill: $white !important;
-                      }
-
-                      rect {
-                        fill: $ta-red-3 !important;
-                      }
-                    }
-                  }
                 }
-              }
-            }
-          }
-
-          .input-container {
-            .address-container {
-              margin-right: 12px;
             }
 
-            .address-unit-container {
-              width: 124px;
-              margin-right: 12px;
+            .question-radios-box {
+                width: 86px;
+
+                .ta-input-radiobutons {
+                    width: 100%;
+                }
             }
-
-            .confirm-cancel-btn-container {
-              width: 56px;
-              height: 26px;
-
-              .confirm-icon,
-              .cancel-icon {
-                cursor: pointer;
-
-                svg {
-                  rect {
-                    transition: fill 0.2s ease-in-out;
-                    fill: $ta-light-grey-4;
-                  }
-
-                  path {
-                    transition: fill 0.2s ease-in-out;
-                    fill: $bw4;
-                  }
-                }
-
-                &:hover {
-                  svg {
-                    rect {
-                      fill: $bw6-2;
-                    }
-
-                    path {
-                      fill: $white;
-                    }
-                  }
-                }
-
-                &.confirm-icon {
-                  margin-right: 8px;
-                }
-              }
-            }
-
-            .delete-btn-container {
-              width: 26px;
-              height: 26px;
-              border-radius: 3px;
-              background: $ta-light-grey-5;
-              transition: background 0.2s ease-in-out;
-              cursor: pointer;
-
-              &:hover {
-                background: $bw2;
-              }
-
-              &:hover .delete-icon {
-                svg {
-                  path {
-                    fill: $bw6-2;
-                  }
-                }
-              }
-
-              .delete-icon {
-                cursor: pointer;
-
-                svg {
-                  path {
-                    transition: fill 0.2s ease-in-out;
-                    fill: $bw4;
-                  }
-                }
-              }
-
-              &.disabled {
-                pointer-events: none;
-
-                &:hover {
-                  background: $ta-light-grey-5;
-
-                  .delete-icon {
-                    svg {
-                      path {
-                        fill: $bw4;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      .previous-address-btn-container {
-        margin-bottom: 26px;
-        width: 616px;
-
-        .previous-address-title {
-          color: $bw6-2;
-          font-size: 14px;
-          height: 18px;
-          margin-right: 12px !important;
-
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
         }
 
-        .add-btn {
-          width: 134px;
-          height: 26px;
-          line-height: 18px;
-          padding: 4px 8px;
-          border: none;
-          outline: none;
-          font-size: 14px;
-          border-radius: 2px;
-          color: $ta-blue;
-          background: $ta-gray-01;
-          transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-          &:hover {
-            color: $white;
-            background: $ta-blue;
-          }
-
-          &:hover .plus-icon {
-            svg {
-              path {
-                fill: $white;
-              }
-            }
-          }
-
-          &.disabled {
-            -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
-            user-select: none !important;
-
-            cursor: auto;
-            background: $ta-light-grey-4;
-            color: $bw4;
-
-            .plus-icon {
-              svg {
-                path {
-                  fill: $ta-light-grey-6;
-                }
-              }
-            }
-          }
-
-          .plus-icon {
-            margin-right: 6px;
-
-            svg {
-              path {
-                transition: fill 0.2s ease-in-out;
-                fill: $ta-light-blue;
-              }
-            }
-          }
+        .explain-container {
+            width: 616px;
+            margin-top: 12px;
         }
-      }
-    }
-  }
-
-  .questions-section {
-    width: 616px;
-
-    .question-container {
-      margin-bottom: 12px;
-      position: relative;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      .review-feedback {
-        height: 26px;
-        position: absolute;
-        right: -6px;
-        top: 0;
-      }
-
-      .question-title {
-        color: $bw6-2;
-        font-size: 14px;
-        line-height: 18px;
-
-        &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
-        }
-
-        &::selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
-        }
-
-        .required-star {
-          color: $progress-danger;
-
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-        }
-      }
-
-      .question-title-feedback {
-        color: $bw5;
-        font-size: 14px;
-        line-height: 18px;
-
-        &::-moz-selection {
-          color: $bw5;
-          background: rgb(145, 145, 145, 0.2);
-        }
-
-        &::selection {
-          color: $bw5;
-          background: rgb(145, 145, 145, 0.2);
-        }
-
-        .required-star {
-          color: $bw5;
-
-          &::-moz-selection {
-            color: $bw5;
-            background: rgb(145, 145, 145, 0.2);
-          }
-
-          &::selection {
-            color: $bw5;
-            background: rgb(145, 145, 145, 0.2);
-          }
-        }
-      }
-
-      .question-radios-box {
-        width: 86px;
-
-        .ta-input-radiobutons {
-          width: 100%;
-        }
-      }
     }
 
-    .explain-container {
-      width: 616px;
-      margin-top: 12px;
+    .required-note {
+        font-size: 10px;
+        color: $progress-danger;
+        line-height: 3px;
     }
-  }
-
-  .required-note {
-    font-size: 10px;
-    color: $progress-danger;
-    line-height: 3px;
-  }
 }
 
 .next-btn-container {
-  position: absolute;
-  top: 50%;
-  bottom: 50%;
-  transform: translate(0, -50%);
-  right: 42px;
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(0, -50%);
+    right: 42px;
 }

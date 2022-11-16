@@ -6,22 +6,22 @@ import { DebugElement } from '@angular/core';
 import { SettingsTabPlaceholderComponent } from './settings-tab-placeholder.component';
 
 describe('SettingsTabPlaceholderComponent', () => {
-  let component: SettingsTabPlaceholderComponent;
-  let fixture: ComponentFixture<SettingsTabPlaceholderComponent>;
+    let component: SettingsTabPlaceholderComponent;
+    let fixture: ComponentFixture<SettingsTabPlaceholderComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SettingsTabPlaceholderComponent],
-    }).compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [SettingsTabPlaceholderComponent],
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SettingsTabPlaceholderComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(SettingsTabPlaceholderComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

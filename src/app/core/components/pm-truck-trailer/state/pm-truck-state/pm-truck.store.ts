@@ -3,12 +3,12 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { PMTruckUnitResponse } from 'appcoretruckassist';
 
 export interface PmTruckState
-  extends EntityState<PMTruckUnitResponse, number> {}
+    extends EntityState<PMTruckUnitResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'pmTruck' })
 export class PmTruckStore extends EntityStore<PmTruckState> {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 }

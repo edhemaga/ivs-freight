@@ -1,28 +1,28 @@
 <div
-  id="settings-toolbar"
-  class="settings-toolbar-card"
-  [ngClass]="{ 'card-toolbar-first': cardId === 1 }"
-  routerLink="{{ route }}"
-  routerLinkActive="active"
-  [routerLinkActiveOptions]="{ exact: true }"
+    id="settings-toolbar"
+    class="settings-toolbar-card"
+    [ngClass]="{ 'card-toolbar-first': cardId === 1 }"
+    routerLink="{{ route }}"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
 >
-  <app-ta-counter
-    *ngIf="cardCount != null"
-    [count]="cardCount"
-    [countColor]="routeColor.color"
-    [countBackground]="routeColor.background"
-    [countHeight]="'24px'"
-    [countWidth]="'24px'"
-  ></app-ta-counter>
-  <svg-icon
-    *ngIf="cardSvg"
-    class="toolbar-card-svg"
-    src="{{ cardSvg }}"
-  ></svg-icon>
-  <p
-    class="toolbar-card-name"
-    [ngClass]="{ 'card-toolbar-first-name': cardId === 1 }"
-  >
-    {{ cardName }}
-  </p>
+    <app-ta-counter
+        *ngIf="cardCount != null"
+        [count]="cardCount"
+        [countColor]="routeColor.color"
+        [countBackground]="routeColor.background"
+        [countHeight]="'24px'"
+        [countWidth]="'24px'"
+    ></app-ta-counter>
+    <svg-icon
+        *ngIf="cardSvg"
+        class="toolbar-card-svg"
+        src="{{ cardSvg }}"
+    ></svg-icon>
+    <p
+        class="toolbar-card-name"
+        [ngClass]="{ 'card-toolbar-first-name': cardId === 1 }"
+    >
+        {{ cardName }}
+    </p>
 </div>

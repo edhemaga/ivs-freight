@@ -1,39 +1,39 @@
 .payroll-tables-holder {
-  margin-right: 6px;
-  margin-top: 12px;
-  .card-holder {
-    .ta-card-header {
-      background-color: #fff;
-      border-radius: 3px;
-      height: 32px !important;
-      transition: none !important;
+    margin-right: 6px;
+    margin-top: 12px;
+    .card-holder {
+        .ta-card-header {
+            background-color: #fff;
+            border-radius: 3px;
+            height: 32px !important;
+            transition: none !important;
 
-      &.active {
-        background-color: #424242;
+            &.active {
+                background-color: #424242;
 
-        .header-content {
-          .header-text {
-            color: #fff !important;
-          }
+                .header-content {
+                    .header-text {
+                        color: #fff !important;
+                    }
+                }
+
+                .ta-counter {
+                    background-color: #6c6c6c !important;
+                    p {
+                        color: #fff !important;
+                    }
+                }
+            }
         }
-
-        .ta-counter {
-          background-color: #6c6c6c !important;
-          p {
-            color: #fff !important;
-          }
-        }
-      }
     }
-  }
 }
 
 .table-container {
-  width: calc(100% - 92px);
-  position: absolute;
-  top: 0;
+    width: calc(100% - 92px);
+    position: absolute;
+    top: 0;
 
-  .columns-container {
-    height: 28px !important;
-  }
+    .columns-container {
+        height: 28px !important;
+    }
 }

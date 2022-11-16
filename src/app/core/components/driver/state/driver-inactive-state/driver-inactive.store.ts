@@ -3,12 +3,12 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { DriverShortResponse } from 'appcoretruckassist';
 
 export interface DriversInactiveState
-  extends EntityState<DriverShortResponse, number> {}
+    extends EntityState<DriverShortResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'driverInactive' })
 export class DriversInactiveStore extends EntityStore<DriversInactiveState> {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 }
