@@ -2,7 +2,10 @@
   <div [ngSwitch]="template">
     <div *ngSwitchCase="'payments'">
       <div class="progress-bar-information">
-        <div class="currency-name-payments">{{totalAmount-paidSoFarAmount}}  {{ progressBarName }}<span class="name-left"> left</span> </div>
+        <div class="currency-name-payments">
+          {{ totalAmount - paidSoFarAmount }} {{ progressBarName
+          }}<span class="name-left"> left</span>
+        </div>
         <div class="currency-price-payments">
           {{ totalAmount }}
         </div>

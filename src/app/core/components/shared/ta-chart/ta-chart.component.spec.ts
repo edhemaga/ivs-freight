@@ -8,9 +8,8 @@ describe('TaChartComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaChartComponent ]
-    })
-    .compileComponents();
+      declarations: [TaChartComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -6,11 +6,14 @@ import { BankVerificationService } from './bankVerification.service';
 describe('Service: BankVerification', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BankVerificationService]
+      providers: [BankVerificationService],
     });
   });
 
-  it('should ...', inject([BankVerificationService], (service: BankVerificationService) => {
-    expect(service).toBeTruthy();
-  }));
+  it('should ...', inject(
+    [BankVerificationService],
+    (service: BankVerificationService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 });

@@ -1,5 +1,5 @@
 // ACCIDENTS COLUMN DEFINITION
-export function getAccidentColumns() { 
+export function getAccidentColumns() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -239,7 +239,7 @@ export function getAccidentColumns() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'media',
@@ -263,7 +263,7 @@ export function getAccidentColumns() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'attachments',
@@ -293,7 +293,7 @@ export function getAccidentColumns() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'note',
@@ -316,7 +316,7 @@ export function getAccidentColumns() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -339,7 +339,7 @@ export function getAccidentColumns() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }
@@ -632,7 +632,7 @@ export function getRoadsideInspectionColums() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'note',
@@ -655,7 +655,7 @@ export function getRoadsideInspectionColums() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -678,7 +678,7 @@ export function getRoadsideInspectionColums() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }

@@ -11,9 +11,8 @@ describe('SettingsParkingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsParkingComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsParkingComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

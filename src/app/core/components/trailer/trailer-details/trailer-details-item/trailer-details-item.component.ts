@@ -98,7 +98,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'View Details',
@@ -111,15 +111,15 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
           name: 'renew',
           svg: 'assets/svg/common/ic_retry_white.svg',
           show: true,
-        },    
+        },
         {
           title: 'Transfer',
           name: 'transfer',
           svg: 'assets/svg/common/dropdown-transfer-icon.svg',
           show: true,
-        },    
+        },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -132,16 +132,16 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
           name: 'print',
           svg: 'assets/svg/common/ic_fax.svg',
           show: true,
-        },  
+        },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Void',
           name: 'activate-item',
           svg: 'assets/svg/common/ic_cancel_violation.svg',
-          redIcon: true,  
-        },    
+          redIcon: true,
+        },
         {
           title: 'Delete',
           name: 'delete-item',
@@ -175,16 +175,16 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'View Details',
           name: 'view-details',
           svg: 'assets/svg/common/ic_hazardous-info.svg',
           show: true,
-        },  
+        },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -197,10 +197,10 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
           name: 'print',
           svg: 'assets/svg/common/ic_fax.svg',
           show: true,
-        },  
+        },
         {
-          title: 'border'
-        }, 
+          title: 'border',
+        },
         {
           title: 'Delete',
           name: 'delete-item',

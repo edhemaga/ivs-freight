@@ -1,16 +1,24 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-toolbar-filters',
   templateUrl: './toolbar-filters.component.html',
-  styleUrls: ['./toolbar-filters.component.scss']
+  styleUrls: ['./toolbar-filters.component.scss'],
 })
 export class ToolbarFiltersComponent implements OnInit, OnChanges {
   @Output() toolbarFilter: EventEmitter<any> = new EventEmitter();
   @Input() options: any;
   @Input() activeTableData: any;
 
-  constructor() { }
+  constructor() {}
 
   // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {}
@@ -26,12 +34,13 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges {
     }
   }
 
-  changeModeView(modeView: string){
-    this.options.toolbarActions.viewModeOptions = this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
-      viewMode.active = viewMode.name === modeView;
+  changeModeView(modeView: string) {
+    this.options.toolbarActions.viewModeOptions =
+      this.options.toolbarActions.viewModeOptions.map((viewMode: any) => {
+        viewMode.active = viewMode.name === modeView;
 
-      return viewMode;
-    })
+        return viewMode;
+      });
 
     this.toolbarFilter.emit({
       mode: modeView,

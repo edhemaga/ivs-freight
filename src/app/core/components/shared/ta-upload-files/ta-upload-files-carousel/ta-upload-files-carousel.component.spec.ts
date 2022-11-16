@@ -11,9 +11,8 @@ describe('TaUploadFilesCarouselComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaUploadFilesCarouselComponent ]
-    })
-    .compileComponents();
+      declarations: [TaUploadFilesCarouselComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

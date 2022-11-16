@@ -8,9 +8,8 @@ describe('TaTimePeriodComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaTimePeriodComponent ]
-    })
-    .compileComponents();
+      declarations: [TaTimePeriodComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

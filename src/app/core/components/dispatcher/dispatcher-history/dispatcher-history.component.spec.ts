@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DispatcherHistoryComponent} from './dispatcher-history.component';
+import { DispatcherHistoryComponent } from './dispatcher-history.component';
 
 describe('DispatcherHistoryComponent', () => {
   let component: DispatcherHistoryComponent;
@@ -8,9 +8,8 @@ describe('DispatcherHistoryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DispatcherHistoryComponent]
-    })
-      .compileComponents();
+      declarations: [DispatcherHistoryComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

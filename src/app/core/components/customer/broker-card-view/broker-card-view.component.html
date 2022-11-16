@@ -139,7 +139,11 @@
       <app-ta-custom-card
         [bodyTemplate]="'card'"
         [hasDivider]="true"
-        [hasCounter]="invoiceAgeingCounter ? invoiceAgeingCounter : broker?.invoiceAgeingGroup?.countInvoice"
+        [hasCounter]="
+          invoiceAgeingCounter
+            ? invoiceAgeingCounter
+            : broker?.invoiceAgeingGroup?.countInvoice
+        "
         [cardName]="'Invoice Ageing'"
         [isCardOpen]="true"
       >

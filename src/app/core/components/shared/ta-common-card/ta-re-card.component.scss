@@ -1,353 +1,353 @@
 @keyframes change {
-    from {
-        color: #6c6c6c;
-    }
-    to {
-        color: #3551b7;
-    }
+  from {
+    color: #6c6c6c;
+  }
+  to {
+    color: #3551b7;
+  }
 }
 @keyframes changeSVG {
-    from {
-        fill: #6c6c6c;
-    }
-    to {
-        fill: #536bc2;
-    }
+  from {
+    fill: #6c6c6c;
+  }
+  to {
+    fill: #536bc2;
+  }
 }
 .card-flex {
-    height: 42px !important;
-    transition: all 0.3s ease-in-out;
+  height: 42px !important;
+  transition: all 0.3s ease-in-out;
 }
 
 .text-icon-common {
-    display: flex;
-    align-items: flex-start;
-    z-index: 1;
-    width: 280px;
-    height: 30px;
-    .card-icon-common {
-        display: none;
-        position: relative;
-        margin-left: 6px;
-        height: 18px;
-        svg {
-            &:hover {
-                path {
-                    fill: #6c6c6c;
-                }
-            }
+  display: flex;
+  align-items: flex-start;
+  z-index: 1;
+  width: 280px;
+  height: 30px;
+  .card-icon-common {
+    display: none;
+    position: relative;
+    margin-left: 6px;
+    height: 18px;
+    svg {
+      &:hover {
+        path {
+          fill: #6c6c6c;
         }
+      }
     }
+  }
 
-    .icon-common {
-        margin-right: 6px;
-        position: relative;
-        bottom: 1px;
-    }
+  .icon-common {
+    margin-right: 6px;
+    position: relative;
+    bottom: 1px;
+  }
 
+  .card-close-title {
+    color: #919191 !important;
+  }
+  &:hover {
     .card-close-title {
-        color: #919191 !important;
+      color: #6c6c6c !important;
     }
-    &:hover {
-        .card-close-title {
-            color: #6c6c6c !important;
-        }
-    }
+  }
 }
 .card-name-cmp {
-    font-size: 14px;
-    font-weight: 800;
+  font-size: 14px;
+  font-weight: 800;
+  color: #6c6c6c;
+  height: 22px;
+  &::-moz-selection {
     color: #6c6c6c;
-    height: 22px;
-    &::-moz-selection {
-        color: #6c6c6c;
-        background: rgb(108, 108, 108, 0.2);
-    }
-    &::selection {
-        color: #6c6c6c;
-        background: rgb(108, 108, 108, 0.2);
-    }
+    background: rgb(108, 108, 108, 0.2);
+  }
+  &::selection {
+    color: #6c6c6c;
+    background: rgb(108, 108, 108, 0.2);
+  }
 }
 .card-container-cmp {
-    border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ffffff;
+  margin-bottom: 8px;
+  width: 100%;
+  .card-body-cmp {
+    flex-direction: column;
     background-color: #ffffff;
-    margin-bottom: 8px;
-    width: 100%;
-    .card-body-cmp {
-        flex-direction: column;
-        background-color: #ffffff;
-        max-height: 0;
-        overflow: hidden;
-        transition: all 0.3s ease-in-out;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
 
-        &.active {
-            max-height: 1200px;
-            transition: all 0.3s ease-in-out;
-        }
-        .dates {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 12px;
-        }
-        .state-issued {
-            display: grid;
-            grid-template-columns: 124px 112px;
-            margin: 0px 0px 8px 0px;
-            .state-issued-item {
-                height: 26px;
-                display: flex;
-                flex-direction: column;
-            }
-        }
+    &.active {
+      max-height: 1200px;
+      transition: all 0.3s ease-in-out;
     }
-    .card-footer-cmp {
+    .dates {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+    }
+    .state-issued {
+      display: grid;
+      grid-template-columns: 124px 112px;
+      margin: 0px 0px 8px 0px;
+      .state-issued-item {
+        height: 26px;
         display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        background-color: #ffffff;
-        margin-left: 16px;
-        margin-right: 10px;
-        padding-bottom: 11px;
-        padding-top: 11px;
-        svg {
-            cursor: pointer;
-        }
-        .icon-counter {
-            display: flex;
-            align-items: baseline;
-            .note-icon {
-                svg {
-                    path {
-                        fill: #cccccc;
-                    }
-                }
-            }
-            .attachment-icon {
-                margin-left: 12px;
-                svg {
-                    path {
-                        fill: #cccccc;
-                    }
-                }
-            }
-            .card-document-counter {
-                font-size: 11px;
-                font-weight: 700;
-                margin-left: 4px !important;
-                color: #cccccc;
-                &::-moz-selection {
-                    color: #cccccc;
-                    background: rgb(204, 204, 204, 0.2);
-                }
-                &::selection {
-                    color: #cccccc;
-                    background: rgb(204, 204, 204, 0.2);
-                }
-            }
-        }
+        flex-direction: column;
+      }
     }
+  }
+  .card-footer-cmp {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    background-color: #ffffff;
+    margin-left: 16px;
+    margin-right: 10px;
+    padding-bottom: 11px;
+    padding-top: 11px;
+    svg {
+      cursor: pointer;
+    }
+    .icon-counter {
+      display: flex;
+      align-items: baseline;
+      .note-icon {
+        svg {
+          path {
+            fill: #cccccc;
+          }
+        }
+      }
+      .attachment-icon {
+        margin-left: 12px;
+        svg {
+          path {
+            fill: #cccccc;
+          }
+        }
+      }
+      .card-document-counter {
+        font-size: 11px;
+        font-weight: 700;
+        margin-left: 4px !important;
+        color: #cccccc;
+        &::-moz-selection {
+          color: #cccccc;
+          background: rgb(204, 204, 204, 0.2);
+        }
+        &::selection {
+          color: #cccccc;
+          background: rgb(204, 204, 204, 0.2);
+        }
+      }
+    }
+  }
 }
 
 svg {
-    &:hover {
-        cursor: pointer;
-    }
+  &:hover {
+    cursor: pointer;
+  }
 }
 p {
-    margin: 0 !important;
+  margin: 0 !important;
 }
 .card-close-dots-margin {
-    svg {
-        margin-top: 0 !important;
-    }
+  svg {
+    margin-top: 0 !important;
+  }
 }
 
 .rotate-common {
-    transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+  svg {
+    transform: rotate(180deg);
+    transition: all 0.3s ease-in-out;
+    path {
+      fill: #6d82c7 !important;
+      &:hover {
+        fill: #3551b7 !important;
+      }
+    }
+  }
+  &:hover {
+    .hide-text {
+      color: #3551b7 !important;
+    }
     svg {
-        transform: rotate(180deg);
-        transition: all 0.3s ease-in-out;
-        path {
-            fill: #6d82c7 !important;
-            &:hover {
-                fill: #3551b7 !important;
-            }
-        }
+      path {
+        fill: #3551b7 !important;
+      }
     }
-    &:hover {
-        .hide-text {
-            color: #3551b7 !important;
-        }
-        svg {
-            path {
-                fill: #3551b7 !important;
-            }
-        }
-    }
+  }
 }
 .hide-text {
+  color: #6d82c7;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 6px;
+  cursor: pointer;
+  &:hover {
+    color: #3551b7 !important;
+  }
+  &::-moz-selection {
     color: #6d82c7;
-    font-size: 14px;
-    font-weight: 600;
-    margin-right: 6px;
-    cursor: pointer;
-    &:hover {
-        color: #3551b7 !important;
-    }
-    &::-moz-selection {
-        color: #6d82c7;
-        background: rgba(109, 130, 199, 0.2);
-    }
-    &::selection {
-        color: #6d82c7;
-        background: rgba(109, 130, 199, 0.2);
-    }
+    background: rgba(109, 130, 199, 0.2);
+  }
+  &::selection {
+    color: #6d82c7;
+    background: rgba(109, 130, 199, 0.2);
+  }
 }
 
 .copied {
-    .card-icon-common {
-        svg {
-            path {
-                animation-duration: 1500ms;
-                animation-name: changeSVG;
-                &:hover {
-                    animation-duration: 1500ms;
-                    animation-name: changeSVG;
-                }
-            }
-        }
-    }
-    .open-name {
+  .card-icon-common {
+    svg {
+      path {
         animation-duration: 1500ms;
-        animation-name: change;
+        animation-name: changeSVG;
+        &:hover {
+          animation-duration: 1500ms;
+          animation-name: changeSVG;
+        }
+      }
     }
+  }
+  .open-name {
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
 }
 .hide-footer {
-    display: none;
+  display: none;
 }
 .name-dots {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    // padding: 11px 8px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // padding: 11px 8px 0 12px;
 }
 .drop-common {
-    height: 21px;
+  height: 21px;
 }
 .resize-icon {
-    height: 18px;
-    cursor: pointer;
-    transition: all 0.4s ease-in-out;
-    svg {
-        path {
-            &:hover {
-                fill: #6c6c6c;
-            }
-        }
+  height: 18px;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+  svg {
+    path {
+      &:hover {
+        fill: #6c6c6c;
+      }
     }
+  }
 }
 .resize-icon-svg {
-    svg {
-        path {
-            fill: #aaaaaa;
-            // &:hover {
-            //     fill: #6c6c6c;
-            // }
-        }
+  svg {
+    path {
+      fill: #aaaaaa;
+      // &:hover {
+      //     fill: #6c6c6c;
+      // }
     }
+  }
 }
 .open-name {
-    font-size: 14px;
-    font-weight: 800;
+  font-size: 14px;
+  font-weight: 800;
+  color: #6c6c6c;
+  cursor: pointer;
+  &::-moz-selection {
     color: #6c6c6c;
-    cursor: pointer;
-    &::-moz-selection {
-        color: #6c6c6c;
-        background: rgb(108, 108, 108, 0.2);
-    }
-    &::selection {
-        color: #6c6c6c;
-        background: rgb(108, 108, 108, 0.2);
-    }
-    &:hover {
-        color: #3c3c3c !important;
-    }
+    background: rgb(108, 108, 108, 0.2);
+  }
+  &::selection {
+    color: #6c6c6c;
+    background: rgb(108, 108, 108, 0.2);
+  }
+  &:hover {
+    color: #3c3c3c !important;
+  }
 }
 .dropdown-common {
-    position: relative;
-    height: 21px;
+  position: relative;
+  height: 21px;
 }
 .disable-selection {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: relative;
 }
 .weekly-status {
-    background-color: #f3f3f3;
-    height: 18px;
-    border-radius: 2px;
-    margin-right: 6px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 800;
+  background-color: #f3f3f3;
+  height: 18px;
+  border-radius: 2px;
+  margin-right: 6px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #6c6c6c;
+  line-height: 17px;
+  z-index: 1;
+  &::-moz-selection {
     color: #6c6c6c;
-    line-height: 17px;
-    z-index: 1;
-    &::-moz-selection {
-        color: #6c6c6c;
-        background: rgb(145, 145, 145, 0.2);
-    }
-    &::selection {
-        color: #919191;
-        background: rgb(145, 145, 145, 0.2);
-    }
+    background: rgb(145, 145, 145, 0.2);
+  }
+  &::selection {
+    color: #919191;
+    background: rgb(145, 145, 145, 0.2);
+  }
 }
 .settings-icon {
-    position: relative;
-    top: 0px;
-    margin-left: 6px;
-    svg {
-        &:hover {
-            path {
-                fill: #6c6c6c;
-            }
-        }
+  position: relative;
+  top: 0px;
+  margin-left: 6px;
+  svg {
+    &:hover {
+      path {
+        fill: #6c6c6c;
+      }
     }
+  }
 }
 .second-name {
-    font-size: 14px;
-    color: #6c6c6c;
-    font-weight: 400;
-    margin-left: 12px;
-    width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 14px;
+  color: #6c6c6c;
+  font-weight: 400;
+  margin-left: 12px;
+  width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .content-wrapper {
-    display: flex;
-    align-items: center;
-    line-height: 23px;
-    z-index: 100;
-    &:hover {
-        .card-icon-common {
-            display: flex;
-            position: relative;
-            bottom: 1px;
-        }
+  display: flex;
+  align-items: center;
+  line-height: 23px;
+  z-index: 100;
+  &:hover {
+    .card-icon-common {
+      display: flex;
+      position: relative;
+      bottom: 1px;
     }
+  }
 }
 .dots-common-cards {
-    display: flex;
-    align-items: flex-end;
-    height: 15px;
+  display: flex;
+  align-items: flex-end;
+  height: 15px;
 }
 .hide-padding {
-    transition: all 0.3s ease-in-out;
-    padding-top: 0 !important;
+  transition: all 0.3s ease-in-out;
+  padding-top: 0 !important;
 }

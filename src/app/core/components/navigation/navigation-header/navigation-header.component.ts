@@ -17,7 +17,7 @@ export class NavigationHeaderComponent {
       case 'Open Panel': {
         this.navigationService.onDropdownActivation({
           name: 'Modal Panel',
-          type: true, 
+          type: true,
         });
         break;
       }

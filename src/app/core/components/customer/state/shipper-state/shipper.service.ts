@@ -1,6 +1,4 @@
-import {
-  ShipperMinimalListStore,
-} from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
+import { ShipperMinimalListStore } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
 import { ShipperService } from './../../../../../../../appcoretruckassist/api/shipper.service';
 import { Injectable, OnDestroy } from '@angular/core';
 import {

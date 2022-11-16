@@ -1,6 +1,6 @@
-import {ServerResponse, ServerResponseList} from './response';
-import {Items} from '../truck';
-import {RepairShop} from './repairShop';
+import { ServerResponse, ServerResponseList } from './response';
+import { Items } from '../truck';
+import { RepairShop } from './repairShop';
 
 export interface Maintenance {
   id: number;

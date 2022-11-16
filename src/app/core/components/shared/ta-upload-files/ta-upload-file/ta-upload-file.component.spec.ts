@@ -11,9 +11,8 @@ describe('TaUploadFileComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaUploadFileComponent ]
-    })
-    .compileComponents();
+      declarations: [TaUploadFileComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

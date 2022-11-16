@@ -9,6 +9,8 @@ import {
 })
 export class TaThousandSeparatorPipe implements PipeTransform {
   transform(value: any): any {
-    return convertNumberInThousandSep(convertThousanSepInNumber(value ? value : '0'));
+    return convertNumberInThousandSep(
+      convertThousanSepInNumber(value ? value : '0')
+    );
   }
 }

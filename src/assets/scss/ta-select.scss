@@ -73,8 +73,8 @@
   }
 
   .ng-arrow-wrapper::after {
-    content: '\f322';
-    font-family: 'Font Awesome 5 Duotone', sans-serif;
+    content: "\f322";
+    font-family: "Font Awesome 5 Duotone", sans-serif;
     position: absolute;
     right: 23px;
     top: 3px;
@@ -116,7 +116,6 @@
     }
   }
 }
-
 
 .ta-select-wrapper.ng-select-opened {
   background-color: #ffffff;

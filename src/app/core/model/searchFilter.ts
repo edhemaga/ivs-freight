@@ -1,4 +1,3 @@
-
 import { DateFilter } from './date-filter';
 import { TabFilter } from './tab-filter';
 import { ViolationGroupFilterSummaryEvent } from './violation-group-filter-event';

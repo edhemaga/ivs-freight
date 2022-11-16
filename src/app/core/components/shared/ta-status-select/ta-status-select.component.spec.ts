@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TaStatusSelectComponent} from './ta-status-select.component';
+import { TaStatusSelectComponent } from './ta-status-select.component';
 
 describe('TaStatusSelectComponent', () => {
   let component: TaStatusSelectComponent;
@@ -8,9 +8,8 @@ describe('TaStatusSelectComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaStatusSelectComponent]
-    })
-      .compileComponents();
+      declarations: [TaStatusSelectComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

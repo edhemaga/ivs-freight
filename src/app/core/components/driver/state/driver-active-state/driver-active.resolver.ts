@@ -16,22 +16,24 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
   ) {}
 
   resolve(): Observable<DriversActiveState | boolean> {
-    return this.driverService.getDrivers(1, undefined, undefined, undefined, 1, 25).pipe(
-      catchError(() => {
-        return of('No drivers data...');
-      }),
-      tap((driverPagination: DriverListResponse) => {
-        localStorage.setItem(
-          'driverTableCount',
-          JSON.stringify({
-            active: driverPagination.activeCount,
-            inactive: driverPagination.inactiveCount,
-          })
-        );
+    return this.driverService
+      .getDrivers(1, undefined, undefined, undefined, 1, 25)
+      .pipe(
+        catchError(() => {
+          return of('No drivers data...');
+        }),
+        tap((driverPagination: DriverListResponse) => {
+          localStorage.setItem(
+            'driverTableCount',
+            JSON.stringify({
+              active: driverPagination.activeCount,
+              inactive: driverPagination.inactiveCount,
+            })
+          );
 
-        this.store.set(driverPagination.pagination.data);
-      })
-    );
+          this.store.set(driverPagination.pagination.data);
+        })
+      );
 
     // const drivers$ = this.driverService.getDrivers(
     //   1,
@@ -63,7 +65,6 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
 
     //     // Set Driver Data In Store
     //     driverStore.set(driverPagination.pagination.data);
-
 
     //     const driverConfig = JSON.parse(driversColumnsConfig.config)
 

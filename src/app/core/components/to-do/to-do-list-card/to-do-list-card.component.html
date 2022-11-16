@@ -96,7 +96,8 @@
               [filterTitle]="'Time Filter'"
               [icon]="'pending'"
               [toDoSubType]="'InProgress'"
-              (setFilter)="setFilterEvent($event)"> 
+              (setFilter)="setFilterEvent($event)"
+            >
             </app-filter>
           </div>
           <div class="border-right"></div>
@@ -151,7 +152,8 @@
               [filterTitle]="'Time Filter'"
               [icon]="'pending'"
               [toDoSubType]="'Done'"
-              (setFilter)="setFilterEvent($event)"> 
+              (setFilter)="setFilterEvent($event)"
+            >
             </app-filter>
           </div>
           <div class="border-right"></div>
@@ -295,7 +297,9 @@
                           [options]="dropdownOptions.actions"
                           [id]="item.id"
                           [data]="item"
-                          [placement]="  i == 2 ? 'bottom-right' : 'right-top right-bottom' "
+                          [placement]="
+                            i == 2 ? 'bottom-right' : 'right-top right-bottom'
+                          "
                           [hasVericalDots]="true"
                           (dropDownActions)="dropAct($event)"
                           [customClassDropDown]="'drop-down-details-single'"

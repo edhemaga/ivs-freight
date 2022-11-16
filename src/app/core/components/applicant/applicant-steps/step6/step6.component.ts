@@ -1037,11 +1037,8 @@ export class Step6Component implements OnInit, OnDestroy {
   }
 
   public onSubmitReview(): void {
-    const {
-      questionReview1,
-      questionReview2,
-      questionReview4
-    } = this.educationForm.value;
+    const { questionReview1, questionReview2, questionReview4 } =
+      this.educationForm.value;
 
     const lastItemReview =
       this.previousFormValuesOnReview.emergencyContactReview;

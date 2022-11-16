@@ -928,7 +928,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         next: () => {
           console.log('deleteStopById success');
 
-          if ( route.stops.length > 1 ) {
+          if (route.stops.length > 1) {
             this.getRouteShape(route);
           } else {
             var stopArr = [];
@@ -944,7 +944,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
               stopArr.push(stopObj);
             });
-            
+
             var updateRouteObj = {
               id: route.id,
               name: route.name,
@@ -952,7 +952,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
               stops: stopArr,
             };
             console.log('updateRouteObj', updateRouteObj);
-    
+
             this.routingService
               .updateRoute(updateRouteObj)
               .pipe(takeUntil(this.destroy$))
@@ -964,7 +964,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                   );
                 },
                 error: () => {
-                  this.notificationService.error("Can't update route.", 'Error');
+                  this.notificationService.error(
+                    "Can't update route.",
+                    'Error'
+                  );
                 },
               });
           }
@@ -2681,7 +2684,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             fuelPrice: '',
             stops: stopsArr,
             color: this.findRouteColor(),
-            isFocused: this.focusedRouteIndex == index
+            isFocused: this.focusedRouteIndex == index,
           };
           console.log('newRoute', newRoute);
 
@@ -2773,7 +2776,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
           const polyLineCoordinates = [];
 
-          if ( this.routePolylines[route.id] ) {
+          if (this.routePolylines[route.id]) {
             this.routePolylines[route.id].setMap(null);
           }
 
@@ -2880,7 +2883,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   deleteRouteLine(route) {
     console.log('deleteRouteLine', route);
-    if ( this.routePolylines[route.id] ) {
+    if (this.routePolylines[route.id]) {
       this.routePolylines[route.id].setMap(null);
       this.routePolylines[route.id] = null;
     }

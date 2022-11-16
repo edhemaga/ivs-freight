@@ -19,7 +19,10 @@
         </div>
         <div class="load-status-item-days">
           <span class="days" *ngIf="load?.lastStatusPassed?.days > 0"
-            >{{ load?.lastStatusPassed?.days}} <span class="days">{{load?.lastStatusPassed?.days== 1?'day':'days'}}</span></span
+            >{{ load?.lastStatusPassed?.days }}
+            <span class="days">{{
+              load?.lastStatusPassed?.days == 1 ? "day" : "days"
+            }}</span></span
           >
           <span class="days" *ngIf="load?.lastStatusPassed?.hours > 0">
             {{ load?.lastStatusPassed?.hours }} hour</span
@@ -68,22 +71,37 @@
       >
         <div class="load-broker-container">
           <div class="company-name">{{ load?.broker?.businessName }}</div>
-          <div class="broker-name" *ngIf="load?.brokerContact?.contactName">{{ load?.brokerContact?.contactName }}</div>
+          <div class="broker-name" *ngIf="load?.brokerContact?.contactName">
+            {{ load?.brokerContact?.contactName }}
+          </div>
           <div class="phone-ext-wrapper" *ngIf="load?.brokerContact?.phone">
-            <div class="phone-ext-item-wrapper" *ngIf="load?.brokerContact?.phone">
+            <div
+              class="phone-ext-item-wrapper"
+              *ngIf="load?.brokerContact?.phone"
+            >
               <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
               <span class="item-value"> {{ load?.brokerContact?.phone }}</span>
             </div>
-            <div class="phone-ext-item-wrapper" *ngIf="load?.brokerContact?.exntensionPhone">
+            <div
+              class="phone-ext-item-wrapper"
+              *ngIf="load?.brokerContact?.exntensionPhone"
+            >
               <svg-icon
                 src="assets/svg/common/ic_phone-extension.svg"
               ></svg-icon>
-              <span class="item-value"> {{ load?.brokerContact?.exntensionPhone }}</span>
+              <span class="item-value">
+                {{ load?.brokerContact?.exntensionPhone }}</span
+              >
             </div>
           </div>
-          <div class="phone-ext-item-wrapper phone-ext-item-wrapper-last" *ngIf="load?.brokerContact?.email">
+          <div
+            class="phone-ext-item-wrapper phone-ext-item-wrapper-last"
+            *ngIf="load?.brokerContact?.email"
+          >
             <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-            <span class="item-value email-broker-load">{{ load?.brokerContact?.email }}</span>
+            <span class="item-value email-broker-load">{{
+              load?.brokerContact?.email
+            }}</span>
           </div>
         </div>
       </app-ta-custom-card>

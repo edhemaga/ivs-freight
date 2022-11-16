@@ -8,9 +8,8 @@ describe('TaTabSwitchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaTabSwitchComponent ]
-    })
-    .compileComponents();
+      declarations: [TaTabSwitchComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

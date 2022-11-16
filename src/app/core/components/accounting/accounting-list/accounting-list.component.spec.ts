@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {AccountingListComponent} from './accounting-list.component';
+import { AccountingListComponent } from './accounting-list.component';
 
 describe('AccountingListComponent', () => {
   let component: AccountingListComponent;
@@ -8,9 +8,8 @@ describe('AccountingListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountingListComponent]
-    })
-      .compileComponents();
+      declarations: [AccountingListComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

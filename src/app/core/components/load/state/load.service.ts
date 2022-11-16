@@ -18,9 +18,7 @@ import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/
   providedIn: 'root',
 })
 export class LoadTService {
-  constructor(
-    private loadServices: LoadService
-  ) {}
+  constructor(private loadServices: LoadService) {}
 
   // Get Load List
   // statusType -> 1 - pending, 2 - active, 3 - closed

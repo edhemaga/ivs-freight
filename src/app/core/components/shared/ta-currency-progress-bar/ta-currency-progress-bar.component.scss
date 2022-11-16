@@ -12,7 +12,7 @@
       font-weight: 500;
       color: #6c6c6c;
     }
-    .currency-name-payments{
+    .currency-name-payments {
       font-size: 14px;
       font-weight: 600;
       color: #6c6c6c;
@@ -24,14 +24,13 @@
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);
       }
-      
     }
-    .name-left{
+    .name-left {
       font-size: 14px;
       font-weight: 400;
       color: #6c6c6c;
       &::-moz-selection {
-        color:#6c6c6c;
+        color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);
       }
       &::selection {
@@ -39,7 +38,7 @@
         background: rgb(108, 108, 108, 0.2);
       }
     }
-    .currency-price-payments{
+    .currency-price-payments {
       font-size: 14px;
       font-weight: 600;
       color: #6c6c6c;

@@ -28,16 +28,16 @@
               ? 'assets/svg/truckassist-table/note/Note.svg'
               : 'assets/svg/truckassist-table/note/Note - Empty.svg'
           "
-          (dropActions)="
-            optionsEvent($event, trailers.data, 'registration')
-          "
+          (dropActions)="optionsEvent($event, trailers.data, 'registration')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
               <div class="card-row-endor">
                 <div class="card-item">
                   <div class="card-item-name">State</div>
-                  <div class="card-item-value">{{reg.state.stateShortName}}</div>
+                  <div class="card-item-value">
+                    {{ reg.state.stateShortName }}
+                  </div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
@@ -169,7 +169,9 @@
               <div class="card-row-endor">
                 <div class="card-item">
                   <div class="card-item-name">State</div>
-                  <div class="card-item-value">{{title?.state?.stateShortName}}</div>
+                  <div class="card-item-value">
+                    {{ title?.state?.stateShortName }}
+                  </div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>

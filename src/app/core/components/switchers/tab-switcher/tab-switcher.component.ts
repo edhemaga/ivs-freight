@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-tab-switcher',
   templateUrl: './tab-switcher.component.html',
-  styleUrls: ['./tab-switcher.component.scss']
+  styleUrls: ['./tab-switcher.component.scss'],
 })
 export class TabSwitcherComponent implements OnInit {
   @Input() tabs: any[];
@@ -12,11 +12,10 @@ export class TabSwitcherComponent implements OnInit {
 
   @Output() switchClicked = new EventEmitter<any>();
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
-    if(this.tabs) {
+    if (this.tabs) {
       this.activeTab = this.tabs[0].id;
     }
   }
@@ -25,8 +24,8 @@ export class TabSwitcherComponent implements OnInit {
     this.switchClicked.emit(event);
     this.activeTab = event.id;
   }
- /**Function retrun id */
- public identity(index: number, item: any): number {
-  return item.id;
-}
+  /**Function retrun id */
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
 }

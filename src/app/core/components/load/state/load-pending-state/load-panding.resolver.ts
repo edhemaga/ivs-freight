@@ -29,7 +29,7 @@ export class LoadPandingResolver implements Resolve<LoadPandingState> {
         undefined,
         undefined,
         1,
-        25,
+        25
       )
       .pipe(
         catchError(() => {

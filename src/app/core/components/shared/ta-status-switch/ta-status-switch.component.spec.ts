@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TaStatusSwitchComponent} from './ta-status-switch.component';
+import { TaStatusSwitchComponent } from './ta-status-switch.component';
 
 describe('TaStatusSwitchComponent', () => {
   let component: TaStatusSwitchComponent;
@@ -8,9 +8,8 @@ describe('TaStatusSwitchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaStatusSwitchComponent]
-    })
-      .compileComponents();
+      declarations: [TaStatusSwitchComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

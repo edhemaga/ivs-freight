@@ -8,9 +8,8 @@ describe('BrokerDetailsSingleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BrokerDetailsSingleComponent ]
-    })
-    .compileComponents();
+      declarations: [BrokerDetailsSingleComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

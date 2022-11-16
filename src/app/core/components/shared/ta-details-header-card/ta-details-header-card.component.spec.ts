@@ -8,9 +8,8 @@ describe('TaDetailsHeaderCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaDetailsHeaderCardComponent ]
-    })
-    .compileComponents();
+      declarations: [TaDetailsHeaderCardComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

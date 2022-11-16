@@ -4,7 +4,6 @@
       <div
         *ngIf="!selectedDropdown"
         class="current-active-item"
-      
         [ngClass]="{ 'single-data': options.length == 1 }"
         (click)="onPickItem()"
         ngbTooltip
@@ -23,7 +22,7 @@
           class="owner-tooltip"
         >
           <svg-icon
-           *ngIf="haveDropSVG"
+            *ngIf="haveDropSVG"
             class="current-active-owner"
             src="{{ (options | detailActiveItem).svg }}"
           ></svg-icon>

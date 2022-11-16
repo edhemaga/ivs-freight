@@ -8,9 +8,8 @@ describe('DashboardPickupByStateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DashboardPickupByStateComponent ]
-    })
-    .compileComponents();
+      declarations: [DashboardPickupByStateComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

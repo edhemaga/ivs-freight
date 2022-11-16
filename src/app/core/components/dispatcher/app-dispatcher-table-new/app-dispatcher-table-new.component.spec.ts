@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AppDispatcherTableNewComponent} from './app-dispatcher-table-new.component';
+import { AppDispatcherTableNewComponent } from './app-dispatcher-table-new.component';
 
 describe('AppDispatcherTableNewComponent', () => {
   let component: AppDispatcherTableNewComponent;
@@ -8,9 +8,8 @@ describe('AppDispatcherTableNewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppDispatcherTableNewComponent]
-    })
-      .compileComponents();
+      declarations: [AppDispatcherTableNewComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

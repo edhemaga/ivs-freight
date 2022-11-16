@@ -15,9 +15,7 @@ export class ContactResolver implements Resolve<ContactState> {
     private contactStore: ContactStore
   ) {}
   resolve(): Observable<ContactState | boolean> {
-    return this.contactService
-    .getContacts(null, 1, 25)
-    .pipe(
+    return this.contactService.getContacts(null, 1, 25).pipe(
       catchError(() => {
         return of('No contact data...');
       }),
@@ -28,7 +26,7 @@ export class ContactResolver implements Resolve<ContactState> {
             contact: contactPagination.count,
           })
         );
-        
+
         this.contactStore.set(contactPagination.pagination.data);
       })
     );

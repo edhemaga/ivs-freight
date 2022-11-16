@@ -11,9 +11,8 @@ describe('TtTitleModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TtTitleModalComponent ]
-    })
-    .compileComponents();
+      declarations: [TtTitleModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -762,7 +762,7 @@
         }
 
         path {
-          fill: #B7B7B7;
+          fill: #b7b7b7;
         }
       }
     }
@@ -780,13 +780,13 @@
       }
     }
 
-    &[disabled]{
+    &[disabled] {
       cursor: auto;
       svg-icon {
-        rect{
+        rect {
           fill: rgb(210 210 210);
         }
-        path{
+        path {
           fill: #fff;
         }
       }

@@ -54,7 +54,7 @@ export class TaCommonHeaderComponent implements OnInit {
 
   public openModal(val: any) {
     this.openModalAction.emit(val);
-    console.log('--val--', val)
+    console.log('--val--', val);
   }
   public makeRequestFun(req: any) {
     this.makeRequest.emit(req);
@@ -81,32 +81,32 @@ export class TaCommonHeaderComponent implements OnInit {
     return index;
   }
 
-  toggleDropdownActions(){
+  toggleDropdownActions() {
     //console.log('--mainData---', this.mainData);
     let itemData = this.mainData?.data;
-    console.log('--itemData---', itemData)
+    console.log('--itemData---', itemData);
     let diasbleClosedArray;
 
-    if ( this.mainData?.nameDefault == 'Repair Shop Details' ) {
-      if ( itemData.status != 1 ) {
+    if (this.mainData?.nameDefault == 'Repair Shop Details') {
+      if (itemData.status != 1) {
         diasbleClosedArray = [0, 3, 4, 5];
-      } else if ( itemData.companyOwned ) {
+      } else if (itemData.companyOwned) {
         diasbleClosedArray = [3];
       }
     }
 
-    if ( this.mainData?.nameDefault == 'Broker Details' ) {
-      if ( itemData.status != 1 ) {
+    if (this.mainData?.nameDefault == 'Broker Details') {
+      if (itemData.status != 1) {
         diasbleClosedArray = [0, 2, 3, 4, 5, 6];
-      } else if ( itemData.dnu || itemData.ban) {
+      } else if (itemData.dnu || itemData.ban) {
         diasbleClosedArray = [2];
       }
     }
 
     switch (this.mainData?.nameDefault) {
-      case 'Repair Shop Details' : 
-        this.options?.actions.map((action, index)=>{
-          if ( index == 3 ) {
+      case 'Repair Shop Details':
+        this.options?.actions.map((action, index) => {
+          if (index == 3) {
             if (itemData.pinned != false) {
               action.title = 'Remove from Favourite';
               action.name = 'remove-from-favourite';
@@ -118,14 +118,14 @@ export class TaCommonHeaderComponent implements OnInit {
             }
           }
 
-          if ( diasbleClosedArray && diasbleClosedArray.indexOf(index) > -1 ) {
+          if (diasbleClosedArray && diasbleClosedArray.indexOf(index) > -1) {
             action.disabled = true;
           } else {
             action.disabled = false;
           }
 
-          if ( index == 9 ) {
-            if ( itemData.status != 1) {
+          if (index == 9) {
+            if (itemData.status != 1) {
               action.title = 'Reopen Business';
               action.greenIcon = true;
               action.redIcon = false;
@@ -136,30 +136,29 @@ export class TaCommonHeaderComponent implements OnInit {
               action.redIcon = true;
               action.name = 'close-business';
             }
-          } 
-
-        })
-      break;
-      case 'Broker Details' : 
-        this.options?.actions.map((action, index)=>{
-          if ( diasbleClosedArray && diasbleClosedArray.indexOf(index) > -1 ) {
+          }
+        });
+        break;
+      case 'Broker Details':
+        this.options?.actions.map((action, index) => {
+          if (diasbleClosedArray && diasbleClosedArray.indexOf(index) > -1) {
             action.disabled = true;
           } else {
             action.disabled = false;
           }
 
-          if ( index == 5 ){
-            if ( itemData.ban ) {
+          if (index == 5) {
+            if (itemData.ban) {
               action.title = 'Remove from Ban List';
               action.name = 'remove-from-ban';
             } else {
               action.title = 'Move to Ban List';
-              action.name = "move-to-ban";
+              action.name = 'move-to-ban';
             }
           }
 
-          if ( index == 6 ) {
-            if ( itemData.dnu ) {
+          if (index == 6) {
+            if (itemData.dnu) {
               action.title = 'Remove from DNU List';
               action.name = 'remove-from-dnu';
             } else {
@@ -167,11 +166,9 @@ export class TaCommonHeaderComponent implements OnInit {
               action.name = 'move-to-dnu';
             }
           }
+        });
 
-        })
-        
-      break;
+        break;
     }
-  
   }
 }

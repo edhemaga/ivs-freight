@@ -1,6 +1,6 @@
 // DRIVER TABLE COLUMNS DEFINITION
-export function getDriverColumnsDefinition() { 
-  return [ 
+export function getDriverColumnsDefinition() {
+  return [
     {
       ngTemplate: 'checkbox',
       title: '',
@@ -149,7 +149,7 @@ export function getDriverColumnsDefinition() {
       disabled: false,
       export: true,
       resizable: true,
-      class: 'custom-font', 
+      class: 'custom-font',
     },
     {
       ngTemplate: 'text',
@@ -674,7 +674,7 @@ export function getDriverColumnsDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'note',
@@ -702,7 +702,7 @@ export function getDriverColumnsDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -730,7 +730,7 @@ export function getDriverColumnsDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ] as any[];
 }

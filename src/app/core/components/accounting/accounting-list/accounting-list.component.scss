@@ -1,7 +1,7 @@
 .acounting_table {
   thead {
     tr {
-      background-color: #eeeeee;;
+      background-color: #eeeeee;
     }
   }
 
@@ -28,7 +28,7 @@
   }
 
   .name_column {
-    display: flex;;
+    display: flex;
     font-weight: bold;
     font-size: 14px;
 
@@ -64,7 +64,7 @@
     font-size: 13px;
 
     &.pending_r {
-      background-color: #24C1A1;
+      background-color: #24c1a1;
     }
   }
 
@@ -76,11 +76,11 @@
       display: flex;
 
       ::ng-deep .search-panel {
-        background-color: #FFFFFFb3;
+        background-color: #ffffffb3;
 
         svg {
           path {
-            fill: #B7B7B7;
+            fill: #b7b7b7;
           }
         }
       }
@@ -91,7 +91,7 @@
         margin-left: 6px;
         border-radius: 3px;
 
-        background-color: #ffffffB3;
+        background-color: #ffffffb3;
         cursor: pointer;
 
         &:after {
@@ -102,7 +102,7 @@
           width: 15px;
           height: 8px;
 
-          background-image: url('../../../assets/img/down-gray.svg');
+          background-image: url("../../../assets/img/down-gray.svg");
           background-repeat: no-repeat;
           background-size: 16px 9px;
 
@@ -121,11 +121,11 @@
         }
 
         ::ng-deep .search-panel {
-          background-color: #FFF !important;
+          background-color: #fff !important;
 
           svg {
             path {
-              fill: #B7B7B7 !important;
+              fill: #b7b7b7 !important;
             }
           }
         }
@@ -146,8 +146,8 @@
       cursor: pointer;
 
       &.active {
-        background-color: #E5E5E5 !important;
-        color: #6C6C6C;
+        background-color: #e5e5e5 !important;
+        color: #6c6c6c;
 
         td {
           opacity: 1 !important;
@@ -178,7 +178,7 @@
             opacity: 1;
           }
 
-          background-color: #F9F9F9;
+          background-color: #f9f9f9;
         }
       }
     }
@@ -187,7 +187,8 @@
       color: #919191;
     }
 
-    td, th {
+    td,
+    th {
       padding: 8px 0 5px 10px;
     }
 
@@ -210,7 +211,7 @@
 
         .pag_show_all {
           margin: 0 10px;
-          color: #D1D1D1;
+          color: #d1d1d1;
           font-weight: bold;
 
           &:hover {

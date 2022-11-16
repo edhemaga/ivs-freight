@@ -3,7 +3,7 @@
 // import { ServerResponse, ServerResponseList } from './response';
 // import { Enums } from './enums';
 
-import {Address} from '../address';
+import { Address } from '../address';
 
 // export interface Owner {
 //   id: number;
@@ -91,7 +91,6 @@ import {Address} from '../address';
 //   disableExport: boolean;
 //   filterable: boolean;
 // }
-
 
 // API V2
 export interface OwnerTabData {

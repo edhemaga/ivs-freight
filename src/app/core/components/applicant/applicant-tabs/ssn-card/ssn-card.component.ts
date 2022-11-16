@@ -32,9 +32,7 @@ export class SsnCardComponent implements OnInit {
   ];
   public hasIncorrectFields: boolean = false;
 
-  constructor(
-    private formBuilder: FormBuilder
-  ) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();

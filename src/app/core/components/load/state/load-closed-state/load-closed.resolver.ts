@@ -29,7 +29,7 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
         undefined,
         undefined,
         1,
-        25,
+        25
       )
       .pipe(
         catchError(() => {

@@ -1,9 +1,8 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DateFormatter {
-  constructor() {
-  }
+  constructor() {}
 
   /**
    * Format date function
@@ -22,8 +21,8 @@ export class DateFormatter {
    * Fix date function
    * @param date
    */
-  static fixDate(date: any): { year: string, month: string, day: string } {
-    let result = {year: '', month: '', day: ''};
+  static fixDate(date: any): { year: string; month: string; day: string } {
+    let result = { year: '', month: '', day: '' };
     if (date) {
       const year = date.getFullYear();
       const month = date.toLocaleString().split('/')[1];
@@ -32,10 +31,9 @@ export class DateFormatter {
       result = {
         year,
         month,
-        day
+        day,
       };
     }
     return result;
   }
-
 }

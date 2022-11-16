@@ -11,9 +11,8 @@ describe('DriverDetailsItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DriverDetailsItemComponent ]
-    })
-    .compileComponents();
+      declarations: [DriverDetailsItemComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -72,7 +72,7 @@ import { UrlExtensionPipe } from './url-extension.pipe';
     FormControlPipe,
     LoadStopTimeDatePipe,
     ActiveLoadStatusPipe,
-    UrlExtensionPipe
+    UrlExtensionPipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -110,7 +110,7 @@ import { UrlExtensionPipe } from './url-extension.pipe';
     FormControlPipe,
     LoadStopTimeDatePipe,
     ActiveLoadStatusPipe,
-    UrlExtensionPipe
+    UrlExtensionPipe,
   ],
   providers: [
     DatePipe,

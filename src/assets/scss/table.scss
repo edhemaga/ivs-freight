@@ -1,15 +1,15 @@
 // Table Body Global Scss
 .truckassist-table-body-style {
-  cdk-virtual-scroll-viewport{
+  cdk-virtual-scroll-viewport {
     width: 100%;
     overflow: hidden !important;
     top: -3px;
 
-    .cdk-virtual-scroll-content-wrapper{
+    .cdk-virtual-scroll-content-wrapper {
       padding-top: 3px;
     }
   }
-  
+
   // DESCRIPTION
   .description-container {
     .description-dot-container {
@@ -30,14 +30,14 @@
   }
 
   // PASSWORD
-  .password-text-crypted{
+  .password-text-crypted {
     display: flex;
     align-self: center;
 
-    .password-characters-container{
+    .password-characters-container {
       width: 5px;
       height: 5px;
-      background: #6C6C6C;
+      background: #6c6c6c;
       border-radius: 50%;
       margin-right: 2px;
     }

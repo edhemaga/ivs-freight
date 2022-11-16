@@ -8,9 +8,8 @@ describe('TrailerTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TrailerTableComponent ]
-    })
-    .compileComponents();
+      declarations: [TrailerTableComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

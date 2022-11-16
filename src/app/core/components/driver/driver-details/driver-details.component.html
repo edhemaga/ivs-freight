@@ -1,5 +1,7 @@
 <div class="details-container-items">
-  <div *ngFor="let item of driverDetailsConfig; let i=index; trackBy: identity">
+  <div
+    *ngFor="let item of driverDetailsConfig; let i = index; trackBy: identity"
+  >
     <app-ta-details-header
       [options]="dataTest"
       [route]="'/driver'"
@@ -11,16 +13,14 @@
       [hasRequest]="item.req"
       [statusInactive]="item.status"
       [optionsId]="driverId"
-      [danger]="item.hasDanger" 
+      [danger]="item.hasDanger"
       (dropActions)="onDriverActions($event)"
       (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>
-  
   </div>
-    <div class="driver-details-container">
+  <div class="driver-details-container">
     <app-driver-details-item
-      
       [drivers]="driverDetailsConfig"
     ></app-driver-details-item>
   </div>

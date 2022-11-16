@@ -11,9 +11,8 @@ describe('ShipperModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShipperModalComponent ]
-    })
-    .compileComponents();
+      declarations: [ShipperModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

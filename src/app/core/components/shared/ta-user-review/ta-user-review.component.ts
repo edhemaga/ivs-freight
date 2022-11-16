@@ -158,8 +158,12 @@ export class TaUserReviewComponent implements OnChanges {
   }
 
   public inputValueChange(event: any, ind: number) {
-    this.reviewMessageRef.toArray()[ind].nativeElement.value = event.target.value;
-    if(this.reviewData[ind].commentContent == event.target.value || event.target.value == '') {
+    this.reviewMessageRef.toArray()[ind].nativeElement.value =
+      event.target.value;
+    if (
+      this.reviewData[ind].commentContent == event.target.value ||
+      event.target.value == ''
+    ) {
       this.valueChanged = false;
     } else {
       this.valueChanged = true;

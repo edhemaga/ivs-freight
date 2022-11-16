@@ -272,7 +272,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Create Load',
@@ -308,7 +308,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
           redIcon: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -323,7 +323,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Close Business',

@@ -11,9 +11,8 @@ describe('DriverDrugAlcoholModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DriverDrugAlcoholModalComponent ]
-    })
-    .compileComponents();
+      declarations: [DriverDrugAlcoholModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

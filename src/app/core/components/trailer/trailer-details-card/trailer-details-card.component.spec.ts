@@ -8,9 +8,8 @@ describe('TrailerDetailsCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TrailerDetailsCardComponent ]
-    })
-    .compileComponents();
+      declarations: [TrailerDetailsCardComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

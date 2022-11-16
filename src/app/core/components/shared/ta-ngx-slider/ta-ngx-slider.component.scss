@@ -1,24 +1,23 @@
-.range-slider-holder
-{
-    .ngx-slider-selection-bar{
-        width: auto !important;
-    }
+.range-slider-holder {
+  .ngx-slider-selection-bar {
+    width: auto !important;
+  }
 
-    .input-values-holder{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding-bottom: 20px;
+  .input-values-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 20px;
 
-        .milesInputHolder{
-            width: 141px;
-            height: 41px;
-            
-            .milesInput{
-              width: 90px;
-              outline: none;
-            }
-          }
+    .milesInputHolder {
+      width: 141px;
+      height: 41px;
+
+      .milesInput {
+        width: 90px;
+        outline: none;
+      }
     }
+  }
 }

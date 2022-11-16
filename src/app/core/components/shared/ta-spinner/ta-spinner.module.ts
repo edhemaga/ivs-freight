@@ -5,10 +5,7 @@ import { LottieModule } from 'ngx-lottie';
 
 @NgModule({
   declarations: [TaSpinnerComponent],
-  imports: [
-    CommonModule,
-    LottieModule
-  ],
+  imports: [CommonModule, LottieModule],
   exports: [TaSpinnerComponent],
 })
 export class TaSpinnerModule {}

@@ -12,7 +12,7 @@ import {
   ContentChildren,
   QueryList,
   SecurityContext,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
@@ -24,7 +24,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   selector: 'app-map-list',
   templateUrl: './map-list.component.html',
   styleUrls: ['./map-list.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -65,9 +65,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
       this.checkResizeButton();
 
       this.mapListContent.map((data, index) => {
-        if (
-          (data.actionAnimation == 'delete')
-        ) {
+        if (data.actionAnimation == 'delete') {
           this.deleteAnimation(data.id);
         }
       });
@@ -123,7 +121,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
       }, 10);
     } else {
       setTimeout(() => {
-        mapListElement.style.height = ((containerHeight / 2) - 110) + 'px';
+        mapListElement.style.height = containerHeight / 2 - 110 + 'px';
       }, 10);
     }
   }
@@ -199,8 +197,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     var mapListContainer = document.querySelectorAll<HTMLElement>(
       '.map-list-container'
     )[0];
-    var mapListElement =
-      document.querySelectorAll<HTMLElement>('.map-list')[0];
+    var mapListElement = document.querySelectorAll<HTMLElement>('.map-list')[0];
     var mapListScrollElement =
       document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
@@ -354,7 +351,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
       '[data-id="map-list-card-' + id + '"]'
     );
 
-    if ( mapListCard ) {
+    if (mapListCard) {
       var cardHeight = mapListCard.clientHeight;
 
       mapListCard.classList.add('delete-animation');

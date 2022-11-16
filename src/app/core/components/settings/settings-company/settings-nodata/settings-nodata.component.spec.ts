@@ -11,9 +11,8 @@ describe('SettingsNodataComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsNodataComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsNodataComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

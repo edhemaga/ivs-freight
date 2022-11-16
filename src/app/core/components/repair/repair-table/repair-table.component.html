@@ -29,10 +29,7 @@
     ></app-truckassist-table-body>
   </div>
 
-  <div
-    class="customer-map-container"
-    *ngIf="activeViewMode == 'Map'"
-  >
+  <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
     <app-map-list
       [type]="'repairShop'"
       [columns]="columns"

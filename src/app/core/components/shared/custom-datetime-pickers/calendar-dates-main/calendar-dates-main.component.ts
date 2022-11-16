@@ -25,7 +25,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 export const FULL_SIZE = 182;
 // UKUPNA VISINA SCROLA 100 GODINA x ( 12 MESECI x PUNA VISINA JEDNO ITEMA U SCROLU )
-export const CYCLE_HEIGHT = (100 * (12 * FULL_SIZE)) + 50;
+export const CYCLE_HEIGHT = 100 * (12 * FULL_SIZE) + 50;
 
 export const CYCLE_HEIGHT_BY_MONTHS = 100 * FULL_SIZE + 65;
 
@@ -72,7 +72,7 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
     this.calendarService,
     CYCLE_HEIGHT,
     FULL_SIZE,
-    "main"
+    'main'
   );
 
   private destroy$ = new Subject<void>();
@@ -89,7 +89,7 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
     'September',
     'October',
     'November',
-    'December'
+    'December',
   ];
 
   selectedYear: any;
@@ -134,7 +134,7 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
         ) {
           const sizeTimes = FULL_SIZE / res.cycleSize;
           const newScrollSize = Math.ceil(sizeTimes * res.scrollOffset);
-          this.scrollStrategy.scrollToOffset(newScrollSize, "auto");
+          this.scrollStrategy.scrollToOffset(newScrollSize, 'auto');
         }
       });
 
@@ -144,9 +144,9 @@ export class CalendarDatesMainComponent implements OnInit, OnChanges {
         setTimeout(() => {
           if (res) {
             const indx = this.findIndexInMonth(res);
-            this.scrollStrategy.scrollToIndex(indx, "auto");
+            this.scrollStrategy.scrollToIndex(indx, 'auto');
           } else {
-            this.scrollStrategy.scrollToIndex(this.currentIndex, "auto");
+            this.scrollStrategy.scrollToIndex(this.currentIndex, 'auto');
           }
         }, 200);
       });

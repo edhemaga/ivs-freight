@@ -11,12 +11,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
-import {
-  Subject,
-  takeUntil,
-  debounceTime,
-  distinctUntilChanged,
-} from 'rxjs';
+import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
@@ -76,7 +71,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
   constructor(
     private inputService: TaInputService,
-    private urlExt: UrlExtensionPipe,
+    private urlExt: UrlExtensionPipe
   ) {}
 
   ngOnInit(): void {

@@ -10,7 +10,14 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { animate, style, transition, trigger, state, keyframes } from '@angular/animations';
+import {
+  animate,
+  style,
+  transition,
+  trigger,
+  state,
+  keyframes,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-details-page-dropdown',
@@ -18,7 +25,7 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
   styleUrls: ['./details-dropdown.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations:[
+  animations: [
     trigger('SubtypeAnimation', [
       state(
         'true',
@@ -26,8 +33,8 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
           height: '*',
           overflow: 'hidden',
           opacity: 1,
-          'padding-bottom' : '4px',
-          'padding-top' : '5px'
+          'padding-bottom': '4px',
+          'padding-top': '5px',
         })
       ),
       state(
@@ -35,18 +42,18 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
         style({
           height: '0px',
           overflow: 'hidden',
-          'padding-bottom' : '0px',
-          'padding-top' : '0px',
+          'padding-bottom': '0px',
+          'padding-top': '0px',
           opacity: 0,
         })
       ),
       transition('false <=> true', [animate('.1s ease-in')]),
-      transition('true <=> false', [animate('.1s ease-in')]), 
+      transition('true <=> false', [animate('.1s ease-in')]),
     ]),
     trigger('showAnimation', [
       transition(':enter', [
-        style({ height: '10px', overflow: 'hidden', }),
-        animate('300ms ease', style({ height: '26px', overflow: 'auto',})),
+        style({ height: '10px', overflow: 'hidden' }),
+        animate('300ms ease', style({ height: '26px', overflow: 'auto' })),
       ]),
       transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
     ]),
@@ -57,7 +64,7 @@ import { animate, style, transition, trigger, state, keyframes } from '@angular/
       ]),
       transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
     ]),
-  ]
+  ],
 })
 export class DetailsDropdownComponent implements OnInit, OnChanges {
   @Input() options: any;
@@ -119,7 +126,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     event.stopPropagation();
     event.preventDefault();
 
-    if ( action.disabled ){
+    if (action.disabled) {
       return false;
     }
 
@@ -132,11 +139,11 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     this.tooltip.close();
   }
 
-  subTypeAction(actionData: any, action: any, event?: any){
+  subTypeAction(actionData: any, action: any, event?: any) {
     event.stopPropagation();
     event.preventDefault();
 
-    if ( actionData.disabled ){
+    if (actionData.disabled) {
       return false;
     }
 
@@ -146,7 +153,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     this.tooltip.close();
   }
 
-  openSubtype(indx){
+  openSubtype(indx) {
     if (this.options[indx]['openSubtype']) {
       this.options[indx]['openSubtype'] = false;
     } else {
@@ -155,13 +162,11 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
       });
       this.options[indx]['openSubtype'] = true;
     }
-    
   }
 
-  dropdownClosed(){
+  dropdownClosed() {
     this.options.map((item) => {
       item['openSubtype'] = false;
     });
   }
-
 }

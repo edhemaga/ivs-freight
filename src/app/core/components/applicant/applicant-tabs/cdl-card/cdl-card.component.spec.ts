@@ -8,9 +8,8 @@ describe('CdlCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CdlCardComponent ]
-    })
-    .compileComponents();
+      declarations: [CdlCardComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

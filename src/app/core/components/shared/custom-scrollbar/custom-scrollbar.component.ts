@@ -158,7 +158,6 @@ export class CustomScrollbarComponent
     }, 100);
   }
 
-
   onMouseUpHandler = () => {
     this.isMouseDown = false;
   };

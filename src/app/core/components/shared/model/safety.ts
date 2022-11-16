@@ -1,4 +1,4 @@
-import {ServerResponse} from './shared/response';
+import { ServerResponse } from './shared/response';
 
 // Repair shop model
 export interface RepairShop {

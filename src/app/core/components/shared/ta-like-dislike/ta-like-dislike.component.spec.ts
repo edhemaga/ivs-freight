@@ -11,9 +11,8 @@ describe('TaLikeDislikeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaLikeDislikeComponent ]
-    })
-    .compileComponents();
+      declarations: [TaLikeDislikeComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

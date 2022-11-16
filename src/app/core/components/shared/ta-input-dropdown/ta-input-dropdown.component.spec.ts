@@ -11,9 +11,8 @@ describe('TaInputDropdownComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaInputDropdownComponent ]
-    })
-    .compileComponents();
+      declarations: [TaInputDropdownComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

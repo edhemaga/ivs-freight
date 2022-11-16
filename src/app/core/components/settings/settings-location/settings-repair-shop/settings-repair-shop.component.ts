@@ -157,7 +157,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
           blueIcon: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -172,7 +172,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Close Business',

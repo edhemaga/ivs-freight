@@ -1,9 +1,7 @@
 <div
   *ngFor="let data of reviewData; trackBy: identity; let ind = index"
   class="ta-user-review"
-  [ngClass]="{ 'edit-review': data.isEditMode,
-  'separate': ind
-   }"
+  [ngClass]="{ 'edit-review': data.isEditMode, separate: ind }"
 >
   <div class="ta-review-header" *ngIf="!data.isEditMode">
     <div class="ta-user-information">

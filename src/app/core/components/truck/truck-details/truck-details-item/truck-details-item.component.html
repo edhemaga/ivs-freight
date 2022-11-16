@@ -33,7 +33,9 @@
               <div class="card-row-endor">
                 <div class="card-item">
                   <div class="card-item-name">State</div>
-                  <div class="card-item-value">{{reg.state.stateShortName}}</div>
+                  <div class="card-item-value">
+                    {{ reg.state.stateShortName }}
+                  </div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
@@ -166,7 +168,9 @@
               <div class="card-row-endor">
                 <div class="card-item">
                   <div class="card-item-name">State</div>
-                  <div class="card-item-value">{{title?.state?.stateShortName}}</div>
+                  <div class="card-item-value">
+                    {{ title?.state?.stateShortName }}
+                  </div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
@@ -181,8 +185,8 @@
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                  [expireDate]="title.issueDate | formatDateP"
-                  [startDate]="title.purchaseDate | formatDateP"
+                    [expireDate]="title.issueDate | formatDateP"
+                    [startDate]="title.purchaseDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
                   </app-truckassist-progress-expiration>
@@ -214,7 +218,7 @@
       <div class="card-width" *ngSwitchCase="'lease-purchase'">
         <app-ta-re-card
           [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
-          (resizePage)="toggleResizePage(5+'lease')"
+          (resizePage)="toggleResizePage(5 + 'lease')"
           [cardNameCommon]="'KSKA FREIGHT, INC'"
           [isCardOpen]="true"
           [expDateClose]="'04/04/27' | formatDateP"
@@ -278,7 +282,7 @@
             <!----------Progress Card---------->
             <div
               class="details-progress-container purchase-progress"
-              [ngClass]="{ 'no-toggler': !toggler[5+'lease'] }"
+              [ngClass]="{ 'no-toggler': !toggler[5 + 'lease'] }"
             >
               <app-ta-currency-progress-bar
                 [template]="'payments'"
@@ -290,7 +294,7 @@
             </div>
 
             <!----------Amortization table Card---------->
-            <div [@showHideCardBody]="toggler[5+'lease'] ? 'true' : 'false'">
+            <div [@showHideCardBody]="toggler[5 + 'lease'] ? 'true' : 'false'">
               <div class="details-document-container amortization-details">
                 <div class="divider"></div>
                 <div class="icon-counter-wrapper">

@@ -11,6 +11,6 @@ export class UrlExtensionPipe implements PipeTransform {
 
     const ext = url.split('.');
 
-    return ext[ext.length-1];
+    return ext[ext.length - 1];
   }
 }

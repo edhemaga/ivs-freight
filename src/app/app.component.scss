@@ -9,7 +9,7 @@
     bottom: 18px;
     left: 1479px;
     display: inline-block;
-  
+
     &:hover {
       transition: all 0.3s ease-in-out;
       cursor: pointer;
@@ -19,7 +19,7 @@
         }
       }
     }
-  
+
     @media only screen and (max-width: 1800px) {
       left: 1620px;
     }
@@ -70,6 +70,6 @@
   }
 }
 
-overlay-scrollbars{
+overlay-scrollbars {
   height: 100vh;
 }

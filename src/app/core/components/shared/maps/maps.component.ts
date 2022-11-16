@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
   ChangeDetectorRef,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
@@ -21,7 +21,8 @@ import { UpdatedData } from '../model/shared/enums';
 })
 export class MapsComponent implements OnInit {
   viewData = [];
-  @Input() set _viewData(value) { // table data (shippers, repair shops)
+  @Input() set _viewData(value) {
+    // table data (shippers, repair shops)
     var previousData = JSON.parse(JSON.stringify(this.viewData));
     var updatedData = false;
 
@@ -47,8 +48,8 @@ export class MapsComponent implements OnInit {
       }, 1000);
     }
   }
-  @Input() mapType: string = 'shipper';  // shipper, repairShop, fuelStop, accident, inspection, routing
-  @Input() routes: any[] = [];  // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
+  @Input() mapType: string = 'shipper'; // shipper, repairShop, fuelStop, accident, inspection, routing
+  @Input() routes: any[] = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
   @Input() dropdownActions: any[] = [];
   @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
 
@@ -203,12 +204,12 @@ export class MapsComponent implements OnInit {
   markerZoom(e, item) {
     var currentTime = new Date().getTime();
 
-    if ( !this.mapZoomTime || (currentTime - this.mapZoomTime > 200 ) ) {
+    if (!this.mapZoomTime || currentTime - this.mapZoomTime > 200) {
       this.mapZoomTime = currentTime;
     } else {
       return;
     }
-    
+
     if (e.wheelDeltaY > 0) {
       // The user scrolled up.
       this.zoomChange(this.mapZoom + 1);

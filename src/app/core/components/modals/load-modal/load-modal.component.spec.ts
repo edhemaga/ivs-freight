@@ -11,9 +11,8 @@ describe('LoadModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoadModalComponent ]
-    })
-    .compileComponents();
+      declarations: [LoadModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

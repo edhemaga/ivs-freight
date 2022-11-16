@@ -1,6 +1,6 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {CalendarScrollService} from './calendar-scroll.service';
+import { CalendarScrollService } from './calendar-scroll.service';
 
 describe('CalendarScrollService', () => {
   let service: CalendarScrollService;

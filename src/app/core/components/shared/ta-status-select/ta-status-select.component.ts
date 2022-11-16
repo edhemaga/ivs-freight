@@ -40,14 +40,14 @@ export class TaStatusSelectComponent implements OnInit {
 
   constructor(private statusPipe: StatusPipePipe) {}
 
-   ngOnInit(): void {
-  //   this.items = this.statusPipe.transform(
-  //     this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
-  //     this.value,
-  //     this.dataType,
-  //     this.dataItems
-  //   );
-   }
+  ngOnInit(): void {
+    //   this.items = this.statusPipe.transform(
+    //     this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
+    //     this.value,
+    //     this.dataType,
+    //     this.dataItems
+    //   );
+  }
 
   // toggleClass(e: any, type: boolean) {
   //   this.selectOpened = type;

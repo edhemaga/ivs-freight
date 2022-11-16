@@ -1,18 +1,21 @@
 import { SearchFilter, SearchFilterEvent } from './../../model/searchFilter';
-import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchDataService {
-  public dataSource = new BehaviorSubject<SearchFilterEvent>({searchFilter: null, check: false});
+  public dataSource = new BehaviorSubject<SearchFilterEvent>({
+    searchFilter: null,
+    check: false,
+  });
   public resetPageSizeDataSource = new BehaviorSubject<boolean>(null);
   public currentDataSource = this.dataSource.asObservable();
-  public currentResetPageSizeDataSource = this.resetPageSizeDataSource.asObservable();
+  public currentResetPageSizeDataSource =
+    this.resetPageSizeDataSource.asObservable();
 
-  constructor() {
-  }
+  constructor() {}
 
   /**
    * Send data source function
@@ -20,7 +23,7 @@ export class SearchDataService {
    * @param searchFilter SearchFilter
    */
   public sendDataSource(searchFilter: SearchFilter) {
-    this.dataSource.next({searchFilter, check: false});
+    this.dataSource.next({ searchFilter, check: false });
   }
 
   /**

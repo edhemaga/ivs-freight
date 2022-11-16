@@ -1,4 +1,4 @@
-import {Address} from './address';
+import { Address } from './address';
 
 // API V2
 export interface OwnerTabData {

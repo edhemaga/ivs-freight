@@ -8,9 +8,8 @@ describe('NavigationItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NavigationRouteComponent ]
-    })
-    .compileComponents();
+      declarations: [NavigationRouteComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

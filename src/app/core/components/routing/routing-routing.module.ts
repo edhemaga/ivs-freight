@@ -7,11 +7,11 @@ const routes: Routes = [
     path: '',
     component: RoutingMapComponent,
     data: { title: 'Routing' },
-  }
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class RoutingRoutingModule { }
+export class RoutingRoutingModule {}

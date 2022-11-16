@@ -6,9 +6,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { DriverTService } from '../driver.service';
 import { DriversItemStore } from './driver-details.store';
-import {
-  DriversDetailsListStore,
-} from '../driver-details-list-state/driver-details-list.store';
+import { DriversDetailsListStore } from '../driver-details-list-state/driver-details-list.store';
 import { DriversDetailsListQuery } from '../driver-details-list-state/driver-details-list.query';
 
 @Injectable({

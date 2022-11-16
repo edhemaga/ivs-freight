@@ -98,7 +98,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   public registerCompany(): void {
-    if (this.inputAddress?.inputDropdown?.inputRef?.focusInput && this.inputAddress?.addresList?.length) {
+    if (
+      this.inputAddress?.inputDropdown?.inputRef?.focusInput &&
+      this.inputAddress?.addresList?.length
+    ) {
       return;
     }
     if (this.registerForm.invalid) {

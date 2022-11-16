@@ -28,27 +28,27 @@
   .default-icon {
     visibility: visible;
     opacity: 1;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
   .valid-icon {
     visibility: hidden;
     opacity: 0;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
   &.not-typing {
     .default-icon {
       visibility: visible;
       opacity: 1;
-      transition: all .2s ease-in-out;
+      transition: all 0.2s ease-in-out;
 
       svg {
-        transition: all .2s ease-in-out;
+        transition: all 0.2s ease-in-out;
       }
 
       .a {
-        fill: #FF8080;
+        fill: #ff8080;
       }
     }
 
@@ -63,20 +63,20 @@
     .default-icon {
       visibility: hidden;
       opacity: 0;
-      transition: all .2s ease-in-out;
+      transition: all 0.2s ease-in-out;
     }
 
     &.touched-invalid {
       .default-icon {
         visibility: hidden;
         opacity: 0;
-        transition: all .2s ease-in-out;
+        transition: all 0.2s ease-in-out;
 
         svg {
-          transition: all .2s ease-in-out;
+          transition: all 0.2s ease-in-out;
 
           .a {
-            fill: #FF8080;
+            fill: #ff8080;
           }
         }
       }
@@ -85,13 +85,13 @@
         .default-icon {
           visibility: hidden;
           opacity: 0;
-          transition: all .2s ease-in-out;
+          transition: all 0.2s ease-in-out;
         }
 
         .clear-icon {
           visibility: visible;
           opacity: 1;
-          transition: all .2s ease-in-out;
+          transition: all 0.2s ease-in-out;
 
           .cls-1 {
             fill: #ffa7a7;
@@ -99,7 +99,7 @@
 
           &:hover {
             .cls-1 {
-              fill: #FFE4E4;
+              fill: #ffe4e4;
             }
           }
         }
@@ -111,10 +111,10 @@
       .valid-icon {
         visibility: visible;
         opacity: 1;
-        transition: all .2s ease-in-out;
+        transition: all 0.2s ease-in-out;
 
         svg {
-          transition: all .2s ease-in-out;
+          transition: all 0.2s ease-in-out;
 
           .a {
             fill: #91a4c7;
@@ -125,13 +125,13 @@
       .x-invalid-icon {
         visibility: hidden;
         opacity: 0;
-        transition: all .2s ease-in-out;
+        transition: all 0.2s ease-in-out;
       }
 
       .clear-icon {
         visibility: hidden;
         opacity: 0;
-        transition: all .2s ease-in-out;
+        transition: all 0.2s ease-in-out;
       }
 
       &:hover {
@@ -139,7 +139,7 @@
         .valid-icon {
           visibility: hidden;
           opacity: 0;
-          transition: all .2s ease-in-out;
+          transition: all 0.2s ease-in-out;
         }
 
         form .form-control.required.ng-valid.ng-dirty.ng-touched {
@@ -149,10 +149,10 @@
         .clear-icon {
           visibility: visible;
           opacity: 1;
-          transition: all .2s ease-in-out;
+          transition: all 0.2s ease-in-out;
 
           svg {
-            transition: all .2s ease-in-out;
+            transition: all 0.2s ease-in-out;
           }
 
           .cls-1 {
@@ -162,7 +162,7 @@
           &:hover {
             svg {
               transform: scale(1.2);
-              transition: all .2s ease-in-out;
+              transition: all 0.2s ease-in-out;
             }
 
             .cls-1 {
@@ -178,19 +178,19 @@
     .default-icon {
       visibility: visible;
       opacity: 1;
-      transition: all .2s ease-in-out;
+      transition: all 0.2s ease-in-out;
     }
 
     .x-invalid-icon {
       visibility: visible;
       opacity: 1;
-      transition: all .2s ease-in-out;
+      transition: all 0.2s ease-in-out;
 
       svg {
-        transition: all .2s ease-in-out;
+        transition: all 0.2s ease-in-out;
 
         .a {
-          fill: #FF8080 !important;
+          fill: #ff8080 !important;
         }
       }
     }
@@ -198,27 +198,27 @@
     .clear-icon {
       visibility: hidden;
       opacity: 0;
-      transition: all .2s ease-in-out;
+      transition: all 0.2s ease-in-out;
     }
 
     .invalid-icon {
       visibility: hidden;
       opacity: 0;
-      transition: all .2s ease-in-out;
+      transition: all 0.2s ease-in-out;
     }
   }
 }
 
 .form-label-group.input-icon.field-focused.touched-invalid {
-  background: #FF6A6A;
+  background: #ff6a6a;
 
   .default-icon {
     visibility: visible;
     opacity: 1;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 
     svg {
-      transition: all .2s ease-in-out;
+      transition: all 0.2s ease-in-out;
 
       .a {
         fill: #fff;
@@ -229,24 +229,24 @@
   .clear-icon {
     visibility: hidden;
     opacity: 0;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
   &:hover {
     .default-icon {
       visibility: hidden;
       opacity: 0;
-      transition: all .2s ease-in-out;
+      transition: all 0.2s ease-in-out;
     }
 
     .clear-icon {
       visibility: visible;
       opacity: 1;
-      transition: all .2s ease-in-out;
+      transition: all 0.2s ease-in-out;
 
       &:hover {
         .cls-1 {
-          fill: #FFE4E4;
+          fill: #ffe4e4;
         }
       }
     }

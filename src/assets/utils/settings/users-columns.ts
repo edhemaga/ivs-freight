@@ -1,4 +1,4 @@
-export function getUsersColumnDefinition() {  
+export function getUsersColumnDefinition() {
   return [
     {
       ngTemplate: 'user-checkbox',
@@ -292,7 +292,7 @@ export function getUsersColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -316,7 +316,7 @@ export function getUsersColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }

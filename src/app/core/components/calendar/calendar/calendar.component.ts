@@ -922,7 +922,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (this.calendarGridView == 'timeGridWeek') {
       //this.calendarTitle = calendarApi.currentData.viewTitle.split(",")[0];
     } else {
-     // var calendarTitleParts = calendarApi.currentData.viewTitle.split(' ');
+      // var calendarTitleParts = calendarApi.currentData.viewTitle.split(' ');
       //this.calendarTitle = calendarTitleParts[0]+', '+calendarTitleParts[1];
     }
 

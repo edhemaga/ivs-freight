@@ -11,9 +11,8 @@ describe('TaUserReviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaUserReviewComponent ]
-    })
-    .compileComponents();
+      declarations: [TaUserReviewComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

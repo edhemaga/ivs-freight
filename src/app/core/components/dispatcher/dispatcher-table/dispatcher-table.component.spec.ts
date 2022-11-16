@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DispatcherTableComponent} from './dispatcher-table.component';
+import { DispatcherTableComponent } from './dispatcher-table.component';
 
 describe('DispatcherTableComponent', () => {
   let component: DispatcherTableComponent;

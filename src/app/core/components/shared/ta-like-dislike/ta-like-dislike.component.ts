@@ -27,7 +27,10 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
   public isLiked: boolean = false;
   public isDisliked: boolean = false;
 
-  constructor(private taLikeDislikeService: TaLikeDislikeService, private DetailsDataService: DetailsDataService) {}
+  constructor(
+    private taLikeDislikeService: TaLikeDislikeService,
+    private DetailsDataService: DetailsDataService
+  ) {}
 
   ngOnInit(): void {
     this.taLikeDislikeService.populateLikeDislike$

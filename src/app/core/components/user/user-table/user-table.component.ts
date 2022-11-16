@@ -266,9 +266,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
       localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    return tableColumnsConfig
-        ? tableColumnsConfig
-        : getUsersColumnDefinition();
+    return tableColumnsConfig ? tableColumnsConfig : getUsersColumnDefinition();
   }
 
   // Send User Data
@@ -320,7 +318,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
       // for (let i = 0; i < 300; i++) {
       //   this.viewData.push(this.viewData[0]);
       // }
-    }else {
+    } else {
       this.viewData = [];
     }
   }
@@ -412,7 +410,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(UserModalComponent, {
         size: 'small',
       });
-    }else if (event.action === 'view-mode') {
+    } else if (event.action === 'view-mode') {
       this.activeViewMode = event.mode;
     }
   }

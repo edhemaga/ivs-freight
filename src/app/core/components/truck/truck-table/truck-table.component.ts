@@ -387,9 +387,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    return tableColumnsConfig
-    ? tableColumnsConfig
-    : getTruckColumnDefinition();
+    return tableColumnsConfig ? tableColumnsConfig : getTruckColumnDefinition();
   }
 
   setTruckData(td: any) {

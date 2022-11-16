@@ -25,9 +25,7 @@ export class SelectCompanyComponent
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    @Inject(DOCUMENT) private document: HTMLDocument
-  ) {}
+  constructor(@Inject(DOCUMENT) private document: HTMLDocument) {}
 
   ngOnInit(): void {
     // @ts-ignore

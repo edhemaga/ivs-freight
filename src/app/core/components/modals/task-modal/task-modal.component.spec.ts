@@ -11,9 +11,8 @@ describe('TaskModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskModalComponent ]
-    })
-    .compileComponents();
+      declarations: [TaskModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

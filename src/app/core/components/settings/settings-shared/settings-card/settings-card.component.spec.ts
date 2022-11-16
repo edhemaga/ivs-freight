@@ -11,9 +11,8 @@ describe('SettingsCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsCardComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsCardComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

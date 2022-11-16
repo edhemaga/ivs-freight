@@ -11,9 +11,8 @@ describe('TaNgxSliderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaNgxSliderComponent ]
-    })
-    .compileComponents();
+      declarations: [TaNgxSliderComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

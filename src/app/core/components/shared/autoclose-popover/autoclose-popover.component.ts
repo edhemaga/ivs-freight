@@ -26,28 +26,25 @@ export class AutoclosePopoverComponent implements OnInit {
   ngOnInit(): void {}
 
   switchTab(e, t2) {
-   if ( t2.isOpen() ){
-    this.tooltip.close();
-   }else{
+    if (t2.isOpen()) {
+      this.tooltip.close();
+    } else {
       t2.open();
       this.tooltip = t2;
-   }
-    
+    }
   }
 
-  onFilterClose(){
-    if(this.closeFilter){
+  onFilterClose() {
+    if (this.closeFilter) {
       this.closeFilter.emit();
     }
   }
 
-
-  onFilterShown(){
-    if(this.openFilter){
+  onFilterShown() {
+    if (this.openFilter) {
       this.openFilter.emit();
     }
   }
-
 
   closeCustomPopover() {
     this.tooltip.close();
