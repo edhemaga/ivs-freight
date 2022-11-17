@@ -14,7 +14,7 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import {
   convertDateToBackend,
-  convertDateFromBackendShortYear,
+  convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -516,9 +516,8 @@ export class Step6Component implements OnInit, OnDestroy {
       otherTrainingExplain: otherTrainingDescription,
       knowledgeOfSafetyRegulations,
       driverForCompany: driverBefore,
-      driverForCompanyBeforeExplain:
-        from && convertDateFromBackendShortYear(from),
-      driverForCompanyToExplain: to && convertDateFromBackendShortYear(to),
+      driverForCompanyBeforeExplain: from && convertDateFromBackend(from),
+      driverForCompanyToExplain: to && convertDateFromBackend(to),
       unableForJob,
       unableForJobExplain: unableForJobDescription,
     });
@@ -1037,11 +1036,8 @@ export class Step6Component implements OnInit, OnDestroy {
   }
 
   public onSubmitReview(): void {
-    const {
-      questionReview1,
-      questionReview2,
-      questionReview4
-    } = this.educationForm.value;
+    const { questionReview1, questionReview2, questionReview4 } =
+      this.educationForm.value;
 
     const lastItemReview =
       this.previousFormValuesOnReview.emergencyContactReview;

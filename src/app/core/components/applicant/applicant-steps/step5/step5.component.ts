@@ -8,7 +8,7 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import {
   convertDateToBackend,
-  convertDateFromBackendShortYear,
+  convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -144,7 +144,7 @@ export class Step5Component implements OnInit, OnDestroy {
           license: lastLicenseAdded?.licenseNumber,
           state: lastLicenseAdded?.state?.stateShortName,
           classType: lastLicenseAdded?.class?.name,
-          expDate: convertDateFromBackendShortYear(lastLicenseAdded?.expDate),
+          expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
         };
 
         if (res.trafficViolation) {
@@ -212,7 +212,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
           return {
             isEditingViolation: false,
-            date: convertDateFromBackendShortYear(item.date),
+            date: convertDateFromBackend(item.date),
             vehicleType: itemVehicleType.name,
             location: item.location,
             description: item.description,
@@ -250,7 +250,7 @@ export class Step5Component implements OnInit, OnDestroy {
       const filteredLastItemInViolationsArray = {
         id: lastItemInViolationsArray.id,
         isEditingViolation: false,
-        date: convertDateFromBackendShortYear(lastItemInViolationsArray.date),
+        date: convertDateFromBackend(lastItemInViolationsArray.date),
         vehicleType: lastItemVehicleType.name,
         location: lastItemInViolationsArray.location,
         description: lastItemInViolationsArray.description,
@@ -822,7 +822,7 @@ export class Step5Component implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.router.navigate([`/application/${this.applicantId}/6`]);
-          /* 
+          /*
             this.applicantStore.update(1, (entity) => {
             return {
               ...entity,

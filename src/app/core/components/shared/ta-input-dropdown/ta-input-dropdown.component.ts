@@ -75,6 +75,9 @@ export class TaInputDropdownComponent
   @Output('pagination') paginationEvent: EventEmitter<number> =
     new EventEmitter<number>();
 
+  @Output('activeGroup') activeGroupEvent: EventEmitter<number> =
+    new EventEmitter<number>();
+
   public paginationNumber: number = 0;
 
   public originalOptions: any[] = [];
@@ -797,6 +800,10 @@ export class TaInputDropdownComponent
     this.options.filter((item) => (item.open = false));
 
     option.open = !option.open;
+
+    if (option.open) {
+      this.activeGroupEvent.emit(option);
+    }
   }
 
   // ----------------------------------  Multiselect Dropdown ----------------------------------

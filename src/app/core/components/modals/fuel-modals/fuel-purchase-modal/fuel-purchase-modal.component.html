@@ -13,9 +13,9 @@
     class="form-container form-container-without-mb"
   >
     <div class="row">
-      <div class="col-6">
+      <div [ngClass]="fuelForm.get('trailerId').value ? 'col-4' : 'col-6'">
         <app-ta-input-dropdown
-          formControlName="truckTypeId"
+          formControlName="truckId"
           [template]="'svgtext-template'"
           [inputConfig]="{
             name: 'Input Dropdown',
@@ -30,9 +30,24 @@
           (selectedItem)="onSelectDropDown($event, 'truck')"
         ></app-ta-input-dropdown>
       </div>
-      <div class="col-6">
+      <div *ngIf="fuelForm.get('trailerId').value" class="col-4">
         <app-ta-input
-          formControlName="fullName"
+          formControlName="trailerId"
+          [inputConfig]="{
+            name: 'Fuel Trailer',
+            type: 'text',
+            label: 'Trailer',
+            isDisabled: true
+          }"
+        ></app-ta-input>
+      </div>
+      <div
+        [ngClass]="
+          fuelForm.get('trailerId').value ? 'col-4 no-p-left' : 'col-6'
+        "
+      >
+        <app-ta-input
+          formControlName="driverFullName"
           [inputConfig]="{
             name: 'Full name',
             type: 'text',
@@ -48,7 +63,7 @@
     <div class="row">
       <div class="col-6">
         <app-ta-input
-          formControlName="date"
+          formControlName="transactionDate"
           [inputConfig]="{
             name: 'datepicker',
             type: 'text',
@@ -63,7 +78,7 @@
       <div class="col-6">
         <!-- Time Picker -->
         <app-ta-input
-          formControlName="time"
+          formControlName="transactionTime"
           [inputConfig]="{
             name: 'timepicker',
             type: 'text',
@@ -87,7 +102,7 @@
             <div *ngIf="selectedFuelStop?.address" class="selected-item-info">
               <svg-icon src="assets/svg/common/ic_address.svg"></svg-icon>
               <p>
-                {{ selectedFuelStop?.address }}
+                {{ selectedFuelStop?.fullAddress }}
               </p>
             </div>
           </div>
@@ -100,7 +115,7 @@
               class="clear-x"
               (click)="
                 selectedFuelStop = null;
-                fuelForm.get('fuelStopId').patchValue(null)
+                fuelForm.get('fuelStopStoreId').patchValue(null)
               "
             >
               <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
@@ -109,7 +124,7 @@
         </div>
         <app-ta-input-dropdown
           *ngIf="!selectedFuelStop"
-          formControlName="fuelStopId"
+          formControlName="fuelStopStoreId"
           [template]="'fuel-franchise'"
           [inputConfig]="{
             name: 'Input Dropdown',
@@ -121,6 +136,8 @@
           }"
           [options]="fuelStops"
           [activeItem]="selectedFuelStop"
+          (pagination)="paginationPage($event)"
+          (activeGroup)="getFuelStoresByFranchiseId($event)"
           (selectedItem)="onSelectDropDown($event, 'fuel')"
         ></app-ta-input-dropdown>
       </div>
@@ -197,20 +214,33 @@
                 }"
                 (change)="onChange('qty', ind)"
               ></app-ta-input>
-              <app-ta-input
-                formControlName="price"
-                [inputConfig]="{
-                  name: 'Price',
-                  type: 'text',
-                  minLength: 4,
-                  maxLength: 11,
-                  blackInput: true,
-                  hideErrorMessage: true,
-                  thousandSeparator: true,
-                  hideRequiredCheck: true
-                }"
-                (change)="onChange('price', ind)"
-              ></app-ta-input>
+              <div class="fuel-item-price-container">
+                <span
+                  *ngIf="
+                    fuelItem.get('price').value &&
+                    fuelItem.get('price').value !== ''
+                  "
+                  class="fuel-item-price-dollar"
+                >
+                  $
+                </span>
+                <app-ta-input
+                  formControlName="price"
+                  [inputConfig]="{
+                    name: 'Price',
+                    type: 'text',
+                    minLength: 4,
+                    maxLength: 11,
+                    blackInput: true,
+                    hideClear: fuelItem.get('price').value === '',
+                    hideErrorMessage: true,
+                    thousandSeparator: true,
+                    hideRequiredCheck: true
+                  }"
+                  (change)="onChange('price', ind)"
+                ></app-ta-input>
+              </div>
+
               <p class="fuel-subtotal">{{ subtotal[ind].value | currency }}</p>
               <div
                 ngbTooltip

@@ -43,6 +43,7 @@ import {
 } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
+import { convertTimeFromBackend } from '../../../utils/methods.calculations';
 @Component({
   selector: 'app-load-modal',
   templateUrl: './load-modal.component.html',
@@ -987,16 +988,12 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
       if (loadStop.get('timeFrom').value) {
         this.loadForm
           .get('timeFrom')
-          .patchValue(
-            moment(loadStop.get('timeFrom').value, 'HH:mm:SS A').toDate()
-          );
+          .patchValue(convertTimeFromBackend(loadStop.get('timeFrom').value));
       }
       if (loadStop.get('timeTo').value) {
         this.loadForm
           .get('timeTo')
-          .patchValue(
-            moment(loadStop.get('timeTo').value, 'HH:mm:SS A').toDate()
-          );
+          .patchValue(convertTimeFromBackend(loadStop.get('timeTo').value));
       }
     } else {
       this.selectedShipper = null;

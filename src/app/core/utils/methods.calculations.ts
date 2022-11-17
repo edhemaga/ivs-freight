@@ -90,9 +90,9 @@ export const convertDateFromBackend = (date: string) => {
   return moment(new Date(date)).format('MM/DD/YY');
 };
 
-//------------------------------- DATE FROM BACKEND - SHORT YEAR -------------------------------
-export const convertDateFromBackendShortYear = (date: string) => {
-  return moment(new Date(date)).format('MM/DD/YY');
+//------------------------------- TIME FROM BACKEND -------------------------------
+export const convertTimeFromBackend = (time: string) => {
+  return moment(time, 'HH:mm:SS A').toDate();
 };
 
 //------------------------------- DATE FROM BACKEND TO TIME -------------------------------

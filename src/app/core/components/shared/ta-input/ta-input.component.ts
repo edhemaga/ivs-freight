@@ -9,6 +9,7 @@ import {
   Output,
   Self,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { ITaInput } from './ta-input.config';
@@ -35,6 +36,7 @@ import { ImageBase64Service } from '../../../utils/base64.image';
     CalendarScrollService,
     TaThousandSeparatorPipe,
   ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaInputComponent
   implements OnInit, OnDestroy, ControlValueAccessor
@@ -1838,7 +1840,7 @@ export class TaInputComponent
   }
 
   setDateTimeModel(direction: string) {
-    if(this.selectionInput == -1) this.selectionInput = 0;
+    if (this.selectionInput == -1) this.selectionInput = 0;
     if (this.inputConfig.name === 'datepicker') {
       if (direction == 'up') {
         if (this.selectionInput == 0) {

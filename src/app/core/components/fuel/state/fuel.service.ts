@@ -14,6 +14,9 @@ import { AddFuelStopCommand } from '../../../../../../appcoretruckassist/model/a
 import { UpdateFuelStopCommand } from '../../../../../../appcoretruckassist/model/updateFuelStopCommand';
 import { FuelStore } from './fule-state/fuel-state.store';
 import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model/getFuelModalResponse';
+import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
+import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
+import { AddFuelTransactionCommand } from '../../../../../../appcoretruckassist/model/addFuelTransactionCommand';
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +26,7 @@ export class FuelTService {
 
   // **************** FUEL TRANSACTION ****************
 
-  // Get Fuel Transactions
-  getFuelTransactionsList(
+  public getFuelTransactionsList(
     fuelTransactionSpecParamsFuelStopStoreId?: number,
     fuelTransactionSpecParamsPageIndex?: number,
     fuelTransactionSpecParamsPageSize?: number,
@@ -59,10 +61,39 @@ export class FuelTService {
     return this.fuelService.apiFuelTransactionModalGet();
   }
 
+  public getFuelTransactionFranchises(
+    pageIndex: number,
+    pageSize: number
+  ): Observable<any> {
+    return this.fuelService.apiFuelTransactionFuelstopfranchiseGet(
+      pageIndex,
+      pageSize
+    );
+  }
+
+  public getFuelTransactionStoresByFranchiseId(
+    id: number
+  ): Observable<FuelStopFranchiseResponse> {
+    return this.fuelService.apiFuelFuelstopfranchiseIdGet(id);
+  }
+
+  public getDriverBySelectedTruckAndDate(
+    truckId: number,
+    date: string
+  ): Observable<FuelDispatchHistoryResponse> {
+    return this.fuelService.apiFuelDispatchhistoryGet(truckId, date);
+  }
+
+  public addFuelTransaction(
+    data: AddFuelTransactionCommand
+  ): Observable<CreateResponse> {
+    return this.fuelService.apiFuelTransactionPost(data);
+  }
+
   // **************** FUEL STOP ****************
 
   // Get Fule Stops
-  getFuelStopsList(
+  public getFuelStopsList(
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
