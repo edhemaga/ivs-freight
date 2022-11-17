@@ -1,4 +1,3 @@
-import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import {
   CreateInspectionCommand,
@@ -49,7 +48,6 @@ export class CommonTruckTrailerService {
     private trailerService: TrailerTService,
     private truckItemStore: TruckItemStore,
     private trailerItemStore: TrailerItemStore,
-    private activeRoute: ActivatedRoute,
     private tdlStore: TrucksDetailsListStore,
     private tadl: TrailerDetailsListStore
   ) {}

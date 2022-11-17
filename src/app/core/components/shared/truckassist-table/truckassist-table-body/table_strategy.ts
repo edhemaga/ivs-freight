@@ -101,7 +101,6 @@ export class TableStrategy implements VirtualScrollStrategy {
     const dataLength = viewport.getDataLength();
   
     const newRange = {start, end};
-    const firstVisibleIndex = this.getIndexForOffset(offset);
 
     const startOffsetIndex = FULL_SIZE * start;
 

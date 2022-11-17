@@ -15,7 +15,6 @@ import {
   Subject,
   takeUntil,
   debounceTime,
-  distinct,
   distinctUntilChanged,
 } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';

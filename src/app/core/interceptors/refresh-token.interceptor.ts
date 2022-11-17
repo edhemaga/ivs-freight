@@ -7,7 +7,7 @@ import {
   HttpHandler,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, catchError, throwError, switchMap, tap } from 'rxjs';
+import { Observable, catchError, throwError, switchMap } from 'rxjs';
 import { AccountService, SignInResponse } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { UserLoggedService } from '../components/authentication/state/user-logged.service';

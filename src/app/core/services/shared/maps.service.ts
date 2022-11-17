@@ -4,7 +4,7 @@ import { OnDestroy } from '@angular/core';
 import { MapService } from './../../../../../appcoretruckassist/api/map.service';
 import { CreateMapCommand } from './../../../../../appcoretruckassist/model/createMapCommand';
 import { MapResponse } from './../../../../../appcoretruckassist/model/mapResponse';
-import { Observable, tap } from 'rxjs';
+import { tap } from 'rxjs';
 
 declare var google: any;
 

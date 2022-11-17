@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { AuthStore } from './auth.store';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import {
@@ -26,7 +25,6 @@ export class AuthStoreService {
     new BehaviorSubject<string>(null);
 
   constructor(
-    private authStore: AuthStore,
     private accountService: AccountService,
     private router: Router,
     @Inject('persistStorage') private persistStorage: PersistState

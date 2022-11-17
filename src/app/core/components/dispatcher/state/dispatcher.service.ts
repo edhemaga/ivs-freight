@@ -9,7 +9,7 @@ import {
   SwitchDispatchesCommand,
   UpdateDispatchCommand,
 } from 'appcoretruckassist';
-import { flatMap, delay, debounce, of, interval, filter } from 'rxjs';
+import { flatMap, delay, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })

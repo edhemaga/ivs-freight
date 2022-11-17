@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  ViewEncapsulation,
   ViewChild,
   AfterViewInit,
   ChangeDetectorRef

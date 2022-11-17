@@ -621,7 +621,7 @@ export function getFunctionParams(func, data) {
   });
 
   let sortedArray = [];
-  const newobj = Object.entries(data).map((item) => {
+  Object.entries(data).map((item) => {
     const indxOf = params.indexOf(item[0]);
     sortedArray[indxOf] = !item[1] ? undefined : item[1];
   });

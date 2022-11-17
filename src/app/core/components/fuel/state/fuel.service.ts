@@ -10,6 +10,9 @@ import { Observable } from 'rxjs';
 import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
 import { getFunctionParams } from 'src/app/core/utils/methods.globals';
+import { EditFuelStopCommand } from '../../../../../../appcoretruckassist/model/editFuelStopCommand';
+import { AddFuelStopCommand } from '../../../../../../appcoretruckassist/model/addFuelStopCommand';
+import { UpdateFuelStopCommand } from '../../../../../../appcoretruckassist/model/updateFuelStopCommand';
 import { FuelStore } from './fule-state/fuel-state.store';
 
 @Injectable({
@@ -84,20 +87,18 @@ export class FuelTService {
     return this.fuelService.apiFuelFuelstopIdGet(fuelId);
   }
 
-  public addFuelStop(data: any): Observable<CreateResponse> {
-    const sortedParams = getFunctionParams(
-      this.fuelService.apiFuelFuelstopPost,
-      data
-    );
-    return this.fuelService.apiFuelFuelstopPost(...sortedParams);
+  public addFuelStop(data: AddFuelStopCommand): Observable<CreateResponse> {
+    return this.fuelService.apiFuelFuelstopPost(data);
   }
 
-  public updateFuelStop(data: any): Observable<object> {
-    const sortedParams = getFunctionParams(
-      this.fuelService.apiFuelFuelstopPut,
-      data
-    );
-    return this.fuelService.apiFuelFuelstopPut(...sortedParams);
+  // For table method
+  public updateFuelStopShortest(data: EditFuelStopCommand): Observable<object> {
+    return this.fuelService.apiFuelFuelstopPut(data);
+  }
+
+  // For modal method
+  public updateFuelStop(data: UpdateFuelStopCommand): Observable<object> {
+    return this.fuelService.apiFuelFuelstopUpdatePut(data);
   }
 
   public getFuelStopModalDropdowns(
@@ -105,5 +106,45 @@ export class FuelTService {
     pageSize: number = 25
   ): Observable<GetFuelStopModalResponse> {
     return this.fuelService.apiFuelFuelstopModalGet(pageIndex, pageSize);
+  }
+
+  public checkFuelStopAddress(
+    addressEntityCity: string,
+    addressEntityState: string,
+    addressEntityCounty: string,
+    addressEntityAddress: string,
+    addressEntityStreet: string,
+    addressEntityStreetNumber: string,
+    addressEntityCountry: string,
+    addressEntityZipCode: string,
+    addressEntityStateShortName: string,
+    addressEntityAddressUnit: string
+  ): Observable<boolean> {
+    return this.fuelService.apiFuelFuelstopCheckAddressGet(
+      addressEntityCity,
+      addressEntityState,
+      addressEntityCounty,
+      addressEntityAddress,
+      addressEntityStreet,
+      addressEntityStreetNumber,
+      addressEntityCountry,
+      addressEntityZipCode,
+      addressEntityStateShortName,
+      addressEntityAddressUnit
+    );
+  }
+
+  public checkFuelStopPhone(data: string): Observable<boolean> {
+    return this.fuelService.apiFuelFuelstopCheckPhonePhoneGet(data);
+  }
+
+  public checkFuelStopFranchise(
+    franchiseId: number,
+    store: string
+  ): Observable<boolean> {
+    return this.fuelService.apiFuelFuelstopCheckStoreFranchiseIdStoreGet(
+      franchiseId,
+      store
+    );
   }
 }
