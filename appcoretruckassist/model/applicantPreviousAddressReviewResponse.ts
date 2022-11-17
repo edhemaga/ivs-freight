@@ -13,7 +13,6 @@
 
 export interface ApplicantPreviousAddressReviewResponse { 
     id?: number;
-    previousAddressId?: number;
     isPreviousAddressValid?: boolean;
     previousAddressMessage?: string | null;
 }

@@ -30,6 +30,5 @@ export interface WorkExperienceItemReviewResponse {
     accountForPeriodBetweenMessage?: string | null;
     isPrimary?: boolean;
     commonMessage?: string | null;
-    workExperienceId?: number;
 }
 

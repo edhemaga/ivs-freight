@@ -19,6 +19,5 @@ export interface ClassOfEquipmentResponse {
     vehicleType?: TruckTypeResponse;
     trailerType?: TrailerTypeResponse;
     trailerLength?: TrailerLengthResponse;
-    workExperienceItemId?: number;
 }
 

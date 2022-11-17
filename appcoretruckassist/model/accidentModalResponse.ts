@@ -13,6 +13,7 @@ import { BrokerMinimalResponse } from './brokerMinimalResponse';
 import { EnumValue } from './enumValue';
 import { TrailerAccidentResponse } from './trailerAccidentResponse';
 import { TruckAccidentResponse } from './truckAccidentResponse';
+import { RoadsideInspectionSpecialCheckResponse } from './roadsideInspectionSpecialCheckResponse';
 import { DriverAccidentResponse } from './driverAccidentResponse';
 
 
@@ -22,5 +23,7 @@ export interface AccidentModalResponse {
     insuranceType?: Array<EnumValue> | null;
     brokers?: Array<BrokerMinimalResponse> | null;
     drivers?: Array<DriverAccidentResponse> | null;
+    counties?: Array<DriverAccidentResponse> | null;
+    specialChecks?: Array<RoadsideInspectionSpecialCheckResponse> | null;
 }
 

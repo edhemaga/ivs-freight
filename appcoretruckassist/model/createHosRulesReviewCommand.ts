@@ -11,11 +11,7 @@
  */
 
 
-export interface EmergencyContactReviewResponse { 
-    id?: number;
-    isNameValid?: boolean;
-    isPhoneValid?: boolean;
-    isRelationshipValid?: boolean;
-    emergencyContactMessage?: string | null;
+export interface CreateHosRulesReviewCommand { 
+    applicantId?: number;
 }
 

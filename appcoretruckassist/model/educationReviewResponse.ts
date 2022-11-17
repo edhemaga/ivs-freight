@@ -22,6 +22,5 @@ export interface EducationReviewResponse {
     datesMessage?: string | null;
     isUnableToPreformJobDescriptionValid?: boolean | null;
     unableToPreformJobDescriptionMessage?: string | null;
-    educationId?: number;
 }
 
