@@ -56,7 +56,7 @@ export class FuelTService {
   }
 
   public getFuelTransactionModalDropdowns(): Observable<GetFuelModalResponse> {
-    return this.fuelService.apiFuelModalGet();
+    return this.fuelService.apiFuelTransactionModalGet();
   }
 
   // **************** FUEL STOP ****************

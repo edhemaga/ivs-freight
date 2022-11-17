@@ -79,7 +79,8 @@ export class TruckassistTableService {
   }
 
   getTableConfig(tableType: TableType): Observable<TableConfigResponse> {
-    return this.tableColumnsConfigService.apiTableconfigTableTypeGet(tableType);
+    // return this.tableColumnsConfigService.apiTableconfigTableTypeGet(tableType);
+    return of();
   }
 
   deleteTableConfig(tableType: TableType): Observable<TableConfigResponse> {
