@@ -1,7 +1,4 @@
-import {
-    Component,
-    Input,
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { settings_card_animation } from '../settings-animation/settings-card.animation';
 
 @Component({
