@@ -7,16 +7,16 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { convertDateFromBackend } from './../../../../utils/methods.calculations';
 
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { ApplicantResponse, UpdatePspAuthCommand } from 'appcoretruckassist';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
     selector: 'app-psp-authorization',
@@ -36,6 +36,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
 
     public signature: string;
     public signatureImgSrc: string;
+    public displaySignatureRequiredNote: boolean = false;
 
     public applicantCardInfo: any;
 
@@ -135,6 +136,12 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
         }
     }
 
+    public onRemoveSignatureRequiredNoteAction(event: any): void {
+        if (event) {
+            this.displaySignatureRequiredNote = false;
+        }
+    }
+
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
             if (
@@ -156,9 +163,9 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
                 this.inputService.markInvalid(this.pspAuthorizationForm);
             }
 
-            /*  if (!this.signature) {
-        
-      } */
+            if (!this.signature) {
+                this.displaySignatureRequiredNote = true;
+             }
 
             return;
         }

@@ -21,6 +21,9 @@
             (mouseleave)="highlightGrade = -1"
             (click)="onSchoolGradeClick(i)"
             [ngClass]="{
+                'grade-required': selectedMode === 'APPLICANT_MODE' && displayGradeRequiredNote,
+                'grade-hovered-required':
+                    selectedMode === 'APPLICANT_MODE' && i <= highlightGrade && displayGradeRequiredNote,
                 'grade-hovered':
                     selectedMode === 'APPLICANT_MODE' && i <= highlightGrade,
                 'grade-selected':
@@ -65,40 +68,53 @@
     <!-- SELECT COLLAGE GRADE -->
 
     <div
-        class="d-flex justify-content-center align-items-center collage-grade-container"
+        class="d-flex flex-column justify-content-center align-items-center collage-grade-container"
     >
-        <div
-            class="d-flex justify-content-center align-items-center grade"
-            (mouseover)="highlightCollegeGrade = i"
-            (mouseleave)="highlightCollegeGrade = -1"
-            (click)="onCollegeGradeClick(i)"
-            [ngClass]="{
-                'grade-hovered':
-                    selectedMode === 'APPLICANT_MODE' &&
-                    i <= highlightCollegeGrade,
-                'grade-selected':
-                    selectedMode === 'APPLICANT_MODE' &&
-                    selectedCollegeGrade === i,
-                'all-before-selected':
-                    selectedMode === 'APPLICANT_MODE' &&
-                    i < selectedCollegeGrade,
-                'grade-review':
-                    selectedMode === 'REVIEW_MODE' && i <= selectedCollegeGrade,
-                'feedback-review':
-                    selectedMode === 'FEEDBACK_MODE' &&
-                    i <= selectedCollegeGrade
-            }"
-            [ngStyle]="{
-                cursor: selectedMode === 'APPLICANT_MODE' ? 'pointer' : 'auto'
-            }"
-            *ngFor="
-                let grade of collegeGrades;
-                let i = index;
-                trackBy: trackByIdentity
-            "
-        >
-            <p class="m-0">{{ grade }}</p>
+        <div class="d-flex align-items-center justify-content-center">
+            <div
+                class="d-flex justify-content-center align-items-center grade"
+                (mouseover)="highlightCollegeGrade = i"
+                (mouseleave)="highlightCollegeGrade = -1"
+                (click)="onCollegeGradeClick(i)"
+                [ngClass]="{
+                    'grade-required': selectedMode === 'APPLICANT_MODE' && displayGradeRequiredNote,
+                    'grade-hovered-required':
+                        selectedMode === 'APPLICANT_MODE' && i <= highlightCollegeGrade && displayGradeRequiredNote,
+                    'grade-hovered':
+                        selectedMode === 'APPLICANT_MODE' &&
+                        i <= highlightCollegeGrade,
+                    'grade-selected':
+                        selectedMode === 'APPLICANT_MODE' &&
+                        selectedCollegeGrade === i,
+                    'all-before-selected':
+                        selectedMode === 'APPLICANT_MODE' &&
+                        i < selectedCollegeGrade,
+                    'grade-review':
+                        selectedMode === 'REVIEW_MODE' && i <= selectedCollegeGrade,
+                    'feedback-review':
+                        selectedMode === 'FEEDBACK_MODE' &&
+                        i <= selectedCollegeGrade
+                }"
+                [ngStyle]="{
+                    cursor: selectedMode === 'APPLICANT_MODE' ? 'pointer' : 'auto'
+                }"
+                *ngFor="
+                    let grade of collegeGrades;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <p class="m-0">{{ grade }}</p>
+            </div>
         </div>
+
+        <!-- REQUIRED -->
+
+        <ng-container *ngIf="displayGradeRequiredNote">
+            <div class="d-flex justify-content-center align-items-center required-container">
+                <p class="m-0 ta-font-semi-bold">Required</p>
+            </div>
+        </ng-container>
     </div>
 
     <!-- FORM SECTION -->

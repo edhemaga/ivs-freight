@@ -3,39 +3,36 @@ import {
     OnDestroy,
     OnInit,
     QueryList,
-    ViewChildren,
+    ViewChildren
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, takeUntil, Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 import {
-    anyInputInLineIncorrect,
-    isFormValueNotEqual,
-    isAnyPropertyInObjectFalse,
+    anyInputInLineIncorrect, isAnyPropertyInObjectFalse, isFormValueNotEqual
 } from '../../state/utils/utils';
 
 import {
-    convertDateToBackend,
-    convertDateFromBackend,
+    convertDateFromBackend, convertDateToBackend
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-import { ContactModel } from '../../state/model/education.model';
 import {
     ApplicantResponse,
     CreateEducationCommand,
     CreateEducationReviewCommand,
-    EducationFeedbackResponse,
+    EducationFeedbackResponse
 } from 'appcoretruckassist/model/models';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { ApplicantQuestion } from '../../state/model/applicant-question.model';
+import { ContactModel } from '../../state/model/education.model';
 
 @Component({
     selector: 'app-step6',
@@ -114,6 +111,7 @@ export class Step6Component implements OnInit, OnDestroy {
         '12',
     ];
     public collegeGrades: string[] = ['1', '2', '3', '4'];
+    public displayGradeRequiredNote: boolean = false;
 
     public helperIndex: number = 2;
     public selectedContactIndex: number;
@@ -707,8 +705,14 @@ export class Step6Component implements OnInit, OnDestroy {
             return;
         }
 
+        if (this.displayGradeRequiredNote) {
+            this.displayGradeRequiredNote = false;
+        }
+
         this.selectedGrade = gradeIndex;
         this.selectedCollegeGrade = -1;
+
+       
     }
 
     public onCollegeGradeClick(gradeIndex: number): void {
@@ -716,11 +720,13 @@ export class Step6Component implements OnInit, OnDestroy {
             return;
         }
 
+        if (this.displayGradeRequiredNote) {
+            this.displayGradeRequiredNote = false;
+        }
+
         this.selectedCollegeGrade = gradeIndex;
 
-        if (this.selectedCollegeGrade) {
-            this.selectedGrade = 11;
-        }
+        this.selectedGrade = 11;        
     }
 
     public onDeleteContact(index: number): void {
@@ -1224,13 +1230,18 @@ export class Step6Component implements OnInit, OnDestroy {
             }
         }
 
-        if (this.educationForm.invalid || this.formStatus === 'INVALID') {
+        if (this.educationForm.invalid || this.formStatus === 'INVALID' || !this.selectedGrade) {
             if (this.educationForm.invalid) {
                 this.inputService.markInvalid(this.educationForm);
             }
 
+            
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;
+            }
+            
+            if (this.selectedGrade < 0) {
+                this.displayGradeRequiredNote = true;
             }
 
             return;

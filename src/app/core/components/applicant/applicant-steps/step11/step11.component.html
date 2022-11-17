@@ -194,7 +194,9 @@
                 <app-applicant-signature-pad
                     [mode]="selectedMode"
                     [signatureImgSrc]="signatureImgSrc"
+                    [displayRequiredNote]="displaySignatureRequiredNote"
                     (signatureEmitter)="onSignatureAction($event)"
+                    (removeRequiredNoteEmitter)="onRemoveSignatureRequiredNoteAction($event)"
                 ></app-applicant-signature-pad>
             </div>
         </form>

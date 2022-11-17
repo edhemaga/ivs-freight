@@ -64,23 +64,34 @@
             }
         }
 
-        .grade-hovered {
-            background: $ta-blue-3;
-            color: $white;
+        .grade-required {
+            background: $ta-red-6;
+            color: $ta-red-2;
 
             &:hover {
-                background: $ta-blue;
+                background: $ta-red-2;
+                color: $white;
             }
         }
 
+        .grade-hovered-required {
+            background: $ta-red-2 !important;
+            color: $white !important;
+        }
+
+        .grade-hovered {
+            background: $ta-blue-6;
+            color: $ta-blue-5;
+        }
+
         .grade-selected {
-            background: $ta-blue;
+            background: $ta-blue-5;
             color: $white;
         }
 
         .all-before-selected {
-            background: $ta-blue-3;
-            color: $white;
+            background: $ta-blue-5;
+            color:  $white;
         }
 
         .grade-review {
@@ -108,6 +119,25 @@
         &::selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
+        }
+    }
+
+    .required-container {
+        margin-top: 6px;
+
+        p {
+            font-size: 11px;
+            color: $ta-red-2;
+
+            &::-moz-selection {
+                color: $ta-red-2;
+                background: rgb(239, 83, 80, 0.2);
+            }
+
+            &::selection {
+                color:  $ta-red-2;
+                background: rgb(239, 83, 80, 0.2);
+            }
         }
     }
 

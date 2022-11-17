@@ -3,7 +3,7 @@ import {
     OnDestroy,
     OnInit,
     QueryList,
-    ViewChildren,
+    ViewChildren
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,30 +16,29 @@ import moment from 'moment';
 
 import {
     anyInputInLineIncorrect,
-    isFormValueNotEqual,
+    isFormValueNotEqual
 } from '../../state/utils/utils';
 
 import {
-    convertDateToBackend,
-    convertDateFromBackend,
+    convertDateFromBackend, convertDateToBackend
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import {
     AddressEntity,
     ApplicantResponse,
     CreateSevenDaysHosCommand,
     CreateSevenDaysHosReviewCommand,
-    SevenDaysHosFeedbackResponse,
+    SevenDaysHosFeedbackResponse
 } from 'appcoretruckassist/model/models';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 
 @Component({
     selector: 'app-step7',
@@ -357,7 +356,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
     public handleCheckboxParagraphClick(type: string): void {
         if (
-            this.selectedMode === 'FEEDBACK_MODE' ||
+            this.selectedMode === SelectedMode.FEEDBACK ||
             this.selectedMode === SelectedMode.REVIEW
         ) {
             return;

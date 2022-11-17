@@ -7,12 +7,12 @@ import {
     Output,
     SimpleChanges,
     ViewChild,
-    ViewEncapsulation,
+    ViewEncapsulation
 } from '@angular/core';
 
 import {
     NgSignaturePadOptions,
-    SignaturePadComponent,
+    SignaturePadComponent
 } from '@almothafar/angular-signature-pad';
 
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
@@ -40,10 +40,14 @@ export class ApplicantSignaturePadComponent
 
     public signature: string;
 
+    public displayActionButtons: boolean = false
+
     @Input() mode: string;
     @Input() signatureImgSrc: any = null;
+    @Input() displayRequiredNote: boolean = false;
 
     @Output() signatureEmitter: EventEmitter<any> = new EventEmitter();
+    @Output() removeRequiredNoteEmitter: EventEmitter<any> = new EventEmitter();
 
     constructor(public imageBase64Service: ImageBase64Service) {}
 
@@ -63,10 +67,19 @@ export class ApplicantSignaturePadComponent
                 changes.signatureImgSrc?.currentValue
             );
         }
+
+        if (
+            changes.displayRequiredNote?.previousValue !==
+            changes.displayRequiredNote?.currentValue
+        ) {
+            this.displayRequiredNote = changes.displayRequiredNote?.currentValue
+        }
     }
 
-    public drawStart(event: MouseEvent | Touch): void {
-        console.log('Start drawing', event);
+    public onDrawStart(event: MouseEvent | Touch): void {
+        this.displayActionButtons = true
+
+        this.removeRequiredNoteEmitter.emit(true)
     }
 
     public onClearDrawing(): void {
@@ -84,15 +97,15 @@ export class ApplicantSignaturePadComponent
             this.signaturePad.fromData(data);
 
             this.signature = this.signaturePad.toDataURL();
-
-            this.signatureEmitter.emit(this.signature);
-        }
+        } 
     }
 
     public onConfirmDrawing(): void {
         this.signature = this.signaturePad.toDataURL();
 
         this.signatureImgSrc = this.signature;
+
+        this.displayActionButtons = false
 
         this.signatureEmitter.emit(this.signature);
     }

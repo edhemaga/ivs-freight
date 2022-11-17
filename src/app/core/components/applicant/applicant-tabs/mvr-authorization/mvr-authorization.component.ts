@@ -9,16 +9,16 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { ApplicantResponse } from 'appcoretruckassist';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
     selector: 'app-mvr-authorization',
@@ -45,6 +45,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public signature: string;
     public signatureImgSrc: string;
+    public displaySignatureRequiredNote: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -200,6 +201,12 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
         }
     }
 
+    public onRemoveSignatureRequiredNoteAction(event: any): void {
+        if (event) {
+            this.displaySignatureRequiredNote = false;
+        }
+    }
+
     public onFilesAction(event: any): void {
         this.documents = event.files;
 
@@ -305,9 +312,9 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                 this.inputService.markInvalid(this.mvrAuthorizationForm);
             }
 
-            /* if (!this.signature) {
-        
-      } */
+            if (!this.signature) {
+                this.displaySignatureRequiredNote = true;
+            }
 
             return;
         }
