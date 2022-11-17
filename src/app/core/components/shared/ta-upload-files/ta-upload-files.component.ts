@@ -30,7 +30,9 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() size: string = 'small'; // small | medium | large
     @Input() hasCarouselBottomTabs: boolean;
     @Input() tags: any[] = [];
-    @Input() type: string; // modal | table | details
+    @Input() type: string; // modal | table | details | todo
+    @Input() isRequired: boolean = false;
+    @Input() showRequired: boolean = false;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[] | UploadFile | any;
@@ -50,6 +52,7 @@ export class TaUploadFilesComponent implements OnInit {
         file: UploadFile;
         message: string;
     }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
+    @Input() slideWidth: number = 180;
 
     public currentSlide: number = 0;
 
@@ -156,6 +159,19 @@ export class TaUploadFilesComponent implements OnInit {
     // TruckBy ngFor files changes
     public identity(index: number, item: any): number {
         return item.name;
+    }
+
+    public downloadAllFiles() {
+        this.files.map((item) => {
+            fetch(item.url).then((t) => {
+                t.blob().then((b) => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(b);
+                    a.setAttribute('download', item.fileName);
+                    a.click();
+                });
+            });
+        });
     }
 
     ngOnDestroy(): void {

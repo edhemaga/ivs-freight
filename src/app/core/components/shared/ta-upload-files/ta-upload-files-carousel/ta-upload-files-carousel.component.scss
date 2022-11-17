@@ -27,20 +27,14 @@
     .ta-upload-carousel-control-bg {
         position: absolute;
         top: 32%;
-        cursor: pointer;
-        height: 32px;
         width: 24px;
-        background: rgba(255, 255, 255, 0.7);
+        height: 32px;
+        cursor: pointer;
         border-radius: 2px;
         text-align: center;
-        box-shadow: 0 0 4px rgb(0 0 0 / 15%);
         display: none;
         transform: translate(-5%, 22%);
         transition: all 0.3s ease-in-out;
-
-        &:hover {
-            background: rgba(255, 255, 255);
-        }
 
         &.prev {
             left: -4px;
@@ -53,28 +47,32 @@
         }
 
         .ta-upload-files-control {
-            width: 18px;
-            height: 18px;
-            line-height: 18px;
             svg {
-                display: flex;
-                width: 18px;
-                height: 18px;
-                line-height: 18px;
-                opacity: 0.7;
                 path {
-                    fill: #aaaaaa;
+                    stroke-linejoin: round;
+                    paint-order: stroke;
+                    filter: drop-shadow(0 0 4px rgb(0 0 0 / 15%));
+                    fill: rgba(255, 255, 255, 0.7) !important;
+                }
+            }
+
+            svg-icon {
+                svg {
+                    display: flex;
+                    width: 24px;
+                    height: 32px;
                 }
             }
         }
 
         &:hover {
             transition: all 0.3s ease-in-out;
-            background: rgb(255, 255, 255, 1);
 
             .ta-upload-files-control {
                 svg {
-                    opacity: 1;
+                    path {
+                        fill: rgba(255, 255, 255, 1) !important;
+                    }
                 }
             }
         }
@@ -106,10 +104,31 @@
     }
 
     &.driver-details-pdf {
-        grid-template-rows: 343px;
+        grid-template-rows: 303px;
 
         .ta-upload-files-carousel {
-            grid-template-rows: 343px;
+            grid-template-rows: 303px;
+        }
+
+        .ta-upload-carousel-control-bg {
+            top: 41%;
+
+            &.next {
+                left: 94%;
+                padding-left: 1px;
+            }
+
+            .ta-upload-files-control {
+                line-height: 24px;
+            }
+        }
+    }
+
+    &.todo-details {
+        grid-template-rows: 200px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 200px;
         }
 
         .ta-upload-carousel-control-bg {
@@ -150,7 +169,7 @@
         }
     }
 }
-.ta-upload-files-carousel-right {
+.ta-upload-files-carousel-left {
     svg {
         transform: rotate(180deg);
     }

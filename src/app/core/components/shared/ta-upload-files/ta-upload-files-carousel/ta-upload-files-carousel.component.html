@@ -17,7 +17,10 @@
 
     <!-- Carousel Button Tabs -->
 
-    <div *ngIf="hasCarouselBottomTabs" class="carousel-tabs-control">
+    <div
+        *ngIf="hasCarouselBottomTabs && files?.length > 1"
+        class="carousel-tabs-control"
+    >
         <div
             *ngFor="let len of files; let ind = index; trackBy: identity"
             class="carousel-tab"
@@ -36,8 +39,8 @@
         (click)="onAction('prev')"
     >
         <svg-icon
-            class="ta-upload-files-control"
-            src="assets/svg/common/arrow-left.svg"
+            class="ta-upload-files-control ta-upload-files-carousel-left"
+            src="assets/svg/common/upload-arrow.svg"
         ></svg-icon>
     </div>
     <div
@@ -51,7 +54,7 @@
     >
         <svg-icon
             class="ta-upload-files-control ta-upload-files-carousel-right"
-            src="assets/svg/common/arrow-left.svg"
+            src="assets/svg/common/upload-arrow.svg"
         ></svg-icon>
     </div>
 </div>
