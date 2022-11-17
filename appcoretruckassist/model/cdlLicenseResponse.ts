@@ -25,7 +25,6 @@ export interface CdlLicenseResponse {
     expDate?: string;
     cdlRestrictions?: Array<CdlRestrictionResponse> | null;
     cdlEndorsements?: Array<CdlEndorsementResponse> | null;
-    cdlInformationId?: number;
     licenseReview?: CdlLicenseReviewResponse;
 }
 

@@ -12,6 +12,7 @@
 
 
 export interface AccidentItemReviewCommand { 
+    id?: number | null;
     isLocationValid?: boolean;
     isDateValid?: boolean;
     locationDateMessage?: string | null;
