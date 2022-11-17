@@ -2,12 +2,10 @@ import { RoadsideInspectionMinimalListResponse } from './../../../../../../../..
 import { Injectable } from '@angular/core';
 
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import {
-  DriverMinimalListResponse,
-  DriverMinimalResponsePagination,
-} from 'appcoretruckassist';
+
+
 import { Observable, of } from 'rxjs';
-import { catchError, tap, take } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { RoadsideService } from '../../roadside.service';
 import {
   RoadsideMinimalListState,

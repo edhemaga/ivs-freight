@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
-import { Clipboard } from '@angular/cdk/clipboard';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';

@@ -23,7 +23,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
-import { TableType } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-truckassist-table-body',

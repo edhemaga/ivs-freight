@@ -3,8 +3,6 @@ import {
 } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
 import { ShipperService } from './../../../../../../../appcoretruckassist/api/shipper.service';
 import { Injectable, OnDestroy } from '@angular/core';
-import { CreateShipperCommand } from 'appcoretruckassist/model/createShipperCommand';
-import { UpdateShipperCommand } from 'appcoretruckassist/model/updateShipperCommand';
 import {
   CreateRatingCommand,
   CreateResponse,

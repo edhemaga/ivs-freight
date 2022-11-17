@@ -6,7 +6,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, tap, take } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { RoadsideService } from '../roadside.service';
 import { RoadItemState, RoadItemStore } from './roadside-details.store';
 import { RoadsideInspectionResponse } from '../../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';

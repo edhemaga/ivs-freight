@@ -1,7 +1,5 @@
 import { BrokerMinimalListQuery } from './../broker-details-state/broker-minimal-list-state/broker-minimal.query';
 import { Injectable, OnDestroy } from '@angular/core';
-import { CreateBrokerCommand } from 'appcoretruckassist/model/createBrokerCommand';
-import { UpdateBrokerCommand } from 'appcoretruckassist/model/updateBrokerCommand';
 import {
   BrokerMinimalListResponse,
   BrokerModalResponse,

@@ -4,7 +4,6 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import {
   AfterViewInit,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,

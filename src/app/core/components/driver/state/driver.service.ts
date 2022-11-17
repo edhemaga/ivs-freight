@@ -19,8 +19,6 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { DriversMinimalListQuery } from './driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { CreateDriverCommand } from 'appcoretruckassist/model/createDriverCommand';
-import { UpdateDriverCommand } from 'appcoretruckassist/model/UpdateDriverCommand';
 import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({

@@ -21,7 +21,6 @@ import {
   AddressEntity,
   CreateRatingCommand,
   CreateReviewCommand,
-  ShipperResponse,
   SignInResponse,
   UpdateReviewCommand,
 } from 'appcoretruckassist';

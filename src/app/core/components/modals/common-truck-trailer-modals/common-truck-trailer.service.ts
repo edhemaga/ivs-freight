@@ -24,12 +24,6 @@ import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trai
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { TrucksDetailsListStore } from '../../truck/state/truck-details-list-state/truck-details-list.store';
 import { TrailerDetailsListStore } from '../../trailer/state/trailer-details-list-state/trailer-details-list.store';
-import { CreateRegistrationCommand } from 'appcoretruckassist/model/createRegistrationCommand';
-import { UpdateRegistrationCommand } from 'appcoretruckassist/model/updateRegistrationCommand';
-import { CreateInspectionCommand } from 'appcoretruckassist/model/createInspectionCommand';
-import { UpdateInspectionCommand } from 'appcoretruckassist/model/updateInspectionCommand';
-import { CreateTitleCommand } from 'appcoretruckassist/model/createTitleCommand';
-import { UpdateTitleCommand } from 'appcoretruckassist/model/updateTitleCommand';
 import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({

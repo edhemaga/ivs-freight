@@ -4,7 +4,6 @@ import {
   OnInit,
   OnDestroy,
   Input,
-  ViewChild,
   ViewChildren,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';

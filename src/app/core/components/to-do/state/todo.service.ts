@@ -4,9 +4,7 @@ import { Injectable } from '@angular/core';
 import { flatMap, Observable } from 'rxjs';
 import { TodoStore } from './todo.store';
 import { CreateTodoCommand } from 'appcoretruckassist/model/createTodoCommand';
-import { UpdateTodoCommand } from 'appcoretruckassist/model/updateTodoCommand';
 import {
-  CreateResponse,
   TodoModalResponse,
   TodoResponse,
   TodoStatus,

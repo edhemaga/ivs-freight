@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  ViewEncapsulation,
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
@@ -29,7 +28,6 @@ import {
   closeAnimationAction,
 } from '../../../utils/methods.globals';
 import {
-  getRepairTruckColumnDefinition,
   getRepairTrailerColumnDefinition,
   getRepairsShopColumnDefinition,
 } from '../../../../../assets/utils/settings/repair-columns';

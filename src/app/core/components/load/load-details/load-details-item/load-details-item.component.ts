@@ -7,9 +7,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import {
-  LoadResponse,
-  LoadStopResponse,
-  SignInResponse,
   UpdateCommentCommand,
 } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';

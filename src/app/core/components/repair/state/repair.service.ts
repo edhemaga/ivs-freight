@@ -3,11 +3,7 @@ import { RepairModalResponse } from './../../../../../../appcoretruckassist/mode
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { RepairService } from 'appcoretruckassist/api/repair.service';
-import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
-import { CreateRepairCommand } from 'appcoretruckassist/model/createRepairCommand';
-import { UpdateRepairCommand } from 'appcoretruckassist/model/updateRepairCommand';
-import { CreateRepairShopCommand } from 'appcoretruckassist/model/createRepairShopCommand';
-import { UpdateRepairShopCommand } from 'appcoretruckassist/model/updateRepairShopCommand';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import {
   CreateResponse,
   RepairResponse,

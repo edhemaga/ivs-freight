@@ -12,7 +12,6 @@ import {
 import {
   CdkDragDrop,
   moveItemInArray,
-  transferArrayItem,
   CdkDragMove,
 } from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
@@ -27,11 +26,10 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
-import { distinctUntilChanged, Subject, takeUntil, filter } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { RoutingStateService } from '../state/routing-state/routing-state.service';
 import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { LongLat } from '../../../../../../appcoretruckassist/model/longLat';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 declare var google: any;

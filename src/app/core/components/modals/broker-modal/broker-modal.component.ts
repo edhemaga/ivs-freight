@@ -14,7 +14,6 @@ import { CreateBrokerCommand } from 'appcoretruckassist/model/createBrokerComman
 import { UpdateBrokerCommand } from 'appcoretruckassist/model/updateBrokerCommand';
 
 import {
-  BrokerResponse,
   CreateRatingCommand,
   CreateReviewCommand,
   SignInResponse,

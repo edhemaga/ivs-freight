@@ -6,9 +6,7 @@ import {
   OwnerResponse,
   OwnerService,
 } from 'appcoretruckassist';
-import { CreateOwnerCommand } from 'appcoretruckassist/model/createOwnerCommand';
-import { UpdateOwnerCommand } from 'appcoretruckassist/model/updateOwnerCommand';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { OwnerActiveQuery } from './owner-active-state/owner-active.query';
 import { OwnerActiveStore } from './owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from './owner-inactive-state/owner-inactive.query';

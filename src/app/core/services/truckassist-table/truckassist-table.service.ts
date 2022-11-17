@@ -3,10 +3,9 @@ import {
   // CreateTableConfigCommand,
   TableConfigResponse,
   TableConfigService,
-  TableType,
   UpdateTableConfigCommand,
 } from 'appcoretruckassist';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

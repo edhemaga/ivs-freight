@@ -5,8 +5,6 @@ import { SettingsBasicModalComponent } from '../../settings-company/company-moda
 import { SettingsInsurancePolicyModalComponent } from '../../settings-company/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
 import { SettingsFactoringModalComponent } from '../../settings-company/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { CreateInsurancePolicyCommand } from 'appcoretruckassist/model/createInsurancePolicyCommand';
-import { UpdateInsurancePolicyCommand } from 'appcoretruckassist/model/updateInsurancePolicyCommand';
 import {
   CompanyModalResponse,
   CompanyResponse,
