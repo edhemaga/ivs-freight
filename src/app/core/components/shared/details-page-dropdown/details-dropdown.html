@@ -6,7 +6,7 @@
     [ngbPopover]="dropdownPopover"
     [placement]="placement"
     class="details-dropdown-container"
-    [ngClass]="{ 'active-drop': dropDownActive === id, 'rightRotation' : leftIcon, 'leftRotation' : !leftIcon }"
+    [ngClass]="{ 'active-drop': t2.isOpen(), 'rightRotation' : leftIcon, 'leftRotation' : !leftIcon }"
     popoverClass="details-dropdown-popover {{customClassDropDown}}"
     triggers="manual"
     [container]="'body'"
@@ -28,8 +28,8 @@
             >
                 <div
                     class="action-holder"
-                    @showAnimation
-                    [@.disabled]="isAnimated"
+                    [@showAnimation2]="isOpened ? 'true' : 'false'"
+                   
                     [class.leftIcon]="leftIcon"
                     [class.disabledAction]="action.disabled"
                     [class.disabledActionMain]="action.disabled"
@@ -44,14 +44,14 @@
                             [class.blueIcon]="action.blueIcon"
                             [class.greenIcon]="action.greenIcon"
                         >
-                            <svg-icon src="{{action.svg}}"></svg-icon>
+                            <svg-icon name="{{action.iconName}}"></svg-icon>
                         </div>
                     </div>
                 </div>
                 <div
                     class="action-holder subTypeHolder"
-                    @showAnimation
-                    [@.disabled]="isAnimated"
+                    [@showAnimation2]="isOpened ? 'true' : 'false'"
+                    
                     [class.leftIcon]="leftIcon"
                     [class.hoveredSubtype]="subtypeHovered == i && action.openSubtype"
                     [class.disabledAction]="action.disabled"
@@ -66,7 +66,7 @@
                     >
                         <div class="actionTitle">{{action.title}}</div>
                         <div class="actionIcon arrowIcon">
-                            <svg-icon src="{{action.svg}}"></svg-icon>
+                            <svg-icon name="{{action.iconName}}" ></svg-icon>
                         </div>
                     </div>
                     <div

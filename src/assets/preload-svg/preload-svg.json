@@ -473,7 +473,52 @@
     {
       "iconName": "ic_load-broker-credit.svg",
       "iconPath": "assets/svg/common/load/ic_load-broker-credit.svg"
+    },
+    {
+      "iconName": "edit",
+      "iconPath": "assets/svg/truckassist-table/dropdown/content/edit.svg"
+    },
+    {
+      "iconName": "view-details",
+      "iconPath": "assets/svg/common/ic_hazardous-info.svg"
+    },
+    {
+      "iconName": "renew",
+      "iconPath": "assets/svg/common/ic_reload_renew.svg"
+    },
+    {
+      "iconName": "share",
+      "iconPath": "assets/svg/common/share-icon.svg"
+    },
+    {
+      "iconName": "print",
+      "iconPath": "assets/svg/common/ic_fax.svg"
+    },
+    {
+      "iconName": "delete",
+      "iconPath": "assets/svg/common/ic_trash_updated.svg"
+    },
+    {
+      "iconName": "activate-item",
+      "iconPath": "assets/svg/common/ic_deactivate.svg"
+    },
+    {
+      "iconName": "deactivate-item",
+      "iconPath": "assets/svg/common/ic_cancel_violation.svg"
+    },
+    {
+      "iconName": "dm",
+      "iconPath": "assets/svg/common/ic_dm.svg"
+    },
+    {
+      "iconName": "add-new",
+      "iconPath": "assets/svg/common/dropdown-arrow.svg"
+    },
+    {
+      "iconName": "transfer",
+      "iconPath": "assets/svg/common/dropdown-transfer-icon.svg"
     }
+    
   ],
   "customIcons": []
 }

@@ -55,13 +55,13 @@ import {
             transition(':enter', [
                 style({ height: '10px', overflow: 'hidden' }),
                 animate(
-                    '200ms cubic-bezier(0, 0, 0.60, 1.99)',
+                    '100ms cubic-bezier(0, 0, 0.60, 1.99)',
                     style({ height: '26px', overflow: 'auto' })
                 ),
             ]),
             transition(':leave', [
                 animate(
-                    '300ms cubic-bezier(0.68, -0.6, 0.32, 1.6)',
+                    '100ms cubic-bezier(0.68, -0.6, 0.32, 1.6)',
                     style({ height: 0 })
                 ),
             ]),
@@ -70,7 +70,7 @@ import {
             transition(':enter', [
                 style({ height: '26px', overflow: 'hidden' }),
                 animate(
-                    '200ms ease',
+                    '100ms ease',
                     style({ height: '10px', overflow: 'auto' })
                 ),
             ]),
@@ -79,9 +79,36 @@ import {
         trigger('borderShowAnimation', [
             transition(':enter', [
                 style({ height: '0px', opacity: 0 }),
-                animate('200ms ease', style({ height: '*', opacity: 1 })),
+                animate('100ms ease', style({ height: '*', opacity: 1 })),
             ]),
             transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
+        ]),
+        trigger('showAnimation2', [
+            state(
+                'true',
+                style({
+                    height: '26px',
+                    overflow: 'hidden'
+                })
+            ),
+            state(
+                'false',
+                style({
+                    height: '10px',
+                    overflow: 'auto'
+                })
+            ),
+            state(
+                'null',
+                style({
+                    height: '10px',
+                    overflow: 'hidden',
+                })
+            ),
+            transition('false <=> true', [
+                animate('0.2s cubic-bezier(0, 0, 0.60, 1.99)'),
+            ]),
+            transition('true <=> false', [animate('0.1s ease')]),
         ]),
     ],
 })
@@ -125,17 +152,21 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
-            setTimeout(() => {
+            
+            setTimeout(()=>{
                 this.isOpened = true;
-            }, 1);
-
+            }, 1)
+            
             tooltip.open({ data: this.dropContent });
             if (this.data) {
                 this.DetailsDataService.setNewData(this.data);
             }
         }
 
-        this.dropDownActive = tooltip.isOpen() ? this.id : -1;
+        if ( tooltip.isOpen() ) {
+            this.dropDownActive = this.id;
+        }
+        //this.dropDownActive = tooltip.isOpen() ? this.id : -1;
     }
 
     setDropContent() {
@@ -193,25 +224,32 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     }
 
     dropdownClosed() {
+        
+        console.log('---this.dropDownActive---1', this.dropDownActive);
         if (!this.isOpened) {
             return false;
         }
-
+        
         if (!this.isAnimated) {
             this.isAnimated = true;
             this.ref.detectChanges();
             this.tooltip.open();
         }
-
+        console.log('---this.dropDownActive---2', this.dropDownActive);
+        setTimeout(()=>{
+            this.isOpened = false;
+        }, 1);
+        
         let mainElementHolder = document.querySelector(
             '.details-dropdown-body'
         );
         mainElementHolder?.classList.add('closeAnimation');
 
-        this.isOpened = false;
-
+        
+        console.log('---this.dropDownActive---3', this.dropDownActive);
         setTimeout(() => {
             this.tooltip.close();
+            console.log('---this.dropDownActive---4', this.dropDownActive);
             this.isAnimated = false;
             this.options.map((item) => {
                 item['openSubtype'] = false;

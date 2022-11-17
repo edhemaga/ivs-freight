@@ -149,13 +149,6 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
                     show: true,
                 },
                 {
-                    title: 'Add Bill',
-                    name: 'add-bill',
-                    svg: 'assets/svg/common/ic_plus.svg',
-                    show: true,
-                    blueIcon: true,
-                },
-                {
                     title: 'border',
                 },
                 {
@@ -172,13 +165,6 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: 'border',
-                },
-                {
-                    title: 'Close Business',
-                    name: 'close-business',
-                    svg: 'assets/svg/common/close-business-icon.svg',
-                    redIcon: true,
-                    show: true,
                 },
                 {
                     title: 'Delete',

@@ -101,6 +101,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
                     title: 'Edit',
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    iconName: 'edit',
                     show: true,
                 },
                 {
@@ -110,18 +111,21 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
                     title: 'View Details',
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: 'view-details',
                     show: true,
                 },
                 {
                     title: 'Renew',
                     name: 'renew',
                     svg: 'assets/svg/common/ic_retry_white.svg',
+                    iconName: 'renew',
                     show: true,
                 },
                 {
                     title: 'Transfer',
                     name: 'transfer',
                     svg: 'assets/svg/common/dropdown-transfer-icon.svg',
+                    iconName: 'transfer',
                     show: true,
                 },
                 {
@@ -131,12 +135,14 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
                     title: 'Share',
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
+                    iconName: 'share',
                     show: true,
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
+                    iconName: 'print',
                     show: true,
                 },
                 {
@@ -146,6 +152,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
                     title: 'Void',
                     name: 'activate-item',
                     svg: 'assets/svg/common/ic_cancel_violation.svg',
+                    iconName: 'deactivate-item',
                     redIcon: true,
                 },
                 {
@@ -154,6 +161,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
+                    iconName: 'delete',
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -179,6 +187,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
                     title: 'Edit',
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    iconName: 'edit',
                     show: true,
                 },
                 {
@@ -188,6 +197,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
                     title: 'View Details',
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: 'view-details',
                     show: true,
                 },
                 {
@@ -197,12 +207,14 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
                     title: 'Share',
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
+                    iconName: 'share',
                     show: true,
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
+                    iconName: 'print',
                     show: true,
                 },
                 {
@@ -214,6 +226,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
+                    iconName: 'delete',
                     danger: true,
                     show: true,
                     redIcon: true,

@@ -194,9 +194,9 @@ import {
                 })
             ),
             transition('false <=> true', [
-                animate('200ms cubic-bezier(0, 0, 0.60, 1.99)'),
+                animate('100ms cubic-bezier(0, 0, 0.60, 1.99)'),
             ]),
-            transition('true <=> false', [animate('200ms ease')]),
+            transition('true <=> false', [animate('100ms ease')]),
         ]),
     ],
 })
