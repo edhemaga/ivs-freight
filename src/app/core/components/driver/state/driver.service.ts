@@ -2,8 +2,6 @@ import { CdlService } from './../../../../../../appcoretruckassist/api/cdl.servi
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
-import { CreateDriverCommand } from 'appcoretruckassist/model/createDriverCommand';
-import { UpdateDriverCommand } from 'appcoretruckassist/model/UpdateDriverCommand';
 import {
     CheckOwnerSsnEinResponse,
     DriverListResponse,

@@ -9,8 +9,6 @@ import {
 import { Observable, of } from 'rxjs';
 import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
-import { EditFuelStopCommand } from '../../../../../../appcoretruckassist/model/editFuelStopCommand';
-import { AddFuelStopCommand } from '../../../../../../appcoretruckassist/model/addFuelStopCommand';
 import { UpdateFuelStopCommand } from '../../../../../../appcoretruckassist/model/updateFuelStopCommand';
 import { FuelStore } from './fule-state/fuel-state.store';
 import { getFunctionParams } from 'src/app/core/utils/methods.globals';

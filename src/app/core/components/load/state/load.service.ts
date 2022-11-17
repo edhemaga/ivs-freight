@@ -10,8 +10,6 @@ import {
 import { Observable } from 'rxjs';
 import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/model/loadMinimalListResponse';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
-import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
-import { UpdateLoadCommand } from '../../../../../../appcoretruckassist/model/updateLoadCommand';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
 import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
