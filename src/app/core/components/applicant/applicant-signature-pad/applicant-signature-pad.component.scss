@@ -76,7 +76,7 @@ app-applicant-signature-pad {
         }
 
         &::selection {
-            color:  $ta-red-2;
+            color: $ta-red-2;
             background: rgb(239, 83, 80, 0.2);
         }
     }
@@ -103,7 +103,8 @@ app-applicant-signature-pad {
         cursor: pointer;
         visibility: hidden;
         opacity: 0;
-        transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out, background 0.3s ease-in-out;
+        transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out,
+            background 0.3s ease-in-out;
 
         &:hover {
             background: $ta-black;
@@ -116,8 +117,6 @@ app-applicant-signature-pad {
                     }
                 }
             }
-           
         }
-     }
-    
+    }
 }

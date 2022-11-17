@@ -290,6 +290,12 @@
                             [formValuesToPatch]="formValuesToPatch"
                             [isReviewingCard]="isReviewingCard"
                             [stepFeedbackValues]="stepFeedbackValues"
+                            [checkIsHazmatSpillNotChecked]="
+                                checkIsHazmatSpillNotChecked
+                            "
+                            [displayRadioRequiredNoteArray]="
+                                displayRadioRequiredNoteArray
+                            "
                             (formValuesEmitter)="
                                 getWorkExperienceFormValues($event)
                             "
@@ -304,6 +310,9 @@
                             "
                             (cardOpenAnnotationArrayValuesEmitter)="
                                 onGetCardOpenAnnotationArrayValues($event)
+                            "
+                            (radioRequiredNoteEmitter)="
+                                onGetRadioRequiredNoteEmit($event)
                             "
                         ></app-step2-form>
                     </div>
@@ -326,6 +335,12 @@
                     [formValuesToPatch]="formValuesToPatch"
                     [isReviewingCard]="isReviewingCard"
                     [stepFeedbackValues]="stepFeedbackValues"
+                    [checkIsHazmatSpillNotChecked]="
+                        checkIsHazmatSpillNotChecked
+                    "
+                    [displayRadioRequiredNoteArray]="
+                        displayRadioRequiredNoteArray
+                    "
                     (formValuesEmitter)="getWorkExperienceFormValues($event)"
                     (formStatusEmitter)="onGetFormStatus($event)"
                     (innerFormStatusEmitter)="onGetInnerFormStatus($event)"
@@ -337,6 +352,9 @@
                     (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
                     (openAnnotationArrayValuesEmitter)="
                         onGetOpenAnnotationArrayValues($event)
+                    "
+                    (radioRequiredNoteEmitter)="
+                        onGetRadioRequiredNoteEmit($event)
                     "
                 ></app-step2-form>
             </div>

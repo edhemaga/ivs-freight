@@ -78,6 +78,11 @@ export class Step2FormComponent
     @Input() markInnerFormInvalid?: boolean;
     @Input() isReviewingCard: boolean;
     @Input() stepFeedbackValues?: any;
+    @Input() displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    };
+    @Input() checkIsHazmatSpillNotChecked: boolean;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -91,6 +96,7 @@ export class Step2FormComponent
     @Output() openAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
+    @Output() radioRequiredNoteEmitter = new EventEmitter<any>();
 
     private destroy$ = new Subject<void>();
 
@@ -114,6 +120,8 @@ export class Step2FormComponent
     public editingCardAddress: any;
     public previousFormValuesOnEdit: any;
     public previousClassOfEquipmentCardsListOnEdit: any;
+
+    public previousClassOfEquipmentFormValues: any;
 
     public selectedAddress: AddressEntity;
     public selectedVehicleType: any = null;
@@ -352,38 +360,70 @@ export class Step2FormComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mode?.previousValue !== changes.mode?.currentValue) {
             this.selectedMode = changes.mode?.currentValue;
+        }
 
-            if (this.selectedMode === SelectedMode.APPLICANT) {
-                if (
-                    changes.markFormInvalid?.previousValue !==
-                    changes.markFormInvalid?.currentValue
-                ) {
-                    this.inputService.markInvalid(this.workExperienceForm);
-                    this.markInvalidEmitter.emit(false);
-                }
-
-                if (
-                    changes.markInnerFormInvalid?.previousValue !==
-                    changes.markInnerFormInvalid?.currentValue
-                ) {
-                    this.inputService.markInvalid(this.classOfEquipmentForm);
-                    this.markInnerFormInvalidEmitter.emit(false);
-                }
+        if (
+            this.selectedMode === SelectedMode.APPLICANT ||
+            this.selectedMode === SelectedMode.FEEDBACK
+        ) {
+            if (
+                changes.markFormInvalid?.previousValue !==
+                changes.markFormInvalid?.currentValue
+            ) {
+                this.inputService.markInvalid(this.workExperienceForm);
+                this.markInvalidEmitter.emit(false);
             }
 
             if (
-                changes.formValuesToPatch?.previousValue !==
-                changes.formValuesToPatch?.currentValue
+                changes.markInnerFormInvalid?.previousValue !==
+                changes.markInnerFormInvalid?.currentValue
             ) {
-                setTimeout(() => {
-                    this.patchForm(changes.formValuesToPatch.currentValue);
-
-                    if (this.selectedMode === SelectedMode.APPLICANT) {
-                        this.startValueChangesMonitoring();
-                        this.startInnerFormValueChangesMonitoring();
-                    }
-                }, 50);
+                this.inputService.markInvalid(this.classOfEquipmentForm);
+                this.markInnerFormInvalidEmitter.emit(false);
             }
+
+            if (
+                changes.checkIsHazmatSpillNotChecked?.previousValue !==
+                changes.checkIsHazmatSpillNotChecked?.currentValue
+            ) {
+                let cfrPartRadios: any;
+                let fmcsaRadios: any;
+
+                if (!changes.checkIsHazmatSpillNotChecked?.firstChange) {
+                    cfrPartRadios =
+                        this.workExperienceForm.get('cfrPart').value;
+
+                    fmcsaRadios = this.workExperienceForm.get('cfrPart').value;
+                }
+
+                if (cfrPartRadios === null) {
+                    this.radioRequiredNoteEmitter.emit({
+                        id: 0,
+                        displayRadioRequiredNote: true,
+                    });
+                }
+
+                if (fmcsaRadios === null) {
+                    this.radioRequiredNoteEmitter.emit({
+                        id: 1,
+                        displayRadioRequiredNote: true,
+                    });
+                }
+            }
+        }
+
+        if (
+            changes.formValuesToPatch?.previousValue !==
+            changes.formValuesToPatch?.currentValue
+        ) {
+            setTimeout(() => {
+                this.patchForm(changes.formValuesToPatch.currentValue);
+
+                if (this.selectedMode === SelectedMode.APPLICANT) {
+                    this.startValueChangesMonitoring();
+                    this.startInnerFormValueChangesMonitoring();
+                }
+            }, 50);
         }
     }
 
@@ -831,6 +871,15 @@ export class Step2FormComponent
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (!value) {
+                    const { vehicleType, trailerType, trailerLength } =
+                        this.classOfEquipmentForm.value;
+
+                    this.previousClassOfEquipmentFormValues = {
+                        vehicleType,
+                        trailerType,
+                        trailerLength,
+                    };
+
                     this.inputService.changeValidators(
                         this.classOfEquipmentForm.get('vehicleType'),
                         false
@@ -851,34 +900,18 @@ export class Step2FormComponent
                         this.workExperienceForm.get('fmCSA'),
                         false
                     );
-
-                    this.workExperienceForm.patchValue({
-                        cfrPart: null,
-                        fmCSA: null,
-                    });
-
-                    this.classOfEquipmentForm.patchValue({
-                        vehicleType: null,
-                        trailerType: null,
-                        trailerLength: null,
-                    });
-
-                    this.selectedVehicleType = null;
-                    this.selectedTrailerType = null;
-                    this.selectedTrailerLength = null;
-
-                    this.classOfEquipmentArray = [];
-
-                    if (this.cfrPartRadios) {
-                        this.cfrPartRadios[0].checked = false;
-                        this.cfrPartRadios[1].checked = false;
-                    }
-
-                    if (this.fmcsaRadios) {
-                        this.fmcsaRadios[0].checked = false;
-                        this.fmcsaRadios[1].checked = false;
-                    }
                 } else {
+                    if (this.previousClassOfEquipmentFormValues) {
+                        const { vehicleType, trailerType, trailerLength } =
+                            this.previousClassOfEquipmentFormValues;
+
+                        this.classOfEquipmentForm.patchValue({
+                            vehicleType,
+                            trailerType,
+                            trailerLength,
+                        });
+                    }
+
                     this.inputService.changeValidators(
                         this.classOfEquipmentForm.get('vehicleType')
                     );
@@ -1009,6 +1042,11 @@ export class Step2FormComponent
                         .get(selectedFormControlName)
                         .patchValue(false);
                 }
+
+                this.radioRequiredNoteEmitter.emit({
+                    id: selectedCheckbox.index,
+                    displayRadioRequiredNote: false,
+                });
 
                 break;
             case InputSwitchActions.REASON_FOR_LEAVING:
@@ -1395,6 +1433,8 @@ export class Step2FormComponent
         this.selectedVehicleType = this.vehicleType.find(
             (item) => item.name === this.previousFormValuesOnEdit.vehicleType
         );
+
+        console.log(this.selectedVehicleType);
 
         if (
             this.selectedVehicleType.id === 5 ||

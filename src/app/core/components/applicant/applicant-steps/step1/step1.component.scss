@@ -655,6 +655,21 @@
                 top: 0;
             }
 
+            .required {
+                font-size: 11px;
+                color: $ta-red-2;
+
+                &::-moz-selection {
+                    color: $ta-red-2;
+                    background: rgb(239, 83, 80, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-red-2;
+                    background: rgb(239, 83, 80, 0.2);
+                }
+            }
+
             .question-title {
                 color: $bw6-2;
                 font-size: 14px;

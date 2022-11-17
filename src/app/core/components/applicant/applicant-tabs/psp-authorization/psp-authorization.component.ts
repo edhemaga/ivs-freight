@@ -165,7 +165,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
 
             if (!this.signature) {
                 this.displaySignatureRequiredNote = true;
-             }
+            }
 
             return;
         }

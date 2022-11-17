@@ -55,6 +55,9 @@ export class Step4Component implements OnInit, OnDestroy {
     public selectedAccidentIndex: number;
     public helperIndex: number = 2;
 
+    public displayRadioRequiredNote: boolean = false;
+    public checkIsHazmatSpillNotChecked: boolean = false;
+
     public isEditing: boolean = false;
     public isReviewingCard: boolean = false;
 
@@ -398,6 +401,14 @@ export class Step4Component implements OnInit, OnDestroy {
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
+    public onGetRadioRequiredNoteEmit(event: any): void {
+        if (event) {
+            this.displayRadioRequiredNote = true;
+        } else {
+            this.displayRadioRequiredNote = false;
+        }
+    }
+
     public cancelAccidentReview(event: any): void {
         this.isReviewingCard = false;
 
@@ -534,6 +545,8 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        this.checkIsHazmatSpillNotChecked = true;
+
         if (this.formStatus === 'INVALID') {
             this.markFormInvalid = true;
             return;

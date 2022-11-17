@@ -1078,7 +1078,7 @@
                     <div
                         class="d-flex align-items-center justify-content-between"
                     >
-                        <div class="question-title-box">
+                        <div class="d-flex flex-column question-title-box">
                             <p
                                 class="m-0 ta-font-regular"
                                 [ngClass]="
@@ -1091,6 +1091,17 @@
 
                                 <span class="required-star">*</span>
                             </p>
+
+                            <ng-container
+                                *ngIf="
+                                    displayRadioRequiredNoteArray[i]
+                                        .displayRadioRequiredNote
+                                "
+                            >
+                                <p class="m-0 ta-font-semi-bold required">
+                                    Required
+                                </p>
+                            </ng-container>
                         </div>
 
                         <div class="question-radios-box">
@@ -1100,6 +1111,10 @@
                                 [disabled]="
                                     selectedMode === 'REVIEW_MODE' ||
                                     selectedMode === 'FEEDBACK_MODE'
+                                "
+                                [displayRequiredNote]="
+                                    displayRadioRequiredNoteArray[i]
+                                        .displayRadioRequiredNote
                                 "
                                 (changedValue)="
                                     handleInputSelect($event, 'ANSWER-CHOICE')

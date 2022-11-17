@@ -120,7 +120,7 @@
         <div
             class="d-flex align-items-center justify-content-between group hazmat-spill-group"
         >
-            <div class="title-box">
+            <div class="d-flex flex-column title-box">
                 <p
                     class="m-0 ta-font-regular"
                     [ngStyle]="{
@@ -142,11 +142,16 @@
                         >*</span
                     >
                 </p>
+
+                <ng-container *ngIf="displayRadioRequiredNote">
+                    <p class="m-0 ta-font-semi-bold required">Required</p>
+                </ng-container>
             </div>
             <div class="radios-box">
                 <app-ta-input-radiobuttons
                     [buttons]="answerChoices"
                     [disabled]="selectedMode === 'REVIEW_MODE'"
+                    [displayRequiredNote]="displayRadioRequiredNote"
                     (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
                 ></app-ta-input-radiobuttons>
             </div>

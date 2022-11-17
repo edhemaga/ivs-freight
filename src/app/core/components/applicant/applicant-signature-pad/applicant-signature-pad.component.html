@@ -7,8 +7,16 @@
         (drawStart)="onDrawStart($event)"
     ></signature-pad>
 
-    <div class="d-flex align-items-center signature-pad-bottom-container" [ngStyle]="{background : displayRequiredNote? '#E57373': '#EEEEEE'}">
-        <p class="m-0 ta-font-regular" [ngStyle]="{color : displayRequiredNote? '#FFFFFF': '#6c6c6c'}">PLEASE USE YOUR MOUSE TO SIGN ABOVE <span>*</span></p>
+    <div
+        class="d-flex align-items-center signature-pad-bottom-container"
+        [ngStyle]="{ background: displayRequiredNote ? '#E57373' : '#EEEEEE' }"
+    >
+        <p
+            class="m-0 ta-font-regular"
+            [ngStyle]="{ color: displayRequiredNote ? '#FFFFFF' : '#6c6c6c' }"
+        >
+            PLEASE USE YOUR MOUSE TO SIGN ABOVE <span>*</span>
+        </p>
 
         <ng-container *ngIf="displayActionButtons">
             <div class="d-flex align-items-center btn-container">
@@ -25,7 +33,7 @@
                         (click)="onUndoDrawing()"
                     ></svg-icon>
                 </div>
-    
+
                 <div
                     ngbTooltip
                     mainTooltip="Confirm"
@@ -39,7 +47,7 @@
                         (click)="onConfirmDrawing()"
                     ></svg-icon>
                 </div>
-    
+
                 <div
                     ngbTooltip
                     mainTooltip="Clear"
@@ -54,13 +62,15 @@
                     ></svg-icon>
                 </div>
             </div>
-        </ng-container>        
+        </ng-container>
     </div>
 
     <!-- REQUIRED -->
 
     <ng-container *ngIf="displayRequiredNote">
-        <div class="d-flex justify-content-center align-items-center required-container">
+        <div
+            class="d-flex justify-content-center align-items-center required-container"
+        >
             <p class="m-0 ta-font-semi-bold">Required</p>
         </div>
     </ng-container>
@@ -74,7 +84,7 @@
 >
     <img [src]="signatureImgSrc" alt="signature" />
 
-    <ng-container  *ngIf="mode === 'APPLICANT_MODE'">
+    <ng-container *ngIf="mode === 'APPLICANT_MODE'">
         <div
             class="d-flex justify-content-center align-items-center clear-signature-container"
             ngbTooltip

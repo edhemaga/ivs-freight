@@ -15,7 +15,7 @@ import {
     ApplicantResponse,
     AuthorizationFeedbackResponse,
     CreateAuthorizationReviewCommand,
-    UpdateAuthorizationCommand
+    UpdateAuthorizationCommand,
 } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
@@ -145,7 +145,6 @@ export class Step11Component implements OnInit, OnDestroy {
     public onSignatureAction(event: any): void {
         if (event) {
             this.signature = this.imageBase64Service.getStringFromBase64(event);
-
         } else {
             this.signature = null;
         }
@@ -182,9 +181,9 @@ export class Step11Component implements OnInit, OnDestroy {
                 this.inputService.markInvalid(this.authorizationForm);
             }
 
-             if (!this.signature) {
+            if (!this.signature) {
                 this.displaySignatureRequiredNote = true;
-             }
+            }
 
             return;
         }

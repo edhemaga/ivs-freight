@@ -15,6 +15,8 @@ import {
     anyInputInLineIncorrect,
     isAnyValueInArrayTrue,
     isFormValueNotEqual,
+    isAnyRadioInArrayUnChecked,
+    filterUnceckedRadiosId,
 } from '../../state/utils/utils';
 
 import {
@@ -66,9 +68,21 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public personalInfoRadios: any;
+
+    public displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    }[] = [
+        { id: 0, displayRadioRequiredNote: false },
+        { id: 1, displayRadioRequiredNote: false },
+        { id: 2, displayRadioRequiredNote: false },
+        { id: 3, displayRadioRequiredNote: false },
+        { id: 4, displayRadioRequiredNote: false },
+        { id: 5, displayRadioRequiredNote: false },
+    ];
 
     public subscription: Subscription;
 
@@ -949,6 +963,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     );
                 }
 
+                this.displayRadioRequiredNoteArray[
+                    selectedCheckbox.index
+                ].displayRadioRequiredNote = false;
+
                 break;
             case InputSwitchActions.PREVIOUS_ADDRESS:
                 const address: AddressEntity = event.address;
@@ -1625,11 +1643,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             }
         }
 
-        if (this.personalInfoForm.invalid) {
-            this.inputService.markInvalid(this.personalInfoForm);
-            return;
-        }
-
         const {
             firstRowReview,
             secondRowReview,
@@ -1646,14 +1659,62 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             email,
             previousAddresses,
             bankId,
+            legalWork,
             legalWorkExplain,
+            anotherName,
             anotherNameExplain,
+            inMilitary,
             inMilitaryExplain,
+            felony,
             felonyExplain,
+            misdemeanor,
             misdemeanorExplain,
+            drunkDriving,
             drunkDrivingExplain,
             ...personalInfoForm
         } = this.personalInfoForm.value;
+
+        const radioButtons = [
+            { id: 0, isChecked: legalWork },
+            { id: 1, isChecked: anotherName },
+            {
+                id: 2,
+                isChecked: inMilitary,
+            },
+            { id: 3, isChecked: felony },
+            { id: 4, isChecked: misdemeanor },
+            { id: 5, isChecked: drunkDriving },
+        ];
+
+        const isAnyRadioUnchecked = isAnyRadioInArrayUnChecked(radioButtons);
+
+        if (this.personalInfoForm.invalid || isAnyRadioUnchecked) {
+            if (this.personalInfoForm.invalid) {
+                this.inputService.markInvalid(this.personalInfoForm);
+            }
+
+            if (isAnyRadioUnchecked) {
+                const uncheckedRadios = filterUnceckedRadiosId(radioButtons);
+
+                this.displayRadioRequiredNoteArray =
+                    this.displayRadioRequiredNoteArray.map((item, index) => {
+                        if (
+                            uncheckedRadios.some(
+                                (someItem) => someItem === index
+                            )
+                        ) {
+                            return {
+                                ...item,
+                                displayRadioRequiredNote: true,
+                            };
+                        }
+
+                        return item;
+                    });
+            }
+
+            return;
+        }
 
         this.selectedAddresses = this.selectedAddresses.filter(
             (item) => item.address
@@ -1683,11 +1744,17 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                           (item, index) =>
                               index !== this.selectedAddresses.length - 1
                       ),
+            legalWork,
             legalWorkDescription: legalWorkExplain,
+            anotherName,
             anotherNameDescription: anotherNameExplain,
+            inMilitary,
             inMilitaryDescription: inMilitaryExplain,
+            felony,
             felonyDescription: felonyExplain,
+            misdemeanor,
             misdemeanorDescription: misdemeanorExplain,
+            drunkDriving,
             drunkDrivingDescription: drunkDrivingExplain,
         };
 

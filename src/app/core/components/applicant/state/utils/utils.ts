@@ -46,3 +46,17 @@ export const isAnyValueInArrayTrue = (values: boolean[]) => {
 export const isAnyPropertyInObjectFalse = (selectedObject: object) => {
     return JSON.stringify(Object.values(selectedObject)).includes('false');
 };
+
+export const isAnyRadioInArrayUnChecked = (
+    values: { isChecked: boolean }[]
+) => {
+    return values.some(({ isChecked }) => isChecked === null);
+};
+
+export const filterUnceckedRadiosId = (
+    values: { id: number; isChecked: boolean }[]
+) => {
+    return values
+        .filter(({ isChecked }) => isChecked === null)
+        .map((item) => item.id);
+};

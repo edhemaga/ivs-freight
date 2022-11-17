@@ -3,7 +3,7 @@ import {
     OnDestroy,
     OnInit,
     QueryList,
-    ViewChildren
+    ViewChildren,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,11 +11,16 @@ import { Router } from '@angular/router';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 import {
-    anyInputInLineIncorrect, isAnyPropertyInObjectFalse, isFormValueNotEqual
+    anyInputInLineIncorrect,
+    isAnyPropertyInObjectFalse,
+    isFormValueNotEqual,
+    isAnyRadioInArrayUnChecked,
+    filterUnceckedRadiosId,
 } from '../../state/utils/utils';
 
 import {
-    convertDateFromBackend, convertDateToBackend
+    convertDateFromBackend,
+    convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -28,7 +33,7 @@ import {
     ApplicantResponse,
     CreateEducationCommand,
     CreateEducationReviewCommand,
-    EducationFeedbackResponse
+    EducationFeedbackResponse,
 } from 'appcoretruckassist/model/models';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
@@ -91,6 +96,17 @@ export class Step6Component implements OnInit, OnDestroy {
     private knowledgeOfSafetyRegulationsRadios: any;
     private driverForCompanyBeforeRadios: any;
     private unableForJobRadios: any;
+
+    public displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    }[] = [
+        { id: 0, displayRadioRequiredNote: false },
+        { id: 1, displayRadioRequiredNote: false },
+        { id: 2, displayRadioRequiredNote: false },
+        { id: 3, displayRadioRequiredNote: false },
+        { id: 4, displayRadioRequiredNote: false },
+    ];
 
     public contactsArray: ContactModel[] = [];
 
@@ -698,6 +714,10 @@ export class Step6Component implements OnInit, OnDestroy {
                 });
             }
         }
+
+        this.displayRadioRequiredNoteArray[
+            selectedCheckbox.index
+        ].displayRadioRequiredNote = false;
     }
 
     public onSchoolGradeClick(gradeIndex: number): void {
@@ -711,8 +731,6 @@ export class Step6Component implements OnInit, OnDestroy {
 
         this.selectedGrade = gradeIndex;
         this.selectedCollegeGrade = -1;
-
-       
     }
 
     public onCollegeGradeClick(gradeIndex: number): void {
@@ -726,7 +744,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
         this.selectedCollegeGrade = gradeIndex;
 
-        this.selectedGrade = 11;        
+        this.selectedGrade = 11;
     }
 
     public onDeleteContact(index: number): void {
@@ -1230,38 +1248,72 @@ export class Step6Component implements OnInit, OnDestroy {
             }
         }
 
-        if (this.educationForm.invalid || this.formStatus === 'INVALID' || !this.selectedGrade) {
+        const {
+            specialTraining,
+            specialTrainingExplain,
+            otherTraining,
+            otherTrainingExplain,
+            knowledgeOfSafetyRegulations,
+            driverForCompany,
+            driverForCompanyBeforeExplain,
+            driverForCompanyToExplain,
+            unableForJob,
+            unableForJobExplain,
+        } = this.educationForm.value;
+
+        const radioButtons = [
+            { id: 0, isChecked: specialTraining },
+            { id: 1, isChecked: otherTraining },
+            {
+                id: 2,
+                isChecked: knowledgeOfSafetyRegulations,
+            },
+            { id: 3, isChecked: driverForCompany },
+            { id: 4, isChecked: unableForJob },
+        ];
+
+        const isAnyRadioUnchecked = isAnyRadioInArrayUnChecked(radioButtons);
+
+        if (
+            this.educationForm.invalid ||
+            this.formStatus === 'INVALID' ||
+            !this.selectedGrade ||
+            isAnyRadioUnchecked
+        ) {
             if (this.educationForm.invalid) {
                 this.inputService.markInvalid(this.educationForm);
             }
 
-            
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;
             }
-            
+
             if (this.selectedGrade < 0) {
                 this.displayGradeRequiredNote = true;
             }
 
+            if (isAnyRadioUnchecked) {
+                const uncheckedRadios = filterUnceckedRadiosId(radioButtons);
+
+                this.displayRadioRequiredNoteArray =
+                    this.displayRadioRequiredNoteArray.map((item, index) => {
+                        if (
+                            uncheckedRadios.some(
+                                (someItem) => someItem === index
+                            )
+                        ) {
+                            return {
+                                ...item,
+                                displayRadioRequiredNote: true,
+                            };
+                        }
+
+                        return item;
+                    });
+            }
+
             return;
         }
-
-        const {
-            specialTrainingExplain,
-            otherTrainingExplain,
-            knowledgeOfSafetyRegulationsExplain,
-            driverForCompany,
-            driverForCompanyBeforeExplain,
-            driverForCompanyToExplain,
-            unableForJobExplain,
-            questionReview1,
-            questionReview2,
-            questionReview3,
-            questionReview4,
-            questionReview5,
-            ...educationForm
-        } = this.educationForm.value;
 
         const filteredContactsArray = this.contactsArray.map((item) => {
             return {
@@ -1278,15 +1330,17 @@ export class Step6Component implements OnInit, OnDestroy {
         };
 
         const saveData: CreateEducationCommand = {
-            ...educationForm,
             applicantId: this.applicantId,
             highestGrade: this.selectedGrade > -1 ? this.selectedGrade + 1 : -1,
             collegeGrade:
                 this.selectedCollegeGrade > -1
                     ? this.selectedCollegeGrade + 1
                     : -1,
+            specialTraining,
             specialTrainingDescription: specialTrainingExplain,
+            otherTraining,
             otherTrainingDescription: otherTrainingExplain,
+            knowledgeOfSafetyRegulations,
             driverBefore: driverForCompany,
             from: driverForCompany
                 ? convertDateToBackend(driverForCompanyBeforeExplain)
@@ -1294,6 +1348,7 @@ export class Step6Component implements OnInit, OnDestroy {
             to: driverForCompany
                 ? convertDateToBackend(driverForCompanyToExplain)
                 : null,
+            unableForJob,
             unableForJobDescription: unableForJobExplain,
             emergencyContacts: [
                 ...filteredContactsArray,

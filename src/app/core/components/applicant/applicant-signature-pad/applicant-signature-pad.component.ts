@@ -7,12 +7,12 @@ import {
     Output,
     SimpleChanges,
     ViewChild,
-    ViewEncapsulation
+    ViewEncapsulation,
 } from '@angular/core';
 
 import {
     NgSignaturePadOptions,
-    SignaturePadComponent
+    SignaturePadComponent,
 } from '@almothafar/angular-signature-pad';
 
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
@@ -40,7 +40,7 @@ export class ApplicantSignaturePadComponent
 
     public signature: string;
 
-    public displayActionButtons: boolean = false
+    public displayActionButtons: boolean = false;
 
     @Input() mode: string;
     @Input() signatureImgSrc: any = null;
@@ -72,14 +72,15 @@ export class ApplicantSignaturePadComponent
             changes.displayRequiredNote?.previousValue !==
             changes.displayRequiredNote?.currentValue
         ) {
-            this.displayRequiredNote = changes.displayRequiredNote?.currentValue
+            this.displayRequiredNote =
+                changes.displayRequiredNote?.currentValue;
         }
     }
 
     public onDrawStart(event: MouseEvent | Touch): void {
-        this.displayActionButtons = true
+        this.displayActionButtons = true;
 
-        this.removeRequiredNoteEmitter.emit(true)
+        this.removeRequiredNoteEmitter.emit(true);
     }
 
     public onClearDrawing(): void {
@@ -97,7 +98,7 @@ export class ApplicantSignaturePadComponent
             this.signaturePad.fromData(data);
 
             this.signature = this.signaturePad.toDataURL();
-        } 
+        }
     }
 
     public onConfirmDrawing(): void {
@@ -105,7 +106,7 @@ export class ApplicantSignaturePadComponent
 
         this.signatureImgSrc = this.signature;
 
-        this.displayActionButtons = false
+        this.displayActionButtons = false;
 
         this.signatureEmitter.emit(this.signature);
     }

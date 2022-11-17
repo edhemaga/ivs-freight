@@ -93,6 +93,8 @@ export class Step3Component implements OnInit, OnDestroy {
 
     public permitRadios: any;
 
+    public displayRadioRequiredNote = false;
+
     public answerChoices: AnswerChoices[] = [
         {
             id: 1,
@@ -313,6 +315,8 @@ export class Step3Component implements OnInit, OnDestroy {
                         false
                     );
                 }
+
+                this.displayRadioRequiredNote = false;
 
                 break;
             default:
@@ -630,7 +634,13 @@ export class Step3Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.permitForm.invalid || this.formStatus === 'INVALID') {
+        const { permit, permitExplain } = this.permitForm.value;
+
+        if (
+            this.permitForm.invalid ||
+            this.formStatus === 'INVALID' ||
+            permit === null
+        ) {
             if (this.permitForm.invalid) {
                 this.inputService.markInvalid(this.permitForm);
             }
@@ -639,10 +649,12 @@ export class Step3Component implements OnInit, OnDestroy {
                 this.markFormInvalid = true;
             }
 
+            if (permit === null) {
+                this.displayRadioRequiredNote = true;
+            }
+
             return;
         }
-
-        const { permit, permitExplain } = this.permitForm.value;
 
         const filteredLicenseArray = this.licenseArray.map((item) => {
             const filteredStateType = this.usStates.find(

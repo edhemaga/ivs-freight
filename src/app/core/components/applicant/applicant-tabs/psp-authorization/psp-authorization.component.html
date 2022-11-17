@@ -494,7 +494,9 @@
                             [signatureImgSrc]="signatureImgSrc"
                             [displayRequiredNote]="displaySignatureRequiredNote"
                             (signatureEmitter)="onSignatureAction($event)"
-                            (removeRequiredNoteEmitter)="onRemoveSignatureRequiredNoteAction($event)"
+                            (removeRequiredNoteEmitter)="
+                                onRemoveSignatureRequiredNoteAction($event)
+                            "
                         ></app-applicant-signature-pad>
                     </div>
                 </form>

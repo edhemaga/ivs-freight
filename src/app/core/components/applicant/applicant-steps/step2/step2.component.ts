@@ -41,7 +41,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public applicantId: number;
 
@@ -73,6 +73,15 @@ export class Step2Component implements OnInit, OnDestroy {
     public trailerLengthType: TrailerLengthResponse[] = [];
 
     public reasonsForLeaving: EnumValue[] = [];
+
+    public displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    }[] = [
+        { id: 0, displayRadioRequiredNote: false },
+        { id: 1, displayRadioRequiredNote: false },
+    ];
+    public checkIsHazmatSpillNotChecked: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -689,6 +698,18 @@ export class Step2Component implements OnInit, OnDestroy {
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
+    public onGetRadioRequiredNoteEmit(event: any): void {
+        if (event.displayRadioRequiredNote) {
+            this.displayRadioRequiredNoteArray[
+                event.id
+            ].displayRadioRequiredNote = true;
+        } else {
+            this.displayRadioRequiredNoteArray[
+                event.id
+            ].displayRadioRequiredNote = false;
+        }
+    }
+
     public cancelWorkExperienceReview(event: any): void {
         this.isReviewingCard = false;
 
@@ -968,6 +989,8 @@ export class Step2Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        this.checkIsHazmatSpillNotChecked = true;
+
         if (
             this.formStatus === 'INVALID' ||
             this.innerFormStatus === 'INVALID'

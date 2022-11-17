@@ -11,8 +11,10 @@ import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
 
 import {
-    ApplicantResponse, CreateDisclosureReviewCommand, DisclosureReleaseFeedbackResponse,
-    UpdateDisclosureReleaseCommand
+    ApplicantResponse,
+    CreateDisclosureReviewCommand,
+    DisclosureReleaseFeedbackResponse,
+    UpdateDisclosureReleaseCommand,
 } from 'appcoretruckassist/model/models';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
