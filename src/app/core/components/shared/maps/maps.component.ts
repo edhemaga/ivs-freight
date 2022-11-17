@@ -12,7 +12,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
-import { UpdatedData } from '../model/shared/enums';
 import { RepairTService } from '../../repair/state/repair.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 import { Subject, takeUntil } from 'rxjs';
