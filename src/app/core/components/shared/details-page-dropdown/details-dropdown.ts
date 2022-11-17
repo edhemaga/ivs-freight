@@ -17,7 +17,6 @@ import {
     transition,
     trigger,
     state,
-    keyframes,
 } from '@angular/animations';
 
 @Component({
