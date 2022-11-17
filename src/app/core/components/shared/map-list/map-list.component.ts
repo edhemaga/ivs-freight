@@ -226,7 +226,9 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
                   this.sortDirection?.substr(1).toLowerCase())
             : '';
 
-        this.headActions.emit({ action: 'sort', direction: directionSort });
+        this.mapsService.sortChange.next(directionSort);
+
+        //this.headActions.emit({ action: 'sort', direction: directionSort });
     }
 
     setSortTypes() {
@@ -359,22 +361,26 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
         if (this.searchText?.length >= 3) {
             this.searchIsActive = true;
 
-            this.tableService.sendCurrentSearchTableData({
-                chip: 'searchOne',
-                search: this.searchText,
-                searchType: 'tabel',
-            });
+            // this.tableService.sendCurrentSearchTableData({
+            //   chip: 'searchOne',
+            //   search: this.searchText,
+            //   searchType: 'tabel',
+            // });
+
+            this.mapsService.searchTextChanged(this.searchText);
         } else if (this.searchIsActive && this.searchText.length < 3) {
             this.searchIsActive = false;
 
             this.highlightSearchedText();
 
-            this.tableService.sendCurrentSearchTableData({
-                chip: 'searchOne',
-                doReset: true,
-                //all: true, - Returns to Table view
-                searchType: 'tabel',
-            });
+            // this.tableService.sendCurrentSearchTableData({
+            //   chip: 'searchOne',
+            //   doReset: true,
+            //   //all: true, - Returns to Table view
+            //   searchType: 'tabel',
+            // });
+
+            this.mapsService.searchTextChanged('');
         }
     }
 

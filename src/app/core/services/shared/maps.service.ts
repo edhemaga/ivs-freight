@@ -22,6 +22,9 @@ export class MapsService implements OnDestroy {
 
     sortCategory: any = {};
     sortCategoryChange: Subject<any> = new Subject<any>();
+    sortChange: Subject<any> = new Subject<any>();
+    searchText: any = {};
+    searchTextChange: Subject<any> = new Subject<any>();
 
     constructor(private mapService: MapService) {
         this.sortCategoryChange
@@ -97,6 +100,10 @@ export class MapsService implements OnDestroy {
                     });
             })
         );
+    }
+
+    public searchTextChanged(text: string) {
+        this.searchTextChange.next(text);
     }
 
     getMapById(mapId: number) {

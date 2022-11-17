@@ -22,7 +22,9 @@ export class MapMarkerDropdownComponent implements OnInit {
     @Input() locationFilterOn: boolean = false;
     @Input() dropdownActions: any[] = [];
     @Input() rating: any = {};
+    @Input() cluster: any = {};
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+    @Output() showClusterItemInfo: EventEmitter<any> = new EventEmitter();
 
     public copiedPhone: boolean = false;
     public copiedEmail: boolean = false;
@@ -89,8 +91,10 @@ export class MapMarkerDropdownComponent implements OnInit {
     }
 
     showMoreOptions(event) {
-        event.preventDefault();
-        event.stopPropagation();
+        //event.preventDefault();
+        //event.stopPropagation();
+
+        this.ref.detectChanges();
     }
 
     callBodyAction(action) {
@@ -118,5 +122,11 @@ export class MapMarkerDropdownComponent implements OnInit {
             type: 'raiting',
             subType: 'dislike',
         });
+    }
+
+    openClusterItemInfo(item2) {
+        console.log('openClusterItemInfo', item2);
+
+        this.showClusterItemInfo.emit([this.item, item2]);
     }
 }

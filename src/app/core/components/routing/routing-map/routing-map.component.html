@@ -446,10 +446,7 @@
                                                     item.value.checkMainValue
                                                 ]) ||
                                                 !item.value.checkMainValue) &&
-                                            ((b > 0 &&
-                                                stop[item.value.value] !=
-                                                    null) ||
-                                                b == 0) &&
+                                            stop[item.value.value] != null &&
                                             ((item.value.expandedOnly &&
                                                 route.expanded &&
                                                 route.expandFinished) ||
@@ -515,7 +512,11 @@
                             <div
                                 class="route-card-row m-0"
                                 [formGroup]="$any(addressInputs)"
-                                [ngClass]="{ 'focused-route': route.isFocused }"
+                                [ngClass]="{
+                                    'focused-route': route.isFocused,
+                                    'disable-hover':
+                                        inputAddress?.addressExpanded
+                                }"
                                 (click)="focusOnInput(i, false, $event)"
                                 [attr.data-id]="'newStop' + route.id"
                                 [ngStyle]="{
@@ -538,7 +539,10 @@
                                         'height.px': 14,
                                         fill: route.isFocused
                                             ? '#fff'
-                                            : route.color
+                                            : route.color,
+                                        opacity: inputAddress?.addressExpanded
+                                            ? '0'
+                                            : '1'
                                     }"
                                 ></svg-icon>
                                 <div
@@ -555,6 +559,7 @@
                                 >
                                     <!-- Add New Stop -->
                                     <app-input-address-dropdown
+                                        #inputAddress
                                         formControlName="address"
                                         [inputConfig]="{
                                             name: 'RoutingAddress',
@@ -609,6 +614,7 @@
                                             }
                                         }"
                                         [isRouting]="true"
+                                        [hideEmptyLoaded]="!route.stops.length"
                                         (changeFlag)="
                                             $event === true
                                                 ? (addressFlag = 'Loaded')
@@ -1152,7 +1158,12 @@
                             <div
                                 class="route-card-row m-0"
                                 [formGroup]="$any(addressInputs)"
-                                [ngClass]="{ 'focused-route': route.isFocused }"
+                                [ngClass]="{
+                                    'focused-route': route.isFocused,
+                                    'disable-hover':
+                                        inputAddress?.inputDropdown?.inputRef
+                                            ?.focusInput
+                                }"
                                 (click)="focusOnInput(i, false, $event)"
                             >
                                 <div
@@ -1457,14 +1468,14 @@
                                                     }"
                                                 />
                                                 <text
-                                                    y="-8%"
+                                                    y="-10%"
                                                     dominant-baseline="middle"
                                                     text-anchor="middle"
                                                     id="_1"
                                                     data-name="1"
                                                     transform="translate(647 2305)"
                                                     fill="#fff"
-                                                    font-size="11"
+                                                    font-size="10"
                                                     font-family="Montserrat-Bold, Montserrat"
                                                     font-weight="700"
                                                 >
@@ -1735,7 +1746,12 @@
                                             cy="2"
                                             r="2"
                                             transform="translate(1115 985)"
-                                            fill="#fff"
+                                            [ngStyle]="{
+                                                fill: tableData[
+                                                    selectedMapIndex
+                                                ].routes[focusedRouteIndex]
+                                                    .color
+                                            }"
                                         />
                                     </g>
                                     <g
