@@ -879,7 +879,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         console.log('dropStops', event, dropArray, route);
 
         route.stops.map((stop, stopIndex) => {
-          stop.orderNumber = stopIndex+1;
+            stop.orderNumber = stopIndex + 1;
         });
 
         this.getRouteShape(route);
@@ -971,12 +971,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     console.log('deleteStopById success');
-                    
+
                     route.stops.splice(index, 1);
 
                     var stopArr = [];
                     route.stops.map((stop, stopIndex) => {
-                        stop.orderNumber = stopIndex+1;
+                        stop.orderNumber = stopIndex + 1;
 
                         var stopObj = <any>{
                             id: stop.id ? stop.id : 0,
@@ -985,7 +985,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             total: null,
                             longitude: stop.long,
                             latitude: stop.lat,
-                            orderNumber: stop.orderNumber
+                            orderNumber: stop.orderNumber,
                         };
 
                         stopArr.push(stopObj);
