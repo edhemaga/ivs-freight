@@ -17,6 +17,7 @@ import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model
 import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
 import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import { AddFuelTransactionCommand } from '../../../../../../appcoretruckassist/model/addFuelTransactionCommand';
+import { EditFuelTransactionCommand } from '../../../../../../appcoretruckassist/model/editFuelTransactionCommand';
 
 @Injectable({
   providedIn: 'root',
@@ -88,6 +89,12 @@ export class FuelTService {
     data: AddFuelTransactionCommand
   ): Observable<CreateResponse> {
     return this.fuelService.apiFuelTransactionPost(data);
+  }
+
+  public updateFuelTransaction(
+    data: EditFuelTransactionCommand
+  ): Observable<CreateResponse> {
+    return this.fuelService.apiFuelTransactionPut(data);
   }
 
   // **************** FUEL STOP ****************

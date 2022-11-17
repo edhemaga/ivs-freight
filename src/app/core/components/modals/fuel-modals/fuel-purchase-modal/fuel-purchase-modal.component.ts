@@ -17,12 +17,17 @@ import { GetFuelModalResponse } from '../../../../../../../appcoretruckassist/mo
 import { FuelDispatchHistoryResponse } from '../../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
 import { FuelStopFranchiseResponse } from '../../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import { AddFuelTransactionCommand } from '../../../../../../../appcoretruckassist/model/addFuelTransactionCommand';
-import { convertDateToBackend } from '../../../../utils/methods.calculations';
+import {
+  convertDateToBackend,
+  convertThousanSepInNumber,
+} from '../../../../utils/methods.calculations';
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
+import { EditFuelTransactionCommand } from '../../../../../../../appcoretruckassist/model/editFuelTransactionCommand';
 import {
   priceValidation,
   fullNameValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-fuel-purchase-modal',
@@ -49,8 +54,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
   public selectedFuelItemsFormArray: any[] = [];
   public fuelItemsCounter: number = 0;
-  public subtotal: { id: number; value: number }[] = [];
+  public subtotal: { value: number; reorderingNumber: number }[] = [];
   public quantity: any[] = [];
+
+  public bluringFuelItemsPrice: any[] = [];
 
   public hoverRowTable: boolean[] = [];
 
@@ -124,12 +131,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         }
         break;
       }
-      case 'delete': {
-        this.deleteFuelById(this.editData.id);
-        this.modalService.setModalSpinner({ action: 'delete', status: true });
-
-        break;
-      }
       default: {
         break;
       }
@@ -141,46 +142,51 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   }
 
   private createFuelItems(data?: {
-    id: number;
+    id?: number;
+    reorderingNumber?: number;
     itemId?: string;
     qty?: string;
     price?: string;
     subtotal?: string;
   }): FormGroup {
     return this.formBuilder.group({
-      id: [data?.id ? data?.id : null],
-      itemId: [data?.itemId ? data?.itemId : null, Validators.required],
-      qty: [data?.qty ? data?.qty : null],
-      price: [[data?.price ? data?.price : null], [...priceValidation]],
-      subtotal: [[data?.subtotal ? data?.subtotal : null]],
+      id: [data?.id ? data.id : 0],
+      reorderingNumber: [data.reorderingNumber ? data.reorderingNumber : null],
+      itemId: [data?.itemId ? data.itemId : null, Validators.required],
+      qty: [data?.qty ? data.qty : null],
+      price: [[data?.price ? data.price : undefined], [...priceValidation]],
+      subtotal: [[data?.subtotal ? data.subtotal : null]],
     });
   }
 
   public addFuelItems(event: { check: boolean; action: string }) {
     if (event.check) {
       this.fuelItems.push(
-        this.createFuelItems({ id: ++this.fuelItemsCounter })
+        this.createFuelItems({ reorderingNumber: ++this.fuelItemsCounter })
       );
       this.subtotal = [
         ...this.subtotal,
-        { id: this.fuelItemsCounter, value: 0 },
+        { reorderingNumber: this.fuelItemsCounter, value: 0 },
       ];
       this.hoverRowTable.push(false);
+      this.bluringFuelItemsPrice.push(false);
     }
   }
 
   public removeFuelItems(id: number) {
     this.fuelItems.removeAt(id);
     this.selectedFuelItemsFormArray.splice(id, 1);
+    this.bluringFuelItemsPrice.splice(id, 1);
     this.hoverRowTable.splice(id, 1);
     const afterDeleting = this.subtotal.splice(id, 1);
 
     this.subtotal = this.subtotal.filter(
-      (item) => item.id !== afterDeleting[0].id
+      (item) => item.reorderingNumber !== afterDeleting[0].reorderingNumber
     );
 
     if (!this.subtotal.length) {
       this.selectedFuelItemsFormArray = [];
+      this.bluringFuelItemsPrice = [];
       this.hoverRowTable = [];
       this.subtotal = [];
       this.fuelItemsCounter = 0;
@@ -195,18 +201,20 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         .get(formControlName)
         .valueChanges.pipe(takeUntil(this.destroy$))
         .subscribe((value) => {
-          if (value) {
-            this.quantity[index] = value;
-            this.subtotal = [...this.subtotal];
-            const price = parseFloat(
-              this.fuelItems
-                .at(index)
-                .get('price')
-                .value?.toString()
-                .replace(/,/g, '')
-            );
-            this.subtotal[index].value = this.quantity[index] * price;
+          this.quantity[index] = value ? value : 1;
+          if (!value) {
+            this.fuelItems.at(index).get(formControlName).patchValue(1);
           }
+
+          this.subtotal = [...this.subtotal];
+          const price = parseInt(
+            this.fuelItems
+              .at(index)
+              .get('price')
+              .value?.toString()
+              ?.replace(/,/g, '')
+          );
+          this.subtotal[index].value = this.quantity[index] * price;
         });
     } else {
       this.fuelItems
@@ -214,16 +222,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         .get(formControlName)
         .valueChanges.pipe(takeUntil(this.destroy$))
         .subscribe((value) => {
-          if (!this.quantity[index] || this.quantity[index] === 0) {
+          if (!this.quantity[index] || (this.quantity[index] === 0 && value)) {
             this.quantity[index] = 1;
             this.fuelItems.at(index).get('qty').patchValue(1);
           }
 
-          if (value) {
-            const price = parseFloat(value.toString().replace(/,/g, ''));
-            this.subtotal = [...this.subtotal];
-            this.subtotal[index].value = this.quantity[index] * price;
-          }
+          const price = parseInt(value?.toString()?.replace(/,/g, ''));
+          this.subtotal = [...this.subtotal];
+          this.subtotal[index].value = this.quantity[index] * price;
         });
     }
   }
@@ -264,7 +270,36 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     moveItemInArray(this.subtotal, event.previousIndex, event.currentIndex);
   }
 
-  private updateFuel(id: number) {}
+  private updateFuel(id: number) {
+    const { ...form } = this.fuelForm.value;
+
+    const newData: EditFuelTransactionCommand = {
+      id: id,
+      truckId: this.selectedTruckType.id,
+      trailerId: this.selectedTrailerType ? this.selectedTrailerType.id : null,
+      fuelStopStoreId: this.selectedFuelStop,
+      transactionDate: convertDateToBackend(form.date),
+      // transactionTime: null,
+      total: this.sumArrays.transform(this.subtotal),
+      fuelItems: this.premmapedItems(),
+    };
+
+    this.fuelService
+      .updateFuelTransaction(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully updated fuel transaction',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: (error: any) => {
+          this.notificationService.error(error, 'Error');
+        },
+      });
+  }
 
   private addFuel() {
     const { ...form } = this.fuelForm.value;
@@ -279,25 +314,23 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       total: this.sumArrays.transform(this.subtotal),
       fuelItems: this.premmapedItems(),
     };
-    // {
-    //   "driverId": 0,
-    //   "truckId": 0,
-    //   "trailerId": 0,
-    //   "fuelStopStoreId": 0,
-    //   "transactionDate": "2022-11-17T19:31:21.692Z",
-    //   "total": 0,
-    //   "fuelItems": [
-    //     {
-    //       "itemfuel": "Diesel",
-    //       "price": 0,
-    //       "qty": 0,
-    //       "subtotal": 0
-    //     }
-    //   ]
-    // }
-  }
 
-  private deleteFuelById(id: number) {}
+    this.fuelService
+      .addFuelTransaction(newData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully created fuel transaction',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: (error: any) => {
+          this.notificationService.error(error, 'Error');
+        },
+      });
+  }
 
   private getFuelById(id: number) {}
 
@@ -313,6 +346,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
               name: item.truckNumber,
             };
           });
+          this.fuelItemsDropdown = res.itemFuel;
         },
         error: (error: any) => {
           this.notificationService.error('Error', error);
@@ -417,12 +451,15 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   }
 
   private premmapedItems() {
-    return null;
-
-    // itemfuel?: ItemFuel;
-    // price?: number;
-    // qty?: number;
-    // subtotal?: number;
+    return this.fuelItems.controls.map((item) => {
+      return {
+        id: item.get('id').value,
+        itemfuel: item.get('itemId').value,
+        price: convertThousanSepInNumber(item.get('price').value),
+        qty: item.get('qty').value,
+        subtotal: item.get('subtotal').value,
+      };
+    });
   }
 
   ngOnDestroy(): void {

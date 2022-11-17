@@ -181,7 +181,9 @@
               (mouseenter)="hoverRowTable[ind] = true"
               (mouseleave)="hoverRowTable[ind] = false"
             >
-              <p *ngIf="!hoverRowTable[ind]">{{ fuelItem.get("id").value }}</p>
+              <p *ngIf="!hoverRowTable[ind]">
+                {{ fuelItem.get("reorderingNumber").value }}
+              </p>
               <svg-icon
                 class="common-fake-table-card-transfer-svg"
                 *ngIf="hoverRowTable[ind]"
@@ -217,13 +219,13 @@
               <div class="fuel-item-price-container">
                 <span
                   *ngIf="
-                    fuelItem.get('price').value &&
-                    fuelItem.get('price').value !== ''
+                    fuelItem.get('price').value && bluringFuelItemsPrice[index]
                   "
                   class="fuel-item-price-dollar"
                 >
                   $
                 </span>
+
                 <app-ta-input
                   formControlName="price"
                   [inputConfig]="{
@@ -232,11 +234,13 @@
                     minLength: 4,
                     maxLength: 11,
                     blackInput: true,
-                    hideClear: fuelItem.get('price').value === '',
+                    hideClear: !bluringFuelItemsPrice[index],
                     hideErrorMessage: true,
                     thousandSeparator: true,
                     hideRequiredCheck: true
                   }"
+                  (blurInput)="bluringFuelItemsPrice[index] = true"
+                  (focusInput)="bluringFuelItemsPrice[index] = false"
                   (change)="onChange('price', ind)"
                 ></app-ta-input>
               </div>

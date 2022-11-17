@@ -60,6 +60,9 @@ export class TaInputComponent
   @Output('blurInput') blurInput: EventEmitter<boolean> =
     new EventEmitter<boolean>();
 
+  @Output('focusInput') focusInputEvent: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+
   @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
   @Output('commandEvent') commandEvent: EventEmitter<any> =
     new EventEmitter<any>();
@@ -266,6 +269,7 @@ export class TaInputComponent
   }
 
   public onFocus(e?): void {
+    this.focusInputEvent.emit(true);
     // Password
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
