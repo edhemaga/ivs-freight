@@ -27,7 +27,7 @@ export interface RoadsideInspectionResponse {
     categoryReport?: EnumValue;
     inspectionLevel?: string | null;
     hmInspectionType?: string | null;
-    country?: string | null;
+    county?: string | null;
     state?: StateResponse;
     startTime?: string | null;
     endTime?: string | null;

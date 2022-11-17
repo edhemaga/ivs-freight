@@ -31,8 +31,8 @@ export interface PersonalInfoFeedbackResponse {
     bankName?: string | null;
     accountNumber?: string | null;
     routingNumber?: string | null;
+    usCitizen?: boolean | null;
     legalWork?: boolean | null;
-    legalWorkDescription?: string | null;
     anotherName?: boolean | null;
     anotherNameDescription?: string | null;
     inMilitary?: boolean | null;
