@@ -1,544 +1,545 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
-  padding-top: 22px;
+    padding-top: 22px;
 
-  .step-title {
-    color: $ta-blue;
-    font-size: 32px;
-    height: 39px;
+    .step-title {
+        color: $ta-blue;
+        font-size: 32px;
+        height: 39px;
 
-    &::-moz-selection {
-      color: $ta-blue;
-      background: rgb(83, 107, 194, 0.2);
-    }
-
-    &::selection {
-      color: $ta-blue;
-      background: rgb(83, 107, 194, 0.2);
-    }
-  }
-
-  .step-subtitle {
-    height: 18px;
-    color: $bw6-2;
-    font-size: 14px;
-    font-style: italic;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-
-    &::-moz-selection {
-      color: $bw6-2;
-      background: rgb(108, 108, 108, 0.2);
-    }
-
-    &::selection {
-      color: $bw6-2;
-      background: rgb(108, 108, 108, 0.2);
-    }
-  }
-
-  .form-section {
-    .past-months-violations-container {
-      margin-bottom: 12px;
-    }
-
-    .not-been-convicted-container {
-      margin-bottom: 22px;
-
-      p {
-        font-size: 12px;
-        margin-left: -80px !important;
-        cursor: pointer;
-        user-select: none;
-      }
-    }
-
-    .license-view-container {
-      width: 616px;
-      margin-bottom: 12px;
-
-      .title-container {
-        width: 100%;
-        margin-bottom: 6px;
-        padding-left: 6px;
-
-        p {
-          color: $bw5;
-          font-size: 12px;
-
-          &::-moz-selection {
-            color: $bw5;
-            background: rgb(145, 145, 145, 0.2);
-          }
-
-          &::selection {
-            color: $bw5;
-            background: rgb(145, 145, 145, 0.2);
-          }
-
-          span {
-            color: $progress-danger;
-
-            &::-moz-selection {
-              color: $bw5;
-              background: rgb(145, 145, 145, 0.2);
-            }
-
-            &::selection {
-              color: $bw5;
-              background: rgb(145, 145, 145, 0.2);
-            }
-          }
+        &::-moz-selection {
+            color: $ta-blue;
+            background: rgb(83, 107, 194, 0.2);
         }
 
-        &-feedback {
-          p {
-            color: $bw4;
-            font-size: 12px;
-
-            &::-moz-selection {
-              color: $bw4;
-              background: rgb(183, 183, 183, 0.2);
-            }
-
-            &::selection {
-              color: $bw4;
-              background: rgb(183, 183, 183, 0.2);
-            }
-
-            span {
-              color: $bw4;
-
-              &::-moz-selection {
-                color: $bw4;
-                background: rgb(183, 183, 183, 0.2);
-              }
-
-              &::selection {
-                color: $bw4;
-                background: rgb(183, 183, 183, 0.2);
-              }
-            }
-          }
+        &::selection {
+            color: $ta-blue;
+            background: rgb(83, 107, 194, 0.2);
         }
+    }
 
-        .license-title-box,
-        .state-title-box,
-        .class-title-box,
-        .date-title-box {
-          &.license-title-box {
-            width: 84px;
-            margin-right: 116px;
-          }
-
-          &.state-title-box {
-            width: 57px;
-            margin-right: 55px;
-          }
-
-          &.class-title-box {
-            width: 59px;
-            margin-right: 53px;
-          }
-
-          &.date-title-box {
-            width: 84px;
-          }
-        }
-      }
-
-      .license-info-container {
-        width: 100%;
-        height: 26px;
-        padding: 4px 6px;
-        background: $ta-light-grey-4;
-        border-radius: 2px;
-        margin-bottom: 2px;
-        text-transform: uppercase;
+    .step-subtitle {
+        height: 18px;
+        color: $bw6-2;
         font-size: 14px;
-        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+        font-style: italic;
+        text-transform: uppercase;
+        margin-bottom: 12px;
 
-        &:hover {
-          background: $bw2;
-
-          p {
-            color: $ta-light-grey-3;
-          }
-        }
-
-        p {
-          color: $bw6-2;
-
-          &::-moz-selection {
+        &::-moz-selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
-          }
-
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
         }
 
-        &-feedback {
-          background: $ta-light-grey-7;
+        &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
 
-          &:hover {
-            background: $ta-light-grey-7;
+    .form-section {
+        .past-months-violations-container {
+            margin-bottom: 12px;
+        }
+
+        .not-been-convicted-container {
+            margin-bottom: 22px;
 
             p {
-              color: $bw5;
+                font-size: 12px;
+                margin-left: -80px !important;
+                cursor: pointer;
+                user-select: none;
             }
-          }
-
-          p {
-            color: $bw5;
-
-            &::-moz-selection {
-              color: $bw5;
-              background: rgb(145, 145, 145, 0.2);
-            }
-
-            &::selection {
-              color: $bw5;
-              background: rgb(145, 145, 145, 0.2);
-            }
-          }
         }
 
-        .license-box,
-        .state-box,
-        .class-box,
-        .date-box {
-          &.license-box {
-            width: 182px;
-            margin-right: 12px;
-          }
+        .license-view-container {
+            width: 616px;
+            margin-bottom: 12px;
 
-          &.state-box {
-            width: 100px;
-            margin-right: 12px;
-            padding-left: 6px;
-          }
+            .title-container {
+                width: 100%;
+                margin-bottom: 6px;
+                padding-left: 6px;
 
-          &.class-box {
-            width: 100px;
-            margin-right: 12px;
-            padding-left: 6px;
-          }
+                p {
+                    color: $bw5;
+                    font-size: 12px;
 
-          &.date-box {
-            width: 136px;
-            margin-right: 8px;
-            padding-left: 6px;
-          }
+                    &::-moz-selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+
+                    span {
+                        color: $progress-danger;
+
+                        &::-moz-selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+                    }
+                }
+
+                &-feedback {
+                    p {
+                        color: $bw4;
+                        font-size: 12px;
+
+                        &::-moz-selection {
+                            color: $bw4;
+                            background: rgb(183, 183, 183, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw4;
+                            background: rgb(183, 183, 183, 0.2);
+                        }
+
+                        span {
+                            color: $bw4;
+
+                            &::-moz-selection {
+                                color: $bw4;
+                                background: rgb(183, 183, 183, 0.2);
+                            }
+
+                            &::selection {
+                                color: $bw4;
+                                background: rgb(183, 183, 183, 0.2);
+                            }
+                        }
+                    }
+                }
+
+                .license-title-box,
+                .state-title-box,
+                .class-title-box,
+                .date-title-box {
+                    &.license-title-box {
+                        width: 84px;
+                        margin-right: 116px;
+                    }
+
+                    &.state-title-box {
+                        width: 57px;
+                        margin-right: 55px;
+                    }
+
+                    &.class-title-box {
+                        width: 59px;
+                        margin-right: 53px;
+                    }
+
+                    &.date-title-box {
+                        width: 84px;
+                    }
+                }
+            }
+
+            .license-info-container {
+                width: 100%;
+                height: 26px;
+                padding: 4px 6px;
+                background: $ta-light-grey-4;
+                border-radius: 2px;
+                margin-bottom: 2px;
+                text-transform: uppercase;
+                font-size: 14px;
+                transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+                &:hover {
+                    background: $bw2;
+
+                    p {
+                        color: $ta-light-grey-3;
+                    }
+                }
+
+                p {
+                    color: $bw6-2;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                &-feedback {
+                    background: $ta-light-grey-7;
+
+                    &:hover {
+                        background: $ta-light-grey-7;
+
+                        p {
+                            color: $bw5;
+                        }
+                    }
+
+                    p {
+                        color: $bw5;
+
+                        &::-moz-selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+                    }
+                }
+
+                .license-box,
+                .state-box,
+                .class-box,
+                .date-box {
+                    &.license-box {
+                        width: 182px;
+                        margin-right: 12px;
+                    }
+
+                    &.state-box {
+                        width: 100px;
+                        margin-right: 12px;
+                        padding-left: 6px;
+                    }
+
+                    &.class-box {
+                        width: 100px;
+                        margin-right: 12px;
+                        padding-left: 6px;
+                    }
+
+                    &.date-box {
+                        width: 136px;
+                        margin-right: 8px;
+                        padding-left: 6px;
+                    }
+                }
+            }
         }
-      }
+
+        .only-license-container {
+            margin-bottom: 32px;
+
+            .ta-checkbox-label {
+                font-size: 12px !important;
+                font-weight: bold !important;
+            }
+        }
+
+        .violations-view-container {
+            width: 616px;
+
+            .line-container {
+                position: relative;
+
+                .review-feedback-container {
+                    position: absolute;
+                    top: 0;
+                    right: -435px;
+                    width: 429px;
+                }
+            }
+
+            .title-container {
+                width: 100%;
+                margin-bottom: 6px;
+                padding-left: 6px;
+
+                .date-title-box,
+                .vehicle-title-box,
+                .location-title-box,
+                .description-title-box {
+                    p {
+                        color: $bw5;
+                        font-size: 12px;
+
+                        &::-moz-selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        span {
+                            color: $progress-danger;
+
+                            &::-moz-selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+
+                            &::selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+                        }
+                    }
+
+                    &.date-title-box {
+                        width: 43px;
+                        margin-right: 52px;
+                    }
+
+                    &.vehicle-title-box {
+                        width: 115px;
+                        margin-right: 18px;
+                    }
+
+                    &.location-title-box {
+                        width: 75px;
+                        margin-right: 72px;
+                    }
+
+                    &.description-title-box {
+                        width: 191px;
+                    }
+                }
+            }
+
+            .violation-info-container {
+                width: 100%;
+                height: 26px;
+                margin-bottom: 2px;
+                padding: 4px 6px;
+                border-radius: 2px;
+                font-size: 14px;
+                background: $ta-light-grey-4;
+                color: $bw6-2;
+                transition: color 0.2s ease-in-out, background 0.2s ease-in-out;
+
+                &:hover {
+                    background: $bw2;
+                    color: $ta-light-grey-3;
+
+                    .info-btn-container {
+                        .btn-container {
+                            .edit-icon,
+                            .delete-icon {
+                                opacity: 1;
+                                visibility: visible;
+                                display: flex;
+                            }
+                        }
+
+                        .btn-container.active {
+                            .review-icon-box {
+                                .review-icon {
+                                    visibility: visible !important;
+                                    opacity: 1 !important;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                p {
+                    line-height: 18px;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                .date-box,
+                .vehicle-box,
+                .location-box,
+                .description-box {
+                    &.date-box {
+                        width: 71px;
+                        margin-right: 24px;
+                    }
+
+                    &.vehicle-box {
+                        width: 109px;
+                        margin-right: 24px;
+                    }
+
+                    &.location-box {
+                        width: 123px;
+                        margin-right: 24px;
+                    }
+
+                    &.description-box {
+                        margin-right: 3px;
+                    }
+                }
+
+                .review-icon-box {
+                    margin-left: 25px;
+                }
+
+                .btn-container {
+                    width: 42px;
+
+                    &.active {
+                        .edit-icon,
+                        .delete-icon,
+                        .review-icon {
+                            visibility: hidden !important;
+                            opacity: 0 !important;
+
+                            &.edit-icon,
+                            &.delete-icon {
+                                display: none !important;
+                            }
+
+                            &.review-icon.active {
+                                visibility: visible !important;
+                                opacity: 1 !important;
+                            }
+                        }
+                    }
+
+                    .edit-icon,
+                    .delete-icon,
+                    .review-icon,
+                    .feedback-icon {
+                        cursor: pointer;
+                        transition: opacity 0.2s ease-in-out,
+                            visibility 0.2s ease-in-out;
+
+                        svg {
+                            path {
+                                fill: $bw4;
+                            }
+                        }
+
+                        &:hover {
+                            svg {
+                                path {
+                                    transition: fill 0.2s ease-in-out;
+                                    fill: $bw6-2;
+                                }
+                            }
+                        }
+
+                        &.edit-icon,
+                        &.delete-icon {
+                            margin-right: 4px;
+                            opacity: 0;
+                            visibility: hidden;
+
+                            &.delete-icon {
+                                margin-right: 0;
+                            }
+                        }
+
+                        &.review-icon {
+                            svg {
+                                path {
+                                    transition: fill 0.3s ease-in-out;
+                                    fill: $ta-red-2 !important;
+                                }
+
+                                rect {
+                                    transition: fill 0.3s ease-in-out;
+                                    fill: $bw2 !important;
+                                }
+                            }
+
+                            &:hover {
+                                svg {
+                                    path {
+                                        fill: $white !important;
+                                    }
+
+                                    rect {
+                                        fill: $ta-red-2 !important;
+                                    }
+                                }
+                            }
+
+                            &.active {
+                                svg {
+                                    path {
+                                        fill: $white !important;
+                                    }
+
+                                    rect {
+                                        fill: $ta-red-3 !important;
+                                    }
+                                }
+                            }
+                        }
+
+                        &.feedback-icon {
+                            margin-left: 4px;
+
+                            svg {
+                                path {
+                                    fill: $ta-red-2;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .violations-view-form {
+                margin: 32px auto 0 auto;
+            }
+        }
+
+        .certify-container {
+            margin: 0 auto;
+            width: 600px;
+
+            .ta-checkbox-label {
+                font-size: 12px !important;
+                font-weight: bold !important;
+            }
+
+            p {
+                font-size: 12px;
+                margin-left: -6px !important;
+                user-select: none;
+                cursor: pointer;
+            }
+        }
     }
-
-    .only-license-container {
-      margin-bottom: 32px;
-
-      .ta-checkbox-label {
-        font-size: 12px !important;
-        font-weight: bold !important;
-      }
-    }
-
-    .violations-view-container {
-      width: 616px;
-
-      .line-container {
-        position: relative;
-
-        .review-feedback-container {
-          position: absolute;
-          top: 0;
-          right: -435px;
-          width: 429px;
-        }
-      }
-
-      .title-container {
-        width: 100%;
-        margin-bottom: 6px;
-        padding-left: 6px;
-
-        .date-title-box,
-        .vehicle-title-box,
-        .location-title-box,
-        .description-title-box {
-          p {
-            color: $bw5;
-            font-size: 12px;
-
-            &::-moz-selection {
-              color: $bw5;
-              background: rgb(145, 145, 145, 0.2);
-            }
-
-            &::selection {
-              color: $bw5;
-              background: rgb(145, 145, 145, 0.2);
-            }
-
-            span {
-              color: $progress-danger;
-
-              &::-moz-selection {
-                color: $bw5;
-                background: rgb(145, 145, 145, 0.2);
-              }
-
-              &::selection {
-                color: $bw5;
-                background: rgb(145, 145, 145, 0.2);
-              }
-            }
-          }
-
-          &.date-title-box {
-            width: 43px;
-            margin-right: 52px;
-          }
-
-          &.vehicle-title-box {
-            width: 115px;
-            margin-right: 18px;
-          }
-
-          &.location-title-box {
-            width: 75px;
-            margin-right: 72px;
-          }
-
-          &.description-title-box {
-            width: 191px;
-          }
-        }
-      }
-
-      .violation-info-container {
-        width: 100%;
-        height: 26px;
-        margin-bottom: 2px;
-        padding: 4px 6px;
-        border-radius: 2px;
-        font-size: 14px;
-        background: $ta-light-grey-4;
-        color: $bw6-2;
-        transition: color 0.2s ease-in-out, background 0.2s ease-in-out;
-
-        &:hover {
-          background: $bw2;
-          color: $ta-light-grey-3;
-
-          .info-btn-container {
-            .btn-container {
-              .edit-icon,
-              .delete-icon {
-                opacity: 1;
-                visibility: visible;
-                display: flex;
-              }
-            }
-
-            .btn-container.active {
-              .review-icon-box {
-                .review-icon {
-                  visibility: visible !important;
-                  opacity: 1 !important;
-                }
-              }
-            }
-          }
-        }
-
-        p {
-          line-height: 18px;
-
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-        }
-
-        .date-box,
-        .vehicle-box,
-        .location-box,
-        .description-box {
-          &.date-box {
-            width: 71px;
-            margin-right: 24px;
-          }
-
-          &.vehicle-box {
-            width: 109px;
-            margin-right: 24px;
-          }
-
-          &.location-box {
-            width: 123px;
-            margin-right: 24px;
-          }
-
-          &.description-box {
-            margin-right: 3px;
-          }
-        }
-
-        .review-icon-box {
-          margin-left: 25px;
-        }
-
-        .btn-container {
-          width: 42px;
-
-          &.active {
-            .edit-icon,
-            .delete-icon,
-            .review-icon {
-              visibility: hidden !important;
-              opacity: 0 !important;
-
-              &.edit-icon,
-              &.delete-icon {
-                display: none !important;
-              }
-
-              &.review-icon.active {
-                visibility: visible !important;
-                opacity: 1 !important;
-              }
-            }
-          }
-
-          .edit-icon,
-          .delete-icon,
-          .review-icon,
-          .feedback-icon {
-            cursor: pointer;
-            transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-
-            svg {
-              path {
-                fill: $bw4;
-              }
-            }
-
-            &:hover {
-              svg {
-                path {
-                  transition: fill 0.2s ease-in-out;
-                  fill: $bw6-2;
-                }
-              }
-            }
-
-            &.edit-icon,
-            &.delete-icon {
-              margin-right: 4px;
-              opacity: 0;
-              visibility: hidden;
-
-              &.delete-icon {
-                margin-right: 0;
-              }
-            }
-
-            &.review-icon {
-              svg {
-                path {
-                  transition: fill 0.3s ease-in-out;
-                  fill: $ta-red-2 !important;
-                }
-
-                rect {
-                  transition: fill 0.3s ease-in-out;
-                  fill: $bw2 !important;
-                }
-              }
-
-              &:hover {
-                svg {
-                  path {
-                    fill: $white !important;
-                  }
-
-                  rect {
-                    fill: $ta-red-2 !important;
-                  }
-                }
-              }
-
-              &.active {
-                svg {
-                  path {
-                    fill: $white !important;
-                  }
-
-                  rect {
-                    fill: $ta-red-3 !important;
-                  }
-                }
-              }
-            }
-
-            &.feedback-icon {
-              margin-left: 4px;
-
-              svg {
-                path {
-                  fill: $ta-red-2;
-                }
-              }
-            }
-          }
-        }
-      }
-
-      .violations-view-form {
-        margin: 32px auto 0 auto;
-      }
-    }
-
-    .certify-container {
-      margin: 0 auto;
-      width: 600px;
-
-      .ta-checkbox-label {
-        font-size: 12px !important;
-        font-weight: bold !important;
-      }
-
-      p {
-        font-size: 12px;
-        margin-left: -6px !important;
-        user-select: none;
-        cursor: pointer;
-      }
-    }
-  }
 }
 
 .next-btn-container {
-  position: absolute;
-  top: 50%;
-  bottom: 50%;
-  transform: translate(0, -50%);
-  right: 42px;
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(0, -50%);
+    right: 42px;
 }
 
 .back-btn-container {
-  position: absolute;
-  top: 50%;
-  bottom: 50%;
-  transform: translate(0, -50%);
-  left: 42px;
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(0, -50%);
+    left: 42px;
 }

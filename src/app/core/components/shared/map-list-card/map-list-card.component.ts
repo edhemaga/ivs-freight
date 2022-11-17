@@ -1,90 +1,97 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter,
+    OnDestroy,
+} from '@angular/core';
 import { MapsService } from '../../../services/shared/maps.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-map-list-card',
-  templateUrl: './map-list-card.component.html',
-  styleUrls: ['./map-list-card.component.scss'],
+    selector: 'app-map-list-card',
+    templateUrl: './map-list-card.component.html',
+    styleUrls: ['./map-list-card.component.scss'],
 })
 export class MapListCardComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+    private destroy$ = new Subject<void>();
 
-  @Input() isSelected: boolean = false;
-  @Input() status: any = 1;
-  @Input() title: string = '';
-  @Input() address: any = {};
-  @Input() rating: any = {};
-  @Input() item: any = {};
-  @Input() index: any = {};
-  @Input() type: string = '';
-  @Input() dropdownActions: any[] = [];
-  @Output() clickedMarker: EventEmitter<string> = new EventEmitter<string>();
-  @Output() bodyActions: EventEmitter<any> = new EventEmitter();
-  public locationFilterOn: boolean = false;
-  sortCategory: any = {};
+    @Input() isSelected: boolean = false;
+    @Input() status: any = 1;
+    @Input() title: string = '';
+    @Input() address: any = {};
+    @Input() rating: any = {};
+    @Input() item: any = {};
+    @Input() index: any = {};
+    @Input() type: string = '';
+    @Input() dropdownActions: any[] = [];
+    @Output() clickedMarker: EventEmitter<string> = new EventEmitter<string>();
+    @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+    public locationFilterOn: boolean = false;
+    sortCategory: any = {};
 
-  constructor(private mapsService: MapsService) {}
+    constructor(private mapsService: MapsService) {}
 
-  ngOnInit(): void {
-    if (!this.sortCategory?.name) {
-      //this.sortCategory = { name: 'Business Name', id: 1, sortName: 'name' };
+    ngOnInit(): void {
+        if (!this.sortCategory?.name) {
+            //this.sortCategory = { name: 'Business Name', id: 1, sortName: 'name' };
 
-      this.sortCategory = this.mapsService.sortCategory;
+            this.sortCategory = this.mapsService.sortCategory;
+        }
+
+        // this.sortCategory = this.mapsService.sortCategory;
+
+        this.mapsService.sortCategoryChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((category) => {
+                this.sortCategory = category;
+            });
     }
 
-    // this.sortCategory = this.mapsService.sortCategory;
+    selectCard() {
+        this.clickedMarker.emit(this.index);
+    }
 
-    this.mapsService.sortCategoryChange
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((category) => {
-        this.sortCategory = category
-      });
-  }
+    showMoreOptions(event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
 
-  selectCard() {
-    this.clickedMarker.emit(this.index);
-  }
+    callBodyAction(action) {
+        this.bodyActions.emit(action);
+    }
 
-  showMoreOptions(event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+    // RAITING
+    onLike(event) {
+        event.preventDefault();
+        event.stopPropagation();
 
-  callBodyAction(action) {
-    this.bodyActions.emit(action);
-  }
+        this.bodyActions.emit({
+            data: this.item,
+            type: 'raiting',
+            subType: 'like',
+        });
+    }
 
-  // RAITING
-  onLike(event) {
-    event.preventDefault();
-    event.stopPropagation();
+    onDislike(event) {
+        event.preventDefault();
+        event.stopPropagation();
 
-    this.bodyActions.emit({
-      data: this.item,
-      type: 'raiting',
-      subType: 'like',
-    });
-  }
+        this.bodyActions.emit({
+            data: this.item,
+            type: 'raiting',
+            subType: 'dislike',
+        });
+    }
 
-  onDislike(event) {
-    event.preventDefault();
-    event.stopPropagation();
+    setSortCategory(category) {
+        this.sortCategory = category;
+        console.log('setSortCategory', this.sortCategory);
+    }
 
-    this.bodyActions.emit({
-      data: this.item,
-      type: 'raiting',
-      subType: 'dislike',
-    });
-  }
-
-  setSortCategory(category) {
-    this.sortCategory = category;
-    console.log('setSortCategory', this.sortCategory);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

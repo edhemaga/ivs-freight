@@ -3,12 +3,12 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { CompanyOfficeResponse } from 'appcoretruckassist';
 
 export interface OfficeState
-  extends EntityState<CompanyOfficeResponse, number> {}
+    extends EntityState<CompanyOfficeResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'companyOfficeStore' })
 export class OfficeStore extends EntityStore<OfficeState> {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 }

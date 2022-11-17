@@ -1,128 +1,132 @@
 <!-- REVIEW -->
 
 <div class="d-flex review-container" *ngIf="!isFeedback">
-  <!-- ANNOTATION BUTTON -->
-
-  <div
-    ngbTooltip
-    mainTooltip="Add Annotation"
-    tooltipBackground="#6C6C6C"
-    position="top"
-    *ngIf="displayAnnotationButton"
-  >
-    <svg-icon
-      class="pen-icon"
-      [ngClass]="{
-        'display-icon': displayAnnotationButton
-      }"
-      src="assets/svg/applicant/pen-box.svg"
-      [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
-      (click)="handleAnnotationClick('open')"
-    ></svg-icon>
-  </div>
-
-  <!-- ANNOTATION INPUT -->
-
-  <div class="d-flex">
-    <div
-      class="annotation-group"
-      [ngClass]="{
-        'display-annotation': displayAnnotationTextArea
-      }"
-    >
-      <app-ta-input
-        [formControl]="getSuperControl"
-        [inputConfig]="{
-          name: 'Annotation',
-          type: 'text',
-          label: 'Write Annotation',
-          textTransform: 'capitalize',
-          blackInput: true,
-          hideRequiredCheck: true,
-          placeholder:
-            (cardsLength > 1 && cardsType === 'addresses' && cardIndex !== 2) ||
-            (cardsLength > 1 &&
-              cardsType === 'workExperience' &&
-              cardIndex !== 0) ||
-            (cardsLength > 1 &&
-              cardsType === 'cdlInformation' &&
-              cardIndex !== 0) ||
-            (cardsLength > 1 &&
-              cardsType === 'accidentRecord' &&
-              cardIndex !== 0) ||
-            (cardsLength > 1 &&
-              cardsType === 'trafficViolations' &&
-              cardIndex !== 0) ||
-            (cardsLength > 1 &&
-              cardsType === 'educationContacts' &&
-              cardIndex !== 0) ||
-            (cardsLength > 1 &&
-              cardsType === 'classOfEquipment' &&
-              cardIndex !== 0)
-              ? 'Write Annotation'
-              : '',
-          placeholderInsteadOfLabel:
-            (cardsLength > 1 && cardsType === 'addresses' && cardIndex !== 2) ||
-            (cardsLength > 1 &&
-              cardsType === 'workExperience' &&
-              cardIndex !== 0) ||
-            (cardsLength > 1 &&
-              cardsType === 'cdlInformation' &&
-              cardIndex !== 0) ||
-            (cardsLength > 1 &&
-              cardsType === 'accidentRecord' &&
-              cardIndex !== 0) ||
-            (cardsLength > 1 &&
-              cardsType === 'trafficViolations' &&
-              cardIndex !== 0) ||
-            (cardsLength > 1 &&
-              cardsType === 'educationContacts' &&
-              cardIndex !== 0) ||
-            (cardsLength > 1 &&
-              cardsType === 'classOfEquipment' &&
-              cardIndex !== 0),
-          autoFocus: true
-        }"
-      ></app-ta-input>
-    </div>
+    <!-- ANNOTATION BUTTON -->
 
     <div
-      ngbTooltip
-      mainTooltip="Close Annotation"
-      tooltipBackground="#6C6C6C"
-      position="top"
-      class="close-icon-container"
-      *ngIf="displayAnnotationTextArea"
+        ngbTooltip
+        mainTooltip="Add Annotation"
+        tooltipBackground="#6C6C6C"
+        position="top"
+        *ngIf="displayAnnotationButton"
     >
-      <svg-icon
-        class="close-icon"
-        [ngClass]="{
-          'display-icon': displayAnnotationTextArea
-        }"
-        src="assets/svg/applicant/close-small-square.svg"
-        [svgStyle]="{
-          'width.px': 26,
-          'height.px': 26
-        }"
-        (click)="handleAnnotationClick('close')"
-      ></svg-icon>
+        <svg-icon
+            class="pen-icon"
+            [ngClass]="{
+                'display-icon': displayAnnotationButton
+            }"
+            src="assets/svg/applicant/pen-box.svg"
+            [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
+            (click)="handleAnnotationClick('open')"
+        ></svg-icon>
     </div>
-  </div>
+
+    <!-- ANNOTATION INPUT -->
+
+    <div class="d-flex">
+        <div
+            class="annotation-group"
+            [ngClass]="{
+                'display-annotation': displayAnnotationTextArea
+            }"
+        >
+            <app-ta-input
+                [formControl]="getSuperControl"
+                [inputConfig]="{
+                    name: 'Annotation',
+                    type: 'text',
+                    label: 'Write Annotation',
+                    textTransform: 'capitalize',
+                    blackInput: true,
+                    hideRequiredCheck: true,
+                    placeholder:
+                        (cardsLength > 1 &&
+                            cardsType === 'addresses' &&
+                            cardIndex !== 2) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'workExperience' &&
+                            cardIndex !== 0) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'cdlInformation' &&
+                            cardIndex !== 0) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'accidentRecord' &&
+                            cardIndex !== 0) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'trafficViolations' &&
+                            cardIndex !== 0) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'educationContacts' &&
+                            cardIndex !== 0) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'classOfEquipment' &&
+                            cardIndex !== 0)
+                            ? 'Write Annotation'
+                            : '',
+                    placeholderInsteadOfLabel:
+                        (cardsLength > 1 &&
+                            cardsType === 'addresses' &&
+                            cardIndex !== 2) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'workExperience' &&
+                            cardIndex !== 0) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'cdlInformation' &&
+                            cardIndex !== 0) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'accidentRecord' &&
+                            cardIndex !== 0) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'trafficViolations' &&
+                            cardIndex !== 0) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'educationContacts' &&
+                            cardIndex !== 0) ||
+                        (cardsLength > 1 &&
+                            cardsType === 'classOfEquipment' &&
+                            cardIndex !== 0),
+                    autoFocus: true
+                }"
+            ></app-ta-input>
+        </div>
+
+        <div
+            ngbTooltip
+            mainTooltip="Close Annotation"
+            tooltipBackground="#6C6C6C"
+            position="top"
+            class="close-icon-container"
+            *ngIf="displayAnnotationTextArea"
+        >
+            <svg-icon
+                class="close-icon"
+                [ngClass]="{
+                    'display-icon': displayAnnotationTextArea
+                }"
+                src="assets/svg/applicant/close-small-square.svg"
+                [svgStyle]="{
+                    'width.px': 26,
+                    'height.px': 26
+                }"
+                (click)="handleAnnotationClick('close')"
+            ></svg-icon>
+        </div>
+    </div>
 </div>
 
 <!-- FEEDBACK -->
 
 <div class="d-flex feedback-container" *ngIf="isFeedback && feedbackText">
-  <div class="d-flex feedback-text-container">
-    <p
-      class="m-0 ta-font-regular d-inline-block text-truncate"
-      style="max-width: 385px"
-      ngbTooltip
-      [mainTooltip]="feedbackText"
-      tooltipBackground="#6C6C6C"
-      position="top-left"
-    >
-      {{ feedbackText }}
-    </p>
-  </div>
+    <div class="d-flex feedback-text-container">
+        <p
+            class="m-0 ta-font-regular d-inline-block text-truncate"
+            style="max-width: 385px"
+            ngbTooltip
+            [mainTooltip]="feedbackText"
+            tooltipBackground="#6C6C6C"
+            position="top-left"
+        >
+            {{ feedbackText }}
+        </p>
+    </div>
 </div>

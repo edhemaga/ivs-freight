@@ -59,18 +59,18 @@ $bc1: #6d82c7;
 $box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
 
 @mixin triangletop {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 6px solid $white;
-  //-webkit-filter: drop-shadow(0px -3px 2px rgba(0, 0, 0, 0.1));
-  -webkit-filter: drop-shadow(0px -2px 1px rgba(0, 0, 0, 0.1));
-  //filter: drop-shadow(0px -3px 2px rgba(0, 0, 0, 0.1));
-  filter: drop-shadow(0px -2px 1px rgba(0, 0, 0, 0.1));
-  position: absolute;
-  top: -6px;
-  left: calc(50% - 10px);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 6px solid $white;
+    //-webkit-filter: drop-shadow(0px -3px 2px rgba(0, 0, 0, 0.1));
+    -webkit-filter: drop-shadow(0px -2px 1px rgba(0, 0, 0, 0.1));
+    //filter: drop-shadow(0px -3px 2px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0px -2px 1px rgba(0, 0, 0, 0.1));
+    position: absolute;
+    top: -6px;
+    left: calc(50% - 10px);
 }
 
 // chips pallete
@@ -126,38 +126,38 @@ $ta-gray-02: #e5e5e5;
 
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {
-  border-#{$direction}: $width $style $color;
+    border-#{$direction}: $width $style $color;
 }
 
 @mixin downAnimation {
-  animation: dropdown 0.3s;
+    animation: dropdown 0.3s;
 }
 
 @keyframes dropdown {
-  0% {
-    margin-top: 20px;
-    visibility: hidden;
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-    margin-top: 10px;
-    visibility: visible !important;
-  }
+    0% {
+        margin-top: 20px;
+        visibility: hidden;
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        margin-top: 10px;
+        visibility: visible !important;
+    }
 }
 
 @mixin AnimationUp {
-  animation: dropup ease-out 0.15s;
+    animation: dropup ease-out 0.15s;
 }
 
 @keyframes dropup {
-  0% {
-    margin-top: -19px;
-    visibility: hidden;
-    opacity: 0;
-  }
-  100% {
-    margin-top: inherit;
-    visibility: visible !important;
-  }
+    0% {
+        margin-top: -19px;
+        visibility: hidden;
+        opacity: 0;
+    }
+    100% {
+        margin-top: inherit;
+        visibility: visible !important;
+    }
 }

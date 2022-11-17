@@ -1,264 +1,264 @@
 .input-holder {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-
-  input {
-    height: 26px;
-    border: none;
-    width: 100%;
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  svg-icon {
-    position: absolute;
-    right: 4px;
-    width: 18px;
-    height: 18px;
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
+    width: 100%;
 
-  .default-icon {
-    visibility: visible;
-    opacity: 1;
-    transition: all .2s ease-in-out;
-  }
+    input {
+        height: 26px;
+        border: none;
+        width: 100%;
 
-  .valid-icon {
-    visibility: hidden;
-    opacity: 0;
-    transition: all .2s ease-in-out;
-  }
+        &:focus {
+            outline: none;
+        }
+    }
 
-  &.not-typing {
+    svg-icon {
+        position: absolute;
+        right: 4px;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
     .default-icon {
-      visibility: visible;
-      opacity: 1;
-      transition: all .2s ease-in-out;
-
-      svg {
-        transition: all .2s ease-in-out;
-      }
-
-      .a {
-        fill: #FF8080;
-      }
-    }
-
-    &.touched-invalid {
-      .clear-icon {
-        visibility: hidden;
-      }
-    }
-  }
-
-  &.typing {
-    .default-icon {
-      visibility: hidden;
-      opacity: 0;
-      transition: all .2s ease-in-out;
-    }
-
-    &.touched-invalid {
-      .default-icon {
-        visibility: hidden;
-        opacity: 0;
-        transition: all .2s ease-in-out;
-
-        svg {
-          transition: all .2s ease-in-out;
-
-          .a {
-            fill: #FF8080;
-          }
-        }
-      }
-
-      &:hover {
-        .default-icon {
-          visibility: hidden;
-          opacity: 0;
-          transition: all .2s ease-in-out;
-        }
-
-        .clear-icon {
-          visibility: visible;
-          opacity: 1;
-          transition: all .2s ease-in-out;
-
-          .cls-1 {
-            fill: #ffa7a7;
-          }
-
-          &:hover {
-            .cls-1 {
-              fill: #FFE4E4;
-            }
-          }
-        }
-      }
-    }
-
-    &.touched-valid {
-      .default-icon,
-      .valid-icon {
         visibility: visible;
         opacity: 1;
-        transition: all .2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+    }
 
-        svg {
-          transition: all .2s ease-in-out;
-
-          .a {
-            fill: #91a4c7;
-          }
-        }
-      }
-
-      .x-invalid-icon {
+    .valid-icon {
         visibility: hidden;
         opacity: 0;
-        transition: all .2s ease-in-out;
-      }
+        transition: all 0.2s ease-in-out;
+    }
 
-      .clear-icon {
-        visibility: hidden;
-        opacity: 0;
-        transition: all .2s ease-in-out;
-      }
+    &.not-typing {
+        .default-icon {
+            visibility: visible;
+            opacity: 1;
+            transition: all 0.2s ease-in-out;
 
-      &:hover {
-        .default-icon,
-        .valid-icon {
-          visibility: hidden;
-          opacity: 0;
-          transition: all .2s ease-in-out;
+            svg {
+                transition: all 0.2s ease-in-out;
+            }
+
+            .a {
+                fill: #ff8080;
+            }
         }
 
-        form .form-control.required.ng-valid.ng-dirty.ng-touched {
-          background-image: none !important;
+        &.touched-invalid {
+            .clear-icon {
+                visibility: hidden;
+            }
+        }
+    }
+
+    &.typing {
+        .default-icon {
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.2s ease-in-out;
+        }
+
+        &.touched-invalid {
+            .default-icon {
+                visibility: hidden;
+                opacity: 0;
+                transition: all 0.2s ease-in-out;
+
+                svg {
+                    transition: all 0.2s ease-in-out;
+
+                    .a {
+                        fill: #ff8080;
+                    }
+                }
+            }
+
+            &:hover {
+                .default-icon {
+                    visibility: hidden;
+                    opacity: 0;
+                    transition: all 0.2s ease-in-out;
+                }
+
+                .clear-icon {
+                    visibility: visible;
+                    opacity: 1;
+                    transition: all 0.2s ease-in-out;
+
+                    .cls-1 {
+                        fill: #ffa7a7;
+                    }
+
+                    &:hover {
+                        .cls-1 {
+                            fill: #ffe4e4;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.touched-valid {
+            .default-icon,
+            .valid-icon {
+                visibility: visible;
+                opacity: 1;
+                transition: all 0.2s ease-in-out;
+
+                svg {
+                    transition: all 0.2s ease-in-out;
+
+                    .a {
+                        fill: #91a4c7;
+                    }
+                }
+            }
+
+            .x-invalid-icon {
+                visibility: hidden;
+                opacity: 0;
+                transition: all 0.2s ease-in-out;
+            }
+
+            .clear-icon {
+                visibility: hidden;
+                opacity: 0;
+                transition: all 0.2s ease-in-out;
+            }
+
+            &:hover {
+                .default-icon,
+                .valid-icon {
+                    visibility: hidden;
+                    opacity: 0;
+                    transition: all 0.2s ease-in-out;
+                }
+
+                form .form-control.required.ng-valid.ng-dirty.ng-touched {
+                    background-image: none !important;
+                }
+
+                .clear-icon {
+                    visibility: visible;
+                    opacity: 1;
+                    transition: all 0.2s ease-in-out;
+
+                    svg {
+                        transition: all 0.2s ease-in-out;
+                    }
+
+                    .cls-1 {
+                        fill: #dadada;
+                    }
+
+                    &:hover {
+                        svg {
+                            transform: scale(1.2);
+                            transition: all 0.2s ease-in-out;
+                        }
+
+                        .cls-1 {
+                            fill: #b7b7b7;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.not-typing {
+        .default-icon {
+            visibility: visible;
+            opacity: 1;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .x-invalid-icon {
+            visibility: visible;
+            opacity: 1;
+            transition: all 0.2s ease-in-out;
+
+            svg {
+                transition: all 0.2s ease-in-out;
+
+                .a {
+                    fill: #ff8080 !important;
+                }
+            }
         }
 
         .clear-icon {
-          visibility: visible;
-          opacity: 1;
-          transition: all .2s ease-in-out;
-
-          svg {
-            transition: all .2s ease-in-out;
-          }
-
-          .cls-1 {
-            fill: #dadada;
-          }
-
-          &:hover {
-            svg {
-              transform: scale(1.2);
-              transition: all .2s ease-in-out;
-            }
-
-            .cls-1 {
-              fill: #b7b7b7;
-            }
-          }
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.2s ease-in-out;
         }
-      }
-    }
-  }
 
-  &.not-typing {
-    .default-icon {
-      visibility: visible;
-      opacity: 1;
-      transition: all .2s ease-in-out;
-    }
-
-    .x-invalid-icon {
-      visibility: visible;
-      opacity: 1;
-      transition: all .2s ease-in-out;
-
-      svg {
-        transition: all .2s ease-in-out;
-
-        .a {
-          fill: #FF8080 !important;
+        .invalid-icon {
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.2s ease-in-out;
         }
-      }
     }
-
-    .clear-icon {
-      visibility: hidden;
-      opacity: 0;
-      transition: all .2s ease-in-out;
-    }
-
-    .invalid-icon {
-      visibility: hidden;
-      opacity: 0;
-      transition: all .2s ease-in-out;
-    }
-  }
 }
 
 .form-label-group.input-icon.field-focused.touched-invalid {
-  background: #FF6A6A;
+    background: #ff6a6a;
 
-  .default-icon {
-    visibility: visible;
-    opacity: 1;
-    transition: all .2s ease-in-out;
-
-    svg {
-      transition: all .2s ease-in-out;
-
-      .a {
-        fill: #fff;
-      }
-    }
-  }
-
-  .clear-icon {
-    visibility: hidden;
-    opacity: 0;
-    transition: all .2s ease-in-out;
-  }
-
-  &:hover {
     .default-icon {
-      visibility: hidden;
-      opacity: 0;
-      transition: all .2s ease-in-out;
+        visibility: visible;
+        opacity: 1;
+        transition: all 0.2s ease-in-out;
+
+        svg {
+            transition: all 0.2s ease-in-out;
+
+            .a {
+                fill: #fff;
+            }
+        }
     }
 
     .clear-icon {
-      visibility: visible;
-      opacity: 1;
-      transition: all .2s ease-in-out;
-
-      &:hover {
-        .cls-1 {
-          fill: #FFE4E4;
-        }
-      }
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
     }
-  }
 
-  input {
-    color: #fff;
-  }
+    &:hover {
+        .default-icon {
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.2s ease-in-out;
+        }
 
-  ::selection {
-    background: #e7e7e7;
-  }
+        .clear-icon {
+            visibility: visible;
+            opacity: 1;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                .cls-1 {
+                    fill: #ffe4e4;
+                }
+            }
+        }
+    }
+
+    input {
+        color: #fff;
+    }
+
+    ::selection {
+        background: #e7e7e7;
+    }
 }
 
 /* input[type="date"]::-webkit-calendar-picker-indicator {

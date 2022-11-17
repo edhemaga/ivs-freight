@@ -6,6 +6,5 @@ export class CalendarStats {
 }
 
 export interface ICalendar {
-    statistic: CalendarStats[]
+    statistic: CalendarStats[];
 }
-  

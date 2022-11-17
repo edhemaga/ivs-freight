@@ -1,13 +1,13 @@
-.message{
+.message {
     text-align: center;
     padding: 10px 0;
     background-color: #cccccc;
 }
-.message ~ svg{
+.message ~ svg {
     display: none;
 }
 
-.svg-wrap{
+.svg-wrap {
     display: inline-block;
     width: 11%;
     padding: 20px;
@@ -16,18 +16,18 @@
     vertical-align: middle;
     text-align: center;
 
-    svg{
+    svg {
         margin-right: 10px;
         margin-bottom: 10px;
         width: 50px;
         height: 50px;
-        
-        path{
+
+        path {
             fill: #000;
         }
     }
 
-    span{
+    span {
         font-size: 10px;
         font-weight: 700;
         padding: 0 10px;

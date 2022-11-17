@@ -1,240 +1,255 @@
 <div class="map-zoom-controls" *ngIf="mapType != 'routing'">
-  <div class="map-zoom-container">
-    <div class="map-zoom-button" (click)="zoomMap('plus')">
-      <svg-icon
-        src="assets/svg/common/ic_plus.svg"
-        [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
-      ></svg-icon>
+    <div class="map-zoom-container">
+        <div class="map-zoom-button" (click)="zoomMap('plus')">
+            <svg-icon
+                src="assets/svg/common/ic_plus.svg"
+                [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
+            ></svg-icon>
+        </div>
+        <div class="map-zoom-button" (click)="zoomMap('minus')">
+            <svg-icon
+                src="assets/svg/common/ic_zoom_minus.svg"
+                [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
+            ></svg-icon>
+        </div>
     </div>
-    <div class="map-zoom-button" (click)="zoomMap('minus')">
-      <svg-icon
-        src="assets/svg/common/ic_zoom_minus.svg"
-        [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
-      ></svg-icon>
-    </div>
-  </div>
 </div>
 
 <!-- Test performance when getting data on button -->
 <!-- <div class="get-clusters-button" (click)="getClusters()">Get Repair Shops</div> -->
 
 <div class="map-container" [ngClass]="{ 'routing-map': mapType == 'routing' }">
-  <agm-map
-    [latitude]="mapLatitude"
-    [longitude]="mapLongitude"
-    [restriction]="mapRestrictions"
-    [streetViewControl]="false"
-    [styles]="styles"
-    [zoom]="mapZoom"
-    [usePanning]="true"
-    [keyboardShortcuts]="false"
-    [zoomControl]="false"
-    [clickableIcons]="false"
-    (mapClick)="mapClick($event)"
-    (zoomChange)="zoomChange($event)"
-    (mapReady)="getMapInstance($event)"
-  >
-    <!-- single markers -->
-    <div *ngFor="let latlong of viewData; let i = index">
-      <agm-marker
-        *ngIf="
-          !clusterMarkers?.length ||
-          (clusterMarkers?.length && latlong.showMarker)
-        "
-        (markerClick)="clickedMarker(latlong.id, $event)"
-        [label]="
-          mapType == 'shipper'
-            ? latlong.businessName
-              ? latlong.businessName
-              : latlong.name
-            : mapType == 'accident'
-            ? latlong.report
-            : mapType == 'repairShop'
-            ? latlong.name
-            : mapType == 'fuelStop'
-            ? latlong.companyName
-            : ''
-        "
-        [latitude]="latlong.latitude"
-        [longitude]="latlong.longitude"
-        [agmFitBounds]="true"
-        [animation]="'DROP'"
-        [visible]="!showMarkerWindow[latlong.id] && !latlong.actionAnimation"
-        [iconUrl]="{
-          url:
-            latlong?.isSelected && latlong?.status == 2
-              ? 'assets/svg/common/ic_marker_closed_big.svg'
-              : latlong?.status == 2
-              ? 'assets/svg/common/ic_marker_closed.svg'
-              : latlong?.isSelected
-              ? 'assets/svg/common/ic_marker_selected.svg'
-              : mapType == 'fuelStop'
-              ? 'assets/svg/common/ic_marker_orange.svg'
-              : 'assets/svg/common/ic_marker.svg'
-        }"
-      >
-        <agm-snazzy-info-window
-          [closeOnMapClick]="false"
-          [closeWhenOthersOpen]="false"
-          [isOpen]="markerAnimations[latlong.id]"
-          [latitude]="latlong.latitude"
-          [longitude]="latlong.longitude"
-          [maxHeight]="32"
-          [maxWidth]="26"
-          [openOnMarkerClick]="false"
-          [pointer]="false"
-          [showCloseButton]="false"
-          [panOnOpen]="false"
-          placement="bottom"
-          *ngIf="!locationFilterOn || latlong.isShown != false"
-        >
-          <ng-template>
-            <div
-              class="marker-container"
-              (click)="clickedMarker(latlong.id)"
-              (mousewheel)="markerZoom($event, latlong)"
-            >
-              <svg-icon
-                class="marker-icon"
-                src="assets/svg/common/ic_marker.svg"
-                [ngClass]="{
-                  'selected-marker': latlong.isSelected,
-                  'fuel-marker': mapType == 'fuelStop'
-                }"
-                *ngIf="latlong.status != 2"
-              ></svg-icon>
-              <svg-icon
-                class="marker-icon permanently-closed-icon"
-                src="assets/svg/common/ic_marker_closed.svg"
-                [ngClass]="{ 'selected-marker': latlong.isSelected }"
-                *ngIf="latlong.status == 2"
-              ></svg-icon>
-              <div
-                [ngClass]="{
-                  'hide-marker': !latlong.isSelected && markerSelected,
-                  'hide-marker-tooltip': latlong.isSelected
-                }"
-              >
-                <div
-                  class="marker-tooltip"
-                  [ngClass]="{ 'hide-marker-tooltip': latlong.isSelected }"
-                >
-                  <div>
-                    {{
-                      mapType == "shipper"
+    <agm-map
+        [latitude]="mapLatitude"
+        [longitude]="mapLongitude"
+        [restriction]="mapRestrictions"
+        [streetViewControl]="false"
+        [styles]="styles"
+        [zoom]="mapZoom"
+        [usePanning]="true"
+        [keyboardShortcuts]="false"
+        [zoomControl]="false"
+        [clickableIcons]="false"
+        (mapClick)="mapClick($event)"
+        (zoomChange)="zoomChange($event)"
+        (mapReady)="getMapInstance($event)"
+    >
+        <!-- single markers -->
+        <div *ngFor="let latlong of viewData; let i = index">
+            <agm-marker
+                *ngIf="
+                    !clusterMarkers?.length ||
+                    (clusterMarkers?.length && latlong.showMarker)
+                "
+                (markerClick)="clickedMarker(latlong.id, $event)"
+                [label]="
+                    mapType == 'shipper'
                         ? latlong.businessName
-                          ? latlong.businessName
-                          : latlong.name
-                        : mapType == "accident" || mapType == "inspection"
+                            ? latlong.businessName
+                            : latlong.name
+                        : mapType == 'accident'
                         ? latlong.report
-                        : mapType == "repairShop"
+                        : mapType == 'repairShop'
                         ? latlong.name
-                        : mapType == "fuelStop"
+                        : mapType == 'fuelStop'
                         ? latlong.companyName
-                        : ""
-                    }}
-                  </div>
-                  <div
-                    class="marker-bold-text lowercase"
-                    [ngClass]="{
-                      'red-text': latlong.fatality > 0,
-                      'orange-text':
-                        (latlong?.injuries > 0 && latlong.fatality == 0) ||
-                        mapType == 'fuelStop',
-                      'blue-text': mapType == 'inspection'
-                    }"
-                    *ngIf="
-                      mapType == 'accident' ||
-                      mapType == 'fuelStop' ||
-                      mapType == 'inspection'
-                    "
-                  >
-                    <div *ngIf="mapType == 'fuelStop'">$3.15</div>
-                    <div *ngIf="mapType == 'inspection'">7 violations</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="marker-dropdown"
-              [ngClass]="{
-                'show-marker-dropdown marker-dropdown-animation':
-                  latlong?.isSelected
-              }"
-            >
-              <app-map-marker-dropdown
-                [title]="
-                  mapType == 'shipper'
-                    ? latlong.businessName
-                      ? latlong.businessName
-                      : latlong.name
-                    : mapType == 'accident' || mapType == 'inspection'
-                    ? latlong.report
-                    : mapType == 'repairShop'
-                    ? latlong.name
-                    : mapType == 'fuelStop'
-                    ? latlong.companyName
-                    : ''
+                        : ''
                 "
-                [item]="latlong"
-                [type]="mapType"
-                [rating]="
-                  mapType == 'shipper'
-                    ? latlong?.raiting
-                    : mapType == 'repairShop'
-                    ? latlong?.shopRaiting
-                    : {}
+                [latitude]="latlong.latitude"
+                [longitude]="latlong.longitude"
+                [agmFitBounds]="true"
+                [animation]="'DROP'"
+                [visible]="
+                    !showMarkerWindow[latlong.id] && !latlong.actionAnimation
                 "
-                [sortCategory]="activeSortType"
-                [locationFilterOn]="locationFilterOn"
-                [dropdownActions]="dropdownActions"
-                (bodyActions)="dropDownActionCall($event)"
-              ></app-map-marker-dropdown>
-            </div>
-          </ng-template>
-        </agm-snazzy-info-window>
-      </agm-marker>
-    </div>
-
-    <!-- cluster markers -->
-    <div *ngFor="let cluster of clusterMarkers; let i = index">
-      <agm-marker
-        [label]="cluster.name != null ? cluster.name : ''"
-        [latitude]="cluster.latitude"
-        [longitude]="cluster.longitude"
-        [agmFitBounds]="true"
-        [visible]="false"
-        (markerClick)="clickedCluster(cluster)"
-      >
-        <agm-snazzy-info-window
-          [closeOnMapClick]="false"
-          [closeWhenOthersOpen]="false"
-          [isOpen]="cluster.showMarker ? true : false"
-          [latitude]="cluster.latitude"
-          [longitude]="cluster.longitude"
-          [maxHeight]="32"
-          [maxWidth]="26"
-          [openOnMarkerClick]="false"
-          [pointer]="false"
-          [showCloseButton]="false"
-          [panOnOpen]="false"
-          placement="bottom"
-        >
-          <ng-template>
-            <div
-              class="marker-container marker-icon cluster-marker hide-marker-at-start"
-              (click)="clickedCluster(cluster)"
-              (mousewheel)="markerZoom($event, cluster)"
-              (mouseenter)="clusterHover(cluster, true)"
-              (mouseleave)="clusterHover(cluster, false)"
-              [ngClass]="{
-                'marker-fade-in-animation': cluster.fadeIn,
-                'hide-marker-at-start': cluster.fadeIn,
-                'marker-fade-out-animation': cluster.fadeOut
-              }"
+                [iconUrl]="{
+                    url:
+                        latlong?.isSelected && latlong?.status == 2
+                            ? 'assets/svg/common/ic_marker_closed_big.svg'
+                            : latlong?.status == 2
+                            ? 'assets/svg/common/ic_marker_closed.svg'
+                            : latlong?.isSelected
+                            ? 'assets/svg/common/ic_marker_selected.svg'
+                            : mapType == 'fuelStop'
+                            ? 'assets/svg/common/ic_marker_orange.svg'
+                            : 'assets/svg/common/ic_marker.svg'
+                }"
             >
-              <!-- <svg-icon
+                <agm-snazzy-info-window
+                    [closeOnMapClick]="false"
+                    [closeWhenOthersOpen]="false"
+                    [isOpen]="markerAnimations[latlong.id]"
+                    [latitude]="latlong.latitude"
+                    [longitude]="latlong.longitude"
+                    [maxHeight]="32"
+                    [maxWidth]="26"
+                    [openOnMarkerClick]="false"
+                    [pointer]="false"
+                    [showCloseButton]="false"
+                    [panOnOpen]="false"
+                    placement="bottom"
+                    *ngIf="!locationFilterOn || latlong.isShown != false"
+                >
+                    <ng-template>
+                        <div
+                            class="marker-container"
+                            (click)="clickedMarker(latlong.id)"
+                            (mousewheel)="markerZoom($event, latlong)"
+                        >
+                            <svg-icon
+                                class="marker-icon"
+                                src="assets/svg/common/ic_marker.svg"
+                                [ngClass]="{
+                                    'selected-marker': latlong.isSelected,
+                                    'fuel-marker': mapType == 'fuelStop'
+                                }"
+                                *ngIf="latlong.status != 2"
+                            ></svg-icon>
+                            <svg-icon
+                                class="marker-icon permanently-closed-icon"
+                                src="assets/svg/common/ic_marker_closed.svg"
+                                [ngClass]="{
+                                    'selected-marker': latlong.isSelected
+                                }"
+                                *ngIf="latlong.status == 2"
+                            ></svg-icon>
+                            <div
+                                [ngClass]="{
+                                    'hide-marker':
+                                        !latlong.isSelected && markerSelected,
+                                    'hide-marker-tooltip': latlong.isSelected
+                                }"
+                            >
+                                <div
+                                    class="marker-tooltip"
+                                    [ngClass]="{
+                                        'hide-marker-tooltip':
+                                            latlong.isSelected
+                                    }"
+                                >
+                                    <div>
+                                        {{
+                                            mapType == 'shipper'
+                                                ? latlong.businessName
+                                                    ? latlong.businessName
+                                                    : latlong.name
+                                                : mapType == 'accident' ||
+                                                  mapType == 'inspection'
+                                                ? latlong.report
+                                                : mapType == 'repairShop'
+                                                ? latlong.name
+                                                : mapType == 'fuelStop'
+                                                ? latlong.companyName
+                                                : ''
+                                        }}
+                                    </div>
+                                    <div
+                                        class="marker-bold-text lowercase"
+                                        [ngClass]="{
+                                            'red-text': latlong.fatality > 0,
+                                            'orange-text':
+                                                (latlong?.injuries > 0 &&
+                                                    latlong.fatality == 0) ||
+                                                mapType == 'fuelStop',
+                                            'blue-text': mapType == 'inspection'
+                                        }"
+                                        *ngIf="
+                                            mapType == 'accident' ||
+                                            mapType == 'fuelStop' ||
+                                            mapType == 'inspection'
+                                        "
+                                    >
+                                        <div *ngIf="mapType == 'fuelStop'">
+                                            $3.15
+                                        </div>
+                                        <div *ngIf="mapType == 'inspection'">
+                                            7 violations
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="marker-dropdown"
+                            [ngClass]="{
+                                'show-marker-dropdown marker-dropdown-animation':
+                                    latlong?.isSelected
+                            }"
+                        >
+                            <app-map-marker-dropdown
+                                [title]="
+                                    mapType == 'shipper'
+                                        ? latlong.businessName
+                                            ? latlong.businessName
+                                            : latlong.name
+                                        : mapType == 'accident' ||
+                                          mapType == 'inspection'
+                                        ? latlong.report
+                                        : mapType == 'repairShop'
+                                        ? latlong.name
+                                        : mapType == 'fuelStop'
+                                        ? latlong.companyName
+                                        : ''
+                                "
+                                [item]="latlong"
+                                [type]="mapType"
+                                [rating]="
+                                    mapType == 'shipper'
+                                        ? latlong?.raiting
+                                        : mapType == 'repairShop'
+                                        ? latlong?.shopRaiting
+                                        : {}
+                                "
+                                [sortCategory]="activeSortType"
+                                [locationFilterOn]="locationFilterOn"
+                                [dropdownActions]="dropdownActions"
+                                (bodyActions)="dropDownActionCall($event)"
+                            ></app-map-marker-dropdown>
+                        </div>
+                    </ng-template>
+                </agm-snazzy-info-window>
+            </agm-marker>
+        </div>
+
+        <!-- cluster markers -->
+        <div *ngFor="let cluster of clusterMarkers; let i = index">
+            <agm-marker
+                [label]="cluster.name != null ? cluster.name : ''"
+                [latitude]="cluster.latitude"
+                [longitude]="cluster.longitude"
+                [agmFitBounds]="true"
+                [visible]="false"
+                (markerClick)="clickedCluster(cluster)"
+            >
+                <agm-snazzy-info-window
+                    [closeOnMapClick]="false"
+                    [closeWhenOthersOpen]="false"
+                    [isOpen]="cluster.showMarker ? true : false"
+                    [latitude]="cluster.latitude"
+                    [longitude]="cluster.longitude"
+                    [maxHeight]="32"
+                    [maxWidth]="26"
+                    [openOnMarkerClick]="false"
+                    [pointer]="false"
+                    [showCloseButton]="false"
+                    [panOnOpen]="false"
+                    placement="bottom"
+                >
+                    <ng-template>
+                        <div
+                            class="marker-container marker-icon cluster-marker hide-marker-at-start"
+                            (click)="clickedCluster(cluster)"
+                            (mousewheel)="markerZoom($event, cluster)"
+                            (mouseenter)="clusterHover(cluster, true)"
+                            (mouseleave)="clusterHover(cluster, false)"
+                            [ngClass]="{
+                                'marker-fade-in-animation': cluster.fadeIn,
+                                'hide-marker-at-start': cluster.fadeIn,
+                                'marker-fade-out-animation': cluster.fadeOut
+                            }"
+                        >
+                            <!-- <svg-icon
                 class="marker-icon"
                 src="assets/svg/common/ic_marker.svg"
                 [ngClass]="{
@@ -244,410 +259,463 @@
                 *ngIf="cluster.status != 2"
               ></svg-icon> -->
 
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                width="56"
-                height="56"
-                viewBox="0 0 56 56"
-              >
-                <defs>
-                  <filter
-                    id="Path_33654"
-                    x="0"
-                    y="0"
-                    width="56"
-                    height="56"
-                    filterUnits="userSpaceOnUse"
-                  >
-                    <feOffset input="SourceAlpha" />
-                    <feGaussianBlur stdDeviation="2" result="blur" />
-                    <feFlood flood-opacity="0.149" />
-                    <feComposite operator="in" in2="blur" />
-                    <feComposite in="SourceGraphic" />
-                  </filter>
-                  <filter
-                    id="Ellipse_6013"
-                    x="6"
-                    y="6"
-                    width="44"
-                    height="44"
-                    filterUnits="userSpaceOnUse"
-                  >
-                    <feOffset input="SourceAlpha" />
-                    <feGaussianBlur stdDeviation="2" result="blur-2" />
-                    <feFlood flood-opacity="0.149" />
-                    <feComposite operator="in" in2="blur-2" />
-                    <feComposite in="SourceGraphic" />
-                  </filter>
-                </defs>
-                <g
-                  id="Group_70617"
-                  data-name="Group 70617"
-                  transform="translate(-1239 -563)"
-                  ngbTooltip
-                  [mainTooltip]="
-                    cluster.count +
-                    ' ' +
-                    (mapType == 'shipper'
-                      ? 'SHIPPERS'
-                      : mapType == 'accident'
-                      ? 'ACCIDENTS'
-                      : mapType == 'inspection'
-                      ? 'ROADSIDE INSPECTIONS'
-                      : mapType == 'repairShop'
-                      ? 'REPAIR SHOPS'
-                      : mapType == 'fuelStop'
-                      ? 'FUEL STOPS'
-                      : '')
-                  "
-                  tooltipBackground="#6C6C6C"
-                  position="top"
-                  [ngStyle]="{ outline: 'none' }"
-                >
-                  <g
-                    transform="matrix(1, 0, 0, 1, 1239, 563)"
-                    filter="url(#Path_33654)"
-                  >
-                    <path
-                      id="Path_33654-2"
-                      data-name="Path 33654"
-                      d="M32.785,3.65l-1.32,2.243a.7.7,0,0,0,.236.943A18.018,18.018,0,0,1,37.164,12.3a.7.7,0,0,0,.943.236l2.243-1.32a.7.7,0,0,0,.244-.978,22.176,22.176,0,0,0-6.831-6.831.7.7,0,0,0-.978.244m9.82,13-2.528.658a.7.7,0,0,0-.5.831,17.906,17.906,0,0,1,0,7.72.7.7,0,0,0,.5.831l2.528.658a.7.7,0,0,0,.864-.517,22.251,22.251,0,0,0,0-9.664.7.7,0,0,0-.864-.517M26.7,40.079a.694.694,0,0,0-.831-.5,17.968,17.968,0,0,1-7.729,0,.7.7,0,0,0-.831.5L16.651,42.6a.7.7,0,0,0,.517.864,22.26,22.26,0,0,0,9.666,0,.7.7,0,0,0,.517-.863ZM11.214,3.649a.7.7,0,0,0-.977-.244A21.926,21.926,0,0,0,3.4,10.237a.7.7,0,0,0,.244.977L5.89,12.533a.7.7,0,0,0,.947-.237A17.977,17.977,0,0,1,12.3,6.837a.7.7,0,0,0,.237-.947Zm-7.3,13.659L1.4,16.652a.7.7,0,0,0-.865.516,22.251,22.251,0,0,0,0,9.664.7.7,0,0,0,.864.517l2.528-.658a.7.7,0,0,0,.5-.831A17.752,17.752,0,0,1,4,22a18.228,18.228,0,0,1,.413-3.859.7.7,0,0,0-.5-.833M5.893,31.465,3.65,32.785a.7.7,0,0,0-.244.978,22.176,22.176,0,0,0,6.831,6.831.7.7,0,0,0,.978-.244l1.32-2.243a.7.7,0,0,0-.236-.943A18.018,18.018,0,0,1,6.836,31.7a.7.7,0,0,0-.943-.236m31.271.236A18.018,18.018,0,0,1,31.7,37.164a.7.7,0,0,0-.236.943l1.32,2.243a.7.7,0,0,0,.978.244,22.176,22.176,0,0,0,6.831-6.831.7.7,0,0,0-.244-.978l-2.243-1.32a.7.7,0,0,0-.943.236M22,0a22,22,0,0,0-4.832.531.7.7,0,0,0-.516.865l.656,2.516a.7.7,0,0,0,.833.5A18.228,18.228,0,0,1,22,4a17.91,17.91,0,0,1,3.869.42.694.694,0,0,0,.831-.5l.651-2.527a.7.7,0,0,0-.517-.863A22.068,22.068,0,0,0,22,0"
-                      transform="translate(6 6)"
-                      opacity="0.7"
-                      [ngStyle]="{
-                        fill:
-                          cluster.isSelected || cluster.markerHover
-                            ? '#FFA726'
-                            : '#fff'
-                      }"
-                      fill="#FFA726"
-                    />
-                  </g>
-                  <g
-                    transform="matrix(1, 0, 0, 1, 1239, 563)"
-                    filter="url(#Ellipse_6013)"
-                  >
-                    <circle
-                      id="Ellipse_6013-2"
-                      data-name="Ellipse 6013"
-                      cx="16"
-                      cy="16"
-                      r="16"
-                      transform="translate(12 12)"
-                      fill="#fff"
-                    />
-                  </g>
-                  <circle
-                    id="Ellipse_6012"
-                    data-name="Ellipse 6012"
-                    cx="14"
-                    cy="14"
-                    r="14"
-                    transform="translate(1253 577)"
-                    fill="#ffa726"
-                  />
-                  <text
-                    id="_4"
-                    data-name="4"
-                    transform="translate(1267 596)"
-                    fill="#fff"
-                    font-size="14"
-                    font-family="Montserrat-ExtraBold, Montserrat"
-                    font-weight="800"
-                    dominant-baseline="middle"
-                    text-anchor="middle"
-                    y="-6.5%"
-                  >
-                    <tspan>{{ cluster.count }}</tspan>
-                  </text>
-                </g>
-              </svg>
-            </div>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="56"
+                                height="56"
+                                viewBox="0 0 56 56"
+                            >
+                                <defs>
+                                    <filter
+                                        id="Path_33654"
+                                        x="0"
+                                        y="0"
+                                        width="56"
+                                        height="56"
+                                        filterUnits="userSpaceOnUse"
+                                    >
+                                        <feOffset input="SourceAlpha" />
+                                        <feGaussianBlur
+                                            stdDeviation="2"
+                                            result="blur"
+                                        />
+                                        <feFlood flood-opacity="0.149" />
+                                        <feComposite operator="in" in2="blur" />
+                                        <feComposite in="SourceGraphic" />
+                                    </filter>
+                                    <filter
+                                        id="Ellipse_6013"
+                                        x="6"
+                                        y="6"
+                                        width="44"
+                                        height="44"
+                                        filterUnits="userSpaceOnUse"
+                                    >
+                                        <feOffset input="SourceAlpha" />
+                                        <feGaussianBlur
+                                            stdDeviation="2"
+                                            result="blur-2"
+                                        />
+                                        <feFlood flood-opacity="0.149" />
+                                        <feComposite
+                                            operator="in"
+                                            in2="blur-2"
+                                        />
+                                        <feComposite in="SourceGraphic" />
+                                    </filter>
+                                </defs>
+                                <g
+                                    id="Group_70617"
+                                    data-name="Group 70617"
+                                    transform="translate(-1239 -563)"
+                                    ngbTooltip
+                                    [mainTooltip]="
+                                        cluster.count +
+                                        ' ' +
+                                        (mapType == 'shipper'
+                                            ? 'SHIPPERS'
+                                            : mapType == 'accident'
+                                            ? 'ACCIDENTS'
+                                            : mapType == 'inspection'
+                                            ? 'ROADSIDE INSPECTIONS'
+                                            : mapType == 'repairShop'
+                                            ? 'REPAIR SHOPS'
+                                            : mapType == 'fuelStop'
+                                            ? 'FUEL STOPS'
+                                            : '')
+                                    "
+                                    tooltipBackground="#6C6C6C"
+                                    position="top"
+                                    [ngStyle]="{ outline: 'none' }"
+                                >
+                                    <g
+                                        transform="matrix(1, 0, 0, 1, 1239, 563)"
+                                        filter="url(#Path_33654)"
+                                    >
+                                        <path
+                                            id="Path_33654-2"
+                                            data-name="Path 33654"
+                                            d="M32.785,3.65l-1.32,2.243a.7.7,0,0,0,.236.943A18.018,18.018,0,0,1,37.164,12.3a.7.7,0,0,0,.943.236l2.243-1.32a.7.7,0,0,0,.244-.978,22.176,22.176,0,0,0-6.831-6.831.7.7,0,0,0-.978.244m9.82,13-2.528.658a.7.7,0,0,0-.5.831,17.906,17.906,0,0,1,0,7.72.7.7,0,0,0,.5.831l2.528.658a.7.7,0,0,0,.864-.517,22.251,22.251,0,0,0,0-9.664.7.7,0,0,0-.864-.517M26.7,40.079a.694.694,0,0,0-.831-.5,17.968,17.968,0,0,1-7.729,0,.7.7,0,0,0-.831.5L16.651,42.6a.7.7,0,0,0,.517.864,22.26,22.26,0,0,0,9.666,0,.7.7,0,0,0,.517-.863ZM11.214,3.649a.7.7,0,0,0-.977-.244A21.926,21.926,0,0,0,3.4,10.237a.7.7,0,0,0,.244.977L5.89,12.533a.7.7,0,0,0,.947-.237A17.977,17.977,0,0,1,12.3,6.837a.7.7,0,0,0,.237-.947Zm-7.3,13.659L1.4,16.652a.7.7,0,0,0-.865.516,22.251,22.251,0,0,0,0,9.664.7.7,0,0,0,.864.517l2.528-.658a.7.7,0,0,0,.5-.831A17.752,17.752,0,0,1,4,22a18.228,18.228,0,0,1,.413-3.859.7.7,0,0,0-.5-.833M5.893,31.465,3.65,32.785a.7.7,0,0,0-.244.978,22.176,22.176,0,0,0,6.831,6.831.7.7,0,0,0,.978-.244l1.32-2.243a.7.7,0,0,0-.236-.943A18.018,18.018,0,0,1,6.836,31.7a.7.7,0,0,0-.943-.236m31.271.236A18.018,18.018,0,0,1,31.7,37.164a.7.7,0,0,0-.236.943l1.32,2.243a.7.7,0,0,0,.978.244,22.176,22.176,0,0,0,6.831-6.831.7.7,0,0,0-.244-.978l-2.243-1.32a.7.7,0,0,0-.943.236M22,0a22,22,0,0,0-4.832.531.7.7,0,0,0-.516.865l.656,2.516a.7.7,0,0,0,.833.5A18.228,18.228,0,0,1,22,4a17.91,17.91,0,0,1,3.869.42.694.694,0,0,0,.831-.5l.651-2.527a.7.7,0,0,0-.517-.863A22.068,22.068,0,0,0,22,0"
+                                            transform="translate(6 6)"
+                                            opacity="0.7"
+                                            [ngStyle]="{
+                                                fill:
+                                                    cluster.isSelected ||
+                                                    cluster.markerHover
+                                                        ? '#FFA726'
+                                                        : '#fff'
+                                            }"
+                                            fill="#FFA726"
+                                        />
+                                    </g>
+                                    <g
+                                        transform="matrix(1, 0, 0, 1, 1239, 563)"
+                                        filter="url(#Ellipse_6013)"
+                                    >
+                                        <circle
+                                            id="Ellipse_6013-2"
+                                            data-name="Ellipse 6013"
+                                            cx="16"
+                                            cy="16"
+                                            r="16"
+                                            transform="translate(12 12)"
+                                            fill="#fff"
+                                        />
+                                    </g>
+                                    <circle
+                                        id="Ellipse_6012"
+                                        data-name="Ellipse 6012"
+                                        cx="14"
+                                        cy="14"
+                                        r="14"
+                                        transform="translate(1253 577)"
+                                        fill="#ffa726"
+                                    />
+                                    <text
+                                        id="_4"
+                                        data-name="4"
+                                        transform="translate(1267 596)"
+                                        fill="#fff"
+                                        font-size="14"
+                                        font-family="Montserrat-ExtraBold, Montserrat"
+                                        font-weight="800"
+                                        dominant-baseline="middle"
+                                        text-anchor="middle"
+                                        y="-6.5%"
+                                    >
+                                        <tspan>{{ cluster.count }}</tspan>
+                                    </text>
+                                </g>
+                            </svg>
+                        </div>
 
-            <div
-              class="marker-dropdown cluster-dropdown"
-              [ngClass]="{
-                'show-marker-dropdown marker-dropdown-animation':
-                  cluster?.isSelected,
-                'cluster-dropdown': !cluster.detailedInfo
-              }"
-              [ngStyle]="{ 'margin-top': '10px' }"
-            >
-              <app-map-marker-dropdown
-                *ngIf="!cluster?.detailedInfo"
-                [title]="
-                  mapType == 'shipper'
-                    ? 'Shipper'
-                    : mapType == 'accident'
-                    ? 'Accident'
-                    : mapType == 'inspection'
-                    ? 'Inspection'
-                    : mapType == 'repairShop'
-                    ? 'Repair Shop'
-                    : mapType == 'fuelStop'
-                    ? 'Fuel Stop'
-                    : ''
-                "
-                [type]="'cluster'"
-                [item]="cluster"
-                (showClusterItemInfo)="showClusterItemInfo($event)"
-              ></app-map-marker-dropdown>
-              <app-map-marker-dropdown
-                *ngIf="cluster?.detailedInfo"
-                [title]="
-                  mapType == 'shipper'
-                    ? cluster?.detailedInfo.businessName
-                    : mapType == 'accident' || mapType == 'inspection'
-                    ? cluster?.detailedInfo.report
-                    : mapType == 'repairShop'
-                    ? cluster?.detailedInfo.name
-                    : mapType == 'fuelStop'
-                    ? cluster?.detailedInfo.companyName
-                    : ''
-                "
-                [item]="cluster.detailedInfo"
-                [type]="mapType"
-                [rating]="
-                  mapType == 'shipper'
-                    ? cluster?.detailedInfo.raiting
-                    : mapType == 'repairShop'
-                    ? cluster?.detailedInfo.shopRaiting
-                    : {}
-                "
-                [sortCategory]="activeSortType"
-                [locationFilterOn]="locationFilterOn"
-                [dropdownActions]="dropdownActions"
-                (bodyActions)="dropDownActionCall($event)"
-              ></app-map-marker-dropdown>
-            </div>
-          </ng-template>
-        </agm-snazzy-info-window>
-      </agm-marker>
-    </div>
-
-    <!-- location filter -->
-    <agm-circle
-      *ngIf="locationFilterOn"
-      [latitude]="mapCircle.lat"
-      [longitude]="mapCircle.lng"
-      [radius]="mapCircle.radius"
-      [fillColor]="'lightBlue'"
-      [circleDraggable]="false"
-      [editable]="false"
-    >
-    </agm-circle>
-
-    <!-- routes -->
-    <div *ngIf="mapType == 'routing' && routes?.length">
-      <div *ngFor="let route of routes; let i = index">
-        <div *ngIf="route.stops?.length">
-          <div
-            *ngFor="let e of [].constructor(route.stops.length); let j = index"
-          >
-            <agm-marker
-              [agmFitBounds]="true"
-              [latitude]="route.stops[j].lat"
-              [longitude]="route.stops[j].long"
-              [visible]="false"
-            >
-              <agm-snazzy-info-window
-                [closeOnMapClick]="false"
-                [closeWhenOthersOpen]="false"
-                [isOpen]="route.hidden ? false : true"
-                [latitude]="route.stops[j].lat"
-                [longitude]="route.stops[j].long"
-                [maxHeight]="32"
-                [maxWidth]="26"
-                [openOnMarkerClick]="false"
-                placement="bottom"
-                [showCloseButton]="false"
-                [pointer]="false"
-              >
-                <ng-template>
-                  <div class="marker-container marker-icon">
-                    <svg
-                      [tooltipBackground]="
-                        route.stops[j].stopColor
-                          ? route.stops[j].stopColor
-                          : routeColors[0]
-                      "
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      width="34"
-                      height="37"
-                      viewBox="0 0 34 37"
-                    >
-                      <defs>
-                        <filter
-                          id="Path_33651"
-                          x="0"
-                          y="0"
-                          width="34"
-                          height="37"
-                          filterUnits="userSpaceOnUse"
+                        <div
+                            class="marker-dropdown cluster-dropdown"
+                            [ngClass]="{
+                                'show-marker-dropdown marker-dropdown-animation':
+                                    cluster?.isSelected,
+                                'cluster-dropdown': !cluster.detailedInfo
+                            }"
+                            [ngStyle]="{ 'margin-top': '10px' }"
                         >
-                          <feOffset input="SourceAlpha" />
-                          <feGaussianBlur stdDeviation="2" result="blur" />
-                          <feFlood flood-opacity="0.149" />
-                          <feComposite operator="in" in2="blur" />
-                          <feComposite in="SourceGraphic" />
-                        </filter>
-                      </defs>
-                      <g
-                        id="Group_98568"
-                        data-name="Group 98568"
-                        transform="translate(-1100 -955.999)"
-                      >
-                        <circle
-                          id="Ellipse_6245"
-                          data-name="Ellipse 6245"
-                          cx="4"
-                          cy="4"
-                          r="4"
-                          transform="translate(1113 983)"
-                          [ngStyle]="{
-                            fill: route.stops[j].stopColor
-                              ? route.stops[j].stopColor
-                              : routeColors[0]
-                          }"
-                        />
-                        <circle
-                          id="Ellipse_6246"
-                          data-name="Ellipse 6246"
-                          cx="2"
-                          cy="2"
-                          r="2"
-                          transform="translate(1115 985)"
-                          fill="#fff"
-                          *ngIf="j > 0 && j < route.stops.length - 1"
-                        />
-                      </g>
-                      <g
-                        id="Group_98569"
-                        data-name="Group 98569"
-                        transform="translate(-630 -2283.999)"
-                      >
-                        <g
-                          [ngStyle]="{
-                            filter: 'drop-shadow(0px 0px 4px #00000026)'
-                          }"
-                          transform="matrix(1, 0, 0, 1, 630, 2284)"
-                        >
-                          <path
-                            id="Path_33651-2"
-                            data-name="Path 33651"
-                            d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974"
-                            transform="translate(6 6)"
-                            fill="#fff"
-                          />
-                        </g>
-                        <circle
-                          id="Ellipse_6005"
-                          data-name="Ellipse 6005"
-                          cx="9"
-                          cy="9"
-                          r="9"
-                          transform="translate(638 2292)"
-                          [ngStyle]="{
-                            fill: route.stops[j].stopColor
-                              ? route.stops[j].stopColor
-                              : routeColors[0]
-                          }"
-                        />
-                        <text
-                          y="-8%"
-                          dominant-baseline="middle"
-                          text-anchor="middle"
-                          id="_1"
-                          data-name="1"
-                          transform="translate(647 2305)"
-                          fill="#fff"
-                          font-size="11"
-                          font-family="Montserrat-Bold, Montserrat"
-                          font-weight="700"
-                        >
-                          <tspan>{{ j + 1 }}</tspan>
-                        </text>
-                      </g>
-                    </svg>
-                  </div>
-                  <div
-                    class="stop-picker-address smaller-marker-address"
-                    [ngClass]="{ 'small-marker-tooltip': !route.isFocused }"
-                    [ngStyle]="{
-                      backgroundColor: route.stops[j].stopColor
-                        ? route.stops[j].stopColor
-                        : routeColors[0],
-                      visibility:
-                        focusedRouteIndex == i &&
-                        stopPickerLocation.editIndex == j
-                          ? 'hidden'
-                          : 'visible'
-                    }"
-                    *ngIf="route.stops[j].isSelected || route.stops[j].hovered"
-                  >
-                    <div class="stop-picker-address-text">
-                      {{
-                        tableData[selectedMapIndex].addressType == "address" &&
-                        route.stops[j].address.address
-                          ? route.stops[j].address.address
-                          : route.stops[j].cityAddress
-                      }}
-                    </div>
-                  </div>
-                </ng-template>
-              </agm-snazzy-info-window>
+                            <app-map-marker-dropdown
+                                *ngIf="!cluster?.detailedInfo"
+                                [title]="
+                                    mapType == 'shipper'
+                                        ? 'Shipper'
+                                        : mapType == 'accident'
+                                        ? 'Accident'
+                                        : mapType == 'inspection'
+                                        ? 'Inspection'
+                                        : mapType == 'repairShop'
+                                        ? 'Repair Shop'
+                                        : mapType == 'fuelStop'
+                                        ? 'Fuel Stop'
+                                        : ''
+                                "
+                                [type]="'cluster'"
+                                [item]="cluster"
+                                (showClusterItemInfo)="
+                                    showClusterItemInfo($event)
+                                "
+                            ></app-map-marker-dropdown>
+                            <app-map-marker-dropdown
+                                *ngIf="cluster?.detailedInfo"
+                                [title]="
+                                    mapType == 'shipper'
+                                        ? cluster?.detailedInfo.businessName
+                                        : mapType == 'accident' ||
+                                          mapType == 'inspection'
+                                        ? cluster?.detailedInfo.report
+                                        : mapType == 'repairShop'
+                                        ? cluster?.detailedInfo.name
+                                        : mapType == 'fuelStop'
+                                        ? cluster?.detailedInfo.companyName
+                                        : ''
+                                "
+                                [item]="cluster.detailedInfo"
+                                [type]="mapType"
+                                [rating]="
+                                    mapType == 'shipper'
+                                        ? cluster?.detailedInfo.raiting
+                                        : mapType == 'repairShop'
+                                        ? cluster?.detailedInfo.shopRaiting
+                                        : {}
+                                "
+                                [sortCategory]="activeSortType"
+                                [locationFilterOn]="locationFilterOn"
+                                [dropdownActions]="dropdownActions"
+                                (bodyActions)="dropDownActionCall($event)"
+                            ></app-map-marker-dropdown>
+                        </div>
+                    </ng-template>
+                </agm-snazzy-info-window>
             </agm-marker>
-          </div>
-          <div
-            *ngFor="
-              let e of [].constructor(route.stops.length - 1);
-              let j = index
-            "
-          >
-            <agm-direction
-              [renderOptions]="{
-                preserveViewport: true,
-                polylineOptions: {
-                  strokeColor: route.routeColor
-                    ? route.routeColor
-                    : routeColors[0],
-                  strokeWeight: 6,
-                  zIndex: 1
-                },
-                suppressMarkers: true
-              }"
-              [optimizeWaypoints]="false"
-              [origin]="{ lat: route.stops[j].lat, lng: route.stops[j].long }"
-              [destination]="{
-                lat: route.stops[j + 1].lat,
-                lng: route.stops[j + 1].long
-              }"
-              [visible]="!route.hidden"
-            ></agm-direction>
-            <agm-direction
-              *ngIf="route.stops[j + 1].empty"
-              [renderOptions]="{
-                preserveViewport: true,
-                polylineOptions: {
-                  strokeColor: '#fff',
-                  strokeWeight: 3,
-                  zIndex: 2
-                },
-                suppressMarkers: true
-              }"
-              [optimizeWaypoints]="false"
-              [origin]="{ lat: route.stops[j].lat, lng: route.stops[j].long }"
-              [destination]="{
-                lat: route.stops[j + 1].lat,
-                lng: route.stops[j + 1].long
-              }"
-              [visible]="!route.hidden"
-            ></agm-direction>
-          </div>
         </div>
-      </div>
-    </div>
-  </agm-map>
+
+        <!-- location filter -->
+        <agm-circle
+            *ngIf="locationFilterOn"
+            [latitude]="mapCircle.lat"
+            [longitude]="mapCircle.lng"
+            [radius]="mapCircle.radius"
+            [fillColor]="'lightBlue'"
+            [circleDraggable]="false"
+            [editable]="false"
+        >
+        </agm-circle>
+
+        <!-- routes -->
+        <div *ngIf="mapType == 'routing' && routes?.length">
+            <div *ngFor="let route of routes; let i = index">
+                <div *ngIf="route.stops?.length">
+                    <div
+                        *ngFor="
+                            let e of [].constructor(route.stops.length);
+                            let j = index
+                        "
+                    >
+                        <agm-marker
+                            [agmFitBounds]="true"
+                            [latitude]="route.stops[j].lat"
+                            [longitude]="route.stops[j].long"
+                            [visible]="false"
+                        >
+                            <agm-snazzy-info-window
+                                [closeOnMapClick]="false"
+                                [closeWhenOthersOpen]="false"
+                                [isOpen]="route.hidden ? false : true"
+                                [latitude]="route.stops[j].lat"
+                                [longitude]="route.stops[j].long"
+                                [maxHeight]="32"
+                                [maxWidth]="26"
+                                [openOnMarkerClick]="false"
+                                placement="bottom"
+                                [showCloseButton]="false"
+                                [pointer]="false"
+                            >
+                                <ng-template>
+                                    <div class="marker-container marker-icon">
+                                        <svg
+                                            [tooltipBackground]="
+                                                route.stops[j].stopColor
+                                                    ? route.stops[j].stopColor
+                                                    : routeColors[0]
+                                            "
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                            width="34"
+                                            height="37"
+                                            viewBox="0 0 34 37"
+                                        >
+                                            <defs>
+                                                <filter
+                                                    id="Path_33651"
+                                                    x="0"
+                                                    y="0"
+                                                    width="34"
+                                                    height="37"
+                                                    filterUnits="userSpaceOnUse"
+                                                >
+                                                    <feOffset
+                                                        input="SourceAlpha"
+                                                    />
+                                                    <feGaussianBlur
+                                                        stdDeviation="2"
+                                                        result="blur"
+                                                    />
+                                                    <feFlood
+                                                        flood-opacity="0.149"
+                                                    />
+                                                    <feComposite
+                                                        operator="in"
+                                                        in2="blur"
+                                                    />
+                                                    <feComposite
+                                                        in="SourceGraphic"
+                                                    />
+                                                </filter>
+                                            </defs>
+                                            <g
+                                                id="Group_98568"
+                                                data-name="Group 98568"
+                                                transform="translate(-1100 -955.999)"
+                                            >
+                                                <circle
+                                                    id="Ellipse_6245"
+                                                    data-name="Ellipse 6245"
+                                                    cx="4"
+                                                    cy="4"
+                                                    r="4"
+                                                    transform="translate(1113 983)"
+                                                    [ngStyle]="{
+                                                        fill: route.stops[j]
+                                                            .stopColor
+                                                            ? route.stops[j]
+                                                                  .stopColor
+                                                            : routeColors[0]
+                                                    }"
+                                                />
+                                                <circle
+                                                    id="Ellipse_6246"
+                                                    data-name="Ellipse 6246"
+                                                    cx="2"
+                                                    cy="2"
+                                                    r="2"
+                                                    transform="translate(1115 985)"
+                                                    fill="#fff"
+                                                    *ngIf="
+                                                        j > 0 &&
+                                                        j <
+                                                            route.stops.length -
+                                                                1
+                                                    "
+                                                />
+                                            </g>
+                                            <g
+                                                id="Group_98569"
+                                                data-name="Group 98569"
+                                                transform="translate(-630 -2283.999)"
+                                            >
+                                                <g
+                                                    [ngStyle]="{
+                                                        filter: 'drop-shadow(0px 0px 4px #00000026)'
+                                                    }"
+                                                    transform="matrix(1, 0, 0, 1, 630, 2284)"
+                                                >
+                                                    <path
+                                                        id="Path_33651-2"
+                                                        data-name="Path 33651"
+                                                        d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974"
+                                                        transform="translate(6 6)"
+                                                        fill="#fff"
+                                                    />
+                                                </g>
+                                                <circle
+                                                    id="Ellipse_6005"
+                                                    data-name="Ellipse 6005"
+                                                    cx="9"
+                                                    cy="9"
+                                                    r="9"
+                                                    transform="translate(638 2292)"
+                                                    [ngStyle]="{
+                                                        fill: route.stops[j]
+                                                            .stopColor
+                                                            ? route.stops[j]
+                                                                  .stopColor
+                                                            : routeColors[0]
+                                                    }"
+                                                />
+                                                <text
+                                                    y="-8%"
+                                                    dominant-baseline="middle"
+                                                    text-anchor="middle"
+                                                    id="_1"
+                                                    data-name="1"
+                                                    transform="translate(647 2305)"
+                                                    fill="#fff"
+                                                    font-size="11"
+                                                    font-family="Montserrat-Bold, Montserrat"
+                                                    font-weight="700"
+                                                >
+                                                    <tspan>{{ j + 1 }}</tspan>
+                                                </text>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div
+                                        class="stop-picker-address smaller-marker-address"
+                                        [ngClass]="{
+                                            'small-marker-tooltip':
+                                                !route.isFocused
+                                        }"
+                                        [ngStyle]="{
+                                            backgroundColor: route.stops[j]
+                                                .stopColor
+                                                ? route.stops[j].stopColor
+                                                : routeColors[0],
+                                            visibility:
+                                                focusedRouteIndex == i &&
+                                                stopPickerLocation.editIndex ==
+                                                    j
+                                                    ? 'hidden'
+                                                    : 'visible'
+                                        }"
+                                        *ngIf="
+                                            route.stops[j].isSelected ||
+                                            route.stops[j].hovered
+                                        "
+                                    >
+                                        <div class="stop-picker-address-text">
+                                            {{
+                                                tableData[selectedMapIndex]
+                                                    .addressType == 'address' &&
+                                                route.stops[j].address.address
+                                                    ? route.stops[j].address
+                                                          .address
+                                                    : route.stops[j].cityAddress
+                                            }}
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </agm-snazzy-info-window>
+                        </agm-marker>
+                    </div>
+                    <div
+                        *ngFor="
+                            let e of [].constructor(route.stops.length - 1);
+                            let j = index
+                        "
+                    >
+                        <agm-direction
+                            [renderOptions]="{
+                                preserveViewport: true,
+                                polylineOptions: {
+                                    strokeColor: route.routeColor
+                                        ? route.routeColor
+                                        : routeColors[0],
+                                    strokeWeight: 6,
+                                    zIndex: 1
+                                },
+                                suppressMarkers: true
+                            }"
+                            [optimizeWaypoints]="false"
+                            [origin]="{
+                                lat: route.stops[j].lat,
+                                lng: route.stops[j].long
+                            }"
+                            [destination]="{
+                                lat: route.stops[j + 1].lat,
+                                lng: route.stops[j + 1].long
+                            }"
+                            [visible]="!route.hidden"
+                        ></agm-direction>
+                        <agm-direction
+                            *ngIf="route.stops[j + 1].empty"
+                            [renderOptions]="{
+                                preserveViewport: true,
+                                polylineOptions: {
+                                    strokeColor: '#fff',
+                                    strokeWeight: 3,
+                                    zIndex: 2
+                                },
+                                suppressMarkers: true
+                            }"
+                            [optimizeWaypoints]="false"
+                            [origin]="{
+                                lat: route.stops[j].lat,
+                                lng: route.stops[j].long
+                            }"
+                            [destination]="{
+                                lat: route.stops[j + 1].lat,
+                                lng: route.stops[j + 1].long
+                            }"
+                            [visible]="!route.hidden"
+                        ></agm-direction>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </agm-map>
 </div>

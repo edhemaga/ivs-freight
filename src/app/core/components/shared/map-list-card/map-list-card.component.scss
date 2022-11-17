@@ -11,7 +11,7 @@
     transition: 0.2s ease-in-out;
 
     &:hover {
-        background: #F7F7F7;
+        background: #f7f7f7;
     }
 
     &.map-list-card-selected {
@@ -20,7 +20,7 @@
         &:hover {
             background: $ta-light-grey;
         }
-        
+
         .marker-info-text {
             color: $ta-light-grey-3;
 
@@ -39,11 +39,12 @@
         .marker-like-text {
             color: $ta-light-grey-3;
         }
-        
+
         .map-list-card-address {
             color: $bw6-2;
-            
-            .address-text, .marker-bold-text {
+
+            .address-text,
+            .marker-bold-text {
                 &::-moz-selection {
                     color: $bw6-2;
                     background: #6c6c6c33;
@@ -65,7 +66,7 @@
             &:hover {
                 svg {
                     path {
-                        fill: #4DB6A2;
+                        fill: #4db6a2;
                     }
                 }
             }
@@ -77,7 +78,8 @@
         line-height: 14px;
         color: $ta-light-grey-2;
 
-        .address-text, .marker-bold-text {
+        .address-text,
+        .marker-bold-text {
             &::-moz-selection {
                 color: $ta-light-grey-2;
                 background: #aaaaaa33;
@@ -97,7 +99,7 @@
         font-size: 14px;
         line-height: 18px;
         color: $bw6-2;
-        
+
         .title-text {
             &::-moz-selection {
                 color: $bw6-2;
@@ -109,7 +111,7 @@
             }
         }
     }
-    
+
     .marker-medium-text {
         font-weight: 500;
     }
@@ -117,7 +119,7 @@
     .marker-bold-text {
         font-weight: 700;
     }
-    
+
     .marker-like-text {
         font-size: 11px;
         line-height: 14px;
@@ -128,7 +130,7 @@
         display: flex;
         color: $ta-light-grey-2;
     }
-    
+
     .permanently-closed-svg {
         display: flex;
         align-items: center;
@@ -141,14 +143,14 @@
         align-items: center;
         height: 14px;
         user-select: none;
-    
+
         .marker-rating {
             margin-right: 12px;
             cursor: pointer;
-        
+
             .marker-rating-svg {
                 margin-right: 4px;
-    
+
                 &:hover {
                     svg {
                         path {
@@ -160,7 +162,7 @@
                 &.has-liked-icon {
                     svg {
                         path {
-                            fill: #4DB6A2;
+                            fill: #4db6a2;
                         }
                     }
 
@@ -172,11 +174,11 @@
                         }
                     }
                 }
-                
+
                 &.has-disliked-icon {
                     svg {
                         path {
-                            fill: #E57373;
+                            fill: #e57373;
                         }
                     }
 
@@ -201,19 +203,19 @@
     .mg-bottom-2 {
         margin-bottom: 2px;
     }
-    
+
     .mg-bottom-4 {
         margin-bottom: 4px;
     }
-    
+
     .mg-bottom-8 {
         margin-bottom: 8px;
     }
-    
+
     .mg-top-2 {
         margin-top: 2px;
     }
-    
+
     .mg-top-4 {
         margin-top: 4px;
     }
@@ -228,7 +230,7 @@
     &.active {
         svg {
             path {
-                fill: #6D82C7;
+                fill: #6d82c7;
             }
         }
     }
@@ -242,7 +244,7 @@
     height: 10px;
     width: 0;
     margin: 0px 12px;
-    border-right: 0.5px solid #DADADA;
+    border-right: 0.5px solid #dadada;
     border-radius: 1px;
 }
 
@@ -255,63 +257,63 @@
 .delete-animation {
     overflow: hidden !important;
     min-height: unset !important;
-  
+
     animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
-      deleting-row-visibility 0.3s ease-in 0.3s,
-      deleting-row-decrease-height 0.3s ease-in 0.6s;
-  
+        deleting-row-visibility 0.3s ease-in 0.3s,
+        deleting-row-decrease-height 0.3s ease-in 0.6s;
+
     .columns-container {
-      animation: deleting-row-add-color 0.3s ease-in;
+        animation: deleting-row-add-color 0.3s ease-in;
     }
-  }
-  
-  @keyframes deleting-row-add-color {
+}
+
+@keyframes deleting-row-add-color {
     0% {
-      background: #ffffff;
+        background: #ffffff;
     }
     100% {
-      background: #ffebee;
+        background: #ffebee;
     }
-  }
-  
-  // 2
-  @keyframes deleting-row-decrease-size {
+}
+
+// 2
+@keyframes deleting-row-decrease-size {
     0% {
-      background: #ffebee;
-      transform: scaleX(1);
+        background: #ffebee;
+        transform: scaleX(1);
     }
     100% {
-      background: #ffebee;
-      transform: scaleX(0.7);
+        background: #ffebee;
+        transform: scaleX(0.7);
     }
-  }
-  
-  @keyframes deleting-row-visibility {
+}
+
+@keyframes deleting-row-visibility {
     0% {
-      opacity: 1;
+        opacity: 1;
     }
     100% {
-      opacity: 0;
+        opacity: 0;
     }
-  }
-  
-  // 3
-  @keyframes deleting-row-decrease-height {
+}
+
+// 3
+@keyframes deleting-row-decrease-height {
     0% {
-      opacity: 0;
-      min-height: 65px;
-      height: 65px;
+        opacity: 0;
+        min-height: 65px;
+        height: 65px;
     }
     100% {
-      opacity: 0;
-      min-height: 0px;
-      height: 0px;
+        opacity: 0;
+        min-height: 0px;
+        height: 0px;
     }
-  }
+}
 
 .text-ellipsis {
     margin-right: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
 }
