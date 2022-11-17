@@ -1,855 +1,855 @@
-$performance_active_colors: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3",
-  "73D0F1", "FFD54F", "BDE08E", "F69FF3", "A1887F";
-$performance_hover_colors: "596FE8", "FD952D", "ED445E", "2FA558", "7F39AA",
-  "38BDEB", "FFCA28", "A2D35F", "F276EF", "8D6E63";
+$performance_active_colors: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3',
+    '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F';
+$performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA',
+    '38BDEB', 'FFCA28', 'A2D35F', 'F276EF', '8D6E63';
 
 .dashboard-performance-holder {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex-direction: column;
-
-  .dashboard-performance-header {
     width: 100%;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 12px;
+    align-items: flex-start;
+    flex-direction: column;
 
-    .dashboard-performance-title {
-      font-size: 26px;
-      font-weight: 900;
-      color: #919191;
-      padding-right: 12px;
-      box-sizing: border-box;
-      &::-moz-selection {
-        background: #91919133;
-        color: #919191;
-      }
-      &::selection {
-        background: #91919133;
-        color: #919191;
-      }
-    }
-
-    .dashboard-performance-toolbar {
-      width: 100%;
-      height: 32px;
-      flex: 1;
-      border-radius: 3px;
-      background-color: #fff;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-
-      .dashboard-performance-switch-holder {
-        height: 32px;
-      }
-
-      .dashboard-performance-border {
-        width: 2px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        border-radius: 1px;
-        background-color: #f3f3f3;
-        margin: 0px 4px;
-      }
-
-      .dashboard-performance-dropdown-holder {
-        position: relative;
-        width: 108px;
-        height: 32px;
-        border-radius: 3px;
+    .dashboard-performance-header {
+        width: 100%;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        cursor: pointer;
-        user-select: none;
+        margin-bottom: 12px;
 
-        .dashboard-performance-dropdown-text {
-          font-size: 14px;
-          font-weight: 800;
-          color: #6c6c6c;
-          padding-left: 6px;
-          box-sizing: border-box;
-        }
-
-        .dashboard-performance-arrow-holder {
-          position: absolute;
-          width: 18px;
-          height: 18px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          top: 50%;
-          right: 8px;
-          transform: translateY(-50%);
-
-          svg-icon {
-            svg {
-              display: flex;
-              width: 13px;
-              height: 8.15px;
-
-              path {
-                fill: #b7b7b7;
-              }
+        .dashboard-performance-title {
+            font-size: 26px;
+            font-weight: 900;
+            color: #919191;
+            padding-right: 12px;
+            box-sizing: border-box;
+            &::-moz-selection {
+                background: #91919133;
+                color: #919191;
             }
-          }
-        }
-
-        &.active-options {
-          .dashboard-performance-arrow-holder {
-            svg-icon {
-              svg {
-                transform: rotate(180deg);
-                transition: all 0.3s;
-              }
+            &::selection {
+                background: #91919133;
+                color: #919191;
             }
-          }
         }
-      }
-    }
-  }
 
-  .dashboard-performance-body {
-    width: 100%;
-    // display: flex;
-    // justify-content: flex-start;
-    // align-items: flex-start;
-    // flex-wrap: wrap;
-
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 0px 8px;
-
-    .dashboard-performance-body-left-holder {
-      position: relative;
-      // width: 177px;
-      grid-row-start: 1;
-      grid-row-end: 4;
-      border-radius: 3px;
-      background-color: #fff;
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-      flex-direction: column;
-      padding: 12px;
-      box-sizing: border-box;
-      margin-bottom: 8px;
-      // margin-right: 8px;
-      user-select: none;
-
-      .dashboard-performance-left-close {
-        position: absolute;
-        width: 18px;
-        height: 18px;
-        display: none;
-        justify-content: center;
-        align-items: center;
-        top: 12px;
-        right: 12px;
-
-        svg-icon {
-          svg {
+        .dashboard-performance-toolbar {
+            width: 100%;
+            height: 32px;
+            flex: 1;
+            border-radius: 3px;
+            background-color: #fff;
             display: flex;
-            width: 12.38px;
-            height: 12.38px;
-
-            path {
-              fill: #fff;
-            }
-          }
-        }
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-
-      .dashboard-performance-body-title-holder {
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        .dashboard-performance-body-title-circle {
-          width: 14px;
-          height: 14px;
-          border-radius: 100%;
-          background-color: #dadada;
-          color: #6c6c6c;
-        }
-
-        .dashboard-performance-body-title {
-          font-size: 14px;
-          font-weight: 700;
-          color: #6c6c6c;
-          padding-left: 6px;
-          box-sizing: border-box;
-        }
-      }
-
-      .dashboard-performance-body-price-holder {
-        font-size: 26px;
-        font-weight: 600;
-        color: #6c6c6c;
-        padding: 8px 0px;
-        box-sizing: border-box;
-      }
-
-      .dashboard-performance-body-range-holder {
-        position: relative;
-        width: 100%;
-        height: 8px;
-        border-radius: 2px;
-        background-color: #dadada;
-        margin-bottom: 2px;
-
-        .dashboard-performance-body-range {
-          position: absolute;
-          width: 70%;
-          height: 8px;
-          background-color: #aaaaaa;
-          border-radius: 2px 0px 0px 2px;
-          top: 0px;
-          left: 0px;
-        }
-      }
-
-      .dashboard-performance-body-items-holder {
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        flex-direction: column;
-        padding-top: 16px;
-        box-sizing: border-box;
-
-        .dashboard-performance-body-items-price {
-          font-size: 18px;
-          font-weight: 700;
-          color: #919191;
-        }
-
-        .dashboard-performance-body-trend-holder {
-          width: 100%;
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          padding: 2px 0px;
-          box-sizing: border-box;
-
-          .dashboard-performance-body-trend-down {
-            width: 18px;
-            height: 18px;
-            display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
-            border-radius: 2px;
 
-            svg-icon {
-              display: flex;
-              svg {
+            .dashboard-performance-switch-holder {
+                height: 32px;
+            }
+
+            .dashboard-performance-border {
+                width: 2px;
+                height: 24px;
                 display: flex;
-                width: 14px;
-                height: 14px;
-
-                path {
-                  fill: #e57373;
-                }
-              }
+                align-items: center;
+                border-radius: 1px;
+                background-color: #f3f3f3;
+                margin: 0px 4px;
             }
 
-            &.trend-up {
-              svg-icon {
-                svg {
-                  display: flex;
+            .dashboard-performance-dropdown-holder {
+                position: relative;
+                width: 108px;
+                height: 32px;
+                border-radius: 3px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                cursor: pointer;
+                user-select: none;
 
-                  path {
-                    fill: #4db6a2;
-                  }
+                .dashboard-performance-dropdown-text {
+                    font-size: 14px;
+                    font-weight: 800;
+                    color: #6c6c6c;
+                    padding-left: 6px;
+                    box-sizing: border-box;
                 }
-              }
-            }
-          }
 
-          .dashboard-performance-body-trend-price {
+                .dashboard-performance-arrow-holder {
+                    position: absolute;
+                    width: 18px;
+                    height: 18px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    top: 50%;
+                    right: 8px;
+                    transform: translateY(-50%);
+
+                    svg-icon {
+                        svg {
+                            display: flex;
+                            width: 13px;
+                            height: 8.15px;
+
+                            path {
+                                fill: #b7b7b7;
+                            }
+                        }
+                    }
+                }
+
+                &.active-options {
+                    .dashboard-performance-arrow-holder {
+                        svg-icon {
+                            svg {
+                                transform: rotate(180deg);
+                                transition: all 0.3s;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .dashboard-performance-body {
+        width: 100%;
+        // display: flex;
+        // justify-content: flex-start;
+        // align-items: flex-start;
+        // flex-wrap: wrap;
+
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 0px 8px;
+
+        .dashboard-performance-body-left-holder {
+            position: relative;
+            // width: 177px;
+            grid-row-start: 1;
+            grid-row-end: 4;
+            border-radius: 3px;
+            background-color: #fff;
             display: flex;
-            font-size: 14px;
-            font-weight: 700;
-            color: #b7b7b7;
-            padding-left: 6px;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 12px;
             box-sizing: border-box;
-          }
-
-          .dashboard-performance-body-trend-percent {
-            display: none;
-            font-size: 14px;
-            font-weight: 700;
-            color: #b7b7b7;
-            padding-left: 6px;
-            box-sizing: border-box;
-          }
-        }
-
-        .dashboard-performance-body-items-text {
-          font-size: 11px;
-          font-weight: 700;
-          color: #b7b7b7;
-        }
-      }
-
-      &:hover {
-        cursor: pointer;
-        box-shadow: 0 0 4px #00000026;
-
-        .dashboard-performance-body-title-circle {
-          background-color: #aaaaaa !important;
-        }
-
-        .dashboard-performance-body-title {
-          color: #3c3c3c !important;
-        }
-
-        .dashboard-performance-body-price-holder {
-          color: #3c3c3c !important;
-        }
-
-        .dashboard-performance-body-items-price {
-          color: #6c6c6c !important;
-        }
-
-        .dashboard-performance-body-trend-price {
-          display: none !important;
-          color: #919191 !important;
-        }
-
-        .dashboard-performance-body-trend-percent {
-          display: flex !important;
-          color: #919191 !important;
-        }
-
-        .dashboard-performance-body-items-text {
-          color: #919191;
-        }
-
-        .dashboard-performance-body-right-cards-text-hover {
-          display: flex;
-        }
-      }
-
-      $ii: 1;
-      @each $col1 in $performance_active_colors {
-        $hover_color: nth($performance_hover_colors, $ii);
-        $ii: $ii + 1;
-
-        &.dashboard-performance-#{$col1}-box {
-          background-color: unquote("#" + $col1);
-
-          .dashboard-performance-body-title-circle {
-            background-color: #ffffff99 !important;
-          }
-
-          .dashboard-performance-body-title {
-            color: #fff !important;
-          }
-
-          .dashboard-performance-body-price-holder {
-            color: #fff !important;
-          }
-
-          .dashboard-performance-body-range-holder {
-            background-color: #ffffff66 !important;
-          }
-
-          .dashboard-performance-body-range {
-            background-color: #fff !important;
-          }
-
-          .dashboard-performance-body-items-price {
-            color: #ffffffe6 !important;
-          }
-
-          .dashboard-performance-body-trend-down {
-            background-color: #ffffffcc !important;
-          }
-
-          .dashboard-performance-body-trend-price {
-            color: #ffffffb3 !important;
-          }
-
-          .dashboard-performance-body-trend-percent {
-            color: #ffffffb3 !important;
-          }
-
-          .dashboard-performance-body-items-text {
-            color: #ffffffb3 !important;
-          }
-
-          &:hover {
-            background-color: unquote("#" + $hover_color);
+            margin-bottom: 8px;
+            // margin-right: 8px;
+            user-select: none;
 
             .dashboard-performance-left-close {
-              display: flex !important;
-            }
-          }
-        }
-      }
-    }
+                position: absolute;
+                width: 18px;
+                height: 18px;
+                display: none;
+                justify-content: center;
+                align-items: center;
+                top: 12px;
+                right: 12px;
 
-    .dashboard-performance-body-right-cards-holder {
-      position: relative;
-      //width: 175px;
-      //height: 143px;
+                svg-icon {
+                    svg {
+                        display: flex;
+                        width: 12.38px;
+                        height: 12.38px;
 
-      background-color: #fff;
-      border-radius: 3px;
-      padding: 12px;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-      flex-direction: column;
-      ///margin-right: 8px;
-      margin-bottom: 8px;
-      user-select: none;
-      transition: all 0.2s;
-
-      .dashboard-performance-right-close {
-        width: 18px;
-        height: 18px;
-        display: none;
-        justify-content: center;
-        align-items: center;
-
-        svg-icon {
-          svg {
-            display: flex;
-            width: 12.38px;
-            height: 12.38px;
-
-            path {
-              fill: #fff;
-            }
-          }
-        }
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-
-      .dashboard-performance-body-right-cards-title-holder {
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        .dashboard-performance-body-right-cards-title-circle {
-          width: 14px;
-          min-width: 14px;
-          height: 14px;
-          border-radius: 100%;
-          background-color: #dadada;
-          transition: all 0.2s;
-        }
-
-        .dashboard-performance-body-right-cards-title {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          font-size: 14px;
-          font-weight: 700;
-          color: #6c6c6c;
-          padding-left: 6px;
-          box-sizing: border-box;
-          line-height: 18px;
-          flex: 1;
-        }
-      }
-
-      .dashboard-performance-body-right-cards-price-holder {
-        font-size: 26px;
-        font-weight: 600;
-        color: #6c6c6c;
-        padding: 8px 0px 4px 0px;
-        box-sizing: border-box;
-      }
-
-      .dashboard-performance-body-right-cards-trend-holder {
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        .dashboard-performance-body-right-cards-trend-up {
-          display: flex;
-          border-radius: 2px;
-          padding: 2px;
-
-          svg-icon {
-            display: flex;
-            svg {
-              display: flex;
-              width: 14px;
-              height: 14px;
-
-              path {
-                fill: #4db6a2;
-              }
-            }
-          }
-
-          &.red-trend-up {
-            svg-icon {
-              svg {
-                display: flex;
-
-                path {
-                  fill: #e57373;
+                        path {
+                            fill: #fff;
+                        }
+                    }
                 }
-              }
-            }
-          }
-        }
 
-        .dashboard-performance-body-right-cards-trend-number {
-          font-size: 18px;
-          font-weight: 700;
-          color: #b7b7b7;
-          padding-left: 8px;
-          box-sizing: border-box;
-          transition: all 0.2s;
-
-          &.different-padding {
-            padding-left: 0px;
-            padding-right: 8px;
-          }
-        }
-
-        .dashboard-performance-body-right-cards-trend-loss {
-          display: none;
-          font-size: 18px;
-          font-weight: 600;
-          color: #b7b7b7;
-          padding-left: 8px;
-          box-sizing: border-box;
-          transition: all 0.2s;
-        }
-      }
-
-      .dashboard-performance-body-right-cards-trend-holder-hover {
-        width: 100%;
-        display: none;
-        justify-content: flex-start;
-        align-items: center;
-        transition: all 0.3s;
-
-        .dashboard-performance-body-right-cards-trend-up {
-          width: 18px;
-          height: 18px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          svg-icon {
-            display: flex;
-            svg {
-              display: flex;
-              width: 14px;
-              height: 14px;
-
-              path {
-                fill: #4db6a2;
-              }
-            }
-          }
-
-          &.red-trend-up {
-            svg-icon {
-              svg {
-                display: flex;
-
-                path {
-                  fill: #e57373;
+                &:hover {
+                    cursor: pointer;
                 }
-              }
             }
-          }
+
+            .dashboard-performance-body-title-holder {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                .dashboard-performance-body-title-circle {
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 100%;
+                    background-color: #dadada;
+                    color: #6c6c6c;
+                }
+
+                .dashboard-performance-body-title {
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: #6c6c6c;
+                    padding-left: 6px;
+                    box-sizing: border-box;
+                }
+            }
+
+            .dashboard-performance-body-price-holder {
+                font-size: 26px;
+                font-weight: 600;
+                color: #6c6c6c;
+                padding: 8px 0px;
+                box-sizing: border-box;
+            }
+
+            .dashboard-performance-body-range-holder {
+                position: relative;
+                width: 100%;
+                height: 8px;
+                border-radius: 2px;
+                background-color: #dadada;
+                margin-bottom: 2px;
+
+                .dashboard-performance-body-range {
+                    position: absolute;
+                    width: 70%;
+                    height: 8px;
+                    background-color: #aaaaaa;
+                    border-radius: 2px 0px 0px 2px;
+                    top: 0px;
+                    left: 0px;
+                }
+            }
+
+            .dashboard-performance-body-items-holder {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                flex-direction: column;
+                padding-top: 16px;
+                box-sizing: border-box;
+
+                .dashboard-performance-body-items-price {
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #919191;
+                }
+
+                .dashboard-performance-body-trend-holder {
+                    width: 100%;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding: 2px 0px;
+                    box-sizing: border-box;
+
+                    .dashboard-performance-body-trend-down {
+                        width: 18px;
+                        height: 18px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border-radius: 2px;
+
+                        svg-icon {
+                            display: flex;
+                            svg {
+                                display: flex;
+                                width: 14px;
+                                height: 14px;
+
+                                path {
+                                    fill: #e57373;
+                                }
+                            }
+                        }
+
+                        &.trend-up {
+                            svg-icon {
+                                svg {
+                                    display: flex;
+
+                                    path {
+                                        fill: #4db6a2;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .dashboard-performance-body-trend-price {
+                        display: flex;
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #b7b7b7;
+                        padding-left: 6px;
+                        box-sizing: border-box;
+                    }
+
+                    .dashboard-performance-body-trend-percent {
+                        display: none;
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #b7b7b7;
+                        padding-left: 6px;
+                        box-sizing: border-box;
+                    }
+                }
+
+                .dashboard-performance-body-items-text {
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: #b7b7b7;
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+                box-shadow: 0 0 4px #00000026;
+
+                .dashboard-performance-body-title-circle {
+                    background-color: #aaaaaa !important;
+                }
+
+                .dashboard-performance-body-title {
+                    color: #3c3c3c !important;
+                }
+
+                .dashboard-performance-body-price-holder {
+                    color: #3c3c3c !important;
+                }
+
+                .dashboard-performance-body-items-price {
+                    color: #6c6c6c !important;
+                }
+
+                .dashboard-performance-body-trend-price {
+                    display: none !important;
+                    color: #919191 !important;
+                }
+
+                .dashboard-performance-body-trend-percent {
+                    display: flex !important;
+                    color: #919191 !important;
+                }
+
+                .dashboard-performance-body-items-text {
+                    color: #919191;
+                }
+
+                .dashboard-performance-body-right-cards-text-hover {
+                    display: flex;
+                }
+            }
+
+            $ii: 1;
+            @each $col1 in $performance_active_colors {
+                $hover_color: nth($performance_hover_colors, $ii);
+                $ii: $ii + 1;
+
+                &.dashboard-performance-#{$col1}-box {
+                    background-color: unquote('#' + $col1);
+
+                    .dashboard-performance-body-title-circle {
+                        background-color: #ffffff99 !important;
+                    }
+
+                    .dashboard-performance-body-title {
+                        color: #fff !important;
+                    }
+
+                    .dashboard-performance-body-price-holder {
+                        color: #fff !important;
+                    }
+
+                    .dashboard-performance-body-range-holder {
+                        background-color: #ffffff66 !important;
+                    }
+
+                    .dashboard-performance-body-range {
+                        background-color: #fff !important;
+                    }
+
+                    .dashboard-performance-body-items-price {
+                        color: #ffffffe6 !important;
+                    }
+
+                    .dashboard-performance-body-trend-down {
+                        background-color: #ffffffcc !important;
+                    }
+
+                    .dashboard-performance-body-trend-price {
+                        color: #ffffffb3 !important;
+                    }
+
+                    .dashboard-performance-body-trend-percent {
+                        color: #ffffffb3 !important;
+                    }
+
+                    .dashboard-performance-body-items-text {
+                        color: #ffffffb3 !important;
+                    }
+
+                    &:hover {
+                        background-color: unquote('#' + $hover_color);
+
+                        .dashboard-performance-left-close {
+                            display: flex !important;
+                        }
+                    }
+                }
+            }
         }
 
-        .dashboard-performance-body-right-cards-trend-number {
-          font-size: 18px;
-          font-weight: 700;
-          color: #b7b7b7;
-          padding-left: 8px;
-          box-sizing: border-box;
+        .dashboard-performance-body-right-cards-holder {
+            position: relative;
+            //width: 175px;
+            //height: 143px;
 
-          &.different-padding {
-            padding-left: 0px;
-            padding-right: 8px;
-          }
-        }
-
-        .dashboard-performance-body-right-cards-trend-loss {
-          font-size: 14px;
-          font-weight: 600;
-          color: #b7b7b7;
-          padding-left: 8px;
-          box-sizing: border-box;
-        }
-      }
-
-      .dashboard-performance-body-right-cards-text-holder {
-        display: flex;
-        font-size: 11px;
-        font-weight: 700;
-        color: #b7b7b7;
-
-        &.different-width {
-          width: 77px;
-          padding-top: 10px;
-          box-sizing: border-box;
-        }
-      }
-
-      .dashboard-performance-body-right-cards-text-hover {
-        display: none;
-        font-size: 11px;
-        font-weight: 700;
-        color: #b7b7b7;
-      }
-
-      &:hover:not(.active) {
-        cursor: pointer;
-        box-shadow: 0 0 4px #00000026;
-
-        .dashboard-performance-body-right-cards-trend-holder-hover {
-          display: none !important;
-        }
-
-        .dashboard-performance-body-right-cards-text-hover {
-          display: flex !important;
-        }
-
-        .dashboard-performance-body-right-cards-text-holder {
-          display: none !important;
-        }
-
-        .dashboard-performance-body-right-cards-title-circle {
-          background-color: #aaaaaa !important;
-        }
-
-        .dashboard-performance-body-right-cards-title {
-          color: #3c3c3c !important;
-        }
-
-        .dashboard-performance-body-right-cards-price-holder {
-          color: #3c3c3c !important;
-        }
-
-        .dashboard-performance-body-right-cards-trend-number {
-          display: none !important;
-          color: #919191 !important;
-        }
-
-        .dashboard-performance-body-right-cards-trend-loss {
-          display: flex !important;
-          color: #919191 !important;
-        }
-
-        .dashboard-performance-body-right-cards-text-holder {
-          color: #919191 !important;
-        }
-      }
-
-      $i: 1;
-      @each $col in $performance_active_colors {
-        $hover_color: nth($performance_hover_colors, $i);
-        $i: $i + 1;
-        &.dashboard-performance-#{$col}-box {
-          background-color: unquote("#" + $col);
-
-          .dashboard-performance-body-right-cards-title-circle {
-            background-color: #ffffff99 !important;
-          }
-
-          .dashboard-performance-body-right-cards-title {
-            color: #fff !important;
-          }
-
-          .dashboard-performance-body-right-cards-price-holder {
-            color: #fff !important;
-          }
-
-          .dashboard-performance-body-right-cards-trend-up {
-            background-color: #ffffffcc !important;
-          }
-
-          .dashboard-performance-body-right-cards-trend-number {
-            color: #ffffffe6 !important;
-          }
-
-          .dashboard-performance-body-right-cards-text-holder {
-            color: #ffffffb3 !important;
-          }
-
-          .dashboard-performance-body-right-cards-text-hover {
-            color: #ffffffb3 !important;
-          }
-
-          &:hover {
-            background-color: unquote("#" + $hover_color);
+            background-color: #fff;
+            border-radius: 3px;
+            padding: 12px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+            ///margin-right: 8px;
+            margin-bottom: 8px;
+            user-select: none;
+            transition: all 0.2s;
 
             .dashboard-performance-right-close {
-              display: flex !important;
-            }
-          }
-        }
-      }
-    }
+                width: 18px;
+                height: 18px;
+                display: none;
+                justify-content: center;
+                align-items: center;
 
-    // .dashboard-performance-body-right-cards-holder:nth-child(6n + 0){
-    //     margin-right: 0px;
-    // }
-  }
+                svg-icon {
+                    svg {
+                        display: flex;
+                        width: 12.38px;
+                        height: 12.38px;
+
+                        path {
+                            fill: #fff;
+                        }
+                    }
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .dashboard-performance-body-right-cards-title-holder {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                .dashboard-performance-body-right-cards-title-circle {
+                    width: 14px;
+                    min-width: 14px;
+                    height: 14px;
+                    border-radius: 100%;
+                    background-color: #dadada;
+                    transition: all 0.2s;
+                }
+
+                .dashboard-performance-body-right-cards-title {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: #6c6c6c;
+                    padding-left: 6px;
+                    box-sizing: border-box;
+                    line-height: 18px;
+                    flex: 1;
+                }
+            }
+
+            .dashboard-performance-body-right-cards-price-holder {
+                font-size: 26px;
+                font-weight: 600;
+                color: #6c6c6c;
+                padding: 8px 0px 4px 0px;
+                box-sizing: border-box;
+            }
+
+            .dashboard-performance-body-right-cards-trend-holder {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                .dashboard-performance-body-right-cards-trend-up {
+                    display: flex;
+                    border-radius: 2px;
+                    padding: 2px;
+
+                    svg-icon {
+                        display: flex;
+                        svg {
+                            display: flex;
+                            width: 14px;
+                            height: 14px;
+
+                            path {
+                                fill: #4db6a2;
+                            }
+                        }
+                    }
+
+                    &.red-trend-up {
+                        svg-icon {
+                            svg {
+                                display: flex;
+
+                                path {
+                                    fill: #e57373;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .dashboard-performance-body-right-cards-trend-number {
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #b7b7b7;
+                    padding-left: 8px;
+                    box-sizing: border-box;
+                    transition: all 0.2s;
+
+                    &.different-padding {
+                        padding-left: 0px;
+                        padding-right: 8px;
+                    }
+                }
+
+                .dashboard-performance-body-right-cards-trend-loss {
+                    display: none;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #b7b7b7;
+                    padding-left: 8px;
+                    box-sizing: border-box;
+                    transition: all 0.2s;
+                }
+            }
+
+            .dashboard-performance-body-right-cards-trend-holder-hover {
+                width: 100%;
+                display: none;
+                justify-content: flex-start;
+                align-items: center;
+                transition: all 0.3s;
+
+                .dashboard-performance-body-right-cards-trend-up {
+                    width: 18px;
+                    height: 18px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    svg-icon {
+                        display: flex;
+                        svg {
+                            display: flex;
+                            width: 14px;
+                            height: 14px;
+
+                            path {
+                                fill: #4db6a2;
+                            }
+                        }
+                    }
+
+                    &.red-trend-up {
+                        svg-icon {
+                            svg {
+                                display: flex;
+
+                                path {
+                                    fill: #e57373;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .dashboard-performance-body-right-cards-trend-number {
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #b7b7b7;
+                    padding-left: 8px;
+                    box-sizing: border-box;
+
+                    &.different-padding {
+                        padding-left: 0px;
+                        padding-right: 8px;
+                    }
+                }
+
+                .dashboard-performance-body-right-cards-trend-loss {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #b7b7b7;
+                    padding-left: 8px;
+                    box-sizing: border-box;
+                }
+            }
+
+            .dashboard-performance-body-right-cards-text-holder {
+                display: flex;
+                font-size: 11px;
+                font-weight: 700;
+                color: #b7b7b7;
+
+                &.different-width {
+                    width: 77px;
+                    padding-top: 10px;
+                    box-sizing: border-box;
+                }
+            }
+
+            .dashboard-performance-body-right-cards-text-hover {
+                display: none;
+                font-size: 11px;
+                font-weight: 700;
+                color: #b7b7b7;
+            }
+
+            &:hover:not(.active) {
+                cursor: pointer;
+                box-shadow: 0 0 4px #00000026;
+
+                .dashboard-performance-body-right-cards-trend-holder-hover {
+                    display: none !important;
+                }
+
+                .dashboard-performance-body-right-cards-text-hover {
+                    display: flex !important;
+                }
+
+                .dashboard-performance-body-right-cards-text-holder {
+                    display: none !important;
+                }
+
+                .dashboard-performance-body-right-cards-title-circle {
+                    background-color: #aaaaaa !important;
+                }
+
+                .dashboard-performance-body-right-cards-title {
+                    color: #3c3c3c !important;
+                }
+
+                .dashboard-performance-body-right-cards-price-holder {
+                    color: #3c3c3c !important;
+                }
+
+                .dashboard-performance-body-right-cards-trend-number {
+                    display: none !important;
+                    color: #919191 !important;
+                }
+
+                .dashboard-performance-body-right-cards-trend-loss {
+                    display: flex !important;
+                    color: #919191 !important;
+                }
+
+                .dashboard-performance-body-right-cards-text-holder {
+                    color: #919191 !important;
+                }
+            }
+
+            $i: 1;
+            @each $col in $performance_active_colors {
+                $hover_color: nth($performance_hover_colors, $i);
+                $i: $i + 1;
+                &.dashboard-performance-#{$col}-box {
+                    background-color: unquote('#' + $col);
+
+                    .dashboard-performance-body-right-cards-title-circle {
+                        background-color: #ffffff99 !important;
+                    }
+
+                    .dashboard-performance-body-right-cards-title {
+                        color: #fff !important;
+                    }
+
+                    .dashboard-performance-body-right-cards-price-holder {
+                        color: #fff !important;
+                    }
+
+                    .dashboard-performance-body-right-cards-trend-up {
+                        background-color: #ffffffcc !important;
+                    }
+
+                    .dashboard-performance-body-right-cards-trend-number {
+                        color: #ffffffe6 !important;
+                    }
+
+                    .dashboard-performance-body-right-cards-text-holder {
+                        color: #ffffffb3 !important;
+                    }
+
+                    .dashboard-performance-body-right-cards-text-hover {
+                        color: #ffffffb3 !important;
+                    }
+
+                    &:hover {
+                        background-color: unquote('#' + $hover_color);
+
+                        .dashboard-performance-right-close {
+                            display: flex !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        // .dashboard-performance-body-right-cards-holder:nth-child(6n + 0){
+        //     margin-right: 0px;
+        // }
+    }
 }
 
 .dahsboard_charts_holder {
-  background-color: #fff;
-  padding: 12px 12px 14px 12px;
-  margin-bottom: 18px;
-  border-radius: 3px;
+    background-color: #fff;
+    padding: 12px 12px 14px 12px;
+    margin-bottom: 18px;
+    border-radius: 3px;
 
-  .line_chart_title_hold {
-    display: flex;
+    .line_chart_title_hold {
+        display: flex;
 
-    .dashboard_chart_title {
-      color: #aaaaaa;
+        .dashboard_chart_title {
+            color: #aaaaaa;
 
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 22px;
-      flex: 1;
-    }
-
-    .dashboard_chart_average_hold {
-      display: flex;
-      align-items: center;
-      height: 14px;
-
-      .chart_average_icon {
-        margin-right: 5px;
-      }
-
-      .chart_average_title {
-        font-size: 11px;
-        line-height: 14px;
-        color: #6c6c6c;
-
-        span {
-          font-weight: 700;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 22px;
+            flex: 1;
         }
-      }
-    }
-  }
 
-  .dashboard_chart_data {
-    display: flex;
-    margin-top: 12px;
-
-    .chart_data_inner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      &.separate_inner {
-        margin-right: 22px;
-      }
-
-      .chart_data_text {
-        color: #6c6c6c;
-        font-size: 11px;
-        line-height: 14px;
-        font-weight: 500;
-        padding-left: 4px;
-
-        &::-moz-selection {
-          background: #91919133;
-          color: #919191;
-        }
-        &::selection {
-          background: #91919133;
-          color: #919191;
-        }
-      }
-
-      .round_dark_grey {
-        svg-icon {
-          svg {
-            rect {
-              fill: #919191;
-            }
-          }
-        }
-      }
-
-      .round_light_grey {
-        svg-icon {
-          svg {
-            rect {
-              fill: #cccccc;
-            }
-          }
-        }
-      }
-
-      .chart_data_icon {
-        svg-icon {
-          svg {
+        .dashboard_chart_average_hold {
             display: flex;
-            width: 10px;
-            height: 10px;
-          }
+            align-items: center;
+            height: 14px;
+
+            .chart_average_icon {
+                margin-right: 5px;
+            }
+
+            .chart_average_title {
+                font-size: 11px;
+                line-height: 14px;
+                color: #6c6c6c;
+
+                span {
+                    font-weight: 700;
+                }
+            }
         }
-      }
     }
-  }
+
+    .dashboard_chart_data {
+        display: flex;
+        margin-top: 12px;
+
+        .chart_data_inner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &.separate_inner {
+                margin-right: 22px;
+            }
+
+            .chart_data_text {
+                color: #6c6c6c;
+                font-size: 11px;
+                line-height: 14px;
+                font-weight: 500;
+                padding-left: 4px;
+
+                &::-moz-selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+                &::selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+            }
+
+            .round_dark_grey {
+                svg-icon {
+                    svg {
+                        rect {
+                            fill: #919191;
+                        }
+                    }
+                }
+            }
+
+            .round_light_grey {
+                svg-icon {
+                    svg {
+                        rect {
+                            fill: #cccccc;
+                        }
+                    }
+                }
+            }
+
+            .chart_data_icon {
+                svg-icon {
+                    svg {
+                        display: flex;
+                        width: 10px;
+                        height: 10px;
+                    }
+                }
+            }
+        }
+    }
 }
 
 @media only screen and (max-width: 1200px) {
-  .dashboard-performance-holder .dashboard-performance-body {
-    grid-template-columns: repeat(5, calc((100% - 35px) / 5));
-  }
+    .dashboard-performance-holder .dashboard-performance-body {
+        grid-template-columns: repeat(5, calc((100% - 35px) / 5));
+    }
 
-  .dashboard-performance-holder
-    .dashboard-performance-body
-    .dashboard-performance-body-left-holder {
-    grid-row-end: 3;
-  }
+    .dashboard-performance-holder
+        .dashboard-performance-body
+        .dashboard-performance-body-left-holder {
+        grid-row-end: 3;
+    }
 }
 
 @media only screen and (min-width: 1201px) and (max-width: 1664px) {
-  .dashboard-performance-holder .dashboard-performance-body {
-    grid-template-columns: repeat(7, calc((100% - 48px) / 7));
+    .dashboard-performance-holder .dashboard-performance-body {
+        grid-template-columns: repeat(7, calc((100% - 48px) / 7));
 
-    .dashboard-performance-body-left-holder {
-      .dashboard-performance-body-items-holder {
-        padding-top: 52px;
+        .dashboard-performance-body-left-holder {
+            .dashboard-performance-body-items-holder {
+                padding-top: 52px;
 
-        &:last-child {
-          padding-top: 62px;
+                &:last-child {
+                    padding-top: 62px;
+                }
+            }
         }
-      }
     }
-  }
 }
 
 @media only screen and (min-width: 1664px) {
-  .dashboard-performance-holder .dashboard-performance-body {
-    grid-template-columns: repeat(10, calc((100% - 72px) / 10));
-  }
+    .dashboard-performance-holder .dashboard-performance-body {
+        grid-template-columns: repeat(10, calc((100% - 72px) / 10));
+    }
 }

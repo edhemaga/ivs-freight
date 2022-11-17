@@ -1,4 +1,4 @@
 export interface ZipCode {
-  id: number;
-  zipCode: string;
+    id: number;
+    zipCode: string;
 }

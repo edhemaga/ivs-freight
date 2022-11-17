@@ -6,8 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { DirectivesModule } from '../../../directives/directives.module';
 
 @NgModule({
-  declarations: [TruckassistSearchComponent],
-  imports: [CommonModule, AngularSvgIconModule, DirectivesModule, FormsModule],
-  exports: [TruckassistSearchComponent],
+    declarations: [TruckassistSearchComponent],
+    imports: [
+        CommonModule,
+        AngularSvgIconModule,
+        DirectivesModule,
+        FormsModule,
+    ],
+    exports: [TruckassistSearchComponent],
 })
 export class TruckassistSearchModule {}

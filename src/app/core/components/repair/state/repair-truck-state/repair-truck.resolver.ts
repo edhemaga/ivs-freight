@@ -7,44 +7,46 @@ import { RepairTService } from '../repair.service';
 import { RepairTruckState, RepairTruckStore } from './repair-truck.store';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class RepairTruckResolver implements Resolve<RepairTruckState> {
-  constructor(
-    private repairService: RepairTService,
-    private repairTruckStore: RepairTruckStore
-  ) {}
+    constructor(
+        private repairService: RepairTService,
+        private repairTruckStore: RepairTruckStore
+    ) {}
 
-  resolve(): Observable<RepairTruckState | boolean> {
-    return this.repairService
-      .getRepairList(
-        undefined,
-        1,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        1,
-        25
-      )
-      .pipe(
-        catchError(() => {
-          return of('No repair trucks data...');
-        }),
-        tap((repairTruckPagination: RepairListResponse) => {
-          localStorage.setItem(
-            'repairTruckTrailerTableCount',
-            JSON.stringify({
-              repairTrucks: repairTruckPagination.truckCount,
-              repairTrailers: repairTruckPagination.trailerCount,
-            })
-          );
+    resolve(): Observable<RepairTruckState | boolean> {
+        return this.repairService
+            .getRepairList(
+                undefined,
+                1,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                1,
+                25
+            )
+            .pipe(
+                catchError(() => {
+                    return of('No repair trucks data...');
+                }),
+                tap((repairTruckPagination: RepairListResponse) => {
+                    localStorage.setItem(
+                        'repairTruckTrailerTableCount',
+                        JSON.stringify({
+                            repairTrucks: repairTruckPagination.truckCount,
+                            repairTrailers: repairTruckPagination.trailerCount,
+                        })
+                    );
 
-          this.repairTruckStore.set(repairTruckPagination.pagination.data);
-        })
-      );
-  }
+                    this.repairTruckStore.set(
+                        repairTruckPagination.pagination.data
+                    );
+                })
+            );
+    }
 }

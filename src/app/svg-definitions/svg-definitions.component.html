@@ -1,12 +1,12 @@
 <div class="message">
-  You can update this list running <code>npm run svg:preview</code> in the root
-  folder
+    You can update this list running <code>npm run svg:preview</code> in the
+    root folder
 </div>
 <div class="svg-wrap" *ngFor="let image of imageList">
-  <svg-icon src="{{ image }}"></svg-icon>
-  <div
-    class="image-preload"
-    [ngStyle]="{ 'background-image': 'url(' + image + ')' }"
-  ></div>
-  <span>{{ image }}</span>
+    <svg-icon src="{{ image }}"></svg-icon>
+    <div
+        class="image-preload"
+        [ngStyle]="{ 'background-image': 'url(' + image + ')' }"
+    ></div>
+    <span>{{ image }}</span>
 </div>

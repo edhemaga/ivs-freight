@@ -1,430 +1,430 @@
-@import "../../settings.global.scss";
+@import '../../settings.global.scss';
 
 .settings-card {
-  width: 100%;
-  padding-bottom: 0px;
-  cursor: pointer;
+    width: 100%;
+    padding-bottom: 0px;
+    cursor: pointer;
 
-  .settings-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    user-select: none;
-
-    p {
-      font-size: 14px;
-      color: $settings-gray-dark;
-      font-weight: $settings-font-extrabold;
-    }
-
-    .settings-card-arrow {
-      transform: rotate(0deg);
-      transition: $settings-transition;
-      position: relative;
-      top: 1px;
-
-      &.rotate {
-        transform: rotate(180deg);
-        transition: $settings-transition;
-      }
-    }
-
-    &.last-item {
-      margin-bottom: 0px !important;
-    }
-
-    .settings-card-header-leftSide {
-      display: flex;
-      align-items: center;
-
-      .settings-header-count {
-        width: 22px;
-        height: 22px;
-        background: $settings-white-light;
-        text-align: center;
-        border-radius: 3px;
-        margin-right: 4px;
-        font-weight: $settings-font-extrabold;
-      }
-    }
-
-    .settings-card-header-rightSide {
-      display: flex;
-      align-items: center;
-      position: relative;
-      bottom: 2px;
-
-      .settings-card-status {
-        height: 20px;
-        background: #f7f7f7;
-        padding: 1.5px 6px;
-        text-align: center;
-        border-radius: 3px;
-        font-size: 12px;
-        font-weight: bold;
-        margin-right: 8px;
-
-        position: relative;
-        top: 1px;
-      }
-    }
-  }
-
-  .settings-card-body {
-    // Common template
-    .settings-template {
-      display: grid;
-      grid-template-columns: repeat(2, 153px) 148px;
-      row-gap: 12px;
-
-      .settings-template-data {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-
-        .settings-template-name {
-          font-size: 12px;
-          color: $settings-gray-dark;
-          font-weight: $settings-font-semibold;
-          user-select: none;
-
-          &.bank {
-            margin-bottom: 10px;
-          }
-        }
-
-        .settings-template-value {
-          font-size: 14px;
-
-          &::selection {
-            color: $settings-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
-        }
-
-        .settings-template-eye {
-          display: flex;
-          align-items: center;
-
-          .hidden-text-eye {
-            margin-right: 6px;
-            display: flex;
-
-            &::selection {
-              color: $settings-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
-            }
-          }
-
-          .hidden-svg-eye {
-            position: relative;
-            bottom: 2px;
-            user-select: none;
-          }
-        }
-      }
-    }
-
-    // BankCard Template
-    .bankcard-template {
-      .bankcard-template-header {
-        font-size: 12px;
-        font-weight: 600;
-        text-align: left;
-        display: grid;
-        grid-template-columns: 135px 205px 72px 44px;
-        margin-bottom: 12px;
-        user-select: none;
-
-        p {
-          align-self: flex-start;
-        }
-      }
-
-      .bankcard-template-data {
-        display: grid;
-        grid-template-columns: 135px 205px 72px 44px;
-
-        &.first {
-          margin-bottom: 12px;
-        }
-
-        .bankcard-template-card {
-          display: flex;
-          align-items: center;
-
-          .bankcard-template-svg {
-            margin-right: 6px;
-          }
-        }
-
-        .bankcard-template-nickname,
-        .bankcard-template-value,
-        .bankcard-template-cvc,
-        .bankcard-template-exp {
-          &::selection {
-            color: $settings-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
-        }
-      }
-    }
-
-    // Payroll Template
-    .payroll-template {
-      .payroll-template-data {
+    .settings-card-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: 12px;
+        user-select: none;
 
-        .payroll-template-name {
-          font-weight: $settings-font-medium;
-          color: $settings-gray-dark;
-          &::selection {
+        p {
+            font-size: 14px;
             color: $settings-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
+            font-weight: $settings-font-extrabold;
         }
 
-        .payroll-template-value {
-          font-weight: $settings-font-semibold;
-          color: $settings-gray-dark;
-          &::selection {
-            color: $settings-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
-        }
-      }
-    }
+        .settings-card-arrow {
+            transform: rotate(0deg);
+            transition: $settings-transition;
+            position: relative;
+            top: 1px;
 
-    // Insurance Policy template
-    .insurance-template-data {
-      display: flex;
-      flex-direction: column;
-
-      .insurance-template-data-top {
-        display: flex;
-        flex-direction: column;
-
-        .insurance-agency {
-          display: flex;
-          align-items: center;
-
-          .insurer-name {
-            font-size: 18px;
-            font-weight: $settings-font-medium;
-            color: $settings-gray-dark;
-            margin-right: 12px;
-            text-transform: uppercase;
-
-            &::selection {
-              color: $settings-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
+            &.rotate {
+                transform: rotate(180deg);
+                transition: $settings-transition;
             }
-          }
-
-          .insurer-rating {
-            height: 20px;
-            width: 36px;
-            border-radius: 2px;
-            font-size: 12px;
-            font-weight: $settings-font-bold;
-            background-color: $settings-white-light;
-            color: $settings-white-dark;
-            text-align: center;
-            padding: 2.5px 6px;
-            user-select: none;
-          }
         }
 
-        .insurer-numberOfPolicy {
-          font-weight: $settings-font-bold;
-          color: $settings-gray-dark;
-          &::selection {
-            color: $settings-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
+        &.last-item {
+            margin-bottom: 0px !important;
         }
-      }
 
-      .insurance-template-data-bottom {
-        display: flex;
-        flex-direction: column;
-        .insurance-field {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-top: 12px;
+        .settings-card-header-leftSide {
+            display: flex;
+            align-items: center;
 
-          .insurance-field-name {
-            &::selection {
-              color: $settings-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
+            .settings-header-count {
+                width: 22px;
+                height: 22px;
+                background: $settings-white-light;
+                text-align: center;
+                border-radius: 3px;
+                margin-right: 4px;
+                font-weight: $settings-font-extrabold;
             }
-          }
-          .insurance-field-value {
-            font-weight: $settings-font-semibold;
-            &::selection {
-              color: $settings-gray-dark;
-              background: rgb(183, 183, 183, 0.2);
+        }
+
+        .settings-card-header-rightSide {
+            display: flex;
+            align-items: center;
+            position: relative;
+            bottom: 2px;
+
+            .settings-card-status {
+                height: 20px;
+                background: #f7f7f7;
+                padding: 1.5px 6px;
+                text-align: center;
+                border-radius: 3px;
+                font-size: 12px;
+                font-weight: bold;
+                margin-right: 8px;
+
+                position: relative;
+                top: 1px;
             }
-          }
         }
-      }
     }
 
-    // Parking Template
-    .parking-template-data {
-      display: grid;
-      grid-template-columns: 170px 152px;
-      grid-row-gap: 6px;
-      row-gap: 6px;
-      padding-left: 4px;
+    .settings-card-body {
+        // Common template
+        .settings-template {
+            display: grid;
+            grid-template-columns: repeat(2, 153px) 148px;
+            row-gap: 12px;
 
-      .parking-template-item {
-        display: flex;
-        align-items: center;
+            .settings-template-data {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
 
-        .parking-template-number {
-          font-size: 17px;
-          font-weight: $settings-font-semibold;
-          color: $settings-gray-dark;
-          user-select: none;
-        }
+                .settings-template-name {
+                    font-size: 12px;
+                    color: $settings-gray-dark;
+                    font-weight: $settings-font-semibold;
+                    user-select: none;
 
-        .parking-template-text {
-          color: $settings-gray-dark;
-          margin-left: 7px;
-          &::selection {
-            color: $settings-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
+                    &.bank {
+                        margin-bottom: 10px;
+                    }
+                }
 
-          &.cross-out {
-            text-decoration: line-through;
-            color: $settings-white-dark;
-          }
-        }
+                .settings-template-value {
+                    font-size: 14px;
 
-        .parking-template-svg {
-          user-select: none;
-          &.disabled {
-            svg {
-              path {
-                fill: $settings-white-dark-2;
-              }
+                    &::selection {
+                        color: $settings-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+                }
+
+                .settings-template-eye {
+                    display: flex;
+                    align-items: center;
+
+                    .hidden-text-eye {
+                        margin-right: 6px;
+                        display: flex;
+
+                        &::selection {
+                            color: $settings-gray-dark;
+                            background: rgb(183, 183, 183, 0.2);
+                        }
+                    }
+
+                    .hidden-svg-eye {
+                        position: relative;
+                        bottom: 2px;
+                        user-select: none;
+                    }
+                }
             }
-          }
         }
-      }
-    }
 
-    // Office Template
-    .office-template-data {
-      display: grid;
-      grid-template-columns: 170px 152px;
-      row-gap: 11px;
+        // BankCard Template
+        .bankcard-template {
+            .bankcard-template-header {
+                font-size: 12px;
+                font-weight: 600;
+                text-align: left;
+                display: grid;
+                grid-template-columns: 135px 205px 72px 44px;
+                margin-bottom: 12px;
+                user-select: none;
 
-      .office-template-item {
-        display: flex;
-        align-items: center;
-
-        .office-template-value {
-          margin-left: 6px;
-          &::selection {
-            color: $settings-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
-        }
-      }
-
-      .office-template-email {
-        grid-column: 1 / -1;
-      }
-    }
-
-    // Repair Shop Template
-    .repair-shop-template-data {
-      display: grid;
-      grid-template-columns: 170px 150px;
-      row-gap: 11px;
-      padding-left: 3.5px;
-      margin-bottom: 12px;
-
-      .repair-shop-template-item {
-        display: flex;
-        align-items: center;
-
-        .repair-shop-template-text {
-          margin-left: 6px;
-          &::selection {
-            color: $settings-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
-
-          &.cross-out {
-            text-decoration: line-through;
-            color: $settings-white-dark;
-          }
-        }
-        .repair-shop-template-svg {
-          user-select: none;
-          &.disabled {
-            svg {
-              path {
-                fill: $settings-white-dark-2;
-              }
+                p {
+                    align-self: flex-start;
+                }
             }
-          }
+
+            .bankcard-template-data {
+                display: grid;
+                grid-template-columns: 135px 205px 72px 44px;
+
+                &.first {
+                    margin-bottom: 12px;
+                }
+
+                .bankcard-template-card {
+                    display: flex;
+                    align-items: center;
+
+                    .bankcard-template-svg {
+                        margin-right: 6px;
+                    }
+                }
+
+                .bankcard-template-nickname,
+                .bankcard-template-value,
+                .bankcard-template-cvc,
+                .bankcard-template-exp {
+                    &::selection {
+                        color: $settings-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+                }
+            }
         }
-      }
 
-      &.no-line {
-        margin-bottom: 0px !important;
-      }
-    }
+        // Payroll Template
+        .payroll-template {
+            .payroll-template-data {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 12px;
 
-    // Terminal Template
-    .terminal-template-data {
-      display: grid;
-      grid-template-columns: 170px 152px;
-      row-gap: 11px;
+                .payroll-template-name {
+                    font-weight: $settings-font-medium;
+                    color: $settings-gray-dark;
+                    &::selection {
+                        color: $settings-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+                }
 
-      .terminal-template-item {
-        display: flex;
-        align-items: center;
-
-        .terminal-template-value {
-          margin-left: 6px;
-          &::selection {
-            color: $settings-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-          }
+                .payroll-template-value {
+                    font-weight: $settings-font-semibold;
+                    color: $settings-gray-dark;
+                    &::selection {
+                        color: $settings-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+                }
+            }
         }
-      }
 
-      .terminal-template-email {
-        grid-column: 1 / -1;
-      }
+        // Insurance Policy template
+        .insurance-template-data {
+            display: flex;
+            flex-direction: column;
+
+            .insurance-template-data-top {
+                display: flex;
+                flex-direction: column;
+
+                .insurance-agency {
+                    display: flex;
+                    align-items: center;
+
+                    .insurer-name {
+                        font-size: 18px;
+                        font-weight: $settings-font-medium;
+                        color: $settings-gray-dark;
+                        margin-right: 12px;
+                        text-transform: uppercase;
+
+                        &::selection {
+                            color: $settings-gray-dark;
+                            background: rgb(183, 183, 183, 0.2);
+                        }
+                    }
+
+                    .insurer-rating {
+                        height: 20px;
+                        width: 36px;
+                        border-radius: 2px;
+                        font-size: 12px;
+                        font-weight: $settings-font-bold;
+                        background-color: $settings-white-light;
+                        color: $settings-white-dark;
+                        text-align: center;
+                        padding: 2.5px 6px;
+                        user-select: none;
+                    }
+                }
+
+                .insurer-numberOfPolicy {
+                    font-weight: $settings-font-bold;
+                    color: $settings-gray-dark;
+                    &::selection {
+                        color: $settings-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+                }
+            }
+
+            .insurance-template-data-bottom {
+                display: flex;
+                flex-direction: column;
+                .insurance-field {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-top: 12px;
+
+                    .insurance-field-name {
+                        &::selection {
+                            color: $settings-gray-dark;
+                            background: rgb(183, 183, 183, 0.2);
+                        }
+                    }
+                    .insurance-field-value {
+                        font-weight: $settings-font-semibold;
+                        &::selection {
+                            color: $settings-gray-dark;
+                            background: rgb(183, 183, 183, 0.2);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Parking Template
+        .parking-template-data {
+            display: grid;
+            grid-template-columns: 170px 152px;
+            grid-row-gap: 6px;
+            row-gap: 6px;
+            padding-left: 4px;
+
+            .parking-template-item {
+                display: flex;
+                align-items: center;
+
+                .parking-template-number {
+                    font-size: 17px;
+                    font-weight: $settings-font-semibold;
+                    color: $settings-gray-dark;
+                    user-select: none;
+                }
+
+                .parking-template-text {
+                    color: $settings-gray-dark;
+                    margin-left: 7px;
+                    &::selection {
+                        color: $settings-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+
+                    &.cross-out {
+                        text-decoration: line-through;
+                        color: $settings-white-dark;
+                    }
+                }
+
+                .parking-template-svg {
+                    user-select: none;
+                    &.disabled {
+                        svg {
+                            path {
+                                fill: $settings-white-dark-2;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Office Template
+        .office-template-data {
+            display: grid;
+            grid-template-columns: 170px 152px;
+            row-gap: 11px;
+
+            .office-template-item {
+                display: flex;
+                align-items: center;
+
+                .office-template-value {
+                    margin-left: 6px;
+                    &::selection {
+                        color: $settings-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+                }
+            }
+
+            .office-template-email {
+                grid-column: 1 / -1;
+            }
+        }
+
+        // Repair Shop Template
+        .repair-shop-template-data {
+            display: grid;
+            grid-template-columns: 170px 150px;
+            row-gap: 11px;
+            padding-left: 3.5px;
+            margin-bottom: 12px;
+
+            .repair-shop-template-item {
+                display: flex;
+                align-items: center;
+
+                .repair-shop-template-text {
+                    margin-left: 6px;
+                    &::selection {
+                        color: $settings-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+
+                    &.cross-out {
+                        text-decoration: line-through;
+                        color: $settings-white-dark;
+                    }
+                }
+                .repair-shop-template-svg {
+                    user-select: none;
+                    &.disabled {
+                        svg {
+                            path {
+                                fill: $settings-white-dark-2;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.no-line {
+                margin-bottom: 0px !important;
+            }
+        }
+
+        // Terminal Template
+        .terminal-template-data {
+            display: grid;
+            grid-template-columns: 170px 152px;
+            row-gap: 11px;
+
+            .terminal-template-item {
+                display: flex;
+                align-items: center;
+
+                .terminal-template-value {
+                    margin-left: 6px;
+                    &::selection {
+                        color: $settings-gray-dark;
+                        background: rgb(183, 183, 183, 0.2);
+                    }
+                }
+            }
+
+            .terminal-template-email {
+                grid-column: 1 / -1;
+            }
+        }
+
+        &.no-line {
+            margin-bottom: 0px !important;
+        }
+    }
+    .settings-line {
+        content: '';
+        height: 2px;
+        margin: 6px 0px;
+        border-radius: 1px;
+        background-color: #f3f3f3;
     }
 
-    &.no-line {
-      margin-bottom: 0px !important;
+    &:hover {
+        transition: $settings-transition;
+        .settings-card-header-name {
+            color: $settings-gray-black !important;
+        }
     }
-  }
-  .settings-line {
-    content: "";
-    height: 2px;
-    margin: 6px 0px;
-    border-radius: 1px;
-    background-color: #f3f3f3;
-  }
-
-  &:hover {
-    transition: $settings-transition;
-    .settings-card-header-name {
-      color: $settings-gray-black !important;
-    }
-  }
 }

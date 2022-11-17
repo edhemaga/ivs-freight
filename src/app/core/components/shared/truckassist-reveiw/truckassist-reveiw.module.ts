@@ -4,8 +4,8 @@ import { TruckassistReveiwComponent } from './truckassist-reveiw.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @NgModule({
-  declarations: [TruckassistReveiwComponent],
-  imports: [CommonModule, AngularSvgIconModule],
-  exports: [TruckassistReveiwComponent],
+    declarations: [TruckassistReveiwComponent],
+    imports: [CommonModule, AngularSvgIconModule],
+    exports: [TruckassistReveiwComponent],
 })
 export class TruckassistReveiwModule {}

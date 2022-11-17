@@ -8,12 +8,12 @@ import { MvrAuthorizationRoutingModule } from './mvr-authorization-routing.modul
 import { ApplicantModule } from './../../applicant.module';
 
 @NgModule({
-  declarations: [MvrAuthorizationComponent],
-  imports: [
-    CommonModule,
-    SharedModule,
-    MvrAuthorizationRoutingModule,
-    ApplicantModule,
-  ],
+    declarations: [MvrAuthorizationComponent],
+    imports: [
+        CommonModule,
+        SharedModule,
+        MvrAuthorizationRoutingModule,
+        ApplicantModule,
+    ],
 })
 export class MvrAuthorizationModule {}

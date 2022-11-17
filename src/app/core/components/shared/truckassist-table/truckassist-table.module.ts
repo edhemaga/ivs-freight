@@ -21,37 +21,37 @@ import { SharedModule } from '../shared.module';
 import { ToolbarFiltersComponent } from './truckassist-table-toolbar/toolbar-filters/toolbar-filters.component';
 
 @NgModule({
-  declarations: [
-    TruckassistTableBodyComponent,
-    TruckassistTableHeadComponent,
-    TruckassistTableToolbarComponent,
-    GetExpireDataPipe,
-    ResizeColumnDirective,
-    ToolbarFiltersComponent,
-  ],
-  imports: [
-    CommonModule,
-    TruckassistSearchModule,
-    AngularSvgIconModule,
-    TruckassistReveiwModule,
-    NgbModule,
-    TaNoteModule,
-    DragDropModule,
-    DirectivesModule,
-    AppNoteModule,
-    ProfileImagesModule,
-    PipesModule,
-    VirtualScrollerModule,
-    ScrollingModule,
+    declarations: [
+        TruckassistTableBodyComponent,
+        TruckassistTableHeadComponent,
+        TruckassistTableToolbarComponent,
+        GetExpireDataPipe,
+        ResizeColumnDirective,
+        ToolbarFiltersComponent,
+    ],
+    imports: [
+        CommonModule,
+        TruckassistSearchModule,
+        AngularSvgIconModule,
+        TruckassistReveiwModule,
+        NgbModule,
+        TaNoteModule,
+        DragDropModule,
+        DirectivesModule,
+        AppNoteModule,
+        ProfileImagesModule,
+        PipesModule,
+        VirtualScrollerModule,
+        ScrollingModule,
 
-    // Veliki problem, ima dosta stvari u njemu, ubacen je zbog filter componente.
-    SharedModule,
-  ],
-  exports: [
-    TruckassistTableBodyComponent,
-    TruckassistTableHeadComponent,
-    TruckassistTableToolbarComponent,
-    GetExpireDataPipe,
-  ],
+        // Veliki problem, ima dosta stvari u njemu, ubacen je zbog filter componente.
+        SharedModule,
+    ],
+    exports: [
+        TruckassistTableBodyComponent,
+        TruckassistTableHeadComponent,
+        TruckassistTableToolbarComponent,
+        GetExpireDataPipe,
+    ],
 })
 export class TruckassistTableModule {}

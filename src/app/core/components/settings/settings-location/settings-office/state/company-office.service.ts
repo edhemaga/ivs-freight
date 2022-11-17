@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import {
-  CompanyOfficeListResponse,
-  CompanyOfficeService,
+    CompanyOfficeListResponse,
+    CompanyOfficeService,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class CompanyTOfficeService {
-  constructor(private companyOfficeService: CompanyOfficeService) {}
+    constructor(private companyOfficeService: CompanyOfficeService) {}
 
-  // Get Parking List
-  public getOfficeList(
-    pageIndex?: number,
-    pageSize?: number,
-    count?: number
-  ): Observable<CompanyOfficeListResponse> {
-    return this.companyOfficeService.apiCompanyofficeListGet(
-      pageIndex,
-      pageSize,
-      count
-    );
-  }
+    // Get Parking List
+    public getOfficeList(
+        pageIndex?: number,
+        pageSize?: number,
+        count?: number
+    ): Observable<CompanyOfficeListResponse> {
+        return this.companyOfficeService.apiCompanyofficeListGet(
+            pageIndex,
+            pageSize,
+            count
+        );
+    }
 }

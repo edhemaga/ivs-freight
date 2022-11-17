@@ -7,6 +7,6 @@
 // }
 
 export interface LoadStatusFilterEvent {
-  loadStatusFilter: number[];
-  check: boolean;
+    loadStatusFilter: number[];
+    check: boolean;
 }

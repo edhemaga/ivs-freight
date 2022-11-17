@@ -1,47 +1,47 @@
 <div class="currency-progress-bar">
-  <div [ngSwitch]="template">
-    <div *ngSwitchCase="'payments'">
-      <div class="progress-bar-information">
-        <div class="currency-name-payments">
-          {{ totalAmount - paidSoFarAmount }} {{ progressBarName
-          }}<span class="name-left"> left</span>
+    <div [ngSwitch]="template">
+        <div *ngSwitchCase="'payments'">
+            <div class="progress-bar-information">
+                <div class="currency-name-payments">
+                    {{ totalAmount - paidSoFarAmount }} {{ progressBarName
+                    }}<span class="name-left"> left</span>
+                </div>
+                <div class="currency-price-payments">
+                    {{ totalAmount }}
+                </div>
+            </div>
         </div>
-        <div class="currency-price-payments">
-          {{ totalAmount }}
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'broker-credit'">
-      <div class="progress-bar-information">
-        <!-- <div class="currency-name-payments">{{totalAmount-paidSoFarAmount}}  {{ progressBarName }}<span class="name-left"> left</span> </div>
+        <div *ngSwitchCase="'broker-credit'">
+            <div class="progress-bar-information">
+                <!-- <div class="currency-name-payments">{{totalAmount-paidSoFarAmount}}  {{ progressBarName }}<span class="name-left"> left</span> </div>
         <div class="currency-price-payments">
           {{ totalAmount }}
         </div> -->
-      </div>
-    </div>
-    <div *ngSwitchDefault>
-      <div class="progress-bar-information">
-        <div class="currency-name">{{ progressBarName }}</div>
-
-        <div class="currency-price">
-          {{ paidSoFarAmount | currency }}
+            </div>
         </div>
-      </div>
+        <div *ngSwitchDefault>
+            <div class="progress-bar-information">
+                <div class="currency-name">{{ progressBarName }}</div>
+
+                <div class="currency-price">
+                    {{ paidSoFarAmount | currency }}
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div
-    class="progress-bar-line"
-    [ngStyle]="{
-      'background-color': status ? status.colorEmpty : '#DADADA'
-    }"
-  >
     <div
-      class="line-filled"
-      [ngStyle]="{
-        'background-color': status ? status.colorFilled : 'transparent',
-        width: activePercentageOfPaid + '%',
-        height: '100%'
-      }"
-    ></div>
-  </div>
+        class="progress-bar-line"
+        [ngStyle]="{
+            'background-color': status ? status.colorEmpty : '#DADADA'
+        }"
+    >
+        <div
+            class="line-filled"
+            [ngStyle]="{
+                'background-color': status ? status.colorFilled : 'transparent',
+                width: activePercentageOfPaid + '%',
+                height: '100%'
+            }"
+        ></div>
+    </div>
 </div>

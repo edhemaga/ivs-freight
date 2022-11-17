@@ -1,71 +1,71 @@
-@import "../shipper-details/shipper-details-single/shipper-details-single.component.scss";
+@import '../shipper-details/shipper-details-single/shipper-details-single.component.scss';
 
 app-shipper-card-view {
-  .wrapper-additional-cards {
-    max-height: calc(77vh - 74px);
-    // min-height: calc(26vh - 10px);
-    min-height: fit-content;
-    display: grid;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    .card-footer-cmp {
-      padding-bottom: 0 !important;
-    }
-  }
-  .hours-template {
-    display: grid;
-    grid-template-columns: 160px 190px;
-    column-gap: 55px;
-    align-items: center;
-    align-content: center;
-    padding: 0 10px;
-    .hours-item {
-      display: flex;
-      flex-direction: column;
-      .name-item {
-        font-size: 12px;
-        font-weight: $font-semibold;
-        color: $color-gray-dark;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+    .wrapper-additional-cards {
+        max-height: calc(77vh - 74px);
+        // min-height: calc(26vh - 10px);
+        min-height: fit-content;
+        display: grid;
+        -ms-overflow-style: none; /* for Internet Explorer, Edge */
+        scrollbar-width: none; /* for Firefox */
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
         }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+        .card-footer-cmp {
+            padding-bottom: 0 !important;
         }
-      }
-      .value-item {
-        font-size: 14px;
-        font-weight: 400;
-        color: $color-gray-dark;
-        white-space: nowrap;
+    }
+    .hours-template {
+        display: grid;
+        grid-template-columns: 160px 190px;
+        column-gap: 55px;
+        align-items: center;
+        align-content: center;
+        padding: 0 10px;
+        .hours-item {
+            display: flex;
+            flex-direction: column;
+            .name-item {
+                font-size: 12px;
+                font-weight: $font-semibold;
+                color: $color-gray-dark;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+            .value-item {
+                font-size: 14px;
+                font-weight: 400;
+                color: $color-gray-dark;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+        }
+    }
+
+    .icon-wrapper {
         display: flex;
         align-items: center;
-        &::-moz-selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
+        .svg-appoiment {
+            margin-right: 5px;
+            svg {
+                display: flex;
+            }
         }
-        &::selection {
-          color: $color-gray-dark;
-          background: rgb(183, 183, 183, 0.2);
-        }
-      }
     }
-  }
-
-  .icon-wrapper {
-    display: flex;
-    align-items: center;
-    .svg-appoiment {
-      margin-right: 5px;
-      svg {
-        display: flex;
-      }
-    }
-  }
 }

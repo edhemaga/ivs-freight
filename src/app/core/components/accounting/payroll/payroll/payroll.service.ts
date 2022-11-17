@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class PayrollService {
-  public toggleTables = new Subject<any>();
+    public toggleTables = new Subject<any>();
 
-  constructor() {}
+    constructor() {}
 }

@@ -5,7 +5,7 @@ import { TruckassistTableModule } from '../../shared/truckassist-table/truckassi
 import { ViolationTableComponent } from './violation-table/violation-table.component';
 
 @NgModule({
-  declarations: [ViolationTableComponent],
-  imports: [CommonModule, ViolationRoutingModule, TruckassistTableModule],
+    declarations: [ViolationTableComponent],
+    imports: [CommonModule, ViolationRoutingModule, TruckassistTableModule],
 })
 export class ViolationModule {}

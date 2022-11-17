@@ -1,144 +1,156 @@
 <div (mouseover)="mouseOverSetItem()">
-  <cdk-virtual-scroll-viewport
-    #monthsScrollRef
-    (scrolledIndexChange)="onMonthChange($event)"
-    style="height: 200px; width: 100%; margin: 0"
-  >
-    <ng-container
-      *cdkVirtualFor="
-        let month of months;
-        let indx = index;
-        templateCacheSize: 10
-      "
+    <cdk-virtual-scroll-viewport
+        #monthsScrollRef
+        (scrolledIndexChange)="onMonthChange($event)"
+        style="height: 200px; width: 100%; margin: 0"
     >
-      <div class="calendar_indicator">
-        <span *ngIf="listPreview == 'full_list'"
-          >{{ getMonth(month.getMonth()) }}
-        </span>
-        {{ month.getFullYear() }}
-      </div>
-      <div *ngIf="listPreview == 'full_list'">
-        <app-calendar-days
-          (selectDay)="selectDay($event)"
-          [index]="indx"
-          [month]="month"
-          [selectedMonth]="month.getMonth()"
-          [year]="selectedYear"
-          [dateTime]="dateTime"
-        ></app-calendar-days>
-      </div>
-      <div *ngIf="listPreview == 'month_list'">
-        <div class="month_list">
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(0)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 0 == selMonth
+        <ng-container
+            *cdkVirtualFor="
+                let month of months;
+                let indx = index;
+                templateCacheSize: 10
             "
-          >
-            JAN
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(1)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 1 == selMonth
-            "
-          >
-            FEB
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(2)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 2 == selMonth
-            "
-          >
-            MAR
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(3)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 3 == selMonth
-            "
-          >
-            APR
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(4)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 4 == selMonth
-            "
-          >
-            MAY
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(5)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 5 == selMonth
-            "
-          >
-            JUN
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(6)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 6 == selMonth
-            "
-          >
-            JUL
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(7)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 7 == selMonth
-            "
-          >
-            AUG
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(8)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 8 == selMonth
-            "
-          >
-            SEP
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(9)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 9 == selMonth
-            "
-          >
-            OCT
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(10)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 10 == selMonth
-            "
-          >
-            NOV
-          </div>
-          <div
-            class="month_list_item"
-            (click)="setCalendarListPreview(11)"
-            [class.current_month]="
-              selectedYearFromInput == month.getFullYear() && 11 == selMonth
-            "
-          >
-            DEC
-          </div>
-        </div>
-      </div>
-    </ng-container>
-  </cdk-virtual-scroll-viewport>
+        >
+            <div class="calendar_indicator">
+                <span *ngIf="listPreview == 'full_list'"
+                    >{{ getMonth(month.getMonth()) }}
+                </span>
+                {{ month.getFullYear() }}
+            </div>
+            <div *ngIf="listPreview == 'full_list'">
+                <app-calendar-days
+                    (selectDay)="selectDay($event)"
+                    [index]="indx"
+                    [month]="month"
+                    [selectedMonth]="month.getMonth()"
+                    [year]="selectedYear"
+                    [dateTime]="dateTime"
+                ></app-calendar-days>
+            </div>
+            <div *ngIf="listPreview == 'month_list'">
+                <div class="month_list">
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(0)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            0 == selMonth
+                        "
+                    >
+                        JAN
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(1)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            1 == selMonth
+                        "
+                    >
+                        FEB
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(2)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            2 == selMonth
+                        "
+                    >
+                        MAR
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(3)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            3 == selMonth
+                        "
+                    >
+                        APR
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(4)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            4 == selMonth
+                        "
+                    >
+                        MAY
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(5)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            5 == selMonth
+                        "
+                    >
+                        JUN
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(6)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            6 == selMonth
+                        "
+                    >
+                        JUL
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(7)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            7 == selMonth
+                        "
+                    >
+                        AUG
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(8)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            8 == selMonth
+                        "
+                    >
+                        SEP
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(9)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            9 == selMonth
+                        "
+                    >
+                        OCT
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(10)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            10 == selMonth
+                        "
+                    >
+                        NOV
+                    </div>
+                    <div
+                        class="month_list_item"
+                        (click)="setCalendarListPreview(11)"
+                        [class.current_month]="
+                            selectedYearFromInput == month.getFullYear() &&
+                            11 == selMonth
+                        "
+                    >
+                        DEC
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </cdk-virtual-scroll-viewport>
 </div>

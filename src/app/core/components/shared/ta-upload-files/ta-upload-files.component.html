@@ -1,75 +1,80 @@
 <div
-  class="ta-upload {{ customClassName }}"
-  [ngClass]="{
-    'ta-upload-small': files.length && size === 'small',
-    'ta-upload-medium-file':
-      files.length && files.length < 2 && size === 'medium',
-    'ta-upload-medium-files':
-      files.length && files.length > 1 && size === 'medium',
-    'ta-upload-large-file':
-      files.length && files.length < 2 && size === 'large',
-    'ta-upload-large-twofiles':
-      files.length && files.length >= 2 && size === 'large',
-    'ta-upload-large-threefiles':
-      files.length && files.length >= 3 && size === 'large',
-    'ta-upload-review-mode': isReview
-  }"
+    class="ta-upload {{ customClassName }}"
+    [ngClass]="{
+        'ta-upload-small': files.length && size === 'small',
+        'ta-upload-medium-file':
+            files.length && files.length < 2 && size === 'medium',
+        'ta-upload-medium-files':
+            files.length && files.length > 1 && size === 'medium',
+        'ta-upload-large-file':
+            files.length && files.length < 2 && size === 'large',
+        'ta-upload-large-twofiles':
+            files.length && files.length >= 2 && size === 'large',
+        'ta-upload-large-threefiles':
+            files.length && files.length >= 3 && size === 'large',
+        'ta-upload-review-mode': isReview
+    }"
 >
-  <!-- Carousel Files -->
-  <app-ta-upload-files-carousel
-    *ngIf="files.length"
-    [files]="files"
-    [hasCarouselBottomTabs]="hasCarouselBottomTabs"
-    [customClass]="size"
-    [customDetailsPageClass]="customClassName"
-    (activeSlide)="currentSlide = $event"
-    [slideWidth]="slideWidth"
-  >
-    <div
-      class="ta-upload-carousel-container"
-      *ngFor="let file of files; let ind = index; trackBy: identity"
+    <!-- Carousel Files -->
+    <app-ta-upload-files-carousel
+        *ngIf="files.length"
+        [files]="files"
+        [hasCarouselBottomTabs]="hasCarouselBottomTabs"
+        [customClass]="size"
+        [customDetailsPageClass]="customClassName"
+        (activeSlide)="currentSlide = $event"
+        [slideWidth]="slideWidth"
     >
-      <div [ngSwitch]="size">
-        <div *ngSwitchCase="'small'">
-          <app-ta-upload-file
-            *ngIf="currentSlide === ind"
-            [file]="file"
-            [hasTag]="hasTag"
-            [isReview]="isReview"
-            [reviewMode]="reviewMode"
-            [feedbackText]="feedbackText"
-            [hasNumberOfPages]="hasNumberOfPages"
-            [customClassName]="customClassName"
-            (fileAction)="onFileAction($event)"
-            (documentReviewInputEvent)="documentReviewInputEventMethod($event)"
-            [tags]="tags"
-            [type]="type"
-          ></app-ta-upload-file>
+        <div
+            class="ta-upload-carousel-container"
+            *ngFor="let file of files; let ind = index; trackBy: identity"
+        >
+            <div [ngSwitch]="size">
+                <div *ngSwitchCase="'small'">
+                    <app-ta-upload-file
+                        *ngIf="currentSlide === ind"
+                        [file]="file"
+                        [hasTag]="hasTag"
+                        [isReview]="isReview"
+                        [reviewMode]="reviewMode"
+                        [feedbackText]="feedbackText"
+                        [hasNumberOfPages]="hasNumberOfPages"
+                        [customClassName]="customClassName"
+                        (fileAction)="onFileAction($event)"
+                        (documentReviewInputEvent)="
+                            documentReviewInputEventMethod($event)
+                        "
+                        [tags]="tags"
+                        [type]="type"
+                    ></app-ta-upload-file>
+                </div>
+                <div *ngSwitchDefault>
+                    <app-ta-upload-file
+                        [file]="file"
+                        [hasTag]="hasTag"
+                        [isReview]="isReview"
+                        [reviewMode]="reviewMode"
+                        [feedbackText]="feedbackText"
+                        [hasNumberOfPages]="hasNumberOfPages"
+                        [customClassName]="customClassName"
+                        (fileAction)="onFileAction($event)"
+                        (documentReviewInputEvent)="
+                            documentReviewInputEventMethod($event)
+                        "
+                        [tags]="tags"
+                        [type]="type"
+                    ></app-ta-upload-file>
+                </div>
+            </div>
         </div>
-        <div *ngSwitchDefault>
-          <app-ta-upload-file
-            [file]="file"
-            [hasTag]="hasTag"
-            [isReview]="isReview"
-            [reviewMode]="reviewMode"
-            [feedbackText]="feedbackText"
-            [hasNumberOfPages]="hasNumberOfPages"
-            [customClassName]="customClassName"
-            (fileAction)="onFileAction($event)"
-            (documentReviewInputEvent)="documentReviewInputEventMethod($event)"
-            [tags]="tags"
-            [type]="type"
-          ></app-ta-upload-file>
-        </div>
-      </div>
-    </div>
-  </app-ta-upload-files-carousel>
-  <app-ta-upload-dropzone
-    *ngIf="
-      customClassName !== 'driver-details-pdf' && reviewMode !== 'REVIEW_MODE'
-    "
-    (onFileEvent)="onUploadFiles($event)"
-    [isRequired]="isRequired"
-    [showRequired]="showRequired"
-  ></app-ta-upload-dropzone>
+    </app-ta-upload-files-carousel>
+    <app-ta-upload-dropzone
+        *ngIf="
+            customClassName !== 'driver-details-pdf' &&
+            reviewMode !== 'REVIEW_MODE'
+        "
+        (onFileEvent)="onUploadFiles($event)"
+        [isRequired]="isRequired"
+        [showRequired]="showRequired"
+    ></app-ta-upload-dropzone>
 </div>

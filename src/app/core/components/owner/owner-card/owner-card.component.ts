@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-owner-card',
-  templateUrl: './owner-card.component.html',
-  styleUrls: ['./owner-card.component.scss'],
+    selector: 'app-owner-card',
+    templateUrl: './owner-card.component.html',
+    styleUrls: ['./owner-card.component.scss'],
 })
 export class OwnerCardComponent implements OnInit {
-  ownerCard: any[] = [
-    {
-      unit: '',
-    },
-  ];
+    ownerCard: any[] = [
+        {
+            unit: '',
+        },
+    ];
 
-  constructor() {}
+    constructor() {}
 
-  ngOnInit(): void {}
+    ngOnInit(): void {}
 }

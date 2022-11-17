@@ -1,426 +1,474 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="m-0 step-title text-center noselect ta-font-bold">7 Days HOS</h1>
+    <h1 class="m-0 step-title text-center noselect ta-font-bold">7 Days HOS</h1>
 
-  <!-- INSTRUCTIONS -->
+    <!-- INSTRUCTIONS -->
 
-  <div
-    class="d-flex flex-column justify-content-center align-items-center instructions-container"
-  >
-    <p
-      class="m-0 text-center ta-font-regular"
-      [ngStyle]="{
-        color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-      }"
+    <div
+        class="d-flex flex-column justify-content-center align-items-center instructions-container"
     >
-      <span class="ta-font-bold">Instructions:</span> Motor Carriers when using
-      a driver for the first time shall obtain from the driver a signed
-      statement giving the total time on-duty during the immediately preceding 7
-      days and time at which such driver was last relived from duty prior to
-      beginning work for such motor carrier. Rule 395.8(j) (2) Federal Motor
-      Carrier Safety Regulations.
-    </p>
-
-    <p
-      class="m-0 text-center ta-font-regular"
-      [ngStyle]="{
-        color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-      }"
-    >
-      <span class="ta-font-bold">NOTE:</span> Hours for any compensated work
-      during the preceding 7 days, including work for a non-motor carrier
-      entity, must be recorded on this form.
-    </p>
-  </div>
-
-  <!-- FORM SECTION -->
-
-  <div class="d-flex flex-column justify-content-center form-section">
-    <form [formGroup]="sevenDaysHosForm">
-      <!-- SEVEN DAYS HOS TABLE -->
-
-      <div
-        class="d-flex flex-column justify-content-center seven-days-hos-table-container"
-      >
-        <table>
-          <tr>
-            <div class="d-flex align-items-center day-container">
-              <th
-                *ngFor="
-                  let day of sevenDaysHosDaysData;
-                  let i = index;
-                  let first = first;
-                  let last = last;
-                  trackBy: trackByIdentity
-                "
-              >
-                <div
-                  class="d-flex day-box"
-                  [ngStyle]="{
-                    width: first ? '35px' : '46px',
-                    'justify-content': first ? 'start' : 'center',
-                    'margin-right': first ? '27px' : last ? '0' : '36px'
-                  }"
-                >
-                  <p
-                    class="m-0 ta-font-bold"
-                    [ngStyle]="{
-                      color:
-                        selectedMode === 'FEEDBACK_MODE' ? '#B7B7B7' : '#919191'
-                    }"
-                  >
-                    {{ day }}
-                  </p>
-                </div>
-              </th>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex align-items-center date-container">
-              <td
-                *ngFor="
-                  let date of sevenDaysHosDateData;
-                  let i = index;
-                  let first = first;
-                  let last = last;
-                  trackBy: trackByIdentity
-                "
-              >
-                <div
-                  class="d-flex date-box"
-                  [ngStyle]="{
-                    width: first ? '35px' : '46px',
-                    'justify-content': first ? 'start' : 'center',
-                    'margin-right': first ? '27px' : last ? '0' : '36px',
-                    'font-size': first ? '14px' : '12px'
-                  }"
-                >
-                  <p
-                    [ngClass]="['date-para' + i, 'm-0 ta-font-bold']"
-                    [ngStyle]="{
-                      color:
-                        selectedMode === 'FEEDBACK_MODE' ? '#B7B7B7' : '#919191'
-                    }"
-                  >
-                    {{ date }}
-                  </p>
-                </div>
-              </td>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex align-items-center input-container">
-              <td>
-                <div class="d-flex align-items-center hos-title-group">
-                  <p
-                    class="m-0 ta-font-bold"
-                    [ngClass]="
-                      selectedMode === 'FEEDBACK_MODE'
-                        ? 'hos-title hos-title-feedback'
-                        : 'hos-title'
-                    "
-                  >
-                    HOS <span>*</span>
-                  </p>
-                </div>
-              </td>
-              <td
-                formArrayName="hosArray"
-                *ngFor="
-                  let input of hosArray?.controls;
-                  let i = index;
-                  trackBy: trackByIdentity
-                "
-              >
-                <div class="d-flex">
-                  <div class="hos-input-group" [formGroupName]="i">
-                    <app-ta-input
-                      formControlName="hos"
-                      [inputConfig]="{
-                        name: 'hos',
-                        type: 'number',
-                        hideClear: true,
-                        textAlign: 'center',
-                        max: 24,
-                        hideErrorMessage: true,
-                        hideRequiredCheck: true,
-                        isDisabled:
-                          selectedMode === 'REVIEW_MODE' ||
-                          selectedMode === 'FEEDBACK_MODE'
-                      }"
-                      (change)="countTotalHours(i)"
-                    ></app-ta-input>
-                  </div>
-                </div>
-              </td>
-            </div>
-          </tr>
-          <tr>
-            <div class="d-flex total-container">
-              <p
-                class="m-0 ta-font-bold"
-                [ngStyle]="{
-                  color:
-                    selectedMode === 'FEEDBACK_MODE' ? '#97A8DC' : '#6d82c7'
-                }"
-              >
-                Total Hours:
-                {{ totalHours | sumArrays }}
-              </p>
-            </div>
-          </tr>
-        </table>
-      </div>
-
-      <!-- VALID HOS  -->
-
-      <div
-        class="d-flex flex-column align-items-center justify-content-center valid-hos-container"
-      >
-        <app-ta-checkbox
-          formControlName="isValidHos"
-          [name]="'isValidHos'"
-          [label]="
-            'I hereby certify that the information given above is correct to the best of my Knowledge '
-          "
-          [customClass]="'bold-12'"
-          [disabledStillCheckMark]="
-            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-          "
-        >
-        </app-ta-checkbox>
         <p
-          class="m-0 text-center ta-font-bold"
-          [ngStyle]="{
-            color: !sevenDaysHosForm.get('isValidHos').value
-              ? '#6c6c6c'
-              : '#2f2f2f',
-            cursor:
-              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-                ? 'auto'
-                : 'pointer'
-          }"
-          (click)="handleCheckboxParagraphClick('isValidHos')"
+            class="m-0 text-center ta-font-regular"
+            [ngStyle]="{
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+            }"
         >
-          and behalf, and that I was released from work on:
+            <span class="ta-font-bold">Instructions:</span> Motor Carriers when
+            using a driver for the first time shall obtain from the driver a
+            signed statement giving the total time on-duty during the
+            immediately preceding 7 days and time at which such driver was last
+            relived from duty prior to beginning work for such motor carrier.
+            Rule 395.8(j) (2) Federal Motor Carrier Safety Regulations.
         </p>
-      </div>
 
-      <h3
-        class="m-0 step-subtitle noselect text-center ta-font-bold"
-        [ngStyle]="{
-          color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-        }"
-      >
-        Date released from work and location?
-      </h3>
-
-      <!-- DATE, LOCATION -->
-
-      <div class="d-flex date-location-container line-container">
-        <div class="group date-group">
-          <app-ta-input
-            formControlName="startDate"
-            [inputConfig]="{
-              name: 'datepicker',
-              type: 'text',
-              label: 'Date',
-              placeholderIcon: 'date',
-              isRequired: true,
-              customClass: 'datetimeclass',
-              isDisabled:
-                selectedMode === 'REVIEW_MODE' ||
-                (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues?.isReleaseDateValid),
-              incorrectInput: selectedMode === 'REVIEW_MODE'
-            }"
-            [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
-            (incorrectEvent)="incorrectInput($event, 0, 0)"
-          ></app-ta-input>
-        </div>
-        <div class="group location-group">
-          <app-input-address-dropdown
-            formControlName="address"
-            [inputConfig]="{
-              name: 'Address',
-              type: 'text',
-              label: 'City, State',
-              isRequired: true,
-              placeholderIcon: 'address',
-              textTransform: 'capitalize',
-              dropdownWidthClass: 'w-col-431',
-              minLength: 6,
-              maxLength: 256,
-              isDisabled:
-                selectedMode === 'REVIEW_MODE' ||
-                (selectedMode === 'FEEDBACK_MODE' &&
-                  stepFeedbackValues?.isLocationValid),
-              incorrectInput: selectedMode === 'REVIEW_MODE'
-            }"
-            [activeAddress]="selectedAddress"
-            [placeholderType]="'shortAddress'"
-            [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
-            (incorrectEvent)="incorrectInput($event, 1, 0)"
-            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-          ></app-input-address-dropdown>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div
-          class="review-feedback-container"
-          *ngIf="
-            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-          "
-        >
-          <app-applicant-review-feedback
-            formControlName="firstRowReview"
-            [displayAnnotationButton]="
-              selectedMode === 'REVIEW_MODE' &&
-              openAnnotationArray[0].displayAnnotationButton
-            "
-            [displayAnnotationTextArea]="
-              selectedMode === 'REVIEW_MODE' &&
-              openAnnotationArray[0].displayAnnotationTextArea
-            "
-            [lineIndex]="0"
-            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-            [feedbackText]="
-              selectedMode === 'FEEDBACK_MODE' &&
-              stepFeedbackValues?.releaseDateLocationMessage
-            "
-            (annotationBtnClickEvent)="
-              selectedMode === 'REVIEW_MODE' &&
-                getAnnotationBtnClickValue($event)
-            "
-          ></app-applicant-review-feedback>
-        </div>
-      </div>
-
-      <!-- INSTRUCTIONS -->
-
-      <div
-        class="d-flex justify-content-center align-items-center instructions-bottom-container"
-      >
         <p
-          class="m-0 text-center ta-font-regular"
-          [ngStyle]="{
-            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-          }"
+            class="m-0 text-center ta-font-regular"
+            [ngStyle]="{
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+            }"
         >
-          <span class="ta-font-bold">Instructions:</span> When employed by motor
-          carrier, a driver must report to the motor carrier all on-duty time
-          working for other employers. The definition of on-duty time found in
-          Section 395.2 paragraphs 8 and 9 of the Federal Motor Carrier Safety
-          Regulations includes time performing any other work in the capacity
-          of, or in the employment or service of a common, contract or private
-          motor carrier, also performing any compensated work for any non-motor
-          carrier entity.
+            <span class="ta-font-bold">NOTE:</span> Hours for any compensated
+            work during the preceding 7 days, including work for a non-motor
+            carrier entity, must be recorded on this form.
         </p>
-      </div>
+    </div>
 
-      <!-- QUESTIONS -->
+    <!-- FORM SECTION -->
 
-      <div class="d-flex flex-column align-items-center questions-container">
-        <div
-          class="d-flex align-items-center justify-content-between question-container"
-          *ngFor="
-            let question of questions;
-            let i = index;
-            trackBy: trackByIdentity
-          "
-        >
-          <div [ngClass]="['title-box' + i, 'title-box']">
-            <p
-              class="m-0 ta-font-regular"
-              [ngClass]="
-                selectedMode === 'FEEDBACK_MODE'
-                  ? 'question-title question-title-feedback'
-                  : 'question-title'
-              "
+    <div class="d-flex flex-column justify-content-center form-section">
+        <form [formGroup]="sevenDaysHosForm">
+            <!-- SEVEN DAYS HOS TABLE -->
+
+            <div
+                class="d-flex flex-column justify-content-center seven-days-hos-table-container"
             >
-              {{ question.title }}
-              <span class="required-star">*</span>
-            </p>
-          </div>
+                <table>
+                    <tr>
+                        <div class="d-flex align-items-center day-container">
+                            <th
+                                *ngFor="
+                                    let day of sevenDaysHosDaysData;
+                                    let i = index;
+                                    let first = first;
+                                    let last = last;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <div
+                                    class="d-flex day-box"
+                                    [ngStyle]="{
+                                        width: first ? '35px' : '46px',
+                                        'justify-content': first
+                                            ? 'start'
+                                            : 'center',
+                                        'margin-right': first
+                                            ? '27px'
+                                            : last
+                                            ? '0'
+                                            : '36px'
+                                    }"
+                                >
+                                    <p
+                                        class="m-0 ta-font-bold"
+                                        [ngStyle]="{
+                                            color:
+                                                selectedMode === 'FEEDBACK_MODE'
+                                                    ? '#B7B7B7'
+                                                    : '#919191'
+                                        }"
+                                    >
+                                        {{ day }}
+                                    </p>
+                                </div>
+                            </th>
+                        </div>
+                    </tr>
+                    <tr>
+                        <div class="d-flex align-items-center date-container">
+                            <td
+                                *ngFor="
+                                    let date of sevenDaysHosDateData;
+                                    let i = index;
+                                    let first = first;
+                                    let last = last;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <div
+                                    class="d-flex date-box"
+                                    [ngStyle]="{
+                                        width: first ? '35px' : '46px',
+                                        'justify-content': first
+                                            ? 'start'
+                                            : 'center',
+                                        'margin-right': first
+                                            ? '27px'
+                                            : last
+                                            ? '0'
+                                            : '36px',
+                                        'font-size': first ? '14px' : '12px'
+                                    }"
+                                >
+                                    <p
+                                        [ngClass]="[
+                                            'date-para' + i,
+                                            'm-0 ta-font-bold'
+                                        ]"
+                                        [ngStyle]="{
+                                            color:
+                                                selectedMode === 'FEEDBACK_MODE'
+                                                    ? '#B7B7B7'
+                                                    : '#919191'
+                                        }"
+                                    >
+                                        {{ date }}
+                                    </p>
+                                </div>
+                            </td>
+                        </div>
+                    </tr>
+                    <tr>
+                        <div class="d-flex align-items-center input-container">
+                            <td>
+                                <div
+                                    class="d-flex align-items-center hos-title-group"
+                                >
+                                    <p
+                                        class="m-0 ta-font-bold"
+                                        [ngClass]="
+                                            selectedMode === 'FEEDBACK_MODE'
+                                                ? 'hos-title hos-title-feedback'
+                                                : 'hos-title'
+                                        "
+                                    >
+                                        HOS <span>*</span>
+                                    </p>
+                                </div>
+                            </td>
+                            <td
+                                formArrayName="hosArray"
+                                *ngFor="
+                                    let input of hosArray?.controls;
+                                    let i = index;
+                                    trackBy: trackByIdentity
+                                "
+                            >
+                                <div class="d-flex">
+                                    <div
+                                        class="hos-input-group"
+                                        [formGroupName]="i"
+                                    >
+                                        <app-ta-input
+                                            formControlName="hos"
+                                            [inputConfig]="{
+                                                name: 'hos',
+                                                type: 'number',
+                                                hideClear: true,
+                                                textAlign: 'center',
+                                                max: 24,
+                                                hideErrorMessage: true,
+                                                hideRequiredCheck: true,
+                                                isDisabled:
+                                                    selectedMode ===
+                                                        'REVIEW_MODE' ||
+                                                    selectedMode ===
+                                                        'FEEDBACK_MODE'
+                                            }"
+                                            (change)="countTotalHours(i)"
+                                        ></app-ta-input>
+                                    </div>
+                                </div>
+                            </td>
+                        </div>
+                    </tr>
+                    <tr>
+                        <div class="d-flex total-container">
+                            <p
+                                class="m-0 ta-font-bold"
+                                [ngStyle]="{
+                                    color:
+                                        selectedMode === 'FEEDBACK_MODE'
+                                            ? '#97A8DC'
+                                            : '#6d82c7'
+                                }"
+                            >
+                                Total Hours:
+                                {{ totalHours | sumArrays }}
+                            </p>
+                        </div>
+                    </tr>
+                </table>
+            </div>
 
-          <div class="radios-box">
-            <app-ta-input-radiobuttons
-              #cmp
-              [buttons]="question.answerChoices"
-              [disabled]="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-              "
-              (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
-            ></app-ta-input-radiobuttons>
-          </div>
-        </div>
-      </div>
+            <!-- VALID HOS  -->
 
-      <!-- VALID ANOTHER EMPLOYER  -->
+            <div
+                class="d-flex flex-column align-items-center justify-content-center valid-hos-container"
+            >
+                <app-ta-checkbox
+                    formControlName="isValidHos"
+                    [name]="'isValidHos'"
+                    [label]="
+                        'I hereby certify that the information given above is correct to the best of my Knowledge '
+                    "
+                    [customClass]="'bold-12'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
+                <p
+                    class="m-0 text-center ta-font-bold"
+                    [ngStyle]="{
+                        color: !sevenDaysHosForm.get('isValidHos').value
+                            ? '#6c6c6c'
+                            : '#2f2f2f',
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="handleCheckboxParagraphClick('isValidHos')"
+                >
+                    and behalf, and that I was released from work on:
+                </p>
+            </div>
 
-      <div
-        class="d-flex flex-column align-items-center justify-content-center valid-another-employer-container"
-      >
-        <app-ta-checkbox
-          formControlName="isValidAnotherEmployer"
-          [name]="'isValidAnotherEmployer'"
-          [label]="
-            'I hereby certify that the information given above is true and I understand that once I begin'
-          "
-          [customClass]="'bold-12'"
-          [disabledStillCheckMark]="
-            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-          "
-        >
-        </app-ta-checkbox>
-        <p
-          class="m-0 text-center ta-font-bold"
-          [ngStyle]="{
-            color: !sevenDaysHosForm.get('isValidAnotherEmployer').value
-              ? '#6c6c6c'
-              : '#2f2f2f',
-            cursor:
-              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-                ? 'auto'
-                : 'pointer'
-          }"
-          (click)="handleCheckboxParagraphClick('isValidAnotherEmployer')"
-        >
-          driving for this company, if I begin working for any additional
-          employer(s) for compensation that <br />
-          I must inform this company immediately of such employment activity.
-        </p>
-      </div>
-    </form>
-  </div>
+            <h3
+                class="m-0 step-subtitle noselect text-center ta-font-bold"
+                [ngStyle]="{
+                    color:
+                        selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+                }"
+            >
+                Date released from work and location?
+            </h3>
+
+            <!-- DATE, LOCATION -->
+
+            <div class="d-flex date-location-container line-container">
+                <div class="group date-group">
+                    <app-ta-input
+                        formControlName="startDate"
+                        [inputConfig]="{
+                            name: 'datepicker',
+                            type: 'text',
+                            label: 'Date',
+                            placeholderIcon: 'date',
+                            isRequired: true,
+                            customClass: 'datetimeclass',
+                            isDisabled:
+                                selectedMode === 'REVIEW_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.isReleaseDateValid),
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
+                        }"
+                        [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
+                        (incorrectEvent)="incorrectInput($event, 0, 0)"
+                    ></app-ta-input>
+                </div>
+                <div class="group location-group">
+                    <app-input-address-dropdown
+                        formControlName="address"
+                        [inputConfig]="{
+                            name: 'Address',
+                            type: 'text',
+                            label: 'City, State',
+                            isRequired: true,
+                            placeholderIcon: 'address',
+                            textTransform: 'capitalize',
+                            dropdownWidthClass: 'w-col-431',
+                            minLength: 6,
+                            maxLength: 256,
+                            isDisabled:
+                                selectedMode === 'REVIEW_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.isLocationValid),
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
+                        }"
+                        [activeAddress]="selectedAddress"
+                        [placeholderType]="'shortAddress'"
+                        [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
+                        (incorrectEvent)="incorrectInput($event, 1, 0)"
+                        (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+                    ></app-input-address-dropdown>
+                </div>
+
+                <!-- REVIEW AND FEEDBACK -->
+
+                <div
+                    class="review-feedback-container"
+                    *ngIf="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                    <app-applicant-review-feedback
+                        formControlName="firstRowReview"
+                        [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[0].displayAnnotationButton
+                        "
+                        [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            openAnnotationArray[0].displayAnnotationTextArea
+                        "
+                        [lineIndex]="0"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.releaseDateLocationMessage
+                        "
+                        (annotationBtnClickEvent)="
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
+                        "
+                    ></app-applicant-review-feedback>
+                </div>
+            </div>
+
+            <!-- INSTRUCTIONS -->
+
+            <div
+                class="d-flex justify-content-center align-items-center instructions-bottom-container"
+            >
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        color:
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? '#919191'
+                                : '#6C6C6C'
+                    }"
+                >
+                    <span class="ta-font-bold">Instructions:</span> When
+                    employed by motor carrier, a driver must report to the motor
+                    carrier all on-duty time working for other employers. The
+                    definition of on-duty time found in Section 395.2 paragraphs
+                    8 and 9 of the Federal Motor Carrier Safety Regulations
+                    includes time performing any other work in the capacity of,
+                    or in the employment or service of a common, contract or
+                    private motor carrier, also performing any compensated work
+                    for any non-motor carrier entity.
+                </p>
+            </div>
+
+            <!-- QUESTIONS -->
+
+            <div
+                class="d-flex flex-column align-items-center questions-container"
+            >
+                <div
+                    class="d-flex align-items-center justify-content-between question-container"
+                    *ngFor="
+                        let question of questions;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div [ngClass]="['title-box' + i, 'title-box']">
+                        <p
+                            class="m-0 ta-font-regular"
+                            [ngClass]="
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? 'question-title question-title-feedback'
+                                    : 'question-title'
+                            "
+                        >
+                            {{ question.title }}
+                            <span class="required-star">*</span>
+                        </p>
+                    </div>
+
+                    <div class="radios-box">
+                        <app-ta-input-radiobuttons
+                            #cmp
+                            [buttons]="question.answerChoices"
+                            [disabled]="
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
+                            "
+                            (changedValue)="
+                                handleInputSelect($event, 'ANSWER-CHOICE')
+                            "
+                        ></app-ta-input-radiobuttons>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VALID ANOTHER EMPLOYER  -->
+
+            <div
+                class="d-flex flex-column align-items-center justify-content-center valid-another-employer-container"
+            >
+                <app-ta-checkbox
+                    formControlName="isValidAnotherEmployer"
+                    [name]="'isValidAnotherEmployer'"
+                    [label]="
+                        'I hereby certify that the information given above is true and I understand that once I begin'
+                    "
+                    [customClass]="'bold-12'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
+                <p
+                    class="m-0 text-center ta-font-bold"
+                    [ngStyle]="{
+                        color: !sevenDaysHosForm.get('isValidAnotherEmployer')
+                            .value
+                            ? '#6c6c6c'
+                            : '#2f2f2f',
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="
+                        handleCheckboxParagraphClick('isValidAnotherEmployer')
+                    "
+                >
+                    driving for this company, if I begin working for any
+                    additional employer(s) for compensation that <br />
+                    I must inform this company immediately of such employment
+                    activity.
+                </p>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center next-btn-container"
+    class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn
-    [nextStep]="true"
-    [filledCorrectly]="
-      sevenDaysHosForm.valid &&
-      (selectedMode === 'APPLICANT_MODE' ||
-        (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
-    "
-    [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && hasIncorrectFields"
-    [mode]="selectedMode"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [nextStep]="true"
+        [filledCorrectly]="
+            sevenDaysHosForm.valid &&
+            (selectedMode === 'APPLICANT_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
+        "
+        [hasIncorrectFields]="
+            selectedMode === 'REVIEW_MODE' && hasIncorrectFields
+        "
+        [mode]="selectedMode"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center back-btn-container"
+    class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn
-    [backStep]="true"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [backStep]="true"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>
