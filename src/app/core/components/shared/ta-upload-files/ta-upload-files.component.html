@@ -23,6 +23,7 @@
     [customClass]="size"
     [customDetailsPageClass]="customClassName"
     (activeSlide)="currentSlide = $event"
+    [slideWidth]="slideWidth"
   >
     <div
       class="ta-upload-carousel-container"
@@ -68,5 +69,7 @@
       customClassName !== 'driver-details-pdf' && reviewMode !== 'REVIEW_MODE'
     "
     (onFileEvent)="onUploadFiles($event)"
+    [isRequired]="isRequired"
+    [showRequired]="showRequired"
   ></app-ta-upload-dropzone>
 </div>

@@ -31,6 +31,8 @@ export class TaUploadFilesComponent implements OnInit {
   @Input() hasCarouselBottomTabs: boolean;
   @Input() tags: any[] = [];
   @Input() type: string; // modal | table | details | todo
+  @Input() isRequired: boolean = false;
+  @Input() showRequired: boolean = false;
 
   @Output() onFileEvent: EventEmitter<{
     files: UploadFile[] | UploadFile | any;
@@ -50,6 +52,7 @@ export class TaUploadFilesComponent implements OnInit {
     file: UploadFile;
     message: string;
   }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
+  @Input() slideWidth: number = 180;
 
   public currentSlide: number = 0;
 

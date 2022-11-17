@@ -24,7 +24,7 @@ export class TaUploadFilesCarouselComponent {
 
   // Multiple slides
   public multipleCurrentSlide: number = 0;
-  public slideWidth: number = 180;
+  @Input() slideWidth: number = 180;
   public translateXMultipleSlides: number = 0;
 
   public onAction(action: string) {
@@ -35,10 +35,13 @@ export class TaUploadFilesCarouselComponent {
         this.activeSlide.emit(this.currentSlide);
         // Multiple slides previous
         if (['medium', 'large'].includes(this.customClass?.toLowerCase())) {
-          if (--this.multipleCurrentSlide <= 0) {
-            this.multipleCurrentSlide = 0;
+          if (this.multipleCurrentSlide <= 0) {
+            const filesShown = ['large'].includes(this.customClass?.toLowerCase()) ? 3 : 2;
+            this.multipleCurrentSlide = this.files.length - filesShown;
+            this.translateXMultipleSlides = this.slideWidth * -this.multipleCurrentSlide;
             return;
           } else {
+            this.multipleCurrentSlide--;
             this.translateXMultipleSlides += this.slideWidth;
           }
         }
@@ -50,22 +53,14 @@ export class TaUploadFilesCarouselComponent {
         this.activeSlide.emit(this.currentSlide);
 
         // Multiple slides previous
-        if (['medium'].includes(this.customClass?.toLowerCase())) {
-          if (++this.multipleCurrentSlide >= this.files.length - 1) {
-            this.multipleCurrentSlide = this.files.length - 1;
-
+        if (['medium', 'large'].includes(this.customClass?.toLowerCase())) {
+          const filesShown = ['large'].includes(this.customClass?.toLowerCase()) ? 4 : 3;
+          if (this.multipleCurrentSlide > this.files.length - filesShown) {
+              this.multipleCurrentSlide = 0;
+              this.translateXMultipleSlides = 0;
             return;
           } else {
-            this.translateXMultipleSlides -= this.slideWidth;
-          }
-        }
-
-        if (['large'].includes(this.customClass?.toLowerCase())) {
-          if (++this.multipleCurrentSlide >= this.files.length - 2) {
-            this.multipleCurrentSlide = this.files.length - 2;
-
-            return;
-          } else {
+            this.multipleCurrentSlide++;
             this.translateXMultipleSlides -= this.slideWidth;
           }
         }

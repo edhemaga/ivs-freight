@@ -4,6 +4,18 @@
   border: 3px dashed #e5e5e5;
   padding: 2px;
 
+  &:hover {
+    border-color: #CCCCCC;
+  }
+
+  &.required {
+    border-color: #E57373;
+
+    &:hover {
+      border-color: #EF5350;
+    }
+  }
+
   .ta-upload-dropzone-label {
     width: 100%;
     height: 100%;
@@ -30,7 +42,7 @@
     .ta-upload-dropzone-text {
       margin: 0;
       margin-top: 18px;
-      color: #b7b7b7;
+      color: #424242;
       font-size: 14px;
       font-weight: 600;
       position: relative;
@@ -49,6 +61,10 @@
         bottom: 3px;
       }
 
+      .required {
+        color: #EF5350 !important
+      }
+
       &.ta-upload-dropzone-text-big {
         font-size: 16px;
         font-weight: 600;
@@ -58,9 +74,13 @@
     &:hover {
       transition: all 0.3 ease-in-out;
       background-color: #eeeeee;
+    }
 
-      .ta-upload-dropzone-text {
-        color: #6c6c6c;
+    &.required {
+      background-color: #E5737333;
+
+      &:hover {
+        background-color: #E573734D;
       }
     }
   }
