@@ -11,6 +11,7 @@ export class DetailsDataService {
     public mainData: any;
     public cardMainTitle: any;
     public leftMenuOpened: any = false;
+    public stopName: any;
 
     constructor() {}
 
@@ -43,4 +44,8 @@ export class DetailsDataService {
             this.mainData.raiting.hasDislike = mod;
         }
     }
+
+    setStopName(mod){
+        this.stopName = mod;
+      }
 }
