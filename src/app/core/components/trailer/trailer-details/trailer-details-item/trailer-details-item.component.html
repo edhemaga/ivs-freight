@@ -74,10 +74,14 @@
                                 toggler[i + 'registration'] ? 'true' : 'false'
                             "
                         >
-                            <div class="divider"></div>
+                            <div
+                                class="divider"
+                                *ngIf="reg?.files?.length"
+                            ></div>
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!reg?.files?.length"
+                                *ngIf="reg?.files?.length"
                             >
                                 <div class="icon-counter-wrapper">
                                     <div
@@ -194,10 +198,14 @@
                                 toggler[i + 'fhwa'] ? 'true' : 'false'
                             "
                         >
-                            <div class="divider"></div>
+                            <div
+                                class="divider"
+                                *ngIf="fhwa?.files?.length"
+                            ></div>
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!fhwa?.files?.length"
+                                *ngIf="fhwa?.files?.length"
                             >
                                 <div class="icon-counter-wrapper">
                                     <div
@@ -324,10 +332,14 @@
                                 toggler[i + 'title'] ? 'true' : 'false'
                             "
                         >
-                            <div class="divider"></div>
+                            <div
+                                class="divider"
+                                *ngIf="title?.files?.length"
+                            ></div>
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!title?.files?.length"
+                                *ngIf="title?.files?.length"
                             >
                                 <div class="icon-counter-wrapper">
                                     <div

@@ -88,12 +88,14 @@ export class FuelTService {
         return this.fuelService.apiFuelFuelstopIdGet(fuelId);
     }
 
-    public addFuelStop(data: any /*AddFuelStopCommand*/): Observable<CreateResponse> {
+    public addFuelStop(
+        data: any /*AddFuelStopCommand*/
+    ): Observable<CreateResponse> {
         const sortedParams = getFunctionParams(
             this.fuelService.apiFuelFuelstopPost,
             data
         );
-        
+
         return this.fuelService.apiFuelFuelstopPost(...sortedParams);
     }
 

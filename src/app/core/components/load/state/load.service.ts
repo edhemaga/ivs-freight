@@ -94,12 +94,14 @@ export class LoadTService {
         );
     }
 
-    public createLoad(data: any /*CreateLoadCommand*/): Observable<CreateResponse> {
+    public createLoad(
+        data: any /*CreateLoadCommand*/
+    ): Observable<CreateResponse> {
         const sortedParams = getFunctionParams(
             this.loadServices.apiLoadPost,
             data
         );
-        
+
         return this.loadServices.apiLoadPost(...sortedParams);
     }
 
