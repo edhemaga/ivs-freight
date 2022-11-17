@@ -12,7 +12,6 @@ import {
 import {
     CdkDragDrop,
     moveItemInArray,
-    transferArrayItem,
     CdkDragMove,
 } from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
@@ -27,11 +26,10 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
-import { distinctUntilChanged, Subject, takeUntil, filter } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { RoutingStateService } from '../state/routing-state/routing-state.service';
 import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { LongLat } from '../../../../../../appcoretruckassist/model/longLat';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 declare var google: any;
@@ -873,21 +871,13 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         );
     }
 
-    dropStops(event: CdkDragDrop<string[]>, dropArray, route) {
+    dropStops(event: CdkDragDrop<string[]>, dropArray, index) {
         moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
 
-        console.log('dropStops', event, dropArray, route);
-
-        route.stops.map((stop, stopIndex) => {
-            stop.orderNumber = stopIndex + 1;
-        });
-
-        this.getRouteShape(route);
-
-        // this.calculateDistanceBetweenStops(index);
-        // this.calculateRouteWidth(
-        //     this.tableData[this.selectedMapIndex].routes[index]
-        // );
+        this.calculateDistanceBetweenStops(index);
+        this.calculateRouteWidth(
+            this.tableData[this.selectedMapIndex].routes[index]
+        );
     }
 
     showHideRoute(event, route) {
@@ -964,7 +954,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         event.stopPropagation();
         event.preventDefault();
 
-        this.DetailsDataService.setStopName(route.stops[index]['cityAddress']);
         this.routingService
             .deleteStopById(route.stops[index].id, route.id)
             .pipe(takeUntil(this.destroy$))
@@ -972,28 +961,23 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 next: () => {
                     console.log('deleteStopById success');
 
-                    route.stops.splice(index, 1);
-
-                    var stopArr = [];
-                    route.stops.map((stop, stopIndex) => {
-                        stop.orderNumber = stopIndex + 1;
-
-                        var stopObj = <any>{
-                            id: stop.id ? stop.id : 0,
-                            address: stop.address,
-                            leg: null,
-                            total: null,
-                            longitude: stop.long,
-                            latitude: stop.lat,
-                            orderNumber: stop.orderNumber,
-                        };
-
-                        stopArr.push(stopObj);
-                    });
-
                     if (route.stops.length > 1) {
                         this.getRouteShape(route);
                     } else {
+                        var stopArr = [];
+                        route.stops.map((stop) => {
+                            var stopObj = <any>{
+                                id: stop.id ? stop.id : 0,
+                                address: stop.address,
+                                leg: null,
+                                total: null,
+                                longitude: stop.long,
+                                latitude: stop.lat,
+                            };
+
+                            stopArr.push(stopObj);
+                        });
+
                         var updateRouteObj = {
                             id: route.id,
                             name: route.name,
@@ -1026,12 +1010,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 },
             });
 
-        // const routeIndex = this.getRouteIndexById(route.id);
+        const routeIndex = this.getRouteIndexById(route.id);
 
-        // route.stops.splice(index, 1);
+        route.stops.splice(index, 1);
 
-        // this.calculateDistanceBetweenStops(routeIndex);
-        // this.calculateRouteWidth(route);
+        this.calculateDistanceBetweenStops(routeIndex);
+        this.calculateRouteWidth(route);
 
         this.ref.detectChanges();
         this.dropdownElement._results.map((item) => {
@@ -1253,7 +1237,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 var stopArr = [];
                 this.tableData[this.selectedMapIndex].routes[
                     this.focusedRouteIndex
-                ].stops.map((stop, stopIndex) => {
+                ].stops.map((stop) => {
                     var stopObj = <any>{
                         id: stop.id ? stop.id : 0,
                         address: stop.address,
@@ -1261,7 +1245,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         total: null,
                         longitude: stop.long,
                         latitude: stop.lat,
-                        orderNumber: stopIndex + 1,
                     };
 
                     stopArr.push(stopObj);
@@ -1596,88 +1579,35 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             );
 
             const newRoute = JSON.parse(JSON.stringify(route));
-            newRoute.id = 0;
+            newRoute.id = lastId + 1;
             newRoute.isFocused = false;
             newRoute.expanded = false;
             newRoute.expandFinished = false;
             newRoute.hover = false;
             newRoute.nameHover = false;
             newRoute.stops.map((stop) => {
-                stop.id = 0;
+                stop.isSelected = false;
             });
 
             newRoute.color = this.findRouteColor();
 
             if (this.tableData[this.selectedMapIndex].routes.length < 8) {
-                //this.tableData[this.selectedMapIndex].routes.push(newRoute);
+                this.tableData[this.selectedMapIndex].routes.push(newRoute);
             }
 
             this.showHideDuplicate();
 
-            console.log(
-                'duplicate route',
-                this.tableData[this.selectedMapIndex]
+            this.tableData[this.selectedMapIndex].length =
+                this.tableData[this.selectedMapIndex].routes.length;
+
+            this.calculateDistanceBetweenStops(
+                this.tableData[this.selectedMapIndex].routes.length - 1
             );
-
-            const newData: any = {
-                name: newRoute.name,
-                mapId: this.tableData[this.selectedMapIndex].id,
-            };
-            this.routingService
-                .addRoute(newData)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res) => {
-                        console.log('duplicate route res', res);
-
-                        var updateRouteObj = {
-                            id: res.id,
-                            name: newRoute.name,
-                            shape: newRoute.shape,
-                            stops: newRoute.stops,
-                        };
-
-                        console.log('duplicate route', route);
-                        console.log('duplicate newRoute', newRoute);
-                        console.log('duplicate updateRouteObj', updateRouteObj);
-
-                        this.routingService
-                            .updateRoute(updateRouteObj)
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe({
-                                next: () => {
-                                    this.notificationService.success(
-                                        'Successfuly updated route.',
-                                        'Success'
-                                    );
-                                },
-                                error: () => {
-                                    this.notificationService.error(
-                                        "Can't update route.",
-                                        'Error'
-                                    );
-                                },
-                            });
-                    },
-                    error: () => {
-                        this.notificationService.error(
-                            "Can't add route.",
-                            'Error'
-                        );
-                    },
-                });
-
-            // this.tableData[this.selectedMapIndex].length =
-            //   this.tableData[this.selectedMapIndex].routes.length;
-
-            // this.calculateDistanceBetweenStops(
-            //   this.tableData[this.selectedMapIndex].routes.length - 1
-            // );
-            // this.calculateRouteWidth(
-            //   this.tableData[this.selectedMapIndex].routes[
-            //     this.tableData[this.selectedMapIndex].routes.length - 1
-            //   ]
-            // );
+            this.calculateRouteWidth(
+                this.tableData[this.selectedMapIndex].routes[
+                    this.tableData[this.selectedMapIndex].routes.length - 1
+                ]
+            );
         }
     }
 
@@ -1715,63 +1645,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             });
 
             setTimeout(() => {
-                var stopsCopy = JSON.parse(JSON.stringify(route.stops));
-
                 route.stops = route.stops.reverse();
 
-                // route.stops.map((stop, stopIndex) => {
-                //   stop.orderNumber = stopsCopy[stopIndex].orderNumber;
-                // });
-
-                var stopArr = [];
-                route.stops.map((stop, stopIndex) => {
-                    stop.orderNumber = stopsCopy[stopIndex].orderNumber;
-
-                    var stopObj = <any>{
-                        id: stop.id,
-                        address: stop.address,
-                        leg: stop.leg,
-                        total: stop.total,
-                        longitude: stop.long,
-                        latitude: stop.lat,
-                        orderNumber: stop.orderNumber,
-                    };
-
-                    stopArr.push(stopObj);
-                });
-
-                this.getRouteShape(route);
-
-                // var updateRouteObj = {
-                //   id: route.id,
-                //   name: route.name,
-                //   shape: route.shape,
-                //   stops: stopArr,
-                // };
-                // console.log('updateRouteObj', updateRouteObj);
-
-                // this.routingService
-                //   .updateRoute(updateRouteObj)
-                //   .pipe(takeUntil(this.destroy$))
-                //   .subscribe({
-                //     next: () => {
-                //       this.notificationService.success(
-                //         'Successfuly updated route.',
-                //         'Success'
-                //       );
-                //     },
-                //     error: () => {
-                //       this.notificationService.error(
-                //         "Can't update route.",
-                //         'Error'
-                //       );
-                //     },
-                //   });
-
-                console.log('reverse route.stops', route.stops);
-
-                //this.calculateDistanceBetweenStops(routeIndex);
-                //this.calculateRouteWidth(route);
+                this.calculateDistanceBetweenStops(routeIndex);
+                this.calculateRouteWidth(route);
                 this.ref.detectChanges();
             }, 200);
         }
@@ -1787,32 +1664,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         }
 
         if (route && route.stops && route.stops.length) {
-            var updateRouteObj = {
-                id: route.id,
-                name: route.name,
-                shape: route.shape,
-                stops: [],
-            };
-
-            this.routingService
-                .updateRoute(updateRouteObj)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: () => {
-                        this.notificationService.success(
-                            'Successfuly updated route.',
-                            'Success'
-                        );
-                    },
-                    error: () => {
-                        this.notificationService.error(
-                            "Can't update route.",
-                            'Error'
-                        );
-                    },
-                });
-
-            //route.stops = [];
+            route.stops = [];
         }
     }
 
@@ -2542,13 +2394,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         event.preventDefault();
 
         if (this.stopPickerLocation.editIndex != null) {
-            this.deleteRouteStop(
-                event,
-                this.tableData[this.selectedMapIndex].routes[
-                    this.focusedRouteIndex
-                ],
-                this.stopPickerLocation.editIndex
-            );
+            this.tableData[this.selectedMapIndex].routes[
+                this.focusedRouteIndex
+            ].stops.splice(this.stopPickerLocation.editIndex, 1);
         }
 
         this.stopPickerLocation = {};
@@ -2957,7 +2805,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             long: stop.longitude,
                             leg: stop.leg,
                             total: stop.total,
-                            orderNumber: stop.orderNumber,
                         };
 
                         stopsArr.push(stopObj);
@@ -2973,7 +2820,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         stopTime: '',
                         mpg: '',
                         fuelPrice: '',
-                        shape: route.shape,
                         stops: stopsArr,
                         color: this.findRouteColor(),
                         isFocused: this.focusedRouteIndex == index,
@@ -3100,7 +2946,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     getRouteShape(route) {
         var stopsLatLong = [];
         var stopArr = [];
-        route.stops.map((stop, stopIndex) => {
+        route.stops.map((stop) => {
             stopsLatLong.push({ latitude: stop.lat, longitude: stop.long });
 
             var stopObj = <any>{
@@ -3110,9 +2956,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 total: null,
                 longitude: stop.long,
                 latitude: stop.lat,
-                orderNumber: stop.orderNumber
-                    ? stop.orderNumber
-                    : stopIndex + 1,
             };
 
             stopArr.push(stopObj);

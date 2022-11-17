@@ -1,17 +1,6 @@
 import { CalendarScrollService } from './../calendar-scroll.service';
-import {
-    Component,
-    forwardRef,
-    HostListener,
-    Input,
-    OnChanges,
-    OnInit,
-    ViewChild,
-} from '@angular/core';
-import {
-    CdkVirtualScrollViewport,
-    VIRTUAL_SCROLL_STRATEGY,
-} from '@angular/cdk/scrolling';
+import { Component, forwardRef, Input, OnChanges, OnInit } from '@angular/core';
+import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { Subject, takeUntil } from 'rxjs';
 import {
     CalendarStrategy,

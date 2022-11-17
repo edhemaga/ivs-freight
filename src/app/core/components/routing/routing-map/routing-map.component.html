@@ -286,7 +286,7 @@
                             cdkDropList
                             [cdkDropListDisabled]="route.stops.length < 2"
                             (cdkDropListDropped)="
-                                dropStops($event, route.stops, route)
+                                dropStops($event, route.stops, i)
                             "
                         >
                             <div
@@ -446,10 +446,7 @@
                                                     item.value.checkMainValue
                                                 ]) ||
                                                 !item.value.checkMainValue) &&
-                                            ((b > 0 &&
-                                                stop[item.value.value] !=
-                                                    null) ||
-                                                b == 0) &&
+                                            stop[item.value.value] != null &&
                                             ((item.value.expandedOnly &&
                                                 route.expanded &&
                                                 route.expandFinished) ||
@@ -929,7 +926,7 @@
                             cdkDropList
                             [cdkDropListDisabled]="route.stops.length < 2"
                             (cdkDropListDropped)="
-                                dropStops($event, route.stops, route)
+                                dropStops($event, route.stops, i)
                             "
                         >
                             <div

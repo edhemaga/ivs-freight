@@ -40,10 +40,7 @@
             >
                 <a
                     class="d-flex align-items-center ta-font-medium"
-                    [routerLink]="[
-                        menuItem.route,
-                        applicant ? applicant.id : 1
-                    ]"
+                    [routerLink]="[menuItem.route, applicantId]"
                 >
                     <svg-icon
                         class="nav-icon"

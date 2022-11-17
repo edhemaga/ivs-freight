@@ -1,13 +1,5 @@
-import { ActivatedRoute, Router } from '@angular/router';
-import { OnChanges, SimpleChanges } from '@angular/core';
-import {
-    Component,
-    Input,
-    OnInit,
-    Output,
-    EventEmitter,
-    ViewEncapsulation,
-} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'app-ta-details-header',

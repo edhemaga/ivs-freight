@@ -2,20 +2,13 @@ import { CalendarScrollService } from './../calendar-scroll.service';
 import {
     Component,
     EventEmitter,
-    HostListener,
     Input,
     OnInit,
     Output,
-    ViewChild,
-    OnDestroy,
-    AfterViewInit,
     OnChanges,
     forwardRef,
 } from '@angular/core';
-import {
-    CdkVirtualScrollViewport,
-    VIRTUAL_SCROLL_STRATEGY,
-} from '@angular/cdk/scrolling';
+import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import {
     CalendarStrategy,
     STARTING_YEAR,

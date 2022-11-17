@@ -1,10 +1,4 @@
-import {
-    Component,
-    OnInit,
-    ViewEncapsulation,
-    ViewChild,
-    OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { AccidentModalComponent } from '../../../modals/accident-modal/accident-modal.component';

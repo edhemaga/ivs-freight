@@ -22,10 +22,14 @@
 <ng-template #dropdownPopover let-data="data">
     <div class="dropdown-main-popover-body">
         <div class="details-dropdown-body">
-            <div *ngFor="let action of options;let i=index; trackBy:identity">
+            <div
+                *ngFor="let action of options;let i=index; trackBy:identity"
+                class="autoClass"
+            >
                 <div
                     class="action-holder"
                     @showAnimation
+                    [@.disabled]="isAnimated"
                     [class.leftIcon]="leftIcon"
                     [class.disabledAction]="action.disabled"
                     [class.disabledActionMain]="action.disabled"
@@ -47,6 +51,7 @@
                 <div
                     class="action-holder subTypeHolder"
                     @showAnimation
+                    [@.disabled]="isAnimated"
                     [class.leftIcon]="leftIcon"
                     [class.hoveredSubtype]="subtypeHovered == i && action.openSubtype"
                     [class.disabledAction]="action.disabled"
@@ -80,6 +85,7 @@
                 <div
                     class="border-holder"
                     @borderShowAnimation
+                    [@.disabled]="isAnimated"
                     *ngIf="action.title == 'border'"
                 >
                     <div class="action-border-line"></div>

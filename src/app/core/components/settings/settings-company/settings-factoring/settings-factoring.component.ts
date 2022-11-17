@@ -16,6 +16,7 @@ import {
     ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { OnInit } from '@angular/core';
+import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 
 @Component({
     selector: 'app-settings-factoring',
@@ -34,7 +35,8 @@ export class SettingsFactoringComponent
         private notificationService: NotificationService,
         private companyStore: CompanyStore,
         private confirmationService: ConfirmationService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private DetailsDataService: DetailsDataService
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -90,6 +92,9 @@ export class SettingsFactoringComponent
     }
 
     public onDeleteFactoringCompany() {
+        this.DetailsDataService.setCardMainTitle(
+            this.factoringData['factoringCompany']['name']
+        );
         this.modalService.openModal(
             ConfirmationModalComponent,
             { size: 'small' },

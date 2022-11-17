@@ -13,7 +13,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
-import { ToastNoAnimationModule, ToastrModule } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
