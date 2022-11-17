@@ -6,12 +6,7 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import {
-    LoadResponse,
-    LoadStopResponse,
-    SignInResponse,
-    UpdateCommentCommand,
-} from 'appcoretruckassist';
+import { UpdateCommentCommand } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';

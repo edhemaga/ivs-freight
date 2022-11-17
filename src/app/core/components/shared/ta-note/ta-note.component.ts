@@ -1,13 +1,11 @@
 import {
     ChangeDetectorRef,
     Component,
-    ElementRef,
     EventEmitter,
     Input,
     OnDestroy,
     OnInit,
     Output,
-    QueryList,
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';

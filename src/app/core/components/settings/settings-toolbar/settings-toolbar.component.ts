@@ -1,22 +1,11 @@
-import {
-    Component,
-    OnInit,
-    ChangeDetectionStrategy,
-    OnChanges,
-    SimpleChanges,
-    Input,
-    ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { OfficeStore } from '../settings-location/settings-office/state/company-office.store';
 import { ParkingStore } from '../settings-location/settings-parking/parking-state/company-parking.store';
 import { CompanyRepairShopStore } from '../settings-location/settings-repair-shop/state/company-repairshop.store';
 import { TerminalStore } from '../settings-location/settings-terminal/state/company-terminal.store';
-import { CompanyQuery } from '../state/company-state/company-settings.query';
-import { CompanyStore } from '../state/company-state/company-settings.store';
 import { OnDestroy } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { CompanyResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-settings-toolbar',

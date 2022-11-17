@@ -44,6 +44,8 @@ export class PmTruckTrailerComponent implements OnInit {
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                showGeneralPmBtn: true,
+                hideOpenModalButton: true,
                 viewModeOptions: [
                     { name: 'List', active: this.activeViewMode === 'List' },
                     { name: 'Card', active: this.activeViewMode === 'Card' },

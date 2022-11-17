@@ -1,4 +1,3 @@
-import { DriverTabData } from 'src/app/core/model/driver';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({

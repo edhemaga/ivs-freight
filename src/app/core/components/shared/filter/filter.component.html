@@ -135,6 +135,7 @@
                     *ngFor="let item of selectedUser; let indx = index"
                     class="user-main-holder"
                     [@inOutAnimation]="'in'"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                     (click)="removeFromSelectedUser(item, indx)"
                 >
                     <div class="user-profile-img" *ngIf="type == 'userFilter'">
@@ -230,6 +231,7 @@
                         *ngFor="let item of usaSelectedStates; let indx = index"
                         class="user-main-holder holder-bottom-margin"
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         (click)="removeFromSelectedUser(item, indx)"
                     >
                         <div
@@ -311,6 +313,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -350,6 +353,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -377,6 +381,7 @@
                         class="user-frame-holder"
                     >
                         <div
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
                             [@inOutAnimation]="'in'"
                             *ngIf="!item.hidden && !item.isSelected"
                             (click)="addToSelectedUser(item, indx, 'pending')"
@@ -410,6 +415,7 @@
                     >
                         <div
                             [@inOutAnimation]="'in'"
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
                             *ngIf="!item.hidden && !item.isSelected"
                             (click)="addToSelectedUser(item, indx, 'active')"
                             class="user-main-holder"
@@ -437,6 +443,7 @@
                     >
                         <div
                             [@inOutAnimation]="'in'"
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
                             *ngIf="!item.hidden && !item.isSelected"
                             (click)="addToSelectedUser(item, indx, 'closed')"
                             class="user-main-holder"
@@ -461,6 +468,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -483,6 +491,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -499,6 +508,7 @@
                 <div
                     *ngFor="let item of categoryRepairArray; let indx = index"
                     class="user-frame-holder"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     <div
                         [@inOutAnimation]="'in'"
@@ -524,6 +534,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -543,6 +554,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -562,6 +574,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -581,6 +594,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -600,6 +614,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -639,6 +654,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -661,6 +677,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder"
@@ -686,6 +703,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx)"
                         class="user-main-holder state-main-holder"
@@ -711,6 +729,7 @@
                 >
                     <div
                         [@inOutAnimation]="'in'"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                         *ngIf="!item.hidden && !item.isSelected"
                         (click)="addToSelectedUser(item, indx, 'canada')"
                         class="user-main-holder state-main-holder"
@@ -770,6 +789,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == 'Today'"
                     (click)="setTimeValue('Today')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     Today
                     <div class="selected-icon">
@@ -787,6 +807,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == 'Yesterday'"
                     (click)="setTimeValue('Yesterday')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     Yesterday
                     <div class="selected-icon">
@@ -807,6 +828,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == 'This week'"
                     (click)="setTimeValue('This week')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     This week
                     <div class="selected-icon">
@@ -824,6 +846,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == 'Last week'"
                     (click)="setTimeValue('Last week')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     Last week
                     <div class="selected-icon">
@@ -841,6 +864,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == '1 week'"
                     (click)="setTimeValue('1 week')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     1 week
                     <div class="selected-icon">
@@ -861,6 +885,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == 'This month'"
                     (click)="setTimeValue('This month')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     This month
                     <div class="selected-icon">
@@ -878,6 +903,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == 'Last month'"
                     (click)="setTimeValue('Last month')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     Last month
                     <div class="selected-icon">
@@ -895,6 +921,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == '1 month'"
                     (click)="setTimeValue('1 month')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     1 month
                     <div class="selected-icon">
@@ -912,6 +939,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == '3 months'"
                     (click)="setTimeValue('3 months')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     3 months
                     <div class="selected-icon">
@@ -932,6 +960,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == 'This quarter'"
                     (click)="setTimeValue('This quarter')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     This quarter
                     <div class="selected-icon">
@@ -949,6 +978,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == 'Last quarter'"
                     (click)="setTimeValue('Last quarter')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     Last quarter
                     <div class="selected-icon">
@@ -969,6 +999,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == 'This year'"
                     (click)="setTimeValue('This year')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     This year
                     <div class="selected-icon">
@@ -986,6 +1017,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == '1 year'"
                     (click)="setTimeValue('1 year')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     1 year
                     <div class="selected-icon">
@@ -1003,6 +1035,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == lastYear"
                     (click)="setTimeValue(lastYear)"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     {{ lastYear }}
                     <div class="selected-icon">
@@ -1020,6 +1053,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == last2Years"
                     (click)="setTimeValue(last2Years)"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     {{ last2Years }}
                     <div class="selected-icon">
@@ -1040,6 +1074,7 @@
                     class="time-items"
                     [class.active]="selectedTimeValue == 'Custom'"
                     (click)="setTimeValue('Custom')"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
                     Custom
                     <div class="selected-icon">
@@ -1086,7 +1121,10 @@
             </div>
             <div class="border-filter money-top-border-magin"></div>
             <div class="single-form-holder" *ngIf="subType != 'all'">
-                <div class="money-main-holder single-money-main">
+                <div
+                    class="money-main-holder single-money-main"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
+                >
                     <div class="money-value-holder">
                         <app-ta-input
                             formControlName="singleFrom"
@@ -1118,10 +1156,20 @@
             </div>
             <div class="multi-form-holder" *ngIf="subType == 'all'">
                 <div class="form-header" [class.hiddenFormTitle]="!showPart1">
-                    <div class="form-name" *ngIf="!fuelType">
+                    <div
+                        class="form-name"
+                        *ngIf="!fuelType"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
                         Invoice Ageing
                     </div>
-                    <div class="form-name" *ngIf="fuelType">Last Price</div>
+                    <div
+                        class="form-name"
+                        *ngIf="fuelType"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
+                        Last Price
+                    </div>
                     <div
                         class="clear-money-form"
                         *ngIf="
@@ -1149,7 +1197,10 @@
                     class="money-main-holder"
                     [@closeForm]="showPart1 ? 'true' : 'false'"
                 >
-                    <div class="money-value-holder">
+                    <div
+                        class="money-value-holder"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
                         <app-ta-input
                             formControlName="multiFromFirstFrom"
                             [inputConfig]="{
@@ -1164,6 +1215,7 @@
                     <div
                         class="money-value-holder"
                         [class.errorForm]="multiFormFirstError"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                     >
                         <app-ta-input
                             formControlName="multiFromFirstTo"
@@ -1182,10 +1234,18 @@
                     [class.hiddenFormBorder]="!showPart1"
                 ></div>
                 <div class="form-header" [class.hiddenFormTitle]="!showPart2">
-                    <div class="form-name" *ngIf="!fuelType">
+                    <div
+                        class="form-name"
+                        *ngIf="!fuelType"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
                         Available Credit
                     </div>
-                    <div class="form-name" *ngIf="fuelType">
+                    <div
+                        class="form-name"
+                        *ngIf="fuelType"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
                         Price Per Gallon
                     </div>
                     <div
@@ -1215,7 +1275,10 @@
                     class="money-main-holder"
                     [@closeForm]="showPart2 ? 'true' : 'false'"
                 >
-                    <div class="money-value-holder">
+                    <div
+                        class="money-value-holder"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
                         <app-ta-input
                             formControlName="multiFormSecondFrom"
                             [inputConfig]="{
@@ -1230,6 +1293,7 @@
                     <div
                         class="money-value-holder"
                         [class.errorForm]="multiFormSecondError"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                     >
                         <app-ta-input
                             formControlName="multiFormSecondTo"
@@ -1248,8 +1312,20 @@
                     [class.hiddenFormBorder]="!showPart2"
                 ></div>
                 <div class="form-header" [class.hiddenFormTitle]="!showPart3">
-                    <div class="form-name" *ngIf="!fuelType">Revenue</div>
-                    <div class="form-name" *ngIf="fuelType">Total Cost</div>
+                    <div
+                        class="form-name"
+                        *ngIf="!fuelType"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
+                        Revenue
+                    </div>
+                    <div
+                        class="form-name"
+                        *ngIf="fuelType"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
+                        Total Cost
+                    </div>
                     <div
                         class="clear-money-form"
                         *ngIf="
@@ -1277,7 +1353,10 @@
                     class="money-main-holder"
                     [@closeForm]="showPart3 ? 'true' : 'false'"
                 >
-                    <div class="money-value-holder">
+                    <div
+                        class="money-value-holder"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
                         <app-ta-input
                             formControlName="multiFormThirdFrom"
                             [inputConfig]="{
@@ -1292,6 +1371,7 @@
                     <div
                         class="money-value-holder"
                         [class.errorForm]="multiFormThirdError"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
                     >
                         <app-ta-input
                             formControlName="multiFormThirdTo"
@@ -1359,6 +1439,7 @@
             <div
                 class="filter-middle-holder"
                 [class.emptySliderState]="rangeValue == 0"
+                [@showAnimation]="activeFilter ? 'true' : 'false'"
             >
                 <app-ta-ngx-slider
                     [sliderOptions]="sliderData"
@@ -1397,6 +1478,7 @@
                 class="filter-middle-holder location-middle-padding"
                 [formGroup]="locationForm"
                 *ngIf="type == 'locationFilter'"
+                [@showAnimation]="activeFilter ? 'true' : 'false'"
             >
                 <app-input-address-dropdown
                     formControlName="address"
@@ -1422,6 +1504,7 @@
             <div
                 class="filter-middle-holder location-slider-middle-padding"
                 *ngIf="type == 'locationFilter'"
+                [@showAnimation]="activeFilter ? 'true' : 'false'"
             >
                 <app-ta-ngx-slider
                     [sliderOptions]="locationSliderData"
@@ -1483,6 +1566,7 @@
                 </div>
                 <div
                     class="filter-middle-holder slider-two-holder"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                     [class.closePointers]="
                         (rangeDiffNum < 670 && type != 'payFilter') ||
                         (rangeDiffNum < 2600 && type == 'payFilter')

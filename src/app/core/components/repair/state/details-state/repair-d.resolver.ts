@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    Resolve,
-    ActivatedRouteSnapshot,
-    RouterStateSnapshot,
-} from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
 import { RepairDService } from './repair-d.service';
 import { RepairDState } from './repair-d.store';

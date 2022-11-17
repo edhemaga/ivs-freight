@@ -1,9 +1,9 @@
-import { Pipe } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'formatPhoneP',
 })
-export class formatPhonePipe {
+export class formatPhonePipe implements PipeTransform {
     transform(phone: string) {
         if (phone) {
             const number = phone?.replace(
