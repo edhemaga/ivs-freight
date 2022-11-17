@@ -1,7 +1,7 @@
-<div class="marker-tool-tip" *ngIf="type != 'cluster'">
+<div class="marker-tool-tip">
     <div class="marker-info-container-all">
         <div class="title-container">
-            <div class="marker-business-name text-ellipsis">{{ title }}</div>
+            <div class="marker-business-name">{{ title }}</div>
             <div
                 class="show-more"
                 (click)="showMoreOptions($event)"
@@ -194,7 +194,7 @@
             </span>
         </div>
     </div>
-    <div *ngIf="type == 'repairShop' && item?.serviceTypes?.length">
+    <div *ngIf="type == 'repairShop'">
         <div class="marker-divider"></div>
         <div class="marker-info-container-all">
             <div class="marker-repair-icons-container">
@@ -443,7 +443,7 @@
             </div>
             <div class="marker-divider"></div>
         </div>
-        <div *ngIf="type == 'repairShop' && item?.openHours?.length">
+        <div *ngIf="type == 'repairShop' && item?.openHours">
             <div class="marker-info-container-all">
                 <div class="marker-title">Working Hours</div>
                 <div
@@ -507,18 +507,14 @@
                         </div>
                         <div
                             class="marker-info-text"
-                            *ngIf="
-                                item.openHours && item.openHours[6].startTime
-                            "
+                            *ngIf="item.openHours[6].startTime"
                         >
                             {{ item.openHours[6].startTime }} -
                             {{ item.openHours[6].endTime }}
                         </div>
                         <div
                             class="marker-info-text"
-                            *ngIf="
-                                !item.openHours || !item.openHours[6].startTime
-                            "
+                            *ngIf="!item.openHours[6].startTime"
                         >
                             Closed
                         </div>
@@ -747,28 +743,5 @@
             [ngClass]="{ rotate: item?.isExpanded }"
             [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
         ></svg-icon>
-    </div>
-</div>
-
-<div class="cluster-list" *ngIf="type == 'cluster'">
-    <div class="cluster-list-header">
-        <div class="header-content">
-            <div class="cluster-count">
-                <div class="header-text">{{ item.count }}</div>
-            </div>
-            <div class="header-text" [style]="{ 'margin-left': '4px' }">
-                {{ title }}
-            </div>
-        </div>
-        <div class="divider"></div>
-    </div>
-    <div class="cluster-list-content">
-        <div
-            class="cluster-list-item"
-            (click)="openClusterItemInfo(item2)"
-            *ngFor="let item2 of item.names"
-        >
-            {{ item2.name }}
-        </div>
     </div>
 </div>

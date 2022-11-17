@@ -15,7 +15,6 @@ import {
     RepairShopService,
     UpdateRepairShopCommand,
     RepairListResponse,
-    ClusterResponse,
     RepairShopMinimalResponse,
 } from 'appcoretruckassist';
 import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
@@ -26,7 +25,6 @@ import { RepairTruckQuery } from './repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from './repair-trailer-state/repair-trailer.query';
 import { ShopQuery } from './shop-state/shop.query';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { GetRepairShopClustersQuery } from '../../../../../../appcoretruckassist/model/getRepairShopClustersQuery';
 import { RepairDQuery } from './details-state/repair-d.query';
 import { RepairDStore } from './details-state/repair-d.store';
 
@@ -503,47 +501,6 @@ export class RepairTService implements OnDestroy {
     public getRepairShopModalDropdowns(): Observable<RepairShopModalResponse> {
         return this.shopServices.apiRepairshopModalGet();
     }
-
-    public getRepairShopClusters(
-        clustersQuery: GetRepairShopClustersQuery
-    ): Observable<Array<ClusterResponse>> {
-        return this.shopServices.apiRepairshopClustersGet(
-            clustersQuery.northEastLatitude,
-            clustersQuery.northEastLongitude,
-            clustersQuery.southWestLatitude,
-            clustersQuery.southWestLongitude,
-            clustersQuery.zoomLevel
-        );
-    }
-
-    public getRepairShopMapList(
-        northEastLatitude?: number,
-        northEastLongitude?: number,
-        southWestLatitude?: number,
-        southWestLongitude?: number,
-        pageIndex?: number,
-        pageSize?: number,
-        companyId?: number,
-        sort?: string,
-        search?: string,
-        search1?: string,
-        search2?: string
-    ) {
-        return this.shopServices.apiRepairshopListmapGet(
-            northEastLatitude,
-            northEastLongitude,
-            southWestLatitude,
-            southWestLongitude,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        );
-    }
-
     set updateRepairShopMinimal(data: RepairShopMinimalResponse) {
         this.rDs.update((store) => {
             return {

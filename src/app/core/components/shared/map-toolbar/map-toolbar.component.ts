@@ -463,15 +463,10 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onShowRoutePopover(addRoutePopup: any) {
-        var routeInfo = {
-            routeName: 'Route 0' + (this.activeTableData.length + 1),
-        };
-
         this.modalService.openModal(
             MapRouteModalComponent,
             { size: 'small' },
             {
-                ...routeInfo,
                 mapId: this.activeTableData.id,
                 type: 'add',
             }

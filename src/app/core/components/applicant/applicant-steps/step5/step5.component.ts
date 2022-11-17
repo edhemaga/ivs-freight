@@ -8,7 +8,7 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import {
     convertDateToBackend,
-    convertDateFromBackendShortYear,
+    convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -51,6 +51,8 @@ export class Step5Component implements OnInit, OnDestroy {
 
     public violationsArray: ViolationModel[] = [];
 
+    public stepHasValues: boolean = false;
+
     public lastValidLicense: any;
 
     public lastViolationsCard: any;
@@ -58,7 +60,6 @@ export class Step5Component implements OnInit, OnDestroy {
     public vehicleType: TruckTypeResponse[] = [];
 
     public selectedViolationIndex: number;
-
     public helperIndex: number = 2;
 
     public isEditing: boolean = false;
@@ -89,11 +90,11 @@ export class Step5Component implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
 
+        this.hasNoTrafficViolations();
+
         this.getDropdownLists();
 
         this.getStepValuesFromStore();
-
-        this.hasNoTrafficViolations();
     }
 
     public trackByIdentity = (index: number, item: any): number => index;
@@ -137,7 +138,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
                 const cdlInformation = res.cdlInformation;
 
-                const lastLicenseAdded: any =
+                const lastLicenseAdded =
                     cdlInformation?.licences[
                         cdlInformation.licences.length - 1
                     ];
@@ -145,14 +146,14 @@ export class Step5Component implements OnInit, OnDestroy {
                 this.lastValidLicense = {
                     license: lastLicenseAdded?.licenseNumber,
                     state: lastLicenseAdded?.state?.stateShortName,
-                    classType: lastLicenseAdded?.class?.name,
-                    expDate: convertDateFromBackendShortYear(
-                        lastLicenseAdded?.expDate
-                    ),
+                    classType: lastLicenseAdded?.classType.name,
+                    expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
                 };
 
                 if (res.trafficViolation) {
                     this.patchStepValues(res.trafficViolation);
+
+                    this.stepHasValues = true;
                 }
             });
     }
@@ -216,7 +217,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
                     return {
                         isEditingViolation: false,
-                        date: convertDateFromBackendShortYear(item.date),
+                        date: convertDateFromBackend(item.date),
                         vehicleType: itemVehicleType.name,
                         location: item.location,
                         description: item.description,
@@ -255,9 +256,7 @@ export class Step5Component implements OnInit, OnDestroy {
             const filteredLastItemInViolationsArray = {
                 id: lastItemInViolationsArray.id,
                 isEditingViolation: false,
-                date: convertDateFromBackendShortYear(
-                    lastItemInViolationsArray.date
-                ),
+                date: convertDateFromBackend(lastItemInViolationsArray.date),
                 vehicleType: lastItemVehicleType.name,
                 location: lastItemInViolationsArray.location,
                 description: lastItemInViolationsArray.description,
@@ -267,7 +266,9 @@ export class Step5Component implements OnInit, OnDestroy {
                         : null,
             };
 
-            this.violationsArray = [...filteredViolationsArray];
+            this.violationsArray = JSON.parse(
+                JSON.stringify(filteredViolationsArray)
+            );
 
             this.formValuesToPatch = filteredLastItemInViolationsArray;
             this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
@@ -297,6 +298,21 @@ export class Step5Component implements OnInit, OnDestroy {
                     displayAnnotationTextArea: false,
                 };
             }
+        } else {
+            this.inputService.changeValidatorsCheck(
+                this.notBeenConvictedForm.get('notBeenConvicted'),
+                false
+            );
+            this.inputService.changeValidatorsCheck(
+                this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense'),
+                false
+            );
+            this.inputService.changeValidatorsCheck(
+                this.certifyForm.get('certify'),
+                false
+            );
+
+            this.formStatus = 'VALID';
         }
     }
 
@@ -319,25 +335,17 @@ export class Step5Component implements OnInit, OnDestroy {
                         false
                     );
 
-                    this.notBeenConvictedForm.patchValue({
-                        notBeenConvicted: null,
-                    });
-                    this.onlyOneHoldLicenseForm.patchValue({
-                        onlyOneHoldLicense: null,
-                    });
-                    this.certifyForm.patchValue({ certify: null });
-
                     this.formStatus = 'VALID';
-
-                    this.formValuesToPatch = {
-                        date: null,
-                        vehicleType: null,
-                        location: null,
-                        description: null,
-                    };
-
-                    this.violationsArray = [];
                 } else {
+                    if (this.lastViolationsCard) {
+                        this.formValuesToPatch = {
+                            date: this.lastViolationsCard?.date,
+                            vehicleType: this.lastViolationsCard?.vehicleType,
+                            location: this.lastViolationsCard.location,
+                            description: this.lastViolationsCard?.description,
+                        };
+                    }
+
                     this.inputService.changeValidatorsCheck(
                         this.notBeenConvictedForm.get('notBeenConvicted')
                     );
@@ -385,7 +393,13 @@ export class Step5Component implements OnInit, OnDestroy {
 
     public onEditViolation(index: number): void {
         if (this.isEditing) {
-            return;
+            this.isEditing = false;
+            this.violationsArray[
+                this.selectedViolationIndex
+            ].isEditingViolation = false;
+
+            this.helperIndex = 2;
+            this.selectedViolationIndex = -1;
         }
 
         this.helperIndex = index;
@@ -395,6 +409,15 @@ export class Step5Component implements OnInit, OnDestroy {
         this.violationsArray[index].isEditingViolation = true;
 
         const selectedViolation = this.violationsArray[index];
+
+        if (this.lastViolationsCard) {
+            this.previousFormValuesOnEdit = {
+                date: this.lastViolationsCard?.date,
+                vehicleType: this.lastViolationsCard?.vehicleType,
+                location: this.lastViolationsCard.location,
+                description: this.lastViolationsCard?.description,
+            };
+        }
 
         this.formValuesToPatch = selectedViolation;
     }
@@ -637,7 +660,10 @@ export class Step5Component implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (this.selectedMode === SelectedMode.APPLICANT) {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
                 this.onSubmit();
             }
 
@@ -652,23 +678,28 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.notBeenConvictedForm.invalid) {
-            this.inputService.markInvalid(this.notBeenConvictedForm);
-            return;
-        }
+        if (
+            this.notBeenConvictedForm.invalid ||
+            this.onlyOneHoldLicenseForm.invalid ||
+            this.certifyForm.invalid ||
+            this.formStatus === 'INVALID'
+        ) {
+            if (this.formStatus === 'INVALID') {
+                this.markFormInvalid = true;
+            }
 
-        if (this.onlyOneHoldLicenseForm.invalid) {
-            this.inputService.markInvalid(this.onlyOneHoldLicenseForm);
-            return;
-        }
+            if (this.notBeenConvictedForm.invalid) {
+                this.inputService.markInvalid(this.notBeenConvictedForm);
+            }
 
-        if (this.certifyForm.invalid) {
-            this.inputService.markInvalid(this.certifyForm);
-            return;
-        }
+            if (this.onlyOneHoldLicenseForm.invalid) {
+                this.inputService.markInvalid(this.onlyOneHoldLicenseForm);
+            }
 
-        if (this.formStatus === 'INVALID') {
-            this.markFormInvalid = true;
+            if (this.certifyForm.invalid) {
+                this.inputService.markInvalid(this.certifyForm);
+            }
+
             return;
         }
 
@@ -773,8 +804,28 @@ export class Step5Component implements OnInit, OnDestroy {
             }
         );
 
-        this.applicantActionsService
-            .createTrafficViolations(saveData)
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT &&
+                !this.stepHasValues
+            ) {
+                return this.applicantActionsService.createTrafficViolations(
+                    saveData
+                );
+            }
+
+            if (
+                (this.selectedMode === SelectedMode.APPLICANT &&
+                    this.stepHasValues) ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
+                return this.applicantActionsService.updateTrafficViolations(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -824,7 +875,9 @@ export class Step5Component implements OnInit, OnDestroy {
         const lastItemId = this.previousFormValuesOnReview.id;
 
         const lastReviewedItemIViolationsArray = {
-            trafficViolationId: lastItemId,
+            itemId: lastItemId,
+            isPrimary: true,
+            commonMessage: null,
             isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
             isVehicleTypeValid: true,
             isLocationValid: lastItemReview
@@ -844,6 +897,8 @@ export class Step5Component implements OnInit, OnDestroy {
 
         console.log('saveData', saveData.trafficViolationReviews[0]);
 
+        console.log('store', this.applicantStore);
+
         this.applicantActionsService
             .createTrafficViolationsReview(saveData)
             .pipe(takeUntil(this.destroy$))
@@ -852,18 +907,18 @@ export class Step5Component implements OnInit, OnDestroy {
                     this.router.navigate([
                         `/application/${this.applicantId}/6`,
                     ]);
-                    /* 
-            this.applicantStore.update(1, (entity) => {
-            return {
-              ...entity,
-              education: {
-                ...entity.education,
-                educationReview: rest,
-              },
-            };
-          });
 
-          console.log('updatedStore', this.applicantStore); */
+                    /*   this.applicantStore.update(store => {
+            return {
+              ...store,
+              applicant: {
+                ...store.applicant,
+                trafficViolation : {
+                  ...store.applicant.trafficViolation,
+                }
+              }
+            }
+          }) */
                 },
                 error: (err) => {
                     console.log(err);

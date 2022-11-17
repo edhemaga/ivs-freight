@@ -12,14 +12,12 @@ import {
     ShipperResponse,
     UpdateReviewCommand,
     UpdateShipperCommand,
-    ClusterResponse,
 } from 'appcoretruckassist';
 import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperDetailsListStore } from './shipper-details-state/shipper-details-list-state/shipper-details-list.store';
-import { GetRepairShopClustersQuery } from 'appcoretruckassist/model/getRepairShopClustersQuery';
 
 @Injectable({
     providedIn: 'root',
@@ -274,50 +272,6 @@ export class ShipperTService implements OnDestroy {
         return this.shipperService.apiShipperMapGet();
     }
 
-    public getShipperClusters(
-        clustersQuery: GetRepairShopClustersQuery
-    ): Observable<Array<ClusterResponse>> {
-        return this.shipperService.apiShipperClustersGet(
-            clustersQuery.northEastLatitude,
-            clustersQuery.northEastLongitude,
-            clustersQuery.southWestLatitude,
-            clustersQuery.southWestLongitude,
-            clustersQuery.zoomLevel
-        );
-    }
-
-    public getShipperMapList(
-        northEastLatitude?: number,
-        northEastLongitude?: number,
-        southWestLatitude?: number,
-        southWestLongitude?: number,
-        ban?: number,
-        dnu?: number,
-        pageIndex?: number,
-        pageSize?: number,
-        companyId?: number,
-        sort?: string,
-        search?: string,
-        search1?: string,
-        search2?: string
-    ) {
-        return this.shipperService.apiShipperListmapGet(
-            northEastLatitude,
-            northEastLongitude,
-            southWestLatitude,
-            southWestLongitude,
-            ban,
-            dnu,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        );
-    }
-
     //  <--------------------------------- Review ---------------------------------->
 
     public createReview(
@@ -333,7 +287,6 @@ export class ShipperTService implements OnDestroy {
     public updateReview(review: UpdateReviewCommand): Observable<any> {
         return this.ratingReviewService.apiRatingReviewReviewPut(review);
     }
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

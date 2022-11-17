@@ -103,7 +103,7 @@
         }
 
         .marker-business-name {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             color: $bw6-2;
             text-transform: uppercase;
@@ -199,10 +199,9 @@
             padding-left: 4px;
 
             .show-more {
-                top: 0px !important;
+                //top: 7px;
                 height: 18px;
                 margin-top: 2px;
-                right: 4px;
 
                 .table-dropdown-container {
                     transform: rotate(90deg);
@@ -454,8 +453,6 @@
             height: 18px;
             cursor: pointer;
 
-            right: 2px;
-
             .dropdown-dots {
                 svg {
                     width: 18px;
@@ -653,11 +650,6 @@
     transform: scale(0.8) !important;
     pointer-events: none;
     transition: all 0.15s ease-out !important;
-
-    &.cluster-dropdown {
-        display: flex;
-        justify-content: center;
-    }
 }
 
 .show-marker-dropdown {
@@ -745,7 +737,7 @@
 }
 
 .blue-text {
-    color: #3074d3 !important;
+    color: #536bc2 !important;
 }
 
 .lowercase {

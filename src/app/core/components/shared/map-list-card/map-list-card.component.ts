@@ -1,22 +1,12 @@
-import {
-    Component,
-    OnInit,
-    Input,
-    Output,
-    EventEmitter,
-    OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MapsService } from '../../../services/shared/maps.service';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-map-list-card',
     templateUrl: './map-list-card.component.html',
     styleUrls: ['./map-list-card.component.scss'],
 })
-export class MapListCardComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
+export class MapListCardComponent implements OnInit {
     @Input() isSelected: boolean = false;
     @Input() status: any = 1;
     @Input() title: string = '';
@@ -35,18 +25,14 @@ export class MapListCardComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         if (!this.sortCategory?.name) {
-            //this.sortCategory = { name: 'Business Name', id: 1, sortName: 'name' };
-
-            this.sortCategory = this.mapsService.sortCategory;
+            this.sortCategory = {
+                name: 'Business Name',
+                id: 1,
+                sortName: 'name',
+            };
         }
 
-        // this.sortCategory = this.mapsService.sortCategory;
-
-        this.mapsService.sortCategoryChange
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((category) => {
-                this.sortCategory = category;
-            });
+        this.sortCategory = this.mapsService.sortCategory;
     }
 
     selectCard() {
@@ -87,11 +73,5 @@ export class MapListCardComponent implements OnInit, OnDestroy {
 
     setSortCategory(category) {
         this.sortCategory = category;
-        console.log('setSortCategory', this.sortCategory);
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }
