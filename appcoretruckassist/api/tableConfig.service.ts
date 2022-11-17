@@ -23,8 +23,6 @@ import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { TableConfigResponse } from '../model/tableConfigResponse';
 // @ts-ignore
-import { TableType } from '../model/tableType';
-// @ts-ignore
 import { UpdateTableConfigCommand } from '../model/updateTableConfigCommand';
 
 // @ts-ignore
@@ -177,10 +175,10 @@ export class TableConfigService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTableconfigTableTypeGet(tableType: TableType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TableConfigResponse>;
-    public apiTableconfigTableTypeGet(tableType: TableType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TableConfigResponse>>;
-    public apiTableconfigTableTypeGet(tableType: TableType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TableConfigResponse>>;
-    public apiTableconfigTableTypeGet(tableType: TableType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTableconfigTableTypeGet(tableType: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TableConfigResponse>;
+    public apiTableconfigTableTypeGet(tableType: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TableConfigResponse>>;
+    public apiTableconfigTableTypeGet(tableType: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TableConfigResponse>>;
+    public apiTableconfigTableTypeGet(tableType: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (tableType === null || tableType === undefined) {
             throw new Error('Required parameter tableType was null or undefined when calling apiTableconfigTableTypeGet.');
         }
