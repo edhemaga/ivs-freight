@@ -13,9 +13,9 @@ import { CdlLicenseReviewCommand } from './cdlLicenseReviewCommand';
 
 
 export interface CreateApplicantCdlReviewCommand { 
+    id?: number | null;
     isCdlDeniedExplanationValid?: boolean;
     cdlDeniedExplanationMessage?: string | null;
-    cdlInformationId?: number;
     applicantId?: number;
     licenceReviews?: Array<CdlLicenseReviewCommand> | null;
 }

@@ -11,11 +11,10 @@
  */
 
 
-export interface EmergencyContactReviewResponse { 
-    id?: number;
-    isNameValid?: boolean;
-    isPhoneValid?: boolean;
-    isRelationshipValid?: boolean;
-    emergencyContactMessage?: string | null;
+export interface CdlCardReviewResponse { 
+    isIssueDateValid?: boolean;
+    isExpireDateValid?: boolean;
+    dateMessage?: string | null;
+    cdlCardId?: number;
 }
 

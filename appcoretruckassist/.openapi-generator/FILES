@@ -114,6 +114,8 @@ model/brokerModalResponse.ts
 model/brokerResponse.ts
 model/brokerResponsePagination.ts
 model/brokerShortResponse.ts
+model/cdlCardFeedbackResponse.ts
+model/cdlCardReviewResponse.ts
 model/cdlEndorsementResponse.ts
 model/cdlFeedbackResponse.ts
 model/cdlLicenseCommand.ts
@@ -196,6 +198,7 @@ model/createEducationCommand.ts
 model/createEducationReviewCommand.ts
 model/createEventCommand.ts
 model/createFuelItemCommand.ts
+model/createHosRulesReviewCommand.ts
 model/createInspectionCommand.ts
 model/createInsurancePolicyAddonCommand.ts
 model/createInsurancePolicyCommand.ts
@@ -210,6 +213,7 @@ model/createParkingCommand.ts
 model/createPersonalInfoReviewCommand.ts
 model/createPreviousEmployerAccidentHistoryCommand.ts
 model/createPreviousEmployerDrugAndAlcoholCommand.ts
+model/createPspAuthReviewCommand.ts
 model/createRatingCommand.ts
 model/createRegistrationCommand.ts
 model/createRepairCommand.ts
@@ -220,6 +224,7 @@ model/createRouteCommand.ts
 model/createSevenDaysHosCommand.ts
 model/createSevenDaysHosReviewCommand.ts
 model/createShipperCommand.ts
+model/createSphReviewCommand.ts
 model/createSsnReviewCommand.ts
 model/createTerminalCommand.ts
 model/createTitleCommand.ts
@@ -341,6 +346,7 @@ model/hazardousMaterialResponse.ts
 model/hireApplicantCommand.ts
 model/hosCommand.ts
 model/hosResponse.ts
+model/hosRuleFeedbackResponse.ts
 model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
 model/insurancePolicyModalResponse.ts
@@ -450,6 +456,7 @@ model/previousEmployerAccidentHistoryItemCommand.ts
 model/previousEmployerModalResponse.ts
 model/previousEmployerRequestResponse.ts
 model/problemDetails.ts
+model/pspAuthFeedbackResponse.ts
 model/ratingSetResponse.ts
 model/reSendSignUpUserCommand.ts
 model/reSendVerifyDriverCommand.ts
@@ -530,9 +537,11 @@ model/signupUserCommand.ts
 model/sphAccidentHistoryItemResponse.ts
 model/sphAccidentHistoryResponse.ts
 model/sphDrugAndAlcoholResponse.ts
+model/sphFeedbackResponse.ts
 model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadCommand.ts
 model/splitLoadResponse.ts
+model/ssnFeedbackResponse.ts
 model/stateResponse.ts
 model/statusSetMultipleBrokerCommand.ts
 model/statusSetMultipleCompanyUserCommand.ts
@@ -643,6 +652,8 @@ model/updatePMTruckDefaultListCommand.ts
 model/updatePMTruckUnitListCommand.ts
 model/updateParkingCommand.ts
 model/updatePersonalInfoCommand.ts
+model/updatePreviousEmployerAccidentHistoryCommand.ts
+model/updatePreviousEmployerDrugAndAlcoholCommand.ts
 model/updatePspAuthCommand.ts
 model/updateRegistrationCommand.ts
 model/updateRepairCommand.ts

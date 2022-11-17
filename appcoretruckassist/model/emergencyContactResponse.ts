@@ -18,6 +18,5 @@ export interface EmergencyContactResponse {
     phone?: string | null;
     relationship?: string | null;
     emergencyContactReview?: EmergencyContactReviewResponse;
-    educationId?: number;
 }
 

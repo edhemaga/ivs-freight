@@ -11,11 +11,11 @@
  */
 
 
-export interface EmergencyContactReviewResponse { 
+export interface SphFeedbackResponse { 
     id?: number;
-    isNameValid?: boolean;
-    isPhoneValid?: boolean;
-    isRelationshipValid?: boolean;
-    emergencyContactMessage?: string | null;
+    authorize?: boolean | null;
+    hasReadAndUnderstood?: boolean | null;
+    signature?: string | null;
+    applicantId?: number;
 }
 
