@@ -446,7 +446,7 @@
                                                     item.value.checkMainValue
                                                 ]) ||
                                                 !item.value.checkMainValue) &&
-                                            stop[item.value.value] != null &&
+                                            ((b > 0 && stop[item.value.value] != null) || b == 0) &&
                                             ((item.value.expandedOnly &&
                                                 route.expanded &&
                                                 route.expandFinished) ||
