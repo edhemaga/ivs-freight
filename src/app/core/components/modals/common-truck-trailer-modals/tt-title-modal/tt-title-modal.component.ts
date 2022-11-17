@@ -3,12 +3,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
-import {
-    CreateTitleCommand,
-    TitleModalResponse,
-    TitleResponse,
-    UpdateTitleCommand,
-} from 'appcoretruckassist';
+import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../../services/notification/notification.service';
@@ -17,6 +12,8 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
+import { CreateTitleCommand } from 'appcoretruckassist/model/createTitleCommand';
+import { UpdateTitleCommand } from 'appcoretruckassist/model/updateTitleCommand';
 
 @Component({
     selector: 'app-tt-title-modal',
@@ -31,6 +28,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
     public ttTitleForm: FormGroup;
 
     public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
 
     public stateTypes: any[] = [];
     public selectedStateType: any = null;
@@ -62,6 +61,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             purchaseDate: [null, Validators.required],
             issueDate: [null, Validators.required],
             note: [null],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.ttTitleForm);
@@ -117,18 +117,49 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.ttTitleForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.ttTitleForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     private addTitle() {
         const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
+        const documents = this.documents.map((item) => {
+            return item.realFile;
+        });
         const newData: CreateTitleCommand = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             purchaseDate: convertDateToBackend(purchaseDate),
             stateId: this.selectedStateType ? this.selectedStateType.id : null,
             trailerId:
-                this.editData.modal === 'trailer' ? this.editData.id : null,
-            truckId: this.editData.modal === 'truck' ? this.editData.id : null,
+                this.editData.modal === 'trailer'
+                    ? this.editData.id
+                    : undefined,
+            truckId:
+                this.editData.modal === 'truck' ? this.editData.id : undefined,
+            files: documents,
         };
 
         this.commonTruckTrailerService
@@ -152,12 +183,17 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     private updateTitle() {
         const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
+        const documents = this.documents.map((item) => {
+            return item.realFile;
+        });
         const newData: UpdateTitleCommand = {
             id: this.editData.file_id,
             ...form,
             issueDate: convertDateToBackend(issueDate),
             purchaseDate: convertDateToBackend(purchaseDate),
             stateId: this.selectedStateType ? this.selectedStateType.id : null,
+            files: documents ? documents : this.ttTitleForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.commonTruckTrailerService
@@ -195,8 +231,12 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                             ? convertDateFromBackend(res.issueDate)
                             : null,
                         note: res.note,
+                        files: res.files.length
+                            ? JSON.stringify(res.files)
+                            : null,
                     });
                     this.selectedStateType = res.state;
+                    this.documents = res.files;
                 },
                 error: () => {
                     this.notificationService.error(

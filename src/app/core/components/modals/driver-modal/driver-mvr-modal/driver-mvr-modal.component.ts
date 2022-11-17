@@ -140,17 +140,29 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
-
-        if (event.action == 'delete') {
-            this.mvrForm.patchValue({
-                files: null,
-            });
-
-            if (event.deleteId) {
-                this.filesForDelete.push(event.deleteId);
+        switch (event.action) {
+            case 'add': {
+                this.mvrForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
             }
+            case 'delete': {
+                this.mvrForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
 
-            this.fileModified = true;
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
         }
     }
 
@@ -254,6 +266,9 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                         cdlId: res.cdlNumber,
                         issueDate: convertDateFromBackend(res.issueDate),
                         note: res.note,
+                        files: res.files.length
+                            ? JSON.stringify(res.files)
+                            : null,
                     });
                     this.selectedCdl = {
                         id: res.cdlId,

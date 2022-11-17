@@ -29,7 +29,6 @@ export interface CompanyUserResponse {
     isAdmin?: boolean;
     isUser?: boolean;
     phone?: string | null;
-    extensionPhone?: string | null;
     email?: string | null;
     includeInPayroll?: boolean;
     salary?: number | null;

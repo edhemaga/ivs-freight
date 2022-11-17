@@ -4,20 +4,19 @@ import { Injectable, OnDestroy } from '@angular/core';
 import {
     CreateRatingCommand,
     CreateResponse,
-    CreateShipperCommand,
     RatingReviewService,
     ShipperListResponse,
     ShipperMinimalListResponse,
     ShipperModalResponse,
     ShipperResponse,
     UpdateReviewCommand,
-    UpdateShipperCommand,
 } from 'appcoretruckassist';
 import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperDetailsListStore } from './shipper-details-state/shipper-details-list-state/shipper-details-list.store';
+import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
     providedIn: 'root',
@@ -37,8 +36,12 @@ export class ShipperTService implements OnDestroy {
         private sListStore: ShipperDetailsListStore
     ) {}
 
-    // Create Shipper
-    public addShipper(data: CreateShipperCommand): Observable<CreateResponse> {
+    // Create Shipper -- CreateShipperCommand
+    public addShipper(data: any): Observable<CreateResponse> {
+        const sortedParams = getFunctionParams(
+            this.shipperService.apiShipperPost,
+            data
+        );
         return this.shipperService.apiShipperPost(data).pipe(
             tap((res: any) => {
                 const subShipper = this.getShipperById(res.id)
@@ -75,9 +78,13 @@ export class ShipperTService implements OnDestroy {
         );
     }
 
-    // Update Shipper
-    public updateShipper(data: UpdateShipperCommand): Observable<any> {
-        return this.shipperService.apiShipperPut(data).pipe(
+    // Update Shipper -- UpdateShipperCommand
+    public updateShipper(data: any): Observable<any> {
+        const sortedParams = getFunctionParams(
+            this.shipperService.apiShipperPut,
+            data
+        );
+        return this.shipperService.apiShipperPut(...sortedParams).pipe(
             tap(() => {
                 const subShipper = this.getShipperById(data.id)
                     .pipe(takeUntil(this.destroy$))

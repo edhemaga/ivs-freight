@@ -15,15 +15,14 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { CreateShipperCommand } from 'appcoretruckassist/model/createShipperCommand';
+import { UpdateShipperCommand } from 'appcoretruckassist/model/updateShipperCommand';
 import {
     AddressEntity,
     CreateRatingCommand,
     CreateReviewCommand,
-    CreateShipperCommand,
-    ShipperResponse,
     SignInResponse,
     UpdateReviewCommand,
-    UpdateShipperCommand,
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -100,6 +99,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public user: SignInResponse = JSON.parse(localStorage.getItem('user'));
 
+    public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -149,6 +152,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shippingTo: [null],
             note: [null],
             shipperContacts: this.formBuilder.array([]),
+            files: [null],
         });
 
         this.inputService.customInputValidator(
@@ -521,6 +525,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         const { address, addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
         let receivingShipping = this.receivingShippingObject();
+        const documents = this.documents.map((item) => {
+            return item.realFile;
+        });
         let newData: CreateShipperCommand = {
             ...form,
             address: {
@@ -534,6 +541,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 receivingShipping.shipping.shippingOpenTwentyFourHours,
             shippingFrom: receivingShipping.shipping.shippingFrom,
             shippingTo: receivingShipping.shipping.shippingTo,
+            files: documents,
         };
 
         for (let index = 0; index < shipperContacts.length; index++) {
@@ -570,6 +578,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         const { address, addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
 
+        const documents = this.documents.map((item) => {
+            return item.realFile;
+        });
+
         let receivingShipping = this.receivingShippingObject();
 
         let newData: UpdateShipperCommand = {
@@ -586,6 +598,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 receivingShipping.shipping.shippingOpenTwentyFourHours,
             shippingFrom: receivingShipping.shipping.shippingFrom,
             shippingTo: receivingShipping.shipping.shippingTo,
+            files: documents ? documents : this.shipperForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         for (let index = 0; index < shipperContacts.length; index++) {
@@ -642,7 +656,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .getShipperById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (reasponse: ShipperResponse) => {
+                next: (reasponse: any /*ShipperResponse*/) => {
                     this.shipperForm.patchValue({
                         businessName: reasponse.businessName,
                         phone: reasponse.phone,
@@ -680,6 +694,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
                     this.selectedAddress = reasponse.address;
                     this.isPhoneExtExist = !!reasponse.phoneExt;
+                    this.documents = reasponse.files;
 
                     if (reasponse.phoneExt) {
                         this.isPhoneExtExist = true;
@@ -843,6 +858,34 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             }
         }
         return { receiving, shipping };
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.shipperForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.shipperForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {

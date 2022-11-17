@@ -14,23 +14,19 @@ import { AddressEntity } from './addressEntity';
 
 export interface UpdateCompanyUserCommand { 
     id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
     address?: AddressEntity;
     personalPhone?: string | null;
     personalEmail?: string | null;
-    departmentId?: number;
     companyOfficeId?: number | null;
-    userType?: number | null;
     isAdmin?: boolean;
+    isUser?: boolean;
     phone?: string | null;
-    extensionPhone?: string | null;
-    email?: string | null;
     includeInPayroll?: boolean;
     paymentType?: number | null;
     salary?: number | null;
     startDate?: string | null;
-    is1099?: boolean | null;
+    is1099?: boolean;
+    isW_2?: boolean;
     bankId?: number | null;
     routingNumber?: string | null;
     accountNumber?: string | null;

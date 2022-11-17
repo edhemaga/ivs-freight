@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { UpdateTableConfigCommand } from 'appcoretruckassist/model/updateTableConfigCommand';
 import {
     // CreateTableConfigCommand,
     TableConfigResponse,
     TableConfigService,
-    UpdateTableConfigCommand,
 } from 'appcoretruckassist';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -76,7 +76,8 @@ export class TruckassistTableService {
     updateTableConfig(
         tableConfig: UpdateTableConfigCommand
     ): Observable<object> {
-        return this.tableColumnsConfigService.apiTableconfigPut(tableConfig);
+        //return this.tableColumnsConfigService.apiTableconfigPut(tableConfig);
+        return of();
     }
 
     getTableConfig(tableType: any): Observable<TableConfigResponse> {

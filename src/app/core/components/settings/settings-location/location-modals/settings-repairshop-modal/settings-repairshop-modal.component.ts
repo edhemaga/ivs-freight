@@ -7,12 +7,12 @@ import {
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { CreateRepairShopCommand } from 'appcoretruckassist/model/createRepairShopCommand';
+import { UpdateRepairShopCommand } from 'appcoretruckassist/model/updateRepairShopCommand';
 import {
     AddressEntity,
-    CreateRepairShopCommand,
     RepairShopModalResponse,
     RepairShopResponse,
-    UpdateRepairShopCommand,
 } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';

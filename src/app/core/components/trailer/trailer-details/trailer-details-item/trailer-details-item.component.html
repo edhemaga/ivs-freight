@@ -14,7 +14,9 @@
                         let i = index;
                         trackBy: identity
                     "
-                    [cardDocumentCounter]="1"
+                    [cardDocumentCounter]="
+                        reg?.files?.length ? reg?.files?.length : 0
+                    "
                     (resizePage)="toggleResizePage(i, 'registration')"
                     [cardNameCommon]="reg.licensePlate"
                     [hasCopyIcon]="true"
@@ -73,6 +75,54 @@
                             "
                         >
                             <div class="divider"></div>
+                            <div
+                                class="details-document-container"
+                                [class.disabled]="!reg?.files?.length"
+                            >
+                                <div class="icon-counter-wrapper">
+                                    <div
+                                        class="counter-text-wrapper"
+                                        [class.disabled]="!reg?.files?.length"
+                                    >
+                                        <app-ta-counter
+                                            [countBackgroud]="'#F3F3F3'"
+                                            [countHeight]="'24px'"
+                                            [countWidth]="'24px'"
+                                            [count]="
+                                                reg?.files?.length
+                                                    ? reg.files.length
+                                                    : 0
+                                            "
+                                        >
+                                        </app-ta-counter>
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
+                                    </div>
+                                    <svg-icon
+                                        *ngIf="reg?.files?.length"
+                                        (click)="
+                                            downloadAllFiles('registration', i)
+                                        "
+                                        src="assets/svg/common/ic_download.svg"
+                                    >
+                                    </svg-icon>
+                                </div>
+                            </div>
+                            <div
+                                class="card-pdf"
+                                [class.disabled]="!reg?.files?.length"
+                                [class.pagination]="reg.files?.length > 1"
+                            >
+                                <app-ta-upload-files
+                                    #registrationUpload
+                                    [files]="reg.files ? reg.files : []"
+                                    [customClassName]="'driver-details-pdf'"
+                                    [hasCarouselBottomTabs]="true"
+                                    [type]="'details'"
+                                ></app-ta-upload-files>
+                            </div>
+                            <div class="divider"></div>
                             <div class="card-note">
                                 <app-ta-input-note
                                     [formControl]="registrationNote"
@@ -103,7 +153,9 @@
                     [options]="dataFHWA"
                     [cardNameCommon]="fhwa.issueDate | formatDateP"
                     [optionsId]="fhwa.id"
-                    [cardDocumentCounter]="1"
+                    [cardDocumentCounter]="
+                        fhwa?.files?.length ? fhwa?.files?.length : 0
+                    "
                     (resizePage)="toggleResizePage(i, 'fhwa')"
                     [noteIcons]="
                         fhwa.note
@@ -143,6 +195,52 @@
                             "
                         >
                             <div class="divider"></div>
+                            <div
+                                class="details-document-container"
+                                [class.disabled]="!fhwa?.files?.length"
+                            >
+                                <div class="icon-counter-wrapper">
+                                    <div
+                                        class="counter-text-wrapper"
+                                        [class.disabled]="!fhwa?.files?.length"
+                                    >
+                                        <app-ta-counter
+                                            [countBackgroud]="'#F3F3F3'"
+                                            [countHeight]="'24px'"
+                                            [countWidth]="'24px'"
+                                            [count]="
+                                                fhwa?.files?.length
+                                                    ? fhwa.files.length
+                                                    : 0
+                                            "
+                                        >
+                                        </app-ta-counter>
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
+                                    </div>
+                                    <svg-icon
+                                        *ngIf="fhwa?.files?.length"
+                                        (click)="downloadAllFiles('fhwa', i)"
+                                        src="assets/svg/common/ic_download.svg"
+                                    >
+                                    </svg-icon>
+                                </div>
+                            </div>
+                            <div
+                                class="card-pdf"
+                                [class.disabled]="!fhwa?.files?.length"
+                                [class.pagination]="fhwa.files?.length > 1"
+                            >
+                                <app-ta-upload-files
+                                    #fhwaUpload
+                                    [files]="fhwa.files ? fhwa.files : []"
+                                    [customClassName]="'driver-details-pdf'"
+                                    [hasCarouselBottomTabs]="true"
+                                    [type]="'details'"
+                                ></app-ta-upload-files>
+                            </div>
+                            <div class="divider"></div>
                             <div class="card-note">
                                 <app-ta-input-note
                                     [formControl]="fhwaNote"
@@ -171,7 +269,9 @@
                         let i = index;
                         trackBy: identity
                     "
-                    [cardDocumentCounter]="1"
+                    [cardDocumentCounter]="
+                        title?.files?.length ? title?.files?.length : 0
+                    "
                     (resizePage)="toggleResizePage(i, 'title')"
                     [cardNameCommon]="title.number"
                     [options]="dataFHWA"
@@ -225,7 +325,52 @@
                             "
                         >
                             <div class="divider"></div>
-
+                            <div
+                                class="details-document-container"
+                                [class.disabled]="!title?.files?.length"
+                            >
+                                <div class="icon-counter-wrapper">
+                                    <div
+                                        class="counter-text-wrapper"
+                                        [class.disabled]="!title?.files?.length"
+                                    >
+                                        <app-ta-counter
+                                            [countBackgroud]="'#F3F3F3'"
+                                            [countHeight]="'24px'"
+                                            [countWidth]="'24px'"
+                                            [count]="
+                                                title?.files?.length
+                                                    ? title.files.length
+                                                    : 0
+                                            "
+                                        >
+                                        </app-ta-counter>
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
+                                    </div>
+                                    <svg-icon
+                                        *ngIf="title?.files?.length"
+                                        (click)="downloadAllFiles('title', i)"
+                                        src="assets/svg/common/ic_download.svg"
+                                    >
+                                    </svg-icon>
+                                </div>
+                            </div>
+                            <div
+                                class="card-pdf"
+                                [class.disabled]="!title?.files?.length"
+                                [class.pagination]="title.files?.length > 1"
+                            >
+                                <app-ta-upload-files
+                                    #titleUpload
+                                    [files]="title.files ? title.files : []"
+                                    [customClassName]="'driver-details-pdf'"
+                                    [hasCarouselBottomTabs]="true"
+                                    [type]="'details'"
+                                ></app-ta-upload-files>
+                            </div>
+                            <div class="divider"></div>
                             <div class="card-note">
                                 <app-ta-input-note
                                     [formControl]="titleNote"

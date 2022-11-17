@@ -8,12 +8,12 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { CreateRepairCommand } from 'appcoretruckassist/model/createRepairCommand';
+import { UpdateRepairCommand } from 'appcoretruckassist/model/updateRepairCommand';
 import {
-    CreateRepairCommand,
     RepairModalResponse,
     RepairResponse,
     RepairShopResponse,
-    UpdateRepairCommand,
 } from 'appcoretruckassist';
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
