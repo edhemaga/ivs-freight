@@ -35,8 +35,6 @@ import { RoadsideInspectionResponse } from '../model/roadsideInspectionResponse'
 // @ts-ignore
 import { RoadsideInspectionSpecialCheckCommand } from '../model/roadsideInspectionSpecialCheckCommand';
 // @ts-ignore
-import { ViolationCategory } from '../model/violationCategory';
-// @ts-ignore
 import { ViolationCommand } from '../model/violationCommand';
 
 // @ts-ignore
@@ -824,36 +822,7 @@ export class ViolationService {
 
     /**
      * @param id 
-     * @param report 
-     * @param categoryReport 
-     * @param inspectionLevel 
-     * @param hMInspectionType 
-     * @param country 
-     * @param state 
-     * @param startTime 
-     * @param endTime 
-     * @param date 
-     * @param driverId 
-     * @param driverFullName 
-     * @param driverLicenceNo 
-     * @param driverState 
-     * @param driverDateOfBirth 
-     * @param coDriverFullName 
-     * @param coDriverLicenceNo 
-     * @param coDriverState 
-     * @param coDriverDateOfBirth 
-     * @param truckUnit 
-     * @param truckType 
-     * @param truckMake 
-     * @param truckPlateNo 
-     * @param truckState 
-     * @param truckVIN 
-     * @param trailerUnit 
-     * @param trailerType 
-     * @param trailerMake 
-     * @param trailerPlateNo 
-     * @param trailerState 
-     * @param trailerVIN 
+     * @param county 
      * @param violations 
      * @param note 
      * @param policeDepartment 
@@ -871,7 +840,6 @@ export class ViolationService {
      * @param addressAddressUnit 
      * @param phone 
      * @param fax 
-     * @param facility 
      * @param highway 
      * @param milePost 
      * @param originCity 
@@ -903,10 +871,10 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiViolationPut(id?: number, report?: string, categoryReport?: ViolationCategory, inspectionLevel?: string, hMInspectionType?: string, country?: string, state?: string, startTime?: string, endTime?: string, date?: string, driverId?: number, driverFullName?: string, driverLicenceNo?: string, driverState?: string, driverDateOfBirth?: string, coDriverFullName?: string, coDriverLicenceNo?: string, coDriverState?: string, coDriverDateOfBirth?: string, truckUnit?: number, truckType?: string, truckMake?: string, truckPlateNo?: string, truckState?: string, truckVIN?: string, trailerUnit?: number, trailerType?: string, trailerMake?: string, trailerPlateNo?: string, trailerState?: string, trailerVIN?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, facility?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiViolationPut(id?: number, county?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiViolationPut(id?: number, county?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiViolationPut(id?: number, county?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiViolationPut(id?: number, county?: string, violations?: Array<ViolationCommand>, note?: string, policeDepartment?: string, policeOfficer?: string, badgeNo?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, fax?: string, highway?: string, milePost?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, specialChecks?: Array<RoadsideInspectionSpecialCheckCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -958,95 +926,8 @@ export class ViolationService {
         if (id !== undefined) {
             localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
         }
-        if (report !== undefined) {
-            localVarFormParams = localVarFormParams.append('Report', <any>report) as any || localVarFormParams;
-        }
-        if (categoryReport !== undefined) {
-            localVarFormParams = localVarFormParams.append('CategoryReport', <any>categoryReport) as any || localVarFormParams;
-        }
-        if (inspectionLevel !== undefined) {
-            localVarFormParams = localVarFormParams.append('InspectionLevel', <any>inspectionLevel) as any || localVarFormParams;
-        }
-        if (hMInspectionType !== undefined) {
-            localVarFormParams = localVarFormParams.append('HMInspectionType', <any>hMInspectionType) as any || localVarFormParams;
-        }
-        if (country !== undefined) {
-            localVarFormParams = localVarFormParams.append('Country', <any>country) as any || localVarFormParams;
-        }
-        if (state !== undefined) {
-            localVarFormParams = localVarFormParams.append('State', <any>state) as any || localVarFormParams;
-        }
-        if (startTime !== undefined) {
-            localVarFormParams = localVarFormParams.append('StartTime', <any>startTime) as any || localVarFormParams;
-        }
-        if (endTime !== undefined) {
-            localVarFormParams = localVarFormParams.append('EndTime', <any>endTime) as any || localVarFormParams;
-        }
-        if (date !== undefined) {
-            localVarFormParams = localVarFormParams.append('Date', <any>date) as any || localVarFormParams;
-        }
-        if (driverId !== undefined) {
-            localVarFormParams = localVarFormParams.append('DriverId', <any>driverId) as any || localVarFormParams;
-        }
-        if (driverFullName !== undefined) {
-            localVarFormParams = localVarFormParams.append('Driver_FullName', <any>driverFullName) as any || localVarFormParams;
-        }
-        if (driverLicenceNo !== undefined) {
-            localVarFormParams = localVarFormParams.append('Driver_LicenceNo', <any>driverLicenceNo) as any || localVarFormParams;
-        }
-        if (driverState !== undefined) {
-            localVarFormParams = localVarFormParams.append('Driver_State', <any>driverState) as any || localVarFormParams;
-        }
-        if (driverDateOfBirth !== undefined) {
-            localVarFormParams = localVarFormParams.append('Driver_DateOfBirth', <any>driverDateOfBirth) as any || localVarFormParams;
-        }
-        if (coDriverFullName !== undefined) {
-            localVarFormParams = localVarFormParams.append('CoDriver_FullName', <any>coDriverFullName) as any || localVarFormParams;
-        }
-        if (coDriverLicenceNo !== undefined) {
-            localVarFormParams = localVarFormParams.append('CoDriver_LicenceNo', <any>coDriverLicenceNo) as any || localVarFormParams;
-        }
-        if (coDriverState !== undefined) {
-            localVarFormParams = localVarFormParams.append('CoDriver_State', <any>coDriverState) as any || localVarFormParams;
-        }
-        if (coDriverDateOfBirth !== undefined) {
-            localVarFormParams = localVarFormParams.append('CoDriver_DateOfBirth', <any>coDriverDateOfBirth) as any || localVarFormParams;
-        }
-        if (truckUnit !== undefined) {
-            localVarFormParams = localVarFormParams.append('Truck_Unit', <any>truckUnit) as any || localVarFormParams;
-        }
-        if (truckType !== undefined) {
-            localVarFormParams = localVarFormParams.append('Truck_Type', <any>truckType) as any || localVarFormParams;
-        }
-        if (truckMake !== undefined) {
-            localVarFormParams = localVarFormParams.append('Truck_Make', <any>truckMake) as any || localVarFormParams;
-        }
-        if (truckPlateNo !== undefined) {
-            localVarFormParams = localVarFormParams.append('Truck_PlateNo', <any>truckPlateNo) as any || localVarFormParams;
-        }
-        if (truckState !== undefined) {
-            localVarFormParams = localVarFormParams.append('Truck_State', <any>truckState) as any || localVarFormParams;
-        }
-        if (truckVIN !== undefined) {
-            localVarFormParams = localVarFormParams.append('Truck_VIN', <any>truckVIN) as any || localVarFormParams;
-        }
-        if (trailerUnit !== undefined) {
-            localVarFormParams = localVarFormParams.append('Trailer_Unit', <any>trailerUnit) as any || localVarFormParams;
-        }
-        if (trailerType !== undefined) {
-            localVarFormParams = localVarFormParams.append('Trailer_Type', <any>trailerType) as any || localVarFormParams;
-        }
-        if (trailerMake !== undefined) {
-            localVarFormParams = localVarFormParams.append('Trailer_Make', <any>trailerMake) as any || localVarFormParams;
-        }
-        if (trailerPlateNo !== undefined) {
-            localVarFormParams = localVarFormParams.append('Trailer_PlateNo', <any>trailerPlateNo) as any || localVarFormParams;
-        }
-        if (trailerState !== undefined) {
-            localVarFormParams = localVarFormParams.append('Trailer_State', <any>trailerState) as any || localVarFormParams;
-        }
-        if (trailerVIN !== undefined) {
-            localVarFormParams = localVarFormParams.append('Trailer_VIN', <any>trailerVIN) as any || localVarFormParams;
+        if (county !== undefined) {
+            localVarFormParams = localVarFormParams.append('County', <any>county) as any || localVarFormParams;
         }
         if (violations) {
             violations.forEach((element) => {
@@ -1100,9 +981,6 @@ export class ViolationService {
         }
         if (fax !== undefined) {
             localVarFormParams = localVarFormParams.append('Fax', <any>fax) as any || localVarFormParams;
-        }
-        if (facility !== undefined) {
-            localVarFormParams = localVarFormParams.append('Facility', <any>facility) as any || localVarFormParams;
         }
         if (highway !== undefined) {
             localVarFormParams = localVarFormParams.append('Highway', <any>highway) as any || localVarFormParams;

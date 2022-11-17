@@ -9,17 +9,24 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SphFeedbackResponse } from './sphFeedbackResponse';
 import { DisclosureReleaseFeedbackResponse } from './disclosureReleaseFeedbackResponse';
 import { DrugAndAlcoholFeedbackResponse } from './drugAndAlcoholFeedbackResponse';
 import { EducationFeedbackResponse } from './educationFeedbackResponse';
+import { HosRuleFeedbackResponse } from './hosRuleFeedbackResponse';
 import { WorkExperienceFeedbackResponse } from './workExperienceFeedbackResponse';
+import { MedicalCertificateFeedbackResponse } from './medicalCertificateFeedbackResponse';
 import { TrafficViolationFeedbackResponse } from './trafficViolationFeedbackResponse';
 import { AuthorizationFeedbackResponse } from './authorizationFeedbackResponse';
 import { CdlFeedbackResponse } from './cdlFeedbackResponse';
+import { MvrAuthFeedbackResponse } from './mvrAuthFeedbackResponse';
 import { DriverRightsFeedbackResponse } from './driverRightsFeedbackResponse';
 import { PersonalInfoFeedbackResponse } from './personalInfoFeedbackResponse';
 import { PreviousEmployerRequestResponse } from './previousEmployerRequestResponse';
+import { PspAuthFeedbackResponse } from './pspAuthFeedbackResponse';
+import { SsnFeedbackResponse } from './ssnFeedbackResponse';
 import { SevenDaysHosFeedbackResponse } from './sevenDaysHosFeedbackResponse';
+import { CdlCardFeedbackResponse } from './cdlCardFeedbackResponse';
 import { AccidentRecordFeedbackResponse } from './accidentRecordFeedbackResponse';
 import { ApplicantCompanyInfoResponse } from './applicantCompanyInfoResponse';
 
@@ -46,6 +53,13 @@ export interface ApplicantResponse {
     driverRight?: DriverRightsFeedbackResponse;
     disclosureRelease?: DisclosureReleaseFeedbackResponse;
     authorization?: AuthorizationFeedbackResponse;
+    medicalCertificate?: MedicalCertificateFeedbackResponse;
+    mvrAuth?: MvrAuthFeedbackResponse;
+    pspAuth?: PspAuthFeedbackResponse;
+    sph?: SphFeedbackResponse;
+    hosRule?: HosRuleFeedbackResponse;
+    ssn?: SsnFeedbackResponse;
+    cdlCard?: CdlCardFeedbackResponse;
     companyInfo?: ApplicantCompanyInfoResponse;
     requests?: Array<PreviousEmployerRequestResponse> | null;
 }

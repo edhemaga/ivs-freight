@@ -12,7 +12,7 @@
 
 
 export interface PreviousAddressReviewCommand { 
-    itemId?: number;
+    id?: number | null;
     isPreviousAddressValid?: boolean;
     previousAddressMessage?: string | null;
 }

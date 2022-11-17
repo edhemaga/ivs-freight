@@ -11,11 +11,9 @@
  */
 
 
-export interface EmergencyContactReviewResponse { 
+export interface HosRuleFeedbackResponse { 
     id?: number;
-    isNameValid?: boolean;
-    isPhoneValid?: boolean;
-    isRelationshipValid?: boolean;
-    emergencyContactMessage?: string | null;
+    isConfirm?: boolean;
+    applicantId?: number;
 }
 
