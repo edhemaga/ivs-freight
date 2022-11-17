@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ApplicantFileResponse } from './applicantFileResponse';
 
 
-export interface EmergencyContactReviewResponse { 
+export interface SsnFeedbackResponse { 
     id?: number;
-    isNameValid?: boolean;
-    isPhoneValid?: boolean;
-    isRelationshipValid?: boolean;
-    emergencyContactMessage?: string | null;
+    reviewed?: boolean | null;
+    approved?: boolean | null;
+    files?: Array<ApplicantFileResponse> | null;
+    applicantId?: number;
 }
 

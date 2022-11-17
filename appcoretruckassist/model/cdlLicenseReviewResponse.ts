@@ -19,6 +19,5 @@ export interface CdlLicenseReviewResponse {
     expDateMessage?: string | null;
     isPrimary?: boolean;
     commonMessage?: string | null;
-    itemId?: number;
 }
 

@@ -69,7 +69,7 @@ import {
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   @Input() editData: any;
- 
+
   public companyForm: FormGroup;
 
   public selectedTab: number = 1;
@@ -281,8 +281,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     if (this.editData.type === 'edit-company') {
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         this.editCompany();
+        clearTimeout(timeout);
       });
     }
 

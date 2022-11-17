@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FuelModalStopResponsePagination } from './fuelModalStopResponsePagination';
 import { TruckMinimalResponse } from './truckMinimalResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
@@ -21,6 +20,5 @@ export interface GetFuelModalResponse {
     fuelTransactionType?: Array<EnumValue> | null;
     truckMinimalLists?: Array<TruckMinimalResponse> | null;
     trailerMinimalLists?: Array<TrailerMinimalResponse> | null;
-    pagination?: FuelModalStopResponsePagination;
 }
 

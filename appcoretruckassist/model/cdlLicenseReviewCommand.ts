@@ -12,6 +12,7 @@
 
 
 export interface CdlLicenseReviewCommand { 
+    id?: number | null;
     isLicenseValid?: boolean;
     licenseMessage?: string | null;
     isExpDateValid?: boolean;
