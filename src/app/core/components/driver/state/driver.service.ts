@@ -4,11 +4,13 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
 import {
     CheckOwnerSsnEinResponse,
+    CreateDriverCommand,
     DriverListResponse,
     DriverMinimalListResponse,
     DriverResponse,
     GetDriverModalResponse,
     OwnerService,
+    UpdateDriverCommand,
 } from 'appcoretruckassist';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
@@ -19,7 +21,6 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { DriversMinimalListQuery } from './driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
     providedIn: 'root',
@@ -89,13 +90,8 @@ export class DriverTService {
 
     /* Observable<CreateDriverResponse> */
     // Create Driver
-    public addDriver(data: any /*CreateDriverCommand*/): Observable<any> {
-        console.log(data, 'addriver data');
-        const sortedParams = getFunctionParams(
-            this.driverService.apiDriverPost,
-            data
-        );
-        return this.driverService.apiDriverPost(...sortedParams).pipe(
+    public addDriver(data: CreateDriverCommand): Observable<any> {
+        return this.driverService.apiDriverPost(data).pipe(
             tap((res: any) => {
                 const subDriver = this.getDriverById(res.id)
                     .pipe(takeUntil(this.destroy$))
@@ -266,13 +262,8 @@ export class DriverTService {
         return of(null);
     }
 
-    /*UpdateDriverCommand*/
-    public updateDriver(data: any): Observable<object> {
-        const sortedParams = getFunctionParams(
-            this.driverService.apiDriverPut,
-            data
-        );
-        return this.driverService.apiDriverPut(...sortedParams).pipe(
+    public updateDriver(data: UpdateDriverCommand): Observable<object> {
+        return this.driverService.apiDriverPut(data).pipe(
             tap((res: any) => {
                 const subDriver = this.getDriverById(data.id)
                     .pipe(takeUntil(this.destroy$))

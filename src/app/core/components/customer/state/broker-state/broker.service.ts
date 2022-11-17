@@ -5,10 +5,12 @@ import {
     BrokerModalResponse,
     BrokerResponse,
     BrokerService,
+    CreateBrokerCommand,
     CreateRatingCommand,
     CreateResponse,
     GetBrokerListResponse,
     RatingReviewService,
+    UpdateBrokerCommand,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { Observable, tap, of, Subject, takeUntil } from 'rxjs';
@@ -16,7 +18,6 @@ import { BrokerStore } from './broker.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
 import { BrokerDetailsListStore } from '../broker-details-state/broker-details-list-state/broker-details-list.store';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
     providedIn: 'root',
@@ -36,13 +37,9 @@ export class BrokerTService implements OnDestroy {
         private bls: BrokerDetailsListStore
     ) {}
 
-    // Add Broker -- CreateBrokerCommand
-    public addBroker(data: any): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.brokerService.apiBrokerPost,
-            data
-        );
-        return this.brokerService.apiBrokerPost(...sortedParams).pipe(
+    // Add Broker
+    public addBroker(data: CreateBrokerCommand): Observable<CreateResponse> {
+        return this.brokerService.apiBrokerPost(data).pipe(
             tap((res: any) => {
                 const subBroker = this.getBrokerById(res.id).subscribe({
                     next: (broker: BrokerResponse | any) => {
@@ -76,13 +73,9 @@ export class BrokerTService implements OnDestroy {
         );
     }
 
-    // Update Broker -- UpdateBrokerCommand
-    public updateBroker(data: any): Observable<any> {
-        const sortedParams = getFunctionParams(
-            this.brokerService.apiBrokerPut,
-            data
-        );
-        return this.brokerService.apiBrokerPut(...sortedParams).pipe(
+    // Update Broker
+    public updateBroker(data: UpdateBrokerCommand): Observable<any> {
+        return this.brokerService.apiBrokerPut(data).pipe(
             tap(() => {
                 const subBroker = this.getBrokerById(data.id).subscribe({
                     next: (broker: BrokerResponse | any) => {

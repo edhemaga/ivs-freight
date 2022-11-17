@@ -1,4 +1,4 @@
-import { TableOptions } from './../models/accounting-table';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
     Component,
     HostListener,
@@ -6,9 +6,9 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { GOOGLE_MAP_STYLES, NORTH_AMERICA_BOUNDS } from 'src/app/const';
+import { TableOptions } from './../models/accounting-table';
 
 @Component({
     selector: 'app-accounting-details',

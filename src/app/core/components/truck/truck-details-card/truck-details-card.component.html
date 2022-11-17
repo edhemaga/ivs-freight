@@ -613,9 +613,7 @@
                         "
                     >
                         <app-ta-re-card
-                            [cardDocumentCounter]="
-                                reg?.files?.length ? reg?.files?.length : 0
-                            "
+                            [cardDocumentCounter]="1"
                             (resizePage)="toggleResizePage(i, 'registration')"
                             [cardNameCommon]="reg.licensePlate"
                             [hasCopyIcon]="true"
@@ -777,9 +775,7 @@
                 >
                     <div *ngFor="let title of truck?.titles; trackBy: identity">
                         <app-ta-re-card
-                            [cardDocumentCounter]="
-                                title?.files?.length ? title?.files?.length : 0
-                            "
+                            [cardDocumentCounter]="1"
                             (resizePage)="toggleResizePage(i, 'title')"
                             [cardNameCommon]="title.number"
                             [options]="dataEdit"

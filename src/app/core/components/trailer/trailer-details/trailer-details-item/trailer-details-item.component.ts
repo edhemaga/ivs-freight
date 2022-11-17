@@ -4,7 +4,6 @@ import {
     OnInit,
     OnDestroy,
     Input,
-    ViewChildren,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TrailerResponse } from 'appcoretruckassist';
@@ -26,9 +25,6 @@ import { card_component_animation } from '../../../shared/animations/card-compon
     animations: [card_component_animation('showHideCardBody')],
 })
 export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
-    @ViewChildren('fhwaUpload') fhwaUpload: any;
-    @ViewChildren('registrationUpload') registrationUpload: any;
-    @ViewChildren('titleUpload') titleUpload: any;
     private destroy$ = new Subject<void>();
     @Input() trailer: TrailerResponse | any = null;
     public note: FormControl = new FormControl();
@@ -297,42 +293,6 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
                 },
             });
     }
-
-    public downloadAllFiles(type: string, index: number) {
-        switch (type) {
-            case 'fhwa': {
-                if (
-                    this.fhwaUpload._results[index] &&
-                    this.fhwaUpload._results[index].downloadAllFiles
-                ) {
-                    this.fhwaUpload._results[index].downloadAllFiles();
-                }
-                break;
-            }
-            case 'registration': {
-                if (
-                    this.registrationUpload._results[index] &&
-                    this.registrationUpload._results[index].downloadAllFiles
-                ) {
-                    this.registrationUpload._results[index].downloadAllFiles();
-                }
-                break;
-            }
-            case 'title': {
-                if (
-                    this.titleUpload._results[index] &&
-                    this.titleUpload._results[index].downloadAllFiles
-                ) {
-                    this.titleUpload._results[index].downloadAllFiles();
-                }
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
         this.destroy$.next();

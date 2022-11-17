@@ -628,11 +628,6 @@
                             display: flex;
                             align-items: center;
                             flex: 1;
-
-                            &.expand {
-                                margin-bottom: 8px;
-                            }
-
                             .todo_list_info_number_hold {
                                 display: flex;
                                 align-items: center;
@@ -711,10 +706,6 @@
                                     color: #fff;
                                 }
                             }
-                        }
-
-                        &.files {
-                            display: block;
                         }
                     }
                 }

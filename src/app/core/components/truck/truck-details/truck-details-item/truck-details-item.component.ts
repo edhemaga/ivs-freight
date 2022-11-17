@@ -6,7 +6,6 @@ import {
     OnDestroy,
     ViewChild,
     Input,
-    ViewChildren,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TruckResponse } from 'appcoretruckassist';
@@ -30,9 +29,6 @@ import { card_component_animation } from '../../../shared/animations/card-compon
 })
 export class TruckDetailsItemComponent implements OnInit, OnDestroy {
     @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-    @ViewChildren('fhwaUpload') fhwaUpload: any;
-    @ViewChildren('registrationUpload') registrationUpload: any;
-    @ViewChildren('titleUpload') titleUpload: any;
     @Input() truck: TruckResponse | any = null;
     public note: FormControl = new FormControl();
     public fhwaNote: FormControl = new FormControl();
@@ -335,42 +331,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
         }
         this.accountText = value;
     }
-
-    public downloadAllFiles(type: string, index: number) {
-        switch (type) {
-            case 'fhwa': {
-                if (
-                    this.fhwaUpload._results[index] &&
-                    this.fhwaUpload._results[index].downloadAllFiles
-                ) {
-                    this.fhwaUpload._results[index].downloadAllFiles();
-                }
-                break;
-            }
-            case 'registration': {
-                if (
-                    this.registrationUpload._results[index] &&
-                    this.registrationUpload._results[index].downloadAllFiles
-                ) {
-                    this.registrationUpload._results[index].downloadAllFiles();
-                }
-                break;
-            }
-            case 'title': {
-                if (
-                    this.titleUpload._results[index] &&
-                    this.titleUpload._results[index].downloadAllFiles
-                ) {
-                    this.titleUpload._results[index].downloadAllFiles();
-                }
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

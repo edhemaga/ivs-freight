@@ -35,7 +35,6 @@ import { FormControlPipe } from '../components/shared/ta-input/form-control.pipe
 import { LoadStopTimeDatePipe } from '../components/modals/load-modal/load-stop-time-date.pipe';
 import { ActiveLoadStatusPipe } from '../components/modals/load-modal/load-modal-statuses/activeLoadStatus.pipe';
 import { UrlExtensionPipe } from './url-extension.pipe';
-import { ByteConvertPipe } from './byte-convert.pipe';
 
 @NgModule({
     declarations: [
@@ -74,7 +73,6 @@ import { ByteConvertPipe } from './byte-convert.pipe';
         LoadStopTimeDatePipe,
         ActiveLoadStatusPipe,
         UrlExtensionPipe,
-        ByteConvertPipe,
     ],
     imports: [CommonModule],
     exports: [
@@ -113,7 +111,6 @@ import { ByteConvertPipe } from './byte-convert.pipe';
         LoadStopTimeDatePipe,
         ActiveLoadStatusPipe,
         UrlExtensionPipe,
-        ByteConvertPipe,
     ],
     providers: [
         DatePipe,

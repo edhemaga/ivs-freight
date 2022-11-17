@@ -1,18 +1,13 @@
 .ta-upload-file-container {
     width: 168px;
     height: 194px;
+    background-color: #f3f3f3;
     border-radius: 2px;
     display: grid;
     grid-template-rows: 160px 1fr;
     row-gap: 7px;
     align-items: center;
     position: relative;
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-        transition: all 0.3s ease-in-out;
-        background-color: #e5e5e5;
-    }
 
     // ----------------- File Header Actions Review ----------
     .ta-upload-file-header-review {
@@ -256,21 +251,17 @@
         .ng2-pdf-viewer-container {
             display: flex;
             align-items: center;
-            justify-content: center;
-            overflow: visible !important;
+            overflow: hidden !important;
             background-color: transparent !important;
             width: 160px !important;
             height: 160px !important;
             border-radius: 1px !important;
+            box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
             top: 4px !important;
             -webkit-user-select: none !important;
             -moz-user-select: none !important;
             -ms-user-select: none !important;
             user-select: none !important;
-
-            .canvasWrapper {
-                box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
-            }
 
             .canvasWrapper,
             .pdfViewer,
@@ -279,11 +270,6 @@
                 width: 160px !important;
                 max-height: 160px !important;
                 margin: 0 !important;
-                border-radius: 1px !important;
-
-                &:not(:first-child) {
-                    opacity: 0;
-                }
             }
         }
 
@@ -343,7 +329,7 @@
             font-size: 11px;
             font-weight: 600;
             position: absolute;
-            bottom: 18px;
+            bottom: -4px;
             left: 0px;
             padding: 1px 4px;
             opacity: 0.9;
@@ -374,61 +360,23 @@
         //-------------- Driver Details Single PDF
         &.driver-details-pdf {
             width: 303px;
-            height: 303px;
+            height: 343px;
             position: relative;
 
             .ng2-pdf-viewer-container {
-                overflow: visible !important;
+                overflow: hidden !important;
                 background-color: transparent !important;
                 width: 295px !important;
-                height: 295px !important;
+                height: 312px !important;
                 border-radius: 1px !important;
 
                 .canvasWrapper,
                 .pdfViewer,
                 .pdfViewer .page,
                 canvas {
-                    max-width: 295px !important;
-                    max-height: 295px !important;
+                    width: 295px !important;
+                    max-height: 335px !important;
                     margin: 0 !important;
-                    border-radius: 1px !important;
-                    width: auto !important;
-                    min-width: 229px;
-
-                    &:not(:first-child) {
-                        opacity: 0;
-                    }
-                }
-            }
-        }
-
-        &.todo-details {
-            width: 200px;
-            height: 200px;
-            position: relative;
-
-            .ng2-pdf-viewer-container {
-                overflow: visible !important;
-                background-color: transparent !important;
-                width: 178px !important;
-                height: 192px !important;
-                border-radius: 1px !important;
-                margin-left: 7px;
-
-                .canvasWrapper,
-                .pdfViewer,
-                .pdfViewer .page,
-                canvas {
-                    max-width: 192px !important;
-                    max-height: 192px !important;
-                    margin: 0 !important;
-                    border-radius: 1px !important;
-                    width: auto !important;
-                    min-width: 150px;
-
-                    &:not(:first-child) {
-                        opacity: 0;
-                    }
                 }
             }
         }
@@ -505,7 +453,6 @@
     //------------------ File Footer Actions ------------------
     .ta-upload-file-footer {
         display: flex;
-        position: relative;
         align-items: center;
         height: 26px;
         padding: 4px;
@@ -524,69 +471,39 @@
             padding: 0px !important;
         }
 
-        .footer_info {
-            display: flex;
-            align-items: center;
-            position: absolute;
-            left: 4px;
-            bottom: 30px;
+        .ta-upload-file-ext {
+            width: 32px;
+            height: 18px;
+            text-align: center;
+            border-radius: 2px;
+            margin-right: 4px;
+            font-size: 11px;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 18px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            text-transform: uppercase;
 
-            .ta-upload-file-ext {
-                width: 32px;
-                height: 18px;
-                text-align: center;
-                border-radius: 1px;
-                margin-right: 4px;
-                font-size: 11px;
-                font-weight: 900;
-                color: #ffffff;
-                line-height: 18px;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-                text-transform: uppercase;
+            &-jpg,
+            &-jpeg,
+            &-png {
+                background: #ffb74d;
+            }
 
-                &-jpg,
-                &-jpeg,
-                &-png {
-                    background: #ffb74d;
-                }
-
-                &-pdf {
-                    background-color: #e57373;
-
-                    &:hover {
-                        background-color: #ef5350;
-                    }
-                }
+            &-pdf {
+                background-color: #e57373;
 
                 &:hover {
-                    transition: all 0.3s ease-in-out;
-                    cursor: auto !important;
+                    background-color: #ef5350;
                 }
             }
-        }
 
-        .document_info_hold {
-            display: flex;
-            padding: 2px 6px;
-            background-color: #919191;
-            color: #ffffff;
-            border-radius: 2px;
-
-            font-size: 11px;
-            font-weight: 700;
-            line-height: 14px;
-
-            user-select: none;
-
-            .file_size {
-                font-weight: 500;
-
-                &.has_pages {
-                    margin-left: 3px;
-                }
+            &:hover {
+                transition: all 0.3s ease-in-out;
+                cursor: auto !important;
             }
         }
 
@@ -595,7 +512,7 @@
             font-size: 14px;
             font-weight: 400;
             color: #6c6c6c;
-            max-width: 161px;
+            max-width: 124px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -613,10 +530,6 @@
             &.details_title {
                 max-width: 259px;
             }
-
-            &.todo_title {
-                max-width: 127px;
-            }
         }
     }
 
@@ -632,77 +545,16 @@
     // --------------------- Custom Classes ---------------------
     &.driver-details-pdf {
         width: 303px;
-        height: 303px;
-        grid-template-rows: 303px;
+        height: 343px;
+        grid-template-rows: 343px;
 
         .ta-upload-file-footer {
-            opacity: 0;
-            bottom: 37px;
-            right: -4px;
-
-            width: 295px;
-            border-radius: 1px;
-            cursor: default;
-            transition: 0.3s all ease-in-out;
-
-            .footer_info {
-                left: 0 !important;
-            }
-
-            .ta-upload-file-name {
-                font-weight: 600 !important;
-            }
-        }
-
-        &:hover {
-            .ta-upload-file-footer {
-                opacity: 1;
-                background-color: rgba(255, 255, 255, 0.9) !important;
-                transition: 0.3s all ease-in-out;
-            }
+            bottom: 33px;
         }
 
         .ta-upload-file-delete-template {
-            width: 295px;
-            height: 295px;
-        }
-    }
-
-    &.todo-details {
-        width: 200px;
-        height: 200px;
-        grid-template-rows: 200px;
-
-        .ta-upload-file-footer {
-            opacity: 0;
-            bottom: 37px;
-            right: -4px;
-
-            width: 192px;
-            border-radius: 1px;
-            cursor: default;
-            transition: 0.3s all ease-in-out;
-
-            .footer_info {
-                left: 0 !important;
-            }
-
-            .ta-upload-file-name {
-                font-weight: 600 !important;
-            }
-        }
-
-        &:hover {
-            .ta-upload-file-footer {
-                opacity: 1;
-                background-color: rgba(255, 255, 255, 0.9) !important;
-                transition: 0.3s all ease-in-out;
-            }
-        }
-
-        .ta-upload-file-delete-template {
-            width: 192px;
-            height: 192px;
+            width: 304px;
+            height: 320px;
         }
     }
 }

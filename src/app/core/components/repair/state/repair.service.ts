@@ -5,11 +5,15 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { RepairService } from 'appcoretruckassist/api/repair.service';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import {
+    CreateRepairCommand,
     CreateResponse,
     RepairResponse,
+    UpdateRepairCommand,
+    CreateRepairShopCommand,
     RepairShopListResponse,
     RepairShopModalResponse,
     RepairShopService,
+    UpdateRepairShopCommand,
     RepairListResponse,
     RepairShopMinimalResponse,
 } from 'appcoretruckassist';
@@ -23,7 +27,6 @@ import { ShopQuery } from './shop-state/shop.query';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { RepairDQuery } from './details-state/repair-d.query';
 import { RepairDStore } from './details-state/repair-d.store';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
     providedIn: 'root',
@@ -48,13 +51,8 @@ export class RepairTService implements OnDestroy {
     ) {}
 
     // <----------------------- Repair Truck And Trailer -------------------->
-    //CreateRepairCommand
-    public addRepair(data: any): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.repairService.apiRepairPost,
-            data
-        );
-        return this.repairService.apiRepairPost(...sortedParams).pipe(
+    public addRepair(data: CreateRepairCommand): Observable<CreateResponse> {
+        return this.repairService.apiRepairPost(data).pipe(
             tap((res: any) => {
                 const subShop = this.getRepairShopById(data.repairShopId)
                     .pipe(takeUntil(this.destroy$))
@@ -108,13 +106,8 @@ export class RepairTService implements OnDestroy {
         );
     }
 
-    //UpdateRepairCommand
-    public updateRepair(data: any): Observable<object> {
-        const sortedParams = getFunctionParams(
-            this.repairService.apiRepairPut,
-            data
-        );
-        return this.repairService.apiRepairPut(...sortedParams).pipe(
+    public updateRepair(data: UpdateRepairCommand): Observable<object> {
+        return this.repairService.apiRepairPut(data).pipe(
             tap(() => {
                 const subShop = this.getRepairShopById(data.repairShopId)
                     .pipe(takeUntil(this.destroy$))
@@ -269,13 +262,10 @@ export class RepairTService implements OnDestroy {
     }
 
     // <----------------------- Repair Shop -------------------->
-    //CreateRepairShopCommand
-    public addRepairShop(data: any): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.shopServices.apiRepairshopPost,
-            data
-        );
-        return this.shopServices.apiRepairshopPost(...sortedParams).pipe(
+    public addRepairShop(
+        data: CreateRepairShopCommand
+    ): Observable<CreateResponse> {
+        return this.shopServices.apiRepairshopPost(data).pipe(
             tap((res: any) => {
                 const subShop = this.getRepairShopById(res.id)
                     .pipe(takeUntil(this.destroy$))
@@ -306,13 +296,8 @@ export class RepairTService implements OnDestroy {
         );
     }
 
-    //UpdateRepairShopCommand
-    public updateRepairShop(data: any): Observable<object> {
-        const sortedParams = getFunctionParams(
-            this.shopServices.apiRepairshopPut,
-            data
-        );
-        return this.shopServices.apiRepairshopPut(...sortedParams).pipe(
+    public updateRepairShop(data: UpdateRepairShopCommand): Observable<object> {
+        return this.shopServices.apiRepairshopPut(data).pipe(
             tap(() => {
                 const subShop = this.getRepairShopById(data.id)
                     .pipe(takeUntil(this.destroy$))

@@ -19,7 +19,7 @@
                     "
                     [options]="dataDropDown"
                     [cardDocumentCounter]="
-                        cdl?.files?.length ? cdl.files.length : null
+                        cdl?.files?.length ? cdl.files.length : 0
                     "
                     [statusActive]="cdl.status"
                     (dataDropDopwn)="getCdlById(cdl.id)"
@@ -193,14 +193,11 @@
                                 toggler[i + 'cdl'] ? 'true' : 'false'
                             "
                         >
-                            <div
-                                class="divider"
-                                *ngIf="cdl?.files?.length"
-                            ></div>
+                            <div class="divider"></div>
+
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!cdl?.files?.length"
-                                *ngIf="cdl?.files?.length"
                             >
                                 <div class="icon-counter-wrapper">
                                     <div
@@ -224,7 +221,7 @@
                                     </div>
                                     <svg-icon
                                         *ngIf="cdl?.files?.length"
-                                        (click)="downloadAllFiles('cdl', i)"
+                                        (click)="onFileAction('download')"
                                         src="assets/svg/common/ic_download.svg"
                                     >
                                     </svg-icon>
@@ -233,10 +230,8 @@
                             <div
                                 class="card-pdf"
                                 [class.disabled]="!cdl?.files?.length"
-                                [class.pagination]="cdl.files?.length > 1"
                             >
                                 <app-ta-upload-files
-                                    #cdlUpload
                                     [files]="cdl.files ? cdl.files : []"
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
@@ -286,7 +281,7 @@
                     (dataDropDopwn)="getTestById(test.id)"
                     (clickedCard)="getNameForDrop($event)"
                     [cardDocumentCounter]="
-                        test?.files?.length ? test.files.length : null
+                        test?.files?.length ? test.files.length : 0
                     "
                     [weeklyWidth]="'18'"
                     [cardNameCurrent]="'test'"
@@ -329,14 +324,10 @@
                                 toggler[i + 'test'] ? 'true' : 'false'
                             "
                         >
-                            <div
-                                class="divider"
-                                *ngIf="test?.files?.length"
-                            ></div>
+                            <div class="divider"></div>
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!test?.files?.length"
-                                *ngIf="test?.files?.length"
                             >
                                 <div class="icon-counter-wrapper">
                                     <div
@@ -360,7 +351,7 @@
                                     </div>
                                     <svg-icon
                                         *ngIf="test?.files?.length"
-                                        (click)="downloadAllFiles('test', i)"
+                                        (click)="onFileAction('download')"
                                         src="assets/svg/common/ic_download.svg"
                                     >
                                     </svg-icon>
@@ -369,10 +360,8 @@
                             <div
                                 class="card-pdf"
                                 [class.disabled]="!test?.files?.length"
-                                [class.pagination]="test.files?.length > 1"
                             >
                                 <app-ta-upload-files
-                                    #testUpload
                                     [files]="test.files ? test.files : []"
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
@@ -420,9 +409,6 @@
                     (dataDropDopwn)="getMedicalById(med.id)"
                     (clickedCard)="getNameForDrop($event)"
                     [cardNameCurrent]="'medical'"
-                    [cardDocumentCounter]="
-                        med?.files?.length ? med.files.length : null
-                    "
                     [noteIcons]="
                         med.note
                             ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -458,14 +444,10 @@
                                 toggler[i + 'medical'] ? 'true' : 'false'
                             "
                         >
-                            <div
-                                class="divider"
-                                *ngIf="med?.files?.length"
-                            ></div>
+                            <div class="divider"></div>
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!med?.files?.length"
-                                *ngIf="med?.files?.length"
                             >
                                 <div class="icon-counter-wrapper">
                                     <div
@@ -489,7 +471,7 @@
                                     </div>
                                     <svg-icon
                                         *ngIf="med?.files?.length"
-                                        (click)="downloadAllFiles('medical', i)"
+                                        (click)="onFileAction('download')"
                                         src="assets/svg/common/ic_download.svg"
                                     >
                                     </svg-icon>
@@ -498,10 +480,8 @@
                             <div
                                 class="card-pdf"
                                 [class.disabled]="!med?.files?.length"
-                                [class.pagination]="med.files?.length > 1"
                             >
                                 <app-ta-upload-files
-                                    #medicalUpload
                                     [files]="med.files ? med.files : []"
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
@@ -547,7 +527,7 @@
                     (clickedCard)="getNameForDrop($event)"
                     (dataDropDopwn)="getMvrById(mvr.id)"
                     [cardDocumentCounter]="
-                        mvr?.files?.length ? mvr.files.length : null
+                        mvr?.files?.length ? mvr.files.length : 0
                     "
                     [noteIcons]="
                         mvr.note
@@ -589,14 +569,10 @@
                                 toggler[i + 'mvr'] ? 'true' : 'false'
                             "
                         >
-                            <div
-                                class="divider"
-                                *ngIf="mvr?.files?.length"
-                            ></div>
+                            <div class="divider"></div>
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!mvr?.files?.length"
-                                *ngIf="mvr?.files?.length"
                             >
                                 <div
                                     class="icon-counter-wrapper"
@@ -620,7 +596,7 @@
                                     </div>
                                     <svg-icon
                                         *ngIf="mvr?.files?.length"
-                                        (click)="downloadAllFiles('mvr', i)"
+                                        (click)="onFileAction('download')"
                                         src="assets/svg/common/ic_download.svg"
                                     >
                                     </svg-icon>
@@ -629,10 +605,8 @@
                             <div
                                 class="card-pdf"
                                 [class.disabled]="!mvr?.files?.length"
-                                [class.pagination]="mvr.files?.length > 1"
                             >
                                 <app-ta-upload-files
-                                    #mvrUpload
                                     [files]="mvr.files ? mvr.files : []"
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"

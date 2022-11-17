@@ -134,29 +134,17 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
-        switch (event.action) {
-            case 'add': {
-                this.medicalForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
-                break;
-            }
-            case 'delete': {
-                this.medicalForm
-                    .get('files')
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
 
-                this.fileModified = true;
-                break;
+        if (event.action == 'delete') {
+            this.medicalForm.patchValue({
+                files: null,
+            });
+
+            if (event.deleteId) {
+                this.filesForDelete.push(event.deleteId);
             }
-            default: {
-                break;
-            }
+
+            this.fileModified = true;
         }
     }
 
@@ -237,9 +225,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                         issueDate: convertDateFromBackend(res.issueDate),
                         expDate: convertDateFromBackend(res.expDate),
                         note: res.note,
-                        files: res.files.length
-                            ? JSON.stringify(res.files)
-                            : null,
                     });
 
                     this.documents = res.files ? (res.files as any) : [];

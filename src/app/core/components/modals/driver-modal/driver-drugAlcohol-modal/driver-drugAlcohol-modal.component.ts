@@ -229,6 +229,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
+
         switch (event.action) {
             case 'add': {
                 this.drugForm
