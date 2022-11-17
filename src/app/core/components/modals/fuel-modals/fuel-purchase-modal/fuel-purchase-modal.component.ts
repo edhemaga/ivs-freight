@@ -38,7 +38,9 @@ import { CurrencyPipe } from '@angular/common';
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  @Input() editData: any;
+  @Input() editData: any = {
+    type: 'edit',
+  };
 
   public fuelForm: FormGroup;
 
@@ -94,6 +96,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.fuelForm = this.formBuilder.group({
+      efsAccount: [null],
+      fuelCard: [null],
       truckId: [null, Validators.required],
       trailerId: [null],
       driverFullName: [null, fullNameValidation],

@@ -137,12 +137,8 @@
       </div>
 
       <!-- Header (Details page, Calendar...) -->
-      <div
-        *ngIf="
-          (hasPlusHeader && _isCardOpen && _isCardOpen != 'null') || stayOpen
-        "
-        class="arrow-down-plus"
-      >
+
+      <div *ngIf="hasPlusHeader || stayOpen" class="arrow-down-plus">
         <div
           class="add-custom-card"
           ngbTooltip

@@ -1595,4 +1595,28 @@
 
     transition: all 0.3s ease-in-out;
   }
+
+  &.non-editable {
+    background-color: #f7f7f7;
+
+    .selected-item-label,
+    .selected-item-name {
+      color: #919191;
+    }
+
+    .selected-item-additional {
+      .selected-item-info {
+        svg-icon {
+          svg {
+            path {
+              fill: #cccccc;
+            }
+          }
+        }
+        p {
+          color: #919191;
+        }
+      }
+    }
+  }
 }

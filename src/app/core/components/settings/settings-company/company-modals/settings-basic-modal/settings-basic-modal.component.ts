@@ -291,11 +291,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       const timeout = setTimeout(() => {
         this.tabChange({ id: 3 });
 
-        setTimeout(() => {
-          this.editCompany();
-        });
+        this.editCompany();
+
         clearTimeout(timeout);
-      }, 150);
+      });
     }
   }
 
