@@ -434,7 +434,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             felony,
             misdemeanor,
             drunkDriving,
-           /*  legalWorkDescription, */
+            // legalWorkDescription,
             anotherNameDescription,
             inMilitaryDescription,
             felonyDescription,
@@ -460,7 +460,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             felony,
             misdemeanor,
             drunkDriving,
-           /*  legalWorkExplain: legalWorkDescription, */
+            // legalWorkExplain: legalWorkDescription,
             anotherNameExplain: anotherNameDescription,
             inMilitaryExplain: inMilitaryDescription,
             felonyExplain: felonyDescription,

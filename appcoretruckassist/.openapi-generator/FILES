@@ -334,6 +334,7 @@ model/getFuelModalResponse.ts
 model/getFuelStopModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
+model/getModalFuelStopFranchiseByIdResponse.ts
 model/getMvrModalResponse.ts
 model/getOwnerListResponse.ts
 model/getRatingReviewModalResponse.ts

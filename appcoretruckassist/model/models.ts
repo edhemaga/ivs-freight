@@ -277,6 +277,7 @@ export * from './getFuelModalResponse';
 export * from './getFuelStopModalResponse';
 export * from './getHazardousMaterialDropdownModalQuery';
 export * from './getMapListResponse';
+export * from './getModalFuelStopFranchiseByIdResponse';
 export * from './getMvrModalResponse';
 export * from './getOwnerListResponse';
 export * from './getRatingReviewModalResponse';
