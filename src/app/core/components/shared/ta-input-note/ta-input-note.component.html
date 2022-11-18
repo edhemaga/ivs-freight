@@ -27,7 +27,7 @@
                 [ngClass]="{
                     rotate: _isVisibleNote && _isVisibleNote != 'null'
                 }"
-                src="assets/svg/common/ic_arrow_down_updated.svg"
+                src="{{ defArrow ? 'assets/svg/common/calendar/arrow-right.svg' : 'assets/svg/common/ic_arrow_down_updated.svg' }}" 
                 (click)="openNote()"
             ></svg-icon>
         </div>

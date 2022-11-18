@@ -43,6 +43,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     savingNote: boolean = false;
     @Input() entityId: number = 0;
     @Input() entityType: string = '';
+    @Input() defArrow: boolean = true;
     noActive: string;
 
     @Input() set isVisibleNote(value: boolean) {

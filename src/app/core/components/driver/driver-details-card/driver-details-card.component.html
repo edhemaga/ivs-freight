@@ -246,10 +246,8 @@
                                 Years of Service
                             </div>
                             <div class="service-year-value">
-                                {{ yearsService }}
-                                {{ yearsService > 1 ? 'years' : 'year' }}
-                                {{ daysService }}
-                                {{ daysService > 1 ? 'days' : 'day' }}
+                                <span *ngIf="yearsService">{{ yearsService }} {{ yearsService > 1 ? 'years' : 'year' }}</span>
+                                <span>{{ daysService }} {{ daysService > 1 ? 'days' : 'day' }}</span>
                             </div>
                         </div>
                     </div>
