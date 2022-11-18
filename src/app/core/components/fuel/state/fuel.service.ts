@@ -18,6 +18,8 @@ import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassis
 import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import { AddFuelTransactionCommand } from '../../../../../../appcoretruckassist/model/addFuelTransactionCommand';
 import { EditFuelTransactionCommand } from '../../../../../../appcoretruckassist/model/editFuelTransactionCommand';
+import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
+import { getFunctionParams } from '../../../utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',
@@ -66,7 +68,7 @@ export class FuelTService {
     pageIndex: number,
     pageSize: number
   ): Observable<any> {
-    return this.fuelService.apiFuelTransactionFuelstopfranchiseGet(
+    return this.fuelService.apiFuelTransactionModalFuelstopfranchiseGet(
       pageIndex,
       pageSize
     );
@@ -85,16 +87,26 @@ export class FuelTService {
     return this.fuelService.apiFuelDispatchhistoryGet(truckId, date);
   }
 
-  public addFuelTransaction(
-    data: AddFuelTransactionCommand
-  ): Observable<CreateResponse> {
-    return this.fuelService.apiFuelTransactionPost(data);
+  public addFuelTransaction(data: any): Observable<CreateResponse> {
+    const sortedParams = getFunctionParams(
+      this.fuelService.apiFuelTransactionPost,
+      data
+    );
+    return this.fuelService.apiFuelTransactionPost(...sortedParams);
   }
 
-  public updateFuelTransaction(
-    data: EditFuelTransactionCommand
-  ): Observable<CreateResponse> {
-    return this.fuelService.apiFuelTransactionPut(data);
+  public updateFuelTransaction(data: any): Observable<CreateResponse> {
+    const sortedParams = getFunctionParams(
+      this.fuelService.apiFuelTransactionPut,
+      data
+    );
+    return this.fuelService.apiFuelTransactionPut(...sortedParams);
+  }
+
+  public getFuelTransactionById(
+    id: number
+  ): Observable<FuelTransactionResponse> {
+    return this.fuelService.apiFuelTransactionIdGet(id);
   }
 
   // **************** FUEL STOP ****************

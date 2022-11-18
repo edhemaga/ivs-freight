@@ -10,7 +10,7 @@ if (environment.production) {
 }
 
 const storage = persistState();
- 
+
 const providers = [{ provide: 'persistStorage', useValue: storage }];
 
 platformBrowserDynamic(providers)
