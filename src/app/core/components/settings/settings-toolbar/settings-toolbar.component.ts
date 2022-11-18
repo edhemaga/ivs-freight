@@ -1,8 +1,4 @@
-import {
-    Component,
-    OnInit,
-    ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { OfficeStore } from '../settings-location/settings-office/state/company-office.store';
 import { ParkingStore } from '../settings-location/settings-parking/parking-state/company-parking.store';

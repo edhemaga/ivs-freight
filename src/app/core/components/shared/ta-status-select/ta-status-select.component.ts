@@ -1,13 +1,7 @@
 import * as AppConst from 'src/app/const';
 import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
 import { LoadStatusPipe } from '../../../pipes/load-status.pipe';
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
     selector: 'app-ta-status-select',

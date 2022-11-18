@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FuelModalStopResponsePagination } from './fuelModalStopResponsePagination';
 
 
-export interface EmergencyContactReviewResponse { 
-    id?: number;
-    isNameValid?: boolean;
-    isPhoneValid?: boolean;
-    isRelationshipValid?: boolean;
-    emergencyContactMessage?: string | null;
+export interface GetModalFuelStopFranchiseByIdResponse { 
+    pagination?: FuelModalStopResponsePagination;
 }
 

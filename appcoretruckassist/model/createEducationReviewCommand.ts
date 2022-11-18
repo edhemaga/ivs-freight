@@ -13,6 +13,7 @@ import { EmergencyContactReviewCommand } from './emergencyContactReviewCommand';
 
 
 export interface CreateEducationReviewCommand { 
+    id?: number | null;
     isSpecialTrainingDescriptionValid?: boolean;
     specialTrainingDescriptionMessage?: string | null;
     isOtherTrainingDescriptionValid?: boolean;

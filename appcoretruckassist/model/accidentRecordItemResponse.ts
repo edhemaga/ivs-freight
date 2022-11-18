@@ -23,6 +23,5 @@ export interface AccidentRecordItemResponse {
     vehicleType?: TruckTypeResponse;
     description?: string | null;
     accidentRecordReview?: AccidentRecordItemResponse;
-    accidentRecordId?: number;
 }
 

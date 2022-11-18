@@ -24,8 +24,8 @@ export interface UpdatePersonalInfoCommand {
     bankId?: number | null;
     accountNumber?: string | null;
     routingNumber?: string | null;
+    usCitizen?: boolean;
     legalWork?: boolean;
-    legalWorkDescription?: string | null;
     anotherName?: boolean | null;
     anotherNameDescription?: string | null;
     inMilitary?: boolean | null;
