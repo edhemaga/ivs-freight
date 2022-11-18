@@ -2406,7 +2406,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 route.mpg ||
                 route.fuelPrice)
         ) {
-            widthNumber += 11;
+            widthNumber += 10;
         }
 
         route.width = widthNumber + 'px';
