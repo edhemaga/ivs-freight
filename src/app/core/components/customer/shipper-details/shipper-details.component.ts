@@ -250,6 +250,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
+                    iconName: 'edit'
                 },
                 {
                     title: 'border',
@@ -259,12 +260,14 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     name: 'add-contact',
                     svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
+                    iconName: 'add-contact'
                 },
                 {
                     title: 'Write Review',
                     name: 'write-review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
+                    iconName: 'write-review'
                 },
                 {
                     title: 'border',
@@ -274,12 +277,14 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
+                    iconName: 'share'
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
+                    iconName: 'print'
                 },
                 {
                     title: 'border',
@@ -290,6 +295,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: true,
                     show: true,
+                    iconName: 'close-business'
                 },
                 {
                     title: 'Delete',
@@ -297,6 +303,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     redIcon: true,
                     show: true,
+                    iconName: 'delete'
                 },
 
                 /*

@@ -517,6 +517,58 @@
     {
       "iconName": "transfer",
       "iconPath": "assets/svg/common/dropdown-transfer-icon.svg"
+    },
+    {
+      "iconName": "ic_plus",
+      "iconPath": "assets/svg/common/ic_plus.svg"
+    },
+    {
+      "iconName": "add-contact",
+      "iconPath": "assets/svg/truckassist-table/customer/contact-column-avatar.svg"
+    },
+    {
+      "iconName": "write-review",
+      "iconPath": "assets/svg/common/review-pen.svg"
+    },
+    {
+      "iconName": "change-status",
+      "iconPath": "assets/svg/common/ic_disable-status.svg"
+    },
+    {
+      "iconName": "close-business",
+      "iconPath": "assets/svg/common/close-business-icon.svg"
+    },
+    {
+      "iconName": "ic_star",
+      "iconPath": "assets/svg/common/ic_star.svg"
+    },
+    {
+      "iconName": "ic_route_duplicate",
+      "iconPath": "assets/svg/common/routing/ic_route_duplicate.svg"
+    },
+    {
+      "iconName": "ic_route_reverse",
+      "iconPath": "assets/svg/common/routing/ic_route_reverse.svg"
+    },
+    {
+      "iconName": "ic_route_clear",
+      "iconPath": "assets/svg/common/routing/ic_route_clear.svg"
+    },
+    {
+      "iconName": "ic_web",
+      "iconPath": "assets/svg/common/ic_web.svg"
+    },
+    {
+      "iconName": "mark-as-ongoing",
+      "iconPath": "assets/svg/detail-cards/refresh.svg"
+    },
+    {
+      "iconName": "mark-as-done",
+      "iconPath": "assets/svg/common/dropdown-done-icon.svg"
+    },
+    {
+      "iconName": "mark-as-to-do",
+      "iconPath": "assets/svg/common/ic_time.svg"
     }
     
   ],
