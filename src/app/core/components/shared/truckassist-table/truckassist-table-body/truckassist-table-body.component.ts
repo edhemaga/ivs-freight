@@ -57,6 +57,7 @@ export class TruckassistTableBodyComponent
     notPinedColumns: any = [];
     actionsColumns: any = [];
     actionsWidth: number = 0;
+    tableWidth: number = 0;
     mySelection: any[] = [];
     showItemDrop: number = -1;
     showScrollSectionBorder: boolean = false;
@@ -297,8 +298,11 @@ export class TruckassistTableBodyComponent
         this.notPinedColumns = [];
         this.actionsColumns = [];
 
+        this.tableWidth = 0;
         this.pinedWidth = 0;
         this.actionsWidth = 0;
+
+        let notPinedWidth = 0;
 
         this.columns.map((c: any) => {
             // Pined
@@ -311,6 +315,8 @@ export class TruckassistTableBodyComponent
             // Not Pined
             if (!c.isPined && !c.isAction && !c.hidden) {
                 this.notPinedColumns.push(c);
+
+                notPinedWidth += c.minWidth > c.width ? c.minWidth : c.width;
             }
 
             // Actions
@@ -321,6 +327,8 @@ export class TruckassistTableBodyComponent
                     c.minWidth > c.width ? c.minWidth : c.width;
             }
         });
+
+        this.tableWidth = this.actionsWidth + notPinedWidth + this.pinedWidth + 12;
     }
 
     // Get Tab Table Data For Selected Tab
@@ -330,6 +338,14 @@ export class TruckassistTableBodyComponent
                 (t) => t.field === this.selectedTab
             );
         }
+
+        console.log('ViewData length');
+        console.log(this.viewData.length);
+
+        console.log('Selected Tab Data All Data');
+        console.log(this.activeTableData.length);
+
+        console.log(`Da li Show More treba da se pojavi: ${this.viewData.length < this.activeTableData.length}`)
     }
 
     // Get Not Pined Section Of Table Max Width
