@@ -12,7 +12,6 @@ import { CreateRepairCommand } from 'appcoretruckassist/model/createRepairComman
 import { UpdateRepairCommand } from 'appcoretruckassist/model/updateRepairCommand';
 import {
     RepairModalResponse,
-    RepairResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
