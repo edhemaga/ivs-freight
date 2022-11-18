@@ -187,8 +187,13 @@
                 !['No Results', 'Add New'].includes(option.name)
             }"
             [innerHtml]="
-              option.name
-                | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+              option?.number
+                ? (option.number
+                  | taHighlight
+                    : [{ index: 45632, text: getSuperControl.value }])
+                : (option.name
+                  | taHighlight
+                    : [{ index: 45632, text: getSuperControl.value }])
             "
           ></div>
         </div>

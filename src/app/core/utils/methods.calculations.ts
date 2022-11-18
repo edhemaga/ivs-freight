@@ -100,6 +100,11 @@ export const convertDateFromBackendToTime = (date: string) => {
   return moment(new Date(date)).format('LT');
 };
 
+export const combineDateAndTimeToBackend = (date: string, time: string) => {
+  console.log('date & time: ', date, time);
+  return moment(new Date(date + ' ' + time)).toISOString(true);
+};
+
 //------------------------------- Convert thousand separator in number -------------------------------
 export const convertThousanSepInNumber = (value: string) => {
   if (value) return parseFloat(value.toString().replace(/,/g, ''));

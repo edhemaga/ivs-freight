@@ -269,8 +269,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       this.createDivisionForm();
 
       if (this.editData.type === 'edit-division') {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
           this.editCompanyDivision();
+          clearTimeout(timeout);
         });
       }
     } else {
@@ -290,9 +291,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (this.editData?.type === 'payroll-tab') {
       const timeout = setTimeout(() => {
         this.tabChange({ id: 3 });
-
         this.editCompany();
-
         clearTimeout(timeout);
       });
     }
@@ -687,6 +686,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public onSelectDropdown(event: any, action: string) {
     switch (action) {
       case 'timezone': {
+        console.log('oeiqneqw: ', event);
         this.selectedTimeZone = event;
         break;
       }
@@ -1657,8 +1657,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     });
 
     this.selectedAddress = this.editData.company.address;
-
-    this.selectedTimeZone = this.editData.company.timeZone;
+    console.log(this.editData.company.timeZone);
+    this.selectedTimeZone =
+      this.editData.company.timeZone.id !== 0
+        ? this.editData.company.timeZone
+        : null;
 
     this.selectedCompanyData =
       this.editData.company.companyType.id !== 0

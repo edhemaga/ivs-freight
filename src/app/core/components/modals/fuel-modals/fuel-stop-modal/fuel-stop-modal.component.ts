@@ -267,7 +267,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             'Success',
             'Successfully fuel stop updated.'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: (error: any) => {
           this.notificationService.error('Error', error);
@@ -297,7 +296,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             'Success',
             'Successfully fuel stop added.'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: (error: any) => {
           this.notificationService.error('Error', error);

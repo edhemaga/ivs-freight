@@ -1560,7 +1560,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
             'Successfully created load',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: (error: any) => {
           this.notificationService.success(`Error: ${error}`, 'Error');
