@@ -104,11 +104,15 @@ import {
                     overflow: 'hidden',
                 })
             ),
-            transition('false <=> true', [
-                animate('0.2s cubic-bezier(0, 0, 0.60, 1.99)'),
+            transition('false => true', [
+                animate('100ms cubic-bezier(0, 0, 0.60, 1.99)'),
+            ]),
+            transition('true => false', [
+                animate('60ms ease'),
             ]),
             transition('true <=> false', [animate('0.1s ease')]),
         ]),
+        
     ],
 })
 export class DetailsDropdownComponent implements OnInit, OnChanges {
@@ -149,7 +153,9 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     toggleDropdown(tooltip: any) {
         this.tooltip = tooltip;
         if (tooltip.isOpen()) {
-            tooltip.close();
+            //this.dropdownClosed();
+            //tooltip.close();
+            console.log('--here----')
         } else {
             
             setTimeout(()=>{
@@ -223,8 +229,6 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     }
 
     dropdownClosed() {
-        
-        console.log('---this.dropDownActive---1', this.dropDownActive);
         if (!this.isOpened) {
             return false;
         }
@@ -234,7 +238,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
             this.ref.detectChanges();
             this.tooltip.open();
         }
-        console.log('---this.dropDownActive---2', this.dropDownActive);
+
         setTimeout(()=>{
             this.isOpened = false;
         }, 1);
@@ -244,15 +248,12 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
         );
         mainElementHolder?.classList.add('closeAnimation');
 
-        
-        console.log('---this.dropDownActive---3', this.dropDownActive);
         setTimeout(() => {
             this.tooltip.close();
-            console.log('---this.dropDownActive---4', this.dropDownActive);
             this.isAnimated = false;
             this.options.map((item) => {
                 item['openSubtype'] = false;
             });
-        }, 200);
+        }, 70);
     }
 }
