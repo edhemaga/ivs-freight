@@ -12,10 +12,7 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 import { AfterViewInit } from '@angular/core';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { FuelQuery } from '../state/fule-state/fuel-state.query';
-import {
-    FuelStopListResponse,
-    FuelTransactionListResponse,
-} from 'appcoretruckassist';
+import { FuelStopResponse, FuelTransactionResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-table',
@@ -65,8 +62,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
-    fuelTransactionList: FuelTransactionListResponse;
-    fuelStopList: FuelStopListResponse;
+    fuelTransactionList: FuelTransactionResponse[];
+    fuelStopList: FuelStopResponse[];
 
     constructor(
         private modalService: ModalService,
@@ -362,18 +359,12 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const fuelCount = JSON.parse(localStorage.getItem('fuelTableCount'));
 
-        console.log('Fuel Transactions Data');
-        console.log(this.fuelTransactionList);
-
-        console.log('Fuel Stops Data');
-        console.log(this.fuelStopList);
-
         this.tableData = [
             {
                 title: 'Transactions',
                 field: 'active',
                 length: fuelCount.fuelTransactions,
-                data: [{}],
+                data: this.fuelTransactionList,
                 gridNameTitle: 'Fuel',
                 tableConfiguration: 'FUEL_TRANSACTION',
                 isActive: this.selectedTab === 'active',
@@ -383,7 +374,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 title: 'Stop',
                 field: 'inactive',
                 length: fuelCount.fuelStops,
-                data: [{}],
+                data: this.fuelStopList,
                 gridNameTitle: 'Fuel',
                 tableConfiguration: 'FUEL_STOP',
                 isActive: this.selectedTab === 'inactive',
@@ -406,6 +397,9 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 data.isSelected = false;
                 return data;
             });
+
+            console.log('Fuel Data');
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }

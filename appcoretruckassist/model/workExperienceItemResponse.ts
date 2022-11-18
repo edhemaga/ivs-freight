@@ -32,7 +32,6 @@ export interface WorkExperienceItemResponse {
     accountForPeriodBetween?: string | null;
     classesOfEquipment?: Array<ClassOfEquipmentResponse> | null;
     workExperienceItemReview?: WorkExperienceItemReviewResponse;
-    workExperienceId?: number;
     readonly fullAddress?: string | null;
 }
 

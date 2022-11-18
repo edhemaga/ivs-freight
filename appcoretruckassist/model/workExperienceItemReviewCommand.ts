@@ -12,6 +12,7 @@
 
 
 export interface WorkExperienceItemReviewCommand { 
+    id?: number | null;
     itemId?: number;
     isEmployerValid?: boolean;
     employerMessage?: string | null;

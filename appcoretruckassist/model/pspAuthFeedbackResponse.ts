@@ -11,11 +11,14 @@
  */
 
 
-export interface EmergencyContactReviewResponse { 
+export interface PspAuthFeedbackResponse { 
     id?: number;
-    isNameValid?: boolean;
-    isPhoneValid?: boolean;
-    isRelationshipValid?: boolean;
-    emergencyContactMessage?: string | null;
+    isConfirm?: boolean;
+    isAuthorize?: boolean;
+    isFurtherUnderstand?: boolean;
+    isPspReport?: boolean;
+    isDisclosureRegardingReport?: boolean;
+    signature?: string | null;
+    applicantId?: number;
 }
 
