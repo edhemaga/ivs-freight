@@ -75,6 +75,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     public selectedBank: any = null;
     public isBankSelected: boolean = false;
 
+    public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -113,6 +117,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             accountNumber: [null, accountBankValidation],
             routingNumber: [null, routingBankValidation],
             note: [null],
+            files: [null],
         });
 
         this.inputService.customInputValidator(
@@ -334,6 +339,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.ownerForm.value;
 
+        const documents = this.documents.map((item) => {
+            return item.realFile;
+        });
+
         const newData: UpdateOwnerCommand = {
             id: id,
             ...form,
@@ -345,6 +354,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
+            files: documents ? documents : this.ownerForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.ownerModalService
@@ -399,6 +410,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.ownerForm.value;
 
+        const documents = this.documents.map((item) => {
+            return item.realFile;
+        });
+
         const newData: CreateOwnerCommand = {
             ...form,
             ownerType: this.selectedTab,
@@ -409,6 +424,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
+            files: documents,
         };
 
         this.ownerModalService
@@ -456,6 +472,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     });
                     this.selectedAddress = res.address;
                     this.selectedBank = res.bank;
+                    this.documents = res.files;
                     this.tabChange(
                         this.tabs.find((item) => item.id === res.ownerType.id)
                     );
@@ -484,6 +501,34 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     );
                 },
             });
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.ownerForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.ownerForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {

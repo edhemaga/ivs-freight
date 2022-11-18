@@ -45,6 +45,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
     public companyId: number = null;
 
+    public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -85,6 +89,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             fax: [null, phoneFaxRegex],
             address: [null, [Validators.required, ...addressValidation]],
             note: [null],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.fuelStopForm);
@@ -268,6 +273,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         const { address, addressUnit, businessName, ...form } =
             this.fuelStopForm.value;
 
+        const documents = this.documents.map((item) => {
+            return item.realFile;
+        });
+
         const newData: UpdateFuelStopCommand = {
             id: id,
             ...form,
@@ -276,6 +285,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             fuelStopFranchiseId: this.selectedFuelStop
                 ? this.selectedFuelStop.id
                 : null,
+            files: documents ? documents : this.fuelStopForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.fuelService
@@ -302,6 +313,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         const { address, addressUnit, businessName, ...form } =
             this.fuelStopForm.value;
 
+        const documents = this.documents.map((item) => {
+            return item.realFile;
+        });
+
         const newData: AddFuelStopCommand = {
             ...form,
             address: this.selectedAddress,
@@ -309,6 +324,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             fuelStopFranchiseId: this.selectedFuelStop
                 ? this.selectedFuelStop.id
                 : null,
+            files: documents,
         };
 
         this.fuelService
@@ -365,6 +381,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                         ? res.fuelStopFranchise.businessName
                         : res.businessName;
 
+                    this.documents = res.files;
+
                     if (!res.fuelStopFranchise) {
                         this.fuelStopForm
                             .get('fuelStopFranchiseId')
@@ -411,6 +429,34 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     this.notificationService.error('Error', error);
                 },
             });
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.fuelStopForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.fuelStopForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {

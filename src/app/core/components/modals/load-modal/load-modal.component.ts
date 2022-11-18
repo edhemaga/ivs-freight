@@ -210,6 +210,9 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
     public isAvailableAdvanceRate: boolean = false;
 
     public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
+
     public comments: any[] = [];
 
     public loadStopRoutes: {
@@ -317,6 +320,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
             detentionRate: [null],
             stops: this.formBuilder.array([]),
             note: [null],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.loadForm);
@@ -697,6 +701,30 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.loadForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.loadForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     /* Comments */
@@ -1611,7 +1639,10 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private addLoad() {
         const { ...form } = this.loadForm.value;
-        let newData: CreateLoadCommand = {
+        const documents = this.documents.map((item) => {
+            return item.realFile;
+        });
+        let newData: any /*CreateLoadCommand*/ = {
             type: this.headerTabs.find((item) => item.id === this.selectedTab)
                 .name as any,
             loadNumber: this.loadNumber,
@@ -1666,6 +1697,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
             advancePay: convertThousanSepInNumber(form.advancePay),
             additionalBillingRates: this.premmapedAdditionalBillingRate(),
             stops: this.premmapedStops() as any,
+            files: documents,
         };
 
         this.loadService
