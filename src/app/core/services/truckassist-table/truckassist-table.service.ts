@@ -79,10 +79,9 @@ export class TruckassistTableService {
         return this.tableColumnsConfigService.apiTableconfigPut(tableConfig);
     }
 
-    getTableConfig(tableType: any): Observable<TableConfigResponse> {
-        console.log('Poziva se getTableConfig za: ' + tableType);
+    getTableConfig(tableConfigId: number): Observable<TableConfigResponse> {
         return this.tableColumnsConfigService.apiTableconfigTableTypeGet(
-            tableType
+            tableConfigId
         );
     }
 
