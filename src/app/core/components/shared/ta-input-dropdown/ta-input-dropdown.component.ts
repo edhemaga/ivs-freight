@@ -600,12 +600,23 @@ export class TaInputDropdownComponent
         };
 
         this.activeItem = option;
-        this.getSuperControl.setValue(option.name);
+
+        this.getSuperControl.setValue(
+          option?.number ? option.number : option.name
+        );
+
         this.options = this.originalOptions;
 
-        group
-          ? this.selectedItem.emit({ ...option, ...group })
-          : this.selectedItem.emit(option);
+        if (this.template === 'fuel-franchise') {
+          const { id } = option;
+          group
+            ? this.selectedItem.emit({ ...option, ...group, storeId: id })
+            : this.selectedItem.emit(option);
+        } else {
+          group
+            ? this.selectedItem.emit({ ...option, ...group })
+            : this.selectedItem.emit(option);
+        }
 
         if (this.inputConfig.name !== 'RoutingAddress') {
           const timeout = setTimeout(() => {
