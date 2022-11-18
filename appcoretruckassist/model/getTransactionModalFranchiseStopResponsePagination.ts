@@ -9,15 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { GetTransactionModalFranchiseStopResponse } from './getTransactionModalFranchiseStopResponse';
 
 
-export interface FuelDispatchHistoryResponse { 
-    truckNumber?: string | null;
-    driverId?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    trailerId?: number | null;
-    trailerNumber?: string | null;
-    logoName?: string | null;
+export interface GetTransactionModalFranchiseStopResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<GetTransactionModalFranchiseStopResponse> | null;
 }
 
