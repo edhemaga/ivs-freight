@@ -15,6 +15,5 @@ export interface CdlReviewResponse {
     id?: number;
     isCdlDeniedExplanationValid?: boolean;
     cdlDeniedExplanationMessage?: string | null;
-    cdlInformationId?: number;
 }
 

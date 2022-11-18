@@ -9,13 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
-export interface EmergencyContactReviewResponse { 
+export interface CitationResponse { 
     id?: number;
-    isNameValid?: boolean;
-    isPhoneValid?: boolean;
-    isRelationshipValid?: boolean;
-    emergencyContactMessage?: string | null;
+    citationNo?: string | null;
+    cost?: number;
+    description?: string | null;
+    citationDate?: string;
+    paid?: boolean;
+    note?: string | null;
+    files?: Array<FileResponse> | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

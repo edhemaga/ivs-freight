@@ -8,6 +8,7 @@ api/applicant.service.ts
 api/bank.service.ts
 api/broker.service.ts
 api/cdl.service.ts
+api/citation.service.ts
 api/comment.service.ts
 api/company.service.ts
 api/companyAccount.service.ts
@@ -111,6 +112,8 @@ model/brokerModalResponse.ts
 model/brokerResponse.ts
 model/brokerResponsePagination.ts
 model/brokerShortResponse.ts
+model/cdlCardFeedbackResponse.ts
+model/cdlCardReviewResponse.ts
 model/cdlEndorsementResponse.ts
 model/cdlFeedbackResponse.ts
 model/cdlLicenseCommand.ts
@@ -122,6 +125,7 @@ model/cdlResponse.ts
 model/cdlRestrictionResponse.ts
 model/cdlReviewResponse.ts
 model/checkOwnerSsnEinResponse.ts
+model/citationResponse.ts
 model/classOfEquipmentCommand.ts
 model/classOfEquipmentResponse.ts
 model/classType.ts
@@ -190,6 +194,7 @@ model/createDrugAndAlcoholReviewCommand.ts
 model/createEducationCommand.ts
 model/createEducationReviewCommand.ts
 model/createEventCommand.ts
+model/createHosRulesReviewCommand.ts
 model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
@@ -198,14 +203,15 @@ model/createParkingCommand.ts
 model/createPersonalInfoReviewCommand.ts
 model/createPreviousEmployerAccidentHistoryCommand.ts
 model/createPreviousEmployerDrugAndAlcoholCommand.ts
+model/createPspAuthReviewCommand.ts
 model/createRatingCommand.ts
 model/createResponse.ts
 model/createReviewCommand.ts
 model/createRouteCommand.ts
 model/createSevenDaysHosCommand.ts
 model/createSevenDaysHosReviewCommand.ts
+model/createSphReviewCommand.ts
 model/createSsnReviewCommand.ts
-model/createTableConfigCommand.ts
 model/createTerminalCommand.ts
 model/createTrafficViolationCommand.ts
 model/createTrafficViolationReviewCommand.ts
@@ -307,6 +313,7 @@ model/getFuelModalResponse.ts
 model/getFuelStopModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
+model/getModalFuelStopFranchiseByIdResponse.ts
 model/getMvrModalResponse.ts
 model/getOwnerListResponse.ts
 model/getRatingReviewModalResponse.ts
@@ -319,6 +326,7 @@ model/hazardousMaterialResponse.ts
 model/hireApplicantCommand.ts
 model/hosCommand.ts
 model/hosResponse.ts
+model/hosRuleFeedbackResponse.ts
 model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
 model/insurancePolicyModalResponse.ts
@@ -423,6 +431,7 @@ model/previousEmployerAccidentHistoryItemCommand.ts
 model/previousEmployerModalResponse.ts
 model/previousEmployerRequestResponse.ts
 model/problemDetails.ts
+model/pspAuthFeedbackResponse.ts
 model/ratingSetResponse.ts
 model/reSendSignUpUserCommand.ts
 model/reSendVerifyDriverCommand.ts
@@ -495,8 +504,10 @@ model/signupUserCommand.ts
 model/sphAccidentHistoryItemResponse.ts
 model/sphAccidentHistoryResponse.ts
 model/sphDrugAndAlcoholResponse.ts
+model/sphFeedbackResponse.ts
 model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadResponse.ts
+model/ssnFeedbackResponse.ts
 model/stateResponse.ts
 model/statusSetMultipleBrokerCommand.ts
 model/statusSetMultipleCompanyUserCommand.ts
@@ -598,12 +609,15 @@ model/updatePMTruckDefaultListCommand.ts
 model/updatePMTruckUnitListCommand.ts
 model/updateParkingCommand.ts
 model/updatePersonalInfoCommand.ts
+model/updatePreviousEmployerAccidentHistoryCommand.ts
+model/updatePreviousEmployerDrugAndAlcoholCommand.ts
 model/updatePspAuthCommand.ts
 model/updateReviewCommand.ts
 model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
 model/updateSphCommand.ts
 model/updateStopCommand.ts
+model/updateTableConfigCommand.ts
 model/updateTerminalCommand.ts
 model/updateTodoStatusCommand.ts
 model/updateTrafficViolationCommand.ts

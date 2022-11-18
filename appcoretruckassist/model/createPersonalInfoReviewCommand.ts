@@ -13,6 +13,7 @@ import { PreviousAddressReviewCommand } from './previousAddressReviewCommand';
 
 
 export interface CreatePersonalInfoReviewCommand { 
+    id?: number | null;
     isFirstNameValid?: boolean;
     isLastNameValid?: boolean;
     isDoBValid?: boolean;

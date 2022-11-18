@@ -25,6 +25,5 @@ export interface DrugAndAlcoholReviewResponse {
     isSapAddressValid?: boolean;
     isSapAddressUnitValid?: boolean;
     sapAddressMessage?: string | null;
-    drugAndAlcoholId?: number;
 }
 

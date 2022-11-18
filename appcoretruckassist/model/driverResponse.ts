@@ -77,6 +77,7 @@ export interface DriverResponse {
     medicalPercentage?: number | null;
     dispatches?: Array<DispatchShortResponse> | null;
     files?: Array<FileResponse> | null;
+    assignedTo?: DispatchShortResponse;
     createdAt?: string;
     updatedAt?: string;
 }
