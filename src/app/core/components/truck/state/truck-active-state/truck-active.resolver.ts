@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { TruckListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
-import { catchError, takeUntil, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TruckTService } from '../truck.service';
 import { TruckActiveState, TruckActiveStore } from './truck-active.store';
