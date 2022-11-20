@@ -18,11 +18,12 @@
                 [value]="value"
                 [popoverNote]="false"
                 [selectedEditor]="noteRef?.nativeElement"
+                [isVisibleArrow]="isVisibleArrow"
             ></app-ta-note-container>
+            
         </div>
-        <div class="note_upper_hold">
+        <div class="note_upper_hold" *ngIf="isVisibleArrow">
             <svg-icon
-                *ngIf="isVisibleArrow"
                 class="note-arrow"
                 [ngClass]="{
                     rotate: _isVisibleNote && _isVisibleNote != 'null'
