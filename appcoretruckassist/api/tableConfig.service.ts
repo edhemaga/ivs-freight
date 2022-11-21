@@ -223,7 +223,7 @@ export class TableConfigService {
             }
         }
 
-        let localVarPath = `/api/tableconfig/${tableType}`;
+        let localVarPath = `/api/tableconfig/`;
         return this.httpClient.request<TableConfigResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
