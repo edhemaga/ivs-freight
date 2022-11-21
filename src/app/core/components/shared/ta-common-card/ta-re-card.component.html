@@ -144,7 +144,7 @@
     <div
         class="card-footer-cmp"
         [ngClass]="{ 'hide-padding': resPage }"
-        *ngIf="hasFooter"
+        *ngIf="isCardOpen && hasFooter"
         [@footerOpenAnimation]="animationStarted ? 'true' : 'false'"
     >
         <div class="icon-counter">

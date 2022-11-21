@@ -101,7 +101,7 @@ export class TaReCardComponent implements OnInit {
     public data: any;
     public resPage: boolean = false;
     public copiedCommon: boolean = false;
-    animationStarted: boolean = false;
+    animationStarted: boolean = true;
     constructor(
         private clipboard: Clipboard,
         private DetailsDataService: DetailsDataService
@@ -118,6 +118,7 @@ export class TaReCardComponent implements OnInit {
             this.isDeactivated
         ) {
             this.isCardOpen = false;
+            this.animationStarted = false;
         }
     }
 
@@ -137,6 +138,7 @@ export class TaReCardComponent implements OnInit {
             this.hasToggler
         ) {
             this.animationStarted = !this.animationStarted;
+            
             let timeOut = 0;
             if ( this.isCardOpen ) {
                 timeOut = 200;
