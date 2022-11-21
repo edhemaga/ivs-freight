@@ -64,9 +64,6 @@ export class TaLogoChangeComponent
         false
     );
 
-    @Output() deleteLogoEvent: EventEmitter<boolean> =
-        new EventEmitter<boolean>(false);
-
     public showUploadZone = true;
     public imageScale = 0.5;
 
@@ -109,20 +106,17 @@ export class TaLogoChangeComponent
                 this.imageUrl = this.imageBase64Service.sanitizer(
                     changes.imageUrl.currentValue
                 );
+
+                this.showUploadZone = false;
             }
 
-            if (!changes.imageUrl?.currentValue) {
-                this.imageUrl = this.imageBase64Service.getStringFromBase64(
-                    this.imageUrl.changingThisBreaksApplicationSecurity
-                );
-
+            if (
+                !changes.imageUrl?.currentValue ||
+                changes.displayUploadZone?.currentValue
+            ) {
                 this.imageUrl = null;
-            }
 
-            if (changes.displayUploadZone?.currentValue) {
                 this.showUploadZone = true;
-
-                this.deleteLogoEvent.emit(true);
             }
         }
     }

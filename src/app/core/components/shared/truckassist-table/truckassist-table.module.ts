@@ -51,7 +51,7 @@ import { ToolbarFiltersComponent } from './truckassist-table-toolbar/toolbar-fil
         TruckassistTableBodyComponent,
         TruckassistTableHeadComponent,
         TruckassistTableToolbarComponent,
-        GetExpireDataPipe,
+        GetExpireDataPipe
     ],
 })
 export class TruckassistTableModule {}
