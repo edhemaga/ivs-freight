@@ -2,7 +2,6 @@ import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import { ImageBase64Service } from '../../../utils/base64.image';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,

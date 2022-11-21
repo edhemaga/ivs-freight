@@ -16,8 +16,6 @@ import { FuelStore } from './fule-state/fuel-state.store';
 import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model/getFuelModalResponse';
 import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
 import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
-import { AddFuelTransactionCommand } from '../../../../../../appcoretruckassist/model/addFuelTransactionCommand';
-import { EditFuelTransactionCommand } from '../../../../../../appcoretruckassist/model/editFuelTransactionCommand';
 import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
 import { getFunctionParams } from '../../../utils/methods.globals';
 

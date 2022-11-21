@@ -21,7 +21,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   @Input() bigProgressBar: boolean = true;
   hasStartDate: boolean = false;
   _startDate: any = null;
-  @Input('startDate') set startDate(value: any) {
+  @Input() set startDate(value: any) {
     this.hasStartDate = !!value;
     this._startDate = value ? value : new Date();
   }

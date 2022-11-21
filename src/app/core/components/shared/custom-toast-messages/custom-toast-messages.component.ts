@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   animate,
   keyframes,
@@ -12,7 +12,6 @@ import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import moment from 'moment';
-import { data } from 'jquery';
 import { Subject, takeUntil } from 'rxjs';
 
 const routeSpecify = {

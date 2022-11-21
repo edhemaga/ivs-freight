@@ -19,7 +19,6 @@ import { NotificationService } from '../../../services/notification/notification
 import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
 import {
   convertDateFromBackend,
-  convertDateToBackend,
 } from '../../../utils/methods.calculations';
 import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';

@@ -46,7 +46,6 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
-import { async } from '@angular/core/testing';
 import {
   AddressEntity,
   CreateResponse,

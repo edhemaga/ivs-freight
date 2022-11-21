@@ -2,12 +2,9 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { card_modal_animation } from '../animations/card-modal.animation';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import { card_component_animation } from '../animations/card-component.animations';
 

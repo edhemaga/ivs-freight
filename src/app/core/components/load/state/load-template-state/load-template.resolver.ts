@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { LoadListResponse, LoadTemplateListResponse } from 'appcoretruckassist';
+import { LoadTemplateListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LoadTService } from '../load.service';

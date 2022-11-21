@@ -9,7 +9,6 @@ import {
   RepairShopResponse,
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
-import moment from 'moment';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {

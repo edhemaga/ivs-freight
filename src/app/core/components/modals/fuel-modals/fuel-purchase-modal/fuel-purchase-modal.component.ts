@@ -7,7 +7,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject, takeUntil, switchMap, of, catchError } from 'rxjs';
+import { Subject, takeUntil, switchMap, of } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from '../../../../services/form/form.service';

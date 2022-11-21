@@ -2,7 +2,6 @@ import { CalendarQuery } from './calendar.query';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
 import { CalendarStoreService } from './calendar.service';
 
 //import { ProductService } from '../product/product.service';

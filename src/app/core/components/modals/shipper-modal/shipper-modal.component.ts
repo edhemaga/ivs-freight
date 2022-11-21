@@ -42,7 +42,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';
-import moment from 'moment';
 import { convertTimeFromBackend } from '../../../utils/methods.calculations';
 
 @Component({

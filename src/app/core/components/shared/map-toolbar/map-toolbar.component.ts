@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { TruckTService } from '../../truck/state/truck.service';

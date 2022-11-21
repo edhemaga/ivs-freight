@@ -37,7 +37,6 @@ import { HttpResponseBase } from '@angular/common/http';
 
 import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.component';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';

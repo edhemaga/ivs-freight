@@ -1,8 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { ID } from '@datorama/akita';
 import { HttpClient } from '@angular/common/http';
 import { RoutingStateStore } from './routing-state.store';
-import { RoutingState } from './routing-state.model';
 import {
   UpdateMapCommand,
   MapService,
@@ -13,7 +11,6 @@ import {
   CreateResponse,
   RouteResponse,
   UpdateRouteCommand,
-  UpdateStopCommand,
 } from 'appcoretruckassist';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
 import { MapResponse } from '../../../../../../../appcoretruckassist/model/mapResponse';

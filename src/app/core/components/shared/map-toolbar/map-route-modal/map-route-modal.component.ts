@@ -8,7 +8,6 @@ import { TruckTService } from '../../../truck/state/truck.service';
 import {
   TruckListResponse,
   CreateRouteCommand,
-  UpdateRouteCommand,
 } from 'appcoretruckassist';
 import { RoutingStateService } from '../../../routing/state/routing-state/routing-state.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
