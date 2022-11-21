@@ -69,7 +69,7 @@ export class MvrTService implements OnDestroy {
     }
 
     /* Observable<CreateMvrResponse> */
-    public addMvr(data: any): Observable<any> {
+    public addMvr(data: any /*CreateMvrCommand*/): Observable<any> {
         const sortedParams = getFunctionParams(
             this.mvrService.apiMvrPost,
             data
@@ -108,7 +108,7 @@ export class MvrTService implements OnDestroy {
         );
     }
 
-    public updateMvr(data: any): Observable<object> {
+    public updateMvr(data: any /*UpdateMvrCommand*/): Observable<object> {
         const sortedParams = getFunctionParams(this.mvrService.apiMvrPut, data);
         return this.mvrService.apiMvrPut(...sortedParams).pipe(
             tap((res: any) => {

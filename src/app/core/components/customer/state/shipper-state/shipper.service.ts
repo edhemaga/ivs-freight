@@ -42,7 +42,7 @@ export class ShipperTService implements OnDestroy {
             this.shipperService.apiShipperPost,
             data
         );
-        return this.shipperService.apiShipperPost(data).pipe(
+        return this.shipperService.apiShipperPost(...sortedParams).pipe(
             tap((res: any) => {
                 const subShipper = this.getShipperById(res.id)
                     .pipe(takeUntil(this.destroy$))

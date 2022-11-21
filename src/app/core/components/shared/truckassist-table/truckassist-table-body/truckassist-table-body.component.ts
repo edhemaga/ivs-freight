@@ -328,7 +328,8 @@ export class TruckassistTableBodyComponent
             }
         });
 
-        this.tableWidth = this.actionsWidth + notPinedWidth + this.pinedWidth + 12;
+        this.tableWidth =
+            this.actionsWidth + notPinedWidth + this.pinedWidth + 12;
     }
 
     // Get Tab Table Data For Selected Tab
@@ -345,7 +346,11 @@ export class TruckassistTableBodyComponent
         console.log('Selected Tab Data All Data');
         console.log(this.activeTableData.length);
 
-        console.log(`Da li Show More treba da se pojavi: ${this.viewData.length < this.activeTableData.length}`)
+        console.log(
+            `Da li Show More treba da se pojavi: ${
+                this.viewData.length < this.activeTableData.length
+            }`
+        );
     }
 
     // Get Not Pined Section Of Table Max Width
