@@ -46,6 +46,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
+import { async } from '@angular/core/testing';
 import {
   AddressEntity,
   CreateResponse,
@@ -904,8 +905,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     this.personalInfoForm
       .get('bankId')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((value) => {
-        this.isBankSelected = this.bankVerificationService.onSelectBank(
+      .subscribe(async (value) => {
+        this.isBankSelected = await this.bankVerificationService.onSelectBank(
           this.selectedBank ? this.selectedBank.name : value,
           this.personalInfoForm.get('routingNumber'),
           this.personalInfoForm.get('accountNumber')

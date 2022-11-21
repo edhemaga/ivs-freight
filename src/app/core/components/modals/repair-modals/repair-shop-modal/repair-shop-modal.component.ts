@@ -294,8 +294,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     this.repairShopForm
       .get('bankId')
       .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe((value) => {
-        this.isBankSelected = this.bankVerificationService.onSelectBank(
+      .subscribe(async (value) => {
+        this.isBankSelected = await this.bankVerificationService.onSelectBank(
           this.selectedBank ? this.selectedBank.name : value,
           this.repairShopForm.get('routing'),
           this.repairShopForm.get('account')

@@ -296,8 +296,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     this.ownerForm
       .get('bankId')
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((value) => {
-        this.isBankSelected = this.bankVerificationService.onSelectBank(
+      .subscribe(async (value) => {
+        this.isBankSelected = await this.bankVerificationService.onSelectBank(
           this.selectedBank ? this.selectedBank.name : value,
           this.ownerForm.get('routingNumber'),
           this.ownerForm.get('accountNumber')

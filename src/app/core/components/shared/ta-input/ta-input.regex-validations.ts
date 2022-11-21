@@ -4,8 +4,12 @@ import moment from 'moment';
 //---------------- Bank Regex, Routing & Accounting Validation
 const brnv = require('bank-routing-number-validator');
 
-export const bankRoutingValidator = (routingNumber: string) => {
-  return brnv.ABARoutingNumberIsValid(routingNumber);
+export const bankRoutingValidator = async (routingNumber: string) => {
+  console.log(
+    'bank routing validator: ',
+    brnv.ABARoutingNumberIsValid(routingNumber)
+  );
+  return await brnv.ABARoutingNumberIsValid(routingNumber);
 };
 
 export const bankValidation = [

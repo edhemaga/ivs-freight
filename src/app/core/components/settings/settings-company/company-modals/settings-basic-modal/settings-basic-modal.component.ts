@@ -632,9 +632,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         takeUntil(this.destroy$)
       )
-      .subscribe((value) => {
+      .subscribe(async (value) => {
         this.isBankSelectedFormArray[index] =
-          this.bankVerificationService.onSelectBank(
+          await this.bankVerificationService.onSelectBank(
             value,
             this.bankAccounts.at(index).get('routing'),
             this.bankAccounts.at(index).get('account')

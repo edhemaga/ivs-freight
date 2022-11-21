@@ -37,7 +37,7 @@ export class TaInputService {
         formGroup.get(key).markAsTouched();
         formGroup.get(key).updateValueAndValidity();
 
-        if ((<FormArray>formGroup.get(key)).controls) {
+        if ((<FormArray>formGroup.get(key)).controls?.length) {
           for (const nestedFormGroup of (<FormArray>formGroup.get(key))
             .controls) {
             this.markInvalid(<FormGroup>nestedFormGroup);

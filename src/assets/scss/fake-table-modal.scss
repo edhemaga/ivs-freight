@@ -477,29 +477,29 @@
         }
 
         &:nth-child(2) {
-          margin-left: 66px;
+          margin-left: 86px;
         }
 
         &:nth-child(3) {
-          margin-left: 133px;
+          margin-left: 144px;
         }
         &:nth-child(4) {
-          margin-left: 48px;
+          margin-left: 51px;
         }
         &:nth-child(5) {
-          margin-left: 29px;
+          margin-left: 32px;
         }
         &:nth-child(6) {
-          margin-left: 30px;
+          margin-left: 31px;
         }
         &:nth-child(7) {
-          margin-left: 25px;
+          margin-left: 27px;
         }
       }
     }
     .common-fake-table-body {
       .common-fake-table-card {
-        grid-template-columns: 94px 195px 55px 42px 44.5px 44.5px 1fr;
+        grid-template-columns: 115px 195px 55px 42px 44.5px 44.5px 1fr;
         align-items: center;
         padding-left: 6px;
         padding-right: 0px;
@@ -521,9 +521,8 @@
         }
 
         .violation-category {
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
+          display: flex;
+          align-items: center;
 
           .violation-category-svg {
             margin-right: 6px;
@@ -532,6 +531,11 @@
           }
 
           .violation-category-text {
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: 400;
+            color: #919191;
+
             &::-moz-selection {
               background-color: rgb(145, 145, 145, 0.2);
               color: #919191;
