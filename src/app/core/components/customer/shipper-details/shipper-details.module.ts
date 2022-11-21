@@ -12,11 +12,7 @@ import { SharedModule } from '../../shared/shared.module';
     ShipperDetailsSingleComponent,
     ShipperCardViewComponent,
   ],
-  exports: [ShipperCardViewComponent,SharedModule ],
-  imports: [
-    CommonModule,
-    ShipperDetailsRoutes,
-    SharedModule
-  ],
+  exports: [ShipperCardViewComponent, SharedModule],
+  imports: [CommonModule, ShipperDetailsRoutes, SharedModule],
 })
 export class ShipperDetailsModule {}

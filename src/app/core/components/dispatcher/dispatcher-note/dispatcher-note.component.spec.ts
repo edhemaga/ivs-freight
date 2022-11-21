@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DispatcherNoteComponent} from './dispatcher-note.component';
+import { DispatcherNoteComponent } from './dispatcher-note.component';
 
 describe('DispatcherNoteComponent', () => {
   let component: DispatcherNoteComponent;
@@ -8,9 +8,8 @@ describe('DispatcherNoteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DispatcherNoteComponent]
-    })
-      .compileComponents();
+      declarations: [DispatcherNoteComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -11,9 +11,8 @@ describe('TaCounterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaCounterComponent ]
-    })
-    .compileComponents();
+      declarations: [TaCounterComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

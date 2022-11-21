@@ -17,24 +17,38 @@
       ></svg-icon>
       <div
         class="drop_item"
-        [ngClass]="{ all_boards: item.dispatcher?.id == -1, team_boards: item.dispatcher?.id == 1 }"
+        [ngClass]="{
+          all_boards: item.dispatcher?.id == -1,
+          team_boards: item.dispatcher?.id == 1
+        }"
       >
         <div
           class="user_avatar"
           *ngIf="item.dispatcher?.avatar"
           [ngStyle]="
-          item.dispatcher?.avatar && { 'background-image': 'url(' + item.dispatcher?.avatar + ')' }
+            item.dispatcher?.avatar && {
+              'background-image': 'url(' + item.dispatcher?.avatar + ')'
+            }
           "
         ></div>
         <app-profile-images
-          *ngIf="!item.dispatcher?.avatar && item.dispatcher?.id != -1 && item.dispatcher?.id != 1"
+          *ngIf="
+            !item.dispatcher?.avatar &&
+            item.dispatcher?.id != -1 &&
+            item.dispatcher?.id != 1
+          "
           [indx]="index"
           [name]="item.dispatcher?.fullName"
           [size]="'small'"
           [type]="'user'"
           [showHoverAnimation]="false"
         ></app-profile-images>
-        <span [class.dispatcher_full_name]="item.dispatcher?.id != -1 && item.dispatcher?.id != 1">{{ item.dispatcher?.fullName }}</span>
+        <span
+          [class.dispatcher_full_name]="
+            item.dispatcher?.id != -1 && item.dispatcher?.id != 1
+          "
+          >{{ item.dispatcher?.fullName }}</span
+        >
       </div>
     </ng-template>
     <ng-template
@@ -45,25 +59,39 @@
     >
       <div
         class="drop_item bottom-list"
-        [ngClass]="{ all_boards: item.dispatcher?.id == -1, team_boards: item.dispatcher?.id == 1 }"
+        [ngClass]="{
+          all_boards: item.dispatcher?.id == -1,
+          team_boards: item.dispatcher?.id == 1
+        }"
       >
-        <div class="dispatch_count">{{item.dispatchCount}}</div>
+        <div class="dispatch_count">{{ item.dispatchCount }}</div>
         <div
           class="user_avatar"
           *ngIf="item.avatar"
           [ngStyle]="
-          item.dispatcher?.avatar && { 'background-image': 'url(' + item.dispatcher?.avatar + ')' }
+            item.dispatcher?.avatar && {
+              'background-image': 'url(' + item.dispatcher?.avatar + ')'
+            }
           "
         ></div>
         <app-profile-images
-          *ngIf="!item.dispatcher?.avatar && item.dispatcher?.id != -1 && item.dispatcher?.id != 1"
+          *ngIf="
+            !item.dispatcher?.avatar &&
+            item.dispatcher?.id != -1 &&
+            item.dispatcher?.id != 1
+          "
           [indx]="index"
           [name]="item.dispatcher?.fullName"
           [size]="'small'"
           [type]="'user'"
           [showHoverAnimation]="false"
         ></app-profile-images>
-        <span [class.dispatcher_full_name]="item.dispatcher?.id != -1 && item.dispatcher?.id != 1">{{ item.dispatcher?.fullName }}</span>
+        <span
+          [class.dispatcher_full_name]="
+            item.dispatcher?.id != -1 && item.dispatcher?.id != 1
+          "
+          >{{ item.dispatcher?.fullName }}</span
+        >
       </div>
     </ng-template>
   </ng-select>

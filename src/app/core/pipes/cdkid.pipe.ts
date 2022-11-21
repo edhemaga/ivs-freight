@@ -1,11 +1,10 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'cdkid',
 })
 export class CdkIdPipe implements PipeTransform {
-  constructor() {
-  }
+  constructor() {}
 
   transform(rowIndex: any, gridIndex: number, type: string) {
     rowIndex = parseInt(rowIndex + '' + gridIndex);

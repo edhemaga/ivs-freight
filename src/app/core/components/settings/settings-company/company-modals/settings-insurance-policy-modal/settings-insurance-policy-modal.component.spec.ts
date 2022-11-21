@@ -11,9 +11,8 @@ describe('SettingsInsurancePolicyModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsInsurancePolicyModalComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsInsurancePolicyModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {PayrollDriverCommissionTableComponent} from './payroll-driver-commission-table.component';
+import { PayrollDriverCommissionTableComponent } from './payroll-driver-commission-table.component';
 
 describe('PayrollDriverCommissionTableComponent', () => {
   let component: PayrollDriverCommissionTableComponent;
@@ -8,9 +8,8 @@ describe('PayrollDriverCommissionTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PayrollDriverCommissionTableComponent]
-    })
-      .compileComponents();
+      declarations: [PayrollDriverCommissionTableComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

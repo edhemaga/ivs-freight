@@ -176,7 +176,8 @@
                   *ngIf="loadData[0]?.data?.statusType?.name === 'Closed'"
                   class="billing-value custom-position-value"
                 >
-                {{ loadItem?.data?.createdAt | formatDateP }} {{loadItem?.data?.createdAt | formatTime}}
+                  {{ loadItem?.data?.createdAt | formatDateP }}
+                  {{ loadItem?.data?.createdAt | formatTime }}
                 </div>
                 <div class="billing-value billing-cost">
                   {{ loadItem?.data?.advancePay | formatCurrency }}
@@ -184,29 +185,31 @@
               </div>
               <div class="divider" *ngIf="loadItem?.data?.shortPaid"></div>
               <div
-              class="billing-item-payments"
-              
-              *ngFor="let paysData of loadItem?.data?.pays; trackBy:identity"
+                class="billing-item-payments"
+                *ngFor="let paysData of loadItem?.data?.pays; trackBy: identity"
               >
-              <div class="pays-data"  *ngIf="
-              loadData[0]?.data?.statusType?.name === 'Closed' &&
-              loadItem?.data?.shortPaid
-              ">
-                <div class="icon-name">
-                  <svg-icon
-                    class="icon-additional"
-                    src="assets/svg/common/load/ic_short-pay.svg"
-                  ></svg-icon>
-                  <div class="billing-name">Short-Pay</div>
+                <div
+                  class="pays-data"
+                  *ngIf="
+                    loadData[0]?.data?.statusType?.name === 'Closed' &&
+                    loadItem?.data?.shortPaid
+                  "
+                >
+                  <div class="icon-name">
+                    <svg-icon
+                      class="icon-additional"
+                      src="assets/svg/common/load/ic_short-pay.svg"
+                    ></svg-icon>
+                    <div class="billing-name">Short-Pay</div>
+                  </div>
+                  <div class="billing-value pays-value">
+                    {{ paysData?.payDate | formatDateP }}
+                    {{ paysData?.payDate | formatTime }}
+                  </div>
+                  <div class="billing-value billing-cost">
+                    {{ paysData?.pay | formatCurrency }}
+                  </div>
                 </div>
-                <div class="billing-value pays-value">
-                  {{paysData?.payDate | formatDateP}}  {{paysData?.payDate | formatTime}}
-                </div>
-                <div class="billing-value billing-cost">
-                  {{ paysData?.pay | formatCurrency }}
-                </div>
-              </div>
-              
               </div>
               <div class="total-bill-wrapper total-wrapper">
                 <div class="total-bill">
@@ -272,22 +275,24 @@
                 src="assets/svg/common/load/ic_load-start-position.svg"
               ></svg-icon>
             </div>
-            
+
             <div
               [ngStyle]="{
                 width: loadItem?.data?.completedPercentage + '%'
               }"
               class="current-loaction"
+            ></div>
+            <div
+              [ngStyle]="{
+                left: loadItem?.data?.completedPercentage + 0.5 + '%'
+              }"
+              class="moving-icon"
             >
-          </div>
-          <div [ngStyle]="{
-            'left': loadItem?.data?.completedPercentage + .5 + '%'
-          }" class="moving-icon">
-            <svg-icon
-              class="icon-start"
-              src="assets/svg/common/load/load-moving-right.svg"
-            ></svg-icon>
-          </div>
+              <svg-icon
+                class="icon-start"
+                src="assets/svg/common/load/load-moving-right.svg"
+              ></svg-icon>
+            </div>
           </div>
           <div class="stop-location-wrapper moving-cont">
             <div class="location-item-wrapper">
@@ -302,7 +307,9 @@
                 ></span
               >
               <span class="moving-value completed-value"
-                ><span class="total-load-perctange font-14 mr-3-load">{{loadItem?.data?.completedPercentage+'%'  }}</span
+                ><span class="total-load-perctange font-14 mr-3-load">{{
+                  loadItem?.data?.completedPercentage + "%"
+                }}</span
                 >Completed</span
               >
             </div>
@@ -321,26 +328,33 @@
               >
             </div>
             <div class="load-pickup-item">
-              <span class="load-value-pickup">{{loadItem?.data?.totalMiles}} mi</span>
-              <span class="load-value-pickup-semi">{{loadItem?.data?.totalTimeDays}} day {{loadItem?.data?.totalTimeHours}} hour</span>
+              <span class="load-value-pickup"
+                >{{ loadItem?.data?.totalMiles }} mi</span
+              >
+              <span class="load-value-pickup-semi"
+                >{{ loadItem?.data?.totalTimeDays }} day
+                {{ loadItem?.data?.totalTimeHours }} hour</span
+              >
             </div>
           </div>
           <div class="load-progress">
             <div
-            class="progress-bar-line-load"
-            [ngStyle]="{
-              'background-color': status ? status.colorEmpty : '#DADADA'
-            }"
-          >
-            <div
-              class="line-filled"
+              class="progress-bar-line-load"
               [ngStyle]="{
-                'background-color': status ? status.colorFilled : 'transparent',
-                width: activePercntage + '%',
-                height: '100%'
+                'background-color': status ? status.colorEmpty : '#DADADA'
               }"
-            ></div>
-          </div>
+            >
+              <div
+                class="line-filled"
+                [ngStyle]="{
+                  'background-color': status
+                    ? status.colorFilled
+                    : 'transparent',
+                  width: activePercntage + '%',
+                  height: '100%'
+                }"
+              ></div>
+            </div>
           </div>
         </div>
 
@@ -350,8 +364,13 @@
         >
           <div class="load-pickup-wrapper">
             <div class="load-pickup-item">
-              <span class="load-value-pickup">{{loadItem?.data?.totalMiles}} mi</span>
-              <span class="load-header-pickup">{{loadItem?.data?.totalTimeDays}} day {{loadItem?.data?.totalTimeHours}}  hour</span>
+              <span class="load-value-pickup"
+                >{{ loadItem?.data?.totalMiles }} mi</span
+              >
+              <span class="load-header-pickup"
+                >{{ loadItem?.data?.totalTimeDays }} day
+                {{ loadItem?.data?.totalTimeHours }} hour</span
+              >
             </div>
             <div class="load-pickup-item">
               <span class="load-value-last-delivery-header">Last Delivery</span>
@@ -377,7 +396,15 @@
           [animationsDisabled]="false"
           [bodyTemplate]="'card'"
           [totalWait]="loadItem?.data?.statusType?.name === 'Closed'"
-          [totalWaitTime]="item?.wait.days>0?item.wait.days+ ' ' +'days':'' + item?.wait.hours>0?item.wait.hours+' '+'hours':'' + item?.wait.hours==0?item.wait.minutes+' '+'minutes':''"
+          [totalWaitTime]="
+            item?.wait.days > 0
+              ? item.wait.days + ' ' + 'days'
+              : '' + item?.wait.hours > 0
+              ? item.wait.hours + ' ' + 'hours'
+              : '' + item?.wait.hours == 0
+              ? item.wait.minutes + ' ' + 'minutes'
+              : ''
+          "
           [totalMiles]="
             loadItem?.data?.statusType?.name === 'Pending' ||
             loadItem?.data?.statusType?.name === 'Active'
@@ -385,14 +412,20 @@
               : false
           "
           [totalMilesValue]="item?.legMiles"
-         [totalMilesTime]="('0' + item?.legHours).slice(-2)+ ':' + ('0' + item?.legMinutes).slice(-2)"
+          [totalMilesTime]="
+            ('0' + item?.legHours).slice(-2) +
+            ':' +
+            ('0' + item?.legMinutes).slice(-2)
+          "
           [haveTimeDateLoad]="
             loadItem?.data?.statusType?.name === 'Pending' ||
             loadItem?.data?.statusType?.name === 'Closed'
               ? false
               : true
           "
-          [headerSvgLike]="item?.wait.minutes || item?.wait.hours || item?.wait.days"
+          [headerSvgLike]="
+            item?.wait.minutes || item?.wait.hours || item?.wait.days
+          "
           [cardName]="
             item?.shipper?.address?.street +
             ', ' +
@@ -419,26 +452,36 @@
               class="stop-status-wrapper"
               *ngIf="loadItem?.data?.statusType?.name === 'Closed'"
             >
-            <div class="stop-status-item" *ngIf="item?.arrive">
-              <div class="header-status">CHECKED-IN</div>
-              <div class="value-status">{{item?.arrive | formatDateP:"month-format"}} </div>
-            </div>
-              <div class="stop-status-item" *ngIf="item?.depart && item?.stopType?.name==='Pickup'">
+              <div class="stop-status-item" *ngIf="item?.arrive">
+                <div class="header-status">CHECKED-IN</div>
+                <div class="value-status">
+                  {{ item?.arrive | formatDateP: "month-format" }}
+                </div>
+              </div>
+              <div
+                class="stop-status-item"
+                *ngIf="item?.depart && item?.stopType?.name === 'Pickup'"
+              >
                 <div class="header-status loaded-status">LOADED</div>
-                <div class="value-status">{{item?.depart | formatDateP:"month-format"}}</div>
+                <div class="value-status">
+                  {{ item?.depart | formatDateP: "month-format" }}
+                </div>
               </div>
-              <div class="stop-status-item" *ngIf="item?.depart && item?.stopType?.name==='Delivery'">
+              <div
+                class="stop-status-item"
+                *ngIf="item?.depart && item?.stopType?.name === 'Delivery'"
+              >
                 <div class="header-status">DELIVERED</div>
-                <div class="value-status">{{item?.depart | formatDateP:"month-format"}}</div>
+                <div class="value-status">
+                  {{ item?.depart | formatDateP: "month-format" }}
+                </div>
               </div>
-             
+
               <div class="divider"></div>
             </div>
             <div class="svg-value-wrapper">
               <div class="driver-name">
-                {{
-                  item?.shipper?.businessName 
-                }}
+                {{ item?.shipper?.businessName }}
               </div>
               <svg-icon
                 class="flex-icon"

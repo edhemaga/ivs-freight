@@ -159,10 +159,10 @@ export class TaNoteContainerComponent implements OnInit {
   togglePattern() {
     this.showCollorPattern = !this.showCollorPattern;
 
-    if(!this.showCollorPattern) {
-      setTimeout(()=>{
+    if (!this.showCollorPattern) {
+      setTimeout(() => {
         this.closedPattern = false;
-      }, 300)
+      }, 300);
     } else {
       this.closedPattern = true;
     }

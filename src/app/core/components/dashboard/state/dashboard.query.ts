@@ -5,7 +5,7 @@ import { combineLatest } from 'rxjs';
 import { DashboardState, DashboardStore } from './dashboard.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DashboardQuery extends QueryEntity<DashboardState> {
   selectDashboardStatistic$ = this.select('statistic');
@@ -14,7 +14,7 @@ export class DashboardQuery extends QueryEntity<DashboardState> {
     super(store);
   }
 
-  get dashboardStatistics(){
+  get dashboardStatistics() {
     return this.getValue().statistic;
   }
 }

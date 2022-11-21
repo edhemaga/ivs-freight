@@ -72,7 +72,9 @@ export class NavigationRouteComponent implements OnInit {
 
   public onNavItemHover(type: boolean) {
     if (type) {
-      this.isNavItemHovered = !([3, 4, 5, 6].includes(this.route.id) && this.route.isRouteActive);
+      this.isNavItemHovered = !(
+        [3, 4, 5, 6].includes(this.route.id) && this.route.isRouteActive
+      );
     } else {
       this.isNavItemHovered = false;
     }

@@ -1,4 +1,4 @@
-export function getToolsContactsColumnDefinition() { 
+export function getToolsContactsColumnDefinition() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -204,7 +204,7 @@ export function getToolsContactsColumnDefinition() {
       disabled: true,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -227,8 +227,7 @@ export function getToolsContactsColumnDefinition() {
       disabled: false,
       export: false,
       resizable: true,
-      isAction: true
+      isAction: true,
     },
   ];
 }
-

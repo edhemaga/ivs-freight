@@ -8,9 +8,8 @@ describe('DispatchboardTablesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DispatchboardTablesComponent ]
-    })
-    .compileComponents();
+      declarations: [DispatchboardTablesComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

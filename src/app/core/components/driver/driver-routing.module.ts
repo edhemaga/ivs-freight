@@ -17,17 +17,17 @@ const routes: Routes = [
       import('./driver-details/driver-details.module').then(
         (m) => m.DriverDetailsModule
       ),
-      resolve:{
-        driver:DriverItemResolver,
-        driverMinimal:DriverMinimalResolver
-      },
+    resolve: {
+      driver: DriverItemResolver,
+      driverMinimal: DriverMinimalResolver,
+    },
     data: { title: 'Driver Details' },
   },
   {
     path: 'card',
     component: DriverCardComponent,
-    data: {title: 'Driver Cards'},
-  }
+    data: { title: 'Driver Cards' },
+  },
 ];
 
 @NgModule({

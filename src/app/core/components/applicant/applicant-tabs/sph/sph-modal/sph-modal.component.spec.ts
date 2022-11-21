@@ -8,9 +8,8 @@ describe('SphModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SphModalComponent ]
-    })
-    .compileComponents();
+      declarations: [SphModalComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

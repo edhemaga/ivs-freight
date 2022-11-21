@@ -190,10 +190,7 @@
         <div class="divider"></div>
         <div
           class="repair-items-vehicle"
-          *ngFor="
-            let vehicle of repairedVehicleListData;
-            let i = index
-          "
+          *ngFor="let vehicle of repairedVehicleListData; let i = index"
         >
           <div class="items-vehicle">
             <span class="unit">{{ vehicle.unitNumber }}</span>

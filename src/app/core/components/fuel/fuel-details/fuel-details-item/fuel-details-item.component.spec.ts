@@ -8,9 +8,8 @@ describe('FuelDetailsItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FuelDetailsItemComponent ]
-    })
-    .compileComponents();
+      declarations: [FuelDetailsItemComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

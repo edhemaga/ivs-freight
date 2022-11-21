@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'hosFilter'
+  name: 'hosFilter',
 })
 export class HosFilterPipe implements PipeTransform {
   transform(items: any[], filter: string): any {

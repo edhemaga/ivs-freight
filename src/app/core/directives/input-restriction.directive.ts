@@ -1,4 +1,4 @@
-import {Directive, ElementRef, HostListener, Input} from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
   selector: '[appInputrestriction]',
@@ -26,7 +26,9 @@ export class InputRestrictionDirective {
     }
     const regex = new RegExp(this.InputRestriction);
     // tslint:disable-next-line: deprecation
-    const str = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    const str = String.fromCharCode(
+      !event.charCode ? event.which : event.charCode
+    );
     if (regex.test(str)) {
       return true;
     } else {

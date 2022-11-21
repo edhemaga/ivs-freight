@@ -8,9 +8,8 @@ describe('HosRulesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HosRulesComponent ]
-    })
-    .compileComponents();
+      declarations: [HosRulesComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

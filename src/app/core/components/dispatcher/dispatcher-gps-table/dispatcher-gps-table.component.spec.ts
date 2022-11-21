@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DispatcherGpsTableComponent} from './dispatcher-gps-table.component';
+import { DispatcherGpsTableComponent } from './dispatcher-gps-table.component';
 
 describe('DispatcherGpsTableComponent', () => {
   let component: DispatcherGpsTableComponent;
@@ -8,9 +8,8 @@ describe('DispatcherGpsTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DispatcherGpsTableComponent]
-    })
-      .compileComponents();
+      declarations: [DispatcherGpsTableComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

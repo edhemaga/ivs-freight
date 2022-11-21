@@ -8,9 +8,8 @@ describe('MapListCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MapListCardComponent ]
-    })
-    .compileComponents();
+      declarations: [MapListCardComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

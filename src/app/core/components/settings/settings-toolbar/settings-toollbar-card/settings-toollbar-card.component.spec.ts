@@ -11,9 +11,8 @@ describe('SettingsToollbarCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsToollbarCardComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsToollbarCardComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

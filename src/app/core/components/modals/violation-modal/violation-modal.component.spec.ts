@@ -11,9 +11,8 @@ describe('ViolationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViolationModalComponent ]
-    })
-    .compileComponents();
+      declarations: [ViolationModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

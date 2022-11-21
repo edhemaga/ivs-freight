@@ -1,7 +1,15 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {animate, style, transition, trigger} from '@angular/animations';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-accounting-list',
@@ -9,8 +17,11 @@ import {takeUntil} from 'rxjs/operators';
   styleUrls: ['./accounting-list.component.scss'],
   animations: [
     trigger('pickupAnimation', [
-      transition(':enter', [style({height: 100}), animate('200ms', style({height: '*'}))]),
-      transition(':leave', [animate('200ms', style({height: 0}))]),
+      transition(':enter', [
+        style({ height: 100 }),
+        animate('200ms', style({ height: '*' })),
+      ]),
+      transition(':leave', [animate('200ms', style({ height: 0 }))]),
     ]),
   ],
 })
@@ -155,7 +166,12 @@ export class AccountingListComponent implements OnInit, OnDestroy {
             accountNumber: null,
             routingNumber: null,
           },
-          businessData: {taxId: null, isOwner: 0, businessName: null, isBusinessOwner: 0},
+          businessData: {
+            taxId: null,
+            isOwner: 0,
+            businessName: null,
+            isBusinessOwner: 0,
+          },
           notifications: [],
         },
       },
@@ -290,7 +306,12 @@ export class AccountingListComponent implements OnInit, OnDestroy {
             accountNumber: null,
             routingNumber: null,
           },
-          businessData: {taxId: null, isOwner: 0, businessName: null, isBusinessOwner: 0},
+          businessData: {
+            taxId: null,
+            isOwner: 0,
+            businessName: null,
+            isBusinessOwner: 0,
+          },
           notifications: [],
         },
       },
@@ -425,7 +446,12 @@ export class AccountingListComponent implements OnInit, OnDestroy {
             accountNumber: null,
             routingNumber: null,
           },
-          businessData: {taxId: null, isOwner: 0, businessName: null, isBusinessOwner: 0},
+          businessData: {
+            taxId: null,
+            isOwner: 0,
+            businessName: null,
+            isBusinessOwner: 0,
+          },
           notifications: [],
         },
       },
@@ -560,7 +586,12 @@ export class AccountingListComponent implements OnInit, OnDestroy {
             accountNumber: null,
             routingNumber: null,
           },
-          businessData: {taxId: null, isOwner: 0, businessName: null, isBusinessOwner: 0},
+          businessData: {
+            taxId: null,
+            isOwner: 0,
+            businessName: null,
+            isBusinessOwner: 0,
+          },
           notifications: [],
         },
       },
@@ -695,7 +726,12 @@ export class AccountingListComponent implements OnInit, OnDestroy {
             accountNumber: null,
             routingNumber: null,
           },
-          businessData: {taxId: null, isOwner: 0, businessName: null, isBusinessOwner: 0},
+          businessData: {
+            taxId: null,
+            isOwner: 0,
+            businessName: null,
+            isBusinessOwner: 0,
+          },
           notifications: [],
         },
       },
@@ -830,7 +866,12 @@ export class AccountingListComponent implements OnInit, OnDestroy {
             accountNumber: null,
             routingNumber: null,
           },
-          businessData: {taxId: null, isOwner: 0, businessName: null, isBusinessOwner: 0},
+          businessData: {
+            taxId: null,
+            isOwner: 0,
+            businessName: null,
+            isBusinessOwner: 0,
+          },
           notifications: [],
         },
       },
@@ -965,7 +1006,12 @@ export class AccountingListComponent implements OnInit, OnDestroy {
             accountNumber: null,
             routingNumber: null,
           },
-          businessData: {taxId: null, isOwner: 0, businessName: null, isBusinessOwner: 0},
+          businessData: {
+            taxId: null,
+            isOwner: 0,
+            businessName: null,
+            isBusinessOwner: 0,
+          },
           notifications: [],
         },
       },
@@ -1100,7 +1146,12 @@ export class AccountingListComponent implements OnInit, OnDestroy {
             accountNumber: null,
             routingNumber: null,
           },
-          businessData: {taxId: null, isOwner: 0, businessName: null, isBusinessOwner: 0},
+          businessData: {
+            taxId: null,
+            isOwner: 0,
+            businessName: null,
+            isBusinessOwner: 0,
+          },
           notifications: [],
         },
       },
@@ -1108,12 +1159,14 @@ export class AccountingListComponent implements OnInit, OnDestroy {
   ];
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor() {
-  }
+  constructor() {}
 
   showMoreItems() {
     this.showListCount = this.showListCount + 1;
-    this.accountListTemp = this.accountList.slice(0, this.showListCount * this.showListNumber);
+    this.accountListTemp = this.accountList.slice(
+      0,
+      this.showListCount * this.showListNumber
+    );
     if (this.chipSearch) {
       this.searchInsideList(this.chipSearch);
     }
@@ -1134,9 +1187,7 @@ export class AccountingListComponent implements OnInit, OnDestroy {
     this.selectedUserIndex = mod.id;
   }
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   searchInsideList(chip: any) {
     /* console.log(chip); */

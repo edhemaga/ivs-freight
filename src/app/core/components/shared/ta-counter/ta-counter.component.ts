@@ -4,10 +4,9 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
   selector: 'app-ta-counter',
   templateUrl: './ta-counter.component.html',
   styleUrls: ['./ta-counter.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaCounterComponent {
-
   @Input() count: number = 0;
   @Input() countColor: string = '#6C6C6C';
   @Input() countBackground: string = '#F7F7F7';

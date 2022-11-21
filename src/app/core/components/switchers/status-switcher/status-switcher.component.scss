@@ -163,7 +163,7 @@
  RH Brand Styling
 */
 body {
-  font: 16px/1.5em 'Overpass', 'Open Sans', Helvetica, sans-serif;
+  font: 16px/1.5em "Overpass", "Open Sans", Helvetica, sans-serif;
   color: #333;
 }
 
@@ -179,7 +179,7 @@ fieldset legend {
 }
 
 .checked-label.ta-radio-button {
-  color: #536BC2;
+  color: #536bc2;
   font-weight: bold !important;
 }
 
@@ -225,21 +225,36 @@ fieldset legend {
 }
 
 /* Stoplight theme */
-.multiswitch[data-theme='stoplight'] .slide-container > a {
+.multiswitch[data-theme="stoplight"] .slide-container > a {
   background: #c00;
   border-color: #8a0000;
 }
 
-.multiswitch[data-theme='stoplight'] input:not(:first-child):checked ~ a {
+.multiswitch[data-theme="stoplight"] input:not(:first-child):checked ~ a {
   background: #ec7a08;
   border-color: #bc6106;
 }
 
-.multiswitch[data-theme='stoplight'] label:nth-last-child(4) ~ input:nth-child(3):checked ~ a,
-.multiswitch[data-theme='stoplight'] label:nth-last-child(6) ~ input:nth-child(5):checked ~ a,
-.multiswitch[data-theme='stoplight'] label:nth-last-child(8) ~ input:nth-child(7):checked ~ a,
-.multiswitch[data-theme='stoplight'] label:nth-last-child(10) ~ input:nth-child(9):checked ~ a,
-.multiswitch[data-theme='stoplight'] label:nth-last-child(12) ~ input:nth-child(11):checked ~ a {
+.multiswitch[data-theme="stoplight"]
+  label:nth-last-child(4)
+  ~ input:nth-child(3):checked
+  ~ a,
+.multiswitch[data-theme="stoplight"]
+  label:nth-last-child(6)
+  ~ input:nth-child(5):checked
+  ~ a,
+.multiswitch[data-theme="stoplight"]
+  label:nth-last-child(8)
+  ~ input:nth-child(7):checked
+  ~ a,
+.multiswitch[data-theme="stoplight"]
+  label:nth-last-child(10)
+  ~ input:nth-child(9):checked
+  ~ a,
+.multiswitch[data-theme="stoplight"]
+  label:nth-last-child(12)
+  ~ input:nth-child(11):checked
+  ~ a {
   background: #3f9c35;
   border-color: #307628;
 }
@@ -285,7 +300,7 @@ app-ta-tab-switch {
 
 .miles-style {
   background: white !important;
-  color: #B7B7B7 !important;
+  color: #b7b7b7 !important;
 
   .checked-label {
     color: white !important;

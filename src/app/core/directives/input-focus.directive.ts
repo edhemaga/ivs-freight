@@ -1,13 +1,10 @@
-import {Directive, ElementRef, HostListener} from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[appInputFocus]'
+  selector: '[appInputFocus]',
 })
 export class InputFocusDirective {
-  constructor(
-    private el: ElementRef
-  ) {
-  }
+  constructor(private el: ElementRef) {}
 
   @HostListener('focus') onFocus() {
     this.el.nativeElement.offsetParent.classList.add('field-focused');

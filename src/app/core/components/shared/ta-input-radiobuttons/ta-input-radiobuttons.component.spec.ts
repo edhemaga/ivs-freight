@@ -11,9 +11,8 @@ describe('TaInputRadiobuttonsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaInputRadiobuttonsComponent ]
-    })
-    .compileComponents();
+      declarations: [TaInputRadiobuttonsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

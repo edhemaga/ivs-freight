@@ -8,9 +8,8 @@ describe('TaCopyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaCopyComponent ]
-    })
-    .compileComponents();
+      declarations: [TaCopyComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

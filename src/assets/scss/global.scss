@@ -86,7 +86,7 @@
 }
 
 // GLOBAL SCROLLBAR
-body{
+body {
   overflow-y: scroll !important;
 }
 
@@ -99,7 +99,7 @@ body{
 
   &::-webkit-scrollbar-thumb {
     background-color: rgba(145, 145, 145, 0.7);
-    border: 5px solid #EEEEEE;
+    border: 5px solid #eeeeee;
     border-radius: 1px;
 
     &:hover {
@@ -126,4 +126,3 @@ body{
 .text-right {
   text-align: right !important;
 }
-

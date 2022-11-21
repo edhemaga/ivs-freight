@@ -18,7 +18,7 @@ import { DriversInactiveState } from '../../../driver/state/driver-inactive-stat
   styleUrls: ['./payroll.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [NameInitialsPipe]
+  providers: [NameInitialsPipe],
 })
 export class PayrollComponent implements OnInit, AfterViewInit {
   tableOptions: any = {};
@@ -38,7 +38,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
   constructor(
     private driversActiveQuery: DriversActiveQuery,
     private driversInactiveQuery: DriversInactiveQuery,
-    private nameInitialsPipe: NameInitialsPipe,
+    private nameInitialsPipe: NameInitialsPipe
   ) {}
 
   ngAfterViewInit(): void {
@@ -112,7 +112,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
           ? this.mapApplicantsData(data, index)
           : this.mapApplicantsData(data, index);
       });
-     // For Testing
+      // For Testing
       // if (this.selectedTab !== 'applicants') {
       //   for (let i = 0; i < 1000; i++) {
       //     this.viewData.push(this.viewData[0]);
@@ -127,7 +127,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     if (dataType === 'active') {
       this.driversActive = this.driversActiveQuery.getAll();
 
-      console.log("WHAT IS FINDING DATA");
+      console.log('WHAT IS FINDING DATA');
       console.log(this.driversActive);
       return this.driversActive?.length ? this.driversActive : [];
     } else if (dataType === 'inactive') {
@@ -250,13 +250,13 @@ export class PayrollComponent implements OnInit, AfterViewInit {
       period: '04/04/44',
       total: '2,300.2',
       empty: '500',
-      salary: "2,300.2",
+      salary: '2,300.2',
       loaded: '1,500.2',
-      "MI Pay": "$1,842.06",
+      'MI Pay': '$1,842.06',
       dob: '04/04/44',
       textShortName: this.nameInitialsPipe.transform('Angelo Trotter'),
       avatarColor: this.getAvatarColors(),
-      status: "444 DAYS",
+      status: '444 DAYS',
       email: 'angelo.T@gmail.com',
       applicantProgress: [
         {
@@ -328,7 +328,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
             : '',
         hideProgres: index !== 3,
         isApplicant: true,
-        expirationDays: "22",
+        expirationDays: '22',
         percentage: 10,
       },
       rev: {

@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AppAddLoadTableComponent} from './app-add-load-table.component';
+import { AppAddLoadTableComponent } from './app-add-load-table.component';
 
 describe('AppAddLoadTableComponent', () => {
   let component: AppAddLoadTableComponent;
@@ -8,9 +8,8 @@ describe('AppAddLoadTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppAddLoadTableComponent]
-    })
-      .compileComponents();
+      declarations: [AppAddLoadTableComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

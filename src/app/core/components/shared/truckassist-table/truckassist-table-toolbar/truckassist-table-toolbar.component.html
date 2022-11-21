@@ -1,6 +1,6 @@
 <div
   class="toolbar-container"
-  [ngClass]="{'mapToolbarStyle': isMapShowning}"
+  [ngClass]="{ mapToolbarStyle: isMapShowning }"
   [ngStyle]="{ width: toolbarWidth, 'max-width.px': maxToolbarWidth }"
 >
   <!-- LIST NAME -->
@@ -43,7 +43,11 @@
   </div>
 
   <!-- TOOLBAR FILTERS AND OTHER -->
-  <app-toolbar-filters [activeTableData]="activeTableData"  [options]="options" (toolbarFilter)="changeModeView($event)"></app-toolbar-filters>
+  <app-toolbar-filters
+    [activeTableData]="activeTableData"
+    [options]="options"
+    (toolbarFilter)="changeModeView($event)"
+  ></app-toolbar-filters>
 
   <!-- TOOLBAR ACTIONS -->
   <div class="table-actions">
@@ -126,7 +130,11 @@
   </div>
 
   <!-- OPEN MODAL BUTTON -->
-  <div class="modal-open-container" (click)="onToolBarAction('open-modal')" *ngIf="!options.toolbarActions.hideOpenModalButton">
+  <div
+    class="modal-open-container"
+    (click)="onToolBarAction('open-modal')"
+    *ngIf="!options.toolbarActions.hideOpenModalButton"
+  >
     <svg-icon
       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
       [src]="'assets/svg/truckassist-table/plus-icon.svg'"
@@ -142,7 +150,7 @@
       [ngClass]="{ 'active-option': option.active }"
       *ngFor="let option of optionsPopupContent"
       class="options"
-      [ngStyle]="{'display': !option.show ? 'none' : 'flex'}"
+      [ngStyle]="{ display: !option.show ? 'none' : 'flex' }"
     >
       <div class="icon">
         <svg-icon

@@ -14,9 +14,7 @@ export class AccountResolver implements Resolve<AccountState> {
     private accountStore: AccountStore
   ) {}
   resolve(): Observable<AccountState | boolean> {
-    return this.accountService
-    .getAccounts(null, 1, 25)
-    .pipe(
+    return this.accountService.getAccounts(null, 1, 25).pipe(
       catchError(() => {
         return of('No account data...');
       }),
@@ -27,7 +25,7 @@ export class AccountResolver implements Resolve<AccountState> {
             account: accountPagination.count,
           })
         );
-        
+
         this.accountStore.set(accountPagination.pagination.data);
       })
     );

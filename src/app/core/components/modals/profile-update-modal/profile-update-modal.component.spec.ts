@@ -11,9 +11,8 @@ describe('ProfileUpdateModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProfileUpdateModalComponent ]
-    })
-    .compileComponents();
+      declarations: [ProfileUpdateModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

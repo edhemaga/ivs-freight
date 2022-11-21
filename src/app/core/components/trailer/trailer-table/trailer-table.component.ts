@@ -159,11 +159,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             clearInterval(inetval);
           }, 2300);
-        } 
+        }
         // Add Trailer Inactive
         else if (res.animation === 'add' && this.selectedTab === 'inactive') {
           this.updateDataCount();
-        } 
+        }
         // Update Trailer
         else if (res.animation === 'update') {
           this.viewData = this.viewData.map((trailer: any) => {
@@ -180,14 +180,15 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
-        } 
+        }
         // Update Trailer Status
         else if (res.animation === 'update-status') {
           let trailerIndex: number;
 
           this.viewData = this.viewData.map((trailer: any, index: number) => {
             if (trailer.id === res.id) {
-              trailer.actionAnimation = this.selectedTab === 'active' ? 'deactivate' : 'activate';
+              trailer.actionAnimation =
+                this.selectedTab === 'active' ? 'deactivate' : 'activate';
               trailerIndex = index;
             }
 
@@ -367,8 +368,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     return tableColumnsConfig
-    ? tableColumnsConfig
-    : getTrailerColumnDefinition();
+      ? tableColumnsConfig
+      : getTrailerColumnDefinition();
   }
 
   setTrailerData(td: any) {
@@ -534,7 +535,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         avatar: `assets/svg/common/trailers/${event.data?.trailerType?.logoName}`,
       },
     };
-    
+
     switch (event.type) {
       case 'show-more': {
         this.backFilterQuery.pageIndex++;

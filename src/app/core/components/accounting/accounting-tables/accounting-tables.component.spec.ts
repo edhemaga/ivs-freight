@@ -1,6 +1,6 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {AccountingTablesComponent} from './accounting-tables.component';
+import { AccountingTablesComponent } from './accounting-tables.component';
 
 describe('AccountingTablesComponent', () => {
   let component: AccountingTablesComponent;
@@ -8,9 +8,8 @@ describe('AccountingTablesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AccountingTablesComponent]
-    })
-      .compileComponents();
+      declarations: [AccountingTablesComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

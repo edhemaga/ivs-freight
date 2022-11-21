@@ -11,9 +11,8 @@ describe('SettingsRepairShopComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsRepairShopComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsRepairShopComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

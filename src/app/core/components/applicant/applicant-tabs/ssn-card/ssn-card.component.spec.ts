@@ -8,9 +8,8 @@ describe('SsnCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SsnCardComponent ]
-    })
-    .compileComponents();
+      declarations: [SsnCardComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

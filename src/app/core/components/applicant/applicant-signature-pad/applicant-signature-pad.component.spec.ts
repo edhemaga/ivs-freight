@@ -8,9 +8,8 @@ describe('ApplicantSignaturePadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ApplicantSignaturePadComponent ]
-    })
-    .compileComponents();
+      declarations: [ApplicantSignaturePadComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

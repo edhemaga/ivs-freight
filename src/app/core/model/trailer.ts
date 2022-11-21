@@ -1,6 +1,6 @@
 // import { Color } from './shared/color';
 
-import {HistoryData} from "../components/shared/history-data/history-data.component";
+import { HistoryData } from '../components/shared/history-data/history-data.component';
 
 export interface TrailerTabData {
   activeTrailers: TrailerData[];
@@ -55,17 +55,17 @@ export interface TrailerAdditional {
 }
 
 export interface LengthData {
-  id: number,
+  id: number;
   key: string;
   value: string;
   domain: string;
-  entityId: any,
-  parentId: any,
-  companyId: any,
+  entityId: any;
+  parentId: any;
+  companyId: any;
   createdAt: string;
-  protected: number,
+  protected: number;
   updatedAt: string;
-  entityName: any
+  entityName: any;
 }
 
 export interface MakeData {

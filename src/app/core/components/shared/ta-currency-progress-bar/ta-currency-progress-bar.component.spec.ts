@@ -11,9 +11,8 @@ describe('TaCurrencyProgressBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaCurrencyProgressBarComponent ]
-    })
-    .compileComponents();
+      declarations: [TaCurrencyProgressBarComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

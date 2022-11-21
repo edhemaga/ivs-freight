@@ -46,12 +46,14 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private trailerMinimalQuery: TrailersMinimalListQuery,
     private trailerMinimalStore: TrailersMinimalListStore,
-    private DetailsDataService: DetailsDataService,
+    private DetailsDataService: DetailsDataService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions(this.activated_route.snapshot.data.trailer);
-    this.DetailsDataService.setNewData(this.activated_route.snapshot.data.trailer); 
+    this.DetailsDataService.setNewData(
+      this.activated_route.snapshot.data.trailer
+    );
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
@@ -203,13 +205,14 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
           svg: 'assets/svg/common/dropdown-arrow.svg',
           disabled: data.status == 0 ? true : false,
           subType: [
-              { subName :'Registration', actionName: 'Registration'}, 
-              { subName : 'FHWA Inspection', actionName: 'FHWA Inspection'}, 
-              { subName : 'Title', actionName: 'Title'}, 
-              { subName: 'Lease / Rent', actionName: 'Lease / Rent'}],
+            { subName: 'Registration', actionName: 'Registration' },
+            { subName: 'FHWA Inspection', actionName: 'FHWA Inspection' },
+            { subName: 'Title', actionName: 'Title' },
+            { subName: 'Lease / Rent', actionName: 'Lease / Rent' },
+          ],
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -224,7 +227,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: data.status == 0 ? 'Activate' : 'Deactivate',
@@ -244,7 +247,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
           danger: true,
           show: true,
           redIcon: true,
-        }
+        },
       ],
       export: true,
     };

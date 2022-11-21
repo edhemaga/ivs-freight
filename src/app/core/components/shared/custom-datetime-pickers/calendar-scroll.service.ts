@@ -1,9 +1,9 @@
-import {distinctUntilChanged} from 'rxjs/operators';
-import {Subject} from 'rxjs';
-import {Injectable} from '@angular/core';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CalendarScrollService {
   public index$ = new Subject<any>();
@@ -15,10 +15,9 @@ export class CalendarScrollService {
   scrollToAutoIndex = this.indexAuto$.pipe(distinctUntilChanged());
   private scrolledScroll: string;
 
-  constructor() {
-  }
+  constructor() {}
 
-  public set setAutoIndex(number){
+  public set setAutoIndex(number) {
     this.selectedIndex = number;
     this.indexAuto$.next(number);
   }

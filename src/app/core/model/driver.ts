@@ -1,8 +1,8 @@
-import {Address} from './address';
-import {IApplicant} from './applicant';
-import {MetaData} from './enums';
-import {OwnerData} from './owner';
-import {HistoryData} from "../components/shared/history-data/history-data.component";
+import { Address } from './address';
+import { IApplicant } from './applicant';
+import { MetaData } from './enums';
+import { OwnerData } from './owner';
+import { HistoryData } from '../components/shared/history-data/history-data.component';
 
 export interface DriverTabData {
   applicantDrivers: IApplicant[];

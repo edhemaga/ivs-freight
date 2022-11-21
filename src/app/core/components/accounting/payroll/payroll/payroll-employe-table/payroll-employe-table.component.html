@@ -1,386 +1,400 @@
 <div class="table-holder">
   <table width="100%">
     <thead>
-    <tr>
-      <th>Name</th>
-      <th>DEPT</th>
-      <th *ngIf="!localSummary">Term</th>
-      <th *ngIf="!localSummary">Payroll #</th>
-      <th>Period</th>
-      <th *ngIf="!localSummary" class="text-center">Revenue</th>
-      <th *ngIf="!localSummary" class="text-center">Pay</th>
-      <th *ngIf="!localSummary" class="text-right">% Pay</th>
-      <th *ngIf="!localSummary" class="text-center">Base</th>
-      <th *ngIf="!localSummary" class="text-right bonus">Bonus</th>
-      <th class="text-right salary">Salary</th>
-      <th class="text-right">Status</th>
-    </tr>
+      <tr>
+        <th>Name</th>
+        <th>DEPT</th>
+        <th *ngIf="!localSummary">Term</th>
+        <th *ngIf="!localSummary">Payroll #</th>
+        <th>Period</th>
+        <th *ngIf="!localSummary" class="text-center">Revenue</th>
+        <th *ngIf="!localSummary" class="text-center">Pay</th>
+        <th *ngIf="!localSummary" class="text-right">% Pay</th>
+        <th *ngIf="!localSummary" class="text-center">Base</th>
+        <th *ngIf="!localSummary" class="text-right bonus">Bonus</th>
+        <th class="text-right salary">Salary</th>
+        <th class="text-right">Status</th>
+      </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>
-        <div class="td-holder">
-          <div class="user_info round-image">
-            <svg-icon src="assets/img/svgs/profile/user-avatar.svg"></svg-icon>
-            <span>Ben Stagner</span>
+      <tr>
+        <td>
+          <div class="td-holder">
+            <div class="user_info round-image">
+              <svg-icon
+                src="assets/img/svgs/profile/user-avatar.svg"
+              ></svg-icon>
+              <span>Ben Stagner</span>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <div class="td-holder">Accounting</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">Bi-Weekly</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">LA59OSK</div>
-      </td>
-      <td>
-        <div class="td-holder">04/05/24</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$40,316.57</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">
-          <div class="payroll_items">
-            <div>1.5%</div>
+        </td>
+        <td>
+          <div class="td-holder">Accounting</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">Bi-Weekly</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">LA59OSK</div>
+        </td>
+        <td>
+          <div class="td-holder">04/05/24</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$40,316.57</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">
+            <div class="payroll_items">
+              <div>1.5%</div>
+            </div>
           </div>
-        </div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">$1,782.06</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$500.00</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">/</div>
-      </td>
-      <td>
-        <div class="td-holder text-right bold-text">$2,282.06</div>
-      </td>
-      <td>
-        <div class="td-holder text-right">
-          <div class="payroll_ready">
-            <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
-            <div class="ready_text">Today</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">$1,782.06</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$500.00</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">/</div>
+        </td>
+        <td>
+          <div class="td-holder text-right bold-text">$2,282.06</div>
+        </td>
+        <td>
+          <div class="td-holder text-right">
+            <div class="payroll_ready">
+              <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
+              <div class="ready_text">Today</div>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="td-holder">
-          <div class="user_info round-image">
-            <svg-icon src="assets/img/svgs/profile/user-avatar.svg"></svg-icon>
-            <span>Ben Stagner</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="td-holder">
+            <div class="user_info round-image">
+              <svg-icon
+                src="assets/img/svgs/profile/user-avatar.svg"
+              ></svg-icon>
+              <span>Ben Stagner</span>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <div class="td-holder">Accounting</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">Bi-Weekly</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">LA59OSK</div>
-      </td>
-      <td>
-        <div class="td-holder">04/05/24</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$40,316.57</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">
-          <div class="payroll_items">
-            <div>1.5%</div>
+        </td>
+        <td>
+          <div class="td-holder">Accounting</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">Bi-Weekly</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">LA59OSK</div>
+        </td>
+        <td>
+          <div class="td-holder">04/05/24</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$40,316.57</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">
+            <div class="payroll_items">
+              <div>1.5%</div>
+            </div>
           </div>
-        </div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">$1,782.06</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$500.00</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">/</div>
-      </td>
-      <td>
-        <div class="td-holder text-right bold-text">$2,282.06</div>
-      </td>
-      <td>
-        <div class="td-holder text-right">
-          <div class="payroll_ready">
-            <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
-            <div class="ready_text">Today</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">$1,782.06</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$500.00</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">/</div>
+        </td>
+        <td>
+          <div class="td-holder text-right bold-text">$2,282.06</div>
+        </td>
+        <td>
+          <div class="td-holder text-right">
+            <div class="payroll_ready">
+              <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
+              <div class="ready_text">Today</div>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="td-holder">
-          <div class="user_info round-image">
-            <svg-icon src="assets/img/svgs/profile/user-avatar.svg"></svg-icon>
-            <span>Ben Stagner</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="td-holder">
+            <div class="user_info round-image">
+              <svg-icon
+                src="assets/img/svgs/profile/user-avatar.svg"
+              ></svg-icon>
+              <span>Ben Stagner</span>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <div class="td-holder">Accounting</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">Bi-Weekly</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">LA59OSK</div>
-      </td>
-      <td>
-        <div class="td-holder">04/05/24</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$40,316.57</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">
-          <div class="payroll_items">
-            <div>1.5%</div>
+        </td>
+        <td>
+          <div class="td-holder">Accounting</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">Bi-Weekly</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">LA59OSK</div>
+        </td>
+        <td>
+          <div class="td-holder">04/05/24</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$40,316.57</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">
+            <div class="payroll_items">
+              <div>1.5%</div>
+            </div>
           </div>
-        </div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">$1,782.06</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$500.00</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">/</div>
-      </td>
-      <td>
-        <div class="td-holder text-right bold-text">$2,282.06</div>
-      </td>
-      <td>
-        <div class="td-holder text-right">
-          <div class="payroll_ready">
-            <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
-            <div class="ready_text">Today</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">$1,782.06</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$500.00</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">/</div>
+        </td>
+        <td>
+          <div class="td-holder text-right bold-text">$2,282.06</div>
+        </td>
+        <td>
+          <div class="td-holder text-right">
+            <div class="payroll_ready">
+              <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
+              <div class="ready_text">Today</div>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="td-holder">
-          <div class="user_info round-image">
-            <svg-icon src="assets/img/svgs/profile/user-avatar.svg"></svg-icon>
-            <span>Ben Stagner</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="td-holder">
+            <div class="user_info round-image">
+              <svg-icon
+                src="assets/img/svgs/profile/user-avatar.svg"
+              ></svg-icon>
+              <span>Ben Stagner</span>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <div class="td-holder">Accounting</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">Bi-Weekly</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">LA59OSK</div>
-      </td>
-      <td>
-        <div class="td-holder">04/05/24</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$40,316.57</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">
-          <div class="payroll_items">
-            <div>1.5%</div>
+        </td>
+        <td>
+          <div class="td-holder">Accounting</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">Bi-Weekly</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">LA59OSK</div>
+        </td>
+        <td>
+          <div class="td-holder">04/05/24</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$40,316.57</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">
+            <div class="payroll_items">
+              <div>1.5%</div>
+            </div>
           </div>
-        </div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">$1,782.06</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$500.00</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">/</div>
-      </td>
-      <td>
-        <div class="td-holder text-right bold-text">$2,282.06</div>
-      </td>
-      <td>
-        <div class="td-holder text-right">
-          <div class="payroll_ready">
-            <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
-            <div class="ready_text">Today</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">$1,782.06</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$500.00</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">/</div>
+        </td>
+        <td>
+          <div class="td-holder text-right bold-text">$2,282.06</div>
+        </td>
+        <td>
+          <div class="td-holder text-right">
+            <div class="payroll_ready">
+              <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
+              <div class="ready_text">Today</div>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="td-holder">
-          <div class="user_info round-image">
-            <svg-icon src="assets/img/svgs/profile/user-avatar.svg"></svg-icon>
-            <span>Ben Stagner</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="td-holder">
+            <div class="user_info round-image">
+              <svg-icon
+                src="assets/img/svgs/profile/user-avatar.svg"
+              ></svg-icon>
+              <span>Ben Stagner</span>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <div class="td-holder">Accounting</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">Bi-Weekly</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">LA59OSK</div>
-      </td>
-      <td>
-        <div class="td-holder">04/05/24</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$40,316.57</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">
-          <div class="payroll_items">
-            <div>1.5%</div>
+        </td>
+        <td>
+          <div class="td-holder">Accounting</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">Bi-Weekly</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">LA59OSK</div>
+        </td>
+        <td>
+          <div class="td-holder">04/05/24</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$40,316.57</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">
+            <div class="payroll_items">
+              <div>1.5%</div>
+            </div>
           </div>
-        </div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">$1,782.06</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$500.00</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">/</div>
-      </td>
-      <td>
-        <div class="td-holder text-right bold-text">$2,282.06</div>
-      </td>
-      <td>
-        <div class="td-holder text-right">
-          <div class="payroll_ready">
-            <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
-            <div class="ready_text">Today</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">$1,782.06</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$500.00</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">/</div>
+        </td>
+        <td>
+          <div class="td-holder text-right bold-text">$2,282.06</div>
+        </td>
+        <td>
+          <div class="td-holder text-right">
+            <div class="payroll_ready">
+              <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
+              <div class="ready_text">Today</div>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="td-holder">
-          <div class="user_info round-image">
-            <svg-icon src="assets/img/svgs/profile/user-avatar.svg"></svg-icon>
-            <span>Ben Stagner</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="td-holder">
+            <div class="user_info round-image">
+              <svg-icon
+                src="assets/img/svgs/profile/user-avatar.svg"
+              ></svg-icon>
+              <span>Ben Stagner</span>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <div class="td-holder">Accounting</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">Bi-Weekly</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">LA59OSK</div>
-      </td>
-      <td>
-        <div class="td-holder">04/05/24</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$40,316.57</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">
-          <div class="payroll_items">
-            <div>1.5%</div>
+        </td>
+        <td>
+          <div class="td-holder">Accounting</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">Bi-Weekly</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">LA59OSK</div>
+        </td>
+        <td>
+          <div class="td-holder">04/05/24</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$40,316.57</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">
+            <div class="payroll_items">
+              <div>1.5%</div>
+            </div>
           </div>
-        </div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">$1,782.06</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$500.00</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">/</div>
-      </td>
-      <td>
-        <div class="td-holder text-right bold-text">$2,282.06</div>
-      </td>
-      <td>
-        <div class="td-holder text-right">
-          <div class="payroll_ready">
-            <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
-            <div class="ready_text">Today</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">$1,782.06</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$500.00</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">/</div>
+        </td>
+        <td>
+          <div class="td-holder text-right bold-text">$2,282.06</div>
+        </td>
+        <td>
+          <div class="td-holder text-right">
+            <div class="payroll_ready">
+              <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
+              <div class="ready_text">Today</div>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="td-holder">
-          <div class="user_info round-image">
-            <svg-icon src="assets/img/svgs/profile/user-avatar.svg"></svg-icon>
-            <span>Ben Stagner</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="td-holder">
+            <div class="user_info round-image">
+              <svg-icon
+                src="assets/img/svgs/profile/user-avatar.svg"
+              ></svg-icon>
+              <span>Ben Stagner</span>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <div class="td-holder">Accounting</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">Bi-Weekly</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder">LA59OSK</div>
-      </td>
-      <td>
-        <div class="td-holder">04/05/24</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$40,316.57</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">
-          <div class="payroll_items">
-            <div>1.5%</div>
+        </td>
+        <td>
+          <div class="td-holder">Accounting</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">Bi-Weekly</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder">LA59OSK</div>
+        </td>
+        <td>
+          <div class="td-holder">04/05/24</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$40,316.57</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">
+            <div class="payroll_items">
+              <div>1.5%</div>
+            </div>
           </div>
-        </div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">$1,782.06</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-center">$500.00</div>
-      </td>
-      <td *ngIf="!localSummary">
-        <div class="td-holder text-right">/</div>
-      </td>
-      <td>
-        <div class="td-holder text-right bold-text">$2,282.06</div>
-      </td>
-      <td>
-        <div class="td-holder text-right">
-          <div class="payroll_ready">
-            <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
-            <div class="ready_text">Today</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">$1,782.06</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-center">$500.00</div>
+        </td>
+        <td *ngIf="!localSummary">
+          <div class="td-holder text-right">/</div>
+        </td>
+        <td>
+          <div class="td-holder text-right bold-text">$2,282.06</div>
+        </td>
+        <td>
+          <div class="td-holder text-right">
+            <div class="payroll_ready">
+              <svg-icon src="assets/img/svgs/payroll/clock.svg"></svg-icon>
+              <div class="ready_text">Today</div>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

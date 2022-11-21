@@ -5,7 +5,11 @@ import { ModalService } from '../../ta-modal/modal.service';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckTService } from '../../../truck/state/truck.service';
-import { TruckListResponse, CreateRouteCommand, UpdateRouteCommand } from 'appcoretruckassist';
+import {
+  TruckListResponse,
+  CreateRouteCommand,
+  UpdateRouteCommand,
+} from 'appcoretruckassist';
 import { RoutingStateService } from '../../../routing/state/routing-state/routing-state.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
 
@@ -53,7 +57,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private truckService: TruckTService,
     private routingService: RoutingStateService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -166,7 +170,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
 
     const newData: CreateRouteCommand = {
       name: form.routeName,
-      mapId: this.editData.mapId
+      mapId: this.editData.mapId,
     };
 
     this.routingService
@@ -180,10 +184,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
           );
         },
         error: () => {
-          this.notificationService.error(
-            "Can't add route.",
-            'Error'
-          );
+          this.notificationService.error("Can't add route.", 'Error');
         },
       });
   }
@@ -195,7 +196,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
       id: id,
       name: form.routeName,
       shape: this.editData.shape ? this.editData.shape : '',
-      stops: this.editData.stops ? this.editData.stops : []
+      stops: this.editData.stops ? this.editData.stops : [],
     };
 
     console.log('updateRoute newData', newData);
@@ -211,10 +212,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
           );
         },
         error: () => {
-          this.notificationService.error(
-            "Can't update route.",
-            'Error'
-          );
+          this.notificationService.error("Can't update route.", 'Error');
         },
       });
   }
@@ -226,7 +224,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: any) => {
           this.mapRouteForm.patchValue({
-            routeName: res.name
+            routeName: res.name,
           });
           console.log('getRouteById', res);
         },

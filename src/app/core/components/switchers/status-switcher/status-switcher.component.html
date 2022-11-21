@@ -1,4 +1,4 @@
-<fieldset class="multiswitch ta-switch-wrapper  {{customClass}}">
+<fieldset class="multiswitch ta-switch-wrapper  {{ customClass }}">
   <div
     [ngClass]="{
       routingStyle: changeToRoutingStyle,
@@ -13,7 +13,9 @@
         *ngIf="label.checked"
         checked
         class="ta-radio-button"
-        id="{{ label.inputName ? label.inputName : 'account' }}{{ label.name }}-{{ i }}"
+        id="{{ label.inputName ? label.inputName : 'account' }}{{
+          label.name
+        }}-{{ i }}"
         name="{{ label.inputName ? label.inputName : 'account' }}"
         type="radio"
       />
@@ -21,14 +23,18 @@
         (change)="handleChange($event)"
         *ngIf="!label.checked"
         class="ta-radio-button"
-        id="{{ label.inputName ? label.inputName : 'account' }}{{ label.name }}-{{ i }}"
+        id="{{ label.inputName ? label.inputName : 'account' }}{{
+          label.name
+        }}-{{ i }}"
         name="{{ label.inputName ? label.inputName : 'account' }}"
         type="radio"
       />
       <label
         class="ta-radio-button{{ label.checked ? ' checked-label' : '' }}"
-        for="{{ label.inputName ? label.inputName : 'account' }}{{ label.name }}-{{ i }}"
-      >{{ label.name }}</label
+        for="{{ label.inputName ? label.inputName : 'account' }}{{
+          label.name
+        }}-{{ i }}"
+        >{{ label.name }}</label
       >
     </ng-container>
     <a *ngIf="!checked" aria-hidden="true" class="slide"></a>

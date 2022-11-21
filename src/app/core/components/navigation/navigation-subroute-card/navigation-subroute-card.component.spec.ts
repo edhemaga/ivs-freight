@@ -8,9 +8,8 @@ describe('NavigationSubrouteCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NavigationSubrouteCardComponent ]
-    })
-    .compileComponents();
+      declarations: [NavigationSubrouteCardComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

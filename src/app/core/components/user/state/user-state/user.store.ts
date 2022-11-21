@@ -12,6 +12,6 @@ export class UserStore extends EntityStore<UserState> {
   }
 
   // akitaPreAddEntity(book: any) {
-    
+
   // }
 }

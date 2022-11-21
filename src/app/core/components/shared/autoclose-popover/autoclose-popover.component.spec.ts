@@ -8,9 +8,8 @@ describe('AutoclosePopoverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AutoclosePopoverComponent ]
-    })
-    .compileComponents();
+      declarations: [AutoclosePopoverComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

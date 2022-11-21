@@ -1,5 +1,5 @@
 // APPLICANT TABLE COLUMNS DEFINITION
-export function getApplicantColumnsDefinition() { 
+export function getApplicantColumnsDefinition() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -296,7 +296,8 @@ export function getApplicantColumnsDefinition() {
       headIconStyle: {
         width: 18,
         height: 18,
-        imgPath: '../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg',
+        imgPath:
+          '../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg',
       },
       filter: '',
       isNumeric: false,
@@ -311,7 +312,7 @@ export function getApplicantColumnsDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'favorite',
@@ -324,7 +325,8 @@ export function getApplicantColumnsDefinition() {
       headIconStyle: {
         width: 18,
         height: 18,
-        imgPath: '../../../assets/svg/truckassist-table/favorite-selected-row.svg',
+        imgPath:
+          '../../../assets/svg/truckassist-table/favorite-selected-row.svg',
       },
       filter: '',
       isNumeric: false,
@@ -339,7 +341,7 @@ export function getApplicantColumnsDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'note',
@@ -367,7 +369,7 @@ export function getApplicantColumnsDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -395,7 +397,7 @@ export function getApplicantColumnsDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ] as any[];
 }

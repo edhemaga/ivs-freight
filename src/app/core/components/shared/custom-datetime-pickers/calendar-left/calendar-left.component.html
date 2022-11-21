@@ -4,8 +4,18 @@
     (scrolledIndexChange)="onScrollChanged($event)"
     style="height: 290px; width: 100%; margin: 0"
   >
-    <ng-container *cdkVirtualFor="let month of months; let indx = index; templateCacheSize: 10;">
-      <div (click)="selectMonth(indx)" class="month-year-item" [innerHTML]="month | calendarmonths : listPreview"></div>
+    <ng-container
+      *cdkVirtualFor="
+        let month of months;
+        let indx = index;
+        templateCacheSize: 10
+      "
+    >
+      <div
+        (click)="selectMonth(indx)"
+        class="month-year-item"
+        [innerHTML]="month | calendarmonths: listPreview"
+      ></div>
     </ng-container>
   </cdk-virtual-scroll-viewport>
 </div>

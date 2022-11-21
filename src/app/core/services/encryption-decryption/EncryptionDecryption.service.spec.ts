@@ -6,11 +6,14 @@ import { EncryptionDecryptionService } from './EncryptionDecryption.service';
 describe('Service: EncryptionDecryption', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [EncryptionDecryptionService]
+      providers: [EncryptionDecryptionService],
     });
   });
 
-  it('should ...', inject([EncryptionDecryptionService], (service: EncryptionDecryptionService) => {
-    expect(service).toBeTruthy();
-  }));
+  it('should ...', inject(
+    [EncryptionDecryptionService],
+    (service: EncryptionDecryptionService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 });

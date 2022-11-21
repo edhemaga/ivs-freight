@@ -1,4 +1,4 @@
-@import 'src/theme/variables.scss';
+@import "src/theme/variables.scss";
 
 .applicant-container {
   min-height: 100vh;
@@ -89,7 +89,7 @@
       .bullet-8::after,
       .bullet-9::after,
       .bullet-10::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 19px;
         right: -90px;
@@ -110,7 +110,7 @@
       .bullet-9::before,
       .bullet-10::before,
       .bullet-11::before {
-        content: '';
+        content: "";
         display: none;
         visibility: hidden;
         user-select: none;

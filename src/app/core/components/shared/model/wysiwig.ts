@@ -7,4 +7,3 @@ export interface Wysiwig {
   textIndent: boolean;
   textLists: boolean;
 }
-

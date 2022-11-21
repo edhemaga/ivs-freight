@@ -1,5 +1,7 @@
 <div class="d-flex justify-content-between">
-  <div class="avatar-container d-flex justify-content-center align-items-center">
+  <div
+    class="avatar-container d-flex justify-content-center align-items-center"
+  >
     <span aria-hidden="true" class="profile-icon">
       <div *ngIf="!avatarError" class="user-avatar-container">
         <img
@@ -35,7 +37,12 @@
   <div *ngIf="showUploadZone" class="edit-image-container">
     <div [hidden]="showDropzone" class="d-fex">
       <div class="d-flex mb-3">
-        <img alt="cropped-image" #croppie="croppie" (update)="handleUpdate($event)" [croppieOptions]="croppieOptions"/>
+        <img
+          alt="cropped-image"
+          #croppie="croppie"
+          (update)="handleUpdate($event)"
+          [croppieOptions]="croppieOptions"
+        />
       </div>
 
       <div class="d-flex justify-content-between mb-2">
@@ -79,10 +86,11 @@
           <span class="image-attach-icon png-icon"></span>
           <span class="image-attach-icon large-cloude"></span>
           <span class="image-attach-icon small-cloude"></span>
-          <span class="image-attach-icon drag-image-text">Drag image here or click to add</span>
+          <span class="image-attach-icon drag-image-text"
+            >Drag image here or click to add</span
+          >
         </div>
       </div>
     </div>
   </div>
-
 </div>

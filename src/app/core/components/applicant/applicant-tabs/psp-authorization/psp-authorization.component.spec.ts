@@ -8,9 +8,8 @@ describe('PspAuthorizationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PspAuthorizationComponent ]
-    })
-    .compileComponents();
+      declarations: [PspAuthorizationComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

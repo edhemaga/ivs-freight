@@ -329,9 +329,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       localStorage.getItem(`table-${configType}-Configuration`)
     );
 
-    return tableColumnsConfig
-        ? tableColumnsConfig
-        : getOwnerColumnDefinition();
+    return tableColumnsConfig ? tableColumnsConfig : getOwnerColumnDefinition();
   }
 
   setOwnerData(td: any) {

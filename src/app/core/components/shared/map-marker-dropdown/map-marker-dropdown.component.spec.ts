@@ -8,9 +8,8 @@ describe('MapMarkerDropdownComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MapMarkerDropdownComponent ]
-    })
-    .compileComponents();
+      declarations: [MapMarkerDropdownComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

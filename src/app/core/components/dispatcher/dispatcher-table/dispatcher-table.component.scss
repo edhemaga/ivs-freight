@@ -1,21 +1,21 @@
 @import "../../../../../theme/variables.scss";
-$trailer_collors: 'FF5454', '6D82C7', '56AB62', '3C3C3C', '6FDFE4', 'F89A3D', '1E9DF3', '59A5A5',
-'A468FF', 'A34CB8', '4A9A4F', 'F3D542';
+$trailer_collors: "FF5454", "6D82C7", "56AB62", "3C3C3C", "6FDFE4", "F89A3D",
+  "1E9DF3", "59A5A5", "A468FF", "A34CB8", "4A9A4F", "F3D542";
 
-$truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415FC1';
+$truck_collors: "97D568", "FFB74D", "E57373", "68C3FF", "BA68C8", "59A5A5",
+  "415FC1";
 
-
-.parking-table{
+.parking-table {
   @each $truck_col in $truck_collors {
     .truck_#{$truck_col} {
-      span{
-        color: unquote('#' + $truck_col) !important;
-        &:hover{
-          background-color: unquote('#' + $truck_col) !important;
+      span {
+        color: unquote("#" + $truck_col) !important;
+        &:hover {
+          background-color: unquote("#" + $truck_col) !important;
           color: #fff !important;
 
-          .dispatcher-close{
-            display: block !important; 
+          .dispatcher-close {
+            display: block !important;
           }
         }
       }
@@ -24,12 +24,12 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
 
   @each $trailer_col in $trailer_collors {
     .trailer_#{$trailer_col} {
-      span{
-        color: unquote('#' + $trailer_col) !important;
-        &:hover{
-          background-color: unquote('#' + $trailer_col) !important;
+      span {
+        color: unquote("#" + $trailer_col) !important;
+        &:hover {
+          background-color: unquote("#" + $trailer_col) !important;
           color: #fff !important;
-          .dispatcher-close{
+          .dispatcher-close {
             display: block !important;
           }
         }
@@ -38,18 +38,15 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
   }
 }
 
-
 .dispacher-table,
 .dragged-row,
 .in-table-dragged-row {
-
   .drag-span {
     width: 100% !important;
-    background: linear-gradient(to right, #DADADA 50%, transparent 50%);
+    background: linear-gradient(to right, #dadada 50%, transparent 50%);
     background-position: right bottom !important;
     transition: all 0.2s ease-out;
     background-size: 200% 100% !important;
-
 
     &:hover {
       border-left: none;
@@ -61,27 +58,25 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
       }
     }
 
-
     .dispatcher-close {
       svg {
         #main_circle {
-          fill: #DADADA
+          fill: #dadada;
         }
       }
 
       &:hover {
         #main_circle {
-          fill: unquote('#' + "DADADA")
+          fill: unquote("#" + "DADADA");
         }
       }
     }
   }
 
   .unlocked {
-
     .dispatcher-close:hover {
       #main_circle {
-        fill: #B7B7B7;
+        fill: #b7b7b7;
       }
     }
 
@@ -91,21 +86,21 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
       @each $truck_col in $truck_collors {
         &.truck_#{$truck_col} {
           background: linear-gradient(
-              to right,
-              unquote('#' + $truck_col + '80') 50%,
-              transparent 50%
+            to right,
+            unquote("#" + $truck_col + "80") 50%,
+            transparent 50%
           );
 
           .dispatcher-close {
             svg {
               #main_circle {
-                fill: unquote('#' + $truck_col + '80')
+                fill: unquote("#" + $truck_col + "80");
               }
             }
 
             &:hover {
               #main_circle {
-                fill: unquote('#' + $truck_col)
+                fill: unquote("#" + $truck_col);
               }
             }
           }
@@ -115,21 +110,21 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
       @each $trailer_col in $trailer_collors {
         &.trailer_#{$trailer_col} {
           background: linear-gradient(
-              to right,
-              unquote('#' + $trailer_col + '80') 50%,
-              transparent 50%
+            to right,
+            unquote("#" + $trailer_col + "80") 50%,
+            transparent 50%
           );
 
           .dispatcher-close {
             svg {
               #main_circle {
-                fill: unquote('#' + $trailer_col + '80')
+                fill: unquote("#" + $trailer_col + "80");
               }
             }
 
             &:hover {
               #main_circle {
-                fill: unquote('#' + $trailer_col)
+                fill: unquote("#" + $trailer_col);
               }
             }
           }
@@ -137,8 +132,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
       }
 
       &:hover {
-
-        .dispatcher-close{
+        .dispatcher-close {
           display: block;
         }
 
@@ -146,33 +140,29 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
           color: #fff !important;
         }
       }
-
     }
 
     .no-color {
       &:hover {
-        background: linear-gradient(to right, #6C6C6C 50%, transparent 50%);
+        background: linear-gradient(to right, #6c6c6c 50%, transparent 50%);
         //background-position: right bottom !important;
         transition: all 0.2s ease-out;
         background-size: 200% 100% !important;
-
       }
     }
   }
 
-
   .locked {
-
     .drag-span {
       @each $truck_col in $truck_collors {
         &.truck_#{$truck_col} {
           .select_span {
-            color: unquote('#' + $truck_col) !important;
+            color: unquote("#" + $truck_col) !important;
             &::-moz-selection {
               color: unquote("#" + $truck_col) !important;
               background: unquote("#" + $truck_col + "22") !important;
             }
-        
+
             &::selection {
               color: unquote("#" + $truck_col) !important;
               background: unquote("#" + $truck_col + "22") !important;
@@ -184,15 +174,15 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
       @each $trailer_col in $trailer_collors {
         &.trailer_#{$trailer_col} {
           .select_span {
-            color: unquote('#' + $trailer_col) !important;
+            color: unquote("#" + $trailer_col) !important;
             &::-moz-selection {
               color: unquote("#" + $trailer_col) !important;
               background: unquote("#" + $trailer_col + "22") !important;
             }
-        
+
             &::selection {
               color: unquote("#" + $trailer_col) !important;
-              background: unquote("#" + $trailer_col+ "22") !important;
+              background: unquote("#" + $trailer_col + "22") !important;
             }
           }
         }
@@ -207,12 +197,11 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
         // background-size: 200% 100% !important;
 
         .select_span {
-          color: #B7B7B7 !important;
+          color: #b7b7b7 !important;
         }
       }
     }
   }
-
 
   .drag-span {
     width: 100% !important;
@@ -248,7 +237,8 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
     }
   }
 
-  .locked, .unlocked {
+  .locked,
+  .unlocked {
     .drag-span {
       &.statusOpened {
         color: rgba(145, 145, 145, 0.3) !important;
@@ -257,8 +247,8 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
   }
 
   .dispatchers_table.locked {
-    .drag-span:hover, ~
-    .dispatch-label {
+    .drag-span:hover,
+    ~ .dispatch-label {
       background: transparent !important;
     }
   }
@@ -280,7 +270,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
   width: calc(100% - 95px);
   max-width: 1920px;
 
-  &.parking_opened{
+  &.parking_opened {
     width: calc(100% - 440px);
   }
 
@@ -314,8 +304,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
         justify-content: space-between;
         align-items: center;
 
-
-        .dispatch-board-buttons-holder{
+        .dispatch-board-buttons-holder {
           display: flex;
           align-items: center;
         }
@@ -328,16 +317,16 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
     }
   }
 
-  .border-spacer{
+  .border-spacer {
     height: 20px;
     width: 2px;
     margin: 0 2px;
     border-radius: 1px;
-    background-color: #F3F3F3;
+    background-color: #f3f3f3;
   }
 
   .k-grid-header {
-    background: #EEEEEE !important;
+    background: #eeeeee !important;
     border: none;
     display: table-row !important;
 
@@ -360,7 +349,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
     &.edit-placeholder {
       svg {
         path:first-child {
-          fill: #B7B7B7;
+          fill: #b7b7b7;
         }
 
         path:last-child {
@@ -408,11 +397,11 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
     // box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14),
     // 0 3px 14px 2px rgba(0, 0, 0, 0.12);
 
-    .abs-right{
+    .abs-right {
       top: 0;
     }
-    
-    .driver-field{
+
+    .driver-field {
       width: 322px !important;
       padding-left: 175px !important;
     }
@@ -432,7 +421,8 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
     justify-content: center;
   }
 
-  .dispatch-list.cdk-drop-list-dragging .dispatch-box:not(.cdk-drag-placeholder) {
+  .dispatch-list.cdk-drop-list-dragging
+    .dispatch-box:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
 
@@ -517,7 +507,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
   }
 
   .hos-column-wrapper {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: "Montserrat", sans-serif !important;
 
     .popover {
       min-width: 400px;
@@ -607,7 +597,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
       }
 
       .hour-mark.noon-mark::before {
-        content: 'N';
+        content: "N";
         position: relative;
         top: -19px;
         left: -6px;
@@ -617,7 +607,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
     }
 
     .time-ruler::before {
-      content: 'M';
+      content: "M";
       position: relative;
       top: -17px;
       left: -9px;
@@ -626,7 +616,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
     }
 
     .time-ruler::after {
-      content: 'M';
+      content: "M";
       position: absolute;
       top: 0;
       right: 9px;
@@ -648,7 +638,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
     z-index: 99999999999;
     justify-content: center;
     display: flex;
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: "Montserrat", sans-serif !important;
     font-size: 13px;
     font-weight: 600;
   }
@@ -683,7 +673,6 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
 }
 
 .dragged-row {
-
   .dispatch-list {
     height: 32px !important;
   }
@@ -748,7 +737,6 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
     //   }
     // }
   }
-
 
   .status-col {
     width: 125px !important;
@@ -961,7 +949,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
         svg-icon {
           svg {
             rect {
-              fill: #B7B7B7;
+              fill: #b7b7b7;
             }
           }
         }
@@ -994,7 +982,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
         svg-icon {
           svg {
             path:first-child {
-              fill: #5673AA;
+              fill: #5673aa;
               opacity: 1;
             }
           }
@@ -1005,7 +993,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
         svg-icon {
           svg {
             path:last-child {
-              fill: #5673AA;
+              fill: #5673aa;
               opacity: 1;
             }
           }
@@ -1157,14 +1145,14 @@ kendo-grid .toolbar-container {
     padding-right: 0;
   }
 
-
   &.right {
     margin-left: 0;
     border-radius: 0 3px 3px 0;
     padding-left: 0;
   }
 
-  .left, .right{
+  .left,
+  .right {
     flex: 1;
   }
 }
@@ -1188,7 +1176,8 @@ kendo-grid .toolbar-container {
         line-height: 39px !important;
       }
 
-      .pick-del-location, .time_info {
+      .pick-del-location,
+      .time_info {
         line-height: 1 !important;
       }
     }
@@ -1222,7 +1211,7 @@ kendo-grid .toolbar-container {
           color: #919191 !important;
           background: #91919122 !important;
         }
-    
+
         &::selection {
           color: #6c6c6c !important;
           background: #91919122 !important;
@@ -1232,7 +1221,8 @@ kendo-grid .toolbar-container {
   }
 }
 
-.destination-data, .pickup-data {
+.destination-data,
+.pickup-data {
   span {
     color: rgba(145, 145, 145, 1);
     .select_span {
@@ -1248,12 +1238,12 @@ kendo-grid .toolbar-container {
           font-size: 10px;
           font-weight: 700;
           color: #919191;
-  
+
           &::-moz-selection {
             color: #919191 !important;
             background: #91919122 !important;
           }
-      
+
           &::selection {
             color: #6c6c6c !important;
             background: #91919122 !important;
@@ -1303,7 +1293,7 @@ kendo-grid .toolbar-container {
   .type-text {
     padding: 7px 0 7px 12px;
     font-weight: bold !important;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 14px;
     color: #919191 !important;
   }
@@ -1488,7 +1478,7 @@ kendo-grid .toolbar-container {
 
       &:hover {
         // background: #f3f3f3 !important;
-        background: #F5F5F5 !important;
+        background: #f5f5f5 !important;
 
         span {
           color: #6c6c6c !important;
@@ -1508,7 +1498,7 @@ kendo-grid .toolbar-container {
       .panel-title {
         padding: 7px 0 7px 12px;
         font-weight: normal !important;
-        font-family: 'Montserrat', sans-serif;
+        font-family: "Montserrat", sans-serif;
         font-size: 14px;
         color: #919191;
         // color: #656565;
@@ -2265,7 +2255,7 @@ kendo-grid .toolbar-container {
       font-weight: bold;
       white-space: pre;
       font-size: 12px;
-      font-family: 'Montserrat', sans-serif;
+      font-family: "Montserrat", sans-serif;
       height: 32px;
       user-select: none;
     }
@@ -3055,7 +3045,6 @@ kendo-grid .toolbar-container {
   }
 }
 
-
 .destination-col {
   position: relative;
 
@@ -3074,7 +3063,8 @@ kendo-grid .toolbar-container {
       }
     }
 
-    &.bs-popover-top, &.bs-popover-auto[x-placement^="top"] {
+    &.bs-popover-top,
+    &.bs-popover-auto[x-placement^="top"] {
       margin-bottom: 3px;
     }
 
@@ -3090,7 +3080,7 @@ kendo-grid .toolbar-container {
   }
 }
 
-.dispatchboard-title{
+.dispatchboard-title {
   height: 32px;
   margin-right: 12px;
 
@@ -3109,4 +3099,3 @@ kendo-grid .toolbar-container {
     background: #91919122 !important;
   }
 }
-

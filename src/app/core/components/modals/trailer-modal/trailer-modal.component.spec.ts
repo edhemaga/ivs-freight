@@ -11,9 +11,8 @@ describe('TrailerModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TrailerModalComponent ]
-    })
-    .compileComponents();
+      declarations: [TrailerModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

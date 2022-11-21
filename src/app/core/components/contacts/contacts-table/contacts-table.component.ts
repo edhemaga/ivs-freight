@@ -318,8 +318,8 @@ export class ContactsTableComponent
     );
 
     return tableColumnsConfig
-    ? tableColumnsConfig
-    : getToolsContactsColumnDefinition();
+      ? tableColumnsConfig
+      : getToolsContactsColumnDefinition();
   }
 
   // Set Countact Data
@@ -523,7 +523,7 @@ export class ContactsTableComponent
 
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
-    
+
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();
 

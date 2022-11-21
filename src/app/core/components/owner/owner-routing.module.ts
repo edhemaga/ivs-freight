@@ -12,13 +12,12 @@ const routes: Routes = [
   {
     path: 'card',
     component: OwnerCardComponent,
-    data: {title: 'Load detail'},
-  }
+    data: { title: 'Load detail' },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-
 export class OwnerRoutingModule {}

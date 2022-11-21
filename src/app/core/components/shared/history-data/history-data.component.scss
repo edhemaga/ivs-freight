@@ -1,4 +1,4 @@
-@import '../../../../../theme/variables.scss';
+@import "../../../../../theme/variables.scss";
 
 .truckassist-history-data-panel {
   user-select: none;
@@ -234,7 +234,7 @@
     @include triangletop;
     left: 110px;
     top: -5.5px;
-    content: '';
+    content: "";
   }
 
   position: absolute;

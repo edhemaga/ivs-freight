@@ -45,7 +45,7 @@ import { ToolbarFiltersComponent } from './truckassist-table-toolbar/toolbar-fil
     ScrollingModule,
 
     // Veliki problem, ima dosta stvari u njemu, ubacen je zbog filter componente.
-    SharedModule
+    SharedModule,
   ],
   exports: [
     TruckassistTableBodyComponent,

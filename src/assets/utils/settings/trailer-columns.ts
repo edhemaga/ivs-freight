@@ -1,4 +1,4 @@
-export function getTrailerColumnDefinition() {  
+export function getTrailerColumnDefinition() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -222,7 +222,7 @@ export function getTrailerColumnDefinition() {
       classField: 'trailerTypeClass',
       svgDimensions: {
         width: 42,
-        height: 18
+        height: 18,
       },
       class: 'type-icon',
     },
@@ -524,7 +524,7 @@ export function getTrailerColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'note',
@@ -548,7 +548,7 @@ export function getTrailerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -572,7 +572,7 @@ export function getTrailerColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }

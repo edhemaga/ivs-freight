@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'app-app-note',
   templateUrl: './app-note.component.html',
-  styleUrls: ['./app-note.component.scss']
+  styleUrls: ['./app-note.component.scss'],
 })
 export class AppNoteComponent implements OnInit {
   @Input() note: any;
@@ -12,14 +12,11 @@ export class AppNoteComponent implements OnInit {
   @Input() rowIndex: number;
 
   openedAll: boolean;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 
   public setResizeGpsMain(indx: number): void {
     //this.sharedService.emitOpenNote.next(this.rowIndex);
   }
-
 }

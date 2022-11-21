@@ -9,5 +9,4 @@ export interface GpsLastPositionsDataModel {
   altitude: DoubleRange;
   speed: DoubleRange;
   motion: BigInt;
-
 }

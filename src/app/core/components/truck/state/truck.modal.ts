@@ -9,74 +9,73 @@ export interface TruckInterface {
   year: number;
   categoryId: string | number | null;
   category: string | null;
-  make:string;
-  model:string;
-  licensePlate:string;
-  licenseExpData:string;
-  colorName:string;
-  colorCode:string;
-  svgIcons:string;
-  svgClass:string;
-  length:string | number| null;
-  fhwaInsepction:string;
-  status:number;
-  used:number;
-  canBeUsedByCompany:number;
-  location:string | null;
-  longgitude:string | null;
-  latitude:string | null;
-  devideId:number | null;
-  uniqueId:number | null;
+  make: string;
+  model: string;
+  licensePlate: string;
+  licenseExpData: string;
+  colorName: string;
+  colorCode: string;
+  svgIcons: string;
+  svgClass: string;
+  length: string | number | null;
+  fhwaInsepction: string;
+  status: number;
+  used: number;
+  canBeUsedByCompany: number;
+  location: string | null;
+  longgitude: string | null;
+  latitude: string | null;
+  devideId: number | null;
+  uniqueId: number | null;
   percentage: number | null;
-  doc:any;
+  doc: any;
   mileage: number | null;
-  additionData:AdditionalData;
-  registrationData:Registration[];
-  fhwaData:FHWA[];
-  titleData:Title[];
-  purchaseData:Lease_Purchase[];
-  ownerData:Owner;
-  note:any;
-  tableRegistrationData:Registration;
-  tableFhwaData:FHWA
-  tableTitleData:Title
-  tableLeaseData:Lease_Purchase
-  isSelected:boolean;
+  additionData: AdditionalData;
+  registrationData: Registration[];
+  fhwaData: FHWA[];
+  titleData: Title[];
+  purchaseData: Lease_Purchase[];
+  ownerData: Owner;
+  note: any;
+  tableRegistrationData: Registration;
+  tableFhwaData: FHWA;
+  tableTitleData: Title;
+  tableLeaseData: Lease_Purchase;
+  isSelected: boolean;
 }
 
 interface Registration {
   id?: string;
   startDate: string;
   endDate: string;
-  state: State[]
-  attachemts?:Attachment[]
+  state: State[];
+  attachemts?: Attachment[];
 }
-interface AdditionalData{
-  grossWeight:string;
-  emptyWeight:string;
-  startingMileage:string;
-  axles:number;
-  tireSize:string;
-  ipass_ezpass:number;
-  insurancePolicy:number;
-}
-
-interface Owner{
-  company:string;
-  commision:string;
-}
-interface OwnerHistory{
-  id:number;
-  from:string;
-  to:string;
-  duration:string;
+interface AdditionalData {
+  grossWeight: string;
+  emptyWeight: string;
+  startingMileage: string;
+  axles: number;
+  tireSize: string;
+  ipass_ezpass: number;
+  insurancePolicy: number;
 }
 
-interface InspectionDate{
-  id:string;
-  startDate:string;
-  attachments:Attachment[];
- 
+interface Owner {
+  company: string;
+  commision: string;
+}
+interface OwnerHistory {
+  id: number;
+  from: string;
+  to: string;
+  duration: string;
+}
+
+interface InspectionDate {
+  id: string;
+  startDate: string;
+  attachments: Attachment[];
 }
 interface Attachment {
   url: string;
@@ -84,13 +83,13 @@ interface Attachment {
   fileItemGuid: string;
 }
 
-interface activityHistory{
-  id:string;
-  dialog:boolean;
-  header:string;
-  startDate:string;
-  endDate:string;
-  ownerId:number;
+interface activityHistory {
+  id: string;
+  dialog: boolean;
+  header: string;
+  startDate: string;
+  endDate: string;
+  ownerId: number;
   showDelete: boolean;
   showDialog: boolean;
   endDateShort: string | null;
@@ -99,22 +98,22 @@ interface activityHistory{
   showStartDateAction: boolean;
 }
 
-interface State{
-  key:string;
-  value:string;
+interface State {
+  key: string;
+  value: string;
 }
 interface FHWA {
   id: string;
   start: string;
   end: string;
-  file?: Attachment[]
+  file?: Attachment[];
 }
-interface LicenseData{
-  id:string;
-  startDate:string;
-  endDate:string;
-  attachments:Attachment[];
-  licensePlate:string;
+interface LicenseData {
+  id: string;
+  startDate: string;
+  endDate: string;
+  attachments: Attachment[];
+  licensePlate: string;
 }
 interface Title {
   id: string;
@@ -135,5 +134,4 @@ interface Lease_Purchase {
   total_val: string;
   total_interest: string;
   file: Attachment[];
-
 }

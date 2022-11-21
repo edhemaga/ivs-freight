@@ -16,7 +16,7 @@
       width: 1px;
       height: 20px;
       border-radius: 1px;
-      background: #DADADA;
+      background: #dadada;
     }
   }
 
@@ -84,7 +84,7 @@
         .tab-title {
           font-size: 17px;
           font-weight: 700;
-          color: #6C6C6C;
+          color: #6c6c6c;
           line-height: 20px;
         }
 
@@ -205,12 +205,12 @@
 
         &.action-active {
           svg-icon {
-            background-color: #3074D326;
+            background-color: #3074d326;
             border-radius: 2px;
 
             svg {
               path {
-                fill: #3074D3 !important;
+                fill: #3074d3 !important;
               }
             }
 
@@ -234,32 +234,32 @@
           position: absolute;
           top: 0;
           left: 0;
-    
+
           width: 100%;
           height: 100%;
         }
 
         &.disabled {
           top: 0px;
-    
+
           width: 34px;
           height: 34px;
           background: #fff;
           cursor: default;
-    
+
           svg-icon {
             border-radius: 2px;
-            
+
             svg {
               path {
-                fill: #DADADA !important;
+                fill: #dadada !important;
               }
             }
           }
 
           &:hover {
             svg-icon {
-              background: #EEEEEE;
+              background: #eeeeee;
               transition: 0.25s;
             }
           }
@@ -294,7 +294,7 @@
 
   // LOCATION FILTER AND OPEN MODAL BUTTON
   .modal-open-container {
-    background: #3074D3;
+    background: #3074d3;
 
     &:hover {
       background: #536bc2;
@@ -351,7 +351,7 @@
   .general-pm-open-container {
     border-radius: 3px;
   }
-  
+
   .modal-open-container {
     position: relative;
     top: -1px;
@@ -368,7 +368,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      
+
       width: 26px;
       height: 26px;
 
@@ -395,14 +395,14 @@
       svg-icon {
         svg {
           path {
-            fill: #DADADA;
+            fill: #dadada;
           }
         }
       }
 
       &:hover {
         .svg-holder {
-          background: #EEEEEE;
+          background: #eeeeee;
           transition: 0.25s;
         }
       }
@@ -431,7 +431,7 @@
 .tab-active {
   background: #424242 !important;
   transition: 0.25s;
-  
+
   .tab {
     background: #424242 !important;
     transition: 0.25s;
@@ -444,7 +444,7 @@
   }
 
   .data-count {
-    background: #6C6C6C !important;
+    background: #6c6c6c !important;
     transition: 0.25s;
   }
 }
@@ -731,7 +731,7 @@
     border-bottom: 5px solid white;
     top: -5px;
     left: 170px;
-    content: '';
+    content: "";
   }
 
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);

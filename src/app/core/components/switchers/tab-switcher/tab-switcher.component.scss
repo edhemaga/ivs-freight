@@ -280,24 +280,22 @@ app-ta-tab-switch {
 }
 
 /*CSS FOR TABS IN DRIVER*/
-.chart-tabs{
+.chart-tabs {
   margin-top: 0px !important;
-  .slide-container{
-      background-color: #f3f3f3 ;
-      color: #b7b7b7;
-      height: 26px ;
-      
+  .slide-container {
+    background-color: #f3f3f3;
+    color: #b7b7b7;
+    height: 26px;
   }
   .slide-container label {
     font-size: 11px;
     font-weight: 700 !important;
     height: 22px !important;
     padding: 2px 0;
-    &:hover{
+    &:hover {
       color: #919191;
     }
   }
- 
 }
 .chart-tabs input:checked ~ a {
   left: 2px;

@@ -171,7 +171,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Add Bill',
@@ -194,7 +194,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Share',
@@ -209,7 +209,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Close Business',

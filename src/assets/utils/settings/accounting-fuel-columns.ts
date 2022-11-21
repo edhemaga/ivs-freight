@@ -1,4 +1,4 @@
-export function getFuelTransactionColumnDefinition() { 
+export function getFuelTransactionColumnDefinition() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -199,7 +199,7 @@ export function getFuelTransactionColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
-      showQTY: true
+      showQTY: true,
     },
     {
       ngTemplate: 'text',
@@ -222,7 +222,7 @@ export function getFuelTransactionColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
-      showQTY: true
+      showQTY: true,
     },
     {
       ngTemplate: 'ppg',
@@ -245,7 +245,7 @@ export function getFuelTransactionColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
-      showQTY: true
+      showQTY: true,
     },
     {
       ngTemplate: 'total',
@@ -269,7 +269,7 @@ export function getFuelTransactionColumnDefinition() {
       export: true,
       resizable: true,
       showFuelDropDown: true,
-      class: 'overflow-unset'
+      class: 'overflow-unset',
     },
     {
       ngTemplate: 'actions',
@@ -291,12 +291,12 @@ export function getFuelTransactionColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }
 
-export function getFuelStopColumnDefinition() { 
+export function getFuelStopColumnDefinition() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -509,7 +509,8 @@ export function getFuelStopColumnDefinition() {
       headIconStyle: {
         width: 18,
         height: 18,
-        imgPath: '../../../assets/svg/truckassist-table/favorite-selected-row.svg',
+        imgPath:
+          '../../../assets/svg/truckassist-table/favorite-selected-row.svg',
       },
       filter: '',
       isNumeric: false,
@@ -524,7 +525,7 @@ export function getFuelStopColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -546,7 +547,7 @@ export function getFuelStopColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }

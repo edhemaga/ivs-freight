@@ -8,9 +8,8 @@ describe('ApplicantNextBackBtnComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ApplicantNextBackBtnComponent ]
-    })
-    .compileComponents();
+      declarations: [ApplicantNextBackBtnComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

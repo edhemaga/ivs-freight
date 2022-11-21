@@ -8,9 +8,8 @@ describe('Step2FormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ Step2FormComponent ]
-    })
-    .compileComponents();
+      declarations: [Step2FormComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

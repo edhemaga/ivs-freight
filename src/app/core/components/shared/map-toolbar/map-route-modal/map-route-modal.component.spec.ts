@@ -11,9 +11,8 @@ describe('MapRouteModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MapRouteModalComponent ]
-    })
-    .compileComponents();
+      declarations: [MapRouteModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

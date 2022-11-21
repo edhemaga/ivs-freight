@@ -1,5 +1,5 @@
-import {ServerResponse, ServerResponseList} from './shared/response';
-import {Enums} from './shared/enums';
+import { ServerResponse, ServerResponseList } from './shared/response';
+import { Enums } from './shared/enums';
 
 export interface LoadColumn {
   name: string;

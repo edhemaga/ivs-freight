@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {PayrollOwnerTableComponent} from './payroll-owner-table.component';
+import { PayrollOwnerTableComponent } from './payroll-owner-table.component';
 
 describe('PayrollOwnerTableComponent', () => {
   let component: PayrollOwnerTableComponent;
@@ -8,9 +8,8 @@ describe('PayrollOwnerTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PayrollOwnerTableComponent]
-    })
-      .compileComponents();
+      declarations: [PayrollOwnerTableComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -4,13 +4,13 @@ import { ToDoListCardComponent } from './to-do-list-card/to-do-list-card.compone
 
 const routes: Routes = [
   {
-    path: "",
-    component: ToDoListCardComponent
-  }
+    path: '',
+    component: ToDoListCardComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ToDoRoutingModule { }
+export class ToDoRoutingModule {}

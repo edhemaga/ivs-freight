@@ -8,9 +8,8 @@ describe('PleaseCheckEmailPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PleaseCheckEmailPageComponent ]
-    })
-    .compileComponents();
+      declarations: [PleaseCheckEmailPageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

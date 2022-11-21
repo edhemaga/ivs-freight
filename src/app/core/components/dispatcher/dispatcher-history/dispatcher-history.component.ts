@@ -1,10 +1,5 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import moment from 'moment';
 import { AppLoadService } from '../../../services/load/app-load.service';
 import { DISPATCH_BOARD_STATUS } from '../../../../const';

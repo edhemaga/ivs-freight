@@ -1,18 +1,20 @@
-import {AfterViewInit, ChangeDetectorRef, Directive, ElementRef, Input} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  Input,
+} from '@angular/core';
 
 @Directive({
-  selector: '[appAutoFocus]'
+  selector: '[appAutoFocus]',
 })
 export class AutoFocusDirective implements AfterViewInit {
   @Input() autoFocusDelay = 1000;
   @Input() dontDoFocus!: string;
   @Input() modalType!: string;
 
-  constructor(
-    private el: ElementRef,
-    private cdRef: ChangeDetectorRef
-  ) {
-  }
+  constructor(private el: ElementRef, private cdRef: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
     if (this.modalType == 'edit') {

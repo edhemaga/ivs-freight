@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'app-dispatcher-table',
   templateUrl: './dispatcher-table.component.html',
   styleUrls: ['../dispatcher.global.scss', './dispatcher-table.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class DispatcherTableComponent implements OnInit, OnDestroy {
   @ViewChild(AppDispatcherTableNewComponent, { static: false })
@@ -87,7 +87,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   };
 
   dispatchTableList: Observable<number[]>;
-  dispatchBoardSmallList: Observable<any>
+  dispatchBoardSmallList: Observable<any>;
 
   constructor(
     private dispatcherQuery: DispatcherQuery,
@@ -107,23 +107,23 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
         this.getDispatcherData(result.dispatchBoards);
       });
 
-      this.dispatchTableList = this.dispatcherQuery.dispatchBoardListData$;
-      this.dispatchBoardSmallList = this.dispatcherQuery.dispatchboardShortList$;
-      console.log(this.dispatchTableList);
+    this.dispatchTableList = this.dispatcherQuery.dispatchBoardListData$;
+    this.dispatchBoardSmallList = this.dispatcherQuery.dispatchboardShortList$;
+    console.log(this.dispatchTableList);
 
-      // this.dispatcherQuery.dispatchBoardListData$
-      // .pipe(takeUntil(this.destroy$))
-      // .subscribe(result => {
-      //   console.log("WHAT IS RESULT------");
-      //   console.log(result);
-      // });
+    // this.dispatcherQuery.dispatchBoardListData$
+    // .pipe(takeUntil(this.destroy$))
+    // .subscribe(result => {
+    //   console.log("WHAT IS RESULT------");
+    //   console.log(result);
+    // });
 
-      // this.dispatcherQuery.dispatchboardShortList$
-      // .pipe(takeUntil(this.destroy$))
-      // .subscribe(result => {
-      //   console.log("WHAT IS RESULT OF LISTTTTT------");
-      //   console.log(result);
-      // })
+    // this.dispatcherQuery.dispatchboardShortList$
+    // .pipe(takeUntil(this.destroy$))
+    // .subscribe(result => {
+    //   console.log("WHAT IS RESULT OF LISTTTTT------");
+    //   console.log(result);
+    // })
   }
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -148,9 +148,11 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
 
   changeDisparcher(id: number) {
     const dispatcherId = id;
-    if(dispatcherId > -1){
-      this.dispatcherStoreService.getDispatchBoardByDispatcherListAndUpdate(dispatcherId);
-    }else{
+    if (dispatcherId > -1) {
+      this.dispatcherStoreService.getDispatchBoardByDispatcherListAndUpdate(
+        dispatcherId
+      );
+    } else {
       this.dispatcherStoreService.getDispatchboardAllListAndUpdate();
     }
 
@@ -161,19 +163,18 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     this.dispatcherItems = JSON.parse(JSON.stringify(result));
 
     let fullDispatchCount = 0;
-    this.dispatcherItems.map(item => {
-
+    this.dispatcherItems.map((item) => {
       fullDispatchCount += parseInt(item.dispatchCount);
-      if(item.teamBoard){
+      if (item.teamBoard) {
         item.dispatcher = {
           avatar: null,
-          fullName: "Team Board",
-          id: 1
-        }
+          fullName: 'Team Board',
+          id: 1,
+        };
       }
 
       return item;
-    })
+    });
 
     //const user = JSON.parse(localStorage.getItem('currentUser'));
     this.dispatcherItems.unshift({
@@ -183,11 +184,11 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       dispatcher: {
         avatar: null,
         fullName: 'All Boards',
-        id: -1
-      }
+        id: -1,
+      },
     });
 
-    console.log(this.dispatcherItems)
+    console.log(this.dispatcherItems);
 
     // const previous_selected = localStorage.getItem('dispatchUserSelect');
     // if (!previous_selected) {

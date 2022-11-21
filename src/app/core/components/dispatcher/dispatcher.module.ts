@@ -40,7 +40,7 @@ export function playerFactory() {
     ColorFinderPipe,
     NestedComponent,
     HosFilterPipe,
-    TooltipWidthPipe
+    TooltipWidthPipe,
   ],
   imports: [
     CommonModule,
@@ -51,7 +51,7 @@ export function playerFactory() {
     PipesModule,
     TaNoteModule,
     TruckassistSearchModule,
-    GridsterModule
+    GridsterModule,
   ],
   entryComponents: [],
   exports: [],

@@ -11,9 +11,8 @@ describe('TaCheckboxComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaCheckboxComponent ]
-    })
-    .compileComponents();
+      declarations: [TaCheckboxComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

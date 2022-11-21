@@ -11,9 +11,8 @@ describe('TtFhwaInspectionModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TtFhwaInspectionModalComponent ]
-    })
-    .compileComponents();
+      declarations: [TtFhwaInspectionModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

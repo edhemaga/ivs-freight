@@ -11,9 +11,8 @@ describe('SettingsOfficeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsOfficeComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsOfficeComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -431,11 +431,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       return tableColumnsConfig
         ? tableColumnsConfig
         : getRepairTrailerColumnDefinition();
-    } else if(configType === 'REPAIR_TRAILER') {
+    } else if (configType === 'REPAIR_TRAILER') {
       return tableColumnsConfig
         ? tableColumnsConfig
         : getRepairTrailerColumnDefinition();
-    }else{
+    } else {
       return tableColumnsConfig
         ? tableColumnsConfig
         : getRepairsShopColumnDefinition();

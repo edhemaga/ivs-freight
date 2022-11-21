@@ -1,5 +1,8 @@
 <div class="repair-component">
-  <div *ngFor="let fuel of fuelData; trackBy:identity" [ngSwitch]="fuel.template">
+  <div
+    *ngFor="let fuel of fuelData; trackBy: identity"
+    [ngSwitch]="fuel.template"
+  >
     <div *ngSwitchCase="'general'">
       <app-ta-details-header-card
         [cardDetailsName]=""
@@ -18,7 +21,7 @@
               class="repair-icon"
               src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
-            <p class="repair-value">{{fuel?.data?.phone}}</p>
+            <p class="repair-value">{{ fuel?.data?.phone }}</p>
           </div>
 
           <div class="repair-information-item">
@@ -27,7 +30,7 @@
               src="assets/svg/common/ic_address.svg"
             ></svg-icon>
             <p class="repair-value">
-              {{fuel?.data?.address?.address}}
+              {{ fuel?.data?.address?.address }}
             </p>
           </div>
         </div>
@@ -44,7 +47,6 @@
               <div class="fuel-price-name">Diesel</div>
               <div class="fuel-price-value">$3.567</div>
               <div class="fuel-price-colors-container">
-                
                 <div class="fuel-price-colors">
                   <div
                     class="fuel-price-level first-color"
@@ -92,7 +94,6 @@
               <div class="fuel-price-name">Def</div>
               <div class="fuel-price-value">$3.799</div>
               <div class="fuel-price-colors-container">
-               
                 <div class="fuel-price-colors">
                   <div
                     class="fuel-price-level first-color"
@@ -130,7 +131,7 @@
                     [svgStyle]="{ 'width.px': 22, 'height.px': 22 }"
                   ></svg-icon>
                 </div>
-                 <div class="fuel-price-text-container mg-bottom-4">
+                <div class="fuel-price-text-container mg-bottom-4">
                   <div class="fuel-price-text">$2.23</div>
                   <div class="fuel-price-text">$3.18</div>
                 </div>
@@ -331,7 +332,10 @@
         >
           <div class="items-vehicle">
             <span class="unit">{{ dum.unit }}</span>
-            <svg-icon class="vehicle-icon fuel-vehicle-icon" src="{{ dum.icon }}"></svg-icon>
+            <svg-icon
+              class="vehicle-icon fuel-vehicle-icon"
+              src="{{ dum.icon }}"
+            ></svg-icon>
             <span class="date">{{ dum.key }}</span>
             <span class="cost">${{ dum.cost }}</span>
           </div>

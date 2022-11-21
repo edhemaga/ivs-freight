@@ -446,7 +446,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
       if (event.direction) {
-       /*  this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        /*  this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.pageIndex = 1;
         this.backFilterQuery.sort = event.direction;
 

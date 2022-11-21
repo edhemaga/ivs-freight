@@ -13,13 +13,16 @@ import {
   VIRTUAL_SCROLL_STRATEGY,
 } from '@angular/cdk/scrolling';
 import { Subject, takeUntil } from 'rxjs';
-import { CalendarStrategy, STARTING_YEAR } from '../date-calendars/calendar_strategy';
+import {
+  CalendarStrategy,
+  STARTING_YEAR,
+} from '../date-calendars/calendar_strategy';
 
 export const FULL_SIZE = 24;
 
-export const CYCLE_HEIGHT = (100 * (12 * FULL_SIZE)) + 265;
+export const CYCLE_HEIGHT = 100 * (12 * FULL_SIZE) + 265;
 
-export const CYCLE_HEIGHT_BY_MONTHS = (100 * FULL_SIZE) + 265;
+export const CYCLE_HEIGHT_BY_MONTHS = 100 * FULL_SIZE + 265;
 
 function factory(dir: CalendarLeftComponent) {
   return dir.scrollStrategy;
@@ -51,9 +54,9 @@ export class CalendarLeftComponent implements OnInit, OnChanges {
     this.calendarService,
     CYCLE_HEIGHT,
     FULL_SIZE,
-    "left"
+    'left'
   );
-  
+
   ngOnChanges(change: any) {
     if (change.listPreview) {
       if (!change.listPreview.firstChange) {
@@ -70,7 +73,7 @@ export class CalendarLeftComponent implements OnInit, OnChanges {
     this.calendarService.scrollToAutoIndex
       .pipe(takeUntil(this.destroy$))
       .subscribe((indx) => {
-       this.scrollStrategy.scrollToIndex(indx, 'auto');
+        this.scrollStrategy.scrollToIndex(indx, 'auto');
       });
 
     this.calendarService.scrolledIndexChange

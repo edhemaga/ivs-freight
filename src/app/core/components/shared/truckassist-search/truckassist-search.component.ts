@@ -63,7 +63,7 @@ export class TruckassistSearchComponent
         this.tableService.sendCurrentSearchTableData({
           chip: searchNumber,
           search: this.searchText,
-          searchType: this.searchType
+          searchType: this.searchType,
         });
       } else if (this.searchIsActive && this.searchText.length < 3) {
         this.searchIsActive = false;
@@ -72,7 +72,7 @@ export class TruckassistSearchComponent
           chip: searchNumber,
           doReset: true,
           all: searchNumber === 'searchOne',
-          searchType: this.searchType
+          searchType: this.searchType,
         });
       }
     }
@@ -91,7 +91,7 @@ export class TruckassistSearchComponent
         chipAdded: true,
         search: this.searchText,
         query: this.getChipQuery(this.chips.length - 1),
-        searchType: this.searchType
+        searchType: this.searchType,
       });
 
       this.searchText = '';
@@ -127,7 +127,7 @@ export class TruckassistSearchComponent
       addToQuery: this.getChipQuery(this.chips.length),
       querys: ['searchOne', 'searchTwo', 'searchThree'],
       chips: this.chips,
-      searchType: this.searchType
+      searchType: this.searchType,
     });
   }
 

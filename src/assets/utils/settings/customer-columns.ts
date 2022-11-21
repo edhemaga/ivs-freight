@@ -1,5 +1,5 @@
 // Customer Broker COLUMN DEFINITION
-export function getBrokerColumnDefinition() { 
+export function getBrokerColumnDefinition() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -653,7 +653,7 @@ export function getBrokerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -676,7 +676,7 @@ export function getBrokerColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }
@@ -1050,7 +1050,7 @@ export function getShipperColumnDefinition() {
       disabled: false,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -1073,7 +1073,7 @@ export function getShipperColumnDefinition() {
       disabled: false,
       export: false,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
   ];
 }

@@ -145,7 +145,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'View Details',
@@ -169,7 +169,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'border'
+          title: 'border',
         },
         {
           title: 'Delete',

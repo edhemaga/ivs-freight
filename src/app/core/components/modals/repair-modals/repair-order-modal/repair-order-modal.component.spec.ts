@@ -11,9 +11,8 @@ describe('RepairOrderModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RepairOrderModalComponent ]
-    })
-    .compileComponents();
+      declarations: [RepairOrderModalComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

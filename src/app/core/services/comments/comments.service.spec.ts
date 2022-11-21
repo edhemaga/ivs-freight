@@ -6,7 +6,7 @@ import { CommentsService } from './comments.service';
 describe('Service: Comments', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CommentsService]
+      providers: [CommentsService],
     });
   });
 

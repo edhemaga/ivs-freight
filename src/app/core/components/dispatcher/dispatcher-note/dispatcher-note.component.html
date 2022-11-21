@@ -23,7 +23,10 @@
   ></svg-icon>
 </button>
 <div [class.hidden]="!note_expanded" class="kendo-editor-note-wrapper">
-  <div [class.expanded]="isExpanded" class="k-widget k-editor custom_editor custom_editor">
+  <div
+    [class.expanded]="isExpanded"
+    class="k-widget k-editor custom_editor custom_editor"
+  >
     <div
       (blur)="prepareForTextRange()"
       (focus)="checkFocus($event)"
@@ -50,7 +53,10 @@
       class="save-note-check"
       position="bottom-right"
     >
-      <svg-icon [svgStyle]="{ 'width.px': '15', 'height.px': '12' }" name="note-check"></svg-icon>
+      <svg-icon
+        [svgStyle]="{ 'width.px': '15', 'height.px': '12' }"
+        name="note-check"
+      ></svg-icon>
     </span>
     <span
       (click)="closeNote()"
@@ -60,7 +66,11 @@
       position="bottom-right"
       tooltipBackground="#707070"
     >
-      <svg-icon [svgStyle]="{ 'width.px': '28', 'height.px': '28' }" name="note-close"> </svg-icon>
+      <svg-icon
+        [svgStyle]="{ 'width.px': '28', 'height.px': '28' }"
+        name="note-close"
+      >
+      </svg-icon>
     </span>
   </div>
 </div>

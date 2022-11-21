@@ -11,9 +11,8 @@ describe('SettingsFactoringComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsFactoringComponent ]
-    })
-    .compileComponents();
+      declarations: [SettingsFactoringComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

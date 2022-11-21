@@ -219,13 +219,13 @@
               <app-details-page-dropdown
                 #dropdownElement
                 (click)="toggleDropdown($event, t2, route)"
-                [placement]="'right-top right-bottom'" 
+                [placement]="'right-top right-bottom'"
                 [hasVericalDots]="true"
                 [options]="dropdownActions"
                 [id]="route.id"
                 (dropDownActions)="callDropDownAction($event)"
               >
-              </app-details-page-dropdown> 
+              </app-details-page-dropdown>
             </div>
             <div
               class="route-card-content"
@@ -523,7 +523,7 @@
                 [ngClass]="{ rotate: route.expanded }"
                 [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
               ></svg-icon>
-            </div>  
+            </div>
           </div>
         </ng-container>
       </div>

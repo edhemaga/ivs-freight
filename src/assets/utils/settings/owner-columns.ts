@@ -1,4 +1,4 @@
-export function getOwnerColumnDefinition() { 
+export function getOwnerColumnDefinition() {
   return [
     {
       ngTemplate: 'checkbox',
@@ -326,7 +326,7 @@ export function getOwnerColumnDefinition() {
       disabled: true,
       export: true,
       resizable: false,
-      isAction: true
+      isAction: true,
     },
     {
       ngTemplate: 'actions',
@@ -349,7 +349,7 @@ export function getOwnerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
-      isAction: true
+      isAction: true,
     },
   ];
 }

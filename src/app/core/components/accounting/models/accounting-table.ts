@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
 export class TableColumnDefinitionAccount {
   public title: string;
@@ -24,7 +24,6 @@ export class TableData {
   public date: string;
   public amount: string;
 }
-
 
 export class IftaTableOptions {
   public data: Observable<any>;

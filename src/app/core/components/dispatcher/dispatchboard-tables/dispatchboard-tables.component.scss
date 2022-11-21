@@ -51,9 +51,9 @@ $truck_collors: "5ba160", "ffaf47", "e94949", "4c83e2", "eec860", "508181",
       background-color: rgb(238, 238, 238);
       z-index: 10;
 
-      &.cdk-drag-handle{
+      &.cdk-drag-handle {
         cursor: grab;
-        &:active{
+        &:active {
           cursor: grabbing;
         }
       }
@@ -327,7 +327,7 @@ td.driver-field {
             color: unquote("#" + $truck_col) !important;
             background: unquote("#" + $truck_col) !important;
           }
-      
+
           &::selection {
             color: unquote("#" + $truck_col) !important;
             background: unquote("#" + $truck_col) !important;
@@ -344,7 +344,7 @@ td.driver-field {
             color: unquote("#" + $trailer_col) !important;
             background: unquote("#" + $trailer_col) !important;
           }
-      
+
           &::selection {
             color: unquote("#" + $trailer_col) !important;
             background: unquote("#" + $trailer_col) !important;
@@ -360,7 +360,7 @@ td.driver-field {
   //   &:hover{
   //     padding-bottom: 10px;
   //   }
-  // } 
+  // }
 
   .no-color {
     &:hover {
@@ -452,12 +452,14 @@ td.driver-field {
           padding-left: 6px;
         }
 
-        &::-moz-selection, span::-moz-selection {
+        &::-moz-selection,
+        span::-moz-selection {
           color: #919191 !important;
           background: #91919122 !important;
         }
-    
-        &::selection, span::selection {
+
+        &::selection,
+        span::selection {
           color: #6c6c6c !important;
           background: #91919122 !important;
         }
@@ -474,7 +476,7 @@ td.driver-field {
         color: #919191 !important;
         background: #91919122 !important;
       }
-  
+
       &::selection {
         color: #6c6c6c !important;
         background: #91919122 !important;
@@ -483,13 +485,8 @@ td.driver-field {
   }
 }
 
-
-
-
-
-
 // GRIDSTER TEST
 
-gridster{
+gridster {
   height: 300px !important;
 }

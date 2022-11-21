@@ -8,9 +8,8 @@ describe('TaInputArrowsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaInputArrowsComponent ]
-    })
-    .compileComponents();
+      declarations: [TaInputArrowsComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

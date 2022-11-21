@@ -1,8 +1,11 @@
-import {CdkVirtualScrollViewport, VirtualScrollStrategy} from "@angular/cdk/scrolling";
-import {Subject} from "rxjs";
-import {distinctUntilChanged} from "rxjs/operators";
-import {Injectable} from "@angular/core";
-import { CalendarScrollService } from "../calendar-scroll.service";
+import {
+  CdkVirtualScrollViewport,
+  VirtualScrollStrategy,
+} from '@angular/cdk/scrolling';
+import { Subject } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { CalendarScrollService } from '../calendar-scroll.service';
 
 // POCETNA GODINA KALENDARA IDE UNAZAD 90 GODINA
 export const STARTING_YEAR = new Date().getFullYear() - 90;
@@ -10,15 +13,17 @@ export const STARTING_YEAR = new Date().getFullYear() - 90;
 // RANGE JE UKUPNO 100 GODINA KOLIKO KALENDAR MOZE DA SADRZI x 12 MESECI
 export const RANGE = 100 * 12;
 
-
 // RANGE KOLIKO UKUPNO MOZE DA BUDE PRIKAZANO
 const BUFFER = 500;
 
 @Injectable()
 export class CalendarStrategy implements VirtualScrollStrategy {
-
-  constructor(private calendarService: CalendarScrollService, private startedHeight, private FULL_SIZE, private SCROLL_TYPE){
-  }
+  constructor(
+    private calendarService: CalendarScrollService,
+    private startedHeight,
+    private FULL_SIZE,
+    private SCROLL_TYPE
+  ) {}
 
   private index$ = new Subject<any>();
   scrolledIndexChange = this.index$.pipe(distinctUntilChanged());
@@ -30,7 +35,7 @@ export class CalendarStrategy implements VirtualScrollStrategy {
     this.updateRenderedRange(this.viewport);
   }
 
-  updateScrollHeights(height: number){
+  updateScrollHeights(height: number) {
     this.viewport.setTotalContentSize(height);
     this.updateRenderedRange(this.viewport);
   }
@@ -47,14 +52,11 @@ export class CalendarStrategy implements VirtualScrollStrategy {
   }
 
   /** These do not matter for this case */
-  onDataLengthChanged() {
-  }
+  onDataLengthChanged() {}
 
-  onContentRendered() {
-  }
+  onContentRendered() {}
 
-  onRenderedOffsetChanged() {
-  }
+  onRenderedOffsetChanged() {}
 
   scrollToIndex(index: number, behavior: ScrollBehavior) {
     if (this.viewport) {
@@ -62,7 +64,7 @@ export class CalendarStrategy implements VirtualScrollStrategy {
     }
   }
 
-  scrollToOffset(offset: number, behavior: ScrollBehavior){
+  scrollToOffset(offset: number, behavior: ScrollBehavior) {
     if (this.viewport) {
       this.viewport.scrollToOffset(offset, behavior);
     }
@@ -79,12 +81,12 @@ export class CalendarStrategy implements VirtualScrollStrategy {
     // koliko je scrolovano
     const offset = viewport.measureScrollOffset();
 
-    const {start, end} = viewport.getRenderedRange();
+    const { start, end } = viewport.getRenderedRange();
     const viewportSize = 230;
 
     const dataLength = viewport.getDataLength();
-  
-    const newRange = {start, end};
+
+    const newRange = { start, end };
     const firstVisibleIndex = this.getIndexForOffset(offset);
 
     const startOffsetIndex = this.FULL_SIZE * start;
@@ -97,8 +99,8 @@ export class CalendarStrategy implements VirtualScrollStrategy {
         this.getIndexForOffset(offset + viewportSize + BUFFER)
       );
     } else {
-      const endBuffer = (this.FULL_SIZE * end) - offset - viewportSize;
-    
+      const endBuffer = this.FULL_SIZE * end - offset - viewportSize;
+
       if (endBuffer < BUFFER && end !== dataLength) {
         newRange.start = Math.max(0, this.getIndexForOffset(offset - BUFFER));
         newRange.end = Math.min(
@@ -112,8 +114,13 @@ export class CalendarStrategy implements VirtualScrollStrategy {
     viewport.setRenderedContentOffset(this.getOffsetForIndex(newRange.start));
 
     // KORISTI SE ZA UPDEJT DRUGOG SCROLLA KOJI SLUSA
-    if( this.calendarService.selectedScroll === this.SCROLL_TYPE ){
-      this.index$.next({indx: firstVisibleIndex, scrollOffset: offset, cycleSize: this.FULL_SIZE, type: this.SCROLL_TYPE});
+    if (this.calendarService.selectedScroll === this.SCROLL_TYPE) {
+      this.index$.next({
+        indx: firstVisibleIndex,
+        scrollOffset: offset,
+        cycleSize: this.FULL_SIZE,
+        type: this.SCROLL_TYPE,
+      });
     }
   }
 }

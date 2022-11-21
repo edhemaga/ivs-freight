@@ -11,9 +11,8 @@ describe('TaUploadDropzoneComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaUploadDropzoneComponent ]
-    })
-    .compileComponents();
+      declarations: [TaUploadDropzoneComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

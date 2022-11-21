@@ -8,9 +8,8 @@ describe('TruckassistTableToolbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TruckassistTableToolbarComponent ]
-    })
-    .compileComponents();
+      declarations: [TruckassistTableToolbarComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -12,8 +12,8 @@ export interface Comments {
   thumbUp: number;
   updatedAt: any;
   userAvatar: {
-    id: string,
-    src: string
+    id: string;
+    src: string;
   };
   userEmail: string;
   userFullName: string;

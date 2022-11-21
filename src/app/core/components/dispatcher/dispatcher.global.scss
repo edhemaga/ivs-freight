@@ -1207,16 +1207,16 @@
 
     .pick-del-location {
       font-size: 14px;
-      color: #6C6C6C;
+      color: #6c6c6c;
 
       &::-moz-selection {
-        color: #6C6C6C !important;
-        background: #6C6C6C22 !important;
+        color: #6c6c6c !important;
+        background: #6c6c6c22 !important;
       }
-  
+
       &::selection {
         color: #6c6c6c !important;
-        background: #6C6C6C22 !important;
+        background: #6c6c6c22 !important;
       }
     }
   }
@@ -1336,7 +1336,7 @@
         color: #919191 !important;
         background: #91919122 !important;
       }
-  
+
       &::selection {
         color: #6c6c6c !important;
         background: #91919122 !important;
@@ -1929,12 +1929,12 @@
     min-width: 136px;
     max-width: 136px;
 
-    app-input-address-dropdown{
+    app-input-address-dropdown {
       top: 2px;
       position: absolute;
     }
 
-    .input-control{
+    .input-control {
       height: 28px !important;
     }
   }

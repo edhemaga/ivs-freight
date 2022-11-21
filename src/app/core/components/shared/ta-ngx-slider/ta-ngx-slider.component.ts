@@ -20,12 +20,11 @@ export class TaNgxSliderComponent {
 
   public userChangeEnd(changes: ChangeContext) {
     if (changes) {
-      if ( this.sliderTemplate == 'range-slider' ) {
+      if (this.sliderTemplate == 'range-slider') {
         this.onUserValueChange.emit(changes);
       } else {
         this.onUserValueChange.emit(changes.value);
       }
-      
     }
   }
 
@@ -35,14 +34,13 @@ export class TaNgxSliderComponent {
     }
   }
 
-  public minValueChange(event){
+  public minValueChange(event) {
     this.onUserValueChange.emit(event);
   }
 
-  public highValueChange(event){
+  public highValueChange(event) {
     if (event) {
       this.onUserHighValueChange.emit(event);
     }
   }
-
 }

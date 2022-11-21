@@ -1,13 +1,12 @@
-import {Router} from '@angular/router';
-import {Component, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-accounting-payroll',
   templateUrl: './accounting-payroll.component.html',
-  styleUrls: ['./accounting-payroll.component.scss']
+  styleUrls: ['./accounting-payroll.component.scss'],
 })
 export class AccountingPayrollComponent implements OnInit {
-
   public loadingItems = false;
   public selectedTab = 'payroll';
   tableData: any[] = [
@@ -18,7 +17,7 @@ export class AccountingPayrollComponent implements OnInit {
       extended: false,
       hideLength: false,
       gridColumns: [],
-      extendedGridColumns: []
+      extendedGridColumns: [],
     },
     {
       title: 'Fuel',
@@ -27,7 +26,7 @@ export class AccountingPayrollComponent implements OnInit {
       extended: false,
       hideLength: false,
       gridColumns: [],
-      extendedGridColumns: []
+      extendedGridColumns: [],
     },
     {
       title: 'Ledger',
@@ -36,7 +35,7 @@ export class AccountingPayrollComponent implements OnInit {
       extended: false,
       hideLength: false,
       gridColumns: [],
-      extendedGridColumns: []
+      extendedGridColumns: [],
     },
     {
       title: 'IFTA',
@@ -45,7 +44,7 @@ export class AccountingPayrollComponent implements OnInit {
       extended: false,
       hideLength: false,
       gridColumns: [],
-      extendedGridColumns: []
+      extendedGridColumns: [],
     },
     {
       title: 'Tax',
@@ -54,14 +53,11 @@ export class AccountingPayrollComponent implements OnInit {
       extended: false,
       hideLength: false,
       gridColumns: [],
-      extendedGridColumns: []
-    }
+      extendedGridColumns: [],
+    },
   ];
 
-  constructor(
-    private router: Router
-  ) {
-  }
+  constructor(private router: Router) {}
 
   public switchTab(e) {
     this.selectedTab = e;
@@ -70,7 +66,6 @@ export class AccountingPayrollComponent implements OnInit {
     } else {
       this.router.navigate(['/accounting/notfound']);
     }
-
   }
 
   public changeScreen(e) {
@@ -78,11 +73,9 @@ export class AccountingPayrollComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     /*  if (this.router.url.includes('/fuel')) {
        this.selectedTab = 'fuel';
      } */
-
     /* this.shared.emitAccountingChange.subscribe(res => {
       this.selectedTab = res;
     }); */
