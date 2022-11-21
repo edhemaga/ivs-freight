@@ -52,7 +52,7 @@
                         : mapType == 'repairShop'
                         ? latlong.name
                         : mapType == 'fuelStop'
-                        ? latlong.companyName
+                        ? latlong.businessName
                         : ''
                 "
                 [latitude]="latlong.latitude"
@@ -139,7 +139,7 @@
                                                 : mapType == 'repairShop'
                                                 ? latlong.name
                                                 : mapType == 'fuelStop'
-                                                ? latlong.companyName
+                                                ? latlong.businessName
                                                 : ''
                                         }}
                                     </div>
@@ -189,7 +189,7 @@
                                         : mapType == 'repairShop'
                                         ? latlong.name
                                         : mapType == 'fuelStop'
-                                        ? latlong.companyName
+                                        ? latlong.businessName
                                         : ''
                                 "
                                 [item]="latlong"
@@ -431,7 +431,7 @@
                                         : mapType == 'repairShop'
                                         ? cluster?.detailedInfo.name
                                         : mapType == 'fuelStop'
-                                        ? cluster?.detailedInfo.companyName
+                                        ? cluster?.detailedInfo.businessName
                                         : ''
                                 "
                                 [item]="cluster.detailedInfo"

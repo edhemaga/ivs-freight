@@ -280,7 +280,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
                 { name: 'Orders', id: 6, sortName: 'orders' },
                 { name: 'Total Cost', id: 7, sortName: 'cost' },
             ];
-        } else if (this.type == 'fuelShop') {
+        } else if (this.type == 'fuelStop') {
             this.sortTypes = [
                 {
                     name: 'Business Name',
