@@ -38,7 +38,7 @@ export class TaUploadFilesCarouselComponent {
                 this.activeSlide.emit(this.currentSlide);
                 // Multiple slides previous
                 if (
-                    ['medium', 'large'].includes(
+                    ['medium', 'large', 'small'].includes(
                         this.customClass?.toLowerCase()
                     )
                 ) {
@@ -47,7 +47,11 @@ export class TaUploadFilesCarouselComponent {
                             this.customClass?.toLowerCase()
                         )
                             ? 3
-                            : 2;
+                            : ['large'].includes(
+                                  this.customClass?.toLowerCase()
+                              )
+                            ? 2
+                            : 1;
                         this.multipleCurrentSlide =
                             this.files.length - filesShown;
                         this.translateXMultipleSlides =
@@ -67,7 +71,7 @@ export class TaUploadFilesCarouselComponent {
 
                 // Multiple slides previous
                 if (
-                    ['medium', 'large'].includes(
+                    ['medium', 'large', 'small'].includes(
                         this.customClass?.toLowerCase()
                     )
                 ) {
@@ -75,7 +79,9 @@ export class TaUploadFilesCarouselComponent {
                         this.customClass?.toLowerCase()
                     )
                         ? 4
-                        : 3;
+                        : ['medium'].includes(this.customClass?.toLowerCase())
+                        ? 3
+                        : 2;
                     if (
                         this.multipleCurrentSlide >
                         this.files.length - filesShown

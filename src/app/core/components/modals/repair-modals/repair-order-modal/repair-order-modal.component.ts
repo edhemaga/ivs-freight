@@ -10,10 +10,7 @@ import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CreateRepairCommand } from 'appcoretruckassist/model/createRepairCommand';
 import { UpdateRepairCommand } from 'appcoretruckassist/model/updateRepairCommand';
-import {
-    RepairModalResponse,
-    RepairShopResponse,
-} from 'appcoretruckassist';
+import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
