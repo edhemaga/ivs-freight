@@ -82,9 +82,20 @@ export class TaUploadFilesComponent implements OnInit {
                 break;
             }
             case 'delete': {
+                let isLastDeleted = false;
+                this.files.map((item, index) => {
+                    if (
+                        item.fileName == data.file.fileName &&
+                        index == this.files.length - 1
+                    ) {
+                        isLastDeleted = true;
+                    }
+                });
+
                 this.files = this.files.filter(
                     (item) => item.fileName !== data.file.fileName
                 );
+
                 if (data.file['fileId']) {
                     this.onFileEvent.emit({
                         files: this.files,
@@ -111,6 +122,31 @@ export class TaUploadFilesComponent implements OnInit {
 
                 if (!this.files.length) {
                     this.currentSlide = 0;
+                }
+
+                if (isLastDeleted) {
+                    const slideTo =
+                        this.modalCarousel.customClass == 'large'
+                            ? 3
+                            : this.modalCarousel.customClass == 'medium'
+                            ? 2
+                            : 1;
+                    const allowSlide =
+                        this.modalCarousel.customClass == 'large' &&
+                        this.files.length > 2
+                            ? true
+                            : this.modalCarousel.customClass == 'medium' &&
+                              this.files.length > 1
+                            ? true
+                            : this.modalCarousel.customClass == 'small' &&
+                              this.files.length > 0
+                            ? true
+                            : false;
+                    if (allowSlide) {
+                        this.modalCarousel.slideToFile(
+                            this.files.length - slideTo
+                        );
+                    }
                 }
                 break;
             }

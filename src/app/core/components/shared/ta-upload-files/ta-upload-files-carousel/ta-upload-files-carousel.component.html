@@ -24,6 +24,7 @@
         <div
             *ngFor="let len of files; let ind = index; trackBy: identity"
             class="carousel-tab"
+            (click)="slideToFile(ind)"
             [ngClass]="{ 'active-tab': currentSlide === ind }"
         ></div>
     </div>

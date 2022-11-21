@@ -47,7 +47,7 @@ export class TaUploadFilesCarouselComponent {
                             this.customClass?.toLowerCase()
                         )
                             ? 3
-                            : ['large'].includes(
+                            : ['medium'].includes(
                                   this.customClass?.toLowerCase()
                               )
                             ? 2
@@ -101,6 +101,13 @@ export class TaUploadFilesCarouselComponent {
                 break;
             }
         }
+    }
+
+    public slideToFile(index: number) {
+        this.currentSlide = index;
+        this.multipleCurrentSlide = index;
+        this.translateXMultipleSlides =
+            this.slideWidth * -this.multipleCurrentSlide;
     }
 
     // TruckBy ngFor files changes
