@@ -1128,6 +1128,8 @@
                     <div
                         class="d-flex explain-container line-container"
                         *ngIf="
+                            i !== 0 &&
+                            i !== 1 &&
                             personalInfoForm.get(question.formControlName)
                                 ?.value
                         "
@@ -1155,17 +1157,17 @@
                                     isDisabled:
                                         selectedMode === 'REVIEW_MODE' ||
                                         (selectedMode === 'FEEDBACK_MODE' &&
-                                            ((i === 0 &&
+                                            ((i === 1 &&
                                                 stepFeedbackValues?.isLegalWorkValid) ||
-                                                (i === 1 &&
-                                                    stepFeedbackValues?.isAnotherNameValid) ||
                                                 (i === 2 &&
-                                                    stepFeedbackValues?.isInMilitaryValid) ||
+                                                    stepFeedbackValues?.isAnotherNameValid) ||
                                                 (i === 3 &&
-                                                    stepFeedbackValues?.isFelonyValid) ||
+                                                    stepFeedbackValues?.isInMilitaryValid) ||
                                                 (i === 4 &&
-                                                    stepFeedbackValues?.isMisdemeanorValid) ||
+                                                    stepFeedbackValues?.isFelonyValid) ||
                                                 (i === 5 &&
+                                                    stepFeedbackValues?.isMisdemeanorValid) ||
+                                                (i === 6 &&
                                                     stepFeedbackValues?.isDrunkDrivingValid))),
                                     incorrectInput:
                                         selectedMode === 'REVIEW_MODE'
@@ -1203,17 +1205,17 @@
                                 [lineIndex]="i + 9"
                                 [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                                 [feedbackText]="
-                                    selectedMode === 'FEEDBACK_MODE' && i === 0
+                                    selectedMode === 'FEEDBACK_MODE' && i === 1
                                         ? stepFeedbackValues?.legalWorkMessage
-                                        : i === 1
-                                        ? stepFeedbackValues?.anotherNameMessage
                                         : i === 2
-                                        ? stepFeedbackValues?.inMilitaryMessage
+                                        ? stepFeedbackValues?.anotherNameMessage
                                         : i === 3
-                                        ? stepFeedbackValues?.felonyMessage
+                                        ? stepFeedbackValues?.inMilitaryMessage
                                         : i === 4
-                                        ? stepFeedbackValues?.misdemeanorMessage
+                                        ? stepFeedbackValues?.felonyMessage
                                         : i === 5
+                                        ? stepFeedbackValues?.misdemeanorMessage
+                                        : i === 6
                                         ? stepFeedbackValues?.drunkDrivingMessage
                                         : null
                                 "
