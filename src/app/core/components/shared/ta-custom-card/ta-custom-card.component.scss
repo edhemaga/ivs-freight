@@ -3,10 +3,9 @@
 
     // CARD HEADER
     .ta-card-header {
-        position: relative;
         display: flex;
         align-items: center;
-        //justify-content: space-between;
+        justify-content: space-between;
         margin: 4px 0px;
         padding: 0px 4px;
         height: 26px;
@@ -300,8 +299,6 @@
 
             // ARROW
             .header-arrow {
-                position: absolute;
-                right: 3px;
                 width: 18px;
                 height: 20px;
                 line-height: 18px;
