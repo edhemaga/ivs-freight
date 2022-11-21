@@ -13,14 +13,9 @@ import {
     EventEmitter,
     Output,
 } from '@angular/core';
-import {
-    FormBuilder,
-    FormGroup,
-} from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
-import {
-    addressValidation,
-} from '../ta-input/ta-input.regex-validations';
+import { addressValidation } from '../ta-input/ta-input.regex-validations';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
 import {

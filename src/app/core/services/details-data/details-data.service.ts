@@ -45,7 +45,7 @@ export class DetailsDataService {
         }
     }
 
-    setStopName(mod){
+    setStopName(mod) {
         this.stopName = mod;
-      }
+    }
 }

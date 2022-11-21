@@ -328,7 +328,8 @@ export class TruckassistTableBodyComponent
             }
         });
 
-        this.tableWidth = this.actionsWidth + notPinedWidth + this.pinedWidth + 12;
+        this.tableWidth =
+            this.actionsWidth + notPinedWidth + this.pinedWidth + 12;
     }
 
     // Get Tab Table Data For Selected Tab
