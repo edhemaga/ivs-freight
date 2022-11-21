@@ -339,12 +339,6 @@ export class TruckassistTableBodyComponent
             );
         }
 
-        console.log('ViewData length');
-        console.log(this.viewData.length);
-
-        console.log('Selected Tab Data All Data');
-        console.log(this.activeTableData.length);
-
         console.log(`Da li Show More treba da se pojavi: ${this.viewData.length < this.activeTableData.length}`)
     }
 
