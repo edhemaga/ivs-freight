@@ -47,6 +47,10 @@
       -ms-user-select: none;
       user-select: none;
 
+      &:nth-child(1) {
+        margin-left: 4px;
+      }
+
       &:nth-child(2) {
         margin-left: 36px;
       }
@@ -109,12 +113,13 @@
       display: grid;
       grid-template-columns: 120px 130px 60px 234px;
       grid-template-rows: 34px;
+      align-items: center;
       -moz-column-gap: 12px;
       column-gap: 12px;
       row-gap: 2px;
       margin-bottom: 2px;
+      padding: 0 4px;
       background-color: #f7f7f7;
-      padding-right: 6px;
       position: relative;
 
       // Override Input classes
@@ -235,7 +240,7 @@
         height: 26px;
         position: absolute;
         bottom: 4px;
-        right: 3px;
+        right: 4px;
         padding-bottom: 1px;
         padding-left: 1px;
         display: none;
@@ -290,20 +295,29 @@
     .common-fake-table-body {
       .common-fake-table-card {
         grid-template-columns: 162px 100px 186px 18px 72px 30px;
-
-        .common-fake-table-delete {
-          bottom: 8px !important;
-          right: 4px !important;
-        }
       }
     }
   }
 
-  &-department-contacts {
-    .common-fake-table-card {
-      .common-fake-table-delete {
-        bottom: 8px !important;
-        right: 5px !important;
+  &-company-banks {
+    .common-fake-table-label {
+      p {
+        &:nth-child(2) {
+          margin-left: 103px;
+        }
+
+        &:nth-child(3) {
+          margin-left: 51px;
+        }
+      }
+    }
+    .common-fake-table-body {
+      .common-fake-table-card {
+        grid-template-columns: 162px 100px 186px 11px 72px 1fr;
+
+        svg-icon {
+          line-height: 11px;
+        }
       }
     }
   }
@@ -314,37 +328,36 @@
     .common-fake-table-label {
       p {
         &:nth-child(2) {
-          margin-left: 98px;
+          margin-left: 108px;
         }
 
         &:nth-child(3) {
-          margin-left: 44px;
+          margin-left: 45px;
         }
 
         &:nth-child(4) {
-          margin-left: 87px;
+          margin-left: 91px;
         }
 
         &:nth-child(5) {
-          margin-left: 48px;
+          margin-left: 50px;
         }
       }
     }
     .common-fake-table-body {
-      width: 765px;
+      width: 805px;
       .common-fake-table-card {
         grid-template-columns: 170px 120px 130px 60px 234px;
 
         .common-fake-table-delete {
-          bottom: 8px !important;
-          right: 150px;
+          right: 197px;
           &.scrolling {
             right: 4px !important;
           }
         }
 
         &:hover .common-fake-table-delete {
-          display: block !important;
+          display: flex !important;
         }
       }
     }
@@ -355,26 +368,21 @@
     .common-fake-table-label {
       p {
         &:nth-child(2) {
-          margin-left: 75px;
+          margin-left: 81px;
         }
 
         &:nth-child(3) {
-          margin-left: 121px;
+          margin-left: 126px;
         }
 
         &:nth-child(4) {
-          margin-left: 80px;
+          margin-left: 83px;
         }
       }
     }
     .common-fake-table-body {
       .common-fake-table-card {
-        grid-template-columns: 132px 172px 94px 153px;
-
-        .common-fake-table-delete {
-          bottom: 8px !important;
-          right: 3px !important;
-        }
+        grid-template-columns: 132px 172px 94px 140px 1fr;
       }
     }
   }
@@ -405,13 +413,10 @@
     .common-fake-table-body {
       .common-fake-table-card {
         grid-template-columns: 18px 114px 70px 80px 90px;
-        align-items: center;
+        padding: 0;
+        padding-right: 4px;
+
         p {
-          margin: 0;
-          padding: 0;
-          font-size: 14px;
-          font-weight: 500;
-          color: #2f2f2f;
           &:nth-child(1) {
             padding-left: 11px;
           }
@@ -457,7 +462,7 @@
     .common-fake-table-label {
       p {
         &:nth-child(2) {
-          margin-left: 52px;
+          margin-left: 59px;
         }
       }
     }
@@ -500,7 +505,6 @@
     .common-fake-table-body {
       .common-fake-table-card {
         grid-template-columns: 115px 195px 55px 42px 44.5px 44.5px 1fr;
-        align-items: center;
         padding-left: 6px;
         padding-right: 0px;
         p {
@@ -625,10 +629,10 @@
         }
       }
     }
+
     .common-fake-table-body {
       .common-fake-table-card {
         grid-template-columns: 190px 42px 1fr 514px;
-        align-items: center;
         padding-left: 6px;
         padding-right: 0px;
 
@@ -670,24 +674,23 @@
         }
 
         &:nth-child(2) {
-          margin-left: 87px;
+          margin-left: 96px;
         }
 
         &:nth-child(3) {
-          margin-left: 80px;
+          margin-left: 86px;
         }
         &:nth-child(4) {
-          margin-left: 59px;
+          margin-left: 68px;
         }
         &:nth-child(5) {
-          margin-left: 106px;
+          margin-left: 109px;
         }
       }
     }
     .common-fake-table-body {
       .common-fake-table-card {
-        grid-template-columns: repeat(2, 135px) 142px 140px 200px;
-        align-items: center;
+        grid-template-columns: repeat(2, 135px) 142px 140px 191px;
       }
     }
   }
@@ -702,22 +705,17 @@
         }
 
         &:nth-child(2) {
-          margin-left: 137px;
+          margin-left: 136px;
         }
 
         &:nth-child(3) {
-          margin-left: 114px;
+          margin-left: 116px;
         }
       }
     }
     .common-fake-table-body {
       .common-fake-table-card {
         grid-template-columns: 1fr repeat(2, 140px);
-        -moz-column-gap: 12px;
-        column-gap: 12px;
-        align-items: center;
-        padding-left: 6px;
-        padding-right: 0px;
       }
     }
   }
@@ -731,17 +729,14 @@
         }
 
         &:nth-child(3) {
-          margin-left: 233px;
+          margin-left: 231px;
         }
       }
     }
     .common-fake-table-body {
       .common-fake-table-card {
         grid-template-columns: 1fr 126px 18px;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
-        align-items: center;
-        padding-left: 6px;
+        padding: 0 6px;
 
         .ta-checkbox-container.disabled .ta-checkbox-label {
           color: #6c6c6c !important;
@@ -762,32 +757,31 @@
     .common-fake-table-label {
       p {
         &:nth-child(2) {
-          margin-left: 36px;
+          margin-left: 34px;
         }
 
         &:nth-child(3) {
-          margin-left: 216px;
+          margin-left: 223px;
         }
 
         &:nth-child(4) {
-          margin-left: 20px;
+          margin-left: 22px;
         }
 
         &:nth-child(5) {
-          margin-left: 63px;
+          margin-left: 64px;
         }
 
         &:nth-child(6) {
-          margin-left: 74px;
+          margin-left: 78px;
         }
       }
     }
     .common-fake-table-body {
       .common-fake-table-card {
-        grid-template-columns: 18px 332px 90px 60px 100px;
+        grid-template-columns: 18px 332px 90px 60px 93px;
         -moz-column-gap: 12px;
         column-gap: 12px;
-        align-items: center;
         padding-left: 6px;
         position: relative;
 
@@ -859,11 +853,6 @@
             }
           }
         }
-
-        .common-fake-table-delete {
-          right: 4px !important;
-          bottom: 8px !important;
-        }
       }
     }
   }
@@ -890,7 +879,6 @@
         grid-template-columns: 18px 546px 60px;
         -moz-column-gap: 12px;
         column-gap: 12px;
-        align-items: center;
         padding-left: 6px;
         position: relative;
 
@@ -957,25 +945,60 @@
             }
           }
         }
+      }
+    }
+  }
 
-        .common-fake-table-delete {
-          right: 4px !important;
-          bottom: 8px !important;
+  &-department-company {
+    .common-fake-table-label {
+      p {
+        &:nth-child(2) {
+          margin-left: 45px;
         }
+
+        &:nth-child(3) {
+          margin-left: 90px;
+        }
+
+        &:nth-child(4) {
+          margin-left: 51px;
+        }
+      }
+    }
+    .common-fake-table-body {
+      .common-fake-table-card {
+        grid-template-columns: 120px 130px 60px 226px 1fr;
       }
     }
   }
 
   // Office department contact
-
   &-office-department-contacts {
-    .common-fake-table-body {
-      .common-fake-table-card {
-        grid-template-columns: 120px 130px 60px 80px 1fr;
+    .common-fake-table-label {
+      p {
+        &:nth-child(2) {
+          margin-left: 45px;
+        }
 
-        .common-fake-table-delete {
-          bottom: 8px;
-          right: 3px;
+        &:nth-child(3) {
+          margin-left: 90px;
+        }
+
+        &:nth-child(4) {
+          margin-left: 51px;
+        }
+      }
+    }
+    .common-fake-table-body {
+      width: 567px;
+      .common-fake-table-card {
+        grid-template-columns: 120px 130px 60px 180px 1fr;
+      }
+
+      .common-fake-table-delete {
+        right: 112px !important;
+        &.scrolling {
+          right: 4px !important;
         }
       }
     }
@@ -1109,7 +1132,6 @@
           }
 
           .common-fake-table-delete {
-            bottom: 8px;
             right: 2px;
             display: inline-block;
 

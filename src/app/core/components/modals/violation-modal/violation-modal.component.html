@@ -34,8 +34,6 @@
                 name: 'Violation Report',
                 type: 'text',
                 label: 'Report',
-                isRequired: true,
-                autoFocus: true,
                 isDisabled: true
               }"
             ></app-ta-input>
@@ -395,16 +393,16 @@
                       <p class="violation-code">
                         {{ violation.get("code").value }}
                       </p>
-                      <p class="violation-category">
+                      <div class="violation-category">
                         <!-- TODO: Change with backend path -->
                         <svg-icon
                           class="violation-category-svg"
-                          src="assets/svg/common/violation-details/ic_vehicle_maintance.svg"
+                          src="assets/svg/common/violation-details/ic_vehicle-maintance.svg"
                         ></svg-icon>
                         <span class="violation-category-text">{{
                           violation.get("category").value
                         }}</span>
-                      </p>
+                      </div>
                       <p class="violation-unit">
                         {{ violation.get("unit").value }}
                       </p>
@@ -654,7 +652,7 @@
                   type: 'text',
                   label: 'Customer',
                   isDropdown: true,
-                  dropdownWidthClass: 'w-col-273'
+                  dropdownWidthClass: 'w-col-272'
                 }"
                 [options]="labelsViolationCustomer"
                 [activeItem]="selectedViolationCustomer"

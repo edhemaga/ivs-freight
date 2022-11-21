@@ -84,7 +84,7 @@
                     [inputConfig]="{
                       name: 'address-unit',
                       type: 'text',
-                      label: 'Unit No.',
+                      label: 'Unit #',
                       textTransform: 'uppercase',
                       minLength: 1,
                       maxLength: 10
@@ -160,9 +160,9 @@
             [cardName]="'Department Contact'"
             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
             [hasArrow]="true"
-            [hasBodyData]="departmentContacts.length > 0"
             [isCardOpen]="departmentContacts.length > 0"
             [hasScrollBody]="departmentContacts.length > 10"
+            [hasBodyData]="departmentContacts.length > 0"
             (onOpenCard)="isDepartmentContactCardOpen = $event"
             (onActionEvent)="addDepartmentContacts($event)"
             [animationMarginParams]="{ marginTop: '12px', marginBottom: '0px' }"
@@ -171,6 +171,7 @@
               formArrayName="departmentContacts"
               class="common-fake-table-modal common-fake-table-modal-office-department-contacts"
               *ngIf="departmentContacts.length"
+              (scroll)="onScrollingBrokerContacts($event)"
             >
               <div class="common-fake-table-label">
                 <p>DEPARTMENT <span>*</span></p>
@@ -223,7 +224,6 @@
                         type: 'text',
                         minLength: 1,
                         maxLength: 8,
-                        placeholderIcon: 'phone-extension',
                         hideErrorMessage: true,
                         blackInput: true,
                         hideRequiredCheck: true
@@ -249,7 +249,7 @@
                       position="top"
                       class="common-fake-table-delete"
                       [ngClass]="{
-                        scrolling: isContactCardsScrolling
+                        scrolling: isDepartmentCardsScrolling
                       }"
                       (click)="removeDepartmentContacts(ind)"
                     >
