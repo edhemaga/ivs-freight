@@ -60,7 +60,17 @@
                                 }"
                             ></svg-icon>
                             <span class="ta-font-regular"
-                                >{{ companyInfo?.address?.street }},</span
+                                >{{ companyInfo?.address?.streetNumber }}
+                                {{ companyInfo?.address?.street
+                                }}<ng-container
+                                    *ngIf="companyInfo?.address?.addressUnit"
+                                >
+                                    <span>
+                                        #{{
+                                            companyInfo?.address?.addressUnit
+                                        }}</span
+                                    ></ng-container
+                                >,</span
                             >
                         </div>
 
@@ -70,13 +80,27 @@
                             >
                         </div>
 
-                        <div
-                            class="d-flex align-items-center company-postalcode"
-                        >
-                            <span class="ta-font-regular"
-                                >{{ companyInfo?.address?.zipCode }},</span
+                        <div class="d-flex align-items-center company-state">
+                            <span class="ta-font-regular">{{
+                                companyInfo?.address?.stateShortName
+                            }}</span>
+
+                            <ng-container
+                                *ngIf="!companyInfo?.address?.zipCode"
                             >
+                                <span class="ta-font-regular">,</span>
+                            </ng-container>
                         </div>
+
+                        <ng-container *ngIf="companyInfo?.address?.zipCode">
+                            <div
+                                class="d-flex align-items-center company-postalcode"
+                            >
+                                <span class="ta-font-regular"
+                                    >{{ companyInfo?.address?.zipCode }},</span
+                                >
+                            </div>
+                        </ng-container>
 
                         <div class="d-flex align-items-center company-country">
                             <span class="ta-font-regular">{{

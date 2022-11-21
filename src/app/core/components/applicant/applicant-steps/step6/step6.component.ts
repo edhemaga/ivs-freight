@@ -73,7 +73,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public subscription: Subscription;
 
@@ -84,8 +84,8 @@ export class Step6Component implements OnInit, OnDestroy {
     public markFormInvalid: boolean;
 
     public applicantId: number;
-
-    public emergencyContactsId: number[];
+    public educationId: number;
+    public emergencyContactReviewIds: any[];
 
     public stepValues: any;
     public lastItemStepValues: any;
@@ -382,6 +382,7 @@ export class Step6Component implements OnInit, OnDestroy {
     public patchStepValues(stepValues: EducationFeedbackResponse): void {
         console.log('stepValues', stepValues);
         const {
+            id,
             highestGrade,
             collegeGrade,
             emergencyContacts,
@@ -403,6 +404,26 @@ export class Step6Component implements OnInit, OnDestroy {
         this.selectedGrade = highestGrade - 1;
         this.selectedCollegeGrade = collegeGrade - 1;
 
+        this.educationId = id;
+
+        this.emergencyContactReviewIds = emergencyContacts.map((item) => {
+            return item.emergencyContactReview
+                ? item.emergencyContactReview.id
+                : null;
+        });
+
+        console.log(
+            'this.emergencyContactReviewIds',
+            this.emergencyContactReviewIds
+        );
+
+        const itemReviewPlaceholder = {
+            isNameValid: true,
+            isPhoneValid: true,
+            isRelationshipValid: true,
+            emergencyContactMessage: null,
+        };
+
         const lastItemInContactsArray =
             emergencyContacts[emergencyContacts.length - 1];
 
@@ -413,13 +434,14 @@ export class Step6Component implements OnInit, OnDestroy {
         const filteredContactsArray = restOfTheItemsInContactsArray.map(
             (item) => {
                 return {
+                    id: item.id,
                     isEditingContact: false,
                     name: item.name,
                     phone: item.phone,
                     relationship: item.relationship,
                     emergencyContactReview: item.emergencyContactReview
                         ? item.emergencyContactReview
-                        : null,
+                        : itemReviewPlaceholder,
                 };
             }
         );
@@ -433,7 +455,7 @@ export class Step6Component implements OnInit, OnDestroy {
             emergencyContactReview:
                 lastItemInContactsArray.emergencyContactReview
                     ? lastItemInContactsArray.emergencyContactReview
-                    : null,
+                    : itemReviewPlaceholder,
         };
 
         this.lastContactCard = {
@@ -1278,7 +1300,8 @@ export class Step6Component implements OnInit, OnDestroy {
             this.educationForm.invalid ||
             this.formStatus === 'INVALID' ||
             !this.selectedGrade ||
-            isAnyRadioUnchecked
+            isAnyRadioUnchecked ||
+            this.isEditing
         ) {
             if (this.educationForm.invalid) {
                 this.inputService.markInvalid(this.educationForm);
@@ -1425,6 +1448,23 @@ export class Step6Component implements OnInit, OnDestroy {
             questionReview5,
         } = this.educationForm.value;
 
+        const contactsArrayReview = this.contactsArray.map((item, index) => {
+            const itemReview = item.emergencyContactReview;
+
+            return {
+                itemId: item.id,
+                isPrimary: false,
+                commonMessage: this.contactForm.get(`cardReview${index + 1}`)
+                    .value,
+                isNameValid: itemReview ? itemReview.isNameValid : true,
+                isPhoneValid: itemReview ? itemReview.isPhoneValid : true,
+                isRelationshipValid: itemReview
+                    ? itemReview.isRelationshipValid
+                    : true,
+                emergencyContactMessage: null,
+            };
+        });
+
         const lastItemReview =
             this.previousFormValuesOnReview.emergencyContactReview;
 
@@ -1432,6 +1472,8 @@ export class Step6Component implements OnInit, OnDestroy {
 
         const lastReviewedItemInContactsArray = {
             itemId: lastItemId,
+            isPrimary: true,
+            commonMessage: null,
             isNameValid: lastItemReview ? lastItemReview.isNameValid : true,
             isPhoneValid: lastItemReview ? lastItemReview.isPhoneValid : true,
             isRelationshipValid: lastItemReview
@@ -1441,7 +1483,8 @@ export class Step6Component implements OnInit, OnDestroy {
         };
 
         const saveData: CreateEducationReviewCommand = {
-            applicantId: this.applicantId,
+            applicantId: this.applicantId /* 
+            id: this.educationId, */,
             isSpecialTrainingDescriptionValid:
                 !this.openAnnotationArray[0].lineInputs[0],
             specialTrainingDescriptionMessage: questionReview1,
@@ -1454,7 +1497,10 @@ export class Step6Component implements OnInit, OnDestroy {
             isUnableToPreformJobDescriptionValid:
                 !this.openAnnotationArray[3].lineInputs[0],
             unableToPreformJobDescriptionMessage: questionReview5,
-            emergencyContactReviews: [lastReviewedItemInContactsArray],
+            emergencyContactReviews: [
+                ...contactsArrayReview,
+                lastReviewedItemInContactsArray,
+            ],
         };
 
         console.log('saveData', saveData);
@@ -1506,7 +1552,15 @@ export class Step6Component implements OnInit, OnDestroy {
                                                     };
                                                 }
 
-                                                return item;
+                                                return {
+                                                    ...item,
+                                                    emergencyContactReview: {
+                                                        ...item.emergencyContactReview,
+                                                        ...contactsArrayReview[
+                                                            index
+                                                        ],
+                                                    },
+                                                };
                                             }
                                         ),
                                 },

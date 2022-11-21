@@ -314,6 +314,9 @@
                             (radioRequiredNoteEmitter)="
                                 onGetRadioRequiredNoteEmit($event)
                             "
+                            (classOfEquipmentformValuesEmitter)="
+                                onGetClassOfEquipmentValues($event)
+                            "
                         ></app-step2-form>
                     </div>
                 </div>
@@ -355,6 +358,9 @@
                     "
                     (radioRequiredNoteEmitter)="
                         onGetRadioRequiredNoteEmit($event)
+                    "
+                    (classOfEquipmentformValuesEmitter)="
+                        onGetClassOfEquipmentValues($event)
                     "
                 ></app-step2-form>
             </div>
@@ -400,6 +406,7 @@
         [nextStep]="true"
         [filledCorrectly]="
             workExperienceForm.valid &&
+            !isEditing &&
             ((selectedMode === 'APPLICANT_MODE' &&
                 formStatus === 'VALID' &&
                 innerFormStatus === 'VALID') ||

@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+    convertDateToBackend,
+    convertDateFromBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
@@ -15,7 +18,10 @@ import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { ApplicantResponse } from 'appcoretruckassist';
+import {
+    ApplicantResponse,
+    MedicalCertificateFeedbackResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-medical-certificate',
@@ -88,8 +94,24 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             .subscribe((res: ApplicantResponse) => {
                 this.applicantId = res.id;
 
-                /* this.stepHasValues = true; */
+                if (res.medicalCertificate) {
+                    this.patchStepValues(res.medicalCertificate);
+
+                    this.stepHasValues = true;
+                }
             });
+    }
+
+    public patchStepValues(
+        stepValues: MedicalCertificateFeedbackResponse
+    ): void {
+        console.log('stepValues', stepValues);
+        const { issueDate, expireDate } = stepValues;
+
+        this.medicalCertificateForm.patchValue({
+            fromDate: convertDateFromBackend(issueDate),
+            toDate: convertDateFromBackend(expireDate),
+        });
     }
 
     public onFilesAction(event: any): void {
@@ -260,6 +282,20 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                     this.router.navigate([
                         `/mvr-authorization/${this.applicantId}`,
                     ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                medicalCertificate: {
+                                    ...store.applicant.medicalCertificate,
+                                    issueDate: saveData.issueDate,
+                                    expireDate: saveData.expireDate,
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);

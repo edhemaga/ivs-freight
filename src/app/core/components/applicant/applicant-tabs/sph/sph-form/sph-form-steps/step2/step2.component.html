@@ -547,7 +547,9 @@
 >
     <app-applicant-next-back-btn
         [nextStep]="true"
-        [filledCorrectly]="accidentHistoryForm.valid && formStatus === 'VALID'"
+        [filledCorrectly]="
+            accidentHistoryForm.valid && formStatus === 'VALID' && !isEditing
+        "
         (stepEvent)="onStepAction($event)"
     ></app-applicant-next-back-btn>
 </div>

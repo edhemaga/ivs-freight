@@ -880,6 +880,7 @@
             educationForm.valid &&
             selectedGrade > -1 &&
             formStatus === 'VALID' &&
+            !isEditing &&
             (selectedMode === 'APPLICANT_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' &&
                     isUpperFormFeedbackValueUpdated &&

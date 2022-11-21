@@ -393,6 +393,7 @@
         [nextStep]="true"
         [filledCorrectly]="
             selectedMode === 'APPLICANT_MODE' &&
+            !isEditing &&
             permitForm.valid &&
             formStatus === 'VALID'
         "

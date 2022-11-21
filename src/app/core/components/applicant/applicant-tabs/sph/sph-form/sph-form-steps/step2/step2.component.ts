@@ -620,7 +620,11 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public onSubmit(): void {
-        if (this.accidentHistoryForm.invalid || this.formStatus === 'INVALID') {
+        if (
+            this.accidentHistoryForm.invalid ||
+            this.formStatus === 'INVALID' ||
+            this.isEditing
+        ) {
             if (this.accidentHistoryForm.invalid) {
                 this.inputService.markInvalid(this.accidentHistoryForm);
             }

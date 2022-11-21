@@ -14,7 +14,11 @@ import { ApplicantActionsService } from '../../state/services/applicant-actions.
 import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { ApplicantResponse, UpdatePspAuthCommand } from 'appcoretruckassist';
+import {
+    ApplicantResponse,
+    PspAuthFeedbackResponse,
+    UpdatePspAuthCommand,
+} from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
@@ -81,7 +85,33 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
                 this.applicantId = res.id;
 
                 this.companyName = res.companyInfo.name;
+
+                if (res.pspAuth) {
+                    this.patchStepValues(res.pspAuth);
+                }
             });
+    }
+
+    public patchStepValues(stepValues: PspAuthFeedbackResponse): void {
+        const {
+            isConfirm,
+            isAuthorize,
+            isFurtherUnderstand,
+            isPspReport,
+            isDisclosureRegardingReport,
+            signature,
+        } = stepValues;
+
+        this.pspAuthorizationForm.patchValue({
+            isConfirm,
+            isAuthorize,
+            isFurtherUnderstand,
+            isPspReport,
+            isDisclosureRegardingReport,
+        });
+
+        this.signatureImgSrc = signature;
+        this.signature = signature;
     }
 
     public handleCheckboxParagraphClick(type: string): void {
@@ -197,6 +227,26 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.router.navigate([`/sph/${this.applicantId}`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                pspAuth: {
+                                    ...store.applicant.pspAuth,
+                                    isConfirm: saveData.isConfirm,
+                                    isAuthorize: saveData.isAuthorize,
+                                    isFurtherUnderstand:
+                                        saveData.isFurtherUnderstand,
+                                    isPspReport: saveData.isPspReport,
+                                    isDisclosureRegardingReport:
+                                        saveData.isDisclosureRegardingReport,
+                                    signature: saveData.signature,
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);

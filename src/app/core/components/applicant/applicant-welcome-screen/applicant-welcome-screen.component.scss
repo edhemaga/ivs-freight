@@ -111,6 +111,7 @@
 
             .company-street,
             .company-city,
+            .company-state,
             .company-postalcode,
             .company-country {
                 height: 22px;
@@ -200,11 +201,11 @@
         font-size: 14px;
         border-radius: 3px;
         color: $white;
-        background: $ta-light-blue;
+        background: $ta-blue-5;
         transition: background 0.3s ease-in-out;
 
         &:hover {
-            background: $ta-blue;
+            background: $ta-blue-9;
         }
     }
 

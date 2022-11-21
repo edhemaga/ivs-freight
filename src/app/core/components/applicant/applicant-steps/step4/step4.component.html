@@ -356,7 +356,9 @@
     <app-applicant-next-back-btn
         [nextStep]="true"
         [filledCorrectly]="
-            selectedMode === 'APPLICANT_MODE' && formStatus === 'VALID'
+            selectedMode === 'APPLICANT_MODE' &&
+            formStatus === 'VALID' &&
+            !isEditing
         "
         [hasIncorrectFields]="
             selectedMode === 'REVIEW_MODE' &&

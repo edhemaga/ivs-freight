@@ -538,7 +538,7 @@
                         label: 'Trailer Type',
                         isDisabled:
                             (selectedMode === 'APPLICANT_MODE' &&
-                                !isTruckSelected) ||
+                                (!isTruckSelected || !!isBoxTruckSelected)) ||
                             selectedMode === 'REVIEW_MODE' ||
                             selectedMode === 'FEEDBACK_MODE',
                         isRequired: isTruckSelected,
@@ -570,7 +570,7 @@
                         }
                     }"
                     [activeItem]="selectedTrailerType"
-                    [options]="trailerType"
+                    [options]="filteredTrailerType"
                     (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
                 ></app-ta-input-dropdown>
             </div>
@@ -678,9 +678,13 @@
                     >
                         {{ question.title }} <span>*</span>
                     </p>
-                    
-                    
-                    <ng-container *ngIf="displayRadioRequiredNoteArray[i].displayRadioRequiredNote">
+
+                    <ng-container
+                        *ngIf="
+                            displayRadioRequiredNoteArray[i]
+                                .displayRadioRequiredNote
+                        "
+                    >
                         <p class="m-0 ta-font-semi-bold required">Required</p>
                     </ng-container>
                 </div>
@@ -693,7 +697,10 @@
                             selectedMode === 'REVIEW_MODE' ||
                             selectedMode === 'FEEDBACK_MODE'
                         "
-                        [displayRequiredNote]="displayRadioRequiredNoteArray[i].displayRadioRequiredNote"
+                        [displayRequiredNote]="
+                            displayRadioRequiredNoteArray[i]
+                                .displayRadioRequiredNote
+                        "
                         (changedValue)="
                             handleInputSelect($event, 'ANSWER-CHOICE')
                         "
@@ -824,7 +831,11 @@
                 type="button"
                 class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
                 [ngClass]="{
-                    disabled: !isWorkExperienceEdited
+                    disabled:
+                        !isWorkExperienceEdited ||
+                        !isWorkExperienceClassOfEquipmentEdited ||
+                        !workExperienceForm.valid ||
+                        !classOfEquipmentForm.valid
                 }"
                 (click)="onSaveEditedWorkExperience()"
             >

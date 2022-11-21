@@ -682,7 +682,8 @@ export class Step5Component implements OnInit, OnDestroy {
             this.notBeenConvictedForm.invalid ||
             this.onlyOneHoldLicenseForm.invalid ||
             this.certifyForm.invalid ||
-            this.formStatus === 'INVALID'
+            this.formStatus === 'INVALID' ||
+            this.isEditing
         ) {
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;

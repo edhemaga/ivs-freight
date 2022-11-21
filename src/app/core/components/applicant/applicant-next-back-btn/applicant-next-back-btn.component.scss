@@ -37,7 +37,7 @@
         .step-icon {
             svg {
                 rect {
-                    fill: $ta-light-blue;
+                    fill: $ta-blue-5;
                 }
             }
         }
@@ -46,9 +46,13 @@
             .step-icon {
                 svg {
                     rect {
-                        fill: $ta-blue;
+                        fill: $ta-blue-9;
                     }
                 }
+            }
+
+            .step-text {
+                color: $ta-blue-9 !important;
             }
         }
     }
@@ -57,12 +61,13 @@
         .step-text {
             visibility: visible;
             opacity: 1;
+            color: $ta-black !important;
         }
 
         .step-icon {
             svg {
                 rect {
-                    fill: $bw5;
+                    fill: $bw6-2;
                 }
             }
         }
@@ -83,7 +88,7 @@
         .step-icon {
             svg {
                 rect {
-                    fill: $bw2;
+                    fill: $bw-9;
                 }
             }
         }

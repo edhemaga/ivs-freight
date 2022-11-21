@@ -150,7 +150,6 @@ export class Step2Component implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: WorkExperienceFeedbackResponse): void {
-        console.log('stepValues', stepValues);
         const { haveWorkExperience, workExperienceItems } = stepValues;
 
         if (this.selectedMode === SelectedMode.REVIEW) {
@@ -710,6 +709,15 @@ export class Step2Component implements OnInit, OnDestroy {
         }
     }
 
+    public onGetClassOfEquipmentValues(event: any): void {
+        if (event.itemDeleted) {
+            this.lastWorkExperienceCard.classesOfEquipment.splice(
+                event.index,
+                1
+            );
+        }
+    }
+
     public cancelWorkExperienceReview(event: any): void {
         this.isReviewingCard = false;
 
@@ -993,7 +1001,8 @@ export class Step2Component implements OnInit, OnDestroy {
 
         if (
             this.formStatus === 'INVALID' ||
-            this.innerFormStatus === 'INVALID'
+            this.innerFormStatus === 'INVALID' ||
+            this.isEditing
         ) {
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;
@@ -1086,7 +1095,7 @@ export class Step2Component implements OnInit, OnDestroy {
                 accountForPeriodBetween:
                     this.lastWorkExperienceCard.accountForPeriod,
                 classesOfEquipment: this.lastWorkExperienceCard
-                    .classesOfEquipment[0].vehicleType
+                    .classesOfEquipment
                     ? this.lastWorkExperienceCard.classesOfEquipment.map(
                           (item, index) => {
                               return {

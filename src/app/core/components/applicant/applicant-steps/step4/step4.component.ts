@@ -547,8 +547,11 @@ export class Step4Component implements OnInit, OnDestroy {
     public onSubmit(): void {
         this.checkIsHazmatSpillNotChecked = true;
 
-        if (this.formStatus === 'INVALID') {
-            this.markFormInvalid = true;
+        if (this.formStatus === 'INVALID' || this.isEditing) {
+            if (this.formStatus === 'INVALID') {
+                this.markFormInvalid = true;
+            }
+
             return;
         }
 

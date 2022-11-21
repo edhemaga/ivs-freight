@@ -527,6 +527,7 @@
         [nextStep]="true"
         [filledCorrectly]="
             selectedMode === 'APPLICANT_MODE' &&
+            !isEditing &&
             notBeenConvictedForm.valid &&
             onlyOneHoldLicenseForm.valid &&
             certifyForm.valid &&

@@ -34,6 +34,7 @@ import {
     ApplicantResponse,
     CreateDrugAndAlcoholCommand,
     CreateDrugAndAlcoholReviewCommand,
+    DrugAndAlcoholFeedbackResponse,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -54,7 +55,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.FEEDBACK;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public drugTestRadios: any;
 
@@ -189,7 +190,7 @@ export class Step8Component implements OnInit, OnDestroy {
             });
     }
 
-    public patchStepValues(stepValues: any): void {
+    public patchStepValues(stepValues: DrugAndAlcoholFeedbackResponse): void {
         const {
             positiveTest,
             motorCarrier,

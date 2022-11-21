@@ -11,7 +11,11 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { ApplicantResponse, UpdatePspAuthCommand } from 'appcoretruckassist';
+import {
+    ApplicantResponse,
+    HosRuleFeedbackResponse,
+    UpdatePspAuthCommand,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-hos-rules',
@@ -53,7 +57,19 @@ export class HosRulesComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
                 this.applicantId = res.id;
+
+                if (res.hosRule) {
+                    this.patchStepValues(res.hosRule);
+                }
             });
+    }
+
+    public patchStepValues(stepValues: HosRuleFeedbackResponse): void {
+        const { isConfirm } = stepValues;
+
+        this.hosRulesForm.patchValue({
+            isReadingConfirmed: isConfirm,
+        });
     }
 
     public onStepAction(event: any): void {
@@ -90,6 +106,19 @@ export class HosRulesComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.router.navigate([`/ssn-card/${this.applicantId}`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                hosRule: {
+                                    ...store.applicant.hosRule,
+                                    isConfirm: saveData.isConfirm,
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);

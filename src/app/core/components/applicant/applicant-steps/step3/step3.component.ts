@@ -639,7 +639,8 @@ export class Step3Component implements OnInit, OnDestroy {
         if (
             this.permitForm.invalid ||
             this.formStatus === 'INVALID' ||
-            permit === null
+            permit === null ||
+            this.isEditing
         ) {
             if (this.permitForm.invalid) {
                 this.inputService.markInvalid(this.permitForm);
