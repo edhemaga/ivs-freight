@@ -17,7 +17,7 @@ export class GpsServiceService {
                 takeUntil(this.destroy$)
             )
             .subscribe((route: NavigationEnd) => {
-                /*   console.log('WHAT IS ROUTE', route.url); */
+                // console.log('WHAT IS ROUTE', route.url);
             });
     }
 
