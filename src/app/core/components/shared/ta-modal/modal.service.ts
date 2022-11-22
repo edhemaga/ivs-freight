@@ -107,7 +107,7 @@ export class ModalService {
                     );
                     clearTimeout(timeout);
                 },
-                data?.closing === 'fastest' ? 500 : 3500
+                data?.closing === 'fastest' ? 500 : 3000
             );
         }
     }

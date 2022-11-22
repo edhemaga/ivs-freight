@@ -120,6 +120,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
+        console.log(data);
         switch (data.action) {
             case 'close': {
                 if (this.editData?.canOpenModal) {
