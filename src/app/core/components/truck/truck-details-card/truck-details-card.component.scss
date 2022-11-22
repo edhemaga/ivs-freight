@@ -44,7 +44,10 @@ app-truck-details-card {
         padding: 9px 6px;
     }
     .note-cards {
-        padding: 0 1px;
+        padding: 0 4px;
+        .note-header{
+            padding: 0px 0px !important;
+        }
         .note-body {
             padding: 0 6px !important;
             .note-textarea {

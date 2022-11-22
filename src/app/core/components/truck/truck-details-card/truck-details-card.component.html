@@ -547,23 +547,24 @@
                         <div
                             class="status-items"
                             *ngFor="
-                                let owHist of truck.ownerHistories;
+                                let owHist of truck.ownerHistories | keyvalue: sortKeys;
                                 trackBy: identity
                             "
                         >
                             <div class="item-wrapper">
-                                <p class="employment">{{ owHist.name }}</p>
+                                <p class="employment">{{ owHist.value.name }}</p>
 
                                 <p class="date-from-to">
-                                    {{ owHist.startDate | formatDateP }} -
-                                    <span *ngIf="owHist.endDate">{{
-                                        owHist.endDate | formatDateP
+                                    {{ owHist.value.startDate | formatDateP }} -
+                                    <span *ngIf="owHist.value.endDate">{{
+                                        owHist.value.endDate | formatDateP
                                     }}</span>
-                                    <span *ngIf="!owHist.endDate">Today</span>
+                                    <span *ngIf="!owHist.value.endDate">Today</span>
                                 </p>
                                 <p class="duration">
-                                    {{ owHist.duration.Years }} y
-                                    {{ owHist.duration.Days }} d
+                                    <span *ngIf="owHist?.value.duration?.Years"> {{ owHist.value.duration.Years }} y </span>
+                                    <span> {{ owHist.value.duration.Days }} d </span>
+                                    
                                 </p>
                             </div>
                             <div class="truck-card-line"></div>

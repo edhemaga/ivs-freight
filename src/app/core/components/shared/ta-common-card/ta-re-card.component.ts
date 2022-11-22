@@ -62,6 +62,16 @@ import {
         ),
         transition('false <=> true', [animate('200ms ease-in-out')]),
         transition('true <=> false', [animate('200ms ease-in-out')]),
+    ]),
+    trigger('cardAppearanceAnimation', [
+        transition(':enter', [
+            style({ 'max-height': '0px', overflow: 'hidden' }),
+            animate(
+                '3100ms ease',
+                style({ 'max-height': '170px', overflow: 'hidden' })
+            ),
+        ]),
+        transition(':leave', [animate('3100ms ease', style({ 'max-height': 0 }))]),
     ]),],
 })
 export class TaReCardComponent implements OnInit {
@@ -119,6 +129,7 @@ export class TaReCardComponent implements OnInit {
         ) {
             this.isCardOpen = false;
             this.animationStarted = false;
+            console.log('--here---', this.animationStarted)
         }
     }
 
@@ -137,7 +148,13 @@ export class TaReCardComponent implements OnInit {
             this.statusActive == 0 ||
             this.hasToggler
         ) {
-            this.animationStarted = !this.animationStarted;
+            
+            if ( this.isCardOpen ) {
+                this.animationStarted = false;
+            } else {
+                this.animationStarted = true;
+            }
+            //this.animationStarted = !this.animationStarted;
             
             let timeOut = 0;
             if ( this.isCardOpen ) {

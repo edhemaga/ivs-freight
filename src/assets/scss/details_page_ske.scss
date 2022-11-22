@@ -48,6 +48,8 @@ p {
     -moz-column-gap: 12px;
     column-gap: 12px;
     row-gap: 12px;
+
+    padding-bottom: 18px;
 }
 // Common Class
 .details-component {
@@ -1066,4 +1068,28 @@ p {
 }
 .date-details-svg {
     margin-left: 29px;
+}
+
+.note-details-holder{
+    padding-right: 4px;
+    padding-left: 4px;
+
+    .note-container {
+        .note-header {
+            .note-label{
+                color: #919191 !important;
+
+                &:hover{
+                    color: #6c6c6c !important;
+                }
+            }
+
+            &.active{
+                .note-label{
+                    color: #6c6c6c !important;
+                }
+            }
+        }
+    }
+    
 }

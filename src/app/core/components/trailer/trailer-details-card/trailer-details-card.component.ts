@@ -199,6 +199,11 @@ export class TrailerDetailsCardComponent
             }
         }
     }
+
+    public sortKeys = (a, b) => {
+        return a.value.id > b.value.id ? -1 : 1;
+    };
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

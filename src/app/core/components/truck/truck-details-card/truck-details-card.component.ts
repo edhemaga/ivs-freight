@@ -63,7 +63,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() templateCard: boolean = false;
     @Input() truck: TruckResponse | any;
-
+    public ownersData: any;
     public truck_list: any[] = this.truckMinimalListQuery.getAll();
 
     payrollChartConfig: any = {
@@ -387,7 +387,24 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.getTruckDropdown();
         this.buttonSwitcher();
         this.initTableOptions();
+
+        let array1 = [...this.truck.ownerHistories];
+        console.log('--here-1-', this.truck);
+        array1.sort((a, b) => {
+            return b.id - a.id;
+        });
+        //this.truck.ownerHistories = array1;
+        this.ownersData = array1;
+        console.log('--here--2', this.truck);
+        console.log('--ownersData2', this.ownersData);
+          
+        
     }
+
+    public sortKeys = (a, b) => {
+        return a.value.id > b.value.id ? -1 : 1;
+    };
+
     public changeColor() {
         document.documentElement.style.setProperty(
             '--dynamic-colour',

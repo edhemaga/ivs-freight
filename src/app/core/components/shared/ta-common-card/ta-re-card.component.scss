@@ -111,7 +111,7 @@
         padding-bottom: 11px;
         padding-top: 11px;
         svg {
-            cursor: pointer;
+            //cursor: pointer;
         }
         .icon-counter {
             display: flex;
@@ -151,7 +151,7 @@
 
 svg {
     &:hover {
-        cursor: pointer;
+        //cursor: pointer;
     }
 }
 p {
