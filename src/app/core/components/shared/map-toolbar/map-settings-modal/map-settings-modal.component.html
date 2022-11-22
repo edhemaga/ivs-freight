@@ -3,6 +3,8 @@
     [isModalValid]="mapSettingsForm.valid && isFormDirty"
     [mapSettingsModal]="true"
     [resetMapVisibility]="isFormDirty ? true : false"
+    [customClass]="'modal-container-S'"
+    [editName]="editData?.title ? editData.title : editData?.name"
     [editData]="editData"
     (action)="onModalAction($event)"
 >

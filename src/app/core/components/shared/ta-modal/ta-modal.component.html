@@ -314,7 +314,9 @@
                         [ngClass]="{ valid: isModalValid }"
                         type="button"
                     >
-                        {{ setMapSettingsSpinnerVisibility ? 'Saving' : 'Set' }}
+                        {{
+                            setMapSettingsSpinnerVisibility ? 'Saving' : 'Save'
+                        }}
                         <div
                             *ngIf="setMapSettingsSpinnerVisibility"
                             class="modal-spinner"
@@ -339,7 +341,7 @@
                                 ? 'Saving'
                                 : editData.id
                                 ? 'Save Changes'
-                                : 'Create'
+                                : 'Save'
                         }}
                         <div
                             *ngIf="setMapRouteSpinnerVisibility"
