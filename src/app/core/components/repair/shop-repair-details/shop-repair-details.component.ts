@@ -34,6 +34,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     public repairList: any;
     public repairObject: any;
     public togglerWorkTime: boolean;
+    public businessOpen: boolean;
     public repairsDataLength: number = 0;
     public repairedDataLength: number = 0;
     public currentIndex: number = 0;
@@ -284,11 +285,17 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     public shopConf(data?: RepairShopResponse) {
         this.repairObject = data;
         this.DetailsDataService.setNewData(data);
-
+        
         if (data?.openHoursToday === 'Closed') {
             this.togglerWorkTime = false;
         } else {
             this.togglerWorkTime = true;
+        }
+
+        if (data?.status){
+            this.businessOpen = true;
+        }else {
+            this.businessOpen = false; 
         }
 
         this.shopRepairConfig = [

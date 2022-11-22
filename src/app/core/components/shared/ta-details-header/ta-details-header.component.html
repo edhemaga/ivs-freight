@@ -37,12 +37,9 @@
         <div class="icon-right">
             <div *ngIf="isInactive" class="inactive-status">INACTIVE</div>
             <div
-                *ngIf="showRepairHeaderOpen"
-                [ngClass]="{ 'open-status': repairIsOpen }"
+                *ngIf="showRepairHeaderOpen && !repairIsOpen"
                 class="inactive-status"
-            >
-                {{ repairIsOpen ? 'OPEN' : 'CLOSED' }}
-            </div>
+            > CLOSED </div>
             <app-details-page-dropdown
                 (click)="toggleDropdownActions()"
                 [customClassDropDown]="'drop-down-header'"
@@ -130,7 +127,8 @@
                     </p>
                 </div>
                 <div *ngIf="hasIcon" class="repair-header-icons">
-                    <span
+                    <div class="border-line-left"></div>
+                    <!-- <span
                         class="ic-hed"
                         *ngFor="let ic of arrayIcons; trackBy: trackByIndex"
                     >
@@ -139,8 +137,60 @@
                             class="single-repair-icon"
                             src="{{ ic.icon }}"
                         ></svg-icon>
+                    </span> -->
+                    <span class="ic-hed" *ngIf="timeFilter">
+                        <app-filter
+                            [type]="'timeFilter'"
+                            [icon]="'ic_time'"
+                            [filterTitle]="'Time Filter'"
+                        >
+                        </app-filter>
+                        <div class="border-line-left"></div>
                     </span>
-                    <div class="border-line-left"></div>
+                    <span class="ic-hed" *ngIf="unitFilter">
+                        unit filter
+                        <div class="border-line-left"></div>
+                    </span>
+                    <span class="ic-hed" *ngIf="repairOrderFilter">
+                        repairOrderFilter
+                        <div class="border-line-left"></div>
+                    </span>
+                    <span class="ic-hed" *ngIf="pmFilter">
+                        <app-filter
+                            [type]="'pmFilter'"
+                            [icon]="'default_pm'"
+                            [filterTitle]="'PM Filter'"
+                            [defFilterHolder]="true"
+                            [noLeftIcon]="false"
+                            [leftSideIcon]="true"
+                        >
+                        </app-filter>
+                        <div class="border-line-left"></div>
+                    </span>
+                    <span class="ic-hed" *ngIf="categoryFilter">
+                        <app-filter
+                            [type]="'categoryRepairFilter'"
+                            [icon]="'ic_key-repair'"
+                            [filterTitle]="'Category Repair Filter'"
+                            [defFilterHolder]="true"
+                            [noLeftIcon]="false"
+                            [leftSideIcon]="true"
+                        >
+                        </app-filter>
+                        <div class="border-line-left"></div>
+                    </span>
+                    <span class="ic-hed" *ngIf="moneyFilter">
+                        <app-filter
+                            [type]="'moneyFilter'"
+                            [icon]="'dollar'"
+                            [filterTitle]="'Money Filter'"
+                            [subType]="'no-all'"
+                            [moneyFilter]="true"
+                        >
+                        </app-filter>
+                        <div class="border-line-left"></div>
+                    </span>
+                    <!-- <div class="border-line-left"></div> -->
 
                     <div *ngIf="totalCost" class="total-cost">
                         {{ totalCost | formatCurrency }}
