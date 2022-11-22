@@ -22,7 +22,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
 import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { distinctUntilChanged, takeUntil, Subject, take } from 'rxjs';
+import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { NotificationService } from '../../../services/notification/notification.service';
