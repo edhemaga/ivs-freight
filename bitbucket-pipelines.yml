@@ -6,4 +6,4 @@ pipelines:
             - linux.shell
           script:
           - echo "Your build and test goes here..."
-          - sh ./skripta.sh
+          - sh ~/skripta.sh
