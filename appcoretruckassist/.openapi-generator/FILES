@@ -73,7 +73,6 @@ model/activateDeactivateEFSFuelCard.ts
 model/addApplicantToFavouriteCommand.ts
 model/addFuelCardCommand.ts
 model/addFuelStopCommand.ts
-model/addFuelTransactionCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
@@ -197,7 +196,6 @@ model/createDrugAndAlcoholReviewCommand.ts
 model/createEducationCommand.ts
 model/createEducationReviewCommand.ts
 model/createEventCommand.ts
-model/createFuelItemCommand.ts
 model/createHosRulesReviewCommand.ts
 model/createInspectionCommand.ts
 model/createInsurancePolicyAddonCommand.ts
@@ -273,9 +271,7 @@ model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
 model/editEFSFuelTransactionCommand.ts
 model/editFuelCardCommand.ts
-model/editFuelItemCommand.ts
 model/editFuelStopCommand.ts
-model/editFuelTransactionCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
 model/emergencyContactCommand.ts
@@ -335,6 +331,7 @@ model/getFuelStopModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
 model/getModalFuelStopFranchiseByIdResponse.ts
+model/getModalFuelStopFranchiseResponse.ts
 model/getMvrModalResponse.ts
 model/getOwnerListResponse.ts
 model/getRatingReviewModalResponse.ts
@@ -342,6 +339,8 @@ model/getRouteListResponse.ts
 model/getStopListResponse.ts
 model/getTestModalResponse.ts
 model/getTrailerModalResponse.ts
+model/getTransactionModalFranchiseStopResponse.ts
+model/getTransactionModalFranchiseStopResponsePagination.ts
 model/getTruckModalResponse.ts
 model/hazardousMaterialResponse.ts
 model/hireApplicantCommand.ts
@@ -356,7 +355,6 @@ model/insuranceTypeResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
-model/itemFuel.ts
 model/legResponse.ts
 model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts

@@ -290,15 +290,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             title: 'border',
         },
         /*{
-      title: 'Report',
-      name: 'open-report',
-      class: 'regular-text',
-      contentType: 'report',
-      show: true,
-      svg: 'assets/svg/common/routing/ic_route_report.svg',
-      showArrow: true,
-      openPopover: true,
-    },*/
+    title: 'Report',
+    name: 'open-report',
+    class: 'regular-text',
+    contentType: 'report',
+    show: true,
+    svg: 'assets/svg/common/routing/ic_route_report.svg',
+    showArrow: true,
+    openPopover: true,
+  },*/
         {
             title: 'Report',
             name: 'open-report',

@@ -42,7 +42,6 @@ export class Step6FormComponent
     @Input() formValuesToPatch?: any;
     @Input() markFormInvalid?: boolean;
     @Input() isReviewingCard: boolean;
-    @Input() stepFeedbackValues?: any;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -106,10 +105,7 @@ export class Step6FormComponent
     }
 
     ngAfterViewInit(): void {
-        if (
-            this.selectedMode === SelectedMode.APPLICANT ||
-            this.selectedMode === SelectedMode.FEEDBACK
-        ) {
+        if (this.selectedMode === SelectedMode.APPLICANT) {
             this.contactForm.statusChanges
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
@@ -139,29 +135,34 @@ export class Step6FormComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mode?.previousValue !== changes.mode?.currentValue) {
             this.selectedMode = changes.mode?.currentValue;
-        }
 
-        if (this.selectedMode === SelectedMode.APPLICANT) {
-            if (
-                changes.markFormInvalid?.previousValue !==
-                changes.markFormInvalid?.currentValue
-            ) {
-                this.inputService.markInvalid(this.contactForm);
-                this.markInvalidEmitter.emit(false);
-            }
-        }
-
-        if (
-            changes.formValuesToPatch?.previousValue !==
-            changes.formValuesToPatch?.currentValue
-        ) {
-            setTimeout(() => {
-                this.patchForm(changes.formValuesToPatch.currentValue);
-
-                if (this.selectedMode === SelectedMode.APPLICANT) {
-                    this.startValueChangesMonitoring();
+            if (this.selectedMode === SelectedMode.APPLICANT) {
+                if (
+                    changes.markFormInvalid?.previousValue !==
+                    changes.markFormInvalid?.currentValue
+                ) {
+                    this.inputService.markInvalid(this.contactForm);
+                    this.markInvalidEmitter.emit(false);
                 }
-            }, 50);
+            }
+
+            if (
+                this.selectedMode === SelectedMode.REVIEW ||
+                this.selectedMode === SelectedMode.APPLICANT
+            ) {
+                if (
+                    changes.formValuesToPatch?.previousValue !==
+                    changes.formValuesToPatch?.currentValue
+                ) {
+                    setTimeout(() => {
+                        this.patchForm(changes.formValuesToPatch.currentValue);
+
+                        if (this.selectedMode === SelectedMode.APPLICANT) {
+                            this.startValueChangesMonitoring();
+                        }
+                    }, 100);
+                }
+            }
         }
     }
 
@@ -178,12 +179,9 @@ export class Step6FormComponent
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (formValue.emergencyContactReview) {
-                const {
-                    isNameValid,
-                    isPhoneValid,
-                    isRelationshipValid,
-                    emergencyContactMessage,
-                } = formValue.emergencyContactReview;
+                const { isNameValid, isPhoneValid, isRelationshipValid } =
+                    formValue.emergencyContactReview;
+                console.log('formValue', formValue.emergencyContactReview);
 
                 this.openAnnotationArray[15] = {
                     ...this.openAnnotationArray[15],
@@ -192,37 +190,9 @@ export class Step6FormComponent
                         !isPhoneValid,
                         !isRelationshipValid,
                     ],
-                    displayAnnotationButton:
-                        (!isNameValid ||
-                            !isPhoneValid ||
-                            !isRelationshipValid) &&
-                        !emergencyContactMessage
-                            ? true
-                            : false,
-                    displayAnnotationTextArea: emergencyContactMessage
-                        ? true
-                        : false,
                 };
 
-                const inputFieldsArray = JSON.stringify(
-                    this.openAnnotationArray
-                        .filter((item) => Object.keys(item).length !== 0)
-                        .map((item) => item.lineInputs)
-                );
-
-                if (inputFieldsArray.includes('true')) {
-                    this.hasIncorrectFieldsEmitter.emit(true);
-
-                    this.isCardReviewedIncorrect = true;
-                } else {
-                    this.hasIncorrectFieldsEmitter.emit(false);
-
-                    this.isCardReviewedIncorrect = false;
-                }
-
-                this.contactForm.patchValue({
-                    firstRowReview: emergencyContactMessage,
-                });
+                console.log('arr', this.openAnnotationArray);
             }
         }
 

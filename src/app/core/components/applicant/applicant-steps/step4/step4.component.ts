@@ -44,8 +44,6 @@ export class Step4Component implements OnInit, OnDestroy {
 
     public accidentArray: AccidentModel[] = [];
 
-    public stepHasValues: boolean = false;
-
     public lastAccidentCard: any;
 
     public vehicleType: TruckTypeResponse[] = [];
@@ -116,8 +114,6 @@ export class Step4Component implements OnInit, OnDestroy {
 
                 if (res.accidentRecords) {
                     this.patchStepValues(res.accidentRecords);
-
-                    this.stepHasValues = true;
                 }
             });
     }
@@ -162,7 +158,6 @@ export class Step4Component implements OnInit, OnDestroy {
             );
 
             const filteredLastItemInAccidentArray = {
-                id: lastItemInAccidentArray.id,
                 isEditingAccident: false,
                 location: lastItemInAccidentArray.location,
                 accidentState: lastItemInAccidentArray.location.stateShortName,
@@ -180,9 +175,7 @@ export class Step4Component implements OnInit, OnDestroy {
                         : null,
             };
 
-            this.accidentArray = JSON.parse(
-                JSON.stringify(filteredAccidentArray)
-            );
+            this.accidentArray = [...filteredAccidentArray];
 
             this.formValuesToPatch = filteredLastItemInAccidentArray;
             this.previousFormValuesOnReview = filteredLastItemInAccidentArray;
@@ -225,19 +218,19 @@ export class Step4Component implements OnInit, OnDestroy {
             .subscribe((value) => {
                 if (value) {
                     this.formStatus = 'VALID';
-                } else {
-                    if (this.lastAccidentCard) {
-                        this.formValuesToPatch = {
-                            location: this.lastAccidentCard?.location,
-                            date: this.lastAccidentCard?.date,
-                            hazmatSpill: this.lastAccidentCard?.hazmatSpill,
-                            fatalities: this.lastAccidentCard?.fatalities,
-                            injuries: this.lastAccidentCard?.injuries,
-                            vehicleType: this.lastAccidentCard?.vehicleType,
-                            description: this.lastAccidentCard?.description,
-                        };
-                    }
 
+                    this.formValuesToPatch = {
+                        location: null,
+                        date: null,
+                        fatalities: 0,
+                        injuries: 0,
+                        hazmatSpill: null,
+                        vehicleType: null,
+                        description: null,
+                    };
+
+                    this.accidentArray = [];
+                } else {
                     this.formStatus = 'INVALID';
                 }
             });
@@ -253,12 +246,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
     public onEditAccident(index: number): void {
         if (this.isEditing) {
-            this.isEditing = false;
-            this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
-                false;
-
-            this.helperIndex = 2;
-            this.selectedAccidentIndex = -1;
+            return;
         }
 
         this.helperIndex = index;
@@ -268,18 +256,6 @@ export class Step4Component implements OnInit, OnDestroy {
         this.accidentArray[index].isEditingAccident = true;
 
         const selectedAccident = this.accidentArray[index];
-
-        if (this.lastAccidentCard) {
-            this.previousFormValuesOnEdit = {
-                location: this.lastAccidentCard?.location,
-                date: this.lastAccidentCard?.date,
-                hazmatSpill: this.lastAccidentCard?.hazmatSpill,
-                fatalities: this.lastAccidentCard?.fatalities,
-                injuries: this.lastAccidentCard?.injuries,
-                vehicleType: this.lastAccidentCard?.vehicleType,
-                description: this.lastAccidentCard?.description,
-            };
-        }
 
         this.formValuesToPatch = selectedAccident;
     }
@@ -355,6 +331,7 @@ export class Step4Component implements OnInit, OnDestroy {
         this.previousFormValuesOnReview.accidentRecordReview = {
             isLocationValid: !event[0].lineInputs[0],
             isDateValid: !event[0].lineInputs[1],
+            isVehicleTypeValid: !event[1].lineInputs[0],
             isDescriptionValid: !event[1].lineInputs[1],
         };
     }
@@ -368,6 +345,7 @@ export class Step4Component implements OnInit, OnDestroy {
         this.accidentArray[this.selectedAccidentIndex].accidentRecordReview = {
             isLocationValid: !event[0].lineInputs[0],
             isDateValid: !event[0].lineInputs[1],
+            isVehicleTypeValid: !event[1].lineInputs[0],
             isDescriptionValid: !event[1].lineInputs[1],
         };
 
@@ -516,10 +494,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode === SelectedMode.APPLICANT) {
                 this.onSubmit();
             }
 
@@ -589,28 +564,8 @@ export class Step4Component implements OnInit, OnDestroy {
             };
         });
 
-        const selectMatchingBackendMethod = () => {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT &&
-                !this.stepHasValues
-            ) {
-                return this.applicantActionsService.createAccidentRecord(
-                    saveData
-                );
-            }
-
-            if (
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    this.stepHasValues) ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
-                return this.applicantActionsService.updateAccidentRecord(
-                    saveData
-                );
-            }
-        };
-
-        selectMatchingBackendMethod()
+        this.applicantActionsService
+            .createAccidentRecord(saveData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -646,23 +601,18 @@ export class Step4Component implements OnInit, OnDestroy {
         const lastItemReview =
             this.previousFormValuesOnReview.accidentRecordReview;
 
-        const lastItemId = this.previousFormValuesOnReview.id;
-
-        console.log('lastItemId', lastItemId);
-
         const lastReviewedItemInAccidentArray = {
-            itemId: lastItemId,
-            isPrimary: true,
-            commonMessage: null,
             isLocationValid: lastItemReview
                 ? lastItemReview.isLocationValid
                 : true,
             isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
             locationDateMessage: this.lastAccidentCard.firstRowReview,
+            isVehicleTypeValid: true,
             isDescriptionValid: lastItemReview
                 ? lastItemReview.isDescriptionValid
                 : true,
-            descriptionMessage: this.lastAccidentCard.secondRowReview,
+            vehicleTypeDescriptionMessage:
+                this.lastAccidentCard.secondRowReview,
         };
 
         const saveData: CreateAccidentRecordReviewCommand = {
@@ -670,9 +620,7 @@ export class Step4Component implements OnInit, OnDestroy {
             accidentReviews: [lastReviewedItemInAccidentArray],
         };
 
-        console.log('saveData', saveData);
-
-        console.log('store', this.applicantStore);
+        console.log('saveData', saveData.accidentReviews[0]);
 
         this.applicantActionsService
             .createAccidentRecordReview(saveData)
@@ -683,17 +631,17 @@ export class Step4Component implements OnInit, OnDestroy {
                         `/application/${this.applicantId}/5`,
                     ]);
 
-                    /*   this.applicantStore.update(store => {
+                    /* this.applicantStore.update(1, (entity) => {
             return {
-              ...store,
-              applicant: {
-                ...store.applicant,
-                accidentRecords : {
-                  ...store.applicant.accidentRecords,
-                }
-              }
-            }
-          }) */
+              ...entity,
+              education: {
+                ...entity.education,
+                educationReview: rest,
+              },
+            };
+          }); */
+
+                    console.log('updatedStore', this.applicantStore);
                 },
                 error: (err) => {
                     console.log(err);

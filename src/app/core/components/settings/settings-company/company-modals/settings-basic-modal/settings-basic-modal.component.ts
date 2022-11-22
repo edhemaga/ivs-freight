@@ -269,8 +269,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.createDivisionForm();
 
             if (this.editData.type === 'edit-division') {
-                setTimeout(() => {
+                const timeout = setTimeout(() => {
                     this.editCompanyDivision();
+                    clearTimeout(timeout);
                 });
             }
         } else {
@@ -281,20 +282,18 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
 
         if (this.editData.type === 'edit-company') {
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 this.editCompany();
+                clearTimeout(timeout);
             });
         }
 
         if (this.editData?.type === 'payroll-tab') {
             const timeout = setTimeout(() => {
                 this.tabChange({ id: 3 });
-
-                setTimeout(() => {
-                    this.editCompany();
-                });
+                this.editCompany();
                 clearTimeout(timeout);
-            }, 150);
+            });
         }
     }
 
@@ -669,9 +668,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 distinctUntilChanged(),
                 takeUntil(this.destroy$)
             )
-            .subscribe((value) => {
+            .subscribe(async (value) => {
                 this.isBankSelectedFormArray[index] =
-                    this.bankVerificationService.onSelectBank(
+                    await this.bankVerificationService.onSelectBank(
                         value,
                         this.bankAccounts.at(index).get('routing'),
                         this.bankAccounts.at(index).get('account')
@@ -1174,7 +1173,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         this.selectedAddress = this.editData.company.address;
 
-        this.selectedTimeZone = this.editData.company.timeZone;
+        this.selectedTimeZone =
+            this.editData.company.timeZone.id !== 0
+                ? this.editData.company.timeZone
+                : null;
 
         this.selectedCurrency =
             this.editData.company.currency.id !== 0
@@ -1743,7 +1745,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
         this.selectedAddress = this.editData.company.address;
 
-        this.selectedTimeZone = this.editData.company.timeZone;
+        this.selectedTimeZone =
+            this.editData.company.timeZone.id !== 0
+                ? this.editData.company.timeZone
+                : null;
 
         this.selectedCompanyData =
             this.editData.company.companyType.id !== 0

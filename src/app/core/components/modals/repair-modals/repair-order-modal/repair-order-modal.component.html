@@ -91,21 +91,24 @@
         </div>
         <div class="row last-row">
             <div class="col-12">
-                <div *ngIf="selectedRepairShop" class="selected-repair-shop">
-                    <div class="repair-shop-label">
+                <div *ngIf="selectedRepairShop" class="selected-item-container">
+                    <div class="selected-item-label">
                         Repair Shop
                         <span *ngIf="selectedHeaderTab === 1">*</span>
                     </div>
-                    <p class="repair-shop-name">
+                    <p class="selected-item-name">
                         {{ selectedRepairShop?.name }}
                         <svg-icon
-                            class="repair-shop-star"
+                            class="selected-item-star"
                             [ngClass]="{ active: selectedRepairShop?.pinned }"
                             src="assets/svg/common/ic_star.svg"
                         ></svg-icon>
                     </p>
-                    <div class="repair-shop-additional">
-                        <div class="repair-shop-info">
+                    <div class="selected-item-additional">
+                        <div
+                            *ngIf="selectedRepairShop?.phone"
+                            class="selected-item-info"
+                        >
                             <svg-icon
                                 src="assets/svg/common/ic_phone.svg"
                             ></svg-icon>
@@ -114,14 +117,20 @@
                             </p>
                         </div>
 
-                        <div class="repair-shop-info">
+                        <div
+                            *ngIf="selectedRepairShop?.email"
+                            class="selected-item-info"
+                        >
                             <svg-icon
                                 src="assets/svg/common/ic_email.svg"
                             ></svg-icon>
                             <p>{{ selectedRepairShop?.email }}</p>
                         </div>
 
-                        <div class="repair-shop-info">
+                        <div
+                            *ngIf="selectedRepairShop?.address"
+                            class="selected-item-info"
+                        >
                             <svg-icon
                                 src="assets/svg/common/ic_address.svg"
                             ></svg-icon>
@@ -130,7 +139,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="clear-repair-shop">
+                    <div class="clear-selected-item">
                         <div
                             ngbTooltip
                             mainTooltip="Clear"

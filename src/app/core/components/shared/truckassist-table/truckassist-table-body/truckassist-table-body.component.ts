@@ -467,7 +467,7 @@ export class TruckassistTableBodyComponent
     // Toggle Status Dropdown
     toggleStatusDropdown(tooltip: any, row: any) {
         this.statusTooltip = tooltip;
-        
+
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {

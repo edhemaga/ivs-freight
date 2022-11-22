@@ -51,8 +51,6 @@ export class Step5Component implements OnInit, OnDestroy {
 
     public violationsArray: ViolationModel[] = [];
 
-    public stepHasValues: boolean = false;
-
     public lastValidLicense: any;
 
     public lastViolationsCard: any;
@@ -60,6 +58,7 @@ export class Step5Component implements OnInit, OnDestroy {
     public vehicleType: TruckTypeResponse[] = [];
 
     public selectedViolationIndex: number;
+
     public helperIndex: number = 2;
 
     public isEditing: boolean = false;
@@ -90,11 +89,11 @@ export class Step5Component implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
 
-        this.hasNoTrafficViolations();
-
         this.getDropdownLists();
 
         this.getStepValuesFromStore();
+
+        this.hasNoTrafficViolations();
     }
 
     public trackByIdentity = (index: number, item: any): number => index;
@@ -138,7 +137,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
                 const cdlInformation = res.cdlInformation;
 
-                const lastLicenseAdded =
+                const lastLicenseAdded: any =
                     cdlInformation?.licences[
                         cdlInformation.licences.length - 1
                     ];
@@ -146,14 +145,12 @@ export class Step5Component implements OnInit, OnDestroy {
                 this.lastValidLicense = {
                     license: lastLicenseAdded?.licenseNumber,
                     state: lastLicenseAdded?.state?.stateShortName,
-                    classType: lastLicenseAdded?.classType.name,
+                    classType: lastLicenseAdded?.class?.name,
                     expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
                 };
 
                 if (res.trafficViolation) {
                     this.patchStepValues(res.trafficViolation);
-
-                    this.stepHasValues = true;
                 }
             });
     }
@@ -266,9 +263,7 @@ export class Step5Component implements OnInit, OnDestroy {
                         : null,
             };
 
-            this.violationsArray = JSON.parse(
-                JSON.stringify(filteredViolationsArray)
-            );
+            this.violationsArray = [...filteredViolationsArray];
 
             this.formValuesToPatch = filteredLastItemInViolationsArray;
             this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
@@ -298,21 +293,6 @@ export class Step5Component implements OnInit, OnDestroy {
                     displayAnnotationTextArea: false,
                 };
             }
-        } else {
-            this.inputService.changeValidatorsCheck(
-                this.notBeenConvictedForm.get('notBeenConvicted'),
-                false
-            );
-            this.inputService.changeValidatorsCheck(
-                this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense'),
-                false
-            );
-            this.inputService.changeValidatorsCheck(
-                this.certifyForm.get('certify'),
-                false
-            );
-
-            this.formStatus = 'VALID';
         }
     }
 
@@ -335,17 +315,25 @@ export class Step5Component implements OnInit, OnDestroy {
                         false
                     );
 
-                    this.formStatus = 'VALID';
-                } else {
-                    if (this.lastViolationsCard) {
-                        this.formValuesToPatch = {
-                            date: this.lastViolationsCard?.date,
-                            vehicleType: this.lastViolationsCard?.vehicleType,
-                            location: this.lastViolationsCard.location,
-                            description: this.lastViolationsCard?.description,
-                        };
-                    }
+                    this.notBeenConvictedForm.patchValue({
+                        notBeenConvicted: null,
+                    });
+                    this.onlyOneHoldLicenseForm.patchValue({
+                        onlyOneHoldLicense: null,
+                    });
+                    this.certifyForm.patchValue({ certify: null });
 
+                    this.formStatus = 'VALID';
+
+                    this.formValuesToPatch = {
+                        date: null,
+                        vehicleType: null,
+                        location: null,
+                        description: null,
+                    };
+
+                    this.violationsArray = [];
+                } else {
                     this.inputService.changeValidatorsCheck(
                         this.notBeenConvictedForm.get('notBeenConvicted')
                     );
@@ -393,13 +381,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
     public onEditViolation(index: number): void {
         if (this.isEditing) {
-            this.isEditing = false;
-            this.violationsArray[
-                this.selectedViolationIndex
-            ].isEditingViolation = false;
-
-            this.helperIndex = 2;
-            this.selectedViolationIndex = -1;
+            return;
         }
 
         this.helperIndex = index;
@@ -409,15 +391,6 @@ export class Step5Component implements OnInit, OnDestroy {
         this.violationsArray[index].isEditingViolation = true;
 
         const selectedViolation = this.violationsArray[index];
-
-        if (this.lastViolationsCard) {
-            this.previousFormValuesOnEdit = {
-                date: this.lastViolationsCard?.date,
-                vehicleType: this.lastViolationsCard?.vehicleType,
-                location: this.lastViolationsCard.location,
-                description: this.lastViolationsCard?.description,
-            };
-        }
 
         this.formValuesToPatch = selectedViolation;
     }
@@ -660,10 +633,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode === SelectedMode.APPLICANT) {
                 this.onSubmit();
             }
 
@@ -678,28 +648,23 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (
-            this.notBeenConvictedForm.invalid ||
-            this.onlyOneHoldLicenseForm.invalid ||
-            this.certifyForm.invalid ||
-            this.formStatus === 'INVALID'
-        ) {
-            if (this.formStatus === 'INVALID') {
-                this.markFormInvalid = true;
-            }
+        if (this.notBeenConvictedForm.invalid) {
+            this.inputService.markInvalid(this.notBeenConvictedForm);
+            return;
+        }
 
-            if (this.notBeenConvictedForm.invalid) {
-                this.inputService.markInvalid(this.notBeenConvictedForm);
-            }
+        if (this.onlyOneHoldLicenseForm.invalid) {
+            this.inputService.markInvalid(this.onlyOneHoldLicenseForm);
+            return;
+        }
 
-            if (this.onlyOneHoldLicenseForm.invalid) {
-                this.inputService.markInvalid(this.onlyOneHoldLicenseForm);
-            }
+        if (this.certifyForm.invalid) {
+            this.inputService.markInvalid(this.certifyForm);
+            return;
+        }
 
-            if (this.certifyForm.invalid) {
-                this.inputService.markInvalid(this.certifyForm);
-            }
-
+        if (this.formStatus === 'INVALID') {
+            this.markFormInvalid = true;
             return;
         }
 
@@ -804,28 +769,8 @@ export class Step5Component implements OnInit, OnDestroy {
             }
         );
 
-        const selectMatchingBackendMethod = () => {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT &&
-                !this.stepHasValues
-            ) {
-                return this.applicantActionsService.createTrafficViolations(
-                    saveData
-                );
-            }
-
-            if (
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    this.stepHasValues) ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
-                return this.applicantActionsService.updateTrafficViolations(
-                    saveData
-                );
-            }
-        };
-
-        selectMatchingBackendMethod()
+        this.applicantActionsService
+            .createTrafficViolations(saveData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -875,9 +820,7 @@ export class Step5Component implements OnInit, OnDestroy {
         const lastItemId = this.previousFormValuesOnReview.id;
 
         const lastReviewedItemIViolationsArray = {
-            itemId: lastItemId,
-            isPrimary: true,
-            commonMessage: null,
+            trafficViolationId: lastItemId,
             isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
             isVehicleTypeValid: true,
             isLocationValid: lastItemReview
@@ -897,8 +840,6 @@ export class Step5Component implements OnInit, OnDestroy {
 
         console.log('saveData', saveData.trafficViolationReviews[0]);
 
-        console.log('store', this.applicantStore);
-
         this.applicantActionsService
             .createTrafficViolationsReview(saveData)
             .pipe(takeUntil(this.destroy$))
@@ -907,18 +848,18 @@ export class Step5Component implements OnInit, OnDestroy {
                     this.router.navigate([
                         `/application/${this.applicantId}/6`,
                     ]);
-
-                    /*   this.applicantStore.update(store => {
+                    /*
+            this.applicantStore.update(1, (entity) => {
             return {
-              ...store,
-              applicant: {
-                ...store.applicant,
-                trafficViolation : {
-                  ...store.applicant.trafficViolation,
-                }
-              }
-            }
-          }) */
+              ...entity,
+              education: {
+                ...entity.education,
+                educationReview: rest,
+              },
+            };
+          });
+
+          console.log('updatedStore', this.applicantStore); */
                 },
                 error: (err) => {
                     console.log(err);
