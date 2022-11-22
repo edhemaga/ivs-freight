@@ -212,6 +212,39 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
             case 'close': {
+                if (this.editData?.canOpenModal) {
+                    switch (this.editData?.key) {
+                        case 'truck-modal': {
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: TruckModalComponent,
+                                size: 'small',
+                                closing: 'fastest',
+                            });
+                            break;
+                        }
+                        case 'trailer-modal': {
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: TrailerModalComponent,
+                                size: 'small',
+                                closing: 'fastest',
+                            });
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }
                 break;
             }
             case 'save': {
@@ -246,32 +279,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             }
             default: {
                 break;
-            }
-        }
-
-        if (this.editData?.canOpenModal) {
-            switch (this.editData?.key) {
-                case 'truck-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: { key: this.editData?.key, value: null },
-                        component: TruckModalComponent,
-                        size: 'small',
-                    });
-                    break;
-                }
-                case 'trailer-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: { key: this.editData?.key, value: null },
-                        component: TrailerModalComponent,
-                        size: 'small',
-                    });
-                    break;
-                }
-                default: {
-                    break;
-                }
             }
         }
     }
@@ -318,12 +325,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.ownerForm
             .get('bankId')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                this.isBankSelected = this.bankVerificationService.onSelectBank(
-                    this.selectedBank ? this.selectedBank.name : value,
-                    this.ownerForm.get('routingNumber'),
-                    this.ownerForm.get('accountNumber')
-                );
+            .subscribe(async (value) => {
+                this.isBankSelected =
+                    await this.bankVerificationService.onSelectBank(
+                        this.selectedBank ? this.selectedBank.name : value,
+                        this.ownerForm.get('routingNumber'),
+                        this.ownerForm.get('accountNumber')
+                    );
             });
     }
 
@@ -436,6 +444,40 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         `"${bussinesName}" added`,
                         'Success'
                     );
+
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'truck-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: TruckModalComponent,
+                                    size: 'small',
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            case 'trailer-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: TrailerModalComponent,
+                                    size: 'small',
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () => {
                     this.notificationService.error(

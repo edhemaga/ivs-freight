@@ -63,12 +63,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         if (this.editData?.type === 'edit') {
-            // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-            this.editData = {
-                ...this.editData,
-                id: 2,
-            };
-
             this.getFuelStopById(this.editData.id);
         }
 
@@ -298,10 +292,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                         'Success',
                         'Successfully fuel stop updated.'
                     );
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                    });
                 },
                 error: (error: any) => {
                     this.notificationService.error('Error', error);
@@ -336,10 +326,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                         'Success',
                         'Successfully fuel stop added.'
                     );
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                    });
                 },
                 error: (error: any) => {
                     this.notificationService.error('Error', error);

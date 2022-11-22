@@ -416,11 +416,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverForm
             .get('bankId')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                this.isBankSelected = this.bankVerificationService.onSelectBank(
-                    this.selectedBank ? this.selectedBank.name : value,
-                    this.driverForm.get('routing'),
-                    this.driverForm.get('account')
+            .subscribe(async (value) => {
+                this.isBankSelected =
+                    await this.bankVerificationService.onSelectBank(
+                        this.selectedBank ? this.selectedBank.name : value,
+                        this.driverForm.get('routing'),
+                        this.driverForm.get('account')
+                    );
+
+                console.log(
+                    'form component: ',
+                    this.driverForm.get('routing').errors
                 );
             });
     }
@@ -931,7 +937,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 data.solo?.perStop
                                     ? convertNumberInThousandSep(
-                                          data.solo.perStop
+                                          data.solo?.perStop
+                                              ? data.solo.perStop
+                                              : null
                                       )
                                     : null,
                                 {
@@ -993,7 +1001,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             .patchValue(
                                 data.team?.perStop
                                     ? convertNumberInThousandSep(
-                                          data.team.perStop
+                                          data.team?.perStop
+                                              ? data.team.perStop
+                                              : null
                                       )
                                     : null,
                                 {
@@ -1029,9 +1039,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
                     this.payrollCompany = {
                         solo: {
-                            emptyMile: data.solo.emptyMile,
-                            loadedMile: data.solo.loadedMile,
-                            perStop: data.solo.perStop
+                            emptyMile: data.solo?.emptyMile
+                                ? data.solo.emptyMile
+                                : null,
+                            loadedMile: data.solo?.loadedMile
+                                ? data.solo.loadedMile
+                                : null,
+                            perStop: data.solo?.perStop
                                 ? convertNumberInThousandSep(data.solo.perStop)
                                 : null,
                             perMileSolo: data.perMileSolo,
@@ -1043,9 +1057,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 : null,
                         },
                         team: {
-                            emptyMile: data.team.emptyMile,
-                            loadedMile: data.team.loadedMile,
-                            perStop: data.team.perStop
+                            emptyMile: data.team?.emptyMile
+                                ? data.team.emptyMile
+                                : null,
+                            loadedMile: data.team?.loadedMile
+                                ? data.team.loadedMile
+                                : null,
+                            perStop: data.team?.perStop
                                 ? convertNumberInThousandSep(data.team.perStop)
                                 : null,
                             perMileTeam: data.perMileTeam,
@@ -1839,19 +1857,39 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
                     this.driverForm
                         .get('soloLoadedMile')
-                        .patchValue(res.solo.loadedMile, { emitEvent: false });
+                        .patchValue(
+                            res.solo?.loadedMile ? res.solo.loadedMile : null,
+                            {
+                                emitEvent: false,
+                            }
+                        );
 
                     this.driverForm
                         .get('teamLoadedMile')
-                        .patchValue(res.team.loadedMile, { emitEvent: false });
+                        .patchValue(
+                            res.team?.loadedMile ? res.team.loadedMile : null,
+                            {
+                                emitEvent: false,
+                            }
+                        );
 
                     this.driverForm
                         .get('soloEmptyMile')
-                        .patchValue(res.solo.emptyMile, { emitEvent: false });
+                        .patchValue(
+                            res.solo?.emptyMile ? res.solo.emptyMile : null,
+                            {
+                                emitEvent: false,
+                            }
+                        );
 
                     this.driverForm
                         .get('teamEmptyMile')
-                        .patchValue(res.team.emptyMile, { emitEvent: false });
+                        .patchValue(
+                            res.team?.emptyMile ? res.team.emptyMile : null,
+                            {
+                                emitEvent: false,
+                            }
+                        );
 
                     this.driverForm
                         .get('soloFlatRate')

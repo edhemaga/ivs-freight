@@ -31,9 +31,7 @@
         >
             <h3 class="m-0 ta-font-bold">To previous employer</h3>
             <div class="d-flex align-items-center info-box">
-                <p class="m-0 ta-font-regular">
-                    {{ completedByProspectiveEmployderCard?.employerName }}
-                </p>
+                <p class="m-0 ta-font-regular">dogma brewery logistic</p>
             </div>
         </div>
         <div class="d-flex align-items-center">
@@ -53,9 +51,7 @@
 
                     <div class="pipe"></div>
 
-                    <p class="m-0 ta-font-regular">
-                        {{ completedByProspectiveEmployderCard?.employerPhone }}
-                    </p>
+                    <p class="m-0 ta-font-regular">(123) 456 7890</p>
                 </div>
             </div>
 
@@ -75,9 +71,7 @@
 
                     <div class="pipe"></div>
 
-                    <p class="m-0 ta-font-regular">
-                        {{ completedByProspectiveEmployderCard?.employerEmail }}
-                    </p>
+                    <p class="m-0 ta-font-regular">Dogmabrewery@gmail.com</p>
                 </div>
             </div>
 
@@ -97,9 +91,7 @@
 
                     <div class="pipe"></div>
 
-                    <p class="m-0 ta-font-regular">
-                        {{ completedByProspectiveEmployderCard?.employerFax }}
-                    </p>
+                    <p class="m-0 ta-font-regular">(123) 456 7890</p>
                 </div>
             </div>
         </div>
@@ -122,10 +114,7 @@
                     <div class="pipe"></div>
 
                     <p class="m-0 ta-font-regular">
-                        {{
-                            completedByProspectiveEmployderCard?.employerAddress
-                                .address
-                        }}
+                        Oak Street, Westmont, IL 34500, USA
                     </p>
                 </div>
             </div>
@@ -137,12 +126,7 @@
             >
                 <h3 class="m-0 ta-font-bold">unit #</h3>
                 <div class="d-flex align-items-center info-box">
-                    <p class="m-0 ta-font-regular">
-                        {{
-                            completedByProspectiveEmployderCard?.employerAddress
-                                .addressUnit
-                        }}
-                    </p>
+                    <p class="m-0 ta-font-regular">40a</p>
                 </div>
             </div>
         </div>
@@ -170,23 +154,20 @@
                 >
                     <div class="d-flex align-items-center driver-box">
                         <p class="m-0 ta-font-regular">
-                            {{
-                                completedByProspectiveEmployderCard?.employeeName
-                            }}
+                            <!--  {{ license.name }} -->
+                            aleksandar djordjevic
                         </p>
                     </div>
                     <div class="d-flex align-items-center ssn-box">
                         <p class="m-0 ta-font-regular">
-                            {{
-                                completedByProspectiveEmployderCard?.employeeSsn
-                            }}
+                            <!--  {{ license.license }} -->
+                            123-45-6789
                         </p>
                     </div>
                     <div class="d-flex align-items-center date-box">
                         <p class="m-0 ta-font-regular">
-                            {{
-                                completedByProspectiveEmployderCard?.employeeDoB
-                            }}
+                            <!--    {{ license.expDate }} -->
+                            01/19/20
                         </p>
                     </div>
                 </div>
@@ -233,9 +214,7 @@
                         <div class="pipe"></div>
 
                         <div class="d-flex align-items-center date-from-box">
-                            <p class="m-0 ta-font-regular">
-                                {{ completedByDriverCard?.dateFrom }}
-                            </p>
+                            <p class="m-0 ta-font-regular">01/18/18</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
@@ -251,18 +230,13 @@
                         <div class="pipe"></div>
 
                         <div class="d-flex align-items-center date-to-box">
-                            <p class="m-0 ta-font-regular">
-                                {{ completedByDriverCard?.dateTo }}
-                            </p>
+                            <p class="m-0 ta-font-regular">01/18/20</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
                         <svg-icon
                             class="truck-icon"
-                            [src]="
-                                'assets/svg/truckassist-table/truck/' +
-                                completedByDriverCard?.vehicleType.logoName
-                            "
+                            src="assets/svg/truckassist-table/truck/ic_truck_semi-truck.svg"
                             [svgStyle]="{
                                 'width.px': '34.03',
                                 'height.px': '14.54'
@@ -270,9 +244,7 @@
                         ></svg-icon>
 
                         <div class="d-flex align-items-center">
-                            <p class="m-0 ta-font-regular">
-                                {{ completedByDriverCard?.vehicleType.name }}
-                            </p>
+                            <p class="m-0 ta-font-regular">Semi Sleeper</p>
                         </div>
                     </div>
                 </div>
@@ -293,9 +265,7 @@
 
                 <div class="d-flex align-items-center reason-info-container">
                     <div class="d-flex align-items-center">
-                        <p class="m-0 ta-font-regular">
-                            {{ completedByDriverCard?.reasonForLeaving.name }}
-                        </p>
+                        <p class="m-0 ta-font-regular">Discharge</p>
                     </div>
                 </div>
             </div>

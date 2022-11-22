@@ -14,7 +14,6 @@
                         class="text-center step"
                         routerLinkActive="step-active"
                         [ngClass]="{
-                            disabled: !isStepCompletedArray[i].isCompleted,
                             'completed-step':
                                 isStepCompletedArray[i].isCompleted
                         }"
@@ -42,7 +41,6 @@
 
             <app-applicant-footer
                 [companyInfoSph]="companyInfo"
-                [dateOfApplicationSph]="dateOfApplication"
             ></app-applicant-footer>
         </div>
     </div>

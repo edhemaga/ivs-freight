@@ -339,18 +339,6 @@ export class TruckassistTableBodyComponent
                 (t) => t.field === this.selectedTab
             );
         }
-
-        console.log('ViewData length');
-        console.log(this.viewData.length);
-
-        console.log('Selected Tab Data All Data');
-        console.log(this.activeTableData.length);
-
-        console.log(
-            `Da li Show More treba da se pojavi: ${
-                this.viewData.length < this.activeTableData.length
-            }`
-        );
     }
 
     // Get Not Pined Section Of Table Max Width
@@ -479,6 +467,7 @@ export class TruckassistTableBodyComponent
     // Toggle Status Dropdown
     toggleStatusDropdown(tooltip: any, row: any) {
         this.statusTooltip = tooltip;
+
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {

@@ -9,7 +9,6 @@ import {
     RepairShopModalResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
-import moment from 'moment';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
@@ -27,6 +26,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
+import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -124,8 +124,30 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
+        console.log(data);
         switch (data.action) {
             case 'close': {
+                if (this.editData?.canOpenModal) {
+                    switch (this.editData?.key) {
+                        case 'repair-modal': {
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: RepairOrderModalComponent,
+                                size: 'large',
+                                type: this.editData?.type,
+                                closing: 'fastest',
+                            });
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }
                 break;
             }
             case 'save': {
@@ -163,24 +185,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
-
-        if (this.editData?.canOpenModal) {
-            switch (this.editData?.key) {
-                case 'repair-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: { key: this.editData?.key, value: null },
-                        component: RepairOrderModalComponent,
-                        size: 'large',
-                        type: this.editData?.type,
-                    });
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-        }
     }
 
     public get openHours(): FormArray {
@@ -191,8 +195,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         day: string,
         isDay: boolean,
         dayOfWeek: number,
-        startTime: any = moment('8:00:00 AM', 'HH:mm:SS A').toDate(),
-        endTime: any = moment('5:00:00 PM', 'HH:mm:SS A').toDate()
+        startTime: any = convertTimeFromBackend('8:00:00 AM'),
+        endTime: any = convertTimeFromBackend('5:00:00 PM')
     ): FormGroup {
         return this.formBuilder.group({
             isDay: [isDay],
@@ -229,15 +233,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.openHours
                         .at(index)
                         .get('startTime')
-                        .patchValue(
-                            moment('8:00:00 AM', 'HH:mm:SS A').toDate()
-                        );
+                        .patchValue(convertTimeFromBackend('8:00:00 AM'));
                     this.openHours
                         .at(index)
                         .get('endTime')
-                        .patchValue(
-                            moment('8:00:00 AM', 'HH:mm:SS A').toDate()
-                        );
+                        .patchValue(convertTimeFromBackend('8:00:00 AM'));
                 }
             });
     }
@@ -312,12 +312,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.repairShopForm
             .get('bankId')
             .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe((value) => {
-                this.isBankSelected = this.bankVerificationService.onSelectBank(
-                    this.selectedBank ? this.selectedBank.name : value,
-                    this.repairShopForm.get('routing'),
-                    this.repairShopForm.get('account')
-                );
+            .subscribe(async (value) => {
+                this.isBankSelected =
+                    await this.bankVerificationService.onSelectBank(
+                        this.selectedBank ? this.selectedBank.name : value,
+                        this.repairShopForm.get('routing'),
+                        this.repairShopForm.get('account')
+                    );
             });
     }
 
@@ -363,8 +364,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             el.dayOfWeek,
                             !!(el.startTime && el.endTime),
                             this.openHoursDays.indexOf(el.dayOfWeek),
-                            moment(el.startTime, 'HH:mm:SS A').toDate(),
-                            moment(el.endTime, 'HH:mm:SS A').toDate()
+                            convertTimeFromBackend(el.startTime),
+                            convertTimeFromBackend(el.endTime)
                         );
                     });
                 },
@@ -424,6 +425,27 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         'Repair shop added',
                         'Success: '
                     );
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'repair-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: RepairOrderModalComponent,
+                                    size: 'large',
+                                    type: this.editData?.type,
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () => {
                     this.notificationService.error(

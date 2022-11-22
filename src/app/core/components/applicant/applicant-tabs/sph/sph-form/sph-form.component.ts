@@ -2,9 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
-
-import { ApplicantQuery } from '../../../state/store/applicant.query';
+import { ApplicantSphFormQuery } from '../../../state/store/applicant-sph-form-store/applicant-sph-form.query';
 
 import { INavigation } from '../../../state/model/navigation.model';
 import { ApplicantCompanyInfoResponse } from 'appcoretruckassist';
@@ -18,8 +16,6 @@ export class SphFormComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public companyInfo: ApplicantCompanyInfoResponse;
-
-    public dateOfApplication: string;
 
     public menuItems: INavigation[] = [
         {
@@ -45,7 +41,7 @@ export class SphFormComponent implements OnInit, OnDestroy {
         { id: 3, isCompleted: false },
     ];
 
-    constructor(private applicantQuery: ApplicantQuery) {}
+    constructor(private applicantSphFormQuery: ApplicantSphFormQuery) {}
 
     ngOnInit(): void {
         this.getStepValuesFromStore();
@@ -56,36 +52,18 @@ export class SphFormComponent implements OnInit, OnDestroy {
     public trackByIdentity = (index: number, item: any): number => index;
 
     public getStepValuesFromStore(): void {
-        this.applicantQuery.applicantSphForm$
+        this.applicantSphFormQuery.fullList$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
                     this.isStepCompletedArray = this.isStepCompletedArray.map(
                         (item, index) => {
-                            if (index === 0) {
-                                return {
-                                    ...item,
-                                    isCompleted: res ? true : false,
-                                };
-                            }
-
-                            if (index === 1) {
-                                return {
-                                    ...item,
-                                    isCompleted: res?.sphAccidentHistory
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 2) {
-                                return {
-                                    ...item,
-                                    isCompleted: res?.sphDrugAndAlcohol
-                                        ? true
-                                        : false,
-                                };
-                            }
+                            return {
+                                ...item,
+                                isCompleted: res[`step${index + 1}`]
+                                    ? true
+                                    : false,
+                            };
                         }
                     );
                 }
@@ -93,16 +71,11 @@ export class SphFormComponent implements OnInit, OnDestroy {
     }
 
     public getCompanyInfo(): void {
-        this.applicantQuery.applicantSphForm$
+        this.applicantSphFormQuery.companyInfo$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res) {
-                    this.companyInfo = res?.companyInfo;
-
-                    this.dateOfApplication = convertDateFromBackend(
-                        res?.inviteDate
-                    );
-                }
+                console.log('comapny', res);
+                this.companyInfo = res;
             });
     }
 

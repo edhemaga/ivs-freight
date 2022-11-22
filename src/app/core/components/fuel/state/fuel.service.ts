@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
 import { Injectable } from '@angular/core';
 import {
@@ -6,12 +7,17 @@ import {
     FuelTransactionListResponse,
 } from 'appcoretruckassist';
 
-import { Observable, of } from 'rxjs';
 import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
+import { EditFuelStopCommand } from '../../../../../../appcoretruckassist/model/editFuelStopCommand';
+import { AddFuelStopCommand } from '../../../../../../appcoretruckassist/model/addFuelStopCommand';
 import { UpdateFuelStopCommand } from '../../../../../../appcoretruckassist/model/updateFuelStopCommand';
 import { FuelStore } from './fule-state/fuel-state.store';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
+import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model/getFuelModalResponse';
+import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
+import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
+import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
+import { getFunctionParams } from '../../../utils/methods.globals';
 
 @Injectable({
     providedIn: 'root',
@@ -22,8 +28,9 @@ export class FuelTService {
         private fuelStore: FuelStore
     ) {}
 
-    // Get Fuel Transactions
-    getFuelTransactionsList(
+    // **************** FUEL TRANSACTION ****************
+
+    public getFuelTransactionsList(
         fuelTransactionSpecParamsFuelStopStoreId?: number,
         fuelTransactionSpecParamsPageIndex?: number,
         fuelTransactionSpecParamsPageSize?: number,
@@ -45,8 +52,68 @@ export class FuelTService {
         );
     }
 
+    set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
+        this.fuelStore.update((store) => {
+            return {
+                ...store,
+                fuelTransactions: data,
+            };
+        });
+    }
+
+    public getFuelTransactionModalDropdowns(): Observable<GetFuelModalResponse> {
+        return this.fuelService.apiFuelTransactionModalGet();
+    }
+
+    public getFuelTransactionFranchises(
+        pageIndex: number,
+        pageSize: number
+    ): Observable<any> {
+        return this.fuelService.apiFuelTransactionModalFuelstopfranchiseGet(
+            pageIndex,
+            pageSize
+        );
+    }
+
+    public getFuelTransactionStoresByFranchiseId(
+        id: number
+    ): Observable<FuelStopFranchiseResponse> {
+        return this.fuelService.apiFuelFuelstopfranchiseIdGet(id);
+    }
+
+    public getDriverBySelectedTruckAndDate(
+        truckId: number,
+        date: string
+    ): Observable<FuelDispatchHistoryResponse> {
+        return this.fuelService.apiFuelDispatchhistoryGet(truckId, date);
+    }
+
+    public addFuelTransaction(data: any): Observable<CreateResponse> {
+        const sortedParams = getFunctionParams(
+            this.fuelService.apiFuelTransactionPost,
+            data
+        );
+        return this.fuelService.apiFuelTransactionPost(...sortedParams);
+    }
+
+    public updateFuelTransaction(data: any): Observable<CreateResponse> {
+        const sortedParams = getFunctionParams(
+            this.fuelService.apiFuelTransactionPut,
+            data
+        );
+        return this.fuelService.apiFuelTransactionPut(...sortedParams);
+    }
+
+    public getFuelTransactionById(
+        id: number
+    ): Observable<FuelTransactionResponse> {
+        return this.fuelService.apiFuelTransactionIdGet(id);
+    }
+
+    // **************** FUEL STOP ****************
+
     // Get Fule Stops
-    getFuelStopsList(
+    public getFuelStopsList(
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -66,15 +133,6 @@ export class FuelTService {
         );
     }
 
-    set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
-        this.fuelStore.update((store) => {
-            return {
-                ...store,
-                fuelTransactions: data,
-            };
-        });
-    }
-
     set updateStoreFuelStopList(data: FuelStopListResponse) {
         this.fuelStore.update((store) => {
             return {
@@ -88,27 +146,15 @@ export class FuelTService {
         return this.fuelService.apiFuelFuelstopIdGet(fuelId);
     }
 
-    public addFuelStop(
-        data: any /*AddFuelStopCommand*/
-    ): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.fuelService.apiFuelFuelstopPost,
-            data
-        );
-
-        return this.fuelService.apiFuelFuelstopPost(...sortedParams);
+    public addFuelStop(data: AddFuelStopCommand): Observable<CreateResponse> {
+        return this.fuelService.apiFuelFuelstopPost(data);
     }
 
     // For table method
     public updateFuelStopShortest(
-        data: any /*EditFuelStopCommand*/
+        data: EditFuelStopCommand
     ): Observable<object> {
-        const sortedParams = getFunctionParams(
-            this.fuelService.apiFuelFuelstopPut,
-            data
-        );
-
-        return this.fuelService.apiFuelFuelstopPut(...sortedParams);
+        return this.fuelService.apiFuelFuelstopPut(data);
     }
 
     // For modal method
@@ -135,34 +181,31 @@ export class FuelTService {
         addressEntityStateShortName: string,
         addressEntityAddressUnit: string
     ): Observable<boolean> {
-        // return this.fuelService.apiFuelFuelstopCheckAddressGet(
-        //     addressEntityCity,
-        //     addressEntityState,
-        //     addressEntityCounty,
-        //     addressEntityAddress,
-        //     addressEntityStreet,
-        //     addressEntityStreetNumber,
-        //     addressEntityCountry,
-        //     addressEntityZipCode,
-        //     addressEntityStateShortName,
-        //     addressEntityAddressUnit
-        // );
-        return of();
+        return this.fuelService.apiFuelFuelstopCheckAddressGet(
+            addressEntityCity,
+            addressEntityState,
+            addressEntityCounty,
+            addressEntityAddress,
+            addressEntityStreet,
+            addressEntityStreetNumber,
+            addressEntityCountry,
+            addressEntityZipCode,
+            addressEntityStateShortName,
+            addressEntityAddressUnit
+        );
     }
 
     public checkFuelStopPhone(data: string): Observable<boolean> {
-        //return this.fuelService.apiFuelFuelstopCheckPhonePhoneGet(data);
-        return of();
+        return this.fuelService.apiFuelFuelstopCheckPhonePhoneGet(data);
     }
 
     public checkFuelStopFranchise(
         franchiseId: number,
         store: string
     ): Observable<boolean> {
-        // return this.fuelService.apiFuelFuelstopCheckStoreFranchiseIdStoreGet(
-        //     franchiseId,
-        //     store
-        // );
-        return of();
+        return this.fuelService.apiFuelFuelstopCheckStoreFranchiseIdStoreGet(
+            franchiseId,
+            store
+        );
     }
 }
