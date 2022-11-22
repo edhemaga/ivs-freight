@@ -2,7 +2,7 @@
     [modalTitle]="editData?.type !== 'edit' ? 'Add User' : 'Edit User'"
     [editData]="editData"
     [editName]="editData?.id"
-    [isModalValid]="userForm.valid"
+    [isModalValid]="userForm.valid && isFormDirty"
     (action)="onModalAction($event)"
 >
     <div origin>
@@ -94,7 +94,7 @@
                                 [inputConfig]="{
                                     name: 'Phone',
                                     type: 'text',
-                                    label: 'Phone',
+                                    label: 'Personal Phone',
                                     isRequired: true,
                                     placeholderIcon: 'phone',
                                     mask: '(000) 000-0000',
@@ -108,7 +108,7 @@
                                 [inputConfig]="{
                                     name: 'Email',
                                     type: 'text',
-                                    label: 'Email',
+                                    label: 'Personal Email',
                                     placeholderIcon: 'email',
                                     minLength: 5,
                                     maxLength: 64,
@@ -158,6 +158,8 @@
                                         isDropdown: true,
                                         dropdownWidthClass: 'w-col-188'
                                     }"
+                                    [canAddNew]="true"
+                                    [canOpenModal]="true"
                                     [options]="offices"
                                     [activeItem]="selectedOffice"
                                     (selectedItem)="
@@ -168,7 +170,9 @@
                             <div class="col-3 no-p-left">
                                 <app-ta-tab-switch
                                     [tabs]="typeOfEmploye"
-                                    (switchClicked)="onTypeOfEmploye($event)"
+                                    (switchClicked)="
+                                        onSelectedTab($event, 'user-admin')
+                                    "
                                     [type]="'type2-modal-popup'"
                                 >
                                 </app-ta-tab-switch>
@@ -269,23 +273,26 @@
                                 active: userForm.get('isIncludePayroll').value
                             }"
                         >
+                            <!-- [canAddNew]="true" -->
                             <div class="row">
                                 <div class="col-5">
-                                    <app-ta-input
-                                        formControlName="salary"
+                                    <app-ta-input-dropdown
+                                        formControlName="paymentType"
                                         [inputConfig]="{
-                                            name: 'Salary',
+                                            name: 'Input Dropdown',
                                             type: 'text',
-                                            label: 'Salary',
-                                            isRequired: true,
-                                            placeholderIcon: 'dollar',
-                                            customClass:
-                                                'dollar-placeholderIcon',
-                                            thousandSeparator: true,
-                                            minLength: 4,
-                                            maxLength: 8
+                                            label: 'Payment Type',
+                                            textTransform: 'capitalize',
+                                            isDropdown: true,
+                                            isDisabled: !isPaymentTypeAvailable,
+                                            dropdownWidthClass: 'w-col-177'
                                         }"
-                                    ></app-ta-input>
+                                        [options]="paymentOptions"
+                                        [activeItem]="selectedPayment"
+                                        (selectedItem)="
+                                            onSelectDropdown($event, 'payment')
+                                        "
+                                    ></app-ta-input-dropdown>
                                 </div>
                                 <div class="col-4">
                                     <app-ta-input
@@ -305,11 +312,78 @@
                                     <app-ta-tab-switch
                                         [tabs]="typeOfPayroll"
                                         (switchClicked)="
-                                            onTypeOfPayroll($event)
+                                            onSelectedTab($event, '1099-w2')
                                         "
                                         [type]="'type2-modal-popup'"
                                     >
                                     </app-ta-tab-switch>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    *ngIf="allowPairCommissionBase"
+                                    class="col-6"
+                                >
+                                    <app-ta-input
+                                        formControlName="base"
+                                        [inputConfig]="{
+                                            name: 'Salary',
+                                            type: 'text',
+                                            label: 'Base',
+                                            isRequired: true,
+                                            placeholderIcon: 'dollar',
+                                            customClass:
+                                                'dollar-placeholderIcon',
+                                            thousandSeparator: true,
+                                            minLength: 4,
+                                            maxLength: 8
+                                        }"
+                                    ></app-ta-input>
+                                </div>
+                                <div
+                                    [ngClass]="
+                                        allowPairCommissionBase
+                                            ? 'col-6'
+                                            : 'col-12'
+                                    "
+                                >
+                                    <app-ta-input
+                                        *ngIf="
+                                            !allowOnlyCommission &&
+                                            !allowPairCommissionBase
+                                        "
+                                        formControlName="salary"
+                                        [inputConfig]="{
+                                            name: 'Salary',
+                                            type: 'text',
+                                            label: 'Salary',
+                                            isRequired: true,
+                                            placeholderIcon: 'dollar',
+                                            customClass:
+                                                'dollar-placeholderIcon',
+                                            thousandSeparator: true,
+                                            minLength: 4,
+                                            maxLength: 8
+                                        }"
+                                    ></app-ta-input>
+
+                                    <app-ta-ngx-slider
+                                        *ngIf="
+                                            allowOnlyCommission ||
+                                            allowPairCommissionBase
+                                        "
+                                        [sliderName]="'Commission'"
+                                        [sliderOptions]="commissionOptions"
+                                        [startedValue]="
+                                            userForm.get('commission').value
+                                        "
+                                        [customClass]="'custom-truck-modal'"
+                                        (onUserValueChange)="
+                                            userForm
+                                                .get('commission')
+                                                .setValue($event)
+                                        "
+                                    ></app-ta-ngx-slider>
                                 </div>
                             </div>
                             <div
@@ -331,7 +405,7 @@
                                             maxLength: 64,
                                             textTransform: 'uppercase',
                                             isDropdown: true,
-                                            dropdownWidthClass: 'w-col-163'
+                                            dropdownWidthClass: 'w-col-164'
                                         }"
                                         [canAddNew]="true"
                                         [options]="labelsBank"
@@ -365,8 +439,8 @@
                                             label: 'Account #',
                                             isDisabled: !isBankSelected,
                                             isRequired: isBankSelected,
-                                            maxLength: 17,
-                                            minLength: 5
+                                            minLength: 5,
+                                            maxLength: 17
                                         }"
                                     ></app-ta-input>
                                 </div>
