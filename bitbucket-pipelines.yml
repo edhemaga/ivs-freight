@@ -1,0 +1,9 @@
+pipelines:
+  default:
+      - step:
+          runs-on:
+            - self.hosted
+            - linux.shell
+          script:
+          - echo "Your build and test goes here..."
+          - sh ./skripta.sh
