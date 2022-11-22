@@ -12,7 +12,9 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 import { AfterViewInit } from '@angular/core';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { FuelQuery } from '../state/fule-state/fuel-state.query';
-import { FuelStopResponse, FuelTransactionResponse } from 'appcoretruckassist';
+import { DatePipe } from '@angular/common';
+import { FuelStopListResponse } from '../../../../../../appcoretruckassist/model/fuelStopListResponse';
+import { FuelTransactionListResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionListResponse';
 
 @Component({
     selector: 'app-fuel-table',
@@ -62,30 +64,16 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
-    fuelTransactionList: FuelTransactionResponse[];
-    fuelStopList: FuelStopResponse[];
+    fuelData: FuelTransactionListResponse | FuelStopListResponse;
 
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private thousandSeparator: TaThousandSeparatorPipe,
+        public datePipe: DatePipe,
         private fuelQuery: FuelQuery
     ) {}
     ngOnInit(): void {
-        // Get Fuel Transactions From Store
-        this.fuelQuery.fuelTransactions$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data) => {
-                this.fuelTransactionList = data.pagination.data;
-            });
-
-        // Get Fuel Stops From Store
-        this.fuelQuery.fuelStops$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data) => {
-                this.fuelStopList = data.pagination.data;
-            });
-
         this.sendFuelData();
 
         // Reset Columns
@@ -271,6 +259,25 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
           }, 900); */
                 }
             });
+
+        // Map
+        this.sortTypes = [
+            { name: 'Business Name', id: 1, sortName: 'name' },
+            { name: 'Location', id: 2, sortName: 'location', isHidden: true },
+            { name: 'Favorites', id: 8, sortName: 'favorites' },
+            { name: 'Fuel Price', id: 9, sortName: 'fuelPrice' },
+            { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
+            { name: 'Purchase', id: 6, sortName: 'purchase' },
+            { name: 'Total Cost', id: 7, sortName: 'cost' },
+        ];
+
+        this.activeSortType = this.sortTypes[0];
+
+        this.sortBy = this.sortDirection
+            ? this.activeSortType.sortName +
+              (this.sortDirection[0]?.toUpperCase() +
+                  this.sortDirection?.substr(1).toLowerCase())
+            : '';
     }
 
     ngAfterViewInit(): void {
@@ -359,12 +366,14 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const fuelCount = JSON.parse(localStorage.getItem('fuelTableCount'));
 
+        this.getTabData();
+
         this.tableData = [
             {
                 title: 'Transactions',
                 field: 'active',
                 length: fuelCount.fuelTransactions,
-                data: this.fuelTransactionList,
+                data: this.fuelData,
                 gridNameTitle: 'Fuel',
                 tableConfiguration: 'FUEL_TRANSACTION',
                 isActive: this.selectedTab === 'active',
@@ -374,7 +383,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 title: 'Stop',
                 field: 'inactive',
                 length: fuelCount.fuelStops,
-                data: this.fuelStopList,
+                data: this.fuelData,
                 gridNameTitle: 'Fuel',
                 tableConfiguration: 'FUEL_STOP',
                 isActive: this.selectedTab === 'inactive',
@@ -382,27 +391,120 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
 
+        console.log(this.tableData);
+
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setFuelData(td);
+    }
+
+    getTabData() {
+        if (this.selectedTab === 'active') {
+            return this.fuelQuery.fuelTransactions$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((data) => {
+                    this.fuelData = data.pagination.data;
+                });
+        } else {
+            return this.fuelQuery.fuelStops$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((data) => {
+                    this.fuelData = data.pagination.data;
+                });
+        }
     }
 
     setFuelData(td: any) {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
-            this.viewData = td.data;
+            this.viewData = [...td.data];
 
             this.viewData = this.viewData.map((data) => {
-                data.isSelected = false;
-                return data;
+                return this.selectedTab === 'active'
+                    ? this.mapFuelTransactionsData(data)
+                    : this.mapFuelStopsData(data);
             });
-
-            console.log('Fuel Data');
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
+    }
+
+    mapFuelTransactionsData(data: any) {
+        return {
+            ...data,
+            isSelected: false,
+            tableTruckNumber: data?.truck?.truckNumber
+                ? data.truck.truckNumber
+                : '',
+            tableDriverName:
+                data?.driver?.firstName || data?.driver?.lastName
+                    ? data.driver.firstName + ' ' + data.driver.lastName
+                    : '',
+            tableFuelCardNumber: data?.fuelCard?.cardNumber
+                ? data.fuelCard.cardNumber
+                : '',
+            tableTransactionDate: data?.transactionDate
+                ? this.datePipe.transform(data.transactionDate, 'MM/dd/yy')
+                : '',
+            tableTransactionTime: 'Treba da se poveze',
+            tableFuelStopName: data?.fuelStopStore?.businessName
+                ? data.fuelStopStore.businessName
+                : '',
+            tableLocation: data?.fuelStopStore?.address?.address
+                ? data.fuelStopStore.address.address
+                : '',
+            fuelTableItem: data?.fuelItems
+                ? data.fuelItems
+                      .map((item) => item.category?.trim())
+                      .join(
+                          '<div class="description-dot-container"><span class="description-dot"></span></div>'
+                      )
+                : null,
+            descriptionItems: data?.fuelItems
+                ? data.fuelItems.map((item) => {
+                      return {
+                          ...item,
+                          descriptionPrice: item?.price
+                              ? '$' +
+                                this.thousandSeparator.transform(item.price)
+                              : '',
+                          descriptionTotalPrice: item?.subtotal
+                              ? '$' +
+                                this.thousandSeparator.transform(item.subtotal)
+                              : '',
+                          pmDescription: null,
+                      };
+                  })
+                : null,
+            tableQTY: 'Treba da se pogleda gde je property',
+            tbalePPG: 'Treba da se pogleda gde je property',
+            tableTotal: data?.total
+                ? '$ ' + this.thousandSeparator.transform(data.total)
+                : '',
+        };
+    }
+
+    mapFuelStopsData(data: any) {
+        return {
+            ...data,
+            isSelected: false,
+            tableName: data?.fuelStopFranchise?.businessName
+                ? data.fuelStopFranchise.businessName
+                : '',
+            tableStore: data?.store ? data.store : '',
+            tableAddress: data?.address?.address ? data.address.address : '',
+            tablePPG: data?.pricePerGallon ? data.pricePerGallon : '',
+            tableLast: data?.fuelStopExtensions[0]?.totalCost
+                ? data.fuelStopExtensions[0].totalCost
+                : '',
+            tableUsed: data?.fuelStopExtensions[0]?.lastUsed
+                ? data.fuelStopExtensions[0].lastUsed
+                : '',
+            tableTotalCost:
+                'Nema propery ili treba da se mapira iz fuelStopExtensions',
+            isFavorite: data.fuelStopExtensions[0].favourite,
+        };
     }
 
     onToolBarAction(event: any) {

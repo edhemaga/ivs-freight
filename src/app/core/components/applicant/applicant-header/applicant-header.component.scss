@@ -191,9 +191,15 @@
                     transition: background 0.3s ease-in-out,
                         color 0.3s ease-in-out;
 
-                    -webkit-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
 
                     .nav-icon {
                         margin-right: 12px;

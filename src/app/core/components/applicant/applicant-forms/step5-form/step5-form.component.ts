@@ -160,37 +160,33 @@ export class Step5FormComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mode?.previousValue !== changes.mode?.currentValue) {
             this.selectedMode = changes.mode?.currentValue;
-        }
 
-        if (this.selectedMode === SelectedMode.APPLICANT) {
-            if (
-                changes.markFormInvalid?.previousValue !==
-                changes.markFormInvalid?.currentValue
-            ) {
-                console.log(
-                    '  changes.markFormInvalid?.currentValue',
+            if (this.selectedMode === SelectedMode.APPLICANT) {
+                if (
+                    changes.markFormInvalid?.previousValue !==
                     changes.markFormInvalid?.currentValue
-                );
-                this.inputService.markInvalid(this.violationsForm);
-                this.markInvalidEmitter.emit(false);
+                ) {
+                    this.inputService.markInvalid(this.violationsForm);
+                    this.markInvalidEmitter.emit(false);
+                }
             }
-        }
 
-        if (
-            this.selectedMode === SelectedMode.REVIEW ||
-            this.selectedMode === SelectedMode.APPLICANT
-        ) {
             if (
-                changes.formValuesToPatch?.previousValue !==
-                changes.formValuesToPatch?.currentValue
+                this.selectedMode === SelectedMode.REVIEW ||
+                this.selectedMode === SelectedMode.APPLICANT
             ) {
-                setTimeout(() => {
-                    this.patchForm(changes.formValuesToPatch.currentValue);
+                if (
+                    changes.formValuesToPatch?.previousValue !==
+                    changes.formValuesToPatch?.currentValue
+                ) {
+                    setTimeout(() => {
+                        this.patchForm(changes.formValuesToPatch.currentValue);
 
-                    if (this.selectedMode === SelectedMode.APPLICANT) {
-                        this.startValueChangesMonitoring();
-                    }
-                }, 50);
+                        if (this.selectedMode === SelectedMode.APPLICANT) {
+                            this.startValueChangesMonitoring();
+                        }
+                    }, 100);
+                }
             }
         }
     }
@@ -240,7 +236,7 @@ export class Step5FormComponent
             this.selectedVehicleType = this.vehicleType.find(
                 (item) => item.name === formValue.vehicleType
             );
-        }, 50);
+        }, 150);
     }
 
     public startValueChangesMonitoring() {
@@ -324,7 +320,6 @@ export class Step5FormComponent
 
         this.formValuesEmitter.emit(saveData);
 
-        this.selectedAddress = null;
         this.selectedVehicleType = null;
 
         this.formService.resetForm(this.violationsForm);

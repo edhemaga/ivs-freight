@@ -3,18 +3,6 @@
 .step-container {
     padding-top: 22px;
 
-    br {
-        &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
-
-        &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
-    }
-
     .step-title {
         color: $ta-blue-5;
         font-size: 32px;
@@ -348,6 +336,10 @@
                         }
                     }
                 }
+            }
+
+            .accident-view-form {
+                margin: 32px auto 0 auto;
             }
         }
     }

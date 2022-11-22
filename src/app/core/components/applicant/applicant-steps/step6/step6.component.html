@@ -179,6 +179,7 @@
                             <app-ta-input-radiobuttons
                                 #cmp
                                 [buttons]="question.answerChoices"
+<<<<<<< HEAD
                                 [disabled]="
                                     selectedMode === 'REVIEW_MODE' ||
                                     selectedMode === 'FEEDBACK_MODE'
@@ -187,6 +188,9 @@
                                     displayRadioRequiredNoteArray[i]
                                         .displayRadioRequiredNote
                                 "
+=======
+                                [disabled]="selectedMode === 'REVIEW_MODE'"
+>>>>>>> develop
                                 (changedValue)="handleInputSelect($event)"
                             ></app-ta-input-radiobuttons>
                         </div>
@@ -223,12 +227,7 @@
                                         placeholder: 'Please explain',
                                         placeholderInsteadOfLabel: true,
                                         isDisabled:
-                                            selectedMode === 'REVIEW_MODE' ||
-                                            (selectedMode === 'FEEDBACK_MODE' &&
-                                                i === 0 &&
-                                                stepFeedbackValues?.isSpecialTrainingDescriptionValid) ||
-                                            (i === 1 &&
-                                                stepFeedbackValues?.isOtherTrainingDescriptionValid),
+                                            selectedMode === 'REVIEW_MODE',
                                         incorrectInput:
                                             selectedMode === 'REVIEW_MODE'
                                     }"
@@ -255,12 +254,10 @@
                                         'questionReview' + (i + 1)
                                     "
                                     [displayAnnotationButton]="
-                                        selectedMode === 'REVIEW_MODE' &&
                                         openAnnotationArray[i]
                                             .displayAnnotationButton
                                     "
                                     [displayAnnotationTextArea]="
-                                        selectedMode === 'REVIEW_MODE' &&
                                         openAnnotationArray[i]
                                             .displayAnnotationTextArea
                                     "
@@ -269,15 +266,10 @@
                                         selectedMode === 'FEEDBACK_MODE'
                                     "
                                     [feedbackText]="
-                                        selectedMode === 'FEEDBACK_MODE' &&
-                                        ((i === 0 &&
-                                            stepFeedbackValues?.specialTrainingDescriptionMessage) ||
-                                            (i === 1 &&
-                                                stepFeedbackValues?.otherTrainingDescriptionMessage))
+                                        'Check the routing number one more time (one number missing)!!!'
                                     "
                                     (annotationBtnClickEvent)="
-                                        selectedMode === 'REVIEW_MODE' &&
-                                            getAnnotationBtnClickValue($event)
+                                        getAnnotationBtnClickValue($event)
                                     "
                                 ></app-applicant-review-feedback>
                             </div>
@@ -344,6 +336,7 @@
                                 <app-ta-input-radiobuttons
                                     #cmp
                                     [buttons]="question.answerChoices"
+<<<<<<< HEAD
                                     [disabled]="
                                         selectedMode === 'REVIEW_MODE' ||
                                         selectedMode === 'FEEDBACK_MODE'
@@ -352,6 +345,9 @@
                                         displayRadioRequiredNoteArray[i + 3]
                                             .displayRadioRequiredNote
                                     "
+=======
+                                    [disabled]="selectedMode === 'REVIEW_MODE'"
+>>>>>>> develop
                                     (changedValue)="handleInputSelect($event)"
                                 ></app-ta-input-radiobuttons>
                             </div>
@@ -386,11 +382,7 @@
                                             isRequired: true,
                                             customClass: 'datetimeclass',
                                             isDisabled:
-                                                selectedMode ===
-                                                    'REVIEW_MODE' ||
-                                                (selectedMode ===
-                                                    'FEEDBACK_MODE' &&
-                                                    stepFeedbackValues?.isFromValid),
+                                                selectedMode === 'REVIEW_MODE',
                                             incorrectInput:
                                                 selectedMode === 'REVIEW_MODE'
                                         }"
@@ -413,11 +405,7 @@
                                             isRequired: true,
                                             customClass: 'datetimeclass',
                                             isDisabled:
-                                                selectedMode ===
-                                                    'REVIEW_MODE' ||
-                                                (selectedMode ===
-                                                    'FEEDBACK_MODE' &&
-                                                    stepFeedbackValues?.isToValid),
+                                                selectedMode === 'REVIEW_MODE',
                                             incorrectInput:
                                                 selectedMode === 'REVIEW_MODE'
                                         }"
@@ -444,12 +432,10 @@
                                             'questionReview' + (i + 4)
                                         "
                                         [displayAnnotationButton]="
-                                            selectedMode === 'REVIEW_MODE' &&
                                             openAnnotationArray[i + 2]
                                                 .displayAnnotationButton
                                         "
                                         [displayAnnotationTextArea]="
-                                            selectedMode === 'REVIEW_MODE' &&
                                             openAnnotationArray[i + 2]
                                                 .displayAnnotationTextArea
                                         "
@@ -458,14 +444,10 @@
                                             selectedMode === 'FEEDBACK_MODE'
                                         "
                                         [feedbackText]="
-                                            selectedMode === 'FEEDBACK_MODE' &&
-                                            stepFeedbackValues?.datesMessage
+                                            'Check the routing number one more time (one number missing)!!!'
                                         "
                                         (annotationBtnClickEvent)="
-                                            selectedMode === 'REVIEW_MODE' &&
-                                                getAnnotationBtnClickValue(
-                                                    $event
-                                                )
+                                            getAnnotationBtnClickValue($event)
                                         "
                                     ></app-applicant-review-feedback>
                                 </div>
@@ -505,17 +487,11 @@
                                             placeholder: 'Please explain',
                                             placeholderInsteadOfLabel: true,
                                             isDisabled:
-                                                selectedMode ===
-                                                    'REVIEW_MODE' ||
-                                                (selectedMode ===
-                                                    'FEEDBACK_MODE' &&
-                                                    stepFeedbackValues?.isUnableToPreformJobDescriptionValid),
+                                                selectedMode === 'REVIEW_MODE',
                                             incorrectInput:
                                                 selectedMode === 'REVIEW_MODE'
                                         }"
-                                        [incorrectValue]="
-                                            openAnnotationArray[3].lineInputs[0]
-                                        "
+                                        [incorrectValue]="false"
                                         (incorrectEvent)="
                                             incorrectInput($event, 0, 3)
                                         "
@@ -535,14 +511,10 @@
                                                 'questionReview' + (i + 4)
                                             "
                                             [displayAnnotationButton]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
                                                 openAnnotationArray[3]
                                                     .displayAnnotationButton
                                             "
                                             [displayAnnotationTextArea]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
                                                 openAnnotationArray[3]
                                                     .displayAnnotationTextArea
                                             "
@@ -551,16 +523,12 @@
                                                 selectedMode === 'FEEDBACK_MODE'
                                             "
                                             [feedbackText]="
-                                                selectedMode ===
-                                                    'FEEDBACK_MODE' &&
-                                                stepFeedbackValues?.unableToPreformJobDescriptionMessage
+                                                'Check the routing number one more time (one number missing)!!!'
                                             "
                                             (annotationBtnClickEvent)="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' &&
-                                                    getAnnotationBtnClickValue(
-                                                        $event
-                                                    )
+                                                getAnnotationBtnClickValue(
+                                                    $event
+                                                )
                                             "
                                         ></app-applicant-review-feedback>
                                     </div>
@@ -804,23 +772,14 @@
                     </div>
 
                     <div
-                        *ngIf="contact.isEditingContact"
                         class="d-flex flex-column contacts-view-form"
-                        [ngStyle]="{
-                            margin:
-                                i !== 0
-                                    ? '32px auto 0 auto'
-                                    : '10px auto 0 auto'
-                        }"
+                        *ngIf="contact.isEditingContact"
                     >
                         <app-step6-form
                             [mode]="selectedMode"
                             [isEditing]="isEditing"
                             [formValuesToPatch]="formValuesToPatch"
                             [isReviewingCard]="isReviewingCard"
-                            [stepFeedbackValues]="
-                                stepFeedbackValues?.lastContactsItemReview
-                            "
                             (formValuesEmitter)="getContactFormValues($event)"
                             (cancelFormEditingEmitter)="
                                 cancelContactEditing($event)
@@ -840,9 +799,7 @@
             <div
                 class="d-flex"
                 *ngIf="
-                    ((selectedMode === 'APPLICANT_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE') &&
-                        !isEditing) ||
+                    (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
                     (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
                 "
             >
@@ -852,9 +809,6 @@
                     [markFormInvalid]="markFormInvalid"
                     [formValuesToPatch]="formValuesToPatch"
                     [isReviewingCard]="isReviewingCard"
-                    [stepFeedbackValues]="
-                        stepFeedbackValues?.lastContactsItemReview
-                    "
                     (formValuesEmitter)="getContactFormValues($event)"
                     (formStatusEmitter)="onGetFormStatus($event)"
                     (markInvalidEmitter)="onMarkInvalidEmit($event)"
@@ -877,20 +831,23 @@
     <app-applicant-next-back-btn
         [nextStep]="true"
         [filledCorrectly]="
+            selectedMode === 'APPLICANT_MODE' &&
             educationForm.valid &&
             selectedGrade > -1 &&
+<<<<<<< HEAD
             formStatus === 'VALID' &&
             !isEditing &&
             (selectedMode === 'APPLICANT_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' &&
                     isUpperFormFeedbackValueUpdated &&
                     isBottomFormFeedbackValueUpdated))
+=======
+            formStatus === 'VALID'
+>>>>>>> develop
         "
         [hasIncorrectFields]="
             selectedMode === 'REVIEW_MODE' &&
-            (questionsHaveIncorrectFields ||
-                hasIncorrectFields ||
-                cardsWithIncorrectFields)
+            (hasIncorrectFields || cardsWithIncorrectFields)
         "
         [mode]="selectedMode"
         (stepEvent)="onStepAction($event)"

@@ -28,14 +28,6 @@ ngb-modal-window[aria-hidden='true'] {
         max-width: -moz-max-content !important;
         max-width: max-content !important;
 
-        // &.modal-large-xl {
-        //   bottom: 6%;
-        // }
-
-        // &.modal-sph-applicant {
-        //   bottom: 3%;
-        // }
-
         @media (min-width: 576px) {
             max-width: -webkit-max-content !important;
             max-width: -moz-max-content !important;
@@ -181,6 +173,10 @@ ngb-modal-window[aria-hidden='true'] {
                     font-size: 14px;
                     font-weight: 400;
                     line-height: 18px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    max-width: 240px;
 
                     &-date {
                         color: #aaaaaa;

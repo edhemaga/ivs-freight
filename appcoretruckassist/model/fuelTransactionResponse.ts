@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { FuelItemResponse } from './fuelItemResponse';
+import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
 import { FuelStopShortResponse } from './fuelStopShortResponse';
 import { DriverMinimalResponse } from './driverMinimalResponse';
@@ -21,6 +22,7 @@ export interface FuelTransactionResponse {
     id?: number;
     driver?: DriverMinimalResponse;
     truck?: TruckShortResponse;
+    trailer?: TrailerMinimalResponse;
     fuelCard?: FuelCardShortResponse;
     fuelStopStore?: FuelStopShortResponse;
     transactionDate?: string;

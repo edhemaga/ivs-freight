@@ -22,22 +22,25 @@ export class BankVerificationService {
         private bankService: BankService
     ) {}
 
-    public onSelectBank(
+    public async onSelectBank(
         bankValue: string,
         routingControl: AbstractControl,
         accountControl: AbstractControl
-    ): boolean {
+    ): Promise<boolean> {
         if (bankValue) {
             this.inputService.changeValidators(
                 routingControl,
                 true,
-                routingBankValidation
+                routingBankValidation,
+                false
             );
-            this.routingNumberTyping(routingControl);
+            await this.routingNumberTyping(routingControl);
+
             this.inputService.changeValidators(
                 accountControl,
                 true,
-                accountBankValidation
+                accountBankValidation,
+                false
             );
             return true;
         } else {
@@ -47,16 +50,23 @@ export class BankVerificationService {
         }
     }
 
-    private routingNumberTyping(routingControl: AbstractControl) {
+    private async routingNumberTyping(routingControl: AbstractControl) {
         routingControl.valueChanges
             .pipe(distinctUntilChanged())
-            .subscribe((value) => {
-                if (value && value.split('').length > 8) {
-                    if (bankRoutingValidator(value)) {
+            .subscribe(async (value) => {
+                if (value?.length > 8) {
+                    console.log('routing value: ', value);
+                    console.log(
+                        'routing typing validation: ',
+                        bankRoutingValidator(value)
+                    );
+                    if (await bankRoutingValidator(value)) {
                         routingControl.setErrors(null);
                     } else {
                         routingControl.setErrors({ invalid: true });
                     }
+
+                    console.log('Error: ', routingControl.errors);
                 }
             });
     }

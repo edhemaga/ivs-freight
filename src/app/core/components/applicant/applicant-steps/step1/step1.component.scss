@@ -3,18 +3,6 @@
 .step-container {
     padding-top: 22px;
 
-    br {
-        &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
-
-        &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
-    }
-
     .step-title {
         color: $ta-blue-5;
         font-size: 32px;
@@ -84,18 +72,6 @@
 
             &:nth-child(1) {
                 margin-top: 0;
-            }
-
-            &.agreement-no-value {
-                &::-moz-selection {
-                    color: $ta-blue-2;
-                    background: rgb(53, 81, 183, 0.2);
-                }
-
-                &::selection {
-                    color: $ta-blue-2;
-                    background: rgb(53, 81, 183, 0.2);
-                }
             }
         }
     }
@@ -575,20 +551,15 @@
                     width: 134px;
                     height: 26px;
                     line-height: 18px;
+                    padding: 4px 8px;
                     border: none;
                     outline: none;
                     font-size: 14px;
-                    padding: 4px 8px;
                     border-radius: 2px;
                     color: $ta-blue-5;
                     background: $bw2;
                     transition: background 0.2s ease-in-out,
                         color 0.2s ease-in-out;
-
-                    -webkit-user-select: none !important;
-                    -moz-user-select: none !important;
-                    -ms-user-select: none !important;
-                    user-select: none !important;
 
                     &:hover {
                         color: $white;
@@ -596,9 +567,38 @@
                     }
 
                     &.disabled {
+                        -webkit-user-select: none !important;
+                        -moz-user-select: none !important;
+                        -ms-user-select: none !important;
+                        user-select: none !important;
+
                         cursor: auto;
+<<<<<<< HEAD
                         background: $bw2;
                         color: $bw5;
+=======
+                        background: $ta-light-grey-4;
+                        color: $bw4;
+
+                        .plus-icon {
+                            svg {
+                                path {
+                                    fill: $ta-light-grey-6;
+                                }
+                            }
+                        }
+                    }
+
+                    .plus-icon {
+                        margin-right: 6px;
+
+                        svg {
+                            path {
+                                transition: fill 0.2s ease-in-out;
+                                fill: $ta-light-blue;
+                            }
+                        }
+>>>>>>> develop
                     }
                 }
             }

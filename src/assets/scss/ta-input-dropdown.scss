@@ -12,9 +12,8 @@
             z-index: 1000;
             max-height: 198px;
             width: 100%;
-            background-color: #ffffff;
+            background-color: #2f2f2f;
             border-radius: 2px;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15) !important;
             padding: 2px;
             overflow: hidden;
 
@@ -28,7 +27,7 @@
                 }
                 &::-webkit-scrollbar-thumb {
                     background-color: transparent;
-                    border: 6px solid #e5e5e5;
+                    border: 6px solid #aaaaaa;
                     border-radius: 1px;
                 }
                 &::-webkit-scrollbar-track {
@@ -38,6 +37,11 @@
                     top: 0;
                     background: transparent;
                 }
+            }
+
+            &-fuel-franchise {
+                padding: 4px;
+                max-height: 300px;
             }
 
             //------------------------ Default Template ------------------------
@@ -50,12 +54,11 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                background-color: #ffffff;
-                color: #6c6c6c;
+                color: #ffffff;
 
                 &.dropdown-option-hovered {
-                    background-color: #f3f3f3;
-                    color: #3c3c3c;
+                    background-color: #1d1d1d;
+                    color: #ffffff;
                     border-radius: 2px;
                     cursor: pointer;
 
@@ -83,8 +86,8 @@
                 }
 
                 &:hover {
-                    background-color: #f3f3f3;
-                    color: #3c3c3c;
+                    background-color: #1d1d1d;
+                    color: #ffffff;
                     border-radius: 2px;
                     cursor: pointer;
 
@@ -103,66 +106,44 @@
                 }
 
                 &.no-result {
-                    height: 18px;
+                    height: 19px;
                     font-size: 11px;
                     font-weight: 600;
                     padding: 1.5px 4px;
-                    color: #b7b7b7;
-
-                    &:hover {
-                        background-color: transparent !important;
-                        color: #b7b7b7 !important;
-                        transition: all 0.3s ease-in-out;
-                        cursor: auto;
-                    }
                 }
 
                 &.add-new {
-                    color: #536bc2;
+                    color: #6f9ee0;
                     font-weight: 600;
                     transition: all 0.3s ease-in-out;
                     position: relative;
 
                     &:hover {
-                        color: #3551b7;
+                        color: #3074d3;
                     }
 
                     .labels-template-text {
-                        color: #536bc2;
+                        color: #6f9ee0;
                         font-weight: 600 !important;
                         transition: all 0.3s ease-in-out;
-                    }
-
-                    &-divider {
-                        &::after {
-                            content: '';
-                            position: absolute;
-                            bottom: 0;
-                            left: 0px;
-                            height: 2px;
-                            width: 100%;
-                            background-color: #f3f3f3;
-                            border-radius: 1px;
-                        }
                     }
                 }
 
                 &.active-repair-truck-trailer {
-                    color: #536bc2;
+                    color: #6f9ee0;
                     position: relative;
 
                     &:hover {
-                        color: #3551b7;
+                        color: #3074d3;
                         transition: all 0.3s ease-in-out;
                     }
 
                     // Higlight text
                     .highlight-text-45632 {
-                        background-color: transparent;
-
+                        font-weight: 700;
+                        transition: all 0.3s ease-in-out;
                         &:hover {
-                            color: #3551b7 !important;
-                            transition: all 0.3s ease-in-out;
+                            color: #3074d3 !important;
                         }
                     }
 
@@ -173,21 +154,20 @@
 
                 &.active,
                 &.active-label {
-                    color: #536bc2;
+                    color: #6f9ee0;
                     position: relative;
 
                     &:hover {
-                        color: #3551b7;
+                        color: #3074d3;
                         transition: all 0.3s ease-in-out;
                     }
 
                     // Higlight text
                     .highlight-text-45632 {
-                        background-color: transparent;
-
+                        font-weight: 700;
+                        transition: all 0.3s ease-in-out;
                         &:hover {
-                            color: #3551b7 !important;
-                            transition: all 0.3s ease-in-out;
+                            color: #3074d3 !important;
                         }
                     }
 
@@ -217,7 +197,7 @@
                         left: 0px;
                         height: 2px;
                         width: 100%;
-                        background-color: #f3f3f3;
+                        background-color: rgb(170, 170, 170, 0.2);
                         border-radius: 1px;
                     }
                 }
@@ -225,11 +205,9 @@
                 // Higlight text
                 .highlight-text-45632 {
                     font-weight: 700;
-                    background-color: transparent;
-
+                    transition: all 0.3s ease-in-out;
                     &:hover {
-                        color: #3c3c3c;
-                        transition: all 0.3s ease-in-out;
+                        color: #3074d3 !important;
                     }
                 }
 
@@ -312,7 +290,7 @@
                         .labels-template-vertical-divider {
                             width: 1px;
                             height: 15px;
-                            background-color: #dadada;
+                            background-color: rgb(170, 170, 170, 0.2);
                             content: '';
                             margin: 0 6px;
                         }
@@ -335,8 +313,8 @@
                             width: 22px;
                             height: 16px;
                             border-radius: 20px;
-                            background-color: #b7b7b7;
-                            color: #ffffff;
+                            background-color: rgb(204, 204, 204, 0.2);
+                            color: #aaaaaa;
                             text-align: center;
                             font-size: 11px;
                             font-weight: 500;
@@ -345,18 +323,17 @@
                     }
 
                     &:hover {
-                        background-color: #f3f3f3;
-
                         .labels-template-text {
-                            color: #3c3c3c;
+                            color: #aaaaaa;
 
                             &.add-new {
-                                color: #3551b7;
+                                color: #3074d3;
                             }
                         }
 
                         .labels-template-counter {
-                            background-color: #919191;
+                            background-color: rgb(204, 204, 204, 0.2);
+                            color: #dadada;
                         }
                     }
                 }
@@ -367,10 +344,10 @@
                     align-items: center;
                     .details-template-text {
                         &.active {
-                            color: #536bc2;
+                            color: #6f9ee0;
 
                             &:hover {
-                                color: #3551b7;
+                                color: #3074d3;
                                 transition: all 0.3s ease-in-out;
                             }
                         }
@@ -392,8 +369,8 @@
                         min-width: 22px;
                         height: 16px;
                         border-radius: 20px;
-                        background-color: #b7b7b7;
-                        color: #ffffff;
+                        background-color: rgb(204, 204, 204, 0.2);
+                        color: #aaaaaa;
                         font-size: 11px;
                         font-weight: 500;
                         text-align: center;
@@ -409,8 +386,227 @@
 
                     &:hover {
                         .option-counter {
-                            background-color: #919191;
+                            background-color: rgb(204, 204, 204, 0.2);
+                        }
+                    }
+                }
+
+                //------------------------ Fuel Franchise Template ------------------------
+
+                &-fuel-franchise {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    height: auto;
+                    min-height: 26px;
+                    border-radius: 2px;
+
+                    // Franchise Header
+                    .fuel-franchise-header {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 0 2px;
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+
+                        .fuel-franchise-header-right-side {
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+
+                            .option-counter {
+                                min-width: 22px;
+                                height: 16px;
+                                border-radius: 20px;
+                                background-color: rgb(204, 204, 204, 0.2);
+                                color: #aaaaaa;
+                                font-size: 11px;
+                                font-weight: 500;
+                                text-align: center;
+                                padding: 0 4.5px;
+                                -webkit-user-select: none;
+                                -moz-user-select: none;
+                                -ms-user-select: none;
+                                user-select: none;
+                            }
+
+                            .header-arrow {
+                                width: 18px;
+                                height: 18px;
+                                line-height: 15px;
+                                transition: all 0.3s ease-in-out;
+
+                                svg {
+                                    transform: rotate(0deg);
+                                    transition: all 0.3s ease-in-out;
+                                    path {
+                                        fill: #aaaaaa;
+                                    }
+                                }
+
+                                &.rotate {
+                                    svg {
+                                        transform: rotate(180deg);
+                                        transition: all 0.3s ease-in-out;
+                                    }
+                                }
+
+                                &:hover {
+                                    svg {
+                                        path {
+                                            fill: #dadada;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Franchise Stores
+                    .fuel-franchise-stores {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        gap: 4px;
+                        max-height: 237px;
+
+                        .fuel-franchise-single-store {
+                            height: 26px;
+                            border-radius: 2px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            padding-left: 3px;
+                            padding-right: 24px;
+                            padding: 3px 26px 4px 4px;
+
+                            .fuel-franchise-store-name {
+                                font-size: 14px;
+                                font-weight: 400;
+                                height: 19px;
+                                -webkit-user-select: none;
+                                -moz-user-select: none;
+                                -ms-user-select: none;
+                                user-select: none;
+                                color: #ffffff;
+                            }
+
+                            .fuel-franchise-store-address {
+                                font-size: 11px;
+                                font-weight: 500;
+                                line-height: 14px;
+                                -webkit-user-select: none;
+                                -moz-user-select: none;
+                                -ms-user-select: none;
+                                user-select: none;
+                                color: #cccccc;
+                            }
+
+                            &.active {
+                                .fuel-franchise-store-name,
+                                .fuel-franchise-store-address {
+                                    color: #6f9ee0 !important;
+                                }
+
+                                .highlight-text-45632 {
+                                    font-weight: 700;
+                                    transition: all 0.3s ease-in-out;
+                                }
+                            }
+
+                            &:hover {
+                                color: #ffffff;
+                                background-color: #1d1d1d;
+
+                                // Higlight text
+                                &.active {
+                                    .fuel-franchise-store-name,
+                                    .fuel-franchise-store-address {
+                                        color: #3074d3 !important;
+                                        font-weight: 700;
+                                    }
+                                }
+                            }
+                        }
+
+                        &.scroll {
+                            transition: all 0.3s ease-in-out;
+                            overflow-y: scroll !important;
+                            scrollbar-width: none !important; /* Firefox */
+
+                            &::-webkit-scrollbar {
+                                width: 3px;
+                            }
+                            &::-webkit-scrollbar-thumb {
+                                background-color: transparent;
+                                border: 6px solid #aaaaaa;
+                                border-radius: 1px;
+                            }
+                            &::-webkit-scrollbar-track {
+                                padding: 0;
+                                position: relative;
+                                right: 0;
+                                top: 0;
+                                background: transparent;
+                            }
+
+                            .fuel-franchise-single-store {
+                                padding: 3px 22px 4px 4px;
+                            }
+                        }
+                    }
+
+                    &.active-stores {
+                        background-color: rgb(170, 170, 170, 0.1);
+
+                        .fuel-franchise-main-header {
                             color: #ffffff;
+                            font-weight: 700;
+                        }
+
+                        &:hover {
+                            background-color: rgb(170, 170, 170, 0.1);
+                            color: #dadada;
+                        }
+                    }
+
+                    &.active-stores-header-hover {
+                        &:hover {
+                            background-color: #2f2f2f;
+                            position: relative;
+
+                            .fuel-franchise-header {
+                                color: #ffffff;
+                                background-color: #1d1d1d;
+                                font-weight: 700;
+                                position: relative;
+                            }
+
+                            .helper-hover-container {
+                                content: '';
+                                width: 105%;
+                                height: 26px;
+                                background-color: #1d1d1d;
+                                position: absolute;
+                                top: 0px;
+                                left: 0px;
+                                border-radius: 2px;
+                            }
+
+                            .fuel-franchise-header {
+                                .fuel-franchise-header-right-side {
+                                    .header-arrow {
+                                        svg {
+                                            path {
+                                                fill: #dadada;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -600,10 +796,6 @@
                 width: 429px;
             }
 
-            &.w-col-422 {
-                width: 422px;
-            }
-
             &.w-col-418 {
                 width: 418px;
             }
@@ -632,10 +824,6 @@
                 width: 403px;
             }
 
-            &.w-col-402 {
-                width: 402px;
-            }
-
             &.w-col-397 {
                 width: 397px;
             }
@@ -660,10 +848,6 @@
                 width: 334px;
             }
 
-            &.w-col-332 {
-                width: 332px;
-            }
-
             &.w-col-310 {
                 width: 310px;
             }
@@ -672,16 +856,16 @@
                 width: 308px;
             }
 
+            &.w-col-302 {
+                width: 302px;
+            }
+
             &.w-col-297 {
                 width: 297px;
             }
 
             &.w-col-296 {
                 width: 296px;
-            }
-
-            &.w-col-291 {
-                width: 291px;
             }
 
             &.w-col-288 {
@@ -696,8 +880,8 @@
                 width: 275px;
             }
 
-            &.w-col-273 {
-                width: 273px;
+            &.w-col-272 {
+                width: 272px;
             }
 
             &.w-col-256 {
@@ -716,10 +900,6 @@
                 width: 246px;
             }
 
-            &.w-col-245 {
-                width: 245px;
-            }
-
             &.w-col-242 {
                 width: 242px;
             }
@@ -728,20 +908,12 @@
                 width: 234px;
             }
 
-            &.w-col-231 {
-                width: 231px;
-            }
-
             &.w-col-229 {
                 width: 229px;
             }
 
             &.w-col-228 {
                 width: 228px;
-            }
-
-            &.w-col-227 {
-                width: 227px;
             }
 
             &.w-col-226 {
@@ -758,6 +930,10 @@
 
             &.w-col-211 {
                 width: 211px;
+            }
+
+            &.w-col-202 {
+                width: 202px;
             }
 
             &.w-col-201 {
@@ -804,21 +980,8 @@
                 width: 174px;
             }
 
-            &.w-col-168 {
-                width: 168px;
-            }
-
             &.w-col-167 {
                 width: 166px;
-            }
-
-            &.w-col-166 {
-                width: 166px;
-            }
-
-            &.w-col-165 {
-                width: 165px;
-                max-height: 304px;
             }
 
             &.w-col-164 {
@@ -830,6 +993,10 @@
                 width: 163px;
             }
 
+            &.w-col-162 {
+                width: 162px;
+            }
+
             &.w-col-156 {
                 width: 156px;
             }
@@ -838,20 +1005,12 @@
                 width: 148px;
             }
 
-            &.w-col-145 {
-                width: 145px;
-            }
-
-            &.w-col-140 {
-                width: 140px;
+            &.w-col-144 {
+                width: 144px;
             }
 
             &.w-col-139 {
                 width: 139px;
-            }
-
-            &.w-col-138 {
-                width: 138px;
             }
 
             &.w-col-136 {
@@ -862,6 +1021,10 @@
                 width: 134px;
             }
 
+            &.w-col-133 {
+                width: 133px;
+            }
+
             &.w-col-130 {
                 width: 130px;
             }
@@ -870,20 +1033,8 @@
                 width: 129px;
             }
 
-            &.w-col-128 {
-                width: 128px;
-            }
-
-            &.w-col-126 {
-                width: 126px;
-            }
-
             &.w-col-120 {
                 width: 120px;
-            }
-
-            &.w-col-118 {
-                width: 118px;
             }
 
             &.w-col-114 {
@@ -950,10 +1101,6 @@
                 width: 66px;
             }
 
-            &.w-col-302 {
-                width: 302px;
-            }
-
             // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
             &.dropdown-options-groups {
                 max-height: 198px;
@@ -974,7 +1121,7 @@
                         bottom: -3px;
                         height: 2px;
                         width: 96%;
-                        background-color: #f3f3f3;
+                        background-color: rgb(170, 170, 170, 0.2);
                     }
 
                     &:last-child {
@@ -993,7 +1140,7 @@
 
                     .dropdown-group-header {
                         font-size: 11px;
-                        color: #cccccc;
+                        color: rgb(204, 204, 204, 0.4);
                         font-weight: 700;
                         text-transform: uppercase;
                         line-height: 14px;
@@ -1007,7 +1154,7 @@
                                 204,
                                 0.2
                             ) !important;
-                            color: #cccccc !important;
+                            color: rgb(204, 204, 204, 0.4) !important;
                         }
 
                         &::selection {
@@ -1017,17 +1164,7 @@
                                 204,
                                 0.2
                             ) !important;
-                            color: #cccccc !important;
-                        }
-
-                        &::-moz-selection {
-                            background-color: rgb(
-                                204,
-                                204,
-                                204,
-                                0.2
-                            ) !important;
-                            color: #cccccc !important;
+                            color: rgb(204, 204, 204, 0.4) !important;
                         }
                     }
 
@@ -1039,7 +1176,8 @@
                         border-radius: 2px;
 
                         &:hover {
-                            background-color: #f3f3f3;
+                            background-color: #1d1d1d;
+                            color: #ffffff !important;
                             cursor: pointer;
                             transition: all 0.3s ease-in-out;
 
@@ -1082,22 +1220,13 @@
                                 &.active {
                                     // Higlight text
                                     .highlight-text-45632 {
-                                        background-color: transparent;
-
+                                        font-weight: 700;
+                                        transition: all 0.3s ease-in-out;
                                         &:hover {
-                                            color: #3551b7 !important;
-                                            transition: all 0.3s ease-in-out;
+                                            color: #3074d3 !important;
                                         }
                                     }
                                 }
-                            }
-                        }
-
-                        &.no-result {
-                            height: 18px;
-                            padding: 0px !important;
-                            &:hover {
-                                background-color: transparent !important;
                             }
                         }
 
@@ -1113,27 +1242,29 @@
                         .dropdown-subgroup-text {
                             font-size: 14px;
                             font-weight: 400;
-                            color: #6c6c6c;
+                            color: #cccccc;
                             display: block;
                             width: 100%;
 
                             // Higlight text
                             .highlight-text-45632 {
                                 font-weight: 700;
-                                background-color: transparent;
-
+                                transition: all 0.3s ease-in-out;
                                 &:hover {
-                                    color: #3c3c3c;
-                                    transition: all 0.3s ease-in-out;
+                                    color: #3074d3 !important;
                                 }
                             }
 
+                            &:hover {
+                                color: #ffffff !important;
+                            }
+
                             &.active {
-                                color: #536bc2;
+                                color: #6f9ee0;
                                 position: relative;
 
                                 &:hover {
-                                    color: #3551b7;
+                                    color: #3074d3;
                                     transition: all 0.3s ease-in-out;
                                 }
 
@@ -1143,21 +1274,6 @@
                                     content: url('../..//assets/svg/common/ic_confirm.svg');
                                     width: 14px;
                                     height: 10px;
-                                }
-                            }
-
-                            &.no-result {
-                                height: 20px;
-                                font-size: 11px;
-                                font-weight: 600;
-                                padding: 1.5px 4px;
-                                color: #b7b7b7;
-
-                                &:hover {
-                                    background-color: transparent !important;
-                                    color: #b7b7b7 !important;
-                                    transition: all 0.3s ease-in-out;
-                                    cursor: auto;
                                 }
                             }
                         }
@@ -1199,21 +1315,20 @@
 
                         .dropdown-subgroup-text {
                             &.active-without-check {
-                                color: #536bc2;
+                                color: #6f9ee0;
                                 position: relative;
 
                                 &:hover {
-                                    color: #3551b7;
+                                    color: #3074d3;
                                     transition: all 0.3s ease-in-out;
                                 }
 
                                 // Higlight text
                                 .highlight-text-45632 {
-                                    background-color: transparent;
-
+                                    font-weight: 700;
+                                    transition: all 0.3s ease-in-out;
                                     &:hover {
-                                        color: #3551b7 !important;
-                                        transition: all 0.3s ease-in-out;
+                                        color: #3074d3 !important;
                                     }
                                 }
                             }
@@ -1240,9 +1355,8 @@
             z-index: 1000;
             max-height: 198px;
             width: 100%;
-            background-color: #ffffff;
+            background-color: #2f2f2f;
             border-radius: 2px;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
             padding: 2px;
             overflow: hidden;
 
@@ -1254,11 +1368,13 @@
                 &::-webkit-scrollbar {
                     width: 3px;
                 }
+
                 &::-webkit-scrollbar-thumb {
                     background-color: transparent;
-                    border: 6px solid #e5e5e5;
+                    border: 6px solid #aaaaaa;
                     border-radius: 1px;
                 }
+
                 &::-webkit-scrollbar-track {
                     padding: 0;
                     position: relative;
@@ -1278,14 +1394,13 @@
                 border-radius: 2px;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                background-color: #ffffff;
-                color: #6c6c6c;
+                color: #ffffff;
                 display: flex;
                 gap: 4px;
 
                 &::-moz-selection {
-                    color: #6c6c6c;
-                    background-color: rgb(108, 108, 108, 0.2);
+                    color: #ffffff;
+                    background-color: rgb(255, 255, 255, 0.2);
                 }
 
                 &:nth-last-child(1) {
@@ -1293,26 +1408,241 @@
                 }
 
                 &:hover {
-                    background-color: #f3f3f3;
-                    color: #3c3c3c;
+                    background-color: #1d1d1d;
                     border-radius: 2px;
                     cursor: pointer;
                 }
 
                 &.add-option {
-                    color: #536bc2;
+                    color: #6f9ee0;
                     font-weight: 600;
 
                     &::after {
                         content: '';
                         height: 2px;
                         width: 100%;
-                        background-color: #f3f3f3;
+                        background-color: rgb(170, 170, 170, 0.2);
                         border-radius: 1px;
                         position: absolute;
                         bottom: 0px;
                         left: 0px;
                     }
+                }
+            }
+        }
+    }
+}
+
+// Selected Dropdown Card Preview
+.selected-item-container {
+    height: 50px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background-color: rgb(111, 158, 224, 0.2);
+    position: relative;
+
+    .selected-item-label {
+        position: absolute;
+        top: -16px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #2f2f2f;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        span {
+            color: #ef5350;
+        }
+    }
+
+    .selected-item-name {
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 18px;
+        color: #2f2f2f;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        .selected-item-star {
+            position: relative;
+            bottom: 2px;
+            cursor: pointer;
+
+            svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            &:hover {
+                transition: all 0.3s ease-in-out;
+                svg {
+                    path {
+                        fill: #2f2f2f;
+                    }
+                }
+            }
+
+            &.active {
+                svg {
+                    path {
+                        fill: #6f9ee0;
+                    }
+                }
+
+                &:hover {
+                    transition: all 0.3s ease-in-out;
+                    svg {
+                        path {
+                            fill: #3074d3;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .selected-item-additional {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+
+        .selected-item-info {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            line-height: 14px;
+
+            svg-icon {
+                height: 14px;
+                width: 14px;
+                line-height: 12.5px;
+
+                svg {
+                    width: 100%;
+                    height: 100%;
+                    path {
+                        fill: #6f9ee0;
+                    }
+                }
+            }
+
+            p {
+                margin: 0;
+                padding: 0;
+                font-size: 11px;
+                font-weight: 400;
+                color: #424242;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        }
+    }
+
+    .clear-selected-item {
+        position: absolute;
+        right: 4px;
+        top: 0px;
+        border-radius: 1px;
+        transition: all 0.3s ease-in-out;
+        display: none;
+        z-index: 10;
+        cursor: pointer;
+
+        .clear-x {
+            svg {
+                width: 18px !important;
+                height: 18px !important;
+                overflow: visible;
+                path {
+                    fill: #3074d3;
+                }
+                rect {
+                    transition: transform 0.3s;
+                    transform: scale(1);
+                    transform-origin: center;
+                    fill: transparent;
+                }
+            }
+
+            &:hover {
+                svg {
+                    overflow: visible;
+                    path {
+                        fill: #255bb9;
+                    }
+                    rect {
+                        transform: scale(1.2);
+                        transform-origin: center;
+                        transition: transform 0.3s;
+                        fill: rgb(37, 91, 185, 0.2);
+                    }
+                }
+            }
+        }
+    }
+
+    &:hover {
+        p {
+            color: #2f2f2f;
+        }
+
+        .selected-item-label {
+            color: #2f2f2f;
+        }
+
+        .selected-item-additional {
+            .selected-item-info {
+                svg-icon {
+                    svg {
+                        path {
+                            fill: #3074d3;
+                        }
+                    }
+                }
+            }
+        }
+        .clear-selected-item {
+            display: inline-block;
+        }
+
+        transition: all 0.3s ease-in-out;
+    }
+
+    &.non-editable {
+        background-color: #f7f7f7;
+
+        .selected-item-label,
+        .selected-item-name {
+            color: #919191;
+        }
+
+        .selected-item-additional {
+            .selected-item-info {
+                svg-icon {
+                    svg {
+                        path {
+                            fill: #cccccc;
+                        }
+                    }
+                }
+                p {
+                    color: #919191;
                 }
             }
         }

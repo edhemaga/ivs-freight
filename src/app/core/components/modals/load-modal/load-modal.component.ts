@@ -43,6 +43,7 @@ import {
 } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
+import { convertTimeFromBackend } from '../../../utils/methods.calculations';
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
@@ -1056,20 +1057,14 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.loadForm
                     .get('timeFrom')
                     .patchValue(
-                        moment(
-                            loadStop.get('timeFrom').value,
-                            'HH:mm:SS A'
-                        ).toDate()
+                        convertTimeFromBackend(loadStop.get('timeFrom').value)
                     );
             }
             if (loadStop.get('timeTo').value) {
                 this.loadForm
                     .get('timeTo')
                     .patchValue(
-                        moment(
-                            loadStop.get('timeTo').value,
-                            'HH:mm:SS A'
-                        ).toDate()
+                        convertTimeFromBackend(loadStop.get('timeTo').value)
                     );
             }
         } else {
@@ -1677,10 +1672,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                         'Successfully created load',
                         'Success'
                     );
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                    });
                 },
                 error: (error: any) => {
                     this.notificationService.success(

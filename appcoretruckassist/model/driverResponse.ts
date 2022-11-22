@@ -74,7 +74,7 @@ export interface DriverResponse {
     mvrPercentage?: number | null;
     cdlPercentage?: number | null;
     medicalPercentage?: number | null;
-    dispatches?: Array<DispatchShortResponse> | null;
+    assignedTo?: DispatchShortResponse;
     createdAt?: string;
     updatedAt?: string;
 }

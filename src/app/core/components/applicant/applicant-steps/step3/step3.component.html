@@ -228,11 +228,8 @@
             </div>
 
             <div
-                *ngIf="license.isEditingLicense"
                 class="d-flex flex-column license-view-form"
-                [ngStyle]="{
-                    margin: i !== 0 ? '32px auto 0 auto' : '10px auto 0 auto'
-                }"
+                *ngIf="license.isEditingLicense"
             >
                 <app-step3-form
                     [mode]="selectedMode"

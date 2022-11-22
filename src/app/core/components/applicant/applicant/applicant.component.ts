@@ -107,9 +107,9 @@ export class ApplicantComponent implements OnInit, OnDestroy {
         { id: 5, isReviewed: false, hasIncorrectAnswer: false },
         { id: 6, isReviewed: false, hasIncorrectAnswer: false },
         { id: 7, isReviewed: false, hasIncorrectAnswer: false },
-        { id: 8, isReviewed: false, hasIncorrectAnswer: false },
-        { id: 9, isReviewed: false, hasIncorrectAnswer: false },
-        { id: 10, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 8, isReviewed: true, hasIncorrectAnswer: false },
+        { id: 9, isReviewed: true, hasIncorrectAnswer: false },
+        { id: 10, isReviewed: true, hasIncorrectAnswer: false },
     ];
 
     feedbackStoreArr = [
@@ -289,42 +289,6 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                                         ? true
                                         : false,
                                     hasIncorrectAnswer: hasIncorrectValue,
-                                };
-                            }
-
-                            if (index === 8) {
-                                const driverRightsReview =
-                                    res?.driverRight?.reviewed;
-
-                                return {
-                                    ...item,
-                                    isReviewed: driverRightsReview
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 9) {
-                                const disclosureAndReleaseReview =
-                                    res?.disclosureRelease?.reviewed;
-
-                                return {
-                                    ...item,
-                                    isReviewed: disclosureAndReleaseReview
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 10) {
-                                const autorizationReview =
-                                    res?.authorization?.reviewed;
-
-                                return {
-                                    ...item,
-                                    isReviewed: autorizationReview
-                                        ? true
-                                        : false,
                                 };
                             }
 

@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Router } from '@angular/router';
-
 import { Subject, takeUntil } from 'rxjs';
 
 import { convertDateFromBackend } from './../../../../utils/methods.calculations';
 
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+<<<<<<< HEAD
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+=======
+>>>>>>> develop
 
 import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
@@ -20,7 +21,11 @@ import {
     UpdatePspAuthCommand,
 } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+<<<<<<< HEAD
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+=======
+import { ApplicantResponse } from 'appcoretruckassist';
+>>>>>>> develop
 
 @Component({
     selector: 'app-psp-authorization',
@@ -34,6 +39,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
 
     public pspAuthorizationForm: FormGroup;
 
+<<<<<<< HEAD
     public companyName: string;
 
     public applicantId: number;
@@ -41,17 +47,16 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
     public signature: string;
     public signatureImgSrc: string;
     public displaySignatureRequiredNote: boolean = false;
+=======
+    public signature: any;
+>>>>>>> develop
 
     public applicantCardInfo: any;
 
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private router: Router,
-        private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery,
-        private applicantActionsService: ApplicantActionsService,
-        private imageBase64Service: ImageBase64Service
+        private applicantQuery: ApplicantQuery
     ) {}
 
     ngOnInit(): void {
@@ -81,6 +86,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
                     ssn: personalInfo?.ssn,
                     dob: convertDateFromBackend(personalInfo?.doB),
                 };
+<<<<<<< HEAD
 
                 this.applicantId = res.id;
 
@@ -89,6 +95,8 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
                 if (res.pspAuth) {
                     this.patchStepValues(res.pspAuth);
                 }
+=======
+>>>>>>> develop
             });
     }
 
@@ -159,11 +167,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public onSignatureAction(event: any): void {
-        if (event) {
-            this.signature = this.imageBase64Service.getStringFromBase64(event);
-        } else {
-            this.signature = null;
-        }
+        this.signature = event;
     }
 
     public onRemoveSignatureRequiredNoteAction(event: any): void {
@@ -174,10 +178,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode === SelectedMode.APPLICANT) {
                 this.onSubmit();
             }
 
@@ -188,6 +189,7 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+<<<<<<< HEAD
         if (this.pspAuthorizationForm.invalid || !this.signature) {
             if (this.pspAuthorizationForm.invalid) {
                 this.inputService.markInvalid(this.pspAuthorizationForm);
@@ -252,6 +254,12 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
                     console.log(err);
                 },
             });
+=======
+        if (this.pspAuthorizationForm.invalid) {
+            this.inputService.markInvalid(this.pspAuthorizationForm);
+            return;
+        }
+>>>>>>> develop
     }
 
     public onSubmitReview(): void {}

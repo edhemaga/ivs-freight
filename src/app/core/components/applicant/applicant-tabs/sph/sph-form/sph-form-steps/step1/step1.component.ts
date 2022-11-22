@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import { Subject, takeUntil } from 'rxjs';
+import { mergeMap, Observable, Subject, takeUntil, forkJoin, take } from 'rxjs';
 
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
 
-import { ApplicantQuery } from 'src/app/core/components/applicant/state/store/applicant.query';
-
-import { SphPreviousEmployerProspectResponse } from 'appcoretruckassist';
+import { ApplicantSphFormStore } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.store';
+import { ApplicantSphFormQuery } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.query';
 
 @Component({
     selector: 'app-step1',
@@ -17,67 +16,64 @@ import { SphPreviousEmployerProspectResponse } from 'appcoretruckassist';
 export class Step1Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public completedByProspectiveEmployderCard: any;
-    public completedByDriverCard: any;
-
     constructor(
         private router: Router,
-        private applicantQuery: ApplicantQuery
+        private route: ActivatedRoute,
+        private applicantActionsService: ApplicantActionsService,
+        private applicantSphFormStore: ApplicantSphFormStore,
+        private applicantSphFormQuery: ApplicantSphFormQuery
     ) {}
 
     ngOnInit(): void {
-        this.getStepValuesFromStore();
-    }
-
-    public getStepValuesFromStore(): void {
-        this.applicantQuery.applicantSphForm$
+        this.applicantSphFormQuery.verifyData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: SphPreviousEmployerProspectResponse) => {
-                if (res) {
-                    this.patchStepValues(res);
+            .subscribe((res) => {
+                if (!res) {
+                    this.getQueryParams();
                 }
             });
     }
 
-    public patchStepValues(
-        stepValues: SphPreviousEmployerProspectResponse
-    ): void {
-        const {
-            employerName,
-            employerPhone,
-            employerEmail,
-            employerFax,
-            employerAddress,
-            employeeName,
-            employeeSsn,
-            employeeDoB,
-            dateFrom,
-            dateTo,
-            reasonForLeaving,
-            vehicleType,
-        } = stepValues;
+    public getQueryParams(): void {
+        const queryParams$ = this.route.queryParams.pipe(take(1));
 
-        this.completedByProspectiveEmployderCard = {
-            employerName,
-            employerPhone,
-            employerEmail,
-            employerFax,
-            employerAddress,
-            employeeName,
-            employeeSsn,
-            employeeDoB: convertDateFromBackend(employeeDoB),
-        };
+        const verifyEmployer$ = queryParams$.pipe(
+            mergeMap((params) =>
+                this.verifyPreviousEmployer({
+                    inviteCode: params['InviteCode']?.split(' ').join('+'),
+                })
+            )
+        );
 
-        this.completedByDriverCard = {
-            dateFrom: convertDateFromBackend(dateFrom),
-            dateTo: convertDateFromBackend(dateTo),
-            reasonForLeaving,
-            vehicleType,
-        };
+        forkJoin({ params: queryParams$, verifyEmployer: verifyEmployer$ })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                const verifyData = {
+                    inviteCode: /\s/.test(res.params.InviteCode)
+                        ? res.params.InviteCode.split(' ').join('+')
+                        : res.params.InviteCode,
+                };
+
+                console.log('verifyData', verifyData);
+
+                this.applicantSphFormStore.update(1, (entity) => {
+                    return {
+                        ...entity,
+                        companyInfo: res.verifyEmployer.companyInfo,
+                        verifyData,
+                    };
+                });
+            });
+    }
+
+    public verifyPreviousEmployer(params: any): Observable<any> {
+        return this.applicantActionsService.verifyPreviousEmployerSphForm(
+            params
+        );
     }
 
     public onGetStarted(): void {
-        this.router.navigate(['/sph-form/1/2']);
+        this.router.navigate(['/applicant/previousemployer/welcome/2']);
     }
 
     ngOnDestroy(): void {

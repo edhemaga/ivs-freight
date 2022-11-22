@@ -275,14 +275,8 @@
                     </div>
 
                     <div
-                        *ngIf="workHistory.isEditingWorkHistory"
                         class="d-flex flex-column history-panel-form"
-                        [ngStyle]="{
-                            margin:
-                                i !== 0
-                                    ? '32px auto 0 auto'
-                                    : '10px auto 0 auto'
-                        }"
+                        *ngIf="workHistory.isEditingWorkHistory"
                     >
                         <app-step2-form
                             [mode]="selectedMode"
@@ -405,12 +399,18 @@
     <app-applicant-next-back-btn
         [nextStep]="true"
         [filledCorrectly]="
+            selectedMode === 'APPLICANT_MODE' &&
             workExperienceForm.valid &&
+<<<<<<< HEAD
             !isEditing &&
             ((selectedMode === 'APPLICANT_MODE' &&
                 formStatus === 'VALID' &&
                 innerFormStatus === 'VALID') ||
                 (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
+=======
+            formStatus === 'VALID' &&
+            innerFormStatus === 'VALID'
+>>>>>>> develop
         "
         [hasIncorrectFields]="
             selectedMode === 'REVIEW_MODE' &&

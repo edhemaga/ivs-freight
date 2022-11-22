@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Router } from '@angular/router';
-
 import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
@@ -11,7 +9,10 @@ import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations'
 
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+<<<<<<< HEAD
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+=======
+>>>>>>> develop
 
 import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
@@ -33,19 +34,17 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     public mvrAuthorizationForm: FormGroup;
     public dontHaveMvrForm: FormGroup;
 
-    public applicantId: number;
-
-    public stepHasValues: boolean = false;
-
     public lastValidLicense: any;
-
-    public previousStepValues: any;
 
     public documents: any[] = [];
 
+<<<<<<< HEAD
     public signature: string;
     public signatureImgSrc: string;
     public displaySignatureRequiredNote: boolean = false;
+=======
+    public signature: any;
+>>>>>>> develop
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -65,19 +64,13 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private router: Router,
-        private applicantStore: ApplicantStore,
-        private applicantQuery: ApplicantQuery,
-        private applicantActionsService: ApplicantActionsService,
-        private imageBase64Service: ImageBase64Service
+        private applicantQuery: ApplicantQuery
     ) {}
 
     ngOnInit(): void {
         this.createForm();
 
         this.getStepValuesFromStore();
-
-        this.requestDrivingRecordFromEmployer();
     }
 
     private createForm(): void {
@@ -86,13 +79,12 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
             isPeriodicallyObtained: [false, Validators.requiredTrue],
             isInformationCorrect: [false, Validators.requiredTrue],
             licenseCheck: [false, Validators.requiredTrue],
-            files: [null, Validators.required],
 
             firstRowReview: [null],
         });
 
         this.dontHaveMvrForm = this.formBuilder.group({
-            dontHaveMvr: [false, Validators.required],
+            dontHaveMvr: [false],
         });
     }
 
@@ -103,7 +95,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                 const personalInfo = res.personalInfo;
                 const cdlInformation = res.cdlInformation;
 
-                const lastLicenseAdded =
+                const lastLicenseAdded: any =
                     cdlInformation?.licences[
                         cdlInformation.licences.length - 1
                     ];
@@ -111,11 +103,12 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                 this.lastValidLicense = {
                     license: lastLicenseAdded?.licenseNumber,
                     state: lastLicenseAdded?.state?.stateShortName,
-                    classType: lastLicenseAdded?.classType?.name,
+                    classType: lastLicenseAdded?.class?.name,
                     expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
                 };
 
                 this.lastValidLicense.name = personalInfo?.fullName;
+<<<<<<< HEAD
 
                 this.applicantId = res.id;
 
@@ -180,6 +173,8 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                         this.mvrAuthorizationForm.get('files')
                     );
                 }
+=======
+>>>>>>> develop
             });
     }
 
@@ -222,11 +217,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public onSignatureAction(event: any): void {
-        if (event) {
-            this.signature = this.imageBase64Service.getStringFromBase64(event);
-        } else {
-            this.signature = null;
-        }
+        this.signature = event;
     }
 
     public onRemoveSignatureRequiredNoteAction(event: any): void {
@@ -237,26 +228,6 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public onFilesAction(event: any): void {
         this.documents = event.files;
-
-        switch (event.action) {
-            case 'add':
-                this.mvrAuthorizationForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
-
-                break;
-            case 'delete':
-                this.mvrAuthorizationForm
-                    .get('files')
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-
-                break;
-
-            default:
-                break;
-        }
     }
 
     public incorrectInput(
@@ -321,10 +292,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode === SelectedMode.APPLICANT) {
                 this.onSubmit();
             }
 
@@ -335,6 +303,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+<<<<<<< HEAD
         if (this.mvrAuthorizationForm.invalid || !this.signature) {
             if (this.mvrAuthorizationForm.invalid) {
                 this.inputService.markInvalid(this.mvrAuthorizationForm);
@@ -427,6 +396,12 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                     console.log(err);
                 },
             });
+=======
+        if (this.mvrAuthorizationForm.invalid) {
+            this.inputService.markInvalid(this.mvrAuthorizationForm);
+            return;
+        }
+>>>>>>> develop
     }
 
     public onSubmitReview(): void {}

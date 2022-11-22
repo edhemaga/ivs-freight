@@ -71,6 +71,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public officeName: string = null;
 
+    public isDepartmentCardsScrolling: boolean = false;
+
     public tabs: any[] = [
         {
             id: 1,
@@ -481,6 +483,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     );
                 },
             });
+    }
+
+    public onScrollingBrokerContacts(event: any) {
+        this.isDepartmentCardsScrolling = event.target.scrollLeft > 1;
     }
 
     ngOnDestroy(): void {

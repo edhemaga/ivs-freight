@@ -415,16 +415,9 @@
                             ></app-applicant-review-feedback>
                         </div>
                     </div>
-
                     <div
-                        *ngIf="violation.isEditingViolation"
                         class="d-flex flex-column violations-view-form"
-                        [ngStyle]="{
-                            margin:
-                                i !== 0
-                                    ? '32px auto 0 auto'
-                                    : '10px auto 0 auto'
-                        }"
+                        *ngIf="violation.isEditingViolation"
                     >
                         <app-step5-form
                             [mode]="selectedMode"

@@ -254,6 +254,7 @@
                         }"
                     >
                         <div class="col-8">
+                            {{ selectedTimezone }}
                             <app-ta-input-dropdown
                                 formControlName="timeZone"
                                 [inputConfig]="{
@@ -266,10 +267,10 @@
                                         editData.type === 'new-division'
                                             ? false
                                             : true,
-                                    dropdownWidthClass: 'w-col-402'
+                                    dropdownWidthClass: 'w-col-403'
                                 }"
                                 [options]="timeZones"
-                                [activeItem]="selectedTimezone"
+                                [activeItem]="selectedTimeZone"
                                 (selectedItem)="
                                     onSelectDropdown($event, 'timezone')
                                 "
@@ -311,7 +312,7 @@
                                     type: 'text',
                                     label: 'Company Type',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-297'
+                                    dropdownWidthClass: 'w-col-296'
                                 }"
                                 [options]="companyData"
                                 [activeItem]="selectedCompanyData"
@@ -372,7 +373,7 @@
                     >
                         <div
                             formArrayName="departmentContacts"
-                            class="common-fake-table-modal common-fake-table-modal-department-contacts hide-overflow-x"
+                            class="common-fake-table-modal common-fake-table-modal-department-company"
                             *ngIf="departmentContacts.length"
                         >
                             <div class="common-fake-table-label">
@@ -493,7 +494,7 @@
                     >
                         <div
                             formArrayName="bankAccounts"
-                            class="common-fake-table-modal common-fake-table-modal-banks hide-overflow-x"
+                            class="common-fake-table-modal common-fake-table-modal-company-banks hide-overflow-x"
                             *ngIf="bankAccounts.length"
                         >
                             <div class="common-fake-table-label">
@@ -525,7 +526,7 @@
                                                 maxLength: 64,
                                                 textTransform: 'uppercase',
                                                 isDropdown: true,
-                                                dropdownWidthClass: 'w-col-163',
+                                                dropdownWidthClass: 'w-col-162',
                                                 hideErrorMessage: true,
                                                 blackInput: true,
                                                 hideRequiredCheck: true
@@ -1408,7 +1409,7 @@
                                         label: 'Ending In',
                                         isDropdown: true,
                                         isRequired: true,
-                                        dropdownWidthClass: 'w-col-medium-4'
+                                        dropdownWidthClass: 'w-col-202'
                                     }"
                                     [options]="endingIns"
                                     [activeItem]="selectedAccountingEndingIn"
@@ -1479,7 +1480,7 @@
                                         label: 'Ending In',
                                         isDropdown: true,
                                         isRequired: true,
-                                        dropdownWidthClass: 'w-col-medium-4'
+                                        dropdownWidthClass: 'w-col-202'
                                     }"
                                     [options]="endingIns"
                                     [activeItem]="selectedCompanyEndingIn"
@@ -1734,7 +1735,7 @@
                                         label: 'Ending In',
                                         isDropdown: true,
                                         isRequired: true,
-                                        dropdownWidthClass: 'w-col-medium-4'
+                                        dropdownWidthClass: 'w-col-202'
                                     }"
                                     [options]="endingIns"
                                     [activeItem]="selectedRecEndingIn"
@@ -1805,7 +1806,7 @@
                                         label: 'Ending In',
                                         isDropdown: true,
                                         isRequired: true,
-                                        dropdownWidthClass: 'w-col-medium-4'
+                                        dropdownWidthClass: 'w-col-202'
                                     }"
                                     [options]="endingIns"
                                     [activeItem]="selectedRepairEndingIn"
@@ -1876,7 +1877,7 @@
                                         label: 'Ending In',
                                         isDropdown: true,
                                         isRequired: true,
-                                        dropdownWidthClass: 'w-col-medium-4'
+                                        dropdownWidthClass: 'w-col-202'
                                     }"
                                     [options]="endingIns"
                                     [activeItem]="selectedSafetyEndingIn"
@@ -1947,7 +1948,7 @@
                                         label: 'Ending In',
                                         isDropdown: true,
                                         isRequired: true,
-                                        dropdownWidthClass: 'w-col-201'
+                                        dropdownWidthClass: 'w-col-202'
                                     }"
                                     [options]="endingIns"
                                     [activeItem]="selectedOtherEndingIn"

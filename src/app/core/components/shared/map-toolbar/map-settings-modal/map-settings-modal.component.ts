@@ -21,12 +21,12 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
     public distanceTabs: { id: number; name: string; checked: boolean }[] = [
         {
             id: 1,
-            name: 'Miles',
+            name: 'MILES',
             checked: false,
         },
         {
             id: 2,
-            name: 'Km',
+            name: 'KM',
             checked: false,
         },
     ];
@@ -34,12 +34,12 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
     public addressTabs: { id: number; name: string; checked: boolean }[] = [
         {
             id: 1,
-            name: 'City',
+            name: 'CITY',
             checked: false,
         },
         {
             id: 2,
-            name: 'Address',
+            name: 'ADDRESS',
             checked: false,
         },
     ];
@@ -47,12 +47,12 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
     public borderTabs: { id: number; name: string; checked: boolean }[] = [
         {
             id: 1,
-            name: 'Open Border',
+            name: 'OPEN BORDER',
             checked: false,
         },
         {
             id: 2,
-            name: 'Closed Border',
+            name: 'CLOSED BORDER',
             checked: false,
         },
     ];
@@ -74,6 +74,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         if (this.editData?.type === 'edit') {
             this.editMap(this.editData.id);
         }
+        console.log(this.editData);
     }
 
     private createForm() {
@@ -103,24 +104,17 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                console.log('editData', this.editData);
-
                 if (this.editData?.type === 'edit') {
-                    if (this.isFormDirty) {
-                        this.updateMap(this.editData.id);
-                        this.modalService.setModalSpinner({
-                            action: 'set-map-settings',
-                            status: true,
-                        });
-                    }
+                    this.updateMap(this.editData.id);
+                    this.modalService.setModalSpinner({
+                        action: 'set-map-settings',
+                        status: true,
+                    });
                 }
-
-                console.log('put action set map');
 
                 break;
             }
             case 'reset-map-routing': {
-                console.log('put action reset map');
                 this.resetForm();
                 break;
             }
@@ -193,7 +187,6 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
                     this.mapSettingsForm.patchValue({
                         mapName: res.name,
                     });
-                    console.log('getMapById', res);
                 },
                 error: () => {
                     this.notificationService.error("Can't load map.", 'Error');
