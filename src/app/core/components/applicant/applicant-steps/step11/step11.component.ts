@@ -14,6 +14,7 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 import {
     ApplicantResponse,
     AuthorizationFeedbackResponse,
+    CreateAuthorizationReviewCommand,
     UpdateAuthorizationCommand,
 } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
@@ -33,7 +34,7 @@ export class Step11Component implements OnInit, OnDestroy {
 
     public applicantId: number;
 
-    public signature: any;
+    public signature: string;
     public signatureImgSrc: string;
     public displaySignatureRequiredNote: boolean = false;
 
@@ -43,7 +44,8 @@ export class Step11Component implements OnInit, OnDestroy {
         private router: Router,
         private applicantStore: ApplicantStore,
         private applicantQuery: ApplicantQuery,
-        private applicantActionsService: ApplicantActionsService
+        private applicantActionsService: ApplicantActionsService,
+        private imageBase64Service: ImageBase64Service
     ) {}
 
     ngOnInit(): void {
@@ -90,6 +92,7 @@ export class Step11Component implements OnInit, OnDestroy {
         });
 
         this.signatureImgSrc = signature;
+        this.signature = signature;
     }
 
     public handleCheckboxParagraphClick(type: string): void {
@@ -140,10 +143,11 @@ export class Step11Component implements OnInit, OnDestroy {
     }
 
     public onSignatureAction(event: any): void {
-        this.signatureImgSrc = event;
-        this.signature = event;
-
-        this.signature = this.signature?.slice(22);
+        if (event) {
+            this.signature = this.imageBase64Service.getStringFromBase64(event);
+        } else {
+            this.signature = null;
+        }
     }
 
     public onRemoveSignatureRequiredNoteAction(event: any): void {
@@ -172,7 +176,6 @@ export class Step11Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-<<<<<<< HEAD
         if (this.authorizationForm.invalid || !this.signature) {
             if (this.authorizationForm.invalid) {
                 this.inputService.markInvalid(this.authorizationForm);
@@ -182,10 +185,6 @@ export class Step11Component implements OnInit, OnDestroy {
                 this.displaySignatureRequiredNote = true;
             }
 
-=======
-        if (this.authorizationForm.invalid) {
-            this.inputService.markInvalid(this.authorizationForm);
->>>>>>> develop
             return;
         }
 
@@ -201,7 +200,7 @@ export class Step11Component implements OnInit, OnDestroy {
         };
 
         this.applicantActionsService
-            .createAuthorization(saveData)
+            .updateAuthorization(saveData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -237,7 +236,36 @@ export class Step11Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
-        this.router.navigate([`/medical-certificate/${this.applicantId}`]);
+        const saveData: CreateAuthorizationReviewCommand = {
+            applicantId: this.applicantId,
+        };
+
+        this.applicantActionsService
+            .createAuthorizationReview(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/medical-certificate/${this.applicantId}`,
+                    ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                authorization: {
+                                    ...store.applicant.authorization,
+                                    reviewed: true,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     ngOnDestroy(): void {

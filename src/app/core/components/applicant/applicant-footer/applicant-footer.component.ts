@@ -47,6 +47,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() mode: string;
     @Input() companyInfoSph: ApplicantCompanyInfoResponse;
+    @Input() dateOfApplicationSph: string;
 
     private destroy$ = new Subject<void>();
 
@@ -157,6 +158,13 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
             changes.companyInfoSph?.currentValue
         ) {
             this.companyInfo = changes.companyInfoSph?.currentValue;
+        }
+
+        if (
+            changes.dateOfApplicationSph?.previousValue !==
+            changes.dateOfApplicationSph?.currentValue
+        ) {
+            this.dateOfApplication = changes.dateOfApplicationSph?.currentValue;
         }
     }
 

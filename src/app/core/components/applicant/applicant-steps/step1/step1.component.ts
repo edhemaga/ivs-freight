@@ -89,6 +89,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     public stepValues: any;
 
+    public companyName: string;
+
     public applicantId: number;
     public personalInfoId: number | null = null;
     public previousAddressesId: number[];
@@ -448,6 +450,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
+                this.companyName = res.companyInfo.name;
+
                 this.applicantId = res.id;
 
                 this.patchStepValues(res.personalInfo);
@@ -455,6 +459,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public patchStepValues(stepValues: PersonalInfoFeedbackResponse): void {
+        console.log('stepValues', stepValues);
         const {
             id,
             isAgreed,
@@ -1033,6 +1038,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     this.previousAddresses
                         .at(index)
                         .setErrors({ invalid: true });
+
+                    this.isLastAddedPreviousAddressValid = false;
                 } else {
                     this.previousAddresses.at(index).patchValue({
                         address: address.address,
@@ -1190,10 +1197,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         if (this.previousAddresses.controls.length < 2) {
             this.isEditingArray[0].isEditing = true;
             this.isEditingArray[0].isEditingAddress = false;
-        }
-
-        if (this.previousAddresses.controls.length === 1) {
-            this.isLastInputDeleted = false;
         }
     }
 
@@ -1456,7 +1459,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    public startFeedbackValueChangesMonitoring() {
+    public startFeedbackValueChangesMonitoring(): void {
         if (this.stepFeedbackValues) {
             const filteredIncorrectValues = Object.keys(
                 this.stepFeedbackValues
@@ -1902,6 +1905,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         const {
             firstRowReview,
             secondRowReview,
+            thirdRowReview,
             fourthRowReview,
             questionReview3,
             questionReview4,

@@ -198,8 +198,8 @@ export class Step4FormComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mode?.previousValue !== changes.mode?.currentValue) {
             this.selectedMode = changes.mode?.currentValue;
+        }
 
-<<<<<<< HEAD
         if (
             this.selectedMode === SelectedMode.APPLICANT ||
             this.selectedMode === SelectedMode.FEEDBACK
@@ -209,19 +209,9 @@ export class Step4FormComponent
                 changes.markFormInvalid?.currentValue
             ) {
                 this.inputService.markInvalid(this.accidentForm);
-=======
-            if (this.selectedMode === SelectedMode.APPLICANT) {
-                if (
-                    changes.markFormInvalid?.previousValue !==
-                    changes.markFormInvalid?.currentValue
-                ) {
-                    this.inputService.markInvalid(this.accidentForm);
->>>>>>> develop
 
-                    this.markInvalidEmitter.emit(false);
-                }
+                this.markInvalidEmitter.emit(false);
             }
-<<<<<<< HEAD
 
             if (
                 changes.checkIsHazmatSpillNotChecked?.previousValue !==
@@ -239,25 +229,22 @@ export class Step4FormComponent
                 }
             }
         }
-=======
->>>>>>> develop
 
+        if (
+            this.selectedMode === SelectedMode.REVIEW ||
+            this.selectedMode === SelectedMode.APPLICANT
+        ) {
             if (
-                this.selectedMode === SelectedMode.REVIEW ||
-                this.selectedMode === SelectedMode.APPLICANT
+                changes.formValuesToPatch?.previousValue !==
+                changes.formValuesToPatch?.currentValue
             ) {
-                if (
-                    changes.formValuesToPatch?.previousValue !==
-                    changes.formValuesToPatch?.currentValue
-                ) {
-                    setTimeout(() => {
-                        this.patchForm(changes.formValuesToPatch.currentValue);
+                setTimeout(() => {
+                    this.patchForm(changes.formValuesToPatch.currentValue);
 
-                        if (this.selectedMode === SelectedMode.APPLICANT) {
-                            this.startValueChangesMonitoring();
-                        }
-                    }, 100);
-                }
+                    if (this.selectedMode === SelectedMode.APPLICANT) {
+                        this.startValueChangesMonitoring();
+                    }
+                }, 50);
             }
         }
     }
@@ -283,12 +270,8 @@ export class Step4FormComponent
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (formValue.accidentRecordReview) {
-                const {
-                    isLocationValid,
-                    isDateValid,
-                    isVehicleTypeValid,
-                    isDescriptionValid,
-                } = formValue.accidentRecordReview;
+                const { isLocationValid, isDateValid, isDescriptionValid } =
+                    formValue.accidentRecordReview;
 
                 this.openAnnotationArray[10] = {
                     ...this.openAnnotationArray[10],
@@ -296,7 +279,7 @@ export class Step4FormComponent
                 };
                 this.openAnnotationArray[11] = {
                     ...this.openAnnotationArray[11],
-                    lineInputs: [!isVehicleTypeValid, !isDescriptionValid],
+                    lineInputs: [false, !isDescriptionValid],
                 };
             }
         }
@@ -320,17 +303,17 @@ export class Step4FormComponent
                 this.hazmatSpillRadios[0].checked = true;
             } else {
                 this.hazmatSpillRadios[1].checked = true;
-            }
 
-            if (hazmatSpillValue === null) {
-                this.hazmatSpillRadios[0].checked = false;
-                this.hazmatSpillRadios[1].checked = false;
+                if (hazmatSpillValue === null) {
+                    this.hazmatSpillRadios[0].checked = false;
+                    this.hazmatSpillRadios[1].checked = false;
+                }
             }
 
             this.selectedVehicleType = this.vehicleType.find(
                 (item) => item.name === formValue?.vehicleType
             );
-        }, 150);
+        }, 50);
     }
 
     public startValueChangesMonitoring(): void {
@@ -432,6 +415,7 @@ export class Step4FormComponent
         this.hazmatSpillRadios[0].checked = false;
         this.hazmatSpillRadios[1].checked = false;
 
+        this.selectedAddress = null;
         this.selectedVehicleType = null;
 
         this.formService.resetForm(this.accidentForm);

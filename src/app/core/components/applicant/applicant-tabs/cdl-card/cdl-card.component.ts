@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-<<<<<<< HEAD
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -9,27 +8,33 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
-=======
->>>>>>> develop
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
+import { ApplicantStore } from '../../state/store/applicant.store';
+import { ApplicantQuery } from '../../state/store/applicant.query';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-<<<<<<< HEAD
 import { ApplicantResponse, CdlCardFeedbackResponse } from 'appcoretruckassist';
-=======
->>>>>>> develop
 
 @Component({
     selector: 'app-cdl-card',
     templateUrl: './cdl-card.component.html',
     styleUrls: ['./cdl-card.component.scss'],
 })
-export class CdlCardComponent implements OnInit {
+export class CdlCardComponent implements OnInit, OnDestroy {
+    private destroy$ = new Subject<void>();
+
     public selectedMode: string = SelectedMode.APPLICANT;
 
     public cdlCardForm: FormGroup;
+
+    public applicantId: number;
+
+    public stepHasValues: boolean = false;
 
     public documents: any[] = [];
 
@@ -56,24 +61,30 @@ export class CdlCardComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private inputService: TaInputService
+        private inputService: TaInputService,
+        private router: Router,
+        private applicantStore: ApplicantStore,
+        private applicantQuery: ApplicantQuery,
+        private applicantActionsService: ApplicantActionsService
     ) {}
 
     ngOnInit(): void {
         this.createForm();
+
+        this.getStepValuesFromStore();
     }
 
     private createForm(): void {
         this.cdlCardForm = this.formBuilder.group({
             fromDate: [null, Validators.required],
             toDate: [null, Validators.required],
+            files: [null, Validators.required],
 
             firstRowReview: [null],
             secondRowReview: [null],
         });
     }
 
-<<<<<<< HEAD
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
@@ -98,10 +109,28 @@ export class CdlCardComponent implements OnInit {
         });
     }
 
-=======
->>>>>>> develop
     public onFilesAction(event: any): void {
         this.documents = event.files;
+
+        switch (event.action) {
+            case 'add':
+                this.cdlCardForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+
+                break;
+            case 'delete':
+                this.cdlCardForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+
+                break;
+
+            default:
+                break;
+        }
     }
 
     public incorrectInput(
@@ -186,7 +215,10 @@ export class CdlCardComponent implements OnInit {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (this.selectedMode === SelectedMode.APPLICANT) {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
                 this.onSubmit();
             }
 
@@ -201,7 +233,6 @@ export class CdlCardComponent implements OnInit {
             this.inputService.markInvalid(this.cdlCardForm);
             return;
         }
-<<<<<<< HEAD
 
         const { fromDate, toDate } = this.cdlCardForm.value;
 
@@ -257,9 +288,12 @@ export class CdlCardComponent implements OnInit {
                     console.log(err);
                 },
             });
-=======
->>>>>>> develop
     }
 
     public onSubmitReview(): void {}
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

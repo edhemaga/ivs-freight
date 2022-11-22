@@ -283,8 +283,12 @@
                 </div>
 
                 <div
-                    class="d-flex flex-column accident-view-form"
                     *ngIf="accident.isEditingAccident"
+                    class="d-flex flex-column accident-view-form"
+                    [ngStyle]="{
+                        margin:
+                            i !== 0 ? '32px auto 0 auto' : '10px auto 0 auto'
+                    }"
                 >
                     <app-step4-form
                         [mode]="selectedMode"

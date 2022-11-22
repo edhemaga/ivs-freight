@@ -5,8 +5,14 @@ import {
     OnInit,
     SimpleChanges,
 } from '@angular/core';
+
+import { Subject, takeUntil } from 'rxjs';
+
+import { ApplicantQuery } from '../state/store/applicant.query';
+
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { INavigation } from '../state/model/navigation.model';
+import { ApplicantResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-applicant-header',
@@ -16,7 +22,11 @@ import { INavigation } from '../state/model/navigation.model';
 export class ApplicantHeaderComponent implements OnInit, OnChanges {
     @Input() mode: string;
 
+    private destroy$ = new Subject<void>();
+
     public selectedMode: string = SelectedMode.APPLICANT;
+
+    public applicantId: number;
 
     public menuItems: INavigation[] = [
         {
@@ -63,7 +73,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
 
     public isTabCompletedArray: { id: number; isCompleted: boolean }[] = [
         { id: 0, isCompleted: false },
-        { id: 1, isCompleted: true },
+        { id: 1, isCompleted: false },
         { id: 2, isCompleted: false },
         { id: 3, isCompleted: false },
         { id: 4, isCompleted: false },
@@ -94,9 +104,11 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 7, hasIncorrectAnswer: false },
     ];
 
-    constructor() {}
+    constructor(private applicantQuery: ApplicantQuery) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.getStepValuesFromStore();
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mode?.previousValue !== changes.mode?.currentValue) {
@@ -105,7 +117,6 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
     }
 
     public trackByIdentity = (index: number, item: any): number => index;
-<<<<<<< HEAD
 
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
@@ -193,6 +204,4 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                 }
             });
     }
-=======
->>>>>>> develop
 }

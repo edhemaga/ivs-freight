@@ -1,21 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { Router } from '@angular/router';
+
 import { Subject, takeUntil } from 'rxjs';
 
 import { convertDateFromBackend } from './../../../../utils/methods.calculations';
 
 import { SphModalComponent } from './sph-modal/sph-modal.component';
 
-<<<<<<< HEAD
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-=======
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
->>>>>>> develop
 
 import { ApplicantQuery } from '../../state/store/applicant.query';
 import { ApplicantStore } from '../../state/store/applicant.store';
@@ -26,11 +23,7 @@ import {
     UpdateSphCommand,
 } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-<<<<<<< HEAD
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-=======
-import { ApplicantResponse } from 'appcoretruckassist';
->>>>>>> develop
 
 @Component({
     selector: 'app-sph',
@@ -44,15 +37,11 @@ export class SphComponent implements OnInit, OnDestroy {
 
     public sphForm: FormGroup;
 
-<<<<<<< HEAD
     public applicantId: number;
 
     public signature: string;
     public signatureImgSrc: string;
     public displaySignatureRequiredNote: boolean = false;
-=======
-    public signature: any;
->>>>>>> develop
 
     public applicantCardInfo: any;
 
@@ -60,7 +49,11 @@ export class SphComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private modalService: ModalService,
         private inputService: TaInputService,
-        private applicantQuery: ApplicantQuery
+        private router: Router,
+        private applicantStore: ApplicantStore,
+        private applicantQuery: ApplicantQuery,
+        private applicantActionsService: ApplicantActionsService,
+        private imageBase64Service: ImageBase64Service
     ) {}
 
     ngOnInit(): void {
@@ -87,15 +80,12 @@ export class SphComponent implements OnInit, OnDestroy {
                     ssn: personalInfo?.ssn,
                     dob: convertDateFromBackend(personalInfo?.doB),
                 };
-<<<<<<< HEAD
 
                 this.applicantId = res.id;
 
                 if (res.sph) {
                     this.patchStepValues(res.sph);
                 }
-=======
->>>>>>> develop
             });
     }
 
@@ -133,7 +123,11 @@ export class SphComponent implements OnInit, OnDestroy {
     }
 
     public onSignatureAction(event: any): void {
-        this.signature = event;
+        if (event) {
+            this.signature = this.imageBase64Service.getStringFromBase64(event);
+        } else {
+            this.signature = null;
+        }
     }
 
     public onRemoveSignatureRequiredNoteAction(event: any): void {
@@ -155,7 +149,10 @@ export class SphComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (this.selectedMode === SelectedMode.APPLICANT) {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT ||
+                SelectedMode.FEEDBACK
+            ) {
                 this.onSubmit();
             }
 
@@ -166,7 +163,6 @@ export class SphComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-<<<<<<< HEAD
         if (this.sphForm.invalid || !this.signature) {
             if (this.sphForm.invalid) {
                 this.inputService.markInvalid(this.sphForm);
@@ -219,12 +215,6 @@ export class SphComponent implements OnInit, OnDestroy {
                     console.log(err);
                 },
             });
-=======
-        if (this.sphForm.invalid) {
-            this.inputService.markInvalid(this.sphForm);
-            return;
-        }
->>>>>>> develop
     }
 
     public onSubmitReview(): void {}
