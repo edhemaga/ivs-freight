@@ -249,7 +249,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 case 'truck-modal': {
                     this.modalService.setProjectionModal({
                         action: 'close',
-                        payload: { key: this.editData?.key, value: null },
+                        payload: {
+                            key: this.editData?.key,
+                            value: null,
+                        },
                         component: TruckModalComponent,
                         size: 'small',
                     });
@@ -258,7 +261,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 case 'trailer-modal': {
                     this.modalService.setProjectionModal({
                         action: 'close',
-                        payload: { key: this.editData?.key, value: null },
+                        payload: {
+                            key: this.editData?.key,
+                            value: null,
+                        },
                         component: TrailerModalComponent,
                         size: 'small',
                     });

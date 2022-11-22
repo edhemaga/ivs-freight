@@ -24,6 +24,7 @@ import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { rentValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../../services/form/form.service';
+import { UserModalComponent } from '../../../../modals/user-modal/user-modal.component';
 import {
     addressValidation,
     addressUnitValidation,
@@ -182,6 +183,27 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             }
             default: {
                 break;
+            }
+        }
+
+        if (this.editData?.canOpenModal) {
+            switch (this.editData?.key) {
+                case 'user-modal': {
+                    this.modalService.setProjectionModal({
+                        action: 'close',
+                        payload: {
+                            key: this.editData?.key,
+                            value: null,
+                        },
+                        component: UserModalComponent,
+                        size: 'small',
+                        type: this.editData?.type,
+                    });
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
         }
     }

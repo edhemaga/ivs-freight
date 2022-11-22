@@ -60,9 +60,9 @@ export class ModalService {
         size: string;
         type?: string;
     }) {
-        const timeout = setTimeout(() => {
-            // Closing Modal and Open New One
-            if (data.action === 'open') {
+        // Closing Modal and Open New One
+        if (data.action === 'open') {
+            const timeout = setTimeout(() => {
                 sessionStorage.setItem(
                     data.payload.key,
                     JSON.stringify(data.payload.value)
@@ -82,9 +82,13 @@ export class ModalService {
                         type: data.type,
                     }
                 );
-            }
-            // Closing Modal and Open Old One
-            if (data.action === 'close') {
+                clearTimeout(timeout);
+            }, 500);
+        }
+
+        // Closing Modal and Open Old One
+        if (data.action === 'close') {
+            const timeout = setTimeout(() => {
                 this.openModal(
                     data.component,
                     { size: data.size },
@@ -97,10 +101,9 @@ export class ModalService {
                     }
                 );
                 this.encryptionDecryptionService.removeItem(data.payload.key);
-            }
-
-            clearTimeout(timeout);
-        }, 500);
+                clearTimeout(timeout);
+            }, 5000);
+        }
     }
 
     public openModal(
