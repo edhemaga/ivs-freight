@@ -1,446 +1,446 @@
-@import "src/theme/variables.scss";
+@import 'src/theme/variables.scss';
 
 .step-container {
-  padding-top: 22px;
+    padding-top: 22px;
 
-  .step-title {
-    color: $ta-blue;
-    font-size: 32px;
-    height: 39px;
-    margin-bottom: 22px !important;
-
-    &::-moz-selection {
-      color: $ta-blue;
-      background: rgb(83, 107, 194, 0.2);
-    }
-
-    &::selection {
-      color: $ta-blue;
-      background: rgb(83, 107, 194, 0.2);
-    }
-  }
-
-  .info-section {
-    width: 820px;
-    margin-bottom: 32px;
-
-    p {
-      color: $bw6-2;
-      font-size: 14px;
-      line-height: 22px;
-
-      &::-moz-selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      &::selection {
-        color: $bw6-2;
-        background: rgb(108, 108, 108, 0.2);
-      }
-    }
-  }
-
-  .step-subtitle {
-    font-size: 14px;
-    height: 18px;
-    color: $bw6-2;
-    text-transform: uppercase;
-    margin-bottom: 22px !important;
-
-    &::-moz-selection {
-      color: $bw6-2;
-      background: rgb(108, 108, 108, 0.2);
-    }
-
-    &::selection {
-      color: $bw6-2;
-      background: rgb(108, 108, 108, 0.2);
-    }
-  }
-
-  .employer-container,
-  .driver-container {
-    width: 660px;
-    padding: 22px;
-    border-radius: 3px;
-    margin-bottom: 22px;
-    background: $ta-light-grey-4;
-
-    .to-prev-employer-box,
-    .phone-box,
-    .email-box,
-    .fax-box,
-    .address-box,
-    .address-unit-box {
-      margin-bottom: 18px;
-
-      h3 {
-        font-size: 12px;
-        color: $bw6-2;
-        margin-bottom: 6px !important;
-        margin-left: 6px !important;
-        text-transform: uppercase;
+    .step-title {
+        color: $ta-blue;
+        font-size: 32px;
+        height: 39px;
+        margin-bottom: 22px !important;
 
         &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
+            color: $ta-blue;
+            background: rgb(83, 107, 194, 0.2);
         }
 
         &::selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
+            color: $ta-blue;
+            background: rgb(83, 107, 194, 0.2);
         }
-      }
-
-      .info-box {
-        background: $white;
-        padding: 4px 6px;
-        height: 26px;
-        border-radius: 2px;
-
-        .pipe {
-          width: 0.1px;
-          height: 14px;
-          background: $ta-light-grey;
-          margin: 2px 6px;
-        }
-
-        p {
-          height: 18px;
-          line-height: 18px;
-          font-size: 14px;
-          color: $bw6-2;
-
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-        }
-      }
-
-      .icon {
-        svg {
-          path {
-            fill: $bw4;
-          }
-        }
-      }
-
-      &.to-prev-employer-box {
-        width: 616px;
-
-        .info-box {
-          p {
-            text-transform: uppercase;
-          }
-        }
-      }
-
-      &.phone-box,
-      &.fax-box {
-        width: 169px;
-
-        h3 {
-          margin-left: 36px !important;
-        }
-
-        &.phone-box {
-          margin-right: 12px;
-        }
-      }
-
-      &.email-box {
-        width: 254px;
-        margin-right: 12px;
-
-        h3 {
-          margin-left: 36px !important;
-        }
-      }
-
-      &.address-box {
-        width: 479px;
-        margin-right: 12px;
-
-        h3 {
-          margin-left: 36px !important;
-        }
-      }
-
-      &.address-unit-box {
-        width: 125px;
-
-        .info-box {
-          p {
-            text-transform: uppercase;
-          }
-        }
-      }
     }
 
-    .prev-employer-box {
-      width: 616px;
+    .info-section {
+        width: 820px;
+        margin-bottom: 32px;
 
-      .title-container {
-        width: 100%;
-        margin-bottom: 6px;
-        padding-left: 6px;
-
-        .name-title-box,
-        .ssn-title-box,
-        .dob-title-box {
-          p {
+        p {
             color: $bw6-2;
-            font-size: 12px;
+            font-size: 14px;
+            line-height: 22px;
 
             &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
             }
 
             &::selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
             }
-          }
-
-          &.name-title-box {
-            width: 180px;
-            margin-right: 117px;
-          }
-
-          &.ssn-title-box {
-            width: 25px;
-            margin-right: 140px;
-          }
-
-          &.dob-title-box {
-            width: 29px;
-          }
         }
-      }
+    }
 
-      .prev-employer-info-container {
-        height: 26px;
-        padding: 4px 6px;
-        background: $white;
-        border-radius: 2px;
+    .step-subtitle {
+        font-size: 14px;
+        height: 18px;
+        color: $bw6-2;
         text-transform: uppercase;
-        color: $bw6-2;
-        font-size: 14px;
+        margin-bottom: 22px !important;
 
-        p {
-          height: 18px;
-
-          &::-moz-selection {
+        &::-moz-selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
-          }
+        }
 
-          &::selection {
+        &::selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
-          }
         }
-
-        .driver-box,
-        .ssn-box,
-        .date-box {
-          &.driver-box {
-            width: 280px;
-            margin-right: 12px;
-          }
-
-          &.ssn-box {
-            width: 153px;
-            margin-right: 12px;
-            padding-left: 6px;
-          }
-
-          &.date-box {
-            margin-right: 12px;
-            padding-left: 6px;
-          }
-        }
-      }
     }
 
-    .date-vehicle-box {
-      width: 616px;
-      margin-bottom: 12px;
+    .employer-container,
+    .driver-container {
+        width: 660px;
+        padding: 22px;
+        border-radius: 3px;
+        margin-bottom: 22px;
+        background: $ta-light-grey-4;
 
-      .title-container {
-        width: 100%;
-        margin-bottom: 6px;
-        padding-left: 36px;
+        .to-prev-employer-box,
+        .phone-box,
+        .email-box,
+        .fax-box,
+        .address-box,
+        .address-unit-box {
+            margin-bottom: 18px;
 
-        .date-from-title-box,
-        .date-to-title-box,
-        .vehicle-title-box {
-          p {
-            color: $bw6-2;
-            font-size: 12px;
+            h3 {
+                font-size: 12px;
+                color: $bw6-2;
+                margin-bottom: 6px !important;
+                margin-left: 6px !important;
+                text-transform: uppercase;
 
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
             }
 
-            &::selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
+            .info-box {
+                background: $white;
+                padding: 4px 6px;
+                height: 26px;
+                border-radius: 2px;
+
+                .pipe {
+                    width: 0.1px;
+                    height: 14px;
+                    background: $ta-light-grey;
+                    margin: 2px 6px;
+                }
+
+                p {
+                    height: 18px;
+                    line-height: 18px;
+                    font-size: 14px;
+                    color: $bw6-2;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
             }
-          }
 
-          &.date-from-title-box {
-            width: 76px;
-            margin-right: 105px;
-          }
-
-          &.date-to-title-box {
-            width: 55px;
-            margin-right: 96px;
-          }
-
-          &.vehicle-title-box {
-            width: 128px;
-          }
-        }
-      }
-
-      .date-vehicle-info-container {
-        height: 26px;
-        padding: 4px 6px;
-        background: $white;
-        border-radius: 2px;
-        color: $bw6-2;
-        font-size: 14px;
-
-        .icon {
-          svg {
-            path {
-              fill: $bw4;
+            .icon {
+                svg {
+                    path {
+                        fill: $bw4;
+                    }
+                }
             }
-          }
-        }
 
-        .truck-icon {
-          margin-right: 6px;
+            &.to-prev-employer-box {
+                width: 616px;
 
-          svg {
-            path {
-              fill: $bw5;
+                .info-box {
+                    p {
+                        text-transform: uppercase;
+                    }
+                }
             }
-          }
+
+            &.phone-box,
+            &.fax-box {
+                width: 169px;
+
+                h3 {
+                    margin-left: 36px !important;
+                }
+
+                &.phone-box {
+                    margin-right: 12px;
+                }
+            }
+
+            &.email-box {
+                width: 254px;
+                margin-right: 12px;
+
+                h3 {
+                    margin-left: 36px !important;
+                }
+            }
+
+            &.address-box {
+                width: 479px;
+                margin-right: 12px;
+
+                h3 {
+                    margin-left: 36px !important;
+                }
+            }
+
+            &.address-unit-box {
+                width: 125px;
+
+                .info-box {
+                    p {
+                        text-transform: uppercase;
+                    }
+                }
+            }
         }
 
-        .pipe {
-          width: 0.1px;
-          height: 14px;
-          background: $ta-light-grey;
-          margin: 2px 6px;
+        .prev-employer-box {
+            width: 616px;
+
+            .title-container {
+                width: 100%;
+                margin-bottom: 6px;
+                padding-left: 6px;
+
+                .name-title-box,
+                .ssn-title-box,
+                .dob-title-box {
+                    p {
+                        color: $bw6-2;
+                        font-size: 12px;
+
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                    }
+
+                    &.name-title-box {
+                        width: 180px;
+                        margin-right: 117px;
+                    }
+
+                    &.ssn-title-box {
+                        width: 25px;
+                        margin-right: 140px;
+                    }
+
+                    &.dob-title-box {
+                        width: 29px;
+                    }
+                }
+            }
+
+            .prev-employer-info-container {
+                height: 26px;
+                padding: 4px 6px;
+                background: $white;
+                border-radius: 2px;
+                text-transform: uppercase;
+                color: $bw6-2;
+                font-size: 14px;
+
+                p {
+                    height: 18px;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                .driver-box,
+                .ssn-box,
+                .date-box {
+                    &.driver-box {
+                        width: 280px;
+                        margin-right: 12px;
+                    }
+
+                    &.ssn-box {
+                        width: 153px;
+                        margin-right: 12px;
+                        padding-left: 6px;
+                    }
+
+                    &.date-box {
+                        margin-right: 12px;
+                        padding-left: 6px;
+                    }
+                }
+            }
         }
 
-        p {
-          height: 18px;
-          line-height: 18px;
+        .date-vehicle-box {
+            width: 616px;
+            margin-bottom: 12px;
 
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
+            .title-container {
+                width: 100%;
+                margin-bottom: 6px;
+                padding-left: 36px;
 
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
+                .date-from-title-box,
+                .date-to-title-box,
+                .vehicle-title-box {
+                    p {
+                        color: $bw6-2;
+                        font-size: 12px;
+
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                    }
+
+                    &.date-from-title-box {
+                        width: 76px;
+                        margin-right: 105px;
+                    }
+
+                    &.date-to-title-box {
+                        width: 55px;
+                        margin-right: 96px;
+                    }
+
+                    &.vehicle-title-box {
+                        width: 128px;
+                    }
+                }
+            }
+
+            .date-vehicle-info-container {
+                height: 26px;
+                padding: 4px 6px;
+                background: $white;
+                border-radius: 2px;
+                color: $bw6-2;
+                font-size: 14px;
+
+                .icon {
+                    svg {
+                        path {
+                            fill: $bw4;
+                        }
+                    }
+                }
+
+                .truck-icon {
+                    margin-right: 6px;
+
+                    svg {
+                        path {
+                            fill: $bw5;
+                        }
+                    }
+                }
+
+                .pipe {
+                    width: 0.1px;
+                    height: 14px;
+                    background: $ta-light-grey;
+                    margin: 2px 6px;
+                }
+
+                p {
+                    height: 18px;
+                    line-height: 18px;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                .date-from-box,
+                .date-to-box {
+                    width: 75px;
+                    margin-right: 76px;
+
+                    &.date-to-box {
+                        width: 75px;
+                        margin-right: 74px;
+                    }
+                }
+            }
         }
 
-        .date-from-box,
-        .date-to-box {
-          width: 75px;
-          margin-right: 76px;
+        .reason-box {
+            width: 616px;
 
-          &.date-to-box {
-            width: 75px;
-            margin-right: 74px;
-          }
+            .title-container {
+                width: 100%;
+                margin-bottom: 6px;
+                padding-left: 6px;
+
+                .reason-title-box {
+                    p {
+                        color: $bw6-2;
+                        font-size: 12px;
+
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                    }
+                }
+            }
+
+            .reason-info-container {
+                height: 26px;
+                padding: 4px 6px;
+                background: $white;
+                border-radius: 2px;
+                color: $bw6-2;
+                font-size: 14px;
+
+                p {
+                    height: 18px;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+            }
         }
-      }
     }
 
-    .reason-box {
-      width: 616px;
+    .btn-container {
+        .add-btn {
+            width: 164px;
+            height: 32px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            border-radius: 3px;
+            color: $white;
+            background: $ta-light-blue;
+            transition: background 0.2s ease-in-out;
 
-      .title-container {
-        width: 100%;
-        margin-bottom: 6px;
-        padding-left: 6px;
-
-        .reason-title-box {
-          p {
-            color: $bw6-2;
-            font-size: 12px;
-
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
+            &:hover {
+                background: $ta-blue;
             }
-
-            &::selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
-            }
-          }
         }
-      }
-
-      .reason-info-container {
-        height: 26px;
-        padding: 4px 6px;
-        background: $white;
-        border-radius: 2px;
-        color: $bw6-2;
-        font-size: 14px;
-
-        p {
-          height: 18px;
-
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-        }
-      }
     }
-  }
-
-  .btn-container {
-    .add-btn {
-      width: 164px;
-      height: 32px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-      border-radius: 3px;
-      color: $white;
-      background: $ta-light-blue;
-      transition: background 0.2s ease-in-out;
-
-      &:hover {
-        background: $ta-blue;
-      }
-    }
-  }
 }

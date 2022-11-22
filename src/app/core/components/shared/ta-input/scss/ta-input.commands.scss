@@ -1,195 +1,195 @@
-@import "./ta-input.colors.scss";
+@import './ta-input.colors.scss';
 
 .ta-input-commands {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  position: absolute;
-  right: 4px;
-
-  .ta-input-command-first {
-    border-radius: 1px;
-    display: block;
-    transition: all 0.3s ease-in-out;
-    z-index: 20;
-    cursor: pointer;
-
-    .ta-input-command-svg-first {
-      svg {
-        width: 18px !important;
-        height: 18px !important;
-        overflow: visible;
-        path {
-          fill: $input-commands-path-fill-normal;
-        }
-        rect {
-          transition: transform 0.3s;
-          transform: scale(1);
-          transform-origin: center;
-          fill: $input-commands-rect-fill-normal;
-        }
-      }
-
-      &:hover {
-        svg {
-          overflow: visible;
-          rect {
-            transform: scale(1.2);
-            transform-origin: center;
-            transition: transform 0.3s;
-            fill: $input-commands-rect-fill-normal-hover;
-          }
-        }
-      }
-
-      &.invalid-focus-in {
-        path {
-          fill: $input-commands-path-fill-invalid-focus !important;
-        }
-        rect {
-          fill: $input-commands-rect-fill-invalid-focus !important;
-        }
-        &:hover {
-          svg {
-            rect {
-              fill: $input-commands-rect-fill-invalid-focus-hover !important;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .ta-input-command-second {
-    border-radius: 1px;
-    display: block;
-    transition: all 0.3s ease-in-out;
-    z-index: 20;
-    cursor: pointer;
-
-    .ta-input-command-svg-second {
-      svg {
-        width: 18px !important;
-        height: 18px !important;
-        overflow: visible;
-        path {
-          fill: $input-commands-path-fill-normal;
-        }
-        rect {
-          transition: transform 0.3s;
-          transform: scale(1);
-          transform-origin: center;
-          fill: $input-commands-rect-fill-normal;
-        }
-      }
-
-      &:hover {
-        svg {
-          overflow: visible;
-          rect {
-            transform: scale(1.2);
-            transform-origin: center;
-            transition: transform 0.3s;
-            fill: $input-commands-rect-fill-normal-hover;
-          }
-        }
-      }
-
-      &.invalid-focus-in {
-        path {
-          fill: $input-commands-path-fill-invalid-focus !important;
-        }
-        rect {
-          fill: $input-commands-rect-fill-invalid-focus !important;
-        }
-        &:hover {
-          svg {
-            rect {
-              fill: $input-commands-rect-fill-invalid-focus-hover !important;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  &.address-flag {
-    position: relative;
-    right: 0;
-    line-height: 17px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: absolute;
+    right: 4px;
 
     .ta-input-command-first {
-      border-radius: 1px;
-      display: block;
-      transition: all 0.3s ease-in-out;
-      z-index: 20;
-      cursor: pointer;
+        border-radius: 1px;
+        display: block;
+        transition: all 0.3s ease-in-out;
+        z-index: 20;
+        cursor: pointer;
 
-      .ta-input-command-svg-first {
-        svg {
-          width: 18px !important;
-          height: 18px !important;
-          overflow: visible;
-          path {
-            fill: $input-commands-path-fill-address-flag;
-          }
-          rect {
-            transition: transform 0.3s;
-            transform: scale(1);
-            transform-origin: center;
-            fill: $input-commands-rect-fill-address-flag;
-          }
-        }
-
-        &:hover {
-          svg {
-            overflow: visible;
-            rect {
-              transform: scale(1.2);
-              transform-origin: center;
-              transition: transform 0.3s;
-              fill: $input-commands-rect-fill-address-flag-hover;
+        .ta-input-command-svg-first {
+            svg {
+                width: 18px !important;
+                height: 18px !important;
+                overflow: visible;
+                path {
+                    fill: $input-commands-path-fill-normal;
+                }
+                rect {
+                    transition: transform 0.3s;
+                    transform: scale(1);
+                    transform-origin: center;
+                    fill: $input-commands-rect-fill-normal;
+                }
             }
-          }
+
+            &:hover {
+                svg {
+                    overflow: visible;
+                    rect {
+                        transform: scale(1.2);
+                        transform-origin: center;
+                        transition: transform 0.3s;
+                        fill: $input-commands-rect-fill-normal-hover;
+                    }
+                }
+            }
+
+            &.invalid-focus-in {
+                path {
+                    fill: $input-commands-path-fill-invalid-focus !important;
+                }
+                rect {
+                    fill: $input-commands-rect-fill-invalid-focus !important;
+                }
+                &:hover {
+                    svg {
+                        rect {
+                            fill: $input-commands-rect-fill-invalid-focus-hover !important;
+                        }
+                    }
+                }
+            }
         }
-      }
     }
 
     .ta-input-command-second {
-      border-radius: 1px;
-      display: block;
-      transition: all 0.3s ease-in-out;
-      z-index: 20;
-      cursor: pointer;
+        border-radius: 1px;
+        display: block;
+        transition: all 0.3s ease-in-out;
+        z-index: 20;
+        cursor: pointer;
 
-      .ta-input-command-svg-second {
-        svg {
-          width: 18px !important;
-          height: 18px !important;
-          overflow: visible;
-          path {
-            fill: $input-commands-path-fill-address-flag;
-          }
-          rect {
-            transition: transform 0.3s;
-            transform: scale(1);
-            transform-origin: center;
-            fill: $input-commands-rect-fill-address-flag;
-          }
-        }
-
-        &:hover {
-          svg {
-            overflow: visible;
-            rect {
-              transform: scale(1.2);
-              transform-origin: center;
-              transition: transform 0.3s;
-              fill: $input-commands-rect-fill-address-flag-hover;
+        .ta-input-command-svg-second {
+            svg {
+                width: 18px !important;
+                height: 18px !important;
+                overflow: visible;
+                path {
+                    fill: $input-commands-path-fill-normal;
+                }
+                rect {
+                    transition: transform 0.3s;
+                    transform: scale(1);
+                    transform-origin: center;
+                    fill: $input-commands-rect-fill-normal;
+                }
             }
-          }
+
+            &:hover {
+                svg {
+                    overflow: visible;
+                    rect {
+                        transform: scale(1.2);
+                        transform-origin: center;
+                        transition: transform 0.3s;
+                        fill: $input-commands-rect-fill-normal-hover;
+                    }
+                }
+            }
+
+            &.invalid-focus-in {
+                path {
+                    fill: $input-commands-path-fill-invalid-focus !important;
+                }
+                rect {
+                    fill: $input-commands-rect-fill-invalid-focus !important;
+                }
+                &:hover {
+                    svg {
+                        rect {
+                            fill: $input-commands-rect-fill-invalid-focus-hover !important;
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-  }
+
+    &.address-flag {
+        position: relative;
+        right: 0;
+        line-height: 17px;
+
+        .ta-input-command-first {
+            border-radius: 1px;
+            display: block;
+            transition: all 0.3s ease-in-out;
+            z-index: 20;
+            cursor: pointer;
+
+            .ta-input-command-svg-first {
+                svg {
+                    width: 18px !important;
+                    height: 18px !important;
+                    overflow: visible;
+                    path {
+                        fill: $input-commands-path-fill-address-flag;
+                    }
+                    rect {
+                        transition: transform 0.3s;
+                        transform: scale(1);
+                        transform-origin: center;
+                        fill: $input-commands-rect-fill-address-flag;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        overflow: visible;
+                        rect {
+                            transform: scale(1.2);
+                            transform-origin: center;
+                            transition: transform 0.3s;
+                            fill: $input-commands-rect-fill-address-flag-hover;
+                        }
+                    }
+                }
+            }
+        }
+
+        .ta-input-command-second {
+            border-radius: 1px;
+            display: block;
+            transition: all 0.3s ease-in-out;
+            z-index: 20;
+            cursor: pointer;
+
+            .ta-input-command-svg-second {
+                svg {
+                    width: 18px !important;
+                    height: 18px !important;
+                    overflow: visible;
+                    path {
+                        fill: $input-commands-path-fill-address-flag;
+                    }
+                    rect {
+                        transition: transform 0.3s;
+                        transform: scale(1);
+                        transform-origin: center;
+                        fill: $input-commands-rect-fill-address-flag;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        overflow: visible;
+                        rect {
+                            transform: scale(1.2);
+                            transform-origin: center;
+                            transition: transform 0.3s;
+                            fill: $input-commands-rect-fill-address-flag-hover;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -1,938 +1,938 @@
-@import "../../theme/variables.scss";
+@import '../../theme/variables.scss';
 
 .toolbar-relative {
-  position: relative;
-  width: 100%;
-  padding-right: 18px;
-  z-index: 2;
+    position: relative;
+    width: 100%;
+    padding-right: 18px;
+    z-index: 2;
 }
 
 .customer-map-container {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  padding-left: 56px;
-  z-index: 1;
-
-  .marker-divider {
-    height: 2px;
-    width: 100%;
-    margin-top: 8px;
-
-    background: $ta-light-grey-4;
-
-    border-radius: 1px;
-  }
-
-  agm-map {
-    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
     height: 100vh;
+    padding-left: 56px;
+    z-index: 1;
 
-    .gm-bundled-control {
-      right: 34px !important;
-      bottom: 58px !important;
+    .marker-divider {
+        height: 2px;
+        width: 100%;
+        margin-top: 8px;
 
-      .gmnoprint {
-        width: 26px;
-        height: 50px;
+        background: $ta-light-grey-4;
 
-        :first-child {
-          width: 26px !important;
-          height: 50px !important;
-          box-shadow: none !important;
+        border-radius: 1px;
+    }
 
-          .gm-control-active {
-            width: 26px !important;
-            height: 25px !important;
+    agm-map {
+        width: 100%;
+        height: 100vh;
 
-            img {
-              width: 12px !important;
-              height: 12px !important;
+        .gm-bundled-control {
+            right: 34px !important;
+            bottom: 58px !important;
+
+            .gmnoprint {
+                width: 26px;
+                height: 50px;
+
+                :first-child {
+                    width: 26px !important;
+                    height: 50px !important;
+                    box-shadow: none !important;
+
+                    .gm-control-active {
+                        width: 26px !important;
+                        height: 25px !important;
+
+                        img {
+                            width: 12px !important;
+                            height: 12px !important;
+                        }
+
+                        &:hover {
+                            img:nth-child(4) {
+                                display: none !important;
+                            }
+                        }
+                    }
+
+                    div {
+                        display: none !important;
+                    }
+                }
             }
-
-            &:hover {
-              img:nth-child(4) {
-                display: none !important;
-              }
-            }
-          }
-
-          div {
-            display: none !important;
-          }
-        }
-      }
-    }
-
-    .si-shadow-frame {
-      box-shadow: none;
-    }
-
-    .si-float-wrapper {
-      z-index: 998;
-
-      pointer-events: none;
-
-      &:has(.show-marker-dropdown) {
-        z-index: 999;
-      }
-    }
-
-    .si-content-wrapper {
-      position: relative;
-      width: 360px;
-      border: none;
-
-      padding: 0px;
-      overflow: visible;
-      background: none !important;
-
-      .si-content {
-        max-width: none !important;
-        max-height: none !important;
-        overflow: hidden;
-        transition: height 0.15s ease-in-out;
-        overflow: visible;
-
-        &.marker-tooltip-shadow {
-          box-shadow: $box-shadow;
-        }
-      }
-    }
-
-    .marker-business-name {
-      font-size: 18px;
-      font-weight: 700;
-      color: $bw6-2;
-      text-transform: uppercase;
-      line-height: 22px;
-
-      &::-moz-selection {
-        color: $bw6-2;
-        background: #6c6c6c33;
-      }
-      &::selection {
-        color: $bw6-2;
-        background: #6c6c6c33;
-      }
-    }
-
-    .marker-expanded-view {
-      overflow: hidden;
-      opacity: 1;
-
-      transition: height 0.15s ease-in-out;
-
-      &.unopened {
-        transition: height 0.15s ease-in-out;
-      }
-    }
-
-    .marker-title {
-      font-size: 14px;
-      font-weight: 800;
-      line-height: 18px;
-      color: $bw6-2;
-      margin-top: 6px;
-    }
-
-    .marker-container-expand {
-      position: absolute;
-      right: 8px;
-      bottom: 8px;
-
-      cursor: pointer;
-
-      .marker-expand-svg {
-        display: inline-block;
-        transition: all 0.15s ease-in-out;
-
-        &:hover {
-          svg {
-            path {
-              fill: $bw6-2;
-            }
-          }
         }
 
-        &.rotate {
-          transform: rotate(180deg);
-
-          svg {
-            path {
-              fill: $bc1;
-            }
-          }
-
-          &:hover {
-            svg {
-              path {
-                fill: $ta-blue-2;
-              }
-            }
-          }
+        .si-shadow-frame {
+            box-shadow: none;
         }
-      }
-    }
 
-    .marker-expanded-info-container {
-      margin-top: 12px;
-    }
+        .si-float-wrapper {
+            z-index: 998;
 
-    .data-count {
-      height: 24px;
-      min-width: 24px;
-      border-radius: 2px;
-      background: $ta-light-grey-4;
-      padding: 3px 4px;
-      margin-right: 4px;
-      font-size: 14px;
-      font-weight: 800;
-      color: $bw6-2;
-      line-height: 18px;
-      user-select: none;
-    }
+            pointer-events: none;
 
-    .marker-info-container-all {
-      padding-left: 4px;
-
-      .show-more {
-        //top: 7px;
-        height: 18px;
-        margin-top: 2px;
-
-        .table-dropdown-container {
-          transform: rotate(90deg);
+            &:has(.show-marker-dropdown) {
+                z-index: 999;
+            }
         }
-      }
-    }
 
-    .marker-info-container {
-      display: flex;
-      margin-top: 12px;
-    }
+        .si-content-wrapper {
+            position: relative;
+            width: 360px;
+            border: none;
 
-    .marker-info-svg {
-      margin-right: 6px;
+            padding: 0px;
+            overflow: visible;
+            background: none !important;
+
+            .si-content {
+                max-width: none !important;
+                max-height: none !important;
+                overflow: hidden;
+                transition: height 0.15s ease-in-out;
+                overflow: visible;
+
+                &.marker-tooltip-shadow {
+                    box-shadow: $box-shadow;
+                }
+            }
+        }
+
+        .marker-business-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: $bw6-2;
+            text-transform: uppercase;
+            line-height: 22px;
+
+            &::-moz-selection {
+                color: $bw6-2;
+                background: #6c6c6c33;
+            }
+            &::selection {
+                color: $bw6-2;
+                background: #6c6c6c33;
+            }
+        }
+
+        .marker-expanded-view {
+            overflow: hidden;
+            opacity: 1;
+
+            transition: height 0.15s ease-in-out;
+
+            &.unopened {
+                transition: height 0.15s ease-in-out;
+            }
+        }
+
+        .marker-title {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 18px;
+            color: $bw6-2;
+            margin-top: 6px;
+        }
+
+        .marker-container-expand {
+            position: absolute;
+            right: 8px;
+            bottom: 8px;
+
+            cursor: pointer;
+
+            .marker-expand-svg {
+                display: inline-block;
+                transition: all 0.15s ease-in-out;
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $bw6-2;
+                        }
+                    }
+                }
+
+                &.rotate {
+                    transform: rotate(180deg);
+
+                    svg {
+                        path {
+                            fill: $bc1;
+                        }
+                    }
+
+                    &:hover {
+                        svg {
+                            path {
+                                fill: $ta-blue-2;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .marker-expanded-info-container {
+            margin-top: 12px;
+        }
+
+        .data-count {
+            height: 24px;
+            min-width: 24px;
+            border-radius: 2px;
+            background: $ta-light-grey-4;
+            padding: 3px 4px;
+            margin-right: 4px;
+            font-size: 14px;
+            font-weight: 800;
+            color: $bw6-2;
+            line-height: 18px;
+            user-select: none;
+        }
+
+        .marker-info-container-all {
+            padding-left: 4px;
+
+            .show-more {
+                //top: 7px;
+                height: 18px;
+                margin-top: 2px;
+
+                .table-dropdown-container {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+
+        .marker-info-container {
+            display: flex;
+            margin-top: 12px;
+        }
+
+        .marker-info-svg {
+            margin-right: 6px;
+        }
     }
-  }
 }
 
 .marker-container {
-  position: absolute;
-  left: 50%;
-  top: -37px;
-  transform: translateX(-17px);
-  pointer-events: auto;
+    position: absolute;
+    left: 50%;
+    top: -37px;
+    transform: translateX(-17px);
+    pointer-events: auto;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  &:hover {
-    .marker-tooltip {
-      color: #3c3c3c;
+    &:hover {
+        .marker-tooltip {
+            color: #3c3c3c;
 
-      .orange-text {
-        color: #ff9800 !important;
-      }
+            .orange-text {
+                color: #ff9800 !important;
+            }
 
-      .red-text {
-        color: #f44336 !important;
-      }
+            .red-text {
+                color: #f44336 !important;
+            }
 
-      .blue-text {
-        color: #3551b7 !important;
-      }
+            .blue-text {
+                color: #3551b7 !important;
+            }
+        }
+
+        .marker-icon {
+            svg {
+                #Ellipse_6005 {
+                    fill: $ta-blue-2;
+                }
+            }
+
+            &.permanently-closed-icon {
+                svg {
+                    #Ellipse_6005 {
+                        fill: #f44336;
+                    }
+                }
+            }
+
+            &.fuel-marker {
+                svg {
+                    #Ellipse_6005 {
+                        fill: #ffb300;
+                    }
+                }
+            }
+        }
     }
-
-    .marker-icon {
-      svg {
-        #Ellipse_6005 {
-          fill: $ta-blue-2;
-        }
-      }
-
-      &.permanently-closed-icon {
-        svg {
-          #Ellipse_6005 {
-            fill: #f44336;
-          }
-        }
-      }
-
-      &.fuel-marker {
-        svg {
-          #Ellipse_6005 {
-            fill: #ffb300;
-          }
-        }
-      }
-    }
-  }
 }
 
 .marker-tooltip {
-  max-width: 90px;
+    max-width: 90px;
 
-  color: $bw6-2;
-  //color: #F44336 !important;
-  //margin-left: 15px;
-  text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white,
-    -1px 1px 0px $white;
-  text-transform: uppercase;
-  font-size: 11px !important;
-  line-height: 12px;
-  font-weight: 600;
-  text-align: left;
+    color: $bw6-2;
+    //color: #F44336 !important;
+    //margin-left: 15px;
+    text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white,
+        -1px 1px 0px $white;
+    text-transform: uppercase;
+    font-size: 11px !important;
+    line-height: 12px;
+    font-weight: 600;
+    text-align: left;
 
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  opacity: 1;
-  transition: 0.15s;
-  user-select: none;
-  cursor: pointer;
-
-  @supports (-webkit-line-clamp: 2) {
-    overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
-    white-space: initial;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
+    overflow: hidden;
+    opacity: 1;
+    transition: 0.15s;
+    user-select: none;
+    cursor: pointer;
+
+    @supports (-webkit-line-clamp: 2) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: initial;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
 }
 
 .hide-marker-tooltip {
-  display: none;
-  opacity: 0;
-  pointer-events: none;
+    display: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .marker-rating-container {
-  display: flex;
-  align-items: center;
-  height: 14px;
-  user-select: none;
+    display: flex;
+    align-items: center;
+    height: 14px;
+    user-select: none;
 
-  .marker-rating {
-    margin-right: 12px;
-    cursor: pointer;
+    .marker-rating {
+        margin-right: 12px;
+        cursor: pointer;
 
-    .marker-rating-svg {
-      margin-right: 4px;
+        .marker-rating-svg {
+            margin-right: 4px;
 
-      &:hover {
-        svg {
-          path {
-            fill: $ta-light-grey-2;
-          }
-        }
-      }
-
-      &.has-liked-icon {
-        svg {
-          path {
-            fill: #4db6a2;
-          }
-        }
-
-        &:hover {
-          svg {
-            path {
-              fill: #26a690;
+            &:hover {
+                svg {
+                    path {
+                        fill: $ta-light-grey-2;
+                    }
+                }
             }
-          }
-        }
-      }
 
-      &.has-disliked-icon {
-        svg {
-          path {
-            fill: #e57373;
-          }
-        }
+            &.has-liked-icon {
+                svg {
+                    path {
+                        fill: #4db6a2;
+                    }
+                }
 
-        &:hover {
-          svg {
-            path {
-              fill: #ef5350;
+                &:hover {
+                    svg {
+                        path {
+                            fill: #26a690;
+                        }
+                    }
+                }
             }
-          }
+
+            &.has-disliked-icon {
+                svg {
+                    path {
+                        fill: #e57373;
+                    }
+                }
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: #ef5350;
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 
 .marker-info-text {
-  font-size: 14px;
-  line-height: 18px;
-  color: $bw6-2;
-
-  &::-moz-selection {
+    font-size: 14px;
+    line-height: 18px;
     color: $bw6-2;
-    background: #6c6c6c33;
-  }
-  &::selection {
-    color: $bw6-2;
-    background: #6c6c6c33;
-  }
 
-  .title-text {
     &::-moz-selection {
-      color: $bw6-2;
-      background: #6c6c6c33;
+        color: $bw6-2;
+        background: #6c6c6c33;
     }
     &::selection {
-      color: $bw6-2;
-      background: #6c6c6c33;
+        color: $bw6-2;
+        background: #6c6c6c33;
     }
-  }
+
+    .title-text {
+        &::-moz-selection {
+            color: $bw6-2;
+            background: #6c6c6c33;
+        }
+        &::selection {
+            color: $bw6-2;
+            background: #6c6c6c33;
+        }
+    }
 }
 
 .marker-semibold-text {
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .marker-bold-text {
-  font-weight: 700;
+    font-weight: 700;
 
-  &::-moz-selection {
-    color: $bw6-2;
-    background: #6c6c6c33;
-  }
-  &::selection {
-    color: $bw6-2;
-    background: #6c6c6c33;
-  }
+    &::-moz-selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+    }
+    &::selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+    }
 }
 
 .marker-extrabold-text {
-  font-weight: 800;
+    font-weight: 800;
 }
 
 .marker-like-text {
-  font-size: 11px;
-  line-height: 14px;
-  color: $bw6-2;
+    font-size: 11px;
+    line-height: 14px;
+    color: $bw6-2;
 
-  &::-moz-selection {
-    color: $bw6-2;
-    background: #6c6c6c33;
-  }
-  &::selection {
-    color: $bw6-2;
-    background: #6c6c6c33;
-  }
+    &::-moz-selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+    }
+    &::selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+    }
 }
 
 .uppercase {
-  text-transform: uppercase;
+    text-transform: uppercase;
 }
 
 .title-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-top: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 2px;
 
-  .show-more {
-    position: relative;
-    height: 18px;
-    cursor: pointer;
+    .show-more {
+        position: relative;
+        height: 18px;
+        cursor: pointer;
 
-    &.table-dropdown-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
+        &.table-dropdown-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
 
-      .dropdown-dots {
-        svg {
-          width: 18px;
-          height: 18px;
+            .dropdown-dots {
+                svg {
+                    width: 18px;
+                    height: 18px;
 
-          path {
-            fill: #aaaaaa;
-          }
-        }
-      }
-
-      &:hover {
-        .dropdown-dots {
-          svg {
-            path {
-              fill: #6c6c6c;
+                    path {
+                        fill: #aaaaaa;
+                    }
+                }
             }
-          }
-        }
-      }
 
-      &.active-drop {
-        .dropdown-dots {
-          svg {
-            path {
-              fill: #6c6c6c !important;
+            &:hover {
+                .dropdown-dots {
+                    svg {
+                        path {
+                            fill: #6c6c6c;
+                        }
+                    }
+                }
             }
-          }
 
-          &:hover {
-            svg {
-              path {
-                fill: #3d3d3d !important;
-              }
+            &.active-drop {
+                .dropdown-dots {
+                    svg {
+                        path {
+                            fill: #6c6c6c !important;
+                        }
+                    }
+
+                    &:hover {
+                        svg {
+                            path {
+                                fill: #3d3d3d !important;
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
     }
-  }
 }
 
 .blue-resize-svg {
-  svg {
-    path {
-      fill: $bc1;
+    svg {
+        path {
+            fill: $bc1;
+        }
     }
-  }
 }
 
 .red-text {
-  color: #ef5350 !important;
+    color: #ef5350 !important;
 }
 
 .marker-distance-left {
-  margin-top: 2px;
+    margin-top: 2px;
 
-  .marker-time-left-text {
-    font-size: 14px;
-    line-height: 18px;
-    color: $ta-light-grey-2;
-  }
+    .marker-time-left-text {
+        font-size: 14px;
+        line-height: 18px;
+        color: $ta-light-grey-2;
+    }
 }
 
 .permanently-closed-text {
-  display: flex;
-  color: $ta-light-grey-2;
+    display: flex;
+    color: $ta-light-grey-2;
 }
 
 .permanently-closed-svg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
 }
 
 .mg-bottom-2 {
-  margin-bottom: 2px;
+    margin-bottom: 2px;
 }
 
 .mg-bottom-4 {
-  margin-bottom: 4px;
+    margin-bottom: 4px;
 }
 
 .mg-bottom-8 {
-  margin-bottom: 8px;
+    margin-bottom: 8px;
 }
 
 .mg-top-2 {
-  margin-top: 2px;
+    margin-top: 2px;
 }
 
 .mg-top-4 {
-  margin-top: 4px;
+    margin-top: 4px;
 }
 
 .mg-top-6 {
-  margin-top: 6px !important;
+    margin-top: 6px !important;
 }
 
 .mg-left-4 {
-  margin-left: 4px;
+    margin-left: 4px;
 }
 
 .mg-left-6 {
-  margin-left: 6px;
+    margin-left: 6px;
 }
 
 .mg-left-8 {
-  margin-left: 8px;
+    margin-left: 8px;
 }
 
 .mg-left-12 {
-  margin-left: 12px !important;
+    margin-left: 12px !important;
 }
 
 .marker-icon {
-  // position: absolute;
-  // top: -40px;
-  // left: 50%;
-  // transform: translateX(-50%);
-  user-select: none;
-  z-index: 10;
-  cursor: pointer;
-  transition: all 0.15s;
+    // position: absolute;
+    // top: -40px;
+    // left: 50%;
+    // transform: translateX(-50%);
+    user-select: none;
+    z-index: 10;
+    cursor: pointer;
+    transition: all 0.15s;
 
-  pointer-events: auto;
+    pointer-events: auto;
 
-  svg {
-    #Ellipse_6007 {
-      filter: "blur(2px)";
-    }
-  }
-
-  &:hover {
     svg {
-      #Ellipse_6005 {
-        fill: $ta-blue-2;
-      }
-    }
-  }
-
-  &.permanently-closed-icon {
-    &:hover {
-      svg {
-        #Ellipse_6005 {
-          fill: #f44336;
+        #Ellipse_6007 {
+            filter: 'blur(2px)';
         }
-      }
-    }
-  }
-
-  &.selected-marker {
-    transform: translate(0, -35%) scale(2);
-
-    svg {
-      #Ellipse_6006 {
-        //r: 3;
-        // transform: translate(14px, 14px) scale(0.5); - old svg
-
-        transform: translate(644px, 2298px) scale(0.5);
-
-        transition: all 0.15s;
-      }
-    }
-  }
-
-  &.fuel-marker {
-    svg {
-      #Ellipse_6005 {
-        fill: #fec107;
-      }
-    }
-  }
-
-  &.inactive {
-    svg {
-      #Ellipse_6005 {
-        fill: #919191;
-      }
     }
 
     &:hover {
-      svg {
-        #Ellipse_6005 {
-          fill: #6c6c6c;
+        svg {
+            #Ellipse_6005 {
+                fill: $ta-blue-2;
+            }
         }
-      }
-    }
-  }
-}
-
-.marker-dropdown {
-  opacity: 0;
-  transform: scale(0.8) !important;
-  pointer-events: none;
-  transition: all 0.15s ease-out !important;
-}
-
-.show-marker-dropdown {
-  opacity: 0.5;
-  transform: scale(0.8) !important;
-
-  pointer-events: auto;
-
-  &.marker-dropdown-animation {
-    opacity: 1;
-    transform: scale(1) !important;
-  }
-
-  &.fade {
-    -webkit-animation-name: fade-in-scale-animation 0.5s;
-    animation-name: fade-in-scale-animation 0.5s;
-  }
-
-  &.show {
-    opacity: 1;
-    transform: scale(0.6) !important;
-    transition: all 0.15s ease-out !important;
-  }
-
-  &.modal-animation {
-    opacity: 1;
-    transform: scale(1) !important;
-  }
-}
-
-// marker label
-.gm-style div[aria-hidden="true"] {
-  width: 90px;
-
-  color: $bw6-2 !important;
-  //color: #F44336 !important;
-  margin-left: 124px;
-  text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white,
-    -1px 1px 0px $white;
-  text-transform: uppercase;
-  font-size: 11px !important;
-  line-height: 12px;
-  font-weight: 600;
-  text-align: left;
-  font-family: "Montserrat", "sans-serif" !important;
-
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-
-  @supports (-webkit-line-clamp: 2) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: initial;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-}
-
-@-webkit-keyframes fade-in-scale-animation {
-  0% {
-    transform: scale(0.6);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes fade-in-scale-animation {
-  0% {
-    transform: scale(0.6);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.orange-text {
-  color: #ffa726 !important;
-}
-
-.red-text {
-  color: #ef5350 !important;
-}
-
-.blue-text {
-  color: #536bc2 !important;
-}
-
-.lowercase {
-  text-transform: lowercase !important;
-}
-
-.accident-report-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 500;
-
-  &.inspection-container {
-    justify-content: flex-start;
-
-    .accident-svg-container {
-      margin-right: 22px;
-    }
-  }
-
-  .accident-svg-container {
-    display: flex;
-    align-items: center;
-    margin-right: 13px;
-
-    .accident-report-svg {
-      margin-right: 4px;
     }
 
-    &.vehicles-number {
-      .marker-like-text {
-        color: #6c6c6c !important;
-      }
-
-      svg {
-        path {
-          fill: #919191;
+    &.permanently-closed-icon {
+        &:hover {
+            svg {
+                #Ellipse_6005 {
+                    fill: #f44336;
+                }
+            }
         }
-      }
     }
 
-    &.injury-number {
-      .marker-like-text {
-        color: #ffa726 !important;
-      }
+    &.selected-marker {
+        transform: translate(0, -35%) scale(2);
 
-      svg {
-        path {
-          fill: #ffb74d;
+        svg {
+            #Ellipse_6006 {
+                //r: 3;
+                // transform: translate(14px, 14px) scale(0.5); - old svg
+
+                transform: translate(644px, 2298px) scale(0.5);
+
+                transition: all 0.15s;
+            }
         }
-      }
     }
 
-    &.fatality-number {
-      .marker-like-text {
-        color: #ef5350 !important;
-      }
-
-      svg {
-        path {
-          fill: #e57373;
+    &.fuel-marker {
+        svg {
+            #Ellipse_6005 {
+                fill: #fec107;
+            }
         }
-      }
-    }
-
-    &.towing {
-      .marker-like-text {
-        color: #536bc2 !important;
-      }
-
-      svg {
-        path {
-          fill: #6d82c7;
-        }
-      }
-
-      &.inactive {
-        text-decoration: line-through;
-        text-decoration-color: #cccccc;
-      }
-    }
-
-    &.hazard {
-      .marker-like-text {
-        color: #536bc2 !important;
-      }
-
-      svg {
-        path {
-          fill: #6d82c7;
-        }
-      }
-
-      &.inactive {
-        text-decoration: line-through;
-        text-decoration-color: #cccccc;
-      }
-    }
-
-    &.violation-number {
-      .marker-like-text {
-        color: #536bc2 !important;
-      }
-
-      svg {
-        path {
-          fill: #6d82c7;
-        }
-      }
     }
 
     &.inactive {
-      .marker-like-text {
-        color: #cccccc !important;
-      }
-
-      svg {
-        path {
-          fill: #dadada;
+        svg {
+            #Ellipse_6005 {
+                fill: #919191;
+            }
         }
-      }
+
+        &:hover {
+            svg {
+                #Ellipse_6005 {
+                    fill: #6c6c6c;
+                }
+            }
+        }
     }
-  }
+}
+
+.marker-dropdown {
+    opacity: 0;
+    transform: scale(0.8) !important;
+    pointer-events: none;
+    transition: all 0.15s ease-out !important;
+}
+
+.show-marker-dropdown {
+    opacity: 0.5;
+    transform: scale(0.8) !important;
+
+    pointer-events: auto;
+
+    &.marker-dropdown-animation {
+        opacity: 1;
+        transform: scale(1) !important;
+    }
+
+    &.fade {
+        -webkit-animation-name: fade-in-scale-animation 0.5s;
+        animation-name: fade-in-scale-animation 0.5s;
+    }
+
+    &.show {
+        opacity: 1;
+        transform: scale(0.6) !important;
+        transition: all 0.15s ease-out !important;
+    }
+
+    &.modal-animation {
+        opacity: 1;
+        transform: scale(1) !important;
+    }
+}
+
+// marker label
+.gm-style div[aria-hidden='true'] {
+    width: 90px;
+
+    color: $bw6-2 !important;
+    //color: #F44336 !important;
+    margin-left: 124px;
+    text-shadow: 1px 1px 0px $white, 1px -1px 0px $white, -1px -1px 0px $white,
+        -1px 1px 0px $white;
+    text-transform: uppercase;
+    font-size: 11px !important;
+    line-height: 12px;
+    font-weight: 600;
+    text-align: left;
+    font-family: 'Montserrat', 'sans-serif' !important;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    @supports (-webkit-line-clamp: 2) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: initial;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+}
+
+@-webkit-keyframes fade-in-scale-animation {
+    0% {
+        transform: scale(0.6);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fade-in-scale-animation {
+    0% {
+        transform: scale(0.6);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.orange-text {
+    color: #ffa726 !important;
+}
+
+.red-text {
+    color: #ef5350 !important;
+}
+
+.blue-text {
+    color: #536bc2 !important;
+}
+
+.lowercase {
+    text-transform: lowercase !important;
+}
+
+.accident-report-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+
+    &.inspection-container {
+        justify-content: flex-start;
+
+        .accident-svg-container {
+            margin-right: 22px;
+        }
+    }
+
+    .accident-svg-container {
+        display: flex;
+        align-items: center;
+        margin-right: 13px;
+
+        .accident-report-svg {
+            margin-right: 4px;
+        }
+
+        &.vehicles-number {
+            .marker-like-text {
+                color: #6c6c6c !important;
+            }
+
+            svg {
+                path {
+                    fill: #919191;
+                }
+            }
+        }
+
+        &.injury-number {
+            .marker-like-text {
+                color: #ffa726 !important;
+            }
+
+            svg {
+                path {
+                    fill: #ffb74d;
+                }
+            }
+        }
+
+        &.fatality-number {
+            .marker-like-text {
+                color: #ef5350 !important;
+            }
+
+            svg {
+                path {
+                    fill: #e57373;
+                }
+            }
+        }
+
+        &.towing {
+            .marker-like-text {
+                color: #536bc2 !important;
+            }
+
+            svg {
+                path {
+                    fill: #6d82c7;
+                }
+            }
+
+            &.inactive {
+                text-decoration: line-through;
+                text-decoration-color: #cccccc;
+            }
+        }
+
+        &.hazard {
+            .marker-like-text {
+                color: #536bc2 !important;
+            }
+
+            svg {
+                path {
+                    fill: #6d82c7;
+                }
+            }
+
+            &.inactive {
+                text-decoration: line-through;
+                text-decoration-color: #cccccc;
+            }
+        }
+
+        &.violation-number {
+            .marker-like-text {
+                color: #536bc2 !important;
+            }
+
+            svg {
+                path {
+                    fill: #6d82c7;
+                }
+            }
+        }
+
+        &.inactive {
+            .marker-like-text {
+                color: #cccccc !important;
+            }
+
+            svg {
+                path {
+                    fill: #dadada;
+                }
+            }
+        }
+    }
 }
 
 .driver-name-container {
-  display: flex;
-  align-items: center;
-
-  .driver-svg {
     display: flex;
-    height: 14px;
-    margin-right: 4px;
-  }
+    align-items: center;
+
+    .driver-svg {
+        display: flex;
+        height: 14px;
+        margin-right: 4px;
+    }
 }
 
 .marker-fuel-svg {
-  margin-right: 4px;
+    margin-right: 4px;
 
-  svg {
-    rect {
-      fill: #fec107;
+    svg {
+        rect {
+            fill: #fec107;
+        }
     }
-  }
 }
 
 .map-zoom-controls {
-  position: absolute;
-  right: 18px;
-  bottom: 18px;
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
 
-  z-index: 1;
+    z-index: 1;
 
-  .map-zoom-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    .map-zoom-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
-    height: 50px;
-    width: 26px;
+        height: 50px;
+        width: 26px;
 
-    background: #fff;
-    border-radius: 3px;
+        background: #fff;
+        border-radius: 3px;
 
-    .map-zoom-button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+        .map-zoom-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-      height: 25px;
-      width: 26px;
+            height: 25px;
+            width: 26px;
 
-      cursor: pointer;
+            cursor: pointer;
 
-      svg {
-        path {
-          fill: #aaaaaa;
+            svg {
+                path {
+                    fill: #aaaaaa;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: #3c3c3c;
+                    }
+                }
+            }
         }
-      }
-
-      &:hover {
-        svg {
-          path {
-            fill: #3c3c3c;
-          }
-        }
-      }
     }
-  }
 }
 
 .highlighted-text {
-  font-weight: 900;
-  background: none;
-  padding: 0;
-  color: inherit;
+    font-weight: 900;
+    background: none;
+    padding: 0;
+    color: inherit;
 }

@@ -1,403 +1,403 @@
-@import "src/theme/variables.scss";
+@import 'src/theme/variables.scss';
 .footer-container {
-  margin-top: 60px;
+    margin-top: 60px;
 
-  .info-container {
-    padding: 0 42px;
-    height: 53px;
-    margin-bottom: 12px;
-    position: relative;
-
-    .info-box {
-      position: absolute;
-      top: -200px;
-      width: 350px;
-      padding: 12px 0;
-      margin-left: -10px;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-      border-radius: 3px;
-      transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-      visibility: hidden;
-      opacity: 0;
-      background: $white;
-
-      &.display-box {
-        visibility: visible;
-        opacity: 1;
-      }
-
-      .box-header {
+    .info-container {
+        padding: 0 42px;
+        height: 53px;
         margin-bottom: 12px;
-        padding: 0 12px;
+        position: relative;
 
-        h2 {
-          height: 24px;
-          font-size: 20px;
-          color: $bw6-2;
-          text-transform: uppercase !important;
+        .info-box {
+            position: absolute;
+            top: -200px;
+            width: 350px;
+            padding: 12px 0;
+            margin-left: -10px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+            border-radius: 3px;
+            transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            visibility: hidden;
+            opacity: 0;
+            background: $white;
 
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-        }
-
-        .close-icon {
-          cursor: pointer;
-          transition: background 0.3s ease-in-out;
-          background: transparent;
-          border-radius: 2px;
-
-          svg {
-            path {
-              transition: fill 0.3s ease-in-out;
-              fill: $bw4;
+            &.display-box {
+                visibility: visible;
+                opacity: 1;
             }
-          }
 
-          &:hover {
-            background: $bw5;
+            .box-header {
+                margin-bottom: 12px;
+                padding: 0 12px;
 
-            svg {
-              path {
-                fill: $white;
-              }
+                h2 {
+                    height: 24px;
+                    font-size: 20px;
+                    color: $bw6-2;
+                    text-transform: uppercase !important;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                .close-icon {
+                    cursor: pointer;
+                    transition: background 0.3s ease-in-out;
+                    background: transparent;
+                    border-radius: 2px;
+
+                    svg {
+                        path {
+                            transition: fill 0.3s ease-in-out;
+                            fill: $bw4;
+                        }
+                    }
+
+                    &:hover {
+                        background: $bw5;
+
+                        svg {
+                            path {
+                                fill: $white;
+                            }
+                        }
+                    }
+                }
             }
-          }
-        }
-      }
 
-      .box-dets {
-        margin-bottom: 12px;
-        padding: 0 12px;
+            .box-dets {
+                margin-bottom: 12px;
+                padding: 0 12px;
 
-        &:last-child {
-          margin-bottom: 0 !important;
+                &:last-child {
+                    margin-bottom: 0 !important;
+                }
+
+                p {
+                    font-size: 14px;
+                    color: $bw6-2;
+                    line-height: 20px;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                .phone-icon,
+                .location-icon,
+                .document-icon {
+                    margin-right: 6px;
+
+                    svg {
+                        path {
+                            fill: $ta-light-grey-2;
+                        }
+                    }
+
+                    &.location-icon {
+                        margin-top: -2px;
+                    }
+                }
+            }
+
+            .box-divider {
+                height: 2px;
+                margin: 0 8px 12px 8px;
+                border-radius: 1px;
+                background-color: $ta-light-grey-4;
+            }
         }
+
+        .requests-box {
+            position: absolute;
+            width: 400px;
+            padding: 12px 12px 0 12px;
+            margin-left: -10px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+            border-radius: 3px;
+            transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            visibility: hidden;
+            opacity: 0;
+            background: $white;
+
+            &.display-box {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .box-header {
+                .box-tabs {
+                    flex: 90%;
+                }
+
+                .icon-box {
+                    width: 22px;
+                    margin-left: 12px;
+
+                    .close-icon {
+                        cursor: pointer;
+                        background: transparent;
+                        border-radius: 2px;
+
+                        svg {
+                            path {
+                                transition: fill 0.3s ease-in-out;
+                                fill: $bw4;
+                            }
+                        }
+
+                        &:hover {
+                            svg {
+                                path {
+                                    fill: $bw6-2;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .names-box {
+                margin-top: 26px !important;
+
+                .employer-group,
+                .applicant-group {
+                    width: 376px;
+
+                    &.employer-group {
+                        margin-bottom: 32px;
+                    }
+
+                    &.applicant-group {
+                        margin-bottom: 22px;
+                    }
+                }
+            }
+
+            .requests-card {
+                margin-top: 22px;
+
+                .date-group,
+                .time-group {
+                    width: 182px;
+
+                    &.date-group {
+                        margin-right: 12px;
+                    }
+                }
+
+                .request-input-group {
+                    width: 252px;
+                    margin-right: 12px;
+                    background: $ta-light-grey-4;
+                    padding: 4px 6px;
+                    height: 26px;
+                    border-radius: 2px;
+
+                    .icon {
+                        svg {
+                            path {
+                                fill: $bw4;
+                            }
+                        }
+                    }
+
+                    .pipe {
+                        width: 0.1px;
+                        height: 14px;
+                        background: $ta-light-grey;
+                        margin: 2px 6px;
+                    }
+
+                    p {
+                        height: 18px;
+                        line-height: 18px;
+                        font-size: 14px;
+                        color: $bw6-2;
+
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                    }
+                }
+
+                .send-request-btn-box {
+                    width: 112px;
+                    height: 26px;
+                    background: $ta-light-grey-4;
+                    border-radius: 2px;
+
+                    .send-request-btn {
+                        width: 108px;
+                        height: 22px;
+                        border: none;
+                        outline: none;
+                        font-size: 12px;
+                        border-radius: 1px;
+                        color: $white;
+                        background: $ta-light-blue;
+                        transition: background 0.3s ease-in-out;
+
+                        &:hover {
+                            background: $ta-blue;
+                        }
+                    }
+                }
+            }
+
+            .sph-received-card {
+                margin-top: 22px;
+
+                .date-group,
+                .received-by-group {
+                    width: 182px;
+
+                    &.date-group {
+                        margin-right: 12px;
+                    }
+                }
+            }
+        }
+
+        .documents-box {
+            position: absolute;
+            top: -400px;
+            width: 400px;
+            padding: 12px;
+            margin-left: -10px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+            border-radius: 3px;
+            transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            visibility: hidden;
+            opacity: 0;
+            background: $white;
+
+            &.display-box {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .box-header {
+                .box-tabs {
+                    flex: 90%;
+                }
+
+                .icon-box {
+                    width: 22px;
+                    margin-left: 12px;
+
+                    .close-icon {
+                        cursor: pointer;
+                        background: transparent;
+                        border-radius: 2px;
+
+                        svg {
+                            path {
+                                transition: fill 0.3s ease-in-out;
+                                fill: $bw4;
+                            }
+                        }
+
+                        &:hover {
+                            svg {
+                                path {
+                                    fill: $bw6-2;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .info-bar {
+            .info-icon,
+            .documents-icon,
+            .requests-icon {
+                cursor: pointer;
+                margin-right: 6px !important;
+                margin-top: 12px !important;
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $bw5;
+                        }
+                    }
+                }
+
+                &:hover + p {
+                    color: $ta-light-grey-3;
+                }
+
+                &.display-box {
+                    svg {
+                        path {
+                            fill: $ta-blue;
+                        }
+                    }
+
+                    &:hover + p {
+                        color: $ta-blue;
+                    }
+                }
+
+                svg {
+                    path {
+                        transition: fill 0.2s ease-in-out;
+                        fill: $ta-light-grey-6;
+                    }
+                }
+            }
+
+            p {
+                cursor: pointer;
+                margin-top: 12px !important;
+                height: 18px;
+                font-size: 14px;
+                color: $bw6-2;
+                user-select: none;
+                transition: color 0.2s ease-in-out;
+
+                &:hover {
+                    color: $ta-light-grey-3;
+                }
+
+                &.display-box {
+                    color: $ta-blue;
+                }
+            }
+        }
+    }
+
+    .copyright-bar {
+        height: 42px;
+        border-top: 0.1rem solid $ta-gray-02;
 
         p {
-          font-size: 14px;
-          color: $bw6-2;
-          line-height: 20px;
-
-          &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-
-          &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-          }
-        }
-
-        .phone-icon,
-        .location-icon,
-        .document-icon {
-          margin-right: 6px;
-
-          svg {
-            path {
-              fill: $ta-light-grey-2;
-            }
-          }
-
-          &.location-icon {
-            margin-top: -2px;
-          }
-        }
-      }
-
-      .box-divider {
-        height: 2px;
-        margin: 0 8px 12px 8px;
-        border-radius: 1px;
-        background-color: $ta-light-grey-4;
-      }
-    }
-
-    .requests-box {
-      position: absolute;
-      width: 400px;
-      padding: 12px 12px 0 12px;
-      margin-left: -10px;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-      border-radius: 3px;
-      transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-      visibility: hidden;
-      opacity: 0;
-      background: $white;
-
-      &.display-box {
-        visibility: visible;
-        opacity: 1;
-      }
-
-      .box-header {
-        .box-tabs {
-          flex: 90%;
-        }
-
-        .icon-box {
-          width: 22px;
-          margin-left: 12px;
-
-          .close-icon {
-            cursor: pointer;
-            background: transparent;
-            border-radius: 2px;
-
-            svg {
-              path {
-                transition: fill 0.3s ease-in-out;
-                fill: $bw4;
-              }
-            }
-
-            &:hover {
-              svg {
-                path {
-                  fill: $bw6-2;
-                }
-              }
-            }
-          }
-        }
-      }
-
-      .names-box {
-        margin-top: 26px !important;
-
-        .employer-group,
-        .applicant-group {
-          width: 376px;
-
-          &.employer-group {
-            margin-bottom: 32px;
-          }
-
-          &.applicant-group {
-            margin-bottom: 22px;
-          }
-        }
-      }
-
-      .requests-card {
-        margin-top: 22px;
-
-        .date-group,
-        .time-group {
-          width: 182px;
-
-          &.date-group {
-            margin-right: 12px;
-          }
-        }
-
-        .request-input-group {
-          width: 252px;
-          margin-right: 12px;
-          background: $ta-light-grey-4;
-          padding: 4px 6px;
-          height: 26px;
-          border-radius: 2px;
-
-          .icon {
-            svg {
-              path {
-                fill: $bw4;
-              }
-            }
-          }
-
-          .pipe {
-            width: 0.1px;
-            height: 14px;
-            background: $ta-light-grey;
-            margin: 2px 6px;
-          }
-
-          p {
-            height: 18px;
-            line-height: 18px;
+            color: $ta-blue-2;
+            font-weight: 400;
             font-size: 14px;
-            color: $bw6-2;
-
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
-            }
-          }
+            user-select: none;
         }
-
-        .send-request-btn-box {
-          width: 112px;
-          height: 26px;
-          background: $ta-light-grey-4;
-          border-radius: 2px;
-
-          .send-request-btn {
-            width: 108px;
-            height: 22px;
-            border: none;
-            outline: none;
-            font-size: 12px;
-            border-radius: 1px;
-            color: $white;
-            background: $ta-light-blue;
-            transition: background 0.3s ease-in-out;
-
-            &:hover {
-              background: $ta-blue;
-            }
-          }
-        }
-      }
-
-      .sph-received-card {
-        margin-top: 22px;
-
-        .date-group,
-        .received-by-group {
-          width: 182px;
-
-          &.date-group {
-            margin-right: 12px;
-          }
-        }
-      }
     }
-
-    .documents-box {
-      position: absolute;
-      top: -400px;
-      width: 400px;
-      padding: 12px;
-      margin-left: -10px;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-      border-radius: 3px;
-      transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-      visibility: hidden;
-      opacity: 0;
-      background: $white;
-
-      &.display-box {
-        visibility: visible;
-        opacity: 1;
-      }
-
-      .box-header {
-        .box-tabs {
-          flex: 90%;
-        }
-
-        .icon-box {
-          width: 22px;
-          margin-left: 12px;
-
-          .close-icon {
-            cursor: pointer;
-            background: transparent;
-            border-radius: 2px;
-
-            svg {
-              path {
-                transition: fill 0.3s ease-in-out;
-                fill: $bw4;
-              }
-            }
-
-            &:hover {
-              svg {
-                path {
-                  fill: $bw6-2;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .info-bar {
-      .info-icon,
-      .documents-icon,
-      .requests-icon {
-        cursor: pointer;
-        margin-right: 6px !important;
-        margin-top: 12px !important;
-
-        &:hover {
-          svg {
-            path {
-              fill: $bw5;
-            }
-          }
-        }
-
-        &:hover + p {
-          color: $ta-light-grey-3;
-        }
-
-        &.display-box {
-          svg {
-            path {
-              fill: $ta-blue;
-            }
-          }
-
-          &:hover + p {
-            color: $ta-blue;
-          }
-        }
-
-        svg {
-          path {
-            transition: fill 0.2s ease-in-out;
-            fill: $ta-light-grey-6;
-          }
-        }
-      }
-
-      p {
-        cursor: pointer;
-        margin-top: 12px !important;
-        height: 18px;
-        font-size: 14px;
-        color: $bw6-2;
-        user-select: none;
-        transition: color 0.2s ease-in-out;
-
-        &:hover {
-          color: $ta-light-grey-3;
-        }
-
-        &.display-box {
-          color: $ta-blue;
-        }
-      }
-    }
-  }
-
-  .copyright-bar {
-    height: 42px;
-    border-top: 0.1rem solid $ta-gray-02;
-
-    p {
-      color: $ta-blue-2;
-      font-weight: 400;
-      font-size: 14px;
-      user-select: none;
-    }
-  }
 }

@@ -8,14 +8,14 @@ import { AgmCoreModule } from '@agm/core';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [AccidentTableComponent],
-  imports: [
-    CommonModule,
-    AccidentRoutingModule,
-    TruckassistTableModule,
-    AgmSnazzyInfoWindowModule,
-    AgmCoreModule,
-    SharedModule,
-  ],
+    declarations: [AccidentTableComponent],
+    imports: [
+        CommonModule,
+        AccidentRoutingModule,
+        TruckassistTableModule,
+        AgmSnazzyInfoWindowModule,
+        AgmCoreModule,
+        SharedModule,
+    ],
 })
 export class AccidentModule {}

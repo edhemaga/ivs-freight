@@ -7,7 +7,7 @@ export interface TruckItemState extends EntityState<TruckResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'truckItem' })
 export class TruckItemStore extends EntityStore<TruckItemState> {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 }

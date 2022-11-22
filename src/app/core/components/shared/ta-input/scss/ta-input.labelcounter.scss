@@ -1,21 +1,21 @@
-@import "./ta-input.colors.scss";
+@import './ta-input.colors.scss';
 
 .input-label-counter {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 18px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #424242;
-  background-color: rgb(66, 66, 66, 0.2);
-  border-radius: 9px;
-  margin: 0;
-  padding-left: 0.5px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 18px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #424242;
+    background-color: rgb(66, 66, 66, 0.2);
+    border-radius: 9px;
+    margin: 0;
+    padding-left: 0.5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

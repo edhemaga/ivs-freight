@@ -4,22 +4,22 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoadModalComponent } from './load-modal.component';
 
 describe('LoadModalComponent', () => {
-  let component: LoadModalComponent;
-  let fixture: ComponentFixture<LoadModalComponent>;
+    let component: LoadModalComponent;
+    let fixture: ComponentFixture<LoadModalComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [LoadModalComponent],
-    }).compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [LoadModalComponent],
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LoadModalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(LoadModalComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

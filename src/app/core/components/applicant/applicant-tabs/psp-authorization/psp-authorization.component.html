@@ -1,466 +1,557 @@
 <div class="container-fluid">
-  <div class="row">
-    <div
-      class="container-fluid d-flex flex-column justify-content-between psp-authorization-container"
-    >
-      <div class="d-flex flex-column align-items-center">
-        <app-applicant-header [mode]="selectedMode"></app-applicant-header>
-
-        <h1 class="m-0 text-center title ta-font-bold">
-          PSP Online Service Authorization
-        </h1>
-
-        <h2
-          class="m-0 text-center subtitle ta-font-bold"
-          [ngStyle]="{
-            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-          }"
-        >
-          The below disclosure and authorization language is for mandatory use
-          by all<br />
-          account holders
-        </h2>
-
-        <!-- INFO CONTAINER -->
-
+    <div class="row">
         <div
-          class="d-flex flex-column justify-content-center align-items-center text-center info-container"
-          [ngStyle]="{
-            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-          }"
+            class="container-fluid d-flex flex-column justify-content-between psp-authorization-container"
         >
-          <p class="m-0 ta-font-regular">
-            In connection with your application for employment with
-            <span class="ta-font-bold">JD FREIGHT</span>
-            (“Prospective Employer”), Prospective Employer, its employees,
-            agents or contractors may obtain one or more reports regarding your
-            driving, and safety inspection history from the Federal Motor
-            Carrier Safety Administration (FMCSA).
-          </p>
+            <div class="d-flex flex-column align-items-center">
+                <app-applicant-header
+                    [mode]="selectedMode"
+                ></app-applicant-header>
 
-          <p class="m-0 ta-font-regular">
-            When the application for employment is submitted in person, if the
-            Prospective Employer uses any information it obtains from FMCSA in a
-            decision to not hire you or to make any other adverse employment
-            decision regarding you, the Prospective Employer will provide you
-            with a copy of the report upon which its decision was based and a
-            written summary of your rights under the Fair Credit Reporting Act
-            before taking any final adverse action. If any final adverse action
-            is taken against you based upon your driving history or safety
-            report, the Prospective Employer will notify you that the action has
-            been taken and that the action was based in part or in whole on this
-            report.
-          </p>
+                <h1 class="m-0 text-center title ta-font-bold">
+                    PSP Online Service Authorization
+                </h1>
 
-          <p class="m-0 ta-font-regular">
-            When the application for employment is submitted by mail, telephone,
-            computer, or other similar means, if the Prospective Employer uses
-            any information it obtains from FMCSA in a decision to not hire you
-            or to make any other adverse employment decision regarding you, the
-            Prospective Employer must provide you within three business days of
-            taking adverse action oral, written or electronic notification: that
-            adverse action has been taken based in whole or in part on
-            information obtained from FMCSA; the name, address, and the toll
-            free telephone number of FMCSA; that the FMCSA did not make the
-            decision to take the adverse action and is unable to provide you the
-            specific reasons why the adverse action was taken; and that you may,
-            upon providing proper identification, request a free copy of the
-            report and may dispute with the FMCSA the accuracy or completeness
-            of any information or report. If you request a copy of a driver
-            record from the Prospective Employer who procured the report, then,
-            within 3 business days of receiving your request, together with
-            proper identification, the Prospective Employer must send or provide
-            to you a copy of your report and a summary of your rights under the
-            Fair Credit Reporting Act.
-          </p>
+                <h2
+                    class="m-0 text-center subtitle ta-font-bold"
+                    [ngStyle]="{
+                        color:
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? '#919191'
+                                : '#6C6C6C'
+                    }"
+                >
+                    The below disclosure and authorization language is for
+                    mandatory use by all<br />
+                    account holders
+                </h2>
 
-          <p class="m-0 ta-font-regular">
-            Neither the Prospective Employer nor the FMCSA contractor supplying
-            the crash and safety information has the capability to correct any
-            safety data that appears to be incorrect. You may challenge the
-            accuracy of the data by submitting a request to
-            <a
-              href="https://dataqs.fmcsa.dot.gov"
-              target="_blank"
-              [ngStyle]="{
-                color: selectedMode === 'FEEDBACK_MODE' ? '#97A8DC' : '#536bc2'
-              }"
-              >https://dataqs.fmcsa.dot.gov</a
-            >. If you challenge crash or inspection information reported by a
-            State, FMCSA cannot change or correct this data. Your request will
-            be forwarded by the Data Qs system to the appropriate State for
-            adjudication.
-          </p>
+                <!-- INFO CONTAINER -->
 
-          <p class="m-0 ta-font-regular">
-            Any crash or inspection in which you were involved will display on
-            your PSP report. Since the PSP report does not report, or assign, or
-            imply fault, it will include all Commercial Motor Vehicle (CMV)
-            crashes where you were a driver or co-driver and where those crashes
-            were reported to FMCSA, regardless of fault. Similarly, all
-            inspections, with or without violations, appear on the PSP report.
-            State citations associated with Federal Motor Carrier Safety
-            Regulations (FMCSR) violations that have been adjudicated by a court
-            of law will also appear, and remain, on a PSP report.
-          </p>
+                <div
+                    class="d-flex flex-column justify-content-center align-items-center text-center info-container"
+                    [ngStyle]="{
+                        color:
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? '#919191'
+                                : '#6C6C6C'
+                    }"
+                >
+                    <p class="m-0 ta-font-regular">
+                        In connection with your application for employment with
+                        <span class="ta-font-bold">JD FREIGHT</span>
+                        (“Prospective Employer”), Prospective Employer, its
+                        employees, agents or contractors may obtain one or more
+                        reports regarding your driving, and safety inspection
+                        history from the Federal Motor Carrier Safety
+                        Administration (FMCSA).
+                    </p>
 
-          <p class="m-0 ta-font-regular">
-            The Prospective Employer cannot obtain background reports from FMCSA
-            without your authorization.
-          </p>
+                    <p class="m-0 ta-font-regular">
+                        When the application for employment is submitted in
+                        person, if the Prospective Employer uses any information
+                        it obtains from FMCSA in a decision to not hire you or
+                        to make any other adverse employment decision regarding
+                        you, the Prospective Employer will provide you with a
+                        copy of the report upon which its decision was based and
+                        a written summary of your rights under the Fair Credit
+                        Reporting Act before taking any final adverse action. If
+                        any final adverse action is taken against you based upon
+                        your driving history or safety report, the Prospective
+                        Employer will notify you that the action has been taken
+                        and that the action was based in part or in whole on
+                        this report.
+                    </p>
+
+                    <p class="m-0 ta-font-regular">
+                        When the application for employment is submitted by
+                        mail, telephone, computer, or other similar means, if
+                        the Prospective Employer uses any information it obtains
+                        from FMCSA in a decision to not hire you or to make any
+                        other adverse employment decision regarding you, the
+                        Prospective Employer must provide you within three
+                        business days of taking adverse action oral, written or
+                        electronic notification: that adverse action has been
+                        taken based in whole or in part on information obtained
+                        from FMCSA; the name, address, and the toll free
+                        telephone number of FMCSA; that the FMCSA did not make
+                        the decision to take the adverse action and is unable to
+                        provide you the specific reasons why the adverse action
+                        was taken; and that you may, upon providing proper
+                        identification, request a free copy of the report and
+                        may dispute with the FMCSA the accuracy or completeness
+                        of any information or report. If you request a copy of a
+                        driver record from the Prospective Employer who procured
+                        the report, then, within 3 business days of receiving
+                        your request, together with proper identification, the
+                        Prospective Employer must send or provide to you a copy
+                        of your report and a summary of your rights under the
+                        Fair Credit Reporting Act.
+                    </p>
+
+                    <p class="m-0 ta-font-regular">
+                        Neither the Prospective Employer nor the FMCSA
+                        contractor supplying the crash and safety information
+                        has the capability to correct any safety data that
+                        appears to be incorrect. You may challenge the accuracy
+                        of the data by submitting a request to
+                        <a
+                            href="https://dataqs.fmcsa.dot.gov"
+                            target="_blank"
+                            [ngStyle]="{
+                                color:
+                                    selectedMode === 'FEEDBACK_MODE'
+                                        ? '#97A8DC'
+                                        : '#536bc2'
+                            }"
+                            >https://dataqs.fmcsa.dot.gov</a
+                        >. If you challenge crash or inspection information
+                        reported by a State, FMCSA cannot change or correct this
+                        data. Your request will be forwarded by the Data Qs
+                        system to the appropriate State for adjudication.
+                    </p>
+
+                    <p class="m-0 ta-font-regular">
+                        Any crash or inspection in which you were involved will
+                        display on your PSP report. Since the PSP report does
+                        not report, or assign, or imply fault, it will include
+                        all Commercial Motor Vehicle (CMV) crashes where you
+                        were a driver or co-driver and where those crashes were
+                        reported to FMCSA, regardless of fault. Similarly, all
+                        inspections, with or without violations, appear on the
+                        PSP report. State citations associated with Federal
+                        Motor Carrier Safety Regulations (FMCSR) violations that
+                        have been adjudicated by a court of law will also
+                        appear, and remain, on a PSP report.
+                    </p>
+
+                    <p class="m-0 ta-font-regular">
+                        The Prospective Employer cannot obtain background
+                        reports from FMCSA without your authorization.
+                    </p>
+                </div>
+
+                <!-- CHECKBOXES -->
+
+                <form [formGroup]="pspAuthorizationForm">
+                    <div
+                        class="d-flex align-items-center justify-content-center confirm-container"
+                    >
+                        <app-ta-checkbox
+                            formControlName="isConfirm"
+                            [name]="'isConfirm'"
+                            [label]="
+                                'Please confirm that you have read and understood the content of this notice'
+                            "
+                            [customClass]="
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? 'applicant-feedback'
+                                    : 'bold-12'
+                            "
+                            [disabledStillCheckMark]="
+                                selectedMode === 'REVIEW_MODE'
+                            "
+                        >
+                        </app-ta-checkbox>
+                    </div>
+
+                    <!-- AUTHORIZATION TITLE -->
+
+                    <h2
+                        class="m-0 text-center ta-font-bold"
+                        [ngStyle]="{
+                            color:
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? '#919191'
+                                    : '#6C6C6C'
+                        }"
+                    >
+                        AUTHORIZATION
+                    </h2>
+
+                    <h3
+                        class="m-0 text-center ta-font-regular"
+                        [ngStyle]="{
+                            color:
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? '#919191'
+                                    : '#6C6C6C'
+                        }"
+                    >
+                        If you agree that the Prospective Employer may obtain
+                        such background reports, please read the<br />
+                        following and sign below
+                    </h3>
+
+                    <div
+                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+                    >
+                        <app-ta-checkbox
+                            formControlName="isAuthorize"
+                            [name]="'isAuthorize'"
+                            [label]="
+                                'I authorize JD FREIGHT (“Prospective Employer”) to access the FMCSA Pre-Employment Screening Program (PSP)'
+                            "
+                            [customClass]="
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? 'applicant-disclosure-release-feedback'
+                                    : 'disclosure-release'
+                            "
+                            [disabledStillCheckMark]="
+                                selectedMode === 'REVIEW_MODE'
+                            "
+                        >
+                        </app-ta-checkbox>
+
+                        <p
+                            class="m-0 text-center ta-font-regular"
+                            [ngStyle]="{
+                                color:
+                                    selectedMode !== 'FEEDBACK_MODE' &&
+                                    pspAuthorizationForm.get('isAuthorize')
+                                        .value
+                                        ? '#3c3c3c'
+                                        : selectedMode === 'FEEDBACK_MODE'
+                                        ? '#919191'
+                                        : '#6c6c6c',
+                                cursor:
+                                    selectedMode === 'REVIEW_MODE'
+                                        ? 'auto'
+                                        : 'pointer'
+                            }"
+                            (click)="
+                                handleCheckboxParagraphClick('isAuthorize')
+                            "
+                        >
+                            system to seek information regarding my commercial
+                            driving safety record and information regarding my
+                            safety inspection history. I understand that I am
+                            authorizing the release of safety performance
+                            information including crash data from the previous
+                            five (5) years and inspection history from the
+                            previous three (3) years. I understand and
+                            acknowledge that this release of information may
+                            assist the Prospective Employer to make a
+                            determination regarding my suitability as an
+                            employee.
+                        </p>
+                    </div>
+
+                    <div
+                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+                    >
+                        <app-ta-checkbox
+                            formControlName="isFurtherUnderstand"
+                            [name]="'isFurtherUnderstand'"
+                            [label]="
+                                'I further understand that neither the Prospective Employer nor the FMCSA contractor supplying the crash and'
+                            "
+                            [customClass]="
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? 'applicant-disclosure-release-feedback'
+                                    : 'disclosure-release'
+                            "
+                            [disabledStillCheckMark]="
+                                selectedMode === 'REVIEW_MODE'
+                            "
+                        >
+                        </app-ta-checkbox>
+
+                        <p
+                            class="m-0 text-center ta-font-regular"
+                            [ngStyle]="{
+                                color:
+                                    selectedMode !== 'FEEDBACK_MODE' &&
+                                    pspAuthorizationForm.get(
+                                        'isFurtherUnderstand'
+                                    ).value
+                                        ? '#3c3c3c'
+                                        : selectedMode === 'FEEDBACK_MODE'
+                                        ? '#919191'
+                                        : '#6c6c6c',
+                                cursor:
+                                    selectedMode === 'REVIEW_MODE'
+                                        ? 'auto'
+                                        : 'pointer'
+                            }"
+                            (click)="
+                                handleCheckboxParagraphClick(
+                                    'isFurtherUnderstand'
+                                )
+                            "
+                        >
+                            safety information has the capability to correct any
+                            safety data that appears to be incorrect. I
+                            understand I may challenge the accuracy of the data
+                            by submitting a request to
+                            <a
+                                href="https://dataqs.fmcsa.dot.gov"
+                                target="_blank"
+                                >https://dataqs.fmcsa.dot.gov</a
+                            >. If I challenge crash or inspection information
+                            reported by a State, FMCSA cannot change or correct
+                            this data. I understand my request will be forwarded
+                            by the Data Qs system to the appropriate State for
+                            adjudication.
+                        </p>
+                    </div>
+
+                    <div
+                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+                    >
+                        <app-ta-checkbox
+                            formControlName="isPspReport"
+                            [name]="'isPspReport'"
+                            [label]="
+                                'I understand that any crash or inspection in which I was involved will display on my PSP report. Since the PSP'
+                            "
+                            [customClass]="
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? 'applicant-disclosure-release-feedback'
+                                    : 'disclosure-release'
+                            "
+                            [disabledStillCheckMark]="
+                                selectedMode === 'REVIEW_MODE'
+                            "
+                        >
+                        </app-ta-checkbox>
+
+                        <p
+                            class="m-0 text-center ta-font-regular"
+                            [ngStyle]="{
+                                color:
+                                    selectedMode !== 'FEEDBACK_MODE' &&
+                                    pspAuthorizationForm.get('isPspReport')
+                                        .value
+                                        ? '#3c3c3c'
+                                        : selectedMode === 'FEEDBACK_MODE'
+                                        ? '#919191'
+                                        : '#6c6c6c',
+                                cursor:
+                                    selectedMode === 'REVIEW_MODE'
+                                        ? 'auto'
+                                        : 'pointer'
+                            }"
+                            (click)="
+                                handleCheckboxParagraphClick('isPspReport')
+                            "
+                        >
+                            report does not report, or assign, or imply fault, I
+                            acknowledge it will include all CMV crashes where I
+                            was a driver or co-driver and where those crashes
+                            were reported to FMCSA, regardless of fault.
+                            Similarly, I understand all inspections, with or
+                            without violations, will appear on my PSP report,
+                            and State citations associated with FMCSR violations
+                            that have been adjudicated by a court of law will
+                            also appear, and remain, on my PSP report.
+                        </p>
+                    </div>
+
+                    <div
+                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+                    >
+                        <app-ta-checkbox
+                            formControlName="isDisclosureRegardingReport"
+                            [name]="'isDisclosureRegardingReport'"
+                            [label]="
+                                'I have read the above Disclosure Regarding Background Reports provided to me by Prospective Employer and'
+                            "
+                            [customClass]="
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? 'applicant-disclosure-release-feedback'
+                                    : 'disclosure-release'
+                            "
+                            [disabledStillCheckMark]="
+                                selectedMode === 'REVIEW_MODE'
+                            "
+                        >
+                        </app-ta-checkbox>
+
+                        <p
+                            class="m-0 text-center ta-font-regular"
+                            [ngStyle]="{
+                                color:
+                                    selectedMode !== 'FEEDBACK_MODE' &&
+                                    pspAuthorizationForm.get(
+                                        'isDisclosureRegardingReport'
+                                    ).value
+                                        ? '#3c3c3c'
+                                        : selectedMode === 'FEEDBACK_MODE'
+                                        ? '#919191'
+                                        : '#6c6c6c',
+                                cursor:
+                                    selectedMode === 'REVIEW_MODE'
+                                        ? 'auto'
+                                        : 'pointer'
+                            }"
+                            (click)="
+                                handleCheckboxParagraphClick(
+                                    'isDisclosureRegardingReport'
+                                )
+                            "
+                        >
+                            I understand that if I sign this Disclosure and
+                            Authorization, Prospective Employer may obtain a
+                            report of my crash and inspection history. I hereby
+                            authorize Prospective Employer and its employees,
+                            authorized agents, and/or affiliates to obtain the
+                            information authorized above.
+                        </p>
+                    </div>
+
+                    <!-- NOTICE INFO -->
+
+                    <div
+                        class="d-flex align-items-center justify-content-center text-center notice-info-container"
+                    >
+                        <p
+                            class="m-0 ta-font-regular"
+                            [ngStyle]="{
+                                color:
+                                    selectedMode === 'FEEDBACK_MODE'
+                                        ? '#919191'
+                                        : '#6C6C6C'
+                            }"
+                        >
+                            <span class="ta-font-bold">NOTICE:</span> This form
+                            is made available to monthly account holders by NIC
+                            on behalf of the U.S. Department of Transportation,
+                            Federal Motor Carrier Safety Administration (FMCSA).
+                            Account holders are required by federal law to
+                            obtain an Applicant’s written or electronic consent
+                            prior to accessing the Applicant’s PSP report.
+                            Further, account holders are required by FMCSA to
+                            use the language contained in this Disclosure and
+                            Authorization form to obtain an Applicant’s consent.
+                            The language must be used in whole, exactly as
+                            provided. Further, the language on this form must
+                            exist as one stand-alone document. The language may
+                            NOT be included with other consent forms or any
+                            other language.
+                        </p>
+                    </div>
+
+                    <div
+                        class="d-flex align-items-center justify-content-center text-center notice-info-container"
+                        [ngStyle]="{
+                            'margin-bottom': applicantCardInfo.ssn ? 0 : '20px'
+                        }"
+                    >
+                        <p
+                            class="m-0 ta-font-regular"
+                            [ngStyle]="{
+                                color:
+                                    selectedMode === 'FEEDBACK_MODE'
+                                        ? '#919191'
+                                        : '#6C6C6C'
+                            }"
+                        >
+                            <span class="ta-font-bold">NOTICE:</span> The
+                            prospective employment concept referenced in this
+                            form contemplates the definition of “employee”
+                            contained at 49 C.F.R. 383.5.
+                        </p>
+                    </div>
+
+                    <!-- APPLICANT CARD -->
+
+                    <div
+                        class="d-flex flex-column justify-content-center applicant-card-container"
+                        *ngIf="applicantCardInfo.ssn"
+                    >
+                        <div
+                            class="d-flex align-items-center"
+                            [ngClass]="
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? 'title-container title-container-feedback'
+                                    : 'title-container'
+                            "
+                        >
+                            <div
+                                class="d-flex align-items-center name-title-box"
+                            >
+                                <p class="m-0 ta-font-bold">APPLICANT NAME</p>
+                            </div>
+                            <div
+                                class="d-flex align-items-center ssn-title-box"
+                            >
+                                <p class="m-0 ta-font-bold">SSN</p>
+                            </div>
+                            <div
+                                class="d-flex align-items-center dob-title-box"
+                            >
+                                <p class="m-0 ta-font-bold">DOB</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="d-flex align-items-center"
+                            [ngClass]="
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? 'applicant-card-info-container applicant-card-info-container-feedback'
+                                    : 'applicant-card-info-container'
+                            "
+                        >
+                            <div class="d-flex align-items-center driver-box">
+                                <p class="m-0 ta-font-regular">
+                                    {{ applicantCardInfo.name }}
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center ssn-box">
+                                <p class="m-0 ta-font-regular">
+                                    {{ applicantCardInfo.ssn }}
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center date-box">
+                                <p class="m-0 ta-font-regular">
+                                    {{ applicantCardInfo.dob }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SIGNATURE PAD -->
+
+                    <div
+                        class="d-flex signature-pad-container"
+                        *ngIf="selectedMode === 'APPLICANT_MODE'"
+                    >
+                        <app-applicant-signature-pad
+                            (signatureEmitter)="onSignatureAction($event)"
+                        ></app-applicant-signature-pad>
+                    </div>
+
+                    <div
+                        class="d-flex justify-content-center align-items-center signature-image-container"
+                        *ngIf="selectedMode !== 'APPLICANT_MODE'"
+                    >
+                        <img src="" alt="signature" />
+                    </div>
+                </form>
+            </div>
+
+            <!-- FOOTER -->
+
+            <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
         </div>
-
-        <!-- CHECKBOXES -->
-
-        <form [formGroup]="pspAuthorizationForm">
-          <div
-            class="d-flex align-items-center justify-content-center confirm-container"
-          >
-            <app-ta-checkbox
-              formControlName="isConfirm"
-              [name]="'isConfirm'"
-              [label]="
-                'Please confirm that you have read and understood the content of this notice'
-              "
-              [customClass]="
-                selectedMode === 'FEEDBACK_MODE'
-                  ? 'applicant-feedback'
-                  : 'bold-12'
-              "
-              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
-            >
-            </app-ta-checkbox>
-          </div>
-
-          <!-- AUTHORIZATION TITLE -->
-
-          <h2
-            class="m-0 text-center ta-font-bold"
-            [ngStyle]="{
-              color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-            }"
-          >
-            AUTHORIZATION
-          </h2>
-
-          <h3
-            class="m-0 text-center ta-font-regular"
-            [ngStyle]="{
-              color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-            }"
-          >
-            If you agree that the Prospective Employer may obtain such
-            background reports, please read the<br />
-            following and sign below
-          </h3>
-
-          <div
-            class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-          >
-            <app-ta-checkbox
-              formControlName="isAuthorize"
-              [name]="'isAuthorize'"
-              [label]="
-                'I authorize JD FREIGHT (“Prospective Employer”) to access the FMCSA Pre-Employment Screening Program (PSP)'
-              "
-              [customClass]="
-                selectedMode === 'FEEDBACK_MODE'
-                  ? 'applicant-disclosure-release-feedback'
-                  : 'disclosure-release'
-              "
-              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
-            >
-            </app-ta-checkbox>
-
-            <p
-              class="m-0 text-center ta-font-regular"
-              [ngStyle]="{
-                color:
-                  selectedMode !== 'FEEDBACK_MODE' &&
-                  pspAuthorizationForm.get('isAuthorize').value
-                    ? '#3c3c3c'
-                    : selectedMode === 'FEEDBACK_MODE'
-                    ? '#919191'
-                    : '#6c6c6c',
-                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
-              }"
-              (click)="handleCheckboxParagraphClick('isAuthorize')"
-            >
-              system to seek information regarding my commercial driving safety
-              record and information regarding my safety inspection history. I
-              understand that I am authorizing the release of safety performance
-              information including crash data from the previous five (5) years
-              and inspection history from the previous three (3) years. I
-              understand and acknowledge that this release of information may
-              assist the Prospective Employer to make a determination regarding
-              my suitability as an employee.
-            </p>
-          </div>
-
-          <div
-            class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-          >
-            <app-ta-checkbox
-              formControlName="isFurtherUnderstand"
-              [name]="'isFurtherUnderstand'"
-              [label]="
-                'I further understand that neither the Prospective Employer nor the FMCSA contractor supplying the crash and'
-              "
-              [customClass]="
-                selectedMode === 'FEEDBACK_MODE'
-                  ? 'applicant-disclosure-release-feedback'
-                  : 'disclosure-release'
-              "
-              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
-            >
-            </app-ta-checkbox>
-
-            <p
-              class="m-0 text-center ta-font-regular"
-              [ngStyle]="{
-                color:
-                  selectedMode !== 'FEEDBACK_MODE' &&
-                  pspAuthorizationForm.get('isFurtherUnderstand').value
-                    ? '#3c3c3c'
-                    : selectedMode === 'FEEDBACK_MODE'
-                    ? '#919191'
-                    : '#6c6c6c',
-                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
-              }"
-              (click)="handleCheckboxParagraphClick('isFurtherUnderstand')"
-            >
-              safety information has the capability to correct any safety data
-              that appears to be incorrect. I understand I may challenge the
-              accuracy of the data by submitting a request to
-              <a href="https://dataqs.fmcsa.dot.gov" target="_blank"
-                >https://dataqs.fmcsa.dot.gov</a
-              >. If I challenge crash or inspection information reported by a
-              State, FMCSA cannot change or correct this data. I understand my
-              request will be forwarded by the Data Qs system to the appropriate
-              State for adjudication.
-            </p>
-          </div>
-
-          <div
-            class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-          >
-            <app-ta-checkbox
-              formControlName="isPspReport"
-              [name]="'isPspReport'"
-              [label]="
-                'I understand that any crash or inspection in which I was involved will display on my PSP report. Since the PSP'
-              "
-              [customClass]="
-                selectedMode === 'FEEDBACK_MODE'
-                  ? 'applicant-disclosure-release-feedback'
-                  : 'disclosure-release'
-              "
-              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
-            >
-            </app-ta-checkbox>
-
-            <p
-              class="m-0 text-center ta-font-regular"
-              [ngStyle]="{
-                color:
-                  selectedMode !== 'FEEDBACK_MODE' &&
-                  pspAuthorizationForm.get('isPspReport').value
-                    ? '#3c3c3c'
-                    : selectedMode === 'FEEDBACK_MODE'
-                    ? '#919191'
-                    : '#6c6c6c',
-                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
-              }"
-              (click)="handleCheckboxParagraphClick('isPspReport')"
-            >
-              report does not report, or assign, or imply fault, I acknowledge
-              it will include all CMV crashes where I was a driver or co-driver
-              and where those crashes were reported to FMCSA, regardless of
-              fault. Similarly, I understand all inspections, with or without
-              violations, will appear on my PSP report, and State citations
-              associated with FMCSR violations that have been adjudicated by a
-              court of law will also appear, and remain, on my PSP report.
-            </p>
-          </div>
-
-          <div
-            class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-          >
-            <app-ta-checkbox
-              formControlName="isDisclosureRegardingReport"
-              [name]="'isDisclosureRegardingReport'"
-              [label]="
-                'I have read the above Disclosure Regarding Background Reports provided to me by Prospective Employer and'
-              "
-              [customClass]="
-                selectedMode === 'FEEDBACK_MODE'
-                  ? 'applicant-disclosure-release-feedback'
-                  : 'disclosure-release'
-              "
-              [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
-            >
-            </app-ta-checkbox>
-
-            <p
-              class="m-0 text-center ta-font-regular"
-              [ngStyle]="{
-                color:
-                  selectedMode !== 'FEEDBACK_MODE' &&
-                  pspAuthorizationForm.get('isDisclosureRegardingReport').value
-                    ? '#3c3c3c'
-                    : selectedMode === 'FEEDBACK_MODE'
-                    ? '#919191'
-                    : '#6c6c6c',
-                cursor: selectedMode === 'REVIEW_MODE' ? 'auto' : 'pointer'
-              }"
-              (click)="
-                handleCheckboxParagraphClick('isDisclosureRegardingReport')
-              "
-            >
-              I understand that if I sign this Disclosure and Authorization,
-              Prospective Employer may obtain a report of my crash and
-              inspection history. I hereby authorize Prospective Employer and
-              its employees, authorized agents, and/or affiliates to obtain the
-              information authorized above.
-            </p>
-          </div>
-
-          <!-- NOTICE INFO -->
-
-          <div
-            class="d-flex align-items-center justify-content-center text-center notice-info-container"
-          >
-            <p
-              class="m-0 ta-font-regular"
-              [ngStyle]="{
-                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-              }"
-            >
-              <span class="ta-font-bold">NOTICE:</span> This form is made
-              available to monthly account holders by NIC on behalf of the U.S.
-              Department of Transportation, Federal Motor Carrier Safety
-              Administration (FMCSA). Account holders are required by federal
-              law to obtain an Applicant’s written or electronic consent prior
-              to accessing the Applicant’s PSP report. Further, account holders
-              are required by FMCSA to use the language contained in this
-              Disclosure and Authorization form to obtain an Applicant’s
-              consent. The language must be used in whole, exactly as provided.
-              Further, the language on this form must exist as one stand-alone
-              document. The language may NOT be included with other consent
-              forms or any other language.
-            </p>
-          </div>
-
-          <div
-            class="d-flex align-items-center justify-content-center text-center notice-info-container"
-            [ngStyle]="{
-              'margin-bottom': applicantCardInfo.ssn ? 0 : '20px'
-            }"
-          >
-            <p
-              class="m-0 ta-font-regular"
-              [ngStyle]="{
-                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-              }"
-            >
-              <span class="ta-font-bold">NOTICE:</span> The prospective
-              employment concept referenced in this form contemplates the
-              definition of “employee” contained at 49 C.F.R. 383.5.
-            </p>
-          </div>
-
-          <!-- APPLICANT CARD -->
-
-          <div
-            class="d-flex flex-column justify-content-center applicant-card-container"
-            *ngIf="applicantCardInfo.ssn"
-          >
-            <div
-              class="d-flex align-items-center"
-              [ngClass]="
-                selectedMode === 'FEEDBACK_MODE'
-                  ? 'title-container title-container-feedback'
-                  : 'title-container'
-              "
-            >
-              <div class="d-flex align-items-center name-title-box">
-                <p class="m-0 ta-font-bold">APPLICANT NAME</p>
-              </div>
-              <div class="d-flex align-items-center ssn-title-box">
-                <p class="m-0 ta-font-bold">SSN</p>
-              </div>
-              <div class="d-flex align-items-center dob-title-box">
-                <p class="m-0 ta-font-bold">DOB</p>
-              </div>
-            </div>
-
-            <div
-              class="d-flex align-items-center"
-              [ngClass]="
-                selectedMode === 'FEEDBACK_MODE'
-                  ? 'applicant-card-info-container applicant-card-info-container-feedback'
-                  : 'applicant-card-info-container'
-              "
-            >
-              <div class="d-flex align-items-center driver-box">
-                <p class="m-0 ta-font-regular">
-                  {{ applicantCardInfo.name }}
-                </p>
-              </div>
-              <div class="d-flex align-items-center ssn-box">
-                <p class="m-0 ta-font-regular">
-                  {{ applicantCardInfo.ssn }}
-                </p>
-              </div>
-              <div class="d-flex align-items-center date-box">
-                <p class="m-0 ta-font-regular">
-                  {{ applicantCardInfo.dob }}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- SIGNATURE PAD -->
-
-          <div
-            class="d-flex signature-pad-container"
-            *ngIf="selectedMode === 'APPLICANT_MODE'"
-          >
-            <app-applicant-signature-pad
-              (signatureEmitter)="onSignatureAction($event)"
-            ></app-applicant-signature-pad>
-          </div>
-
-          <div
-            class="d-flex justify-content-center align-items-center signature-image-container"
-            *ngIf="selectedMode !== 'APPLICANT_MODE'"
-          >
-            <img src="" alt="signature" />
-          </div>
-        </form>
-      </div>
-
-      <!-- FOOTER -->
-
-      <app-applicant-footer [mode]="selectedMode"></app-applicant-footer>
     </div>
-  </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center next-btn-container"
+    class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn
-    [nextStep]="true"
-    [lastStep]="true"
-    [filledCorrectly]="
-      selectedMode === 'APPLICANT_MODE' &&
-      pspAuthorizationForm.valid &&
-      signature
-    "
-    [mode]="selectedMode"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [nextStep]="true"
+        [lastStep]="true"
+        [filledCorrectly]="
+            selectedMode === 'APPLICANT_MODE' &&
+            pspAuthorizationForm.valid &&
+            signature
+        "
+        [mode]="selectedMode"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>

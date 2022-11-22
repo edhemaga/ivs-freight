@@ -1,187 +1,191 @@
 <app-ta-modal
-  [modalTitle]="editData?.id ? 'Route Settings' : 'Create New Route'"
-  [isModalValid]="mapRouteForm.valid && isFormDirty"
-  [mapRouteModal]="true"
-  [resetMapVisibility]="isFormDirty ? true : false"
-  [editData]="editData"
-  (action)="onModalAction($event)"
+    [modalTitle]="editData?.id ? 'Route Settings' : 'Create New Route'"
+    [isModalValid]="mapRouteForm.valid && isFormDirty"
+    [mapRouteModal]="true"
+    [resetMapVisibility]="isFormDirty ? true : false"
+    [editData]="editData"
+    (action)="onModalAction($event)"
 >
-  <form origin [formGroup]="mapRouteForm" class="form-container">
-    <div class="row">
-      <div class="col-12">
-        <app-ta-input
-          formControlName="routeName"
-          [inputConfig]="{
-            name: 'Route Name',
-            type: 'text',
-            label: 'Name',
-            isRequired: true,
-            blackInput: true,
-            maxLength: 16
-          }"
-        ></app-ta-input>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-12">
-        <app-ta-tab-switch
-          [tabs]="routeTabs"
-          (switchClicked)="onTabChange($event, 'Route-tab')"
-          [type]="'type2-modal-popup'"
-        >
-        </app-ta-tab-switch>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-12">
-        <app-ta-input-dropdown
-          formControlName="truckId"
-          [template]="'svgtext-template'"
-          [inputConfig]="{
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Truck Unit',
-            isDropdown: true,
-
-            dropdownImageInput: {
-              withText: true,
-              svg: true,
-              image: false,
-              url: selectedTruckType?.logoName,
-              template: 'truck',
-              class: selectedTruckType?.name
-                ?.trim()
-                .replace(' ', '')
-                .toLowerCase()
-            },
-            dropdownWidthClass: 'w-col-455 truck-trailer-dropdown',
-            customClass: 'truck-trailer-dropdown'
-          }"
-          [options]="truckType"
-          [activeItem]="selectedTruckType"
-          (selectedItem)="onSelectDropdown($event)"
-        ></app-ta-input-dropdown>
-      </div>
-    </div>
-
-    <!-- Duration -->
-    <div class="custom-checkbox-card">
-      <div class="divider"></div>
-      <div
-        class="checkbox-card-header"
-        [ngClass]="{
-          pointer: mapRouteForm.get('duration').value
-        }"
-      >
-        <app-ta-checkbox
-          formControlName="duration"
-          [label]="'Duration'"
-          [name]="'Duration'"
-        ></app-ta-checkbox>
-        <svg-icon
-          class="checkbox-card-header-arrow"
-          src="assets/svg/common/ic_arrow_down_updated.svg"
-          [ngClass]="{
-            visible: mapRouteForm.get('duration').value,
-            rotate: !durationCheckboxCard
-          }"
-          (click)="durationCheckboxCard = !durationCheckboxCard"
-        ></svg-icon>
-      </div>
-      <div
-        *ngIf="mapRouteForm.get('duration').value && durationCheckboxCard"
-        class="checkbox-card-body"
-        [ngClass]="{
-          'active-20': mapRouteForm.get('duration').value
-        }"
-      >
+    <form origin [formGroup]="mapRouteForm" class="form-container">
         <div class="row">
-          <div class="col-12">
-            <app-ta-input
-              formControlName="durationTime"
-              [inputConfig]="{
-                name: 'timepicker',
-                type: 'text',
-                label: 'Stop Time',
-                isRequired: true,
-                placeholderIcon: 'time',
-                customClass: 'datetimeclass'
-              }"
-            ></app-ta-input>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Fuel Cost -->
-    <div class="custom-checkbox-card">
-      <div class="divider"></div>
-      <div
-        class="checkbox-card-header"
-        [ngClass]="{
-          pointer: mapRouteForm.get('fuelCost').value
-        }"
-      >
-        <app-ta-checkbox
-          formControlName="fuelCost"
-          [label]="'Fuel Cost'"
-          [name]="'Fuel Cost'"
-        ></app-ta-checkbox>
-        <svg-icon
-          class="checkbox-card-header-arrow"
-          src="assets/svg/common/ic_arrow_down_updated.svg"
-          [ngClass]="{
-            visible: mapRouteForm.get('fuelCost').value,
-            rotate: !fuelCostCheckboxCard
-          }"
-          (click)="fuelCostCheckboxCard = !fuelCostCheckboxCard"
-        ></svg-icon>
-      </div>
-      <div
-        *ngIf="mapRouteForm.get('fuelCost').value && fuelCostCheckboxCard"
-        class="checkbox-card-body"
-        [ngClass]="{
-          'active-20': mapRouteForm.get('fuelCost').value
-        }"
-      >
-        <div class="row">
-          <div class="col-12">
-            <app-ta-input
-              formControlName="fuelMpg"
-              [inputConfig]="{
-                name: 'Fuel Per Miles',
-                type: 'text',
-                label: 'Miles Per Gallon',
-                placeholderIcon: 'mileage',
-                isRequired: true,
-                thousandSeparator: true,
-                maxLength: 5,
-                customClass: 'line-input-26'
-              }"
-            ></app-ta-input>
-          </div>
+            <div class="col-12">
+                <app-ta-input
+                    formControlName="routeName"
+                    [inputConfig]="{
+                        name: 'Route Name',
+                        type: 'text',
+                        label: 'Name',
+                        isRequired: true,
+                        blackInput: true,
+                        maxLength: 16
+                    }"
+                ></app-ta-input>
+            </div>
         </div>
 
         <div class="row">
-          <div class="col-12">
-            <app-ta-input
-              formControlName="fuelPrice"
-              [inputConfig]="{
-                name: 'Fuel Price Map',
-                type: 'text',
-                label: 'Price Per Gallon',
-                placeholderIcon: 'dollar',
-                isRequired: true,
-                thousandSeparator: true,
-                maxLength: 5,
-                customClass: 'line-input-26'
-              }"
-            ></app-ta-input>
-          </div>
+            <div class="col-12">
+                <app-ta-tab-switch
+                    [tabs]="routeTabs"
+                    (switchClicked)="onTabChange($event, 'Route-tab')"
+                    [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
+            </div>
         </div>
-      </div>
-    </div>
-  </form>
+
+        <div class="row">
+            <div class="col-12">
+                <app-ta-input-dropdown
+                    formControlName="truckId"
+                    [template]="'svgtext-template'"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Truck Unit',
+                        isDropdown: true,
+
+                        dropdownImageInput: {
+                            withText: true,
+                            svg: true,
+                            image: false,
+                            url: selectedTruckType?.logoName,
+                            template: 'truck',
+                            class: selectedTruckType?.name
+                                ?.trim()
+                                .replace(' ', '')
+                                .toLowerCase()
+                        },
+                        dropdownWidthClass: 'w-col-455 truck-trailer-dropdown',
+                        customClass: 'truck-trailer-dropdown'
+                    }"
+                    [options]="truckType"
+                    [activeItem]="selectedTruckType"
+                    (selectedItem)="onSelectDropdown($event)"
+                ></app-ta-input-dropdown>
+            </div>
+        </div>
+
+        <!-- Duration -->
+        <div class="custom-checkbox-card">
+            <div class="divider"></div>
+            <div
+                class="checkbox-card-header"
+                [ngClass]="{
+                    pointer: mapRouteForm.get('duration').value
+                }"
+            >
+                <app-ta-checkbox
+                    formControlName="duration"
+                    [label]="'Duration'"
+                    [name]="'Duration'"
+                ></app-ta-checkbox>
+                <svg-icon
+                    class="checkbox-card-header-arrow"
+                    src="assets/svg/common/ic_arrow_down_updated.svg"
+                    [ngClass]="{
+                        visible: mapRouteForm.get('duration').value,
+                        rotate: !durationCheckboxCard
+                    }"
+                    (click)="durationCheckboxCard = !durationCheckboxCard"
+                ></svg-icon>
+            </div>
+            <div
+                *ngIf="
+                    mapRouteForm.get('duration').value && durationCheckboxCard
+                "
+                class="checkbox-card-body"
+                [ngClass]="{
+                    'active-20': mapRouteForm.get('duration').value
+                }"
+            >
+                <div class="row">
+                    <div class="col-12">
+                        <app-ta-input
+                            formControlName="durationTime"
+                            [inputConfig]="{
+                                name: 'timepicker',
+                                type: 'text',
+                                label: 'Stop Time',
+                                isRequired: true,
+                                placeholderIcon: 'time',
+                                customClass: 'datetimeclass'
+                            }"
+                        ></app-ta-input>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fuel Cost -->
+        <div class="custom-checkbox-card">
+            <div class="divider"></div>
+            <div
+                class="checkbox-card-header"
+                [ngClass]="{
+                    pointer: mapRouteForm.get('fuelCost').value
+                }"
+            >
+                <app-ta-checkbox
+                    formControlName="fuelCost"
+                    [label]="'Fuel Cost'"
+                    [name]="'Fuel Cost'"
+                ></app-ta-checkbox>
+                <svg-icon
+                    class="checkbox-card-header-arrow"
+                    src="assets/svg/common/ic_arrow_down_updated.svg"
+                    [ngClass]="{
+                        visible: mapRouteForm.get('fuelCost').value,
+                        rotate: !fuelCostCheckboxCard
+                    }"
+                    (click)="fuelCostCheckboxCard = !fuelCostCheckboxCard"
+                ></svg-icon>
+            </div>
+            <div
+                *ngIf="
+                    mapRouteForm.get('fuelCost').value && fuelCostCheckboxCard
+                "
+                class="checkbox-card-body"
+                [ngClass]="{
+                    'active-20': mapRouteForm.get('fuelCost').value
+                }"
+            >
+                <div class="row">
+                    <div class="col-12">
+                        <app-ta-input
+                            formControlName="fuelMpg"
+                            [inputConfig]="{
+                                name: 'Fuel Per Miles',
+                                type: 'text',
+                                label: 'Miles Per Gallon',
+                                placeholderIcon: 'mileage',
+                                isRequired: true,
+                                thousandSeparator: true,
+                                maxLength: 5,
+                                customClass: 'line-input-26'
+                            }"
+                        ></app-ta-input>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <app-ta-input
+                            formControlName="fuelPrice"
+                            [inputConfig]="{
+                                name: 'Fuel Price Map',
+                                type: 'text',
+                                label: 'Price Per Gallon',
+                                placeholderIcon: 'dollar',
+                                isRequired: true,
+                                thousandSeparator: true,
+                                maxLength: 5,
+                                customClass: 'line-input-26'
+                            }"
+                        ></app-ta-input>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </app-ta-modal>

@@ -1,75 +1,75 @@
 .content-page {
-  // min-height: 100vh;
-  //max-width: 1480px;
-  padding-top: 18px;
-  margin-left: 74px;
+    // min-height: 100vh;
+    //max-width: 1480px;
+    padding-top: 18px;
+    margin-left: 74px;
 
-  .content-scroll {
-    position: sticky;
-    bottom: 18px;
-    left: 1479px;
-    display: inline-block;
+    .content-scroll {
+        position: sticky;
+        bottom: 18px;
+        left: 1479px;
+        display: inline-block;
 
-    &:hover {
-      transition: all 0.3s ease-in-out;
-      cursor: pointer;
-      svg {
-        path.a {
-          fill: #919191;
+        &:hover {
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            svg {
+                path.a {
+                    fill: #919191;
+                }
+            }
         }
-      }
-    }
 
-    @media only screen and (max-width: 1800px) {
-      left: 1620px;
+        @media only screen and (max-width: 1800px) {
+            left: 1620px;
+        }
+        @media only screen and (max-width: 1600px) {
+            left: 1450px;
+        }
     }
-    @media only screen and (max-width: 1600px) {
-      left: 1450px;
-    }
-  }
 }
 
 .login-page {
-  height: 100vh;
-  width: 100vw;
+    height: 100vh;
+    width: 100vw;
 }
 
 .low-res-wrapper {
-  position: fixed;
-  left: 0;
-  top: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
 
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  z-index: 99999999999999;
-  background-color: #fff;
+    z-index: 99999999999999;
+    background-color: #fff;
 
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  h3,
-  h4 {
-    color: #28529f;
-  }
-
-  &.hidden {
     display: none;
-  }
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-  .low-res-logo {
-    svg .b {
-      stroke: transparent;
+    h3,
+    h4 {
+        color: #28529f;
     }
-  }
 
-  @media only screen and (max-width: 800px) {
-    display: flex;
-  }
+    &.hidden {
+        display: none;
+    }
+
+    .low-res-logo {
+        svg .b {
+            stroke: transparent;
+        }
+    }
+
+    @media only screen and (max-width: 800px) {
+        display: flex;
+    }
 }
 
 overlay-scrollbars {
-  height: 100vh;
+    height: 100vh;
 }

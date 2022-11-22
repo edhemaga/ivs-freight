@@ -1,124 +1,139 @@
 <div
-  class="table-progress-cotnainer"
-  [ngClass]="{
-    'big-progress-bar': bigProgressBar,
-    'todo-progress': expiresSettings === 'todo-list'
-  }"
+    class="table-progress-cotnainer"
+    [ngClass]="{
+        'big-progress-bar': bigProgressBar,
+        'todo-progress': expiresSettings === 'todo-list'
+    }"
 >
-  <div class="table-progress" [class]="'bg-' + progressBarLength">
-    <div
-      [class]="'bg-' + progressbarColor"
-      [ngClass]="{ 'progres-default': !progressbarColor }"
-      [ngStyle]="{ width: calculatedProgress + '%' }"
-      class="table-progress-bar"
-    ></div>
-  </div>
+    <div class="table-progress" [class]="'bg-' + progressBarLength">
+        <div
+            [class]="'bg-' + progressbarColor"
+            [ngClass]="{ 'progres-default': !progressbarColor }"
+            [ngStyle]="{ width: calculatedProgress + '%' }"
+            class="table-progress-bar"
+        ></div>
+    </div>
 
-  <div class="table-progress-panel">
-    <!-- EXPIRES IN -->
-    <span
-      *ngIf="
-        !negative &&
-        expire >= 1 &&
-        expiresSettings !== 'details' &&
-        expiresSettings !== 'settings-insurance-policy' &&
-        expiresSettings !== 'todo-list'
-      "
-      [ngClass]="{ 'd-none': expire !== expire }"
-      class="progress-text"
-    >
-      <span
-        *ngIf="expiresSettings === 'settings-parking'"
-        class="expires-settings"
-        >{{ customText }}</span
-      >
-      <span
-        *ngIf="
-          expiresSettings !== 'settings-parking' &&
-          expiresSettings !== 'settings-insurance-policy'
-        "
-        [ngClass]="{ 'expires-settings-bold': expiresSettings }"
-      >
-        {{ progresDay > 1 ? "days" : "day" }}</span
-      >
-    </span>
-
-    <!-- EXPIRED -->
-    <span *ngIf="expire === 0 && timeDifference === 0" class="progress-text">
-      <span>Expired</span>
-    </span>
-
-    <!-- EXPIRED AGO -->
-    <span *ngIf="negative" class="progress-text">
-      <span>
-        {{ expiresSettings !== "todo-list" ? "Expired" : "Deadline was" }}
+    <div class="table-progress-panel">
+        <!-- EXPIRES IN -->
         <span
-          [ngClass]="{
-            'expires-settings-bold': expiresSettings !== 'todo-list'
-          }"
-          *ngIf="progresDay > 0"
+            *ngIf="
+                !negative &&
+                expire >= 1 &&
+                expiresSettings !== 'details' &&
+                expiresSettings !== 'settings-insurance-policy' &&
+                expiresSettings !== 'todo-list'
+            "
+            [ngClass]="{ 'd-none': expire !== expire }"
+            class="progress-text"
         >
-          {{ progresDay }} {{ progresDay > 1 ? "days" : "day" }}
+            <span
+                *ngIf="expiresSettings === 'settings-parking'"
+                class="expires-settings"
+                >{{ customText }}</span
+            >
+            <span
+                *ngIf="
+                    expiresSettings !== 'settings-parking' &&
+                    expiresSettings !== 'settings-insurance-policy'
+                "
+                [ngClass]="{ 'expires-settings-bold': expiresSettings }"
+            >
+                {{ progresDay > 1 ? 'days' : 'day' }}</span
+            >
         </span>
+
+        <!-- EXPIRED -->
         <span
-          [ngClass]="{
-            'expires-settings-bold': expiresSettings !== 'todo-list'
-          }"
-          *ngIf="progresDay == 0"
+            *ngIf="expire === 0 && timeDifference === 0"
+            class="progress-text"
         >
-          {{ timeDifference }} h.
+            <span>Expired</span>
         </span>
-        ago
-      </span>
-    </span>
 
-    <!-- DAYS -->
-    <span
-      *ngIf="
-        !negative &&
-        (daysDiff > 0 || timeDifference > 0) &&
-        (expiresSettings === 'details' ||
-          expiresSettings === 'todo-list' ||
-          expiresSettings === 'settings-insurance-policy')
-      "
-      class="progress-days"
-    >
-      <span>
-        {{ expiresSettings !== "todo-list" ? "Expires in" : "Deadline in" }}
+        <!-- EXPIRED AGO -->
+        <span *ngIf="negative" class="progress-text">
+            <span>
+                {{
+                    expiresSettings !== 'todo-list' ? 'Expired' : 'Deadline was'
+                }}
+                <span
+                    [ngClass]="{
+                        'expires-settings-bold': expiresSettings !== 'todo-list'
+                    }"
+                    *ngIf="progresDay > 0"
+                >
+                    {{ progresDay }} {{ progresDay > 1 ? 'days' : 'day' }}
+                </span>
+                <span
+                    [ngClass]="{
+                        'expires-settings-bold': expiresSettings !== 'todo-list'
+                    }"
+                    *ngIf="progresDay == 0"
+                >
+                    {{ timeDifference }} h.
+                </span>
+                ago
+            </span>
+        </span>
+
+        <!-- DAYS -->
         <span
-          [ngClass]="{ 'progress-days-bold': expiresSettings !== 'todo-list' }"
-          *ngIf="daysDiff !== 0"
-          >{{ daysDiff }} {{ daysDiff > 1 ? "days" : "day" }}</span
+            *ngIf="
+                !negative &&
+                (daysDiff > 0 || timeDifference > 0) &&
+                (expiresSettings === 'details' ||
+                    expiresSettings === 'todo-list' ||
+                    expiresSettings === 'settings-insurance-policy')
+            "
+            class="progress-days"
         >
+            <span>
+                {{
+                    expiresSettings !== 'todo-list'
+                        ? 'Expires in'
+                        : 'Deadline in'
+                }}
+                <span
+                    [ngClass]="{
+                        'progress-days-bold': expiresSettings !== 'todo-list'
+                    }"
+                    *ngIf="daysDiff !== 0"
+                    >{{ daysDiff }} {{ daysDiff > 1 ? 'days' : 'day' }}</span
+                >
+                <span
+                    [ngClass]="{
+                        'progress-days-bold': expiresSettings !== 'todo-list'
+                    }"
+                    *ngIf="daysDiff == 0"
+                    >{{ timeDifference }} h.</span
+                >
+            </span>
+        </span>
+
+        <!-- DAYS TO GO -->
         <span
-          [ngClass]="{ 'progress-days-bold': expiresSettings !== 'todo-list' }"
-          *ngIf="daysDiff == 0"
-          >{{ timeDifference }} h.</span
+            *ngIf="!negative && expiresSettings === 'settings-parking'"
+            class="progress-days-to-go"
         >
-      </span>
-    </span>
+            <span
+                >{{
+                    totalDays == 1 ? totalDays + ' days' : totalDays + ' days'
+                }}
+                to go</span
+            >
+        </span>
 
-    <!-- DAYS TO GO -->
-    <span
-      *ngIf="!negative && expiresSettings === 'settings-parking'"
-      class="progress-days-to-go"
-    >
-      <span
-        >{{ totalDays == 1 ? totalDays + " days" : totalDays + " days" }} to
-        go</span
-      >
-    </span>
-
-    <!-- EXPIRED DATE - MM-DD-YYYY -->
-    <span
-      *ngIf="
-        expiresSettings === 'settings-insurance-policy' ||
-        expiresSettings === 'details' ||
-        expiresSettings === 'todo-list'
-      "
-      class="progress-text"
-    >
-      <span>{{ endingDate }}</span>
-    </span>
-  </div>
+        <!-- EXPIRED DATE - MM-DD-YYYY -->
+        <span
+            *ngIf="
+                expiresSettings === 'settings-insurance-policy' ||
+                expiresSettings === 'details' ||
+                expiresSettings === 'todo-list'
+            "
+            class="progress-text"
+        >
+            <span>{{ endingDate }}</span>
+        </span>
+    </div>
 </div>

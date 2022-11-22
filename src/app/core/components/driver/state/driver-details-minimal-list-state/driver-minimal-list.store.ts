@@ -3,12 +3,12 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { DriverMinimalResponse } from 'appcoretruckassist';
 
 export interface DriverMinimalListState
-  extends EntityState<DriverMinimalResponse, number> {}
+    extends EntityState<DriverMinimalResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'driverMinimalList' })
 export class DriversMinimalListStore extends EntityStore<DriverMinimalListState> {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 }

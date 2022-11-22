@@ -1,228 +1,257 @@
 <div class="details-component">
-  <div *ngFor="let trailers of trailer">
-    <div [ngSwitch]="trailers.template">
-      <!---------------------- GENERAL TEMPLATE ------------------>
-      <div *ngSwitchCase="'general'">
-        <app-trailer-details-card [trailer]="trailers.data">
-        </app-trailer-details-card>
-      </div>
-      <!---------------------------- Registration TEMPLATE ----------------------------->
-      <div class="card-width" *ngSwitchCase="'registration'">
-        <app-ta-re-card
-          *ngFor="
-            let reg of trailers?.data?.registrations;
-            let i = index;
-            trackBy: identity
-          "
-          [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i, 'registration')"
-          [cardNameCommon]="reg.licensePlate"
-          [hasCopyIcon]="true"
-          [options]="dataTest"
-          [expDateClose]="reg.expDate | formatDateP"
-          [optionsId]="reg.id"
-          [mainData]="reg"
-          [cardNameCurrent]="'registration'"
-          [noteIcons]="
-            reg.note
-              ? 'assets/svg/truckassist-table/note/Note.svg'
-              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
-          "
-          (dropActions)="optionsEvent($event, trailers.data, 'registration')"
-        >
-          <div class="cards-container">
-            <div class="card-body-cdl">
-              <div class="card-row-endor">
-                <div class="card-item">
-                  <div class="card-item-name">State</div>
-                  <div class="card-item-value">
-                    {{ reg.state.stateShortName }}
-                  </div>
-                </div>
-                <div class="card-item">
-                  <div class="card-item-name">Issued</div>
-                  <div class="card-item-value">
-                    {{ reg.issueDate | formatDateP }}
-                  </div>
-                </div>
-              </div>
-              <div
-                class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i + 'registration'] }"
-              >
-                <div class="card-details-progress-container">
-                  <app-truckassist-progress-expiration
-                    [expireDate]="reg.expDate | formatDateP"
-                    [startDate]="reg.issueDate | formatDateP"
-                    [expiresSettings]="'details'"
-                  >
-                  </app-truckassist-progress-expiration>
-                </div>
-              </div>
+    <div *ngFor="let trailers of trailer">
+        <div [ngSwitch]="trailers.template">
+            <!---------------------- GENERAL TEMPLATE ------------------>
+            <div *ngSwitchCase="'general'">
+                <app-trailer-details-card [trailer]="trailers.data">
+                </app-trailer-details-card>
             </div>
-            <div
-              [@showHideCardBody]="
-                toggler[i + 'registration'] ? 'true' : 'false'
-              "
-            >
-              <div class="divider"></div>
-              <div class="card-note">
-                <app-ta-input-note
-                  [formControl]="registrationNote"
-                  [isVisibleDivider]="false"
-                  [placeholder]="'Write something.'"
-                  [customClass]="'note-small'"
-                  [isVisibleArrow]="false"
-                  [minRows]="1"
-                  [isVisibleNote]="true"
-                  [noteType]="'details-card'"
-                  [note]="reg.note"
-                  [entityId]="reg.id"
-                  [entityType]="'Registration'"
-                ></app-ta-input-note>
-              </div>
+            <!---------------------------- Registration TEMPLATE ----------------------------->
+            <div class="card-width" *ngSwitchCase="'registration'">
+                <app-ta-re-card
+                    *ngFor="
+                        let reg of trailers?.data?.registrations;
+                        let i = index;
+                        trackBy: identity
+                    "
+                    [cardDocumentCounter]="1"
+                    (resizePage)="toggleResizePage(i, 'registration')"
+                    [cardNameCommon]="reg.licensePlate"
+                    [hasCopyIcon]="true"
+                    [options]="dataTest"
+                    [expDateClose]="reg.expDate | formatDateP"
+                    [optionsId]="reg.id"
+                    [mainData]="reg"
+                    [cardNameCurrent]="'registration'"
+                    [noteIcons]="
+                        reg.note
+                            ? 'assets/svg/truckassist-table/note/Note.svg'
+                            : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+                    "
+                    (dropActions)="
+                        optionsEvent($event, trailers.data, 'registration')
+                    "
+                >
+                    <div class="cards-container">
+                        <div class="card-body-cdl">
+                            <div class="card-row-endor">
+                                <div class="card-item">
+                                    <div class="card-item-name">State</div>
+                                    <div class="card-item-value">
+                                        {{ reg.state.stateShortName }}
+                                    </div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-name">Issued</div>
+                                    <div class="card-item-value">
+                                        {{ reg.issueDate | formatDateP }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="card-row-progress"
+                                [ngClass]="{
+                                    'second-progress':
+                                        toggler[i + 'registration']
+                                }"
+                            >
+                                <div class="card-details-progress-container">
+                                    <app-truckassist-progress-expiration
+                                        [expireDate]="reg.expDate | formatDateP"
+                                        [startDate]="
+                                            reg.issueDate | formatDateP
+                                        "
+                                        [expiresSettings]="'details'"
+                                    >
+                                    </app-truckassist-progress-expiration>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            [@showHideCardBody]="
+                                toggler[i + 'registration'] ? 'true' : 'false'
+                            "
+                        >
+                            <div class="divider"></div>
+                            <div class="card-note">
+                                <app-ta-input-note
+                                    [formControl]="registrationNote"
+                                    [isVisibleDivider]="false"
+                                    [placeholder]="'Write something.'"
+                                    [customClass]="'note-small'"
+                                    [isVisibleArrow]="false"
+                                    [minRows]="1"
+                                    [isVisibleNote]="true"
+                                    [noteType]="'details-card'"
+                                    [note]="reg.note"
+                                    [entityId]="reg.id"
+                                    [entityType]="'Registration'"
+                                ></app-ta-input-note>
+                            </div>
+                        </div>
+                    </div>
+                </app-ta-re-card>
             </div>
-          </div>
-        </app-ta-re-card>
-      </div>
-      <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
-      <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
-        <app-ta-re-card
-          *ngFor="
-            let fhwa of trailers?.data?.inspections;
-            let i = index;
-            trackBy: identity
-          "
-          [options]="dataFHWA"
-          [cardNameCommon]="fhwa.issueDate | formatDateP"
-          [optionsId]="fhwa.id"
-          [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i, 'fhwa')"
-          [noteIcons]="
-            fhwa.note
-              ? 'assets/svg/truckassist-table/note/Note.svg'
-              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
-          "
-          [expDateClose]="fhwa.issueDate | setFutureYear"
-          (dropActions)="optionsEvent($event, trailers.data, 'inspection')"
-        >
-          <div class="cards-container">
-            <div class="card-body-cdl">
-              <div
-                class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i + 'fhwa'] }"
-              >
-                <div class="card-details-progress-container">
-                  <app-truckassist-progress-expiration
-                    [expireDate]="fhwa.issueDate | setFutureYear"
-                    [startDate]="fhwa.issueDate | formatDateP"
-                    [expiresSettings]="'details'"
-                  >
-                  </app-truckassist-progress-expiration>
-                </div>
-              </div>
+            <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
+            <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
+                <app-ta-re-card
+                    *ngFor="
+                        let fhwa of trailers?.data?.inspections;
+                        let i = index;
+                        trackBy: identity
+                    "
+                    [options]="dataFHWA"
+                    [cardNameCommon]="fhwa.issueDate | formatDateP"
+                    [optionsId]="fhwa.id"
+                    [cardDocumentCounter]="1"
+                    (resizePage)="toggleResizePage(i, 'fhwa')"
+                    [noteIcons]="
+                        fhwa.note
+                            ? 'assets/svg/truckassist-table/note/Note.svg'
+                            : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+                    "
+                    [expDateClose]="fhwa.issueDate | setFutureYear"
+                    (dropActions)="
+                        optionsEvent($event, trailers.data, 'inspection')
+                    "
+                >
+                    <div class="cards-container">
+                        <div class="card-body-cdl">
+                            <div
+                                class="card-row-progress"
+                                [ngClass]="{
+                                    'second-progress': toggler[i + 'fhwa']
+                                }"
+                            >
+                                <div class="card-details-progress-container">
+                                    <app-truckassist-progress-expiration
+                                        [expireDate]="
+                                            fhwa.issueDate | setFutureYear
+                                        "
+                                        [startDate]="
+                                            fhwa.issueDate | formatDateP
+                                        "
+                                        [expiresSettings]="'details'"
+                                    >
+                                    </app-truckassist-progress-expiration>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            [@showHideCardBody]="
+                                toggler[i + 'fhwa'] ? 'true' : 'false'
+                            "
+                        >
+                            <div class="divider"></div>
+                            <div class="card-note">
+                                <app-ta-input-note
+                                    [formControl]="fhwaNote"
+                                    [isVisibleDivider]="false"
+                                    [placeholder]="'Write something.'"
+                                    [customClass]="'note-small'"
+                                    [isVisibleArrow]="false"
+                                    [minRows]="1"
+                                    [isVisibleNote]="true"
+                                    [noteType]="'details-card'"
+                                    [note]="fhwa.note"
+                                    [entityId]="fhwa.id"
+                                    [entityType]="'Inspection'"
+                                ></app-ta-input-note>
+                            </div>
+                        </div>
+                    </div>
+                </app-ta-re-card>
             </div>
-            <div [@showHideCardBody]="toggler[i + 'fhwa'] ? 'true' : 'false'">
-              <div class="divider"></div>
-              <div class="card-note">
-                <app-ta-input-note
-                  [formControl]="fhwaNote"
-                  [isVisibleDivider]="false"
-                  [placeholder]="'Write something.'"
-                  [customClass]="'note-small'"
-                  [isVisibleArrow]="false"
-                  [minRows]="1"
-                  [isVisibleNote]="true"
-                  [noteType]="'details-card'"
-                  [note]="fhwa.note"
-                  [entityId]="fhwa.id"
-                  [entityType]="'Inspection'"
-                ></app-ta-input-note>
-              </div>
-            </div>
-          </div>
-        </app-ta-re-card>
-      </div>
 
-      <!---------------------------- Title TEMPLATE ----------------------------->
-      <div class="card-width" *ngSwitchCase="'title'">
-        <app-ta-re-card
-          *ngFor="
-            let title of trailers?.data?.titles;
-            let i = index;
-            trackBy: identity
-          "
-          [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i, 'title')"
-          [cardNameCommon]="title.number"
-          [options]="dataFHWA"
-          [optionsId]="title.id"
-          [noteIcons]="
-            title.note
-              ? 'assets/svg/truckassist-table/note/Note.svg'
-              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
-          "
-          (dropActions)="optionsEvent($event, trailers.data, 'title')"
-        >
-          <div class="cards-container">
-            <div class="card-body-cdl">
-              <div class="card-row-endor">
-                <div class="card-item">
-                  <div class="card-item-name">State</div>
-                  <div class="card-item-value">
-                    {{ title?.state?.stateShortName }}
-                  </div>
-                </div>
-                <div class="card-item">
-                  <div class="card-item-name">Issued</div>
-                  <div class="card-item-value">
-                    {{ title.issueDate | formatDateP }}
-                  </div>
-                </div>
-              </div>
-              <div
-                class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i + 'title'] }"
-              >
-                <div class="card-details-progress-container">
-                  <app-truckassist-progress-expiration
-                    [expireDate]="title.issueDate | formatDateP"
-                    [startDate]="title.purchaseDate | formatDateP"
-                    [expiresSettings]="'details'"
-                  >
-                  </app-truckassist-progress-expiration>
-                </div>
-              </div>
-            </div>
-            <div [@showHideCardBody]="toggler[i + 'title'] ? 'true' : 'false'">
-              <div class="divider"></div>
+            <!---------------------------- Title TEMPLATE ----------------------------->
+            <div class="card-width" *ngSwitchCase="'title'">
+                <app-ta-re-card
+                    *ngFor="
+                        let title of trailers?.data?.titles;
+                        let i = index;
+                        trackBy: identity
+                    "
+                    [cardDocumentCounter]="1"
+                    (resizePage)="toggleResizePage(i, 'title')"
+                    [cardNameCommon]="title.number"
+                    [options]="dataFHWA"
+                    [optionsId]="title.id"
+                    [noteIcons]="
+                        title.note
+                            ? 'assets/svg/truckassist-table/note/Note.svg'
+                            : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+                    "
+                    (dropActions)="optionsEvent($event, trailers.data, 'title')"
+                >
+                    <div class="cards-container">
+                        <div class="card-body-cdl">
+                            <div class="card-row-endor">
+                                <div class="card-item">
+                                    <div class="card-item-name">State</div>
+                                    <div class="card-item-value">
+                                        {{ title?.state?.stateShortName }}
+                                    </div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-name">Issued</div>
+                                    <div class="card-item-value">
+                                        {{ title.issueDate | formatDateP }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="card-row-progress"
+                                [ngClass]="{
+                                    'second-progress': toggler[i + 'title']
+                                }"
+                            >
+                                <div class="card-details-progress-container">
+                                    <app-truckassist-progress-expiration
+                                        [expireDate]="
+                                            title.issueDate | formatDateP
+                                        "
+                                        [startDate]="
+                                            title.purchaseDate | formatDateP
+                                        "
+                                        [expiresSettings]="'details'"
+                                    >
+                                    </app-truckassist-progress-expiration>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            [@showHideCardBody]="
+                                toggler[i + 'title'] ? 'true' : 'false'
+                            "
+                        >
+                            <div class="divider"></div>
 
-              <div class="card-note">
-                <app-ta-input-note
-                  [formControl]="titleNote"
-                  [placeholder]="'Write something.'"
-                  [customClass]="'note-small'"
-                  [isVisibleArrow]="false"
-                  [minRows]="1"
-                  [isVisibleDivider]="false"
-                  [isVisibleNote]="true"
-                  [noteType]="'details-card'"
-                  [note]="title.note"
-                  [entityId]="title.id"
-                  [entityType]="'Title'"
-                ></app-ta-input-note>
-              </div>
+                            <div class="card-note">
+                                <app-ta-input-note
+                                    [formControl]="titleNote"
+                                    [placeholder]="'Write something.'"
+                                    [customClass]="'note-small'"
+                                    [isVisibleArrow]="false"
+                                    [minRows]="1"
+                                    [isVisibleDivider]="false"
+                                    [isVisibleNote]="true"
+                                    [noteType]="'details-card'"
+                                    [note]="title.note"
+                                    [entityId]="title.id"
+                                    [entityType]="'Title'"
+                                ></app-ta-input-note>
+                            </div>
+                        </div>
+                    </div>
+                </app-ta-re-card>
             </div>
-          </div>
-        </app-ta-re-card>
-      </div>
-      <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
-      <div class="card-width" *ngSwitchCase="'lease-purchase'">
-        <div
-          class="test"
-          style="background-color: #ffffff; height: 200px"
-        ></div>
-      </div>
+            <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
+            <div class="card-width" *ngSwitchCase="'lease-purchase'">
+                <div
+                    class="test"
+                    style="background-color: #ffffff; height: 200px"
+                ></div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

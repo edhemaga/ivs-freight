@@ -1,10 +1,10 @@
 import { takeUntil } from 'rxjs/operators';
 import {
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewEncapsulation,
+    ChangeDetectionStrategy,
+    Component,
+    OnDestroy,
+    OnInit,
+    ViewEncapsulation,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
@@ -15,236 +15,236 @@ import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  public inputDate: FormControl = new FormControl();
-  dashboardStats: Observable<DashboardStats[]>;
+    public inputDate: FormControl = new FormControl();
+    dashboardStats: Observable<DashboardStats[]>;
 
-  color: string = '#eee';
-  dispatchStatuses: any = [
-    {
-      id: 40,
-      name: 'OFF',
-      status: 58,
-      statusPercentage: 10.0,
-      color: '#202020',
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'ACTIVE',
-      statusPercentage: 15.0,
-      color: '#5AE99D',
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'DISPATCHED',
-      color: '#497BDC',
-      statusPercentage: 25.0,
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'CHECKED IN',
-      color: '#24C1A1',
-      statusPercentage: 98.0,
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'LOADED',
-      color: '#207E4C',
-      statusPercentage: 35.0,
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'REPAIR',
-      color: '#AE3232',
-      statusPercentage: 80.0,
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'EMPTY',
-      color: '#F99E00',
-      statusPercentage: 76.0,
-    },
-  ];
-  pendingStatuses: any = [
-    {
-      id: 40,
-      name: 'BOOKED',
-      status: 58,
-      statusPercentage: 25.0,
-      color: '#959595',
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'ASSIGNED',
-      statusPercentage: 10.0,
-      color: '#202020',
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'DISPATCHED',
-      color: '#497BDC',
-      statusPercentage: 14.0,
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'LOADED',
-      color: '#207E4C',
-      statusPercentage: 90.0,
-    },
-  ];
-  closedStatuses: any = [
-    {
-      id: 40,
-      name: 'CANCELED',
-      status: 58,
-      statusPercentage: 20.0,
-      color: '#AE3232',
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'TONU',
-      statusPercentage: 55.0,
-      color: '#FF5D5D',
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'INVOICED',
-      color: '#BFB580',
-      statusPercentage: 30.0,
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'In HOLD / REVISED',
-      color: '#B7B7B7',
-      statusPercentage: 100.0,
-    },
-    {
-      id: 40,
-      name: 'PAID',
-      status: 58,
-      statusPercentage: 40.0,
-      color: '#9F9A7B',
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'SHORT-PAID',
-      statusPercentage: 70.0,
-      color: '#807B65',
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'UNPAID',
-      color: '#65614D',
-      statusPercentage: 10.0,
-    },
-    {
-      id: 40,
-      status: 58,
-      name: 'CLAIM',
-      color: '#514E40',
-      statusPercentage: 90.0,
-    },
-  ];
-
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private dashboardService: DashboardService,
-    private sharedService: SharedService,
-    private route: ActivatedRoute
-  ) {}
-
-  ngOnInit() {
-    //this.dashboardStoreService.addStats();
-    this.dashboardStats = this.route.snapshot.data['dashboard'];
-
-    // this.dashboardQuery.selectDashboardStatistic$
-    // .pipe(takeUntil(this.destroy$))
-    // .subscribe(result => {
-    //   this.dashboardStats = result;
-    // });
-
-    //this.getStats();
-  }
-
-  getStats() {
-    this.dashboardService
-      .getDasboardMainTotals()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (response: any) => {
-          this.dashboardStats = response;
+    color: string = '#eee';
+    dispatchStatuses: any = [
+        {
+            id: 40,
+            name: 'OFF',
+            status: 58,
+            statusPercentage: 10.0,
+            color: '#202020',
         },
-        (error: any) => {
-          this.sharedService.handleServerError();
-        }
-      );
-  }
+        {
+            id: 40,
+            status: 58,
+            name: 'ACTIVE',
+            statusPercentage: 15.0,
+            color: '#5AE99D',
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'DISPATCHED',
+            color: '#497BDC',
+            statusPercentage: 25.0,
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'CHECKED IN',
+            color: '#24C1A1',
+            statusPercentage: 98.0,
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'LOADED',
+            color: '#207E4C',
+            statusPercentage: 35.0,
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'REPAIR',
+            color: '#AE3232',
+            statusPercentage: 80.0,
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'EMPTY',
+            color: '#F99E00',
+            statusPercentage: 76.0,
+        },
+    ];
+    pendingStatuses: any = [
+        {
+            id: 40,
+            name: 'BOOKED',
+            status: 58,
+            statusPercentage: 25.0,
+            color: '#959595',
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'ASSIGNED',
+            statusPercentage: 10.0,
+            color: '#202020',
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'DISPATCHED',
+            color: '#497BDC',
+            statusPercentage: 14.0,
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'LOADED',
+            color: '#207E4C',
+            statusPercentage: 90.0,
+        },
+    ];
+    closedStatuses: any = [
+        {
+            id: 40,
+            name: 'CANCELED',
+            status: 58,
+            statusPercentage: 20.0,
+            color: '#AE3232',
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'TONU',
+            statusPercentage: 55.0,
+            color: '#FF5D5D',
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'INVOICED',
+            color: '#BFB580',
+            statusPercentage: 30.0,
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'In HOLD / REVISED',
+            color: '#B7B7B7',
+            statusPercentage: 100.0,
+        },
+        {
+            id: 40,
+            name: 'PAID',
+            status: 58,
+            statusPercentage: 40.0,
+            color: '#9F9A7B',
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'SHORT-PAID',
+            statusPercentage: 70.0,
+            color: '#807B65',
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'UNPAID',
+            color: '#65614D',
+            statusPercentage: 10.0,
+        },
+        {
+            id: 40,
+            status: 58,
+            name: 'CLAIM',
+            color: '#514E40',
+            statusPercentage: 90.0,
+        },
+    ];
 
-  public ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+    private destroy$ = new Subject<void>();
 
-  parseNum(x) {
-    return parseFloat(x);
-  }
+    constructor(
+        private dashboardService: DashboardService,
+        private sharedService: SharedService,
+        private route: ActivatedRoute
+    ) {}
 
-  dataTest = {
-    disabledMutedStyle: null,
-    toolbarActions: {
-      hideViewMode: false,
-    },
-    config: {
-      showSort: true,
-      sortBy: '',
-      sortDirection: '',
-      disabledColumns: [0],
-      minWidth: 60,
-    },
-    actions: [
-      {
-        title: 'Edit',
-        name: 'edit',
-        class: 'regular-text',
-        contentType: 'edit',
-      },
+    ngOnInit() {
+        //this.dashboardStoreService.addStats();
+        this.dashboardStats = this.route.snapshot.data['dashboard'];
 
-      {
-        title: 'Delete',
-        name: 'delete-item',
-        type: 'driver',
-        text: 'Are you sure you want to delete driver(s)?',
-        class: 'delete-text',
-        contentType: 'delete',
-      },
-    ],
-    export: true,
-  };
+        // this.dashboardQuery.selectDashboardStatistic$
+        // .pipe(takeUntil(this.destroy$))
+        // .subscribe(result => {
+        //   this.dashboardStats = result;
+        // });
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.sharedService.emitUpdateScrollHeight.emit(true);
-    }, 200);
-  }
+        //this.getStats();
+    }
+
+    getStats() {
+        this.dashboardService
+            .getDasboardMainTotals()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+                (response: any) => {
+                    this.dashboardStats = response;
+                },
+                (error: any) => {
+                    this.sharedService.handleServerError();
+                }
+            );
+    }
+
+    public ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    parseNum(x) {
+        return parseFloat(x);
+    }
+
+    dataTest = {
+        disabledMutedStyle: null,
+        toolbarActions: {
+            hideViewMode: false,
+        },
+        config: {
+            showSort: true,
+            sortBy: '',
+            sortDirection: '',
+            disabledColumns: [0],
+            minWidth: 60,
+        },
+        actions: [
+            {
+                title: 'Edit',
+                name: 'edit',
+                class: 'regular-text',
+                contentType: 'edit',
+            },
+
+            {
+                title: 'Delete',
+                name: 'delete-item',
+                type: 'driver',
+                text: 'Are you sure you want to delete driver(s)?',
+                class: 'delete-text',
+                contentType: 'delete',
+            },
+        ],
+        export: true,
+    };
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.sharedService.emitUpdateScrollHeight.emit(true);
+        }, 200);
+    }
 }

@@ -7,7 +7,7 @@ export interface DriverItemState extends EntityState<DriverResponse, number> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'driverItem' })
 export class DriversItemStore extends EntityStore<DriverItemState> {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 }

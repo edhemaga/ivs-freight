@@ -1,417 +1,459 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add Contact' : 'Edit Contact'"
-  [editData]="editData"
-  [editName]="editData?.data?.name"
-  [isModalValid]="contactForm.valid && isFormDirty"
-  [dropZoneConfig]="dropZoneConfig"
-  (action)="onModalAction($event)"
+    [modalTitle]="editData?.type !== 'edit' ? 'Add Contact' : 'Edit Contact'"
+    [editData]="editData"
+    [editName]="editData?.data?.name"
+    [isModalValid]="contactForm.valid && isFormDirty"
+    [dropZoneConfig]="dropZoneConfig"
+    (action)="onModalAction($event)"
 >
-  <form
-    origin
-    [formGroup]="contactForm"
-    class="form-container form-container-without-mb"
-  >
-    <div class="row">
-      <div class="col-12">
-        <app-ta-input
-          formControlName="name"
-          [inputConfig]="{
-            name: 'Full Name',
-            type: 'text',
-            label: 'Full Name',
-            isRequired: true,
-            minLength: 2,
-            maxLength: 32,
-            textTransform: 'capitalize',
-            autoFocus: editData?.type !== 'edit'
-          }"
-        ></app-ta-input>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <app-ta-input-dropdown-label
-          formControlName="companyContactLabelId"
-          [inputConfig]="{
-            name: 'Input Dropdown Label',
-            type: 'text',
-            label: 'Label',
-            placeholderIcon: 'ic_dynamic_label',
-            dropdownLabel: true,
-            dropdownWidthClass: 'w-col-456',
-            textTransform: 'lowercase',
-            minLength: 1,
-            maxLength: 32,
-            blackInput: true,
-            commands: {
-              active: false,
-              type: 'confirm-cancel',
-              firstCommand: {
-                popup: {
-                  name: 'Confirm',
-                  backgroundColor: '#536BC2'
-                },
-                name: 'confirm',
-                svg: 'assets/svg/ic_spec-confirm.svg'
-              },
-              secondCommand: {
-                popup: {
-                  name: 'Cancel',
-                  backgroundColor: '#6c6c6c'
-                },
-                name: 'cancel',
-                svg: 'assets/svg/ic_x.svg'
-              }
-            }
-          }"
-          [colors]="colors"
-          [options]="contactLabels"
-          [selectedLabel]="selectedContactLabel"
-          [selectedLabelColor]="selectedContactColor"
-          (pickExistLabel)="onPickExistLabel($event)"
-          (pickColorLabel)="onSelectColorLabel($event)"
-          (editModeLabel)="companyContactLabelMode($event)"
-          (saveLabel)="onSaveLabel($event)"
-        >
-        </app-ta-input-dropdown-label>
-      </div>
-    </div>
-    <div class="row last-row">
-      <div class="col-10">
-        <app-input-address-dropdown
-          formControlName="address"
-          [inputConfig]="{
-            name: 'Address',
-            type: 'text',
-            label: 'Address, City, State Zip',
-            placeholderIcon: 'address',
-            textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-376',
-            minLength: 6,
-            maxLength: 256
-          }"
-          [placeholderType]="'longAddress'"
-          [activeAddress]="selectedAddress"
-          (selectedAddress)="onHandleAddress($event)"
-        ></app-input-address-dropdown>
-      </div>
-      <div class="col-2">
-        <app-ta-input
-          formControlName="addressUnit"
-          [inputConfig]="{
-            name: 'address-unit',
-            type: 'text',
-            label: 'Unit #',
-            textTransform: 'uppercase',
-            minLength: 1,
-            maxLength: 10
-          }"
-        ></app-ta-input>
-      </div>
-    </div>
-    <!-- Contact phones -->
-    <app-ta-custom-card
-      [hasCounter]="contactPhones.length ? contactPhones.length : 0"
-      [cardName]="'Phone'"
-      [headerSvgEnabled]="true"
-      [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-      [actionText]="'ADD PHONE'"
-      [isCardOpen]="contactPhones.length > 0"
-      [hasBodyData]="contactPhones.length > 0"
-      (onActionEvent)="addContactPhones($event)"
-      [animationMarginParams]="{
-        marginTop: '10px',
-        marginBottom: '12px'
-      }"
+    <form
+        origin
+        [formGroup]="contactForm"
+        class="form-container form-container-without-mb"
     >
-      <div
-        formArrayName="contactPhones"
-        class="common-table-modal-container"
-        *ngIf="contactPhones.length"
-      >
-        <div
-          class="common-table-modal-container-label common-table-modal-container-label-contact-modal-phone"
-        >
-          <p>PHONE</p>
-          <p>EXT</p>
-          <p>TYPE</p>
-        </div>
-
-        <div class="common-table-modal-container-body">
-          <div
-            *ngFor="let contactPh of contactPhones.controls; let ind = index"
-          >
-            <div
-              [formGroupName]="ind"
-              class="common-table-modal-container-body-card"
-            >
-              <div
-                class="common-table-modal-container-radio-btn"
-                [ngClass]="{ active: contactPh.get('primary').value }"
-                ngbTooltip
-                [mainTooltip]="
-                  contactPh.get('primary').value
-                    ? 'Primary Number'
-                    : 'Set As Primary'
-                "
-                position="top"
-                tooltipBackground="#424242"
-                (click)="setPrimary(contactPh, 'phone')"
-              ></div>
-              <div
-                class="common-table-modal-container-content common-table-modal-container-content-contact-modal-phone"
-              >
-                <app-ta-input
-                  formControlName="phone"
-                  [inputConfig]="{
-                    name: 'Phone',
-                    type: 'text',
-                    placeholderIcon: 'phone',
-                    mask: '(000) 000-0000',
-                    maxLength: 14,
-                    hideRequiredCheck: true,
-                    hideErrorMessage: true,
-                    customClass: 'line-input-26-in-card'
-                  }"
-                ></app-ta-input>
-
-                <div
-                  class="common-table-modal-container-extension"
-                  *ngIf="!isContactPhoneExtExist[ind]"
-                  ngbTooltip
-                  mainTooltip="Add Extension"
-                  position="top"
-                  tooltipBackground="#6c6c6c"
-                  (click)="
-                    isContactPhoneExtExist[ind] = !isContactPhoneExtExist[ind]
-                  "
-                >
-                  <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
-                </div>
-                <app-ta-input
-                  *ngIf="isContactPhoneExtExist[ind]"
-                  formControlName="phoneExt"
-                  [inputConfig]="{
-                    name: 'phone-extension',
-                    type: 'text',
-                    minLength: 1,
-                    maxLength: 8,
-                    placeholderIcon: 'phone-extension',
-                    hideRequiredCheck: true,
-                    hideErrorMessage: true,
-                    customClass: 'line-input-26-in-card'
-                  }"
-                ></app-ta-input>
-
-                <app-ta-input-dropdown
-                  formControlName="contactPhoneType"
-                  [inputConfig]="{
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    textTransform: 'capitalize',
-                    isDropdown: true,
-                    dropdownWidthClass: 'w-col-101',
-                    hideErrorMessage: true,
-                    hideRequiredCheck: true,
-                    customClass: 'line-input-26-in-card'
-                  }"
-                  [activeItem]="selectedContactPhone[ind]"
-                  [options]="labelsContactPhones"
-                  (selectedItem)="
-                    onSelectDropDown($event, 'contact-phone', ind)
-                  "
-                ></app-ta-input-dropdown>
-                <div
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  position="top"
-                  tooltipBackground="#EF5350"
-                  class="common-table-modal-container-delete"
-                  (click)="removeContactFeature('contact-phone', ind)"
-                >
-                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </app-ta-custom-card>
-    <!-- Contact emails -->
-    <app-ta-custom-card
-      [hasCounter]="contactEmails.length ? contactEmails.length : 0"
-      [cardName]="'Email'"
-      [headerSvgEnabled]="true"
-      [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-      [actionText]="'ADD EMAIL'"
-      [isCardOpen]="contactEmails.length > 0"
-      [hasBodyData]="contactEmails.length > 0"
-      (onActionEvent)="addContactEmails($event)"
-      [animationMarginParams]="{
-        marginTop: '10px',
-        marginBottom: '12px'
-      }"
-    >
-      <div
-        formArrayName="contactEmails"
-        class="common-table-modal-container"
-        *ngIf="contactEmails.length"
-      >
-        <div
-          class="common-table-modal-container-label common-table-modal-container-label-contact-modal-email"
-        >
-          <p>EMAIL</p>
-          <p>TYPE</p>
-        </div>
-        <div class="common-table-modal-container-body">
-          <div
-            *ngFor="let contactEm of contactEmails.controls; let ind = index"
-          >
-            <div
-              [formGroupName]="ind"
-              class="common-table-modal-container-body-card"
-            >
-              <div
-                class="common-table-modal-container-radio-btn"
-                [ngClass]="{ active: contactEm.get('primary').value }"
-                ngbTooltip
-                [mainTooltip]="
-                  contactEm.get('primary').value
-                    ? 'Primary Email'
-                    : 'Set As Primary'
-                "
-                position="top"
-                tooltipBackground="#424242"
-                (click)="setPrimary(contactEm, 'email')"
-              ></div>
-              <div
-                class="common-table-modal-container-content common-table-modal-container-content-contact-modal-email"
-              >
-                <app-ta-input
-                  formControlName="email"
-                  [inputConfig]="{
-                    name: 'Email',
-                    type: 'text',
-                    placeholderIcon: 'email',
-                    minLength: 5,
-                    maxLength: 64,
-                    textTransform: 'lowercase',
-                    hideErrorMessage: true,
-                    hideRequiredCheck: true
-                  }"
-                ></app-ta-input>
-
-                <app-ta-input-dropdown
-                  formControlName="contactEmailType"
-                  [inputConfig]="{
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    textTransform: 'capitalize',
-                    isDropdown: true,
-                    dropdownWidthClass: 'w-col-101',
-                    hideErrorMessage: true,
-                    hideRequiredCheck: true,
-                    customClass: 'line-input-26-in-card'
-                  }"
-                  [activeItem]="selectedContactEmail[ind]"
-                  [options]="labelsContactEmails"
-                  (selectedItem)="
-                    onSelectDropDown($event, 'contact-email', ind)
-                  "
-                ></app-ta-input-dropdown>
-                <div
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  position="top"
-                  tooltipBackground="#EF5350"
-                  class="common-table-modal-container-delete"
-                  (click)="removeContactFeature('contact-email', ind)"
-                >
-                  <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </app-ta-custom-card>
-    <!-- Shared Contact -->
-    <div class="custom-checkbox-card">
-      <div class="divider"></div>
-      <div
-        class="checkbox-card-header"
-        [ngClass]="{ pointer: contactForm.get('shared').value }"
-      >
-        <app-ta-checkbox
-          formControlName="shared"
-          [label]="'Share Contact'"
-        ></app-ta-checkbox>
-        <svg-icon
-          class="checkbox-card-header-arrow"
-          src="assets/svg/common/ic_arrow_down_updated.svg"
-          [ngClass]="{
-            visible: contactForm.get('shared').value,
-            rotate: !sharedContactCheckboxCard
-          }"
-          (click)="toggleCheckboxCard()"
-        ></svg-icon>
-      </div>
-      <div
-        *ngIf="contactForm.get('shared').value && sharedContactCheckboxCard"
-        class="checkbox-card-body"
-        [ngClass]="{ 'active-20': contactForm.get('shared').value }"
-      >
-        <div *ngIf="contactForm.get('shared').value">
-          <div class="row shared-contact-dropdown">
+        <div class="row">
             <div class="col-12">
-              <app-ta-input-dropdown
-                formControlName="sharedLabelId"
-                [template]="'groups'"
-                [inputConfig]="{
-                  name: 'Input Dropdown Department',
-                  minLength: 2,
-                  maxLength: 36,
-                  type: 'text',
-                  label: 'Department',
-                  isDropdown: true,
-                  isRequired: true,
-                  textTransform: 'capitalize',
-                  dropdownWidthClass: 'w-col-456'
-                }"
-                [options]="[]"
-                (selectedItem)="onSelectDropdown($event, 'departments')"
-              ></app-ta-input-dropdown>
+                <app-ta-input
+                    formControlName="name"
+                    [inputConfig]="{
+                        name: 'Full Name',
+                        type: 'text',
+                        label: 'Full Name',
+                        isRequired: true,
+                        minLength: 2,
+                        maxLength: 32,
+                        textTransform: 'capitalize',
+                        autoFocus: editData?.type !== 'edit'
+                    }"
+                ></app-ta-input>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="ta-card-body-overflow-none">
-        <app-ta-custom-card [cardName]="'Contact Image'" [isCardOpen]="true">
-          <app-ta-logo-change
-            [croppieOptions]="croppieOptions"
-            [customClass]="'modal-container-S'"
-            [imageUrl]="this.contactForm.get('avatar').value"
-            (base64ImageEvent)="onUploadImage($event)"
-            (validationEvent)="onImageValidation($event)"
-          ></app-ta-logo-change>
+        <div class="row">
+            <div class="col-12">
+                <app-ta-input-dropdown-label
+                    formControlName="companyContactLabelId"
+                    [inputConfig]="{
+                        name: 'Input Dropdown Label',
+                        type: 'text',
+                        label: 'Label',
+                        placeholderIcon: 'ic_dynamic_label',
+                        dropdownLabel: true,
+                        dropdownWidthClass: 'w-col-456',
+                        textTransform: 'lowercase',
+                        minLength: 1,
+                        maxLength: 32,
+                        blackInput: true,
+                        commands: {
+                            active: false,
+                            type: 'confirm-cancel',
+                            firstCommand: {
+                                popup: {
+                                    name: 'Confirm',
+                                    backgroundColor: '#536BC2'
+                                },
+                                name: 'confirm',
+                                svg: 'assets/svg/ic_spec-confirm.svg'
+                            },
+                            secondCommand: {
+                                popup: {
+                                    name: 'Cancel',
+                                    backgroundColor: '#6c6c6c'
+                                },
+                                name: 'cancel',
+                                svg: 'assets/svg/ic_x.svg'
+                            }
+                        }
+                    }"
+                    [colors]="colors"
+                    [options]="contactLabels"
+                    [selectedLabel]="selectedContactLabel"
+                    [selectedLabelColor]="selectedContactColor"
+                    (pickExistLabel)="onPickExistLabel($event)"
+                    (pickColorLabel)="onSelectColorLabel($event)"
+                    (editModeLabel)="companyContactLabelMode($event)"
+                    (saveLabel)="onSaveLabel($event)"
+                >
+                </app-ta-input-dropdown-label>
+            </div>
+        </div>
+        <div class="row last-row">
+            <div class="col-10">
+                <app-input-address-dropdown
+                    formControlName="address"
+                    [inputConfig]="{
+                        name: 'Address',
+                        type: 'text',
+                        label: 'Address, City, State Zip',
+                        placeholderIcon: 'address',
+                        textTransform: 'capitalize',
+                        dropdownWidthClass: 'w-col-376',
+                        minLength: 6,
+                        maxLength: 256
+                    }"
+                    [placeholderType]="'longAddress'"
+                    [activeAddress]="selectedAddress"
+                    (selectedAddress)="onHandleAddress($event)"
+                ></app-input-address-dropdown>
+            </div>
+            <div class="col-2">
+                <app-ta-input
+                    formControlName="addressUnit"
+                    [inputConfig]="{
+                        name: 'address-unit',
+                        type: 'text',
+                        label: 'Unit #',
+                        textTransform: 'uppercase',
+                        minLength: 1,
+                        maxLength: 10
+                    }"
+                ></app-ta-input>
+            </div>
+        </div>
+        <!-- Contact phones -->
+        <app-ta-custom-card
+            [hasCounter]="contactPhones.length ? contactPhones.length : 0"
+            [cardName]="'Phone'"
+            [headerSvgEnabled]="true"
+            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+            [actionText]="'ADD PHONE'"
+            [isCardOpen]="contactPhones.length > 0"
+            [hasBodyData]="contactPhones.length > 0"
+            (onActionEvent)="addContactPhones($event)"
+            [animationMarginParams]="{
+                marginTop: '10px',
+                marginBottom: '12px'
+            }"
+        >
+            <div
+                formArrayName="contactPhones"
+                class="common-table-modal-container"
+                *ngIf="contactPhones.length"
+            >
+                <div
+                    class="common-table-modal-container-label common-table-modal-container-label-contact-modal-phone"
+                >
+                    <p>PHONE</p>
+                    <p>EXT</p>
+                    <p>TYPE</p>
+                </div>
+
+                <div class="common-table-modal-container-body">
+                    <div
+                        *ngFor="
+                            let contactPh of contactPhones.controls;
+                            let ind = index
+                        "
+                    >
+                        <div
+                            [formGroupName]="ind"
+                            class="common-table-modal-container-body-card"
+                        >
+                            <div
+                                class="common-table-modal-container-radio-btn"
+                                [ngClass]="{
+                                    active: contactPh.get('primary').value
+                                }"
+                                ngbTooltip
+                                [mainTooltip]="
+                                    contactPh.get('primary').value
+                                        ? 'Primary Number'
+                                        : 'Set As Primary'
+                                "
+                                position="top"
+                                tooltipBackground="#424242"
+                                (click)="setPrimary(contactPh, 'phone')"
+                            ></div>
+                            <div
+                                class="common-table-modal-container-content common-table-modal-container-content-contact-modal-phone"
+                            >
+                                <app-ta-input
+                                    formControlName="phone"
+                                    [inputConfig]="{
+                                        name: 'Phone',
+                                        type: 'text',
+                                        placeholderIcon: 'phone',
+                                        mask: '(000) 000-0000',
+                                        maxLength: 14,
+                                        hideRequiredCheck: true,
+                                        hideErrorMessage: true,
+                                        customClass: 'line-input-26-in-card'
+                                    }"
+                                ></app-ta-input>
+
+                                <div
+                                    class="common-table-modal-container-extension"
+                                    *ngIf="!isContactPhoneExtExist[ind]"
+                                    ngbTooltip
+                                    mainTooltip="Add Extension"
+                                    position="top"
+                                    tooltipBackground="#6c6c6c"
+                                    (click)="
+                                        isContactPhoneExtExist[ind] =
+                                            !isContactPhoneExtExist[ind]
+                                    "
+                                >
+                                    <svg-icon
+                                        src="assets/svg/common/ic_plus.svg"
+                                    ></svg-icon>
+                                </div>
+                                <app-ta-input
+                                    *ngIf="isContactPhoneExtExist[ind]"
+                                    formControlName="phoneExt"
+                                    [inputConfig]="{
+                                        name: 'phone-extension',
+                                        type: 'text',
+                                        minLength: 1,
+                                        maxLength: 8,
+                                        placeholderIcon: 'phone-extension',
+                                        hideRequiredCheck: true,
+                                        hideErrorMessage: true,
+                                        customClass: 'line-input-26-in-card'
+                                    }"
+                                ></app-ta-input>
+
+                                <app-ta-input-dropdown
+                                    formControlName="contactPhoneType"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown',
+                                        type: 'text',
+                                        textTransform: 'capitalize',
+                                        isDropdown: true,
+                                        dropdownWidthClass: 'w-col-101',
+                                        hideErrorMessage: true,
+                                        hideRequiredCheck: true,
+                                        customClass: 'line-input-26-in-card'
+                                    }"
+                                    [activeItem]="selectedContactPhone[ind]"
+                                    [options]="labelsContactPhones"
+                                    (selectedItem)="
+                                        onSelectDropDown(
+                                            $event,
+                                            'contact-phone',
+                                            ind
+                                        )
+                                    "
+                                ></app-ta-input-dropdown>
+                                <div
+                                    ngbTooltip
+                                    mainTooltip="Delete"
+                                    position="top"
+                                    tooltipBackground="#EF5350"
+                                    class="common-table-modal-container-delete"
+                                    (click)="
+                                        removeContactFeature(
+                                            'contact-phone',
+                                            ind
+                                        )
+                                    "
+                                >
+                                    <svg-icon
+                                        src="assets/svg/common/ic_trash.svg"
+                                    ></svg-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </app-ta-custom-card>
-      </div>
-      <!-- Note -->
-      <app-ta-input-note
-        formControlName="note"
-        [isVisibleNote]="
-          contactForm.get('note').value &&
-          contactForm.get('note').value != 'null'
-            ? contactForm.get('note').value
-            : false
-        "
-        [note]="
-          contactForm.get('note').value &&
-          contactForm.get('note').value != 'null'
-            ? contactForm.get('note').value
-            : ''
-        "
-      ></app-ta-input-note>
-    </div>
-  </form>
+        <!-- Contact emails -->
+        <app-ta-custom-card
+            [hasCounter]="contactEmails.length ? contactEmails.length : 0"
+            [cardName]="'Email'"
+            [headerSvgEnabled]="true"
+            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+            [actionText]="'ADD EMAIL'"
+            [isCardOpen]="contactEmails.length > 0"
+            [hasBodyData]="contactEmails.length > 0"
+            (onActionEvent)="addContactEmails($event)"
+            [animationMarginParams]="{
+                marginTop: '10px',
+                marginBottom: '12px'
+            }"
+        >
+            <div
+                formArrayName="contactEmails"
+                class="common-table-modal-container"
+                *ngIf="contactEmails.length"
+            >
+                <div
+                    class="common-table-modal-container-label common-table-modal-container-label-contact-modal-email"
+                >
+                    <p>EMAIL</p>
+                    <p>TYPE</p>
+                </div>
+                <div class="common-table-modal-container-body">
+                    <div
+                        *ngFor="
+                            let contactEm of contactEmails.controls;
+                            let ind = index
+                        "
+                    >
+                        <div
+                            [formGroupName]="ind"
+                            class="common-table-modal-container-body-card"
+                        >
+                            <div
+                                class="common-table-modal-container-radio-btn"
+                                [ngClass]="{
+                                    active: contactEm.get('primary').value
+                                }"
+                                ngbTooltip
+                                [mainTooltip]="
+                                    contactEm.get('primary').value
+                                        ? 'Primary Email'
+                                        : 'Set As Primary'
+                                "
+                                position="top"
+                                tooltipBackground="#424242"
+                                (click)="setPrimary(contactEm, 'email')"
+                            ></div>
+                            <div
+                                class="common-table-modal-container-content common-table-modal-container-content-contact-modal-email"
+                            >
+                                <app-ta-input
+                                    formControlName="email"
+                                    [inputConfig]="{
+                                        name: 'Email',
+                                        type: 'text',
+                                        placeholderIcon: 'email',
+                                        minLength: 5,
+                                        maxLength: 64,
+                                        textTransform: 'lowercase',
+                                        hideErrorMessage: true,
+                                        hideRequiredCheck: true
+                                    }"
+                                ></app-ta-input>
+
+                                <app-ta-input-dropdown
+                                    formControlName="contactEmailType"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown',
+                                        type: 'text',
+                                        textTransform: 'capitalize',
+                                        isDropdown: true,
+                                        dropdownWidthClass: 'w-col-101',
+                                        hideErrorMessage: true,
+                                        hideRequiredCheck: true,
+                                        customClass: 'line-input-26-in-card'
+                                    }"
+                                    [activeItem]="selectedContactEmail[ind]"
+                                    [options]="labelsContactEmails"
+                                    (selectedItem)="
+                                        onSelectDropDown(
+                                            $event,
+                                            'contact-email',
+                                            ind
+                                        )
+                                    "
+                                ></app-ta-input-dropdown>
+                                <div
+                                    ngbTooltip
+                                    mainTooltip="Delete"
+                                    position="top"
+                                    tooltipBackground="#EF5350"
+                                    class="common-table-modal-container-delete"
+                                    (click)="
+                                        removeContactFeature(
+                                            'contact-email',
+                                            ind
+                                        )
+                                    "
+                                >
+                                    <svg-icon
+                                        src="assets/svg/common/ic_trash.svg"
+                                    ></svg-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </app-ta-custom-card>
+        <!-- Shared Contact -->
+        <div class="custom-checkbox-card">
+            <div class="divider"></div>
+            <div
+                class="checkbox-card-header"
+                [ngClass]="{ pointer: contactForm.get('shared').value }"
+            >
+                <app-ta-checkbox
+                    formControlName="shared"
+                    [label]="'Share Contact'"
+                ></app-ta-checkbox>
+                <svg-icon
+                    class="checkbox-card-header-arrow"
+                    src="assets/svg/common/ic_arrow_down_updated.svg"
+                    [ngClass]="{
+                        visible: contactForm.get('shared').value,
+                        rotate: !sharedContactCheckboxCard
+                    }"
+                    (click)="toggleCheckboxCard()"
+                ></svg-icon>
+            </div>
+            <div
+                *ngIf="
+                    contactForm.get('shared').value && sharedContactCheckboxCard
+                "
+                class="checkbox-card-body"
+                [ngClass]="{ 'active-20': contactForm.get('shared').value }"
+            >
+                <div *ngIf="contactForm.get('shared').value">
+                    <div class="row shared-contact-dropdown">
+                        <div class="col-12">
+                            <app-ta-input-dropdown
+                                formControlName="sharedLabelId"
+                                [template]="'groups'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown Department',
+                                    minLength: 2,
+                                    maxLength: 36,
+                                    type: 'text',
+                                    label: 'Department',
+                                    isDropdown: true,
+                                    isRequired: true,
+                                    textTransform: 'capitalize',
+                                    dropdownWidthClass: 'w-col-456'
+                                }"
+                                [options]="[]"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'departments')
+                                "
+                            ></app-ta-input-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ta-card-body-overflow-none">
+                <app-ta-custom-card
+                    [cardName]="'Contact Image'"
+                    [isCardOpen]="true"
+                >
+                    <app-ta-logo-change
+                        [croppieOptions]="croppieOptions"
+                        [customClass]="'modal-container-S'"
+                        [imageUrl]="this.contactForm.get('avatar').value"
+                        (base64ImageEvent)="onUploadImage($event)"
+                        (validationEvent)="onImageValidation($event)"
+                    ></app-ta-logo-change>
+                </app-ta-custom-card>
+            </div>
+            <!-- Note -->
+            <app-ta-input-note
+                formControlName="note"
+                [isVisibleNote]="
+                    contactForm.get('note').value &&
+                    contactForm.get('note').value != 'null'
+                        ? contactForm.get('note').value
+                        : false
+                "
+                [note]="
+                    contactForm.get('note').value &&
+                    contactForm.get('note').value != 'null'
+                        ? contactForm.get('note').value
+                        : ''
+                "
+            ></app-ta-input-note>
+        </div>
+    </form>
 </app-ta-modal>

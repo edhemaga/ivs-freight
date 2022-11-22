@@ -1,519 +1,519 @@
 .dispatch_history {
-  width: 852px;
+    width: 852px;
 
-  .history_modal {
-    overflow: visible;
+    .history_modal {
+        overflow: visible;
 
-    ::ng-deep {
-      .ng-dropdown-panel.ng-select-bottom:not(.addition-dropdown):not(.status-select-wrapper) {
-        top: auto !important;
-      }
+        ::ng-deep {
+            .ng-dropdown-panel.ng-select-bottom:not(.addition-dropdown):not(.status-select-wrapper) {
+                top: auto !important;
+            }
+        }
     }
-  }
 }
 
 .history_head_selects {
-  justify-content: space-between;
-  padding: 0 12px;
-  margin: 22px 0;
+    justify-content: space-between;
+    padding: 0 12px;
+    margin: 22px 0;
 
-  .chart_select_holder {
-    position: relative;
+    .chart_select_holder {
+        position: relative;
 
-    &.board_list {
-      width: 180px;
-    }
-
-    &.truck_list {
-      width: 120px;
-    }
-
-    &.trailer_list {
-      width: 120px;
-    }
-
-    &.driver_list {
-      width: 180px;
-    }
-
-    &.time_list {
-      width: 180px;
-    }
-
-    ::ng-deep {
-      ng-select {
-        &.ng-valid:not(.select_time_item) {
-          .ng-select-container {
-            background-color: #5673aab3 !important;
-          }
-
-          .ng-value-label {
-            color: #fff !important;
-          }
-
-          .ng-arrow-wrapper {
-            &::after {
-              color: #fff !important;
-            }
-          }
+        &.board_list {
+            width: 180px;
         }
 
-        &.ng-select-opened {
-          .ng-select-container {
-            background-color: #6c6c6c !important;
-          }
-
-          .ng-value-label {
-            color: #fff !important;
-          }
-
-          .ng-arrow-wrapper {
-            &::after {
-              color: #fff !important;
-            }
-          }
+        &.truck_list {
+            width: 120px;
         }
 
-        .ng-select-container {
-          height: 32px;
-          display: flex;
-          align-items: center;
-          background-color: #eeeeee;
-          border-radius: 3px;
-
-          overflow: visible;
-
-          .ng-clear-wrapper {
-            display: none !important;
-          }
-
-          .ng-arrow-wrapper {
-            bottom: 9px;
-          }
-
-          &::after {
-            display: none;
-          }
-
-          .ng-value-container .ng-placeholder {
-            bottom: 3px !important;
-          }
-
-          .ng-input > input {
-            height: 32px;
-          }
-
-          .ng-value {
-            span {
-              color: #fff;
-            }
-          }
+        &.trailer_list {
+            width: 120px;
         }
 
-        &.ng-select .ng-has-value .ng-placeholder,
-        &.ng-select.ng-select-opened .ng-placeholder,
-        &.ng-select.ng-select-focused .ng-placeholder {
-          bottom: 30px !important;
+        &.driver_list {
+            width: 180px;
         }
 
-        &.select_time_item {
-          .selected_time_sel {
-            color: #6c6c6c !important;
-          }
-
-          .ng-value-label {
-            color: #6c6c6c !important;
-          }
-
-          .ng-arrow-wrapper {
-            &::after {
-              color: #6c6c6c !important;
-            }
-          }
-
-          &.ng-select-opened {
-            .selected_time_sel {
-              color: #fff !important;
-            }
-
-            .ng-value-label {
-              color: #fff !important;
-            }
-
-            .ng-arrow-wrapper {
-              &::after {
-                color: #fff !important;
-              }
-            }
-          }
-
-          ::ng-deep {
-            ng-dropdown-panel {
-              display: none !important;
-            }
-          }
+        &.time_list {
+            width: 180px;
         }
-      }
+
+        ::ng-deep {
+            ng-select {
+                &.ng-valid:not(.select_time_item) {
+                    .ng-select-container {
+                        background-color: #5673aab3 !important;
+                    }
+
+                    .ng-value-label {
+                        color: #fff !important;
+                    }
+
+                    .ng-arrow-wrapper {
+                        &::after {
+                            color: #fff !important;
+                        }
+                    }
+                }
+
+                &.ng-select-opened {
+                    .ng-select-container {
+                        background-color: #6c6c6c !important;
+                    }
+
+                    .ng-value-label {
+                        color: #fff !important;
+                    }
+
+                    .ng-arrow-wrapper {
+                        &::after {
+                            color: #fff !important;
+                        }
+                    }
+                }
+
+                .ng-select-container {
+                    height: 32px;
+                    display: flex;
+                    align-items: center;
+                    background-color: #eeeeee;
+                    border-radius: 3px;
+
+                    overflow: visible;
+
+                    .ng-clear-wrapper {
+                        display: none !important;
+                    }
+
+                    .ng-arrow-wrapper {
+                        bottom: 9px;
+                    }
+
+                    &::after {
+                        display: none;
+                    }
+
+                    .ng-value-container .ng-placeholder {
+                        bottom: 3px !important;
+                    }
+
+                    .ng-input > input {
+                        height: 32px;
+                    }
+
+                    .ng-value {
+                        span {
+                            color: #fff;
+                        }
+                    }
+                }
+
+                &.ng-select .ng-has-value .ng-placeholder,
+                &.ng-select.ng-select-opened .ng-placeholder,
+                &.ng-select.ng-select-focused .ng-placeholder {
+                    bottom: 30px !important;
+                }
+
+                &.select_time_item {
+                    .selected_time_sel {
+                        color: #6c6c6c !important;
+                    }
+
+                    .ng-value-label {
+                        color: #6c6c6c !important;
+                    }
+
+                    .ng-arrow-wrapper {
+                        &::after {
+                            color: #6c6c6c !important;
+                        }
+                    }
+
+                    &.ng-select-opened {
+                        .selected_time_sel {
+                            color: #fff !important;
+                        }
+
+                        .ng-value-label {
+                            color: #fff !important;
+                        }
+
+                        .ng-arrow-wrapper {
+                            &::after {
+                                color: #fff !important;
+                            }
+                        }
+                    }
+
+                    ::ng-deep {
+                        ng-dropdown-panel {
+                            display: none !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.time_list {
+            ::ng-deep {
+                .dropdown-toggle.toolbar-btn.filter-btn {
+                    //display: none !important;
+                }
+            }
+        }
+
+        .remove_select_item {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: 5px;
+            right: 5px;
+        }
     }
-
-    &.time_list {
-      ::ng-deep {
-        .dropdown-toggle.toolbar-btn.filter-btn {
-          //display: none !important;
-        }
-      }
-    }
-
-    .remove_select_item {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      top: 5px;
-      right: 5px;
-    }
-  }
 }
 
 .dispatch_history_table {
-  .disp_hist_head {
-    display: flex;
-    padding: 0 12px;
-    height: 30px;
-    align-items: center;
-
-    background-color: #f7f7f7;
-
-    .disp_head_item {
-      font-size: 12px;
-      margin: 0 2px;
-      font-weight: 700;
-      color: #6c6c6cb3;
-
-      &.trailer_item {
-        width: 80px;
-      }
-
-      &.driver_item {
-        width: 178px;
-
-        &.trailer_selected {
-          width: 190px;
-        }
-      }
-
-      &.pickup_date {
-        width: 112px;
-        color: #5dcbb5;
-
-        &.trailer_selected {
-          width: 127px;
-        }
-      }
-
-      &.delivery_date {
-        width: 112px;
-        color: #f78585;
-
-        &.trailer_selected {
-          width: 127px;
-        }
-      }
-
-      &.duration_item {
-        width: 110px;
-      }
-    }
-  }
-
-  .disp_table_body {
-    padding: 10px;
-
-    .list_items {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      margin: 1px;
-      padding: 3px 5px;
-      height: 26px;
-      background-color: #f7f7f7;
-      border-radius: 3px;
-
-      font-size: 14px;
-      color: #919191;
-      font-weight: 500;
-      line-height: 20px;
-
-      .edit_button {
-        display: none;
+    .disp_hist_head {
+        display: flex;
+        padding: 0 12px;
+        height: 30px;
         align-items: center;
-        justify-content: center;
-        position: absolute;
-        right: 2px;
-        top: 2px;
-        width: 22px;
-        height: 22px;
-        background-color: transparent;
 
-        border: none;
+        background-color: #f7f7f7;
 
-        &:hover {
-          background-color: #919191e6;
-          border-radius: 2px;
-        }
+        .disp_head_item {
+            font-size: 12px;
+            margin: 0 2px;
+            font-weight: 700;
+            color: #6c6c6cb3;
 
-        svg-icon {
-          width: 14px;
-          height: 14px;
-          display: flex;
-
-          svg {
-            path {
-              fill: #fff;
-            }
-          }
-        }
-      }
-
-      &.trailer_list {
-        width: 80px;
-      }
-
-      &.drivers_list {
-        width: 178px;
-
-        &.trailer_selected {
-          width: 190px;
-        }
-
-        &.status_list {
-          font-size: 14px;
-          font-weight: 900;
-          color: #ff5d5d;
-        }
-      }
-
-      &.pickup_date {
-        width: 112px;
-
-        &.trailer_selected {
-          width: 127px;
-        }
-
-        &:hover {
-          background-color: #b7b7b7;
-          color: #fff;
-
-          .edit_button {
-            display: flex;
-          }
-        }
-      }
-
-      &.delivery_date {
-        width: 112px;
-
-        &.trailer_selected {
-          width: 127px;
-        }
-
-        &:hover {
-          background-color: #b7b7b7;
-          color: #fff;
-
-          .edit_button {
-            display: flex;
-          }
-        }
-      }
-
-      &.duration_item {
-        width: 110px;
-
-        &.trailer_selected {
-          width: 120px;
-        }
-      }
-
-      .history_picker_hold {
-        .time_date_picker {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          padding: 0 3px;
-
-          &::ng-deep {
-            .k-dateinput-wrap,
-            .k-picker-wrap {
-              border: none !important;
+            &.trailer_item {
+                width: 80px;
             }
 
-            .k-select {
-              display: none !important;
-            }
+            &.driver_item {
+                width: 178px;
 
-            input {
-              padding: 0;
-              height: 26px;
-
-              font-size: 14px;
-              color: #919191;
-            }
-          }
-        }
-
-        .picker_handlers {
-          position: absolute;
-          top: 4px;
-          right: 4px;
-          width: 18px;
-          height: 18px;
-          align-items: center;
-          justify-content: center;
-          background-color: transparent;
-          padding: 0;
-
-          border: none;
-          border-radius: 2px;
-
-          svg-icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            svg {
-              width: 10px;
-              height: 10px;
-
-              path,
-              rect {
-                fill: #b7b7b7;
-              }
-            }
-          }
-
-          &.accept_item {
-            right: 22px;
-          }
-
-          &:hover {
-            background-color: #919191;
-
-            svg-icon {
-              svg {
-                path,
-                rect {
-                  fill: #fff;
+                &.trailer_selected {
+                    width: 190px;
                 }
-              }
             }
-          }
-        }
-      }
 
-      &.active {
-        background-color: #6c6c6c !important;
+            &.pickup_date {
+                width: 112px;
+                color: #5dcbb5;
 
-        .picker_handlers {
-          svg-icon {
-            svg {
-              path,
-              rect {
-                fill: #b7b7b7;
-              }
+                &.trailer_selected {
+                    width: 127px;
+                }
             }
-          }
-        }
 
-        .time_date_picker {
-          &::ng-deep {
-            input {
-              color: #fff !important;
+            &.delivery_date {
+                width: 112px;
+                color: #f78585;
 
-              &::placeholder {
-                /* Chrome, Firefox, Opera, Safari 10.1+ */
-                color: #fff !important;
-              }
-
-              &:-ms-input-placeholder {
-                /* Internet Explorer 10-11 */
-                color: #fff !important;
-              }
-
-              &::-ms-input-placeholder {
-                /* Microsoft Edge */
-                color: #fff !important;
-              }
+                &.trailer_selected {
+                    width: 127px;
+                }
             }
-          }
+
+            &.duration_item {
+                width: 110px;
+            }
         }
-      }
     }
-  }
+
+    .disp_table_body {
+        padding: 10px;
+
+        .list_items {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            margin: 1px;
+            padding: 3px 5px;
+            height: 26px;
+            background-color: #f7f7f7;
+            border-radius: 3px;
+
+            font-size: 14px;
+            color: #919191;
+            font-weight: 500;
+            line-height: 20px;
+
+            .edit_button {
+                display: none;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                right: 2px;
+                top: 2px;
+                width: 22px;
+                height: 22px;
+                background-color: transparent;
+
+                border: none;
+
+                &:hover {
+                    background-color: #919191e6;
+                    border-radius: 2px;
+                }
+
+                svg-icon {
+                    width: 14px;
+                    height: 14px;
+                    display: flex;
+
+                    svg {
+                        path {
+                            fill: #fff;
+                        }
+                    }
+                }
+            }
+
+            &.trailer_list {
+                width: 80px;
+            }
+
+            &.drivers_list {
+                width: 178px;
+
+                &.trailer_selected {
+                    width: 190px;
+                }
+
+                &.status_list {
+                    font-size: 14px;
+                    font-weight: 900;
+                    color: #ff5d5d;
+                }
+            }
+
+            &.pickup_date {
+                width: 112px;
+
+                &.trailer_selected {
+                    width: 127px;
+                }
+
+                &:hover {
+                    background-color: #b7b7b7;
+                    color: #fff;
+
+                    .edit_button {
+                        display: flex;
+                    }
+                }
+            }
+
+            &.delivery_date {
+                width: 112px;
+
+                &.trailer_selected {
+                    width: 127px;
+                }
+
+                &:hover {
+                    background-color: #b7b7b7;
+                    color: #fff;
+
+                    .edit_button {
+                        display: flex;
+                    }
+                }
+            }
+
+            &.duration_item {
+                width: 110px;
+
+                &.trailer_selected {
+                    width: 120px;
+                }
+            }
+
+            .history_picker_hold {
+                .time_date_picker {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    padding: 0 3px;
+
+                    &::ng-deep {
+                        .k-dateinput-wrap,
+                        .k-picker-wrap {
+                            border: none !important;
+                        }
+
+                        .k-select {
+                            display: none !important;
+                        }
+
+                        input {
+                            padding: 0;
+                            height: 26px;
+
+                            font-size: 14px;
+                            color: #919191;
+                        }
+                    }
+                }
+
+                .picker_handlers {
+                    position: absolute;
+                    top: 4px;
+                    right: 4px;
+                    width: 18px;
+                    height: 18px;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: transparent;
+                    padding: 0;
+
+                    border: none;
+                    border-radius: 2px;
+
+                    svg-icon {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        svg {
+                            width: 10px;
+                            height: 10px;
+
+                            path,
+                            rect {
+                                fill: #b7b7b7;
+                            }
+                        }
+                    }
+
+                    &.accept_item {
+                        right: 22px;
+                    }
+
+                    &:hover {
+                        background-color: #919191;
+
+                        svg-icon {
+                            svg {
+                                path,
+                                rect {
+                                    fill: #fff;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.active {
+                background-color: #6c6c6c !important;
+
+                .picker_handlers {
+                    svg-icon {
+                        svg {
+                            path,
+                            rect {
+                                fill: #b7b7b7;
+                            }
+                        }
+                    }
+                }
+
+                .time_date_picker {
+                    &::ng-deep {
+                        input {
+                            color: #fff !important;
+
+                            &::placeholder {
+                                /* Chrome, Firefox, Opera, Safari 10.1+ */
+                                color: #fff !important;
+                            }
+
+                            &:-ms-input-placeholder {
+                                /* Internet Explorer 10-11 */
+                                color: #fff !important;
+                            }
+
+                            &::-ms-input-placeholder {
+                                /* Microsoft Edge */
+                                color: #fff !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 .not_found {
-  flex-direction: column;
-  align-items: center;
+    flex-direction: column;
+    align-items: center;
 
-  .not_found_text {
-    margin: 22px 0;
+    .not_found_text {
+        margin: 22px 0;
 
-    .nf_big_text {
-      font-size: 32px;
-      font-weight: bold;
-      color: #5673aa;
+        .nf_big_text {
+            font-size: 32px;
+            font-weight: bold;
+            color: #5673aa;
+        }
+
+        .nf_small_text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #919191;
+        }
     }
-
-    .nf_small_text {
-      font-size: 14px;
-      font-weight: 600;
-      color: #919191;
-    }
-  }
 }
 
 ::ng-deep.dashboard-history-popover {
-  width: 180px;
-  box-shadow: none !important;
-  background-color: transparent;
-  margin-top: 4px;
+    width: 180px;
+    box-shadow: none !important;
+    background-color: transparent;
+    margin-top: 4px;
 
-  &::after {
-    display: none !important;
-  }
-
-  .popover-body {
-    padding: 0;
-
-    .history_select_groups {
-      .history_group {
-        border-radius: 3px;
-        background-color: #fff;
-        box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%) !important;
-        margin-bottom: 2px;
-
-        overflow: hidden;
-
-        .history_group_item {
-          height: 32px;
-          padding: 6px;
-          display: flex;
-          align-items: center;
-
-          font-size: 16px;
-          color: #919191;
-
-          &:hover {
-            background-color: #f9f9f9;
-            cursor: pointer;
-          }
-        }
-      }
+    &::after {
+        display: none !important;
     }
-  }
 
-  .k-calendar {
-    width: 471px;
-  }
+    .popover-body {
+        padding: 0;
+
+        .history_select_groups {
+            .history_group {
+                border-radius: 3px;
+                background-color: #fff;
+                box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%) !important;
+                margin-bottom: 2px;
+
+                overflow: hidden;
+
+                .history_group_item {
+                    height: 32px;
+                    padding: 6px;
+                    display: flex;
+                    align-items: center;
+
+                    font-size: 16px;
+                    color: #919191;
+
+                    &:hover {
+                        background-color: #f9f9f9;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+
+    .k-calendar {
+        width: 471px;
+    }
 }

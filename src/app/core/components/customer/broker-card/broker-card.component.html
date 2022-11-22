@@ -1,65 +1,72 @@
 <div class="row card-main-holder">
-  <div class="col-3">
-    <div class="details"></div>
-  </div>
-  <div class="col-9">
-    <div *ngFor="let item of brokerCard; let indx = index" class="card-frame">
-      <div class="card-holder-frame" [class.active]="item.checked">
-        <div *ngIf="item.inactive" class="inactive-overflow"></div>
-        <div class="card-holder">
-          <div class="check-holder">
-            <label class="container1">
-              <input
-                (change)="changeChatBox($event, indx)"
-                [checked]="item.checked"
-                type="checkbox"
-              />
-              <span class="checkmark"></span>
-            </label>
-            <div
-              class="ban-item"
-              *ngIf="item.ban || item.iban"
-              [class.ban]="item.ban"
-            >
-              <svg-icon
-                src="assets/svg/truckassist-table/customer/banner-icon.svg"
-              ></svg-icon>
-            </div>
-            <div class="check-title broker-title-size">{{ item.title }}</div>
-          </div>
-          <div class="dropdown">
-            <svg-icon
-              src="assets/svg/truckassist-table/dropdown/dropdown-select.svg"
-            ></svg-icon>
-          </div>
-        </div>
-        <div class="card-holder padding-between">
-          <div class="check-holder">
-            <div class="broker-image">
-              <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-            </div>
-            <div class="name">{{ item.phone }}</div>
-          </div>
-        </div>
-        <div class="card-holder">
-          <div class="check-holder">
-            <div
-              class="count-box broker-box-bcg"
-              [class.no_value]="item.price == 0"
-            >
-              {{ item.boxFirst }}
-            </div>
-            <div
-              class="count-box broker-box-between"
-              [class.no_value]="item.price == 0"
-            >
-              {{ item.boxSecond }}
-            </div>
-            <div class="name">{{ item.invoice }}</div>
-          </div>
-          <div class="broker-price">{{ item.price | currency }}</div>
-        </div>
-      </div>
+    <div class="col-3">
+        <div class="details"></div>
     </div>
-  </div>
+    <div class="col-9">
+        <div
+            *ngFor="let item of brokerCard; let indx = index"
+            class="card-frame"
+        >
+            <div class="card-holder-frame" [class.active]="item.checked">
+                <div *ngIf="item.inactive" class="inactive-overflow"></div>
+                <div class="card-holder">
+                    <div class="check-holder">
+                        <label class="container1">
+                            <input
+                                (change)="changeChatBox($event, indx)"
+                                [checked]="item.checked"
+                                type="checkbox"
+                            />
+                            <span class="checkmark"></span>
+                        </label>
+                        <div
+                            class="ban-item"
+                            *ngIf="item.ban || item.iban"
+                            [class.ban]="item.ban"
+                        >
+                            <svg-icon
+                                src="assets/svg/truckassist-table/customer/banner-icon.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="check-title broker-title-size">
+                            {{ item.title }}
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <svg-icon
+                            src="assets/svg/truckassist-table/dropdown/dropdown-select.svg"
+                        ></svg-icon>
+                    </div>
+                </div>
+                <div class="card-holder padding-between">
+                    <div class="check-holder">
+                        <div class="broker-image">
+                            <svg-icon
+                                src="assets/svg/common/ic_phone.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="name">{{ item.phone }}</div>
+                    </div>
+                </div>
+                <div class="card-holder">
+                    <div class="check-holder">
+                        <div
+                            class="count-box broker-box-bcg"
+                            [class.no_value]="item.price == 0"
+                        >
+                            {{ item.boxFirst }}
+                        </div>
+                        <div
+                            class="count-box broker-box-between"
+                            [class.no_value]="item.price == 0"
+                        >
+                            {{ item.boxSecond }}
+                        </div>
+                        <div class="name">{{ item.invoice }}</div>
+                    </div>
+                    <div class="broker-price">{{ item.price | currency }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,99 +1,105 @@
 <div class="table_item_holder">
-  <div class="table_detail_add">
-    <span class="detail_text">{{ tableName }}</span>
-    <div>
-      <button
-        *ngIf="options.editItem"
-        class="btn-transparent dispatch-bottom-add-accounting edit_reccurring"
-      >
-        <svg-icon
-          [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
-          appTaTooltip="Edit {{ options.editItem }}"
-          class="icon-hover-blue-28 m-0"
-          position="bottom-right"
-          src="assets/img/svgs/edit-pencil.svg"
-        >
-        </svg-icon>
-      </button>
-      <button
-        (click)="openAddNew()"
-        class="btn-transparent dispatch-bottom-add-accounting"
-      >
-        <svg-icon
-          [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
-          appTaTooltip="Add Deducation"
-          class="icon-hover-blue-28 m-0"
-          position="bottom-right"
-          src="assets/img/svgs/just_plus.svg"
-        >
-        </svg-icon>
-      </button>
-    </div>
-  </div>
-  <table class="account_details_table">
-    <thead>
-      <tr class="transparent_rows small_tables">
-        <th *ngFor="let column of columns">{{ column.title }}</th>
-      </tr>
-    </thead>
-    <tbody (cdkDropListDropped)="onDrop($event)" cdkDropList>
-      <ng-template [ngForOf]="dataItem" let-i="index" let-items ngFor>
-        <tr
-          (cdkDropListEntered)="enterDropList($event)"
-          *ngIf="items.draggable"
-          [cdkDragPreviewClass]="'line-drag-row'"
-          cdkDrag
-          cdkDragBoundary=".account_details_table"
-          cdkDragHandle
-          cdkDragLockAxis="y"
-          class="dragg_row"
-        >
-          <td colspan="3">
-            {{ items.name }} - {{ items.start_period }} - {{ items.end_period }}
-          </td>
-        </tr>
-        <tr
-          (cdkDropListEntered)="enterDropList($event)"
-          *ngIf="!items.draggable"
-          [cdkDragDisabled]="true"
-          [class.low_opacity]="tableCurrentIndex < i"
-          cdkDrag
-          cdkDragHandle
-          cdkDragLockAxis="y"
-          class="table_row"
-        >
-          <td width="60%">
-            <div class="description_hold">
-              {{ items.description }}
-              <span *ngIf="items.type == 2" class="duration_type">
-                <span [class.infinity]="!items.limited" class="duration_info">
-                  <span *ngIf="items.limited">0/{{ items.limitNumber }}</span>
-                </span>
-              </span>
-              <div class="item_table_buttons">
+    <div class="table_detail_add">
+        <span class="detail_text">{{ tableName }}</span>
+        <div>
+            <button
+                *ngIf="options.editItem"
+                class="btn-transparent dispatch-bottom-add-accounting edit_reccurring"
+            >
                 <svg-icon
-                  (click)="openEdit(items)"
-                  appTaTooltip="Edit"
-                  class="cursor-pointer edit_checkmark"
-                  position="bottom-right"
-                  src="/assets/img/svgs/edit-comment.svg"
+                    [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+                    appTaTooltip="Edit {{ options.editItem }}"
+                    class="icon-hover-blue-28 m-0"
+                    position="bottom-right"
+                    src="assets/img/svgs/edit-pencil.svg"
                 >
                 </svg-icon>
+            </button>
+            <button
+                (click)="openAddNew()"
+                class="btn-transparent dispatch-bottom-add-accounting"
+            >
                 <svg-icon
-                  (click)="deleteItem(i)"
-                  appTaTooltip="Delete"
-                  class="ml-2 cursor-pointer delete_checkmark"
-                  position="bottom-right"
-                  src="/assets/img/svgs/delete-comment.svg"
-                  tooltipBackground="#FF5D5D"
-                ></svg-icon>
-              </div>
-            </div>
-          </td>
-          <td>{{ items.itemDate | date: "MM/dd/yy" }}</td>
-          <td class="text-right">${{ items.amount }}</td>
-        </tr>
-      </ng-template>
-    </tbody>
-  </table>
+                    [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+                    appTaTooltip="Add Deducation"
+                    class="icon-hover-blue-28 m-0"
+                    position="bottom-right"
+                    src="assets/img/svgs/just_plus.svg"
+                >
+                </svg-icon>
+            </button>
+        </div>
+    </div>
+    <table class="account_details_table">
+        <thead>
+            <tr class="transparent_rows small_tables">
+                <th *ngFor="let column of columns">{{ column.title }}</th>
+            </tr>
+        </thead>
+        <tbody (cdkDropListDropped)="onDrop($event)" cdkDropList>
+            <ng-template [ngForOf]="dataItem" let-i="index" let-items ngFor>
+                <tr
+                    (cdkDropListEntered)="enterDropList($event)"
+                    *ngIf="items.draggable"
+                    [cdkDragPreviewClass]="'line-drag-row'"
+                    cdkDrag
+                    cdkDragBoundary=".account_details_table"
+                    cdkDragHandle
+                    cdkDragLockAxis="y"
+                    class="dragg_row"
+                >
+                    <td colspan="3">
+                        {{ items.name }} - {{ items.start_period }} -
+                        {{ items.end_period }}
+                    </td>
+                </tr>
+                <tr
+                    (cdkDropListEntered)="enterDropList($event)"
+                    *ngIf="!items.draggable"
+                    [cdkDragDisabled]="true"
+                    [class.low_opacity]="tableCurrentIndex < i"
+                    cdkDrag
+                    cdkDragHandle
+                    cdkDragLockAxis="y"
+                    class="table_row"
+                >
+                    <td width="60%">
+                        <div class="description_hold">
+                            {{ items.description }}
+                            <span *ngIf="items.type == 2" class="duration_type">
+                                <span
+                                    [class.infinity]="!items.limited"
+                                    class="duration_info"
+                                >
+                                    <span *ngIf="items.limited"
+                                        >0/{{ items.limitNumber }}</span
+                                    >
+                                </span>
+                            </span>
+                            <div class="item_table_buttons">
+                                <svg-icon
+                                    (click)="openEdit(items)"
+                                    appTaTooltip="Edit"
+                                    class="cursor-pointer edit_checkmark"
+                                    position="bottom-right"
+                                    src="/assets/img/svgs/edit-comment.svg"
+                                >
+                                </svg-icon>
+                                <svg-icon
+                                    (click)="deleteItem(i)"
+                                    appTaTooltip="Delete"
+                                    class="ml-2 cursor-pointer delete_checkmark"
+                                    position="bottom-right"
+                                    src="/assets/img/svgs/delete-comment.svg"
+                                    tooltipBackground="#FF5D5D"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ items.itemDate | date: 'MM/dd/yy' }}</td>
+                    <td class="text-right">${{ items.amount }}</td>
+                </tr>
+            </ng-template>
+        </tbody>
+    </table>
 </div>

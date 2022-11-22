@@ -1,191 +1,191 @@
-@import "src/theme/variables.scss";
+@import 'src/theme/variables.scss';
 
 .step-form {
-  .line-container {
-    position: relative;
+    .line-container {
+        position: relative;
 
-    .review-feedback-container {
-      position: absolute;
-      top: 0;
-      right: -435px;
-      width: 429px;
+        .review-feedback-container {
+            position: absolute;
+            top: 0;
+            right: -435px;
+            width: 429px;
+        }
     }
-  }
 
-  .group {
-    margin-right: 12px;
+    .group {
+        margin-right: 12px;
 
-    &:last-child {
-      margin-right: 0;
-      margin-bottom: 0;
+        &:last-child {
+            margin-right: 0;
+            margin-bottom: 0;
+        }
     }
-  }
 
-  .name-group {
-    width: 207px;
-    margin-bottom: 22px;
-  }
+    .name-group {
+        width: 207px;
+        margin-bottom: 22px;
+    }
 
-  .phone-group {
-    width: 219px;
-    margin-bottom: 22px;
-  }
+    .phone-group {
+        width: 219px;
+        margin-bottom: 22px;
+    }
 
-  .relationship-group {
-    width: 166px;
-    margin-bottom: 22px;
-    margin-right: 0;
-  }
-
-  .btn-container {
-    .add-btn {
-      height: 26px;
-      padding: 4px 8px;
-      line-height: 18px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-      border-radius: 2px;
-      color: $ta-blue;
-      background: $ta-gray-01;
-      transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-      &:hover {
-        color: $white;
-        background: $ta-blue;
-      }
-
-      &:hover .plus-icon {
-        svg {
-          path {
-            fill: $white;
-          }
-        }
-      }
-
-      &.disabled {
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-
-        cursor: auto;
-        background: $ta-light-grey-4;
-        color: $bw4;
-
-        .plus-icon {
-          svg {
-            path {
-              fill: $ta-light-grey-6;
-            }
-          }
-        }
-
-        &:hover {
-          background: $ta-light-grey-4 !important;
-          color: $bw4 !important;
-        }
-      }
-
-      .plus-icon {
-        margin-right: 6px;
-
-        svg {
-          path {
-            transition: fill 0.2s ease-in-out;
-            fill: $ta-light-blue;
-          }
-        }
-      }
+    .relationship-group {
+        width: 166px;
+        margin-bottom: 22px;
+        margin-right: 0;
     }
 
     .btn-container {
-      margin-bottom: 32px;
+        .add-btn {
+            height: 26px;
+            padding: 4px 8px;
+            line-height: 18px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            border-radius: 2px;
+            color: $ta-blue;
+            background: $ta-gray-01;
+            transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
-      .add-btn {
-        height: 26px;
-        padding: 4px 8px;
-        border: none;
-        outline: none;
-        font-size: 14px;
-        border-radius: 2px;
-        color: $ta-blue;
-        background: $ta-gray-01;
-        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-        &:hover {
-          color: $white;
-          background: $ta-blue;
-        }
-
-        &:hover .plus-icon {
-          svg {
-            path {
-              fill: $white;
+            &:hover {
+                color: $white;
+                background: $ta-blue;
             }
-          }
-        }
 
-        &.disabled {
-          -webkit-user-select: none !important;
-          -moz-user-select: none !important;
-          -ms-user-select: none !important;
-          user-select: none !important;
-
-          cursor: auto;
-          background: $ta-light-grey-4;
-          color: $bw4;
-
-          .plus-icon {
-            svg {
-              path {
-                fill: $ta-light-grey-6;
-              }
+            &:hover .plus-icon {
+                svg {
+                    path {
+                        fill: $white;
+                    }
+                }
             }
-          }
 
-          &:hover {
-            background: $ta-light-grey-4 !important;
-            color: $bw4 !important;
-          }
-        }
+            &.disabled {
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
 
-        .plus-icon {
-          margin-right: 6px;
+                cursor: auto;
+                background: $ta-light-grey-4;
+                color: $bw4;
 
-          svg {
-            path {
-              transition: fill 0.2s ease-in-out;
-              fill: $ta-light-blue;
+                .plus-icon {
+                    svg {
+                        path {
+                            fill: $ta-light-grey-6;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background: $ta-light-grey-4 !important;
+                    color: $bw4 !important;
+                }
             }
-          }
+
+            .plus-icon {
+                margin-right: 6px;
+
+                svg {
+                    path {
+                        transition: fill 0.2s ease-in-out;
+                        fill: $ta-light-blue;
+                    }
+                }
+            }
         }
-      }
 
-      .cancel-btn {
-        width: 150px;
-        height: 32px;
-        margin-right: 22px;
-        color: $bw5;
-        background: $ta-light-grey-4;
-        transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
+        .btn-container {
+            margin-bottom: 32px;
 
-        &:hover {
-          background: $bw6-2;
-          color: $white;
+            .add-btn {
+                height: 26px;
+                padding: 4px 8px;
+                border: none;
+                outline: none;
+                font-size: 14px;
+                border-radius: 2px;
+                color: $ta-blue;
+                background: $ta-gray-01;
+                transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+                &:hover {
+                    color: $white;
+                    background: $ta-blue;
+                }
+
+                &:hover .plus-icon {
+                    svg {
+                        path {
+                            fill: $white;
+                        }
+                    }
+                }
+
+                &.disabled {
+                    -webkit-user-select: none !important;
+                    -moz-user-select: none !important;
+                    -ms-user-select: none !important;
+                    user-select: none !important;
+
+                    cursor: auto;
+                    background: $ta-light-grey-4;
+                    color: $bw4;
+
+                    .plus-icon {
+                        svg {
+                            path {
+                                fill: $ta-light-grey-6;
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        background: $ta-light-grey-4 !important;
+                        color: $bw4 !important;
+                    }
+                }
+
+                .plus-icon {
+                    margin-right: 6px;
+
+                    svg {
+                        path {
+                            transition: fill 0.2s ease-in-out;
+                            fill: $ta-light-blue;
+                        }
+                    }
+                }
+            }
+
+            .cancel-btn {
+                width: 150px;
+                height: 32px;
+                margin-right: 22px;
+                color: $bw5;
+                background: $ta-light-grey-4;
+                transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
+
+                &:hover {
+                    background: $bw6-2;
+                    color: $white;
+                }
+            }
+
+            .save-btn {
+                width: 150px;
+                height: 32px;
+                color: $white;
+                background: $ta-light-blue;
+
+                &:hover {
+                    background-color: $ta-blue;
+                }
+            }
         }
-      }
-
-      .save-btn {
-        width: 150px;
-        height: 32px;
-        color: $white;
-        background: $ta-light-blue;
-
-        &:hover {
-          background-color: $ta-blue;
-        }
-      }
     }
-  }
 }

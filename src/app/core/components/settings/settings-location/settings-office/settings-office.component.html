@@ -1,108 +1,110 @@
 <div class="settings-office">
-  <div class="settings-header">
-    <div class="settings-name d-flex align-items-center">
-      <app-ta-counter
-        [count]="officeData?.count"
-        [countColor]="'#919191'"
-        [countBackground]="'#F3F3F3'"
-        [countHeight]="'24px'"
-        [countWidth]="'24px'"
-      ></app-ta-counter>
-      <p>Office</p>
-    </div>
+    <div class="settings-header">
+        <div class="settings-name d-flex align-items-center">
+            <app-ta-counter
+                [count]="officeData?.count"
+                [countColor]="'#919191'"
+                [countBackground]="'#F3F3F3'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+            ></app-ta-counter>
+            <p>Office</p>
+        </div>
 
-    <div class="settings-header-button">
-      <div class="border-left"></div>
-      <svg-icon
-        src="assets/svg/common/ic_plus.svg"
-        class="settings-plus-button"
-        (click)="onAction({ modalName: 'office' })"
-      ></svg-icon>
+        <div class="settings-header-button">
+            <div class="border-left"></div>
+            <svg-icon
+                src="assets/svg/common/ic_plus.svg"
+                class="settings-plus-button"
+                (click)="onAction({ modalName: 'office' })"
+            ></svg-icon>
+        </div>
     </div>
-  </div>
-  <div class="settings-body">
-    <app-ta-re-card
-      *ngFor="
-        let item of officeData?.data;
-        let i = index;
-        trackBy: identityOfficeData
-      "
-      [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
-      [cardNameCommon]="item.name"
-      [hasFooter]="false"
-      [haveHeaderText]="true"
-      [optionsId]="item.id"
-      [options]="officeActions"
-      (dropActions)="officeDropActions($event, 'office')"
-      [paddingDots]="'11px 0px 0px 12px'"
-    >
-      <div class="settings-body-items">
-        <div *ngIf="item.phone" class="single-item">
-          <svg-icon
-            class="company-icons"
-            src="assets/svg/common/ic_phone.svg"
-          ></svg-icon>
-          <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
-        </div>
-        <div *ngIf="item.email" class="single-item">
-          <svg-icon
-            class="company-icons"
-            src="assets/svg/common/ic_email.svg"
-          ></svg-icon>
-          <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
-        </div>
-        <div *ngIf="item.address.address" class="single-item">
-          <svg-icon
-            class="company-icons"
-            src="assets/svg/truckassist-table/location-icon.svg"
-          ></svg-icon>
-          <span>{{ item.address.address }}</span>
-        </div>
-      </div>
-      <app-ta-custom-card
-        *ngFor="
-          let dep of item.departmentContacts;
-          let i = index;
-          trackBy: identityOfficeData
-        "
-        [cardName]="dep.department.name"
-        [isCardOpen]="true"
-        [bodyTemplate]="'card'"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="office-template-data">
-          <div class="office-template-item">
-            <svg-icon
-              class="company-icons"
-              src="assets/svg/common/ic_phone.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="dep?.phone"> </app-ta-copy>
-          </div>
-          <div class="office-template-item">
-            <svg-icon
-              class="office-template-svg"
-              src="assets/svg/common/ic_phone-extension.svg"
-            ></svg-icon>
-            <p class="office-template-value">{{ dep.extensionPhone }}</p>
-          </div>
-          <div class="office-template-item office-template-email">
-            <svg-icon
-              class="company-icons"
-              src="assets/svg/common/ic_email.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="dep?.email"> </app-ta-copy>
-          </div>
-        </div>
-      </app-ta-custom-card>
-      <div *ngIf="item.rent" class="divider"></div>
-      <div *ngIf="item.rent" class="settings-progress-container">
-        <app-truckassist-progress-expiration
-          [expireDate]="'03/25/2023'"
-          [startDate]="'03/12/2023'"
-          [expiresSettings]="'settings-parking'"
-          [customText]="generateTextForProgressBar(item)"
-        ></app-truckassist-progress-expiration>
-      </div>
-    </app-ta-re-card>
-  </div>
+    <div class="settings-body">
+        <app-ta-re-card
+            *ngFor="
+                let item of officeData?.data;
+                let i = index;
+                trackBy: identityOfficeData
+            "
+            [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
+            [cardNameCommon]="item.name"
+            [hasFooter]="false"
+            [haveHeaderText]="true"
+            [optionsId]="item.id"
+            [options]="officeActions"
+            (dropActions)="officeDropActions($event, 'office')"
+            [paddingDots]="'11px 0px 0px 12px'"
+        >
+            <div class="settings-body-items">
+                <div *ngIf="item.phone" class="single-item">
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/common/ic_phone.svg"
+                    ></svg-icon>
+                    <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
+                </div>
+                <div *ngIf="item.email" class="single-item">
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/common/ic_email.svg"
+                    ></svg-icon>
+                    <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
+                </div>
+                <div *ngIf="item.address.address" class="single-item">
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/truckassist-table/location-icon.svg"
+                    ></svg-icon>
+                    <span>{{ item.address.address }}</span>
+                </div>
+            </div>
+            <app-ta-custom-card
+                *ngFor="
+                    let dep of item.departmentContacts;
+                    let i = index;
+                    trackBy: identityOfficeData
+                "
+                [cardName]="dep.department.name"
+                [isCardOpen]="true"
+                [bodyTemplate]="'card'"
+                [textBottomPossiton]="'-2px'"
+            >
+                <div class="office-template-data">
+                    <div class="office-template-item">
+                        <svg-icon
+                            class="company-icons"
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="dep?.phone"> </app-ta-copy>
+                    </div>
+                    <div class="office-template-item">
+                        <svg-icon
+                            class="office-template-svg"
+                            src="assets/svg/common/ic_phone-extension.svg"
+                        ></svg-icon>
+                        <p class="office-template-value">
+                            {{ dep.extensionPhone }}
+                        </p>
+                    </div>
+                    <div class="office-template-item office-template-email">
+                        <svg-icon
+                            class="company-icons"
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="dep?.email"> </app-ta-copy>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+            <div *ngIf="item.rent" class="divider"></div>
+            <div *ngIf="item.rent" class="settings-progress-container">
+                <app-truckassist-progress-expiration
+                    [expireDate]="'03/25/2023'"
+                    [startDate]="'03/12/2023'"
+                    [expiresSettings]="'settings-parking'"
+                    [customText]="generateTextForProgressBar(item)"
+                ></app-truckassist-progress-expiration>
+            </div>
+        </app-ta-re-card>
+    </div>
 </div>
