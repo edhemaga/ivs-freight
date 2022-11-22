@@ -176,33 +176,33 @@ export class Step3FormComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mode?.previousValue !== changes.mode?.currentValue) {
             this.selectedMode = changes.mode?.currentValue;
-        }
 
-        if (this.selectedMode === SelectedMode.APPLICANT) {
-            if (
-                changes.markFormInvalid?.previousValue !==
-                changes.markFormInvalid?.currentValue
-            ) {
-                this.inputService.markInvalid(this.licenseForm);
-                this.markInvalidEmitter.emit(false);
+            if (this.selectedMode === SelectedMode.APPLICANT) {
+                if (
+                    changes.markFormInvalid?.previousValue !==
+                    changes.markFormInvalid?.currentValue
+                ) {
+                    this.inputService.markInvalid(this.licenseForm);
+                    this.markInvalidEmitter.emit(false);
+                }
             }
-        }
 
-        if (
-            this.selectedMode === SelectedMode.REVIEW ||
-            this.selectedMode === SelectedMode.APPLICANT
-        ) {
             if (
-                changes.formValuesToPatch?.previousValue !==
-                changes.formValuesToPatch?.currentValue
+                this.selectedMode === SelectedMode.REVIEW ||
+                this.selectedMode === SelectedMode.APPLICANT
             ) {
-                setTimeout(() => {
-                    this.patchForm(changes.formValuesToPatch.currentValue);
+                if (
+                    changes.formValuesToPatch?.previousValue !==
+                    changes.formValuesToPatch?.currentValue
+                ) {
+                    setTimeout(() => {
+                        this.patchForm(changes.formValuesToPatch.currentValue);
 
-                    if (this.selectedMode === SelectedMode.APPLICANT) {
-                        this.startValueChangesMonitoring();
-                    }
-                }, 50);
+                        if (this.selectedMode === SelectedMode.APPLICANT) {
+                            this.startValueChangesMonitoring();
+                        }
+                    }, 100);
+                }
             }
         }
     }
@@ -227,16 +227,31 @@ export class Step3FormComponent
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (formValue.licenseReview) {
-                const { isLicenseValid, isExpDateValid } =
-                    formValue.licenseReview;
+                const {
+                    isLicenseNumberValid,
+                    isCountryValid,
+                    isStateValid,
+                    isClassValid,
+                    isExpDateValid,
+                    isRestrictionsValid,
+                    isEndorsmentsValid,
+                } = formValue.licenseReview;
 
                 this.openAnnotationArray[10] = {
                     ...this.openAnnotationArray[10],
-                    lineInputs: [!isLicenseValid, false],
+                    lineInputs: [!isLicenseNumberValid, !isCountryValid],
                 };
                 this.openAnnotationArray[11] = {
                     ...this.openAnnotationArray[11],
-                    lineInputs: [false, false, !isExpDateValid],
+                    lineInputs: [!isStateValid, !isClassValid, !isExpDateValid],
+                };
+                this.openAnnotationArray[12] = {
+                    ...this.openAnnotationArray[12],
+                    lineInputs: [!isRestrictionsValid],
+                };
+                this.openAnnotationArray[13] = {
+                    ...this.openAnnotationArray[13],
+                    lineInputs: [!isEndorsmentsValid],
                 };
             }
         }
@@ -291,7 +306,7 @@ export class Step3FormComponent
                         .concat(' ', item.description),
                 };
             });
-        }, 50);
+        }, 150);
     }
 
     public startValueChangesMonitoring(): void {

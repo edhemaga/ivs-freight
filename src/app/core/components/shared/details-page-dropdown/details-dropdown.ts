@@ -8,7 +8,6 @@ import {
     Output,
     SimpleChanges,
     ViewEncapsulation,
-    ChangeDetectorRef,
 } from '@angular/core';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import {
@@ -54,23 +53,8 @@ import {
             transition(':enter', [
                 style({ height: '10px', overflow: 'hidden' }),
                 animate(
-                    '200ms cubic-bezier(0, 0, 0.60, 1.99)',
+                    '300ms ease',
                     style({ height: '26px', overflow: 'auto' })
-                ),
-            ]),
-            transition(':leave', [
-                animate(
-                    '300ms cubic-bezier(0.68, -0.6, 0.32, 1.6)',
-                    style({ height: 0 })
-                ),
-            ]),
-        ]),
-        trigger('hideAnimation', [
-            transition(':enter', [
-                style({ height: '26px', overflow: 'hidden' }),
-                animate(
-                    '200ms ease',
-                    style({ height: '10px', overflow: 'auto' })
                 ),
             ]),
             transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
@@ -78,7 +62,7 @@ import {
         trigger('borderShowAnimation', [
             transition(':enter', [
                 style({ height: '0px', opacity: 0 }),
-                animate('200ms ease', style({ height: '*', opacity: 1 })),
+                animate('300ms ease', style({ height: '*', opacity: 1 })),
             ]),
             transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
         ]),
@@ -98,13 +82,8 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     tooltip: any;
     dropDownActive: number = -1;
     subtypeHovered: any = false;
-    isAnimated: any = false;
-    isOpened: any = false;
 
-    constructor(
-        private DetailsDataService: DetailsDataService,
-        private ref: ChangeDetectorRef
-    ) {}
+    constructor(private DetailsDataService: DetailsDataService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.options?.currentValue) {
@@ -124,10 +103,6 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
-            setTimeout(() => {
-                this.isOpened = true;
-            }, 1);
-
             tooltip.open({ data: this.dropContent });
             if (this.data) {
                 this.DetailsDataService.setNewData(this.data);
@@ -192,29 +167,8 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     }
 
     dropdownClosed() {
-        if (!this.isOpened) {
-            return false;
-        }
-
-        if (!this.isAnimated) {
-            this.isAnimated = true;
-            this.ref.detectChanges();
-            this.tooltip.open();
-        }
-
-        let mainElementHolder = document.querySelector(
-            '.details-dropdown-body'
-        );
-        mainElementHolder?.classList.add('closeAnimation');
-
-        this.isOpened = false;
-
-        setTimeout(() => {
-            this.tooltip.close();
-            this.isAnimated = false;
-            this.options.map((item) => {
-                item['openSubtype'] = false;
-            });
-        }, 200);
+        this.options.map((item) => {
+            item['openSubtype'] = false;
+        });
     }
 }

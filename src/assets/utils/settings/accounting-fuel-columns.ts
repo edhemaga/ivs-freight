@@ -24,7 +24,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Unit #',
-            field: 'truckNumber',
+            field: 'tableTruckNumber',
             name: 'Unit #',
             sortName: 'truckNumber',
             hidden: false,
@@ -46,7 +46,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Driver',
-            field: 'driverFullName',
+            field: 'tableDriverName',
             name: 'Driver',
             sortName: 'driverFullName',
             hidden: false,
@@ -68,7 +68,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Fuel Card #',
-            field: 'cardNumber',
+            field: 'tableFuelCardNumber',
             name: 'Fuel Card #',
             sortName: 'cardNumber',
             hidden: false,
@@ -91,7 +91,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Date',
-            field: 'transactionDate',
+            field: 'tableTransactionDate',
             name: 'Date',
             sortName: 'transactionDate',
             hidden: false,
@@ -115,7 +115,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Time',
-            field: 'transactionTime',
+            field: 'tableTransactionTime',
             name: 'Time',
             sortName: 'transactionTime',
             hidden: false,
@@ -137,7 +137,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Fuel Stop',
-            field: 'name',
+            field: 'tableFuelStopName',
             name: 'Fuel Stop',
             sortName: 'name',
             hidden: false,
@@ -159,7 +159,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Location',
-            field: 'location',
+            field: 'tableLocation',
             name: 'Location',
             sortName: 'location',
             hidden: false,
@@ -204,7 +204,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Fuel gal.',
-            field: 'qty',
+            field: 'tableQTY',
             name: 'Fuel gal.',
             sortName: 'qty',
             hidden: false,
@@ -227,7 +227,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'ppg',
             title: 'PPG',
-            field: '',
+            field: 'tbalePPG',
             name: 'PPG',
             sortName: '',
             hidden: false,
@@ -250,7 +250,7 @@ export function getFuelTransactionColumnDefinition() {
         {
             ngTemplate: 'total',
             title: 'Total',
-            field: 'total',
+            field: 'tableTotal',
             name: 'Total',
             sortName: 'total',
             hidden: false,
@@ -389,7 +389,7 @@ export function getFuelStopColumnDefinition() {
         {
             ngTemplate: 'text',
             title: 'Phone',
-            field: 'tablePhone',
+            field: 'phone',
             name: 'Phone',
             sortName: '',
             hidden: false,
@@ -501,7 +501,7 @@ export function getFuelStopColumnDefinition() {
         {
             ngTemplate: 'favorite',
             title: 'Favorite',
-            field: 'favorite',
+            field: 'isFavorite',
             name: '',
             hidden: false,
             width: 40,

@@ -2,94 +2,15 @@
 .footer-container {
     margin-top: 60px;
 
-    br {
-        &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
-
-        &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
-        }
-    }
-
     .info-container {
         padding: 0 42px;
         height: 53px;
         margin-bottom: 12px;
         position: relative;
 
-        .info-bar {
-            gap: 12px;
-
-            .info-icon,
-            .documents-icon,
-            .requests-icon {
-                cursor: pointer;
-                margin-right: 6px !important;
-
-                &.documents-icon {
-                    margin-top: 12px !important;
-                }
-
-                &.documents-icon + p {
-                    margin-top: 12px !important;
-                }
-
-                &:hover {
-                    svg {
-                        path {
-                            fill: $bw5;
-                        }
-                    }
-                }
-
-                &:hover + p {
-                    color: $ta-light-grey-3;
-                }
-
-                &.display-box {
-                    svg {
-                        path {
-                            fill: $ta-blue;
-                        }
-                    }
-
-                    &:hover + p {
-                        color: $ta-blue;
-                    }
-                }
-
-                svg {
-                    path {
-                        transition: fill 0.2s ease-in-out;
-                        fill: $ta-light-grey-6;
-                    }
-                }
-            }
-
-            p {
-                cursor: pointer;
-                height: 18px;
-                font-size: 14px;
-                color: $bw6-2;
-                user-select: none;
-                transition: color 0.2s ease-in-out;
-
-                &:hover {
-                    color: $ta-light-grey-3;
-                }
-
-                &.display-box {
-                    color: $ta-blue;
-                }
-            }
-        }
-
         .info-box {
             position: absolute;
-            bottom: 40px;
+            top: -200px;
             width: 350px;
             padding: 12px 0;
             margin-left: -10px;
@@ -404,6 +325,65 @@
                             }
                         }
                     }
+                }
+            }
+        }
+
+        .info-bar {
+            .info-icon,
+            .documents-icon,
+            .requests-icon {
+                cursor: pointer;
+                margin-right: 6px !important;
+                margin-top: 12px !important;
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $bw5;
+                        }
+                    }
+                }
+
+                &:hover + p {
+                    color: $ta-light-grey-3;
+                }
+
+                &.display-box {
+                    svg {
+                        path {
+                            fill: $ta-blue;
+                        }
+                    }
+
+                    &:hover + p {
+                        color: $ta-blue;
+                    }
+                }
+
+                svg {
+                    path {
+                        transition: fill 0.2s ease-in-out;
+                        fill: $ta-light-grey-6;
+                    }
+                }
+            }
+
+            p {
+                cursor: pointer;
+                margin-top: 12px !important;
+                height: 18px;
+                font-size: 14px;
+                color: $bw6-2;
+                user-select: none;
+                transition: color 0.2s ease-in-out;
+
+                &:hover {
+                    color: $ta-light-grey-3;
+                }
+
+                &.display-box {
+                    color: $ta-blue;
                 }
             }
         }

@@ -57,7 +57,7 @@
                                             isRequired: true,
                                             autoFocus:
                                                 editData?.type !== 'edit',
-                                            textTransform: 'capitalize',
+                                            textTransform: 'uppercase',
                                             minLength: 1,
                                             maxLength: 64
                                         }"
@@ -282,7 +282,7 @@
                                     type: 'text',
                                     label: 'Pay Period',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-148'
+                                    dropdownWidthClass: 'w-col-144'
                                 }"
                                 [options]="payPeriods"
                                 [activeItem]="selectedPayPeriod"
@@ -299,7 +299,7 @@
                                     isDropdown: true,
                                     isDisabled:
                                         !parkingForm.get('payPeriod').value,
-                                    dropdownWidthClass: 'w-col-148'
+                                    dropdownWidthClass: 'w-col-144'
                                 }"
                                 [options]="
                                     selectedDay?.name === 'Weekly'

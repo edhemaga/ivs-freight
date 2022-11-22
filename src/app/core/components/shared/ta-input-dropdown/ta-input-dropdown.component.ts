@@ -1,4 +1,4 @@
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, skip, Subject, takeUntil } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
@@ -79,6 +79,9 @@ export class TaInputDropdownComponent
         new EventEmitter<boolean>();
 
     @Output('pagination') paginationEvent: EventEmitter<number> =
+        new EventEmitter<number>();
+
+    @Output('activeGroup') activeGroupEvent: EventEmitter<number> =
         new EventEmitter<number>();
 
     public paginationNumber: number = 0;
@@ -212,7 +215,7 @@ export class TaInputDropdownComponent
 
         // Search
         this.getSuperControl.valueChanges
-            .pipe(debounceTime(50), takeUntil(this.destroy$))
+            .pipe(debounceTime(50), takeUntil(this.destroy$), skip(1))
             .subscribe((searchText) => {
                 if (this.labelMode === 'Color') {
                     return;
@@ -268,7 +271,9 @@ export class TaInputDropdownComponent
                 if (this.labelMode !== 'Color') {
                     // Focus Out
                     if (!action) {
-                        this.popoverRef.open();
+                        if (this.template !== 'fuel-franchise') {
+                            this.popoverRef.open();
+                        }
 
                         // Prevent user to typing dummmy data if activeItem doesn't exist
                         if (this.activeItem) {
@@ -278,11 +283,14 @@ export class TaInputDropdownComponent
                                 (item) =>
                                     item.name === this.getSuperControl.value
                             );
+
                             if (index === -1) {
                                 this.onClearSearch();
                             }
                         }
-                        this.popoverRef.close();
+                        if (this.template !== 'fuel-franchise') {
+                            this.popoverRef.close();
+                        }
                     }
                     // Focus In
                     else {
@@ -292,6 +300,7 @@ export class TaInputDropdownComponent
                                 ? this.getSuperControl.value
                                 : this.activeItem?.name,
                         };
+
                         this.getSuperControl.setValue(null);
                         this.popoverRef.close();
 
@@ -434,8 +443,9 @@ export class TaInputDropdownComponent
     private search(searchText: string): void {
         // Single Dropdown
         if (
-            this.template !== 'groups' &&
-            this.template !== 'load-broker-contact'
+            !['groups', 'load-broker-contact', 'fuel-franchise'].includes(
+                this.template
+            )
         ) {
             if (
                 searchText?.length &&
@@ -527,6 +537,20 @@ export class TaInputDropdownComponent
                     });
                 }
 
+                if (this.template === 'fuel-franchise') {
+                    this.options = this.originalOptions.map((element) => {
+                        return {
+                            ...element,
+                            stores: element?.stores?.filter((subElement) =>
+                                subElement.name
+                                    .toString()
+                                    .toLowerCase()
+                                    .includes(searchText.toLowerCase())
+                            ),
+                        };
+                    });
+                }
+
                 if (!this.options.length) {
                     this.options.push({
                         groups: [
@@ -543,7 +567,7 @@ export class TaInputDropdownComponent
         }
     }
 
-    public onActiveItem(option: any): void {
+    public onActiveItem(option: any, group?: any): void {
         // Disable to picking banned or dnu user
         if (option?.dnu || option?.ban) {
             return;
@@ -600,9 +624,27 @@ export class TaInputDropdownComponent
                 };
 
                 this.activeItem = option;
-                this.getSuperControl.setValue(option.name);
+
+                this.getSuperControl.setValue(
+                    option?.number ? option.number : option.name
+                );
+
                 this.options = this.originalOptions;
-                this.selectedItem.emit(option);
+
+                if (this.template === 'fuel-franchise') {
+                    const { id } = option;
+                    group
+                        ? this.selectedItem.emit({
+                              ...option,
+                              ...group,
+                              storeId: id,
+                          })
+                        : this.selectedItem.emit(option);
+                } else {
+                    group
+                        ? this.selectedItem.emit({ ...option, ...group })
+                        : this.selectedItem.emit(option);
+                }
 
                 if (this.inputConfig.name !== 'RoutingAddress') {
                     const timeout = setTimeout(() => {
@@ -614,6 +656,13 @@ export class TaInputDropdownComponent
                     }, 200);
                 }
             }
+        }
+
+        if (this.template === 'fuel-franchise') {
+            const timeout = setTimeout(() => {
+                this.popoverRef.close();
+                clearTimeout(timeout);
+            }, 100);
         }
     }
 
@@ -781,6 +830,20 @@ export class TaInputDropdownComponent
 
     public identity(index: number, item: any): number {
         return item.id;
+    }
+
+    public toggleNestedList(option: any) {
+        if (option.open) {
+            option.open = false;
+            return;
+        }
+        this.options.filter((item) => (item.open = false));
+
+        option.open = !option.open;
+
+        if (option.open) {
+            this.activeGroupEvent.emit(option);
+        }
     }
 
     // ----------------------------------  Multiselect Dropdown ----------------------------------

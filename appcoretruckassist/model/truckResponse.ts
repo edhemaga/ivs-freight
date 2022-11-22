@@ -72,6 +72,6 @@ export interface TruckResponse {
     inspections?: Array<InspectionResponse> | null;
     titles?: Array<TitleResponse> | null;
     ownerHistories?: Array<OwnerHistoryResponse> | null;
-    dispatches?: Array<DispatchShortResponse> | null;
+    assignedTo?: DispatchShortResponse;
 }
 

@@ -42,7 +42,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';
-import moment from 'moment';
+import { convertTimeFromBackend } from '../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -653,27 +653,23 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         receivingAppointment: reasponse.receivingAppointment,
                         receivingOpenTwentyFourHours:
                             reasponse.receivingOpenTwentyFourHours,
-                        receivingFrom: moment(
-                            reasponse.receivingFrom,
-                            'HH:mm:SS A'
-                        ).toDate(),
-                        receivingTo: moment(
-                            reasponse.receivingTo,
-                            'HH:mm:SS A'
-                        ).toDate(),
+                        receivingFrom: convertTimeFromBackend(
+                            reasponse.receivingFrom
+                        ),
+                        receivingTo: convertTimeFromBackend(
+                            reasponse.receivingTo
+                        ),
                         shippingHoursSameReceiving:
                             reasponse.shippingHoursSameReceiving,
                         shippingAppointment: reasponse.shippingAppointment,
                         shippingOpenTwentyFourHours:
                             reasponse.shippingOpenTwentyFourHours,
-                        shippingFrom: moment(
-                            reasponse.shippingFrom,
-                            'HH:mm:SS A'
-                        ).toDate(),
-                        shippingTo: moment(
-                            reasponse.shippingTo,
-                            'HH:mm:SS A'
-                        ).toDate(),
+                        shippingFrom: convertTimeFromBackend(
+                            reasponse.shippingFrom
+                        ),
+                        shippingTo: convertTimeFromBackend(
+                            reasponse.shippingTo
+                        ),
                         note: reasponse.note,
                         shipperContacts: [],
                     });
