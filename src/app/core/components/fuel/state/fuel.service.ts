@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
 import { Injectable } from '@angular/core';
 import {
@@ -69,10 +69,11 @@ export class FuelTService {
         pageIndex: number,
         pageSize: number
     ): Observable<any> {
-        return this.fuelService.apiFuelTransactionModalFuelstopfranchiseGet(
-            pageIndex,
-            pageSize
-        );
+        return of();
+        // return this.fuelService.apiFuelTransactionModalFuelstopfranchiseGet(
+        //     pageIndex,
+        //     pageSize
+        // );
     }
 
     public getFuelTransactionStoresByFranchiseId(
@@ -146,15 +147,23 @@ export class FuelTService {
         return this.fuelService.apiFuelFuelstopIdGet(fuelId);
     }
 
-    public addFuelStop(data: AddFuelStopCommand): Observable<CreateResponse> {
-        return this.fuelService.apiFuelFuelstopPost(data);
+    public addFuelStop(data: any /*AddFuelStopCommand*/): Observable<CreateResponse> {
+        const sortedParams = getFunctionParams(
+            this.fuelService.apiFuelFuelstopPost,
+            data
+        );
+        return this.fuelService.apiFuelFuelstopPost(...sortedParams);
     }
 
     // For table method
     public updateFuelStopShortest(
-        data: EditFuelStopCommand
+        data: any /*EditFuelStopCommand*/
     ): Observable<object> {
-        return this.fuelService.apiFuelFuelstopPut(data);
+        const sortedParams = getFunctionParams(
+            this.fuelService.apiFuelFuelstopPut,
+            data
+        );
+        return this.fuelService.apiFuelFuelstopPut(...sortedParams);
     }
 
     // For modal method

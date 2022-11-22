@@ -14,6 +14,7 @@ import { MvrResponse } from './mvrResponse';
 import { TestResponse } from './testResponse';
 import { EnumValue } from './enumValue';
 import { PerMileEntity } from './perMileEntity';
+import { FileResponse } from './fileResponse';
 import { MedicalResponse } from './medicalResponse';
 import { BankResponse } from './bankResponse';
 import { EmploymentHistoryResponse } from './employmentHistoryResponse';
@@ -74,6 +75,8 @@ export interface DriverResponse {
     mvrPercentage?: number | null;
     cdlPercentage?: number | null;
     medicalPercentage?: number | null;
+    dispatches?: Array<DispatchShortResponse> | null;
+    files?: Array<FileResponse> | null;
     assignedTo?: DispatchShortResponse;
     createdAt?: string;
     updatedAt?: string;

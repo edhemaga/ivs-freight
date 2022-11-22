@@ -223,7 +223,7 @@ export class TableConfigService {
             }
         }
 
-        let localVarPath = `/api/tableconfig/${this.configuration.encodeParam({name: "tableType", value: tableType, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/api/tableconfig/`;
         return this.httpClient.request<TableConfigResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

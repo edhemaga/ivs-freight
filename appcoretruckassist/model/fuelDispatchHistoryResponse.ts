@@ -16,9 +16,5 @@ export interface FuelDispatchHistoryResponse {
     driverId?: number;
     firstName?: string | null;
     lastName?: string | null;
-    trailerId?: number | null;
-    trailerNumber?: string | null;
-    trailerTypeName?: string | null;
-    logoName?: string | null;
 }
 
