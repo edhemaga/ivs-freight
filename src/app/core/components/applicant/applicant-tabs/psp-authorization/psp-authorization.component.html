@@ -102,7 +102,7 @@
                                 color:
                                     selectedMode === 'FEEDBACK_MODE'
                                         ? '#97A8DC'
-                                        : '#536bc2'
+                                        : '#3074d3'
                             }"
                             >https://dataqs.fmcsa.dot.gov</a
                         >. If you challenge crash or inspection information
@@ -274,6 +274,12 @@
                             <a
                                 href="https://dataqs.fmcsa.dot.gov"
                                 target="_blank"
+                                [ngStyle]="{
+                                    color:
+                                        selectedMode === 'FEEDBACK_MODE'
+                                            ? '#97A8DC'
+                                            : '#3074d3'
+                                }"
                                 >https://dataqs.fmcsa.dot.gov</a
                             >. If I challenge crash or inspection information
                             reported by a State, FMCSA cannot change or correct

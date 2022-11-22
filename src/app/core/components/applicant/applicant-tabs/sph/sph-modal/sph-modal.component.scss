@@ -7,19 +7,19 @@
 
     .step-one-container {
         .step-title {
-            color: $ta-blue;
+            color: $ta-blue-5;
             font-size: 32px;
             height: 39px;
             margin-bottom: 22px !important;
 
             &::-moz-selection {
-                color: $ta-blue;
-                background: rgb(83, 107, 194, 0.2);
+                color: $ta-blue-5;
+                background: rgb(48, 116, 211, 0.2);
             }
 
             &::selection {
-                color: $ta-blue;
-                background: rgb(83, 107, 194, 0.2);
+                color: $ta-blue-5;
+                background: rgb(48, 116, 211, 0.2);
             }
         }
 
@@ -157,19 +157,19 @@
 
     .step-two-container {
         .step-title {
-            color: $ta-blue;
+            color: $ta-blue-5;
             font-size: 32px;
             height: 39px;
             margin-bottom: 12px !important;
 
             &::-moz-selection {
-                color: $ta-blue;
-                background: rgb(83, 107, 194, 0.2);
+                color: $ta-blue-5;
+                background: rgb(48, 116, 211, 0.2);
             }
 
             &::selection {
-                color: $ta-blue;
-                background: rgb(83, 107, 194, 0.2);
+                color: $ta-blue-5;
+                background: rgb(48, 116, 211, 0.2);
             }
         }
 
@@ -423,58 +423,20 @@
                         outline: none;
                         font-size: 14px;
                         border-radius: 2px;
-                        color: $ta-blue;
-                        background: $ta-gray-01;
+                        color: $ta-blue-5;
+                        background: $bw2;
                         transition: background 0.2s ease-in-out,
                             color 0.2s ease-in-out;
                         user-select: none;
 
                         &:hover {
                             color: $white;
-                            background: $ta-blue;
+                            background: $ta-blue-5;
                         }
 
-                        &:hover .plus-icon {
-                            svg {
-                                path {
-                                    fill: $white;
-                                }
-                            }
-                        }
-
-                        &.disabled {
-                            -webkit-user-select: none !important;
-                            -moz-user-select: none !important;
-                            -ms-user-select: none !important;
-                            user-select: none !important;
-
-                            cursor: auto;
-                            background: $ta-light-grey-4;
-                            color: $bw4;
-
-                            .plus-icon {
-                                svg {
-                                    path {
-                                        fill: $ta-light-grey-6;
-                                    }
-                                }
-                            }
-
-                            &:hover {
-                                background: $ta-light-grey-4 !important;
-                                color: $bw4 !important;
-                            }
-                        }
-
-                        .plus-icon {
-                            margin-right: 6px;
-
-                            svg {
-                                path {
-                                    transition: fill 0.2s ease-in-out;
-                                    fill: $ta-light-blue;
-                                }
-                            }
+                        p {
+                            position: relative;
+                            top: 0.5px;
                         }
                     }
                 }
@@ -486,19 +448,19 @@
         padding-top: 22px;
 
         .step-title {
-            color: $ta-blue;
+            color: $ta-blue-5;
             font-size: 32px;
             height: 39px;
             margin-bottom: 12px !important;
 
             &::-moz-selection {
-                color: $ta-blue;
-                background: rgb(83, 107, 194, 0.2);
+                color: $ta-blue-5;
+                background: rgb(48, 116, 211, 0.2);
             }
 
             &::selection {
-                color: $ta-blue;
-                background: rgb(83, 107, 194, 0.2);
+                color: $ta-blue-5;
+                background: rgb(48, 116, 211, 0.2);
             }
         }
 

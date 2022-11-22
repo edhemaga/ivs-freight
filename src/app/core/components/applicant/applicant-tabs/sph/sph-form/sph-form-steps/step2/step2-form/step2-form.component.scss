@@ -79,8 +79,8 @@
             outline: none;
             font-size: 14px;
             border-radius: 2px;
-            color: $ta-blue;
-            background: $ta-gray-01;
+            color: $ta-blue-5;
+            background: $bw2;
             transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
             user-select: none;
 
@@ -91,45 +91,23 @@
 
             &:hover {
                 color: $white;
-                background: $ta-blue;
-            }
-
-            &:hover .plus-icon {
-                svg {
-                    path {
-                        fill: $white;
-                    }
-                }
+                background: $ta-blue-5;
             }
 
             &.disabled {
                 cursor: auto;
-                background: $ta-light-grey-4;
-                color: $bw4;
-
-                .plus-icon {
-                    svg {
-                        path {
-                            fill: $ta-light-grey-6;
-                        }
-                    }
-                }
+                background: $bw2;
+                color: $bw5;
 
                 &:hover {
-                    background: $ta-light-grey-4 !important;
-                    color: $bw4 !important;
+                    background: $bw2 !important;
+                    color: $bw5 !important;
                 }
             }
 
-            .plus-icon {
-                margin-right: 6px;
-
-                svg {
-                    path {
-                        transition: fill 0.2s ease-in-out;
-                        fill: $ta-light-blue;
-                    }
-                }
+            p {
+                position: relative;
+                top: 1px;
             }
         }
 
@@ -152,11 +130,12 @@
             margin-bottom: 32px;
             width: 150px;
             height: 32px;
-            color: $white;
-            background: $ta-light-blue;
+            color: $ta-blue-5;
+            background: $bw2;
 
             &:hover {
-                background-color: $ta-blue;
+                color: $white;
+                background: $ta-blue-5;
             }
         }
     }

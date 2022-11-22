@@ -1669,11 +1669,7 @@ export class Step2FormComponent
                     };
                 });
 
-                console.log('trailers', this.trailerType);
-
                 this.trailerLengthType = res.trailerLenghts;
-
-                console.log('trailerLengthType', this.trailerLengthType);
 
                 this.reasonsForLeaving = res.reasonsForLeave;
             });

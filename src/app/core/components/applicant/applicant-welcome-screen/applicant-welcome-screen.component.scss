@@ -7,7 +7,7 @@
 
     .top-header {
         height: 30px;
-        background-color: $ta-blue;
+        background-color: $ta-blue-5;
         padding: 6px;
 
         &-title {
@@ -155,17 +155,17 @@
     .welcome-title {
         font-size: 32px;
         height: 39px;
-        color: $ta-blue;
+        color: $ta-blue-5;
         margin-bottom: 12px !important;
 
         &::-moz-selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
         }
 
         &::selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
         }
     }
 
@@ -207,6 +207,11 @@
         &:hover {
             background: $ta-blue-9;
         }
+
+        p {
+            position: relative;
+            top: 1px;
+        }
     }
 
     .welcome-info {
@@ -235,19 +240,10 @@
         border-top: 0.1rem solid $ta-gray-02;
 
         p {
-            color: $ta-blue-2;
+            color: $ta-blue-5;
             font-weight: 400;
             font-size: 14px;
-
-            &::-moz-selection {
-                color: $ta-blue-2;
-                background: rgb(53, 81, 183, 0.2);
-            }
-
-            &::selection {
-                color: $ta-blue-2;
-                background: rgb(53, 81, 183, 0.2);
-            }
+            user-select: none;
         }
     }
 }

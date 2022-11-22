@@ -619,15 +619,6 @@
                     !isEditingClassOfEquipment
                 "
             >
-                <svg-icon
-                    class="plus-icon"
-                    src="assets/svg/common/ic_plus.svg"
-                    [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                    }"
-                ></svg-icon>
-
                 Add Another Class Of Equipment
             </button>
 
@@ -646,7 +637,9 @@
                     type="button"
                     class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
                     [ngClass]="{
-                        disabled: !isClassOfEquipmentEdited
+                        disabled:
+                            !isClassOfEquipmentEdited ||
+                            !classOfEquipmentForm.valid
                     }"
                     (click)="onSaveEditedClassOfEquipment()"
                 >
@@ -803,17 +796,7 @@
             (click)="onAddSecondOrLastEmployer()"
             *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
         >
-            <svg-icon
-                class="plus-icon"
-                src="assets/svg/common/ic_plus.svg
-   "
-                [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                }"
-            ></svg-icon>
-
-            Add Second Or Last Employer
+            <p class="m-0 ta-font-bold">Add Second Or Last Employer</p>
         </button>
 
         <div
