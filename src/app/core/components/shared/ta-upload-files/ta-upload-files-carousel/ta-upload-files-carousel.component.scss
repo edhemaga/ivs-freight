@@ -36,6 +36,12 @@
         transform: translate(-5%, 22%);
         transition: all 0.3s ease-in-out;
 
+        &.show {
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+        }
+
         &.prev {
             left: -4px;
             padding-right: 1px;

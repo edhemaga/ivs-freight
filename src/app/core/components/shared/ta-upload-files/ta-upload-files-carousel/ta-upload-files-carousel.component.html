@@ -1,7 +1,8 @@
 <div class="upload-carousel {{ customClass }} {{ customDetailsPageClass }}">
-    <div class="ta-upload-files-carousel">
+    <div class="ta-upload-files-carousel" #fileHolder>
         <div
             class="carousel-slider"
+            #fileSlider
             [ngClass]="{
                 'multiple-slider': ['medium', 'large', 'small'].includes(
                     this.customClass?.toLowerCase()
@@ -35,7 +36,13 @@
         [hidden]="
             (files.length < 2 && customClass === 'small') ||
             (files.length < 3 && customClass === 'medium') ||
-            (files.length < 4 && customClass === 'large')
+            (files.length < 4 && customClass === 'large') ||
+            multipleCurrentSlide == 0
+        "
+        [class.show]="
+            customDetailsPageClass == 'todo-details' &&
+            files?.length == 3 &&
+            translateXMultipleSlides < 0
         "
         (click)="onAction('prev')"
     >
@@ -49,7 +56,13 @@
         [hidden]="
             (files.length < 2 && customClass === 'small') ||
             (files.length < 3 && customClass === 'medium') ||
-            (files.length < 4 && customClass === 'large')
+            (files.length < 4 && customClass === 'large') ||
+            multipleCurrentSlide > files?.length - filesShown
+        "
+        [class.show]="
+            customDetailsPageClass == 'todo-details' &&
+            files?.length == 3 &&
+            translateXMultipleSlides == 0
         "
         (click)="onAction('next')"
     >
