@@ -317,6 +317,9 @@
                             (classOfEquipmentformValuesEmitter)="
                                 onGetClassOfEquipmentValues($event)
                             "
+                            (isEditingClassOfEquipmentEmitter)="
+                                onGetIsEditingClassOfEquipmentStatus($event)
+                            "
                         ></app-step2-form>
                     </div>
                 </div>
@@ -361,6 +364,9 @@
                     "
                     (classOfEquipmentformValuesEmitter)="
                         onGetClassOfEquipmentValues($event)
+                    "
+                    (isEditingClassOfEquipmentEmitter)="
+                        onGetIsEditingClassOfEquipmentStatus($event)
                     "
                 ></app-step2-form>
             </div>
@@ -407,6 +413,7 @@
         [filledCorrectly]="
             workExperienceForm.valid &&
             !isEditing &&
+            !isEditingClassOfEquipment &&
             ((selectedMode === 'APPLICANT_MODE' &&
                 formStatus === 'VALID' &&
                 innerFormStatus === 'VALID') ||

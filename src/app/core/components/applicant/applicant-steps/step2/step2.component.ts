@@ -62,6 +62,7 @@ export class Step2Component implements OnInit, OnDestroy {
     public helperIndex: number = 2;
 
     public isEditing: boolean = false;
+    public isEditingClassOfEquipment: boolean = false;
     public isReviewingCard: boolean = false;
 
     public formValuesToPatch: any;
@@ -718,6 +719,14 @@ export class Step2Component implements OnInit, OnDestroy {
         }
     }
 
+    public onGetIsEditingClassOfEquipmentStatus(event: any): void {
+        if (event) {
+            this.isEditingClassOfEquipment = true;
+        } else {
+            this.isEditingClassOfEquipment = false;
+        }
+    }
+
     public cancelWorkExperienceReview(event: any): void {
         this.isReviewingCard = false;
 
@@ -1137,6 +1146,8 @@ export class Step2Component implements OnInit, OnDestroy {
                       filteredLastWorkExperienceCard,
                   ],
         };
+
+        console.log('saveData', saveData);
 
         const storeWorkExperienceItems = saveData.workExperienceItems.map(
             (item) => {

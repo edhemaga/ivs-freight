@@ -98,6 +98,7 @@ export class Step2FormComponent
     @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
     @Output() radioRequiredNoteEmitter = new EventEmitter<any>();
+    @Output() isEditingClassOfEquipmentEmitter = new EventEmitter<any>();
 
     private destroy$ = new Subject<void>();
 
@@ -656,6 +657,11 @@ export class Step2FormComponent
                     ...formValue.classesOfEquipment,
                 ];
 
+                console.log(
+                    'lastItemInClassOfEquipmentArray',
+                    lastItemInClassOfEquipmentArray
+                );
+
                 this.workExperienceForm.patchValue({
                     vehicleType: lastItemInClassOfEquipmentArray.vehicleType,
                     trailerType: lastItemInClassOfEquipmentArray.trailerType,
@@ -670,6 +676,23 @@ export class Step2FormComponent
                     trailerLength:
                         lastItemInClassOfEquipmentArray.trailerLength,
                 });
+
+                const vehicleTypeId = this.vehicleType.find(
+                    (item) =>
+                        item.name ===
+                        lastItemInClassOfEquipmentArray.vehicleType
+                ).id;
+
+                if (vehicleTypeId === 5) {
+                    this.isTruckSelected = false;
+                    this.isBoxTruckSelected = false;
+                } else if (vehicleTypeId === 2) {
+                    this.isTruckSelected = true;
+                    this.isBoxTruckSelected = true;
+                } else {
+                    this.isTruckSelected = true;
+                    this.isBoxTruckSelected = false;
+                }
 
                 setTimeout(() => {
                     const cfrPartValue =
@@ -1010,6 +1033,8 @@ export class Step2FormComponent
                 break;
             case InputSwitchActions.TRUCK_TYPE:
                 this.selectedVehicleType = event;
+
+                console.log('event', event);
 
                 if (event) {
                     this.isTruckSelected = true;
@@ -1417,6 +1442,9 @@ export class Step2FormComponent
         this.selectedTrailerType = null;
         this.selectedTrailerLength = null;
 
+        this.isTruckSelected = false;
+        this.isBoxTruckSelected = false;
+
         this.formService.resetForm(this.classOfEquipmentForm);
     }
 
@@ -1464,7 +1492,22 @@ export class Step2FormComponent
         this.isEditingClassOfEquipment = true;
         this.classOfEquipmentArray[index].isEditingClassOfEquipment = true;
 
-        const selectedClassOfEquipment = this.classOfEquipmentArray[index];
+        const selectedClassOfEquipment: any = this.classOfEquipmentArray[index];
+
+        const vehicleTypeId = this.vehicleType.find(
+            (item) => item.name === selectedClassOfEquipment.vehicleType
+        ).id;
+
+        if (vehicleTypeId === 5) {
+            this.isTruckSelected = false;
+            this.isBoxTruckSelected = false;
+        } else if (vehicleTypeId === 2) {
+            this.isTruckSelected = true;
+            this.isBoxTruckSelected = true;
+        } else {
+            this.isTruckSelected = true;
+            this.isBoxTruckSelected = false;
+        }
 
         this.classOfEquipmentForm.patchValue({
             vehicleType: selectedClassOfEquipment.vehicleType,
@@ -1490,6 +1533,7 @@ export class Step2FormComponent
                         vehicleTypeImageLocation,
                         trailerTypeImageLocation,
                         isEditingClassOfEquipment,
+                        fifthRowReview,
                         ...previousFormValues
                     } = selectedClassOfEquipment;
 
@@ -1504,7 +1548,7 @@ export class Step2FormComponent
                         cardReview8,
                         cardReview9,
                         cardReview10,
-                        fifthRowReview,
+                        fifthRowReview: updatedFifthRowReview,
                         ...newFormValues
                     } = updatedFormValues;
 
@@ -1514,6 +1558,8 @@ export class Step2FormComponent
                         this.isClassOfEquipmentEdited = true;
                     }
                 });
+
+        this.isEditingClassOfEquipmentEmitter.emit(true);
     }
 
     public onCancelEditClassOfEquipment(): void {
@@ -1530,6 +1576,10 @@ export class Step2FormComponent
         this.classOfEquipmentArray =
             this.previousClassOfEquipmentCardsListOnEdit;
 
+        this.selectedVehicleType = null;
+        this.selectedTrailerType = null;
+        this.selectedTrailerLength = null;
+
         this.formService.resetForm(this.classOfEquipmentForm);
 
         this.classOfEquipmentSubscription.unsubscribe();
@@ -1541,16 +1591,18 @@ export class Step2FormComponent
         });
 
         this.selectedVehicleType = this.vehicleType.find(
-            (item) => item.name === this.previousFormValuesOnEdit.vehicleType
+            (item) => item.name === this.previousFormValuesOnEdit?.vehicleType
         );
 
-        if (
-            this.selectedVehicleType.id === 5 ||
-            this.selectedVehicleType.id === 8
-        ) {
+        if (this.selectedVehicleType?.id === 5) {
             this.isTruckSelected = false;
+            this.isBoxTruckSelected = false;
+        } else if (this.selectedVehicleType?.id === 2) {
+            this.isTruckSelected = true;
+            this.isBoxTruckSelected = true;
         } else {
             this.isTruckSelected = true;
+            this.isBoxTruckSelected = false;
 
             this.selectedTrailerType = this.trailerType.find(
                 (item) =>
@@ -1562,6 +1614,8 @@ export class Step2FormComponent
                     item.name === this.previousFormValuesOnEdit.trailerLength
             );
         }
+
+        this.isEditingClassOfEquipmentEmitter.emit(false);
     }
 
     public onSaveEditedClassOfEquipment(): void {
@@ -1647,6 +1701,8 @@ export class Step2FormComponent
                     item.name === this.previousFormValuesOnEdit.trailerLength
             );
         }
+
+        this.isEditingClassOfEquipmentEmitter.emit(false);
     }
 
     public getDropdownLists(): void {

@@ -371,6 +371,13 @@
             *ngIf="classOfEquipmentArray?.length"
             formGroupName="classOfEquipmentCards"
             class="d-flex flex-column justify-content-center equipment-container"
+            [ngStyle]="{
+                'margin-bottom':
+                    isEditingClassOfEquipment &&
+                    classOfEquipmentArray?.length === 1
+                        ? '0'
+                        : '32px'
+            }"
         >
             <div
                 class="d-flex flex-column"
