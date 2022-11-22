@@ -536,13 +536,12 @@
                         name: 'Input Dropdown',
                         type: 'text',
                         label: 'Trailer Type',
-                        isDisabled:
-                            (selectedMode === 'APPLICANT_MODE' &&
-                                !isTruckSelected) ||
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE',
+                        isDisabled: !isTruckSelected,
                         isRequired: isTruckSelected,
                         isDropdown: true,
+                        isDisabled:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE',
                         dropdownWidthClass: 'w-col-211',
                         customClass: 'truck-trailer-dropdown',
                         dropdownImageInput: {
@@ -582,14 +581,11 @@
                         type: 'text',
                         label: 'Length',
                         isDropdown: true,
+                        isDisabled: !isTruckSelected,
+                        isRequired: isTruckSelected,
                         isDisabled:
-                            (selectedMode === 'APPLICANT_MODE' &&
-                                !isTruckSelected) ||
                             selectedMode === 'REVIEW_MODE' ||
                             selectedMode === 'FEEDBACK_MODE',
-
-                        isRequired: isTruckSelected,
-
                         dropdownWidthClass: 'w-col-130'
                     }"
                     [options]="trailerLengthType"

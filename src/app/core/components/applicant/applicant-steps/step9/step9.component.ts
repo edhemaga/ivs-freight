@@ -15,7 +15,6 @@ import {
     ApplicantResponse,
     DriverRightsFeedbackResponse,
     UpdateDriverRightsCommand,
-    CreateDriverRightsReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -135,36 +134,7 @@ export class Step9Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
-        const saveData: CreateDriverRightsReviewCommand = {
-            applicantId: this.applicantId,
-        };
-
-        this.applicantActionsService
-            .createDriverRightsReview(saveData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.router.navigate([
-                        `/application/${this.applicantId}/10`,
-                    ]);
-
-                    this.applicantStore.update((store) => {
-                        return {
-                            ...store,
-                            applicant: {
-                                ...store.applicant,
-                                driverRight: {
-                                    ...store.applicant.driverRight,
-                                    reviewed: true,
-                                },
-                            },
-                        };
-                    });
-                },
-                error: (err) => {
-                    console.log(err);
-                },
-            });
+        this.router.navigate([`/application/${this.applicantId}/10`]);
     }
 
     ngOnDestroy(): void {

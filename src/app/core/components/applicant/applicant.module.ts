@@ -69,6 +69,7 @@ import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+
         SharedModule,
         AngularSignaturePadModule,
     ],

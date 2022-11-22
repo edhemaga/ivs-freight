@@ -50,7 +50,6 @@ export class TruckassistTableHeadComponent
     resizeHitLimit: number = -1;
     resizeIsPined: boolean;
     notPinedMaxWidth: number = 0;
-    sortDirection: string = '';
     tableConfigurationType: string = '';
 
     constructor(
@@ -207,6 +206,7 @@ export class TruckassistTableHeadComponent
         }
     }
 
+    sortDirection: string = '';
     // Sort
     sortHeaderClick(column: any): void {
         if (

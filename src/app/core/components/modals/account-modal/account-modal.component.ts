@@ -21,12 +21,12 @@ import { AccountTService } from '../../account/state/account.service';
 import { Subject, takeUntil } from 'rxjs';
 import {
     labelValidation,
-    passwordValidation,
     urlValidation,
     usernameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { FormService } from '../../../services/form/form.service';
+import { passwordAccountValidation } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
     selector: 'app-account-modal',
@@ -78,7 +78,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         this.accountForm = this.formBuilder.group({
             name: [null, [Validators.required, ...labelValidation]],
             username: [null, [Validators.required, ...usernameValidation]],
-            password: [null, [Validators.required, ...passwordValidation]],
+            password: [
+                null,
+                [Validators.required, ...passwordAccountValidation],
+            ],
             url: [null, urlValidation],
             companyAccountLabelId: [null],
             note: [null],

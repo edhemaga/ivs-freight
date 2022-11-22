@@ -66,15 +66,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public personalInfoRadios: any;
 
     public subscription: Subscription;
 
     public stepValues: any;
-
-    public companyName: string;
 
     public applicantId: number;
     public personalInfoId: number;
@@ -403,8 +401,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
-                this.companyName = res.companyInfo.name;
-
                 this.applicantId = res.id;
 
                 this.patchStepValues(res.personalInfo);
@@ -412,7 +408,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public patchStepValues(stepValues: PersonalInfoFeedbackResponse): void {
-        console.log('stepValues', stepValues);
         const {
             id,
             isAgreed,
@@ -961,8 +956,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     this.previousAddresses
                         .at(index)
                         .setErrors({ invalid: true });
-
-                    this.isLastAddedPreviousAddressValid = false;
                 } else {
                     this.previousAddresses.at(index).patchValue({
                         address: address.address,
@@ -980,12 +973,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.personalInfoForm
             .get('bankId')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                this.isBankSelected = this.bankVerificationService.onSelectBank(
-                    this.selectedBank ? this.selectedBank.name : value,
-                    this.personalInfoForm.get('routingNumber'),
-                    this.personalInfoForm.get('accountNumber')
-                );
+            .subscribe(async (value) => {
+                this.isBankSelected =
+                    await this.bankVerificationService.onSelectBank(
+                        this.selectedBank ? this.selectedBank.name : value,
+                        this.personalInfoForm.get('routingNumber'),
+                        this.personalInfoForm.get('accountNumber')
+                    );
             });
     }
 
@@ -1119,6 +1113,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         if (this.previousAddresses.controls.length < 2) {
             this.isEditingArray[0].isEditing = true;
             this.isEditingArray[0].isEditingAddress = false;
+        }
+
+        if (this.previousAddresses.controls.length === 1) {
+            this.isLastInputDeleted = false;
         }
     }
 
@@ -1389,7 +1387,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    public startFeedbackValueChangesMonitoring(): void {
+    public startFeedbackValueChangesMonitoring() {
         if (this.stepFeedbackValues) {
             const filteredIncorrectValues = Object.keys(
                 this.stepFeedbackValues
@@ -1790,7 +1788,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         const {
             firstRowReview,
             secondRowReview,
-            thirdRowReview,
             fourthRowReview,
             questionReview1,
             questionReview2,

@@ -286,7 +286,7 @@
                             cdkDropList
                             [cdkDropListDisabled]="route.stops.length < 2"
                             (cdkDropListDropped)="
-                                dropStops($event, route.stops, route)
+                                dropStops($event, route.stops, i)
                             "
                         >
                             <div
@@ -926,7 +926,7 @@
                             cdkDropList
                             [cdkDropListDisabled]="route.stops.length < 2"
                             (cdkDropListDropped)="
-                                dropStops($event, route.stops, route)
+                                dropStops($event, route.stops, i)
                             "
                         >
                             <div

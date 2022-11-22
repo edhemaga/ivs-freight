@@ -6,7 +6,6 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
@@ -16,7 +15,6 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
     ApplicantResponse,
     AuthorizationFeedbackResponse,
-    CreateAuthorizationReviewCommand,
     UpdateAuthorizationCommand,
 } from 'appcoretruckassist';
 
@@ -34,7 +32,7 @@ export class Step11Component implements OnInit, OnDestroy {
 
     public applicantId: number;
 
-    public signature: string;
+    public signature: any;
     public signatureImgSrc: string;
 
     constructor(
@@ -43,8 +41,7 @@ export class Step11Component implements OnInit, OnDestroy {
         private router: Router,
         private applicantStore: ApplicantStore,
         private applicantQuery: ApplicantQuery,
-        private applicantActionsService: ApplicantActionsService,
-        private imageBase64Service: ImageBase64Service
+        private applicantActionsService: ApplicantActionsService
     ) {}
 
     ngOnInit(): void {
@@ -91,7 +88,6 @@ export class Step11Component implements OnInit, OnDestroy {
         });
 
         this.signatureImgSrc = signature;
-        this.signature = signature;
     }
 
     public handleCheckboxParagraphClick(type: string): void {
@@ -142,11 +138,10 @@ export class Step11Component implements OnInit, OnDestroy {
     }
 
     public onSignatureAction(event: any): void {
-        if (event) {
-            this.signature = this.imageBase64Service.getStringFromBase64(event);
-        } else {
-            this.signature = null;
-        }
+        this.signatureImgSrc = event;
+        this.signature = event;
+
+        this.signature = this.signature?.slice(22);
     }
 
     public onStepAction(event: any): void {
@@ -169,14 +164,8 @@ export class Step11Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.authorizationForm.invalid || !this.signature) {
-            if (this.authorizationForm.invalid) {
-                this.inputService.markInvalid(this.authorizationForm);
-            }
-
-            /*  if (!this.signature) {
-      } */
-
+        if (this.authorizationForm.invalid) {
+            this.inputService.markInvalid(this.authorizationForm);
             return;
         }
 
@@ -192,7 +181,7 @@ export class Step11Component implements OnInit, OnDestroy {
         };
 
         this.applicantActionsService
-            .updateAuthorization(saveData)
+            .createAuthorization(saveData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -228,36 +217,7 @@ export class Step11Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
-        const saveData: CreateAuthorizationReviewCommand = {
-            applicantId: this.applicantId,
-        };
-
-        this.applicantActionsService
-            .createAuthorizationReview(saveData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.router.navigate([
-                        `/medical-certificate/${this.applicantId}`,
-                    ]);
-
-                    this.applicantStore.update((store) => {
-                        return {
-                            ...store,
-                            applicant: {
-                                ...store.applicant,
-                                authorization: {
-                                    ...store.applicant.authorization,
-                                    reviewed: true,
-                                },
-                            },
-                        };
-                    });
-                },
-                error: (err) => {
-                    console.log(err);
-                },
-            });
+        this.router.navigate([`/medical-certificate/${this.applicantId}`]);
     }
 
     ngOnDestroy(): void {

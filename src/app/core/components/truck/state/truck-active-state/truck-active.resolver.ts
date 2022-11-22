@@ -3,7 +3,6 @@ import { Resolve } from '@angular/router';
 import { TruckListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TruckTService } from '../truck.service';
 import { TruckActiveState, TruckActiveStore } from './truck-active.store';
 
@@ -13,8 +12,7 @@ import { TruckActiveState, TruckActiveStore } from './truck-active.store';
 export class TruckActiveResolver implements Resolve<TruckActiveState> {
     constructor(
         private truckService: TruckTService,
-        private truckStore: TruckActiveStore,
-        private tableService: TruckassistTableService
+        private truckStore: TruckActiveStore
     ) {}
     resolve(): Observable<TruckActiveState | boolean> {
         // Get Table Configuration

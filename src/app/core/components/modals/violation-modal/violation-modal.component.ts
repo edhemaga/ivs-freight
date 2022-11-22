@@ -17,10 +17,7 @@ import { FormService } from '../../../services/form/form.service';
 import { RoadsideService } from '../../safety/violation/state/roadside.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-} from '../../../utils/methods.calculations';
+import { convertDateFromBackend } from '../../../utils/methods.calculations';
 import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
 
@@ -109,9 +106,9 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         params: { height: '0px' },
     };
 
-    public selectedAuthorityAddress: AddressEntity;
-    public selectedAuthorityOrigin: AddressEntity;
-    public selectedAuthorityDestination: AddressEntity;
+    public selectedAuthorityAddress: AddressEntity | any;
+    public selectedAuthorityOrigin: AddressEntity | any;
+    public selectedAuthorityDestination: AddressEntity | any;
 
     public selectedViolationCustomer: any = null;
     public labelsViolationCustomer: any[] = [];
@@ -328,142 +325,108 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     private updateViolation(id: number) {
         const { ...form } = this.violationForm.value;
-
+        console.log(this.selectedAuthorityAddress);
         const newData: any = {
             id: id,
-            report: form.report,
-            categoryReport: form.categoryReport,
-            inspectionLevel: form.inspectionLevel,
-            hMInspectionType: form.hmInspectionType,
-            country: this.selectedCounty ? this.selectedCounty.id : null,
-            state: form.state,
-            startTime: form.startTime,
-            endTime: form.endTime,
-            date: form.date ? convertDateToBackend(form.date) : null,
-            driverId: null,
-            driverFullName: form.driverName,
-            driverLicenceNo: form.driverLicenceNumber,
-            driverState: form.driverState,
-            driverDateOfBirth: form.driverDOB
-                ? convertDateToBackend(form.driverDOB)
-                : null,
-            coDriverFullName: form.coDriverName,
-            coDriverLicenceNo: form.coDriverLicenceNumber,
-            coDriverState: form.coDriverState,
-            coDriverDateOfBirth: form.coDriverDOB
-                ? convertDateToBackend(form.coDriverDOB)
-                : null,
-            truckUnit: form.truck_Unit,
-            truckType: form.truck_Type,
-            truckMake: form.truck_Make,
-            truckPlateNo: form.truck_PlateNo,
-            truckState: form.truck_State,
-            truckVIN: form.truck_VIN,
-            trailerUnit: form.trailer_Unit,
-            trailerType: form.trailer_Type,
-            trailerMake: form.trailer_Make,
-            trailerPlateNo: form.trailer_PlateNo,
-            trailerState: form.trailer_State,
-            trailerVIN: form.trailer_VIN,
-            violations: this.premmapedViolations(), //ViolationCommand
+            county: this.selectedCounty ? this.selectedCounty.id : null,
+            violations: this.premmapedViolations(),
             note: form.note,
             policeDepartment: form.policeDepartment,
             policeOfficer: form.policeOfficer,
             badgeNo: form.badgeNo,
             addressCity: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.city
+                ? this.selectedAuthorityAddress.address.city
                 : null,
             addressState: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.state
+                ? this.selectedAuthorityAddress.address.state
                 : null,
             addressCounty: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.county
+                ? this.selectedAuthorityAddress.address.county
                 : null,
             addressAddress: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address
+                ? this.selectedAuthorityAddress.address.address
                 : null,
             addressStreet: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.street
+                ? this.selectedAuthorityAddress.address.street
                 : null,
             addressStreetNumber: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.streetNumber
+                ? this.selectedAuthorityAddress.address.streetNumber
                 : null,
             addressCountry: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.country
+                ? this.selectedAuthorityAddress.address.country
                 : null,
             addressZipCode: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.zipCode
+                ? this.selectedAuthorityAddress.address.zipCode
                 : null,
             addressStateShortName: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.stateShortName
+                ? this.selectedAuthorityAddress.address.stateShortName
                 : null,
             addressAddressUnit: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.addressUnit
+                ? this.selectedAuthorityAddress.address.addressUnit
                 : null,
             phone: form.phone,
             fax: form.fax,
-            facility: form.facility,
             highway: form.highway,
             milePost: form.milePost,
             originCity: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.city
+                ? this.selectedAuthorityOrigin.address.city
                 : null,
             originState: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.state
+                ? this.selectedAuthorityOrigin.address.state
                 : null,
             originCounty: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.county
+                ? this.selectedAuthorityOrigin.address.county
                 : null,
             originAddress: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address
+                ? this.selectedAuthorityOrigin.address.address
                 : null,
             originStreet: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.street
+                ? this.selectedAuthorityOrigin.address.street
                 : null,
             originStreetNumber: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.streetNumber
+                ? this.selectedAuthorityOrigin.address.streetNumber
                 : null,
             originCountry: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.country
+                ? this.selectedAuthorityOrigin.address.country
                 : null,
             originZipCode: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.zipCode
+                ? this.selectedAuthorityOrigin.address.zipCode
                 : null,
             originStateShortName: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.stateShortName
+                ? this.selectedAuthorityOrigin.address.stateShortName
                 : null,
             originAddressUnit: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.addressUnit
+                ? this.selectedAuthorityOrigin.address.addressUnit
                 : null,
             destinationCity: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.city
+                ? this.selectedAuthorityDestination.address.city
                 : null,
             destinationState: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.state
+                ? this.selectedAuthorityDestination.address.state
                 : null,
             destinationCounty: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.county
+                ? this.selectedAuthorityDestination.address.county
                 : null,
             destinationAddress: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address
+                ? this.selectedAuthorityDestination.address.address
                 : null,
             destinationStreet: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.street
+                ? this.selectedAuthorityDestination.address.street
                 : null,
             destinationStreetNumber: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.streetNumber
+                ? this.selectedAuthorityDestination.address.streetNumber
                 : null,
             destinationCountry: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.country
+                ? this.selectedAuthorityDestination.address.country
                 : null,
             destinationZipCode: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.zipCode
+                ? this.selectedAuthorityDestination.address.zipCode
                 : null,
             destinationStateShortName: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.stateShortName
+                ? this.selectedAuthorityDestination.address.stateShortName
                 : null,
             destinationAddressUnit: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.addressUnit
+                ? this.selectedAuthorityDestination.address.addressUnit
                 : null,
             brokerId: this.selectedViolationCustomer
                 ? this.selectedViolationCustomer.id
@@ -474,6 +437,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             files: [],
             filesForDeleteIds: [],
         };
+
+        console.log('udpate violation: ', newData);
 
         this.roadsideService
             .updateRoadside(newData)
@@ -571,12 +536,46 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
                     this.violationModalName = res.report;
 
+                    if (res.driver) {
+                        this.violationForm.patchValue({
+                            driverName: res.driver.firstName.concat(
+                                ' ',
+                                res.driver.lastName
+                            ),
+                            driverLicenceNumber: null,
+                            driverState: null,
+                            driverDOB: null,
+                        });
+                    }
+
+                    if (res.truck) {
+                        this.violationForm.patchValue({
+                            truck_Unit: res.truck.truckNumber,
+                            truck_Type: res.truck.truckType.name,
+                            truck_Make: res.truck.truckMake.name,
+                            truck_PlateNo: res.truck.licensePlate,
+                            truck_State: null,
+                            truck_VIN: res.truck.vin,
+                        });
+                    }
+
+                    if (res.trailer) {
+                        this.violationForm.patchValue({
+                            trailer_Unit: res.trailer.trailerNumber,
+                            trailer_Type: res.trailer.trailerType.name,
+                            trailer_Make: res.trailer.trailerMake.name,
+                            trailer_PlateNo: res.trailer.licensePlate,
+                            trailer_State: null,
+                            trailer_VIN: res.trailer.vin,
+                        });
+                    }
+
                     if (res.violations.length) {
                         for (let i = 0; i < res.violations.length; i++) {
                             this.violations.push(
                                 this.createViolation({
                                     code: res.violations[i].code,
-                                    category: res.violations[i].category,
+                                    category: res.violations[i].basic,
                                     unit: res.violations[i].unit,
                                     sw: res.violations[i].sw,
                                     oos: res.violations[i].oos,
@@ -658,9 +657,11 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                 oos: item.get('oos').value,
                 sms: item.get('sms').value,
                 description: item.get('description').value,
-                extraDescription: item
-                    .get('extraDescription')
-                    .value.replace(item.get('description').value, ''),
+                extraDescription: item.get('extraDescription').value
+                    ? item
+                          .get('extraDescription')
+                          .value.replace(item.get('description').value, '')
+                    : null,
                 basic: item.get('basic').value,
                 reason: item.get('reason').value,
             };
