@@ -23,7 +23,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
-import { TableType } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-truckassist-table-body',
@@ -58,11 +57,11 @@ export class TruckassistTableBodyComponent
     notPinedColumns: any = [];
     actionsColumns: any = [];
     actionsWidth: number = 0;
+    tableWidth: number = 0;
     mySelection: any[] = [];
     showItemDrop: number = -1;
     showScrollSectionBorder: boolean = false;
     activeTableData: any = {};
-    tableConfigurationType: TableType;
     notPinedMaxWidth: number = 0;
     dropContent: any[] = [];
     tooltip: any;
@@ -82,6 +81,30 @@ export class TruckassistTableBodyComponent
     statusDropdownData: any;
     showInspectinDescriptionEdit: boolean;
     editInspectinDescriptionText: string = '';
+    // tableTypes = [
+    //     { configType: 'LOAD_TEMPLATE', id: 1 },
+    //     { configType: 'LOAD_CLOSED', id: 2 },
+    //     { configType: 'LOAD_REGULAR', id: 3 },
+    //     { configType: 'BROKER', id: 4 },
+    //     { configType: 'SHIPPER', id: 5 },
+    //     { configType: 'DRIVER', id: 6 },
+    //     { configType: 'APPLICANT', id: 7 },
+    //     { configType: 'TRUCK', id: 8 },
+    //     { configType: 'TRAILER', id: 9 },
+    //     { configType: 'REPAIR_TRUCK', id: 10 },
+    //     { configType: 'REPAIR_TRAILER', id: 11 },
+    //     { configType: 'REPAIR_SHOP', id: 12 },
+    //     { configType: 'PM_TRUCK', id: 13 },
+    //     { configType: 'PM_TRAILER', id: 14 },
+    //     { configType: 'FUEL_TRANSACTION', id: 15 },
+    //     { configType: 'FUEL_STOP', id: 16 },
+    //     { configType: 'OWNER', id: 17 },
+    //     { configType: 'ACCOUNT', id: 18 },
+    //     { configType: 'CONTACT', id: 19 },
+    //     { configType: 'ROADSIDE_INSPECTION', id: 20 },
+    //     { configType: 'ACCIDENT', id: 21 },
+    //     { configType: 'USER', id: 22 },
+    // ];
 
     constructor(
         private router: Router,
@@ -95,22 +118,6 @@ export class TruckassistTableBodyComponent
     ngOnInit(): void {
         // Get Selected Tab Data
         this.getSelectedTabTableData();
-
-        // Get Table Configuration
-        // this.tableService
-        //   .getTableConfig(this.tableConfigurationType)
-        //   .pipe(takeUntil(this.destroy$))
-        //   .subscribe((res) => {
-        //     console.log('Get Table Config');
-        //     console.log(res);
-
-        //     const driverConfig = JSON.parse(res.config);
-
-        //     localStorage.setItem(
-        //       `table-${res.tableType}-Configuration`,
-        //       JSON.stringify(driverConfig)
-        //     );
-        //   });
 
         this.viewDataEmpty = this.viewData.length ? false : true;
 
@@ -194,10 +201,6 @@ export class TruckassistTableBodyComponent
                     this.getNotPinedMaxWidth();
                     this.getSelectedTabTableData();
                 }, 10);
-            }
-
-            if (changes.viewData.currentValue[0]) {
-                //this.detailsDataService.setNewData(changes.viewData.currentValue[0]);
             }
         }
 
@@ -295,8 +298,11 @@ export class TruckassistTableBodyComponent
         this.notPinedColumns = [];
         this.actionsColumns = [];
 
+        this.tableWidth = 0;
         this.pinedWidth = 0;
         this.actionsWidth = 0;
+
+        let notPinedWidth = 0;
 
         this.columns.map((c: any) => {
             // Pined
@@ -309,6 +315,8 @@ export class TruckassistTableBodyComponent
             // Not Pined
             if (!c.isPined && !c.isAction && !c.hidden) {
                 this.notPinedColumns.push(c);
+
+                notPinedWidth += c.minWidth > c.width ? c.minWidth : c.width;
             }
 
             // Actions
@@ -319,6 +327,9 @@ export class TruckassistTableBodyComponent
                     c.minWidth > c.width ? c.minWidth : c.width;
             }
         });
+
+        this.tableWidth =
+            this.actionsWidth + notPinedWidth + this.pinedWidth + 12;
     }
 
     // Get Tab Table Data For Selected Tab
@@ -327,9 +338,6 @@ export class TruckassistTableBodyComponent
             this.activeTableData = this.tableData.find(
                 (t) => t.field === this.selectedTab
             );
-
-            this.tableConfigurationType =
-                this.activeTableData.tableConfiguration;
         }
     }
 
@@ -459,6 +467,7 @@ export class TruckassistTableBodyComponent
     // Toggle Status Dropdown
     toggleStatusDropdown(tooltip: any, row: any) {
         this.statusTooltip = tooltip;
+
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {

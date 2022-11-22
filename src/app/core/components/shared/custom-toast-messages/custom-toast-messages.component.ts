@@ -196,6 +196,30 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'map',
             value: 'MAP',
         },
+        {
+            api: 'stop',
+            value: 'STOP',
+        },
+        {
+            api: 'insurancepolicy',
+            value: 'INSURANCE POLICY',
+        },
+        {
+            api: 'factoringcompany',
+            value: 'FACTORING COMPANY',
+        },
+        {
+            api: 'parking',
+            value: 'PARKING',
+        },
+        {
+            api: 'companyoffice',
+            value: 'OFFICE',
+        },
+        {
+            api: 'terminal',
+            value: 'TERMINAL',
+        },
     ];
     constructor(
         protected toastrService: ToastrService,
@@ -431,7 +455,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 if (this.httpRequest.body) {
                     let cdlNum = this.httpRequest.body.getAll('CdlNumber')[0]
                         ? this.httpRequest.body.getAll('CdlNumber')[0]
-                        : this.DetailsDataService.cdlNum;
+                        : this.DetailsDataService.cardMainTitle;
 
                     if (!this.httpRequest.body?.cdlNumber) {
                         let cdlId = lastVal;
@@ -810,6 +834,42 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'MAP':
                 let mapName = this.httpRequest.body.name;
                 this.message = mapName;
+                break;
+            case 'STOP':
+                let stopName = this.DetailsDataService.stopName
+                    ? this.DetailsDataService.stopName
+                    : '';
+                this.message = stopName;
+                break;
+            case 'INSURANCE POLICY':
+                let producerName = this.httpRequest.body?.producerName
+                    ? this.httpRequest.body?.producerName
+                    : this.DetailsDataService.cardMainTitle;
+                this.message = producerName;
+                break;
+            case 'FACTORING COMPANY':
+                let factoringCompanyName = this.httpRequest.body?.name
+                    ? this.httpRequest.body?.name
+                    : this.DetailsDataService.cardMainTitle;
+                this.message = factoringCompanyName;
+                break;
+            case 'PARKING':
+                let parkingName = this.httpRequest.body?.name
+                    ? this.httpRequest.body?.name
+                    : this.DetailsDataService.cardMainTitle;
+                this.message = parkingName;
+                break;
+            case 'OFFICE':
+                let officeName = this.httpRequest.body?.name
+                    ? this.httpRequest.body?.name
+                    : this.DetailsDataService.cardMainTitle;
+                this.message = officeName;
+                break;
+            case 'TERMINAL':
+                let terminalName = this.httpRequest.body?.name
+                    ? this.httpRequest.body?.name
+                    : this.DetailsDataService.cardMainTitle;
+                this.message = terminalName;
                 break;
         }
 

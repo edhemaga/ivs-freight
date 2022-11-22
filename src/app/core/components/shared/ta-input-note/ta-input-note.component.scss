@@ -10,7 +10,6 @@
         padding: 0 6px;
         margin: 4px 0px;
         height: 26px;
-        cursor: pointer;
 
         .note-label {
             font-weight: 800;
@@ -46,10 +45,13 @@
             transition: all 0.3s ease-in-out;
         }
 
-        &:hover {
-            .note-label {
-                color: #6c6c6c;
-                transition: all 0.3s ease-in-out;
+        &.hover_on {
+            cursor: pointer;
+            &:hover {
+                .note-label {
+                    color: #6c6c6c;
+                    transition: all 0.3s ease-in-out;
+                }
             }
         }
 

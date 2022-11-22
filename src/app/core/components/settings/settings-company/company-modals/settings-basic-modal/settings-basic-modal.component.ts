@@ -230,6 +230,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public selectedFleetType: string = null;
 
+    // Logo Actions
     public croppieOptions: Croppie.CroppieOptions = {
         enableExif: true,
         viewport: {
@@ -244,7 +245,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         enforceBoundary: false,
     };
 
-    // Logo Actions
     public displayDeleteAction: boolean = false;
     public displayUploadZone: boolean = false;
 
@@ -2136,28 +2136,26 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 }
             }
         }
+
+        if (this.companyForm.get('logo').value) {
+            this.displayDeleteAction = true;
+        }
     }
 
     public handleDeleteClick(event: any) {
         if (event.action === 'delete') {
             this.displayUploadZone = true;
-        }
 
-        this.displayDeleteAction = false;
+            this.companyForm.get('logo').patchValue(null);
+            this.companyForm.get('logo').setErrors(null);
+
+            this.displayDeleteAction = false;
+        }
     }
 
     public onSaveLogoAction(event: any) {
         if (event) {
             this.displayDeleteAction = true;
-        }
-    }
-
-    public onDeleteLogoAction(event: any) {
-        if (event) {
-            this.displayUploadZone = false;
-
-            this.companyForm.get('logo').patchValue(null);
-            this.companyForm.get('logo').setErrors(null);
         }
     }
 

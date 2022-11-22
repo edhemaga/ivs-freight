@@ -268,14 +268,7 @@ export class TruckassistTableHeadComponent
 
         this.columns.splice(currentIndex, 0, column[0]);
 
-        localStorage.setItem(
-            `table-${this.tableConfigurationType}-Configuration`,
-            JSON.stringify(this.columns)
-        );
-
-        this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
-
-        this.setVisibleColumns();
+        this.updateTableColumns();
     }
 
     // Rezaize
@@ -335,20 +328,20 @@ export class TruckassistTableHeadComponent
             }
         });
 
-        localStorage.setItem(
-            `table-${this.tableConfigurationType}-Configuration`,
-            JSON.stringify(this.columns)
-        );
-
-        this.setVisibleColumns();
-
-        this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+        this.updateTableColumns();
     }
 
     // Pin Column
     onPinColumn(column: any) {
         column.isPined = !column.isPined;
 
+        this.updateTableColumns();
+
+        this.changeDetectorRef.detectChanges();
+    }
+
+    // Update Table Columns
+    updateTableColumns() {
         localStorage.setItem(
             `table-${this.tableConfigurationType}-Configuration`,
             JSON.stringify(this.columns)
@@ -357,8 +350,6 @@ export class TruckassistTableHeadComponent
         this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
 
         this.setVisibleColumns();
-
-        this.changeDetectorRef.detectChanges();
     }
 
     // --------------------------------ON DESTROY---------------------------------

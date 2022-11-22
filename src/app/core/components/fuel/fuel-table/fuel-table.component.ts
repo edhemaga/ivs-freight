@@ -12,10 +12,9 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 import { AfterViewInit } from '@angular/core';
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { FuelQuery } from '../state/fule-state/fuel-state.query';
-import {
-    FuelStopListResponse,
-    FuelTransactionListResponse,
-} from 'appcoretruckassist';
+import { DatePipe } from '@angular/common';
+import { FuelStopListResponse } from '../../../../../../appcoretruckassist/model/fuelStopListResponse';
+import { FuelTransactionListResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionListResponse';
 
 @Component({
     selector: 'app-fuel-table',
@@ -71,6 +70,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private thousandSeparator: TaThousandSeparatorPipe,
+        public datePipe: DatePipe,
         private fuelQuery: FuelQuery
     ) {}
     ngOnInit(): void {
@@ -418,15 +418,93 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
-            this.viewData = td.data;
+            this.viewData = [...td.data];
 
             this.viewData = this.viewData.map((data) => {
-                data.isSelected = false;
-                return data;
+                return this.selectedTab === 'active'
+                    ? this.mapFuelTransactionsData(data)
+                    : this.mapFuelStopsData(data);
             });
         } else {
             this.viewData = [];
         }
+    }
+
+    mapFuelTransactionsData(data: any) {
+        return {
+            ...data,
+            isSelected: false,
+            tableTruckNumber: data?.truck?.truckNumber
+                ? data.truck.truckNumber
+                : '',
+            tableDriverName:
+                data?.driver?.firstName || data?.driver?.lastName
+                    ? data.driver.firstName + ' ' + data.driver.lastName
+                    : '',
+            tableFuelCardNumber: data?.fuelCard?.cardNumber
+                ? data.fuelCard.cardNumber
+                : '',
+            tableTransactionDate: data?.transactionDate
+                ? this.datePipe.transform(data.transactionDate, 'MM/dd/yy')
+                : '',
+            tableTransactionTime: 'Treba da se poveze',
+            tableFuelStopName: data?.fuelStopStore?.businessName
+                ? data.fuelStopStore.businessName
+                : '',
+            tableLocation: data?.fuelStopStore?.address?.address
+                ? data.fuelStopStore.address.address
+                : '',
+            fuelTableItem: data?.fuelItems
+                ? data.fuelItems
+                      .map((item) => item.category?.trim())
+                      .join(
+                          '<div class="description-dot-container"><span class="description-dot"></span></div>'
+                      )
+                : null,
+            descriptionItems: data?.fuelItems
+                ? data.fuelItems.map((item) => {
+                      return {
+                          ...item,
+                          descriptionPrice: item?.price
+                              ? '$' +
+                                this.thousandSeparator.transform(item.price)
+                              : '',
+                          descriptionTotalPrice: item?.subtotal
+                              ? '$' +
+                                this.thousandSeparator.transform(item.subtotal)
+                              : '',
+                          pmDescription: null,
+                      };
+                  })
+                : null,
+            tableQTY: 'Treba da se pogleda gde je property',
+            tbalePPG: 'Treba da se pogleda gde je property',
+            tableTotal: data?.total
+                ? '$ ' + this.thousandSeparator.transform(data.total)
+                : '',
+        };
+    }
+
+    mapFuelStopsData(data: any) {
+        return {
+            ...data,
+            isSelected: false,
+            tableName: data?.fuelStopFranchise?.businessName
+                ? data.fuelStopFranchise.businessName
+                : '',
+            tableStore: data?.store ? data.store : '',
+            tableAddress: data?.address?.address ? data.address.address : '',
+            tablePPG: data?.pricePerGallon ? data.pricePerGallon : '',
+            tableLast: data?.fuelStopExtensions[0]?.totalCost
+                ? data.fuelStopExtensions[0].totalCost
+                : '',
+            tableUsed: data?.fuelStopExtensions[0]?.lastUsed
+                ? data.fuelStopExtensions[0].lastUsed
+                : '',
+            tableTotalCost:
+                'Nema propery ili treba da se mapira iz fuelStopExtensions',
+            isFavorite: data.fuelStopExtensions[0].favourite,
+        };
     }
 
     onToolBarAction(event: any) {

@@ -9,8 +9,9 @@ export class DetailsDataService {
     public leftSideMenuChanges = this.leftSideMenuStatus.asObservable();
 
     public mainData: any;
-    public cdlNum: any;
+    public cardMainTitle: any;
     public leftMenuOpened: any = false;
+    public stopName: any;
 
     constructor() {}
 
@@ -32,8 +33,8 @@ export class DetailsDataService {
         }
     }
 
-    setCdlNum(mod) {
-        this.cdlNum = mod;
+    setCardMainTitle(mod) {
+        this.cardMainTitle = mod;
     }
 
     changeRateStatus(type, mod) {
@@ -42,5 +43,9 @@ export class DetailsDataService {
         } else {
             this.mainData.raiting.hasDislike = mod;
         }
+    }
+
+    setStopName(mod) {
+        this.stopName = mod;
     }
 }
