@@ -174,7 +174,7 @@ export class TruckassistTableBodyComponent
                     this.mySelection = [];
                 }
             });
-
+ 
         // Scrolling Virtual Container
         this.sharedService.emitTableScrolling
             .pipe(takeUntil(this.destroy$))

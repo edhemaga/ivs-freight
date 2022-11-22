@@ -202,6 +202,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
+                this.updateDataCount();
+                
                 // On Add Repair
                 if (res.animation === 'add' && this.selectedTab === res.tab) {
                     this.viewData.push(
@@ -219,8 +221,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         return repair;
                     });
-
-                    this.updateDataCount();
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
@@ -278,8 +278,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             return repair;
                         }
                     );
-
-                    this.updateDataCount();
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
