@@ -14,6 +14,7 @@ import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
 import { RepairTService } from '../../repair/state/repair.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
+import { FuelTService } from '../../fuel/state/fuel.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
@@ -125,6 +126,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         private mapsService: MapsService,
         private repairShopService: RepairTService,
         private shipperService: ShipperTService,
+        private fuelStopService: FuelTService,
         private notificationService: NotificationService
     ) {}
 
@@ -155,7 +157,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     public getMapInstance(map) {
         this.agmMap = map;
 
-        if (this.mapType == 'repairShop' || this.mapType == 'shipper') {
+        if (this.mapType == 'repairShop' || this.mapType == 'shipper' || this.mapType == 'fuelStop') {
             map.addListener('idle', (ev) => {
                 // update the coordinates here
 
@@ -194,6 +196,9 @@ export class MapsComponent implements OnInit, OnDestroy {
                         } else if (this.mapType == 'shipper') {
                             console.log('getShipper data.id', data.id);
                             this.getShipper(data.id, index);
+                        } else if (this.mapType == 'fuelStop') {
+                            console.log('getFuelStop data.id', data.id);
+                            this.getFuelStop(data.id, index);
                         }
                     } else {
                         data.isSelected = true;
@@ -618,7 +623,130 @@ export class MapsComponent implements OnInit, OnDestroy {
                     this.updateMapList.emit(mapListData);
                     // this.mapsService.updateMapList(mapListResponse);
                 });
+        } else if (this.mapType == 'fuelStop') {
+            this.fuelStopService
+                .getFuelStopClusters(clustersObj)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((clustersResponse: any) => {
+                    var clustersToShow = [];
+                    var markersToShow = [];
+                    var newMarkersAdded = false;
+                    console.log('clustersResponse', clustersResponse);
+
+                    clustersResponse.map((clusterItem) => {
+                        if (clusterItem.count > 1) {
+                            let clusterIndex = this.clusterMarkers.findIndex(
+                                (item) =>
+                                    item.latitude === clusterItem.latitude &&
+                                    item.longitude === clusterItem.longitude
+                            );
+
+                            console.log('clusterItem', clusterIndex);
+
+                            if (clusterIndex == -1) {
+                                this.clusterMarkers.push(clusterItem);
+                            }
+
+                            clustersToShow.push(clusterItem.latitude);
+                        } else {
+                            let markerIndex = this.viewData.findIndex(
+                                (item) => item.id === clusterItem.id
+                            );
+
+                            if (markerIndex == -1) {
+                                this.viewData.push(clusterItem);
+                                newMarkersAdded = true;
+                            }
+
+                            markersToShow.push(clusterItem.id);
+                        }
+                    });
+
+                    this.viewData.map((item) => {
+                        if (
+                            markersToShow.includes(item.id) &&
+                            !item.showMarker
+                        ) {
+                            item.showMarker = true;
+                        } else if (
+                            !markersToShow.includes(item.id) &&
+                            item.showMarker
+                        ) {
+                            item.showMarker = false;
+                        }
+                    });
+
+                    this.clusterMarkers.map((cluster) => {
+                        if (
+                            clustersToShow.includes(cluster.latitude) &&
+                            !cluster.showMarker
+                        ) {
+                            cluster.fadeIn = true;
+                            setTimeout(() => {
+                                cluster.fadeIn = false;
+                                this.ref.detectChanges();
+                            }, 200);
+
+                            cluster.showMarker = true;
+                        } else if (
+                            !clustersToShow.includes(cluster.latitude) &&
+                            cluster.showMarker
+                        ) {
+                            cluster.fadeOut = true;
+                            setTimeout(() => {
+                                cluster.fadeOut = false;
+                                cluster.showMarker = false;
+                                this.ref.detectChanges();
+                            }, 200);
+                        }
+                    });
+
+                    if (newMarkersAdded) this.markersDropAnimation();
+
+                    this.ref.detectChanges();
+                });
+
+            console.log('sortName', this.sortBy);
+            this.fuelStopService
+                .getFuelStopMapList(
+                    clustersObj.northEastLatitude,
+                    clustersObj.northEastLongitude,
+                    clustersObj.southWestLatitude,
+                    clustersObj.southWestLongitude,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null, //this.sortBy
+                    this.searchText
+                )
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((mapListResponse: any) => {
+                    console.log('shipper list', mapListResponse);
+                    console.log('shipper list clustersObj', clustersObj);
+                    console.log('shipper list sortBy', this.sortBy);
+                    console.log('shipper list searchText', this.searchText);
+
+                    var mapListData = { ...mapListResponse };
+                    mapListData.pagination.data.map((data) => {
+                        data.raiting = {
+                            hasLiked: data.currentCompanyUserRating === 1,
+                            hasDislike: data.currentCompanyUserRating === -1,
+                            likeCount: data?.upCount ? data.upCount : '0',
+                            dislikeCount: data?.downCount
+                                ? data.downCount
+                                : '0',
+                        };
+                    });
+
+                    mapListData.changedSort = changedSearchOrSort;
+
+                    this.updateMapList.emit(mapListData);
+                    // this.mapsService.updateMapList(mapListResponse);
+                });
         }
+        console.log('mapType', this.mapType);
     }
 
     clickedCluster(cluster) {
@@ -743,6 +871,38 @@ export class MapsComponent implements OnInit, OnDestroy {
             });
     }
 
+    getFuelStop(id, index) {
+        console.log('getFuelStop', id);
+        this.fuelStopService
+            .getFuelStopById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    this.viewData[index] = { ...this.viewData[index], ...res };
+
+                    console.log('get fuel stop', res);
+
+                    // this.viewData[index].raiting = {
+                    //     hasLiked: res.currentCompanyUserRating === 1,
+                    //     hasDislike: res.currentCompanyUserRating === -1,
+                    //     likeCount: res?.upCount ? res.upCount : '0',
+                    //     dislikeCount: res?.downCount ? res.downCount : '0',
+                    // };
+
+                    setTimeout(() => {
+                        this.viewData[index].isSelected = true;
+                        this.ref.detectChanges();
+                    }, 200);
+                },
+                error: () => {
+                    this.notificationService.error(
+                        `Cant' get shipper by ${id}`,
+                        'Error'
+                    );
+                },
+            });
+    }
+
     updateRef() {
         this.ref.detectChanges();
     }
@@ -789,6 +949,31 @@ export class MapsComponent implements OnInit, OnDestroy {
                             likeCount: res?.upCount ? res.upCount : '0',
                             dislikeCount: res?.downCount ? res.downCount : '0',
                         };
+
+                        this.ref.detectChanges();
+                    },
+                    error: () => {
+                        this.notificationService.error(
+                            `Cant' get shipper by ${item.id}`,
+                            'Error'
+                        );
+                    },
+                });
+        } else if (this.mapType == 'fuelStop') {
+            this.fuelStopService
+                .getFuelStopById(item.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res) => {
+                        cluster.detailedInfo = res;
+
+                        console.log('get fuel stop', res);
+                        // cluster.detailedInfo.raiting = {
+                        //     hasLiked: res.currentCompanyUserRating === 1,
+                        //     hasDislike: res.currentCompanyUserRating === -1,
+                        //     likeCount: res?.upCount ? res.upCount : '0',
+                        //     dislikeCount: res?.downCount ? res.downCount : '0',
+                        // };
 
                         this.ref.detectChanges();
                     },

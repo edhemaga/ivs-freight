@@ -4,6 +4,7 @@ import {
     FuelService,
     FuelStopListResponse,
     FuelTransactionListResponse,
+    ClusterResponse
 } from 'appcoretruckassist';
 
 import { Observable } from 'rxjs';
@@ -13,6 +14,7 @@ import { EditFuelStopCommand } from '../../../../../../appcoretruckassist/model/
 import { AddFuelStopCommand } from '../../../../../../appcoretruckassist/model/addFuelStopCommand';
 import { UpdateFuelStopCommand } from '../../../../../../appcoretruckassist/model/updateFuelStopCommand';
 import { FuelStore } from './fule-state/fuel-state.store';
+import { GetRepairShopClustersQuery } from 'appcoretruckassist/model/getRepairShopClustersQuery';
 
 @Injectable({
     providedIn: 'root',
@@ -149,6 +151,46 @@ export class FuelTService {
         return this.fuelService.apiFuelFuelstopCheckStoreFranchiseIdStoreGet(
             franchiseId,
             store
+        );
+    }
+
+    public getFuelStopClusters(
+        clustersQuery: GetRepairShopClustersQuery
+    ): Observable<Array<ClusterResponse>> {
+        return this.fuelService.apiFuelClustersGet(
+            clustersQuery.northEastLatitude,
+            clustersQuery.northEastLongitude,
+            clustersQuery.southWestLatitude,
+            clustersQuery.southWestLongitude,
+            clustersQuery.zoomLevel
+        );
+    }
+
+    public getFuelStopMapList(
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ) {
+        return this.fuelService.apiFuelListmapGet(
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
         );
     }
 }

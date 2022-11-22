@@ -32,16 +32,13 @@
     <div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
         <app-map-list
             [type]="'fuelStop'"
-            [sortTypes]="sortTypes"
             [columns]="columns"
-            [activeSortType]="activeSortType"
-            [mapListContent]="viewData"
-            (changeSortCategory)="changeSortCategory($event)"
-            (changeSortDirection)="changeSortDirection($event)"
-            (searchData)="searchStops($event)"
+            [mapListContent]="mapListData"
+            (headActions)="onTableHeadActions($event)"
         >
             <app-map-list-card
-                *ngFor="let latlong of viewData; let i = index"
+                *ngFor="let latlong of mapListData; let i = index"
+                #listCard
                 [title]="latlong?.businessName"
                 [isSelected]="latlong?.isSelected"
                 [status]="latlong?.status"
@@ -53,8 +50,6 @@
                     down: latlong?.downRatingCount
                 }"
                 [type]="'fuelStop'"
-                [sortCategory]="activeSortType"
-                [locationFilterOn]="locationFilterOn"
                 [dropdownActions]="tableOptions.actions"
                 (bodyActions)="onTableBodyActions($event)"
                 (clickedMarker)="selectItem(latlong.id)"
@@ -69,10 +64,11 @@
 
         <app-maps
             #mapsComponent
-            [_viewData]="viewData"
+            [_viewData]="[]"
             [dropdownActions]="tableOptions.actions"
             [mapType]="'fuelStop'"
             (callDropDownAction)="onTableBodyActions($event)"
+            (updateMapList)="updateMapList($event)"
         ></app-maps>
     </div>
 </div>
