@@ -566,8 +566,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.getMapList(companyUserId, 1, 4);
 
         this.tableData[this.selectedMapIndex].routes.map((item, index) => {
-          //this.calculateDistanceBetweenStops(index);
-          this.calculateRouteWidth(item);
+            //this.calculateDistanceBetweenStops(index);
+            this.calculateRouteWidth(item);
         });
 
         // Confirmation Subscribe
@@ -1658,9 +1658,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             //   this.tableData[this.selectedMapIndex].routes.length - 1
             // );
             this.calculateRouteWidth(
-              this.tableData[this.selectedMapIndex].routes[
-                this.tableData[this.selectedMapIndex].routes.length - 1
-              ]
+                this.tableData[this.selectedMapIndex].routes[
+                    this.tableData[this.selectedMapIndex].routes.length - 1
+                ]
             );
         }
     }
@@ -3006,9 +3006,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.showHideDuplicate();
 
         this.calculateRouteWidth(
-          this.tableData[this.selectedMapIndex].routes[
-            this.tableData[this.selectedMapIndex].routes.length - 1
-          ]
+            this.tableData[this.selectedMapIndex].routes[
+                this.tableData[this.selectedMapIndex].routes.length - 1
+            ]
         );
 
         this.tableData[this.selectedMapIndex].length =

@@ -19,14 +19,16 @@ export class TruckActiveResolver implements Resolve<TruckActiveState> {
     resolve(): Observable<TruckActiveState | boolean> {
         // Get Table Configuration
         // const sub = this.tableService.getTableConfig(8).subscribe((res) => {
-        //     const tableConfig = JSON.parse(res.config);
+        //     if (res?.config) {
+        //         const tableConfig = JSON.parse(res.config);
 
-        //     console.log('Pozvata getTableConfig metoda');
-
-        //     localStorage.setItem(
-        //         `table-${res.tableType}-Configuration`,
-        //         JSON.stringify(tableConfig)
-        //     );
+        //         if (tableConfig) {
+        //             localStorage.setItem(
+        //                 `table-${res.tableType}-Configuration`,
+        //                 JSON.stringify(tableConfig)
+        //             );
+        //         }
+        //     }
 
         //     sub.unsubscribe();
         // });
