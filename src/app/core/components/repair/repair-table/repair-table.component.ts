@@ -203,7 +203,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 this.updateDataCount();
-                
+
                 // On Add Repair
                 if (res.animation === 'add' && this.selectedTab === res.tab) {
                     this.viewData.push(

@@ -174,7 +174,7 @@ export class TruckassistTableBodyComponent
                     this.mySelection = [];
                 }
             });
- 
+
         // Scrolling Virtual Container
         this.sharedService.emitTableScrolling
             .pipe(takeUntil(this.destroy$))
@@ -467,7 +467,7 @@ export class TruckassistTableBodyComponent
     // Toggle Status Dropdown
     toggleStatusDropdown(tooltip: any, row: any) {
         this.statusTooltip = tooltip;
-        
+
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
