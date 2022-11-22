@@ -122,6 +122,27 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
             case 'close': {
+                if (this.editData?.canOpenModal) {
+                    switch (this.editData?.key) {
+                        case 'repair-modal': {
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: RepairOrderModalComponent,
+                                size: 'large',
+                                type: this.editData?.type,
+                                closing: 'fastest',
+                            });
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }
                 break;
             }
             case 'save': {
@@ -157,24 +178,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
             default: {
                 break;
-            }
-        }
-
-        if (this.editData?.canOpenModal) {
-            switch (this.editData?.key) {
-                case 'repair-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: { key: this.editData?.key, value: null },
-                        component: RepairOrderModalComponent,
-                        size: 'large',
-                        type: this.editData?.type,
-                    });
-                    break;
-                }
-                default: {
-                    break;
-                }
             }
         }
     }
@@ -411,6 +414,27 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         'Repair shop added',
                         'Success: '
                     );
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'repair-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: RepairOrderModalComponent,
+                                    size: 'large',
+                                    type: this.editData?.type,
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () => {
                     this.notificationService.error(

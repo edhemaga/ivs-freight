@@ -59,6 +59,7 @@ export class ModalService {
         component: any;
         size: string;
         type?: string;
+        closing?: 'fastest' | 'slowlest';
     }) {
         // Closing Modal and Open New One
         if (data.action === 'open') {
@@ -85,24 +86,29 @@ export class ModalService {
                 clearTimeout(timeout);
             }, 500);
         }
-
+        console.log('closing type: ', data?.closing);
         // Closing Modal and Open Old One
         if (data.action === 'close') {
-            const timeout = setTimeout(() => {
-                this.openModal(
-                    data.component,
-                    { size: data.size },
-                    {
-                        storageData:
-                            this.encryptionDecryptionService.getLocalStorage(
-                                data.payload.key
-                            ),
-                        type: data.type,
-                    }
-                );
-                this.encryptionDecryptionService.removeItem(data.payload.key);
-                clearTimeout(timeout);
-            }, 5000);
+            const timeout = setTimeout(
+                () => {
+                    this.openModal(
+                        data.component,
+                        { size: data.size },
+                        {
+                            storageData:
+                                this.encryptionDecryptionService.getLocalStorage(
+                                    data.payload.key
+                                ),
+                            type: data.type,
+                        }
+                    );
+                    this.encryptionDecryptionService.removeItem(
+                        data.payload.key
+                    );
+                    clearTimeout(timeout);
+                },
+                data?.closing === 'fastest' ? 500 : 3500
+            );
         }
     }
 

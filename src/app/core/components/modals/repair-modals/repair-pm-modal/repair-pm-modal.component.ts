@@ -216,6 +216,27 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
             case 'close': {
+                if (this.editData?.canOpenModal) {
+                    switch (this.editData?.key) {
+                        case 'repair-modal': {
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: RepairOrderModalComponent,
+                                size: 'large',
+                                type: this.editData?.type2,
+                                closing: 'fastest',
+                            });
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }
                 break;
             }
             case 'save': {
@@ -286,24 +307,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
             default: {
                 break;
-            }
-        }
-
-        if (this.editData?.canOpenModal) {
-            switch (this.editData?.key) {
-                case 'repair-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: { key: this.editData?.key, value: null },
-                        component: RepairOrderModalComponent,
-                        size: 'large',
-                        type: this.editData?.type2,
-                    });
-                    break;
-                }
-                default: {
-                    break;
-                }
             }
         }
     }
@@ -476,6 +479,27 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         'Successfully added PM Item in PM List',
                         'Success'
                     );
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'repair-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: RepairOrderModalComponent,
+                                    size: 'large',
+                                    type: this.editData?.type2,
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () => {
                     this.notificationService.error(
@@ -528,6 +552,27 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         'Successfully added PM Item in PM List',
                         'Success'
                     );
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'repair-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: RepairOrderModalComponent,
+                                    size: 'large',
+                                    type: this.editData?.type2,
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () => {
                     this.notificationService.error(
@@ -579,6 +624,28 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         'Successfully added PM Item in PM Unit List',
                         'Success'
                     );
+
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'repair-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: RepairOrderModalComponent,
+                                    size: 'large',
+                                    type: this.editData?.type2,
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () => {
                     this.notificationService.error(
@@ -630,6 +697,27 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         'Successfully added PM Item in PM List',
                         'Success'
                     );
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'repair-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: RepairOrderModalComponent,
+                                    size: 'large',
+                                    type: this.editData?.type2,
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () => {
                     this.notificationService.error(
