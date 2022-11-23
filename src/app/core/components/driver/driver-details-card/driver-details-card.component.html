@@ -189,6 +189,10 @@
                 [isCardOpen]="false"
                 *ngIf="driver.offDutyLocations.length"
                 [bodyTemplate]="'card'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '0px'
+                }"
                 class="item-cards"
             >
                 <div
@@ -222,7 +226,7 @@
                             >
                                 <svg-icon
                                     class="address-icon"
-                                    src="assets/svg/common/ic_address.svg"
+                                    src="assets/svg/common/off-duty-location-icon.svg"
                                 >
                                 </svg-icon>
                             </span>
