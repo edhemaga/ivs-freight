@@ -1,7 +1,7 @@
 <app-ta-modal
     [modalTitle]="editData?.type !== 'edit' ? 'Add User' : 'Edit User'"
     [editData]="editData"
-    [editName]="editData?.id"
+    [editName]="modalName"
     [isModalValid]="userForm.valid && isFormDirty"
     (action)="onModalAction($event)"
 >
@@ -150,7 +150,7 @@
                             </div>
                             <div class="col-5">
                                 <app-ta-input-dropdown
-                                    formControlName="mainOfficeId"
+                                    formControlName="companyOfficeId"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',
                                         type: 'text',
@@ -185,7 +185,7 @@
                             <div class="phone-extension">
                                 <div class="phone-field">
                                     <app-ta-input
-                                        formControlName="employePhone"
+                                        formControlName="phone"
                                         [inputConfig]="{
                                             name: 'Phone',
                                             type: 'text',
@@ -212,7 +212,7 @@
                                 </div>
                                 <app-ta-input
                                     *ngIf="isPhoneExtExist"
-                                    formControlName="employePhoneExt"
+                                    formControlName="extensionPhone"
                                     [inputConfig]="{
                                         name: 'phone-extension',
                                         type: 'text',
@@ -225,7 +225,7 @@
                             </div>
                             <div class="email-field">
                                 <app-ta-input
-                                    formControlName="employeEmail"
+                                    formControlName="email"
                                     [inputConfig]="{
                                         name: 'Email',
                                         type: 'text',
@@ -245,11 +245,11 @@
                         <div
                             class="checkbox-card-header"
                             [ngClass]="{
-                                pointer: userForm.get('isIncludePayroll').value
+                                pointer: userForm.get('includeInPayroll').value
                             }"
                         >
                             <app-ta-checkbox
-                                formControlName="isIncludePayroll"
+                                formControlName="includeInPayroll"
                                 [label]="'Include in Payroll'"
                             ></app-ta-checkbox>
                             <svg-icon
@@ -257,7 +257,7 @@
                                 src="assets/svg/common/ic_arrow_down_updated.svg"
                                 [ngClass]="{
                                     visible:
-                                        userForm.get('isIncludePayroll').value,
+                                        userForm.get('includeInPayroll').value,
                                     rotate: !payrollCheckboxCard
                                 }"
                                 (click)="toggleCheckboxCard()"
@@ -265,12 +265,12 @@
                         </div>
                         <div
                             *ngIf="
-                                userForm.get('isIncludePayroll').value &&
+                                userForm.get('includeInPayroll').value &&
                                 payrollCheckboxCard
                             "
                             class="checkbox-card-body"
                             [ngClass]="{
-                                active: userForm.get('isIncludePayroll').value
+                                active: userForm.get('includeInPayroll').value
                             }"
                         >
                             <!-- [canAddNew]="true" -->
@@ -390,7 +390,7 @@
                                 class="custom-bank-row last-row"
                                 [ngClass]="{
                                     'no-m-bottom':
-                                        !userForm.get('isIncludePayroll').value
+                                        !userForm.get('includeInPayroll').value
                                 }"
                             >
                                 <div class="bank-field">

@@ -32,6 +32,16 @@ import { CompanyUserModalResponse } from '../../../../../../appcoretruckassist/m
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsOfficeModalComponent } from '../../settings/settings-location/location-modals/settings-office-modal/settings-office-modal.component';
 import { Options } from 'ng5-slider';
+import { CreateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/createCompanyUserCommand';
+import { CompanyUserResponse } from '../../../../../../appcoretruckassist/model/companyUserResponse';
+import {
+    convertNumberInThousandSep,
+    convertDateFromBackend,
+} from '../../../utils/methods.calculations';
+import {
+    convertThousanSepInNumber,
+    convertDateToBackend,
+} from '../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-user-modal',
@@ -113,14 +123,22 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public selectedPayment: any = null;
     public selectedAddress: AddressEntity = null;
 
+    public selectedUserType: any = null;
+
+    public selectedUserAdmin: any = this.typeOfEmploye[0];
+    public selectedW21099: any = this.typeOfPayroll[0];
+
     public isPhoneExtExist: boolean = false;
     public isBankSelected: boolean = false;
 
     public isFormDirty: boolean;
 
     public isPaymentTypeAvailable: boolean = false;
+
     public allowOnlyCommission: boolean = false;
     public allowPairCommissionBase: boolean = false;
+
+    public modalName: string = null;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -155,21 +173,22 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 null,
                 [Validators.required, ...departmentValidation],
             ],
-            mainOfficeId: [null],
+            companyOfficeId: [null],
             userType: [null],
-            employePhone: [null, [phoneFaxRegex, Validators.required]],
-            employePhoneExt: [null, [...phoneExtension]],
-            employeEmail: [null, [Validators.required]],
-            isIncludePayroll: [false],
+            isAdmin: [false],
+            phone: [null, [phoneFaxRegex, Validators.required]],
+            extensionPhone: [null, [...phoneExtension]],
+            email: [null, [Validators.required]],
+            includeInPayroll: [false],
             paymentType: [null],
-            startDate: [null],
-            payrollType: [null],
             salary: [null, salaryValidation],
-            base: [null],
-            commission: [null],
+            startDate: [null],
+            is1099: [null],
             bankId: [null, [...bankValidation]],
             routingNumber: [null, routingBankValidation],
             accountNumber: [null, accountBankValidation],
+            base: [null],
+            commission: [null],
             note: [null],
         });
 
@@ -188,7 +207,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         );
 
         this.inputService.customInputValidator(
-            this.userForm.get('employeEmail'),
+            this.userForm.get('email'),
             'email',
             this.destroy$
         );
@@ -293,11 +312,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
 
     public onSelectedTab(event: any, action: String) {
+        console.log('ldkd: ', event);
         switch (action) {
             case 'user-admin': {
+                this.selectedUserAdmin = event;
                 break;
             }
             case '1099-w2': {
+                this.selectedW21099 = event;
                 break;
             }
             default: {
@@ -310,11 +332,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
         switch (action) {
             case 'department': {
                 this.selectedDepartment = event;
-                console.log('department: ', this.selectedDepartment);
 
                 if (
                     ['Dispatch', 'Manager'].includes(
-                        this.selectedDepartment.name
+                        this.selectedDepartment?.name
                     )
                 ) {
                     this.isPaymentTypeAvailable = true;
@@ -328,6 +349,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.paymentOptions = [];
                     this.allowOnlyCommission = false;
                     this.allowPairCommissionBase = false;
+                    this.userForm.get('paymentType').reset();
+                    this.selectedPayment = null;
                 }
                 break;
             }
@@ -361,13 +384,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 this.selectedPayment = event;
 
                 this.allowOnlyCommission = ['Load %', 'Revenue %'].includes(
-                    this.selectedPayment.name
+                    this.selectedPayment?.name
                 );
 
                 this.allowPairCommissionBase = [
                     'Base + Load %',
                     'Base + Revenue %',
-                ].includes(this.selectedPayment.name);
+                ].includes(this.selectedPayment?.name);
 
                 break;
             }
@@ -379,11 +402,131 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     private updateUser(id: number) {}
 
-    private addUser() {}
+    private addUser() {
+        const {
+            addressUnit,
+            includeInPayroll,
+            salary,
+            startDate,
+            base,
+            commission,
+            ...form
+        } = this.userForm.value;
+        const newData: CreateCompanyUserCommand = {
+            ...form,
+            address: {
+                ...this.selectedAddress,
+                addressUnit: addressUnit,
+            },
+            departmentId: this.selectedDepartment
+                ? this.selectedDepartment.id
+                : null,
+            companyOfficeId: this.selectedOffice
+                ? this.selectedOffice.id
+                : null,
+            userType: null,
+            isAdmin: this.selectedUserAdmin
+                ? this.selectedUserAdmin.name === 'Admin'
+                    ? true
+                    : false
+                : false,
+            includeInPayroll: includeInPayroll,
+            paymentType: this.selectedPayment ? this.selectedPayment.id : null,
+            salary: salary ? convertThousanSepInNumber(salary) : null,
+            startDate: startDate ? convertDateToBackend(startDate) : null,
+            is1099: this.selectedW21099
+                ? this.selectedW21099.name === '1099'
+                    ? true
+                    : false
+                : false,
+            bankId: this.selectedBank ? this.selectedBank.id : null,
+            base: base ? convertThousanSepInNumber(base) : null,
+            commission: commission ? parseFloat(commission) : null,
+        };
+        this.userService
+            .addUser(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success(
+                        'Successfully created user.',
+                        'Success'
+                    );
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
+    }
 
     private deleteUserById(id: number) {}
 
-    private getUserById(id: number) {}
+    private getUserById(id: number) {
+        this.userService
+            .getUserByid(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: CompanyUserResponse) => {
+                    console.log(res);
+                    this.userForm.patchValue({
+                        firstName: res.firstName,
+                        lastName: res.lastName,
+                        address: res.address?.address,
+                        addressUnit: res.address?.addressUnit,
+                        personalPhone: res.personalPhone,
+                        personalEmail: res.personalEmail,
+                        departmentId: res.department
+                            ? res.department.name
+                            : null,
+                        companyOfficeId: res.companyOffice
+                            ? res.companyOffice.name
+                            : null,
+                        userType: res.userType ? res.userType.name : null,
+                        isAdmin: res.isAdmin,
+                        phone: res.phone,
+                        extensionPhone: res.extensionPhone,
+                        email: res.email,
+                        includeInPayroll: res.includeInPayroll ? true : false,
+                        paymentType: null,
+                        salary: res.salary
+                            ? convertNumberInThousandSep(res.salary)
+                            : null,
+                        startDate: res.startDate
+                            ? convertDateFromBackend(res.startDate)
+                            : null,
+                        is1099: res.is1099,
+                        bankId: res.bank ? res.bank.name : null,
+                        routingNumber: res.routingNumber,
+                        accountNumber: res.accountNumber,
+                        base: res.base
+                            ? convertNumberInThousandSep(res.base)
+                            : null,
+                        commission: res.commission,
+                        note: res.note,
+                    });
+
+                    this.selectedAddress = res.address;
+                    this.selectedDepartment = res.department;
+                    this.selectedOffice = res.companyOffice;
+                    this.selectedUserType = res.userType;
+
+                    this.selectedUserAdmin = res.isAdmin
+                        ? this.typeOfEmploye[1]
+                        : this.typeOfEmploye[0];
+
+                    this.selectedW21099 = res.is1099
+                        ? this.typeOfPayroll[0]
+                        : this.typeOfPayroll[1];
+
+                    this.selectedBank = res.bank;
+
+                    this.modalName = res.firstName?.concat(' ', res.lastName);
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
+    }
 
     private getModalDropdowns() {
         this.userService
@@ -391,7 +534,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CompanyUserModalResponse) => {
-                    console.log('modal get: ', res);
+                    console.log('drop: ', res);
                     this.departments = res.departments;
                     this.labelsBank = res.banks;
                     this.offices = res.officeShortResponses;
