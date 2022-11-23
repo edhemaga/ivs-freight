@@ -168,7 +168,18 @@
             <app-ta-custom-card
                 [cardName]="'Additional Details'"
                 [bodyTemplate]="'card'"
-                [isCardOpen]="true"
+                [isCardOpen]="companyData?.ifta || 
+                            companyData?.irp || 
+                            companyData?.toll || 
+                            companyData?.scac || 
+                            companyData?.timeZone?.name || 
+                            companyData?.currency?.name ? true : false"
+                [disabledCard]=" companyData?.ifta || 
+                                companyData?.irp || 
+                                companyData?.toll || 
+                                companyData?.scac || 
+                                companyData?.timeZone?.name || 
+                                companyData?.currency?.name ? false : true"
             >
                 <div class="additional-template-data">
                     <div class="additional-template-item" *ngIf="companyData?.ifta">
