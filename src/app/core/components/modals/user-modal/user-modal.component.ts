@@ -19,7 +19,7 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { AddressEntity, CreateResponse } from 'appcoretruckassist';
+import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
 import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
@@ -34,6 +34,7 @@ import { SettingsOfficeModalComponent } from '../../settings/settings-location/l
 import { Options } from 'ng5-slider';
 import { CreateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/createCompanyUserCommand';
 import { CompanyUserResponse } from '../../../../../../appcoretruckassist/model/companyUserResponse';
+import { UpdateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/updateCompanyUserCommand';
 import {
     convertNumberInThousandSep,
     convertDateFromBackend,
@@ -42,6 +43,7 @@ import {
     convertThousanSepInNumber,
     convertDateToBackend,
 } from '../../../utils/methods.calculations';
+import { HttpResponseBase } from '@angular/common/http';
 
 @Component({
     selector: 'app-user-modal',
@@ -80,6 +82,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
             id: 4,
             name: 'Admin',
             checked: false,
+        },
+    ];
+
+    public ownerType = [
+        {
+            id: 10,
+            name: 'Owner',
+            checked: true,
         },
     ];
 
@@ -123,7 +133,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public selectedPayment: any = null;
     public selectedAddress: AddressEntity = null;
 
-    public selectedUserType: any = null;
+    public selectedUserType: EnumValue = null;
 
     public selectedUserAdmin: any = this.typeOfEmploye[0];
     public selectedW21099: any = this.typeOfPayroll[0];
@@ -138,7 +148,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public allowOnlyCommission: boolean = false;
     public allowPairCommissionBase: boolean = false;
 
-    public modalName: string = null;
+    public userFullName: string = null;
+
+    public userStatus: boolean = true;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -167,7 +179,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             lastName: [null, [Validators.required, ...lastNameValidation]],
             address: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            personalPhone: [null, [phoneFaxRegex, Validators.required]],
+            personalPhone: [null, [phoneFaxRegex]],
             personalEmail: [null],
             departmentId: [
                 null,
@@ -176,7 +188,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             companyOfficeId: [null],
             userType: [null],
             isAdmin: [false],
-            phone: [null, [phoneFaxRegex, Validators.required]],
+            phone: [null, [phoneFaxRegex]],
             extensionPhone: [null, [...phoneExtension]],
             email: [null, [Validators.required]],
             includeInPayroll: [false],
@@ -238,6 +250,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
+            case 'deactivate': {
+                if (this.editData) {
+                    this.updateUserStatus(this.editData.id, data);
+                }
+                break;
+            }
+
             case 'delete': {
                 if (this.editData) {
                     this.deleteUserById(this.editData.id);
@@ -311,8 +330,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSelectedTab(event: any, action: String) {
-        console.log('ldkd: ', event);
+    public onSelectedTab(event: any, action: string) {
         switch (action) {
             case 'user-admin': {
                 this.selectedUserAdmin = event;
@@ -400,7 +418,69 @@ export class UserModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private updateUser(id: number) {}
+    private updateUser(id: number) {
+        const {
+            addressUnit,
+            includeInPayroll,
+            salary,
+            startDate,
+            base,
+            commission,
+            ...form
+        } = this.userForm.value;
+
+        const newData: UpdateCompanyUserCommand = {
+            id: id,
+            ...form,
+            address: {
+                ...this.selectedAddress,
+                addressUnit: addressUnit,
+            },
+            departmentId: this.selectedDepartment
+                ? this.selectedDepartment.id
+                : null,
+            companyOfficeId: this.selectedOffice
+                ? this.selectedOffice.id
+                : null,
+            userType: this.selectedUserType
+                ? this.selectedUserType.name === 'Owner'
+                    ? this.selectedUserType.id
+                    : 0
+                : 0,
+            isAdmin: this.selectedUserAdmin
+                ? this.selectedUserAdmin.name === 'Admin'
+                    ? true
+                    : false
+                : false,
+            includeInPayroll: includeInPayroll,
+            paymentType: this.selectedPayment ? this.selectedPayment.id : null,
+            salary: salary ? convertThousanSepInNumber(salary) : null,
+            startDate: startDate ? convertDateToBackend(startDate) : null,
+            is1099: this.selectedW21099
+                ? this.selectedW21099.name === '1099'
+                    ? true
+                    : false
+                : false,
+            bankId: this.selectedBank ? this.selectedBank.id : null,
+            base: base ? convertThousanSepInNumber(base) : null,
+            commission: commission ? parseFloat(commission) : null,
+        };
+
+        this.userService
+            .updateUser(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success(
+                        'Successfully created user.',
+                        'Success'
+                    );
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
+    }
 
     private addUser() {
         const {
@@ -459,7 +539,22 @@ export class UserModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteUserById(id: number) {}
+    private deleteUserById(id: number) {
+        this.userService
+            .deleteUserById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success(
+                        'Successfully deleted user.',
+                        'Success'
+                    );
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
+    }
 
     private getUserById(id: number) {
         this.userService
@@ -487,7 +582,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         extensionPhone: res.extensionPhone,
                         email: res.email,
                         includeInPayroll: res.includeInPayroll ? true : false,
-                        paymentType: null,
+                        paymentType: res.paymentType
+                            ? res.paymentType.name
+                            : null,
                         salary: res.salary
                             ? convertNumberInThousandSep(res.salary)
                             : null,
@@ -509,21 +606,89 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.selectedDepartment = res.department;
                     this.selectedOffice = res.companyOffice;
                     this.selectedUserType = res.userType;
+                    this.selectedPayment = res.paymentType;
+                    console.log('user status: ', res.status);
+                    this.userStatus = res.status !== 1;
 
-                    this.selectedUserAdmin = res.isAdmin
-                        ? this.typeOfEmploye[1]
-                        : this.typeOfEmploye[0];
+                    this.typeOfEmploye = this.typeOfEmploye.map(
+                        (item, index) => {
+                            return {
+                                ...item,
+                                checked: res.isAdmin && index === 1,
+                            };
+                        }
+                    );
 
-                    this.selectedW21099 = res.is1099
-                        ? this.typeOfPayroll[0]
-                        : this.typeOfPayroll[1];
+                    this.typeOfPayroll = this.typeOfPayroll.map(
+                        (item, index) => {
+                            return {
+                                ...item,
+                                checked: !res.is1099 && index === 1,
+                            };
+                        }
+                    );
+
+                    this.onSelectedTab(
+                        res.isAdmin
+                            ? this.typeOfEmploye[1]
+                            : this.typeOfEmploye[0],
+                        'user-admin'
+                    );
+
+                    this.onSelectedTab(
+                        res.is1099
+                            ? this.typeOfPayroll[0]
+                            : this.typeOfPayroll[1],
+                        '1099-w2'
+                    );
 
                     this.selectedBank = res.bank;
 
-                    this.modalName = res.firstName?.concat(' ', res.lastName);
+                    this.userFullName = res.firstName?.concat(
+                        ' ',
+                        res.lastName
+                    );
+
+                    this.isPhoneExtExist = !!res.extensionPhone;
                 },
                 error: (error: any) => {
                     this.notificationService.error(error, 'Error');
+                },
+            });
+    }
+
+    private updateUserStatus(
+        id: number,
+        data: { action: string; bool: boolean }
+    ) {
+        let successMessage = `"${this.userFullName}" ${
+            data.action === 'deactivate' ? 'Deactivated' : 'Activated'
+        }`;
+        let errorMessage = `Failed to ${
+            data.action === 'deactivate' ? 'Deactivate' : 'Activate'
+        } "${this.userFullName}"`;
+
+        this.userService
+            .updateUserStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: HttpResponseBase) => {
+                    if (res.status === 200 || res.status === 204) {
+                        this.userStatus = !this.userStatus;
+
+                        this.modalService.changeModalStatus({
+                            name: 'deactivate',
+                            status: this.userStatus,
+                        });
+
+                        this.notificationService.success(
+                            successMessage,
+                            'Success'
+                        );
+                    }
+                },
+                error: () => {
+                    this.notificationService.error(errorMessage, 'Error');
                 },
             });
     }
