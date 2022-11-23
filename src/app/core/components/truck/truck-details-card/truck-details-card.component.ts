@@ -223,14 +223,14 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public barChartLegend: any[] = [
         {
             title: 'Miles Per Gallon',
-            value: 0,
+            value: 5830,
             image: 'assets/svg/common/round_yellow.svg',
             sufix: 'mi',
             elementId: 1,
         },
         {
             title: 'Revenue',
-            value: 0,
+            value: 19402,
             image: 'assets/svg/common/round_blue.svg',
             prefix: '$',
             elementId: 0,
