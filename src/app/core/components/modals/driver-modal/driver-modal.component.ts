@@ -1091,9 +1091,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             pushNotificationPayroll,
             smsNotificationPayroll,
             mvrExpiration,
-            address,
             addressUnit,
-            bussinesName,
             ...form
         } = this.driverForm.value;
 
@@ -1474,9 +1472,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             pushNotificationPayroll,
             smsNotificationPayroll,
 
-            address,
             addressUnit,
-            bussinesName,
             ...form
         } = this.driverForm.value;
 
@@ -1504,7 +1500,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     : this.driverForm.get('bussinesName').value,
             address: {
                 ...this.selectedAddress,
-                addressUnit: this.driverForm.get('addressUnit').value,
+                addressUnit: addressUnit,
             },
             bankId: this.selectedBank ? this.selectedBank.id : null,
             payType: this.selectedPayType ? this.selectedPayType.id : null,

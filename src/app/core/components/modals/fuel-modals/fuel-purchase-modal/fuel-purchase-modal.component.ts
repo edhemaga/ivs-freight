@@ -468,7 +468,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .get(formControlName)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
-                switchMap((value) => {
+                switchMap(() => {
                     if (
                         this.selectedTruckType &&
                         this.fuelForm.get('transactionDate').value

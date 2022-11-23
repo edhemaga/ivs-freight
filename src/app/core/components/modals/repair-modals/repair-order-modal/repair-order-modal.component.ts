@@ -612,7 +612,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepair() {
-        const { repairShopId, items, date, unit, odometer, invoice, ...form } =
+        const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
         let newData: CreateRepairCommand = null;
@@ -690,7 +690,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepair(id: number) {
-        const { repairShopId, items, date, unit, odometer, invoice, ...form } =
+        const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
         let newData: UpdateRepairCommand = null;

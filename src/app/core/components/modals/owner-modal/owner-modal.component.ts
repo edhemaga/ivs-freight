@@ -337,7 +337,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             lastName,
             ssn,
             ein,
-            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
@@ -402,7 +401,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             lastName,
             ssn,
             ein,
-            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
