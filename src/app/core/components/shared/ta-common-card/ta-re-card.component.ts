@@ -129,7 +129,6 @@ export class TaReCardComponent implements OnInit {
         ) {
             this.isCardOpen = false;
             this.animationStarted = false;
-            console.log('--here---', this.animationStarted)
         }
     }
 

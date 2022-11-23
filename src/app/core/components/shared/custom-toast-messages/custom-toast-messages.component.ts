@@ -825,6 +825,49 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     let noteTrailerNum =
                         this.DetailsDataService.mainData?.trailerNumber;
                     noteName = 'Trailer - ' + noteTrailerNum;
+                } else if ( this.httpRequest.body.entityTypeNote == 'Test' ) {
+                    let testId = this.httpRequest.body?.entityId;
+                    let testDate;
+
+                    this.DetailsDataService?.mainData?.tests.map((item) => {
+                        if ( item.id ==  testId ) {
+                            testDate = moment(item.testingDate).format('MM/DD/YY')
+                        }
+                    })
+                    noteName = 'Test - ' + testDate;
+
+                } else if ( this.httpRequest.body.entityTypeNote == 'Cdl' ) {
+
+                    let noteCdlId = this.httpRequest.body?.entityId;
+                    let noteCdlNum;
+
+                    this.DetailsDataService?.mainData?.cdls.map((item) => {
+                        if ( item.id ==  noteCdlId ) {
+                            noteCdlNum = item.cdlNumber;
+                        }
+                    })
+                    noteName = 'Cdl - ' + noteCdlNum;
+                } else if ( this.httpRequest.body.entityTypeNote == 'Medical' ) {
+
+                    let noteMedicalId = this.httpRequest.body?.entityId;
+                    let noteMedicalDate;
+                    this.DetailsDataService?.mainData?.medicals.map((item) => {
+                        if ( item.id ==  noteMedicalId ) {
+                            noteMedicalDate = moment(item.issueDate).format('MM/DD/YY')
+                        }
+                    })
+
+                    noteName = 'Medical - ' + noteMedicalDate;
+                } else if ( this.httpRequest.body.entityTypeNote == 'Mvr' ) {
+                    let noteMvrId = this.httpRequest.body?.entityId;
+                    let noteMvrDate;
+                  
+                    this.DetailsDataService?.mainData?.mvrs.map((item) => {
+                        if ( item.id ==  noteMvrId ) {
+                            noteMvrDate = moment(item.issueDate).format('MM/DD/YY')
+                        }
+                    })
+                    noteName = 'Medical - ' + noteMvrDate;
                 }
 
                 this.message = noteName;
