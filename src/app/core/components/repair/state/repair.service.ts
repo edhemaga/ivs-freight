@@ -277,6 +277,7 @@ export class RepairTService implements OnDestroy {
                                 localStorage.getItem('repairShopTableCount')
                             );
                             repairShopCount.repairShops++;
+
                             localStorage.setItem(
                                 'repairShopTableCount',
                                 JSON.stringify({

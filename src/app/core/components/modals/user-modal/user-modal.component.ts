@@ -26,6 +26,12 @@ import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { FormService } from '../../../services/form/form.service';
+import { UserTService } from '../../user/state/user.service';
+import { CompanyUserModalResponse } from '../../../../../../appcoretruckassist/model/companyUserModalResponse';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SettingsOfficeModalComponent } from '../../settings/settings-location/location-modals/settings-office-modal/settings-office-modal.component';
+import { Options } from 'ng5-slider';
 
 @Component({
     selector: 'app-user-modal',
@@ -37,6 +43,7 @@ import { NotificationService } from '../../../services/notification/notification
 })
 export class UserModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+
     @Input() editData: any;
 
     public userForm: FormGroup;
@@ -53,23 +60,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
         },
     ];
 
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
-
     public typeOfEmploye = [
         {
-            id: 998,
-            label: 'employe',
-            value: 'user',
+            id: 3,
             name: 'User',
             checked: true,
         },
         {
-            id: 999,
-            label: 'employe',
-            value: 'admin',
+            id: 4,
             name: 'Admin',
             checked: false,
         },
@@ -77,49 +75,71 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     public typeOfPayroll = [
         {
-            id: 300,
-            label: 'payroll',
-            value: '1099',
+            id: 5,
             name: '1099',
             checked: true,
         },
         {
-            id: 301,
-            label: 'payroll',
-            value: 'W-2',
+            id: 6,
             name: 'W-2',
             checked: false,
         },
     ];
+
+    public animationObject = {
+        value: this.selectedTab,
+        params: { height: '0px' },
+    };
+
+    public commissionOptions: Options = {
+        floor: 2.5,
+        ceil: 25,
+        step: 0.5,
+        showSelectionBar: true,
+        hideLimitLabels: true,
+    };
+
     public labelsBank: any[] = [];
     public departments: any[] = [];
     public offices: any[] = [];
+    public paymentOptions: any[] = [];
+
+    public helperForManagers: any[] = [];
+    public heleperForDispatchers: any[] = [];
 
     public selectedDepartment: any = null;
     public selectedOffice: any = null;
     public selectedBank: any = null;
-
+    public selectedPayment: any = null;
     public selectedAddress: AddressEntity = null;
-    public isPhoneExtExist: boolean = false;
 
+    public isPhoneExtExist: boolean = false;
     public isBankSelected: boolean = false;
 
-    public isDirty: boolean;
+    public isFormDirty: boolean;
+
+    public isPaymentTypeAvailable: boolean = false;
+    public allowOnlyCommission: boolean = false;
+    public allowPairCommissionBase: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
+        private userService: UserTService,
         private bankVerificationService: BankVerificationService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
         this.createForm();
+        this.getModalDropdowns();
         this.onBankSelected();
 
         if (this.editData) {
-            this.editUserById(this.editData.id);
+            this.getUserById(this.editData.id);
         }
     }
 
@@ -141,14 +161,25 @@ export class UserModalComponent implements OnInit, OnDestroy {
             employePhoneExt: [null, [...phoneExtension]],
             employeEmail: [null, [Validators.required]],
             isIncludePayroll: [false],
-            salary: [null, salaryValidation],
+            paymentType: [null],
             startDate: [null],
             payrollType: [null],
+            salary: [null, salaryValidation],
+            base: [null],
+            commission: [null],
             bankId: [null, [...bankValidation]],
             routingNumber: [null, routingBankValidation],
             accountNumber: [null, accountBankValidation],
             note: [null],
         });
+
+        this.formService.checkFormChange(this.userForm);
+
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
 
         this.inputService.customInputValidator(
             this.userForm.get('personalEmail'),
@@ -169,7 +200,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'save': {
-                if (this.userForm.invalid) {
+                if (this.userForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.userForm);
                     return;
                 }
@@ -234,33 +265,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onTypeOfEmploye(event: any) {}
-
-    public onTypeOfPayroll(event: any) {}
-
-    public onSelectDropdown(event: any, action: string) {
-        switch (action) {
-            case 'department': {
-                this.selectedDepartment = event;
-                break;
-            }
-            case 'office': {
-                this.selectedOffice = event;
-                break;
-            }
-            case 'bank': {
-                this.selectedBank = event;
-                if (!event) {
-                    this.userForm.get('bankId').patchValue(null);
-                }
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
     public onSaveNewBank(bank: { data: any; action: string }) {
         this.selectedBank = bank.data;
 
@@ -288,13 +292,117 @@ export class UserModalComponent implements OnInit, OnDestroy {
             });
     }
 
+    public onSelectedTab(event: any, action: String) {
+        switch (action) {
+            case 'user-admin': {
+                break;
+            }
+            case '1099-w2': {
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    public onSelectDropdown(event: any, action: string) {
+        switch (action) {
+            case 'department': {
+                this.selectedDepartment = event;
+                console.log('department: ', this.selectedDepartment);
+
+                if (
+                    ['Dispatch', 'Manager'].includes(
+                        this.selectedDepartment.name
+                    )
+                ) {
+                    this.isPaymentTypeAvailable = true;
+
+                    this.paymentOptions =
+                        this.selectedDepartment.name === 'Dispatch'
+                            ? this.heleperForDispatchers
+                            : this.helperForManagers;
+                } else {
+                    this.isPaymentTypeAvailable = false;
+                    this.paymentOptions = [];
+                    this.allowOnlyCommission = false;
+                    this.allowPairCommissionBase = false;
+                }
+                break;
+            }
+            case 'office': {
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'user-modal',
+                            value: {},
+                        },
+                        component: SettingsOfficeModalComponent,
+                        size: 'small',
+                        type: 'user-modal',
+                    });
+                } else {
+                    this.selectedOffice = event;
+                }
+
+                break;
+            }
+            case 'bank': {
+                this.selectedBank = event;
+                if (!event) {
+                    this.userForm.get('bankId').patchValue(null);
+                }
+                break;
+            }
+            case 'payment': {
+                this.selectedPayment = event;
+
+                this.allowOnlyCommission = ['Load %', 'Revenue %'].includes(
+                    this.selectedPayment.name
+                );
+
+                this.allowPairCommissionBase = [
+                    'Base + Load %',
+                    'Base + Revenue %',
+                ].includes(this.selectedPayment.name);
+
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
     private updateUser(id: number) {}
 
     private addUser() {}
 
     private deleteUserById(id: number) {}
 
-    private editUserById(id: number) {}
+    private getUserById(id: number) {}
+
+    private getModalDropdowns() {
+        this.userService
+            .getModalDropdowns()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: CompanyUserModalResponse) => {
+                    console.log('modal get: ', res);
+                    this.departments = res.departments;
+                    this.labelsBank = res.banks;
+                    this.offices = res.officeShortResponses;
+                    this.helperForManagers = res.managerResponses;
+                    this.heleperForDispatchers = res.dispatcherResponses;
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
+    }
 
     // Checkbox Card
     public payrollCheckboxCard: boolean = true;
