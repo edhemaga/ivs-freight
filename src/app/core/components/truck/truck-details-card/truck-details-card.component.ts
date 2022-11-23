@@ -78,7 +78,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             },
         ],
         showLegend: false,
-        chartValues: [],
+        chartValues: [100, 100],
         defaultType: 'bar',
         chartWidth: '417',
         chartHeight: '130',
