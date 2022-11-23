@@ -35,7 +35,9 @@
         <app-ta-checkbox
             formControlName="isAgreement"
             [name]="'isAgreement'"
-            [label]="'I also understand that JD Freight have the right to:'"
+            [label]="
+                'I also understand that ' + companyName + ' have the right to:'
+            "
             [customClass]="'bold-12'"
             [disabledStillCheckMark]="
                 selectedMode === 'REVIEW_MODE' ||
@@ -49,6 +51,9 @@
     <div class="d-flex flex-column text-center bottom-section">
         <p
             class="ta-font-regular"
+            [ngClass]="{
+                'agreement-no-value': !personalInfoForm.get('isAgreement').value
+            }"
             [ngStyle]="{
                 color: !personalInfoForm.get('isAgreement').value
                     ? '#3551B7'
@@ -185,7 +190,14 @@
 
             <!--  PHONE, EMAIL-->
 
-            <div class="d-flex form-input-container line-container">
+            <div
+                class="d-flex form-input-container line-container"
+                [ngStyle]="{
+                    'margin-bottom': isEditingMiddlePositionAddress
+                        ? '53px'
+                        : '32px'
+                }"
+            >
                 <div class="group phone-group">
                     <app-ta-input
                         formControlName="phone"
@@ -276,7 +288,8 @@
                         [ngStyle]="{
                             'margin-top':
                                 (isEditingArray[i]?.isEditing &&
-                                    isEditingMiddlePositionAddress) ||
+                                    isEditingMiddlePositionAddress &&
+                                    i !== 0) ||
                                 (isEditingArray[i]?.isEditing &&
                                     isEditingMiddlePositionAddress &&
                                     last)
@@ -358,24 +371,26 @@
                                             class="address-container"
                                             [ngStyle]="{
                                                 width:
-                                                    isEditingArray[i]
+                                                    previousAddresses.controls
+                                                        .length === 1 ||
+                                                    (isEditingArray[i]
                                                         ?.isEditing &&
-                                                    !isEditingArray[i]
-                                                        ?.isEditingAddress &&
-                                                    !isLastInputDeleted &&
-                                                    !isEditingArray[i]
-                                                        ?.isFirstAddress
-                                                        ? '442px'
+                                                        !isEditingArray[i]
+                                                            ?.isEditingAddress &&
+                                                        isEditingArray[i]
+                                                            ?.isFirstAddress &&
+                                                        previousAddresses
+                                                            .controls.length ===
+                                                            1)
+                                                        ? '480px'
                                                         : isEditingArray[i]
                                                               ?.isEditing &&
                                                           !isEditingArray[i]
                                                               ?.isEditingAddress &&
-                                                          isEditingArray[i]
-                                                              ?.isFirstAddress &&
-                                                          previousAddresses
-                                                              .controls
-                                                              .length === 1
-                                                        ? '480px'
+                                                          !isLastInputDeleted &&
+                                                          !isEditingArray[i]
+                                                              ?.isFirstAddress
+                                                        ? '442px'
                                                         : '412px'
                                             }"
                                         >
@@ -587,13 +602,11 @@
                                                         'FEEDBACK_MODE'
                                             }"
                                             *ngIf="
+                                                previousAddresses?.controls
+                                                    .length !== 1 &&
                                                 isEditingArray[i]?.isEditing &&
                                                 !isEditingArray[i]
                                                     ?.isEditingAddress &&
-                                                i ===
-                                                    previousAddresses?.controls
-                                                        .length -
-                                                        1 &&
                                                 !isLastInputDeleted &&
                                                 !isEditingArray[i]
                                                     .isFirstAddress
@@ -865,20 +878,10 @@
                         (click)="onAddNewAddress()"
                         [ngClass]="{
                             disabled:
-                                previousAddresses.controls.length !== 0 &&
                                 !isLastAddedPreviousAddressValid &&
                                 !isLastInputDeleted
                         }"
                     >
-                        <svg-icon
-                            class="plus-icon"
-                            src="assets/svg/common/ic_plus.svg"
-                            [svgStyle]="{
-                                'width.px': 18,
-                                'height.px': 18
-                            }"
-                        ></svg-icon>
-
                         Add Address
                     </button>
                 </div>
@@ -1070,7 +1073,7 @@
                     <div
                         class="d-flex align-items-center justify-content-between"
                     >
-                        <div class="question-title-box">
+                        <div class="d-flex flex-column question-title-box">
                             <p
                                 class="m-0 ta-font-regular"
                                 [ngClass]="
@@ -1083,6 +1086,17 @@
 
                                 <span class="required-star">*</span>
                             </p>
+
+                            <ng-container
+                                *ngIf="
+                                    displayRadioRequiredNoteArray[i]
+                                        .displayRadioRequiredNote
+                                "
+                            >
+                                <p class="m-0 ta-font-semi-bold required">
+                                    Required
+                                </p>
+                            </ng-container>
                         </div>
 
                         <div class="question-radios-box">
@@ -1092,6 +1106,10 @@
                                 [disabled]="
                                     selectedMode === 'REVIEW_MODE' ||
                                     selectedMode === 'FEEDBACK_MODE'
+                                "
+                                [displayRequiredNote]="
+                                    displayRadioRequiredNoteArray[i]
+                                        .displayRadioRequiredNote
                                 "
                                 (changedValue)="
                                     handleInputSelect($event, 'ANSWER-CHOICE')
@@ -1105,6 +1123,8 @@
                     <div
                         class="d-flex explain-container line-container"
                         *ngIf="
+                            i !== 0 &&
+                            i !== 1 &&
                             personalInfoForm.get(question.formControlName)
                                 ?.value
                         "
@@ -1132,17 +1152,17 @@
                                     isDisabled:
                                         selectedMode === 'REVIEW_MODE' ||
                                         (selectedMode === 'FEEDBACK_MODE' &&
-                                            ((i === 0 &&
+                                            ((i === 1 &&
                                                 stepFeedbackValues?.isLegalWorkValid) ||
-                                                (i === 1 &&
-                                                    stepFeedbackValues?.isAnotherNameValid) ||
                                                 (i === 2 &&
-                                                    stepFeedbackValues?.isInMilitaryValid) ||
+                                                    stepFeedbackValues?.isAnotherNameValid) ||
                                                 (i === 3 &&
-                                                    stepFeedbackValues?.isFelonyValid) ||
+                                                    stepFeedbackValues?.isInMilitaryValid) ||
                                                 (i === 4 &&
-                                                    stepFeedbackValues?.isMisdemeanorValid) ||
+                                                    stepFeedbackValues?.isFelonyValid) ||
                                                 (i === 5 &&
+                                                    stepFeedbackValues?.isMisdemeanorValid) ||
+                                                (i === 6 &&
                                                     stepFeedbackValues?.isDrunkDrivingValid))),
                                     incorrectInput:
                                         selectedMode === 'REVIEW_MODE'
@@ -1180,17 +1200,17 @@
                                 [lineIndex]="i + 9"
                                 [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                                 [feedbackText]="
-                                    selectedMode === 'FEEDBACK_MODE' && i === 0
+                                    selectedMode === 'FEEDBACK_MODE' && i === 1
                                         ? stepFeedbackValues?.legalWorkMessage
-                                        : i === 1
-                                        ? stepFeedbackValues?.anotherNameMessage
                                         : i === 2
-                                        ? stepFeedbackValues?.inMilitaryMessage
+                                        ? stepFeedbackValues?.anotherNameMessage
                                         : i === 3
-                                        ? stepFeedbackValues?.felonyMessage
+                                        ? stepFeedbackValues?.inMilitaryMessage
                                         : i === 4
-                                        ? stepFeedbackValues?.misdemeanorMessage
+                                        ? stepFeedbackValues?.felonyMessage
                                         : i === 5
+                                        ? stepFeedbackValues?.misdemeanorMessage
+                                        : i === 6
                                         ? stepFeedbackValues?.drunkDrivingMessage
                                         : null
                                 "

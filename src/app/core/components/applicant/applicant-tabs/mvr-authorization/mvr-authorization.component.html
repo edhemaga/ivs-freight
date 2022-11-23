@@ -40,13 +40,10 @@
                             [label]="
                                 '1. Certifies that the undersigned is an employee, or has applied to become an employee of the below named'
                             "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-disclosure-release-feedback'
-                                    : 'disclosure-release'
-                            "
+                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
                             "
                         >
                         </app-ta-checkbox>
@@ -54,16 +51,14 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    mvrAuthorizationForm.get('isConsentRelease')
-                                        .value
-                                        ? '#3c3c3c'
-                                        : selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6c6c6c',
+                                color: mvrAuthorizationForm.get(
+                                    'isConsentRelease'
+                                ).value
+                                    ? '#3c3c3c'
+                                    : '#6c6c6c',
                                 cursor:
-                                    selectedMode === 'REVIEW_MODE'
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    selectedMode === 'FEEDBACK_MODE'
                                         ? 'auto'
                                         : 'pointer'
                             }"
@@ -87,13 +82,10 @@
                             [label]="
                                 '2. That the undersigned authorizes his or her driving record to be periodically obtained and reviewed for the'
                             "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-disclosure-release-feedback'
-                                    : 'disclosure-release'
-                            "
+                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
                             "
                         >
                         </app-ta-checkbox>
@@ -101,17 +93,14 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    mvrAuthorizationForm.get(
-                                        'isPeriodicallyObtained'
-                                    ).value
-                                        ? '#3c3c3c'
-                                        : selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6c6c6c',
+                                color: mvrAuthorizationForm.get(
+                                    'isPeriodicallyObtained'
+                                ).value
+                                    ? '#3c3c3c'
+                                    : '#6c6c6c',
                                 cursor:
-                                    selectedMode === 'REVIEW_MODE'
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    selectedMode === 'FEEDBACK_MODE'
                                         ? 'auto'
                                         : 'pointer'
                             }"
@@ -134,13 +123,10 @@
                             [label]="
                                 '3. That all information presented in this form is true and correct. The undersigned makes this certification and'
                             "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-disclosure-release-feedback'
-                                    : 'disclosure-release'
-                            "
+                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
                             "
                         >
                         </app-ta-checkbox>
@@ -148,17 +134,14 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color:
-                                    selectedMode !== 'FEEDBACK_MODE' &&
-                                    mvrAuthorizationForm.get(
-                                        'isInformationCorrect'
-                                    ).value
-                                        ? '#3c3c3c'
-                                        : selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#6c6c6c',
+                                color: mvrAuthorizationForm.get(
+                                    'isInformationCorrect'
+                                ).value
+                                    ? '#3c3c3c'
+                                    : '#6c6c6c',
                                 cursor:
-                                    selectedMode === 'REVIEW_MODE'
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    selectedMode === 'FEEDBACK_MODE'
                                         ? 'auto'
                                         : 'pointer'
                             }"
@@ -285,10 +268,10 @@
                             [label]="
                                 'Dont have MVR? Request a driving record from your prospective employer'
                             "
-                            [customClass]="
+                            [customClass]="'bold-12'"
+                            [disabledStillCheckMark]="
+                                selectedMode === 'REVIEW_MODE' ||
                                 selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-feedback'
-                                    : 'bold-12'
                             "
                         >
                         </app-ta-checkbox>
@@ -402,13 +385,10 @@
                             [label]="
                                 'I further certify that the above license is the only one I hold.'
                             "
-                            [customClass]="
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? 'applicant-feedback'
-                                    : 'bold-12'
-                            "
+                            [customClass]="'bold-12'"
                             [disabledStillCheckMark]="
-                                selectedMode === 'REVIEW_MODE'
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
                             "
                         >
                         </app-ta-checkbox>
@@ -416,20 +396,16 @@
 
                     <!-- SIGNATURE PAD -->
 
-                    <div
-                        class="d-flex signature-pad-container"
-                        *ngIf="selectedMode === 'APPLICANT_MODE'"
-                    >
+                    <div class="d-flex signature-pad-container">
                         <app-applicant-signature-pad
+                            [mode]="selectedMode"
+                            [signatureImgSrc]="signatureImgSrc"
+                            [displayRequiredNote]="displaySignatureRequiredNote"
                             (signatureEmitter)="onSignatureAction($event)"
+                            (removeRequiredNoteEmitter)="
+                                onRemoveSignatureRequiredNoteAction($event)
+                            "
                         ></app-applicant-signature-pad>
-                    </div>
-
-                    <div
-                        class="d-flex justify-content-center align-items-center signature-image-container"
-                        *ngIf="selectedMode !== 'APPLICANT_MODE'"
-                    >
-                        <img src="" alt="signature" />
                     </div>
                 </form>
             </div>

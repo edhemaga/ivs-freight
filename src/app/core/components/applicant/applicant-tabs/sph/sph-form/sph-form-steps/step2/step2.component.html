@@ -346,13 +346,6 @@
 
             <div
                 class="d-flex justify-content-center align-items-center no-safety-checkbox-container"
-                [ngStyle]="{
-                    margin:
-                        accidentArray.length === 1 &&
-                        accidentArray[0].isEditingAccident
-                            ? '0 auto'
-                            : '0 auto 32px auto'
-                }"
             >
                 <app-ta-checkbox
                     formControlName="noSafetyPerformance"
@@ -506,8 +499,14 @@
                     </div>
 
                     <div
-                        class="d-flex flex-column accident-view-form"
                         *ngIf="accident.isEditingAccident"
+                        class="d-flex flex-column accident-view-form"
+                        [ngStyle]="{
+                            margin:
+                                i === 0
+                                    ? '10px auto 0 auto'
+                                    : '32px auto 0 auto'
+                        }"
                     >
                         <app-sph-step2-form
                             [isEditing]="isEditing"
@@ -548,7 +547,9 @@
 >
     <app-applicant-next-back-btn
         [nextStep]="true"
-        [filledCorrectly]="accidentHistoryForm.valid && formStatus === 'VALID'"
+        [filledCorrectly]="
+            accidentHistoryForm.valid && formStatus === 'VALID' && !isEditing
+        "
         (stepEvent)="onStepAction($event)"
     ></app-applicant-next-back-btn>
 </div>
