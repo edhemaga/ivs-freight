@@ -10,8 +10,7 @@ import { Observable, of } from 'rxjs';
     providedIn: 'root',
 })
 export class DashboardResolverService implements Resolve<any> {
-    constructor() // private dashboardQuery: DashboardQuery // private dashboardStoreService: DashboardStoreService,
-    {}
+    constructor() {} // private dashboardQuery: DashboardQuery // private dashboardStoreService: DashboardStoreService,
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
         // if( this.dashboardQuery.dashboardStatistics.todayObject ){
         //   return this.dashboardQuery.dashboardStatistics;

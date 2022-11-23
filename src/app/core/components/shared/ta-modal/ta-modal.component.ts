@@ -174,7 +174,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 (data: {
                     action: string;
                     status: boolean;
-                    clearTimeout: boolean;
+                    setFasterTimeout: boolean;
                 }) => {
                     switch (data.action) {
                         case 'delete': {
@@ -212,17 +212,18 @@ export class TaModalComponent implements OnInit, OnDestroy {
                             data.action
                         )
                     ) {
-                        if (data.clearTimeout) {
-                            const timeout = setTimeout(() => {
-                                this.onAction('close');
+                        const timeout = setTimeout(
+                            () => {
+                                $('.pac-container').remove();
+                                this.ngbActiveModal.close();
+                                this.uploadFileService.visibilityDropZone(
+                                    false
+                                );
+                                this.uploadFileService.uploadFiles(null);
                                 clearTimeout(timeout);
-                            }, 200);
-                        } else {
-                            const timeout = setTimeout(() => {
-                                this.onAction('close');
-                                clearTimeout(timeout);
-                            }, 2000);
-                        }
+                            },
+                            data?.setFasterTimeout ? 200 : 2000
+                        );
                     }
                 }
             );
