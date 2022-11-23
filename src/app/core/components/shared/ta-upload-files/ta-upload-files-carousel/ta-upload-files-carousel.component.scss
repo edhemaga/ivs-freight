@@ -140,6 +140,10 @@
         .ta-upload-carousel-control-bg {
             top: 41%;
 
+            &.prev {
+                left: 1.5%;
+            }
+
             &.next {
                 left: 94%;
                 padding-left: 1px;
