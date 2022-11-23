@@ -174,7 +174,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 (data: {
                     action: string;
                     status: boolean;
-                    clearTimeout: boolean;
+                    setFasterTimeout: boolean;
                 }) => {
                     switch (data.action) {
                         case 'delete': {
@@ -222,7 +222,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                                 this.uploadFileService.uploadFiles(null);
                                 clearTimeout(timeout);
                             },
-                            data?.clearTimeout ? 200 : 2000
+                            data?.setFasterTimeout ? 200 : 2000
                         );
                     }
                 }

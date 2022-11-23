@@ -15,11 +15,11 @@ export class ModalService {
     private modalSpinner: Subject<{
         action: string;
         status: boolean;
-        clearTimeout?: boolean;
+        setFasterTimeout?: boolean;
     }> = new Subject<{
         action: string;
         status: boolean;
-        clearTimeout?: boolean;
+        setFasterTimeout?: boolean;
     }>();
 
     constructor(
@@ -40,12 +40,12 @@ export class ModalService {
     public setModalSpinner(data: {
         action: string;
         status: boolean;
-        clearTimeout?: boolean;
+        setFasterTimeout?: boolean;
     }) {
         this.modalSpinner.next({
             action: data.action,
             status: data.status,
-            clearTimeout: data.clearTimeout,
+            setFasterTimeout: data.setFasterTimeout,
         });
     }
 

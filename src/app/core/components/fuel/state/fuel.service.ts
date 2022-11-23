@@ -38,16 +38,17 @@ export class FuelTService {
         fuelTransactionSpecParamsSearch1?: string,
         fuelTransactionSpecParamsSearch2?: string
     ): Observable<FuelTransactionListResponse> {
-        return this.fuelService.apiFuelTransactionListGet(
-            fuelTransactionSpecParamsFuelStopStoreId,
-            fuelTransactionSpecParamsPageIndex,
-            fuelTransactionSpecParamsPageSize,
-            fuelTransactionSpecParamsCompanyId,
-            fuelTransactionSpecParamsSort,
-            fuelTransactionSpecParamsSearch,
-            fuelTransactionSpecParamsSearch1,
-            fuelTransactionSpecParamsSearch2
-        );
+        // return this.fuelService.apiFuelTransactionListGet(
+        //     fuelTransactionSpecParamsFuelStopStoreId,
+        //     fuelTransactionSpecParamsPageIndex,
+        //     fuelTransactionSpecParamsPageSize,
+        //     fuelTransactionSpecParamsCompanyId,
+        //     fuelTransactionSpecParamsSort,
+        //     fuelTransactionSpecParamsSearch,
+        //     fuelTransactionSpecParamsSearch1,
+        //     fuelTransactionSpecParamsSearch2
+        // );
+        return of();
     }
 
     set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
@@ -121,15 +122,16 @@ export class FuelTService {
         search1?: string,
         search2?: string
     ): Observable<FuelStopListResponse> {
-        return this.fuelService.apiFuelFuelstopListGet(
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        );
+        // return this.fuelService.apiFuelFuelstopListGet(
+        //     pageIndex,
+        //     pageSize,
+        //     companyId,
+        //     sort,
+        //     search,
+        //     search1,
+        //     search2
+        // );
+        return of();
     }
 
     set updateStoreFuelStopList(data: FuelStopListResponse) {

@@ -5,6 +5,7 @@ import {
     OnChanges,
     SimpleChanges,
     ViewEncapsulation,
+    ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
@@ -17,12 +18,109 @@ import { DetailsPageService } from '../../../services/details-page/details-page-
     styleUrls: ['./shipper-card-view.component.scss'],
 })
 export class ShipperCardViewComponent implements OnInit, OnChanges {
+    @ViewChild('stackedBarChart', { static: false })
+    public stackedBarChart: any;
     @Input() shipper: any;
     @Input() templateCard: boolean;
     public shipperDropdowns: any[] = [];
     public shipperList: any[] = this.shipperMinimalListQuery.getAll();
     public note: FormControl = new FormControl();
     public shipperTabs: any[] = [];
+
+    stackedBarChartConfig: any = {
+        dataProperties: [
+            {
+                defaultConfig: {
+                    type: 'bar',
+                    data: [20, 17, 30, 23, 27, 25, 19, 29, 22, 25, 22, 20],
+                    label: 'Miles',
+                    yAxisID: 'y-axis-0',
+                    borderColor: '#80CBBA',
+                    backgroundColor: '#80CBBA',
+                    hoverBackgroundColor: '#26A690',
+                    hoverBorderColor: '#26A690',
+                    barThickness: 18,
+                },
+            },
+            {
+                defaultConfig: {
+                    type: 'bar',
+                    data: [
+                        -20, -25, -21, -22, -15, -26, -24, -21, -23, -24, -25,
+                        -20,
+                    ],
+                    label: 'Miles',
+                    yAxisID: 'y-axis-0',
+                    borderColor: '#EF9A9A',
+                    backgroundColor: '#EF9A9A',
+                    hoverBackgroundColor: '#E57373',
+                    hoverBorderColor: '#E57373',
+                    barThickness: 18,
+                },
+            },
+        ],
+        showLegend: false,
+        chartValues: [150, 257.7, 190, 568.85],
+        defaultType: 'bar',
+        chartWidth: '417',
+        chartHeight: '130',
+        dataLabels: [
+            '',
+            'NOV',
+            '',
+            '2021',
+            '',
+            'MAR',
+            '',
+            'MAY',
+            '',
+            'JUL',
+            '',
+            'SEP',
+        ],
+        onHoverAnnotation: true,
+        hoverTimeDisplay: true,
+        stacked: true,
+        offset: true,
+        allowAnimation: true,
+        animationOnlyOnLoad: true,
+        noChartImage: 'assets/svg/common/stacked_no_data.svg',
+    };
+
+    public stackedBarChartLegend: any[] = [
+        {
+            title: 'Avg. Pickup Time',
+            value: 68.56,
+            image: 'assets/svg/common/round_green.svg',
+            customClass: 'light_green',
+            sufix: 'm',
+            elementId: 0,
+        },
+        {
+            title: 'Avg. Delivery Time',
+            value: 37.56,
+            image: 'assets/svg/common/round_blue.svg',
+            customClass: 'light_red',
+            sufix: 'm',
+            elementId: 1,
+        },
+    ];
+
+    public stackedBarAxes: object = {
+        verticalLeftAxes: {
+            visible: true,
+            minValue: -30,
+            maxValue: 30,
+            stepSize: 15,
+            showGridLines: true,
+        },
+        horizontalAxes: {
+            visible: true,
+            position: 'bottom',
+            showGridLines: false,
+        },
+    };
+
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private shipperMinimalListQuery: ShipperMinimalListQuery
