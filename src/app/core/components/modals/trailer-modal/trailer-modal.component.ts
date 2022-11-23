@@ -271,7 +271,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
-                            clearTimeout: !!this.editData?.canOpenModal,
+                            setFasterTimeout: !!this.editData?.canOpenModal,
                         });
                     }
                 }
