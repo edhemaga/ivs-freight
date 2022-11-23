@@ -1,11 +1,15 @@
-<div class="ta-input-radiobutons" [ngClass]="{ disabled }">
+<div
+    class="ta-input-radiobutons"
+    [ngClass]="{ disabled, required: displayRequiredNote }"
+>
     <label
         *ngFor="let button of buttons; trackBy: identity"
         class="radio-button-label"
         [ngClass]="{
             checked: button.checked,
             'no-checked': !button.checked,
-            disabled
+            disabled,
+            required: displayRequiredNote
         }"
         for="{{ button.id }}"
     >

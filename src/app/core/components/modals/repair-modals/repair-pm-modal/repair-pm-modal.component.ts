@@ -603,7 +603,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                                 : 'Inactive',
                     };
                 }),
-                ...this.newPMs.controls.map((item, index) => {
+                ...this.newPMs.controls.map((item) => {
                     return {
                         id: item.get('id').value,
                         mileage: convertThousanSepInNumber(
@@ -676,7 +676,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                                 : 'Inactive',
                     };
                 }),
-                ...this.newPMs.controls.map((item, index) => {
+                ...this.newPMs.controls.map((item) => {
                     return {
                         id: item.get('id').value,
                         months: convertThousanSepInNumber(

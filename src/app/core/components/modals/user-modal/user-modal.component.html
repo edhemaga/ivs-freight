@@ -1,15 +1,16 @@
 <app-ta-modal
     [modalTitle]="editData?.type !== 'edit' ? 'Add User' : 'Edit User'"
     [editData]="editData"
-    [editName]="editData?.id"
+    [editName]="userFullName"
     [isModalValid]="userForm.valid && isFormDirty"
+    [disableDelete]="selectedUserType?.name === 'Owner'"
     (action)="onModalAction($event)"
 >
     <div origin>
         <app-ta-tab-switch
             [tabs]="tabs"
-            (switchClicked)="tabChange($event)"
             [type]="'type1-modal-popup'"
+            (switchClicked)="tabChange($event)"
         >
         </app-ta-tab-switch>
 
@@ -34,6 +35,8 @@
                                     isRequired: true,
                                     minLength: 2,
                                     maxLength: 26,
+                                    isDisabled:
+                                        selectedUserType?.name === 'Owner',
                                     textTransform: 'capitalize',
                                     autoFocus: editData?.type !== 'edit'
                                 }"
@@ -49,6 +52,8 @@
                                     minLength: 2,
                                     maxLength: 26,
                                     isRequired: true,
+                                    isDisabled:
+                                        selectedUserType?.name === 'Owner',
                                     textTransform: 'capitalize'
                                 }"
                             ></app-ta-input>
@@ -95,7 +100,6 @@
                                     name: 'Phone',
                                     type: 'text',
                                     label: 'Personal Phone',
-                                    isRequired: true,
                                     placeholderIcon: 'phone',
                                     mask: '(000) 000-0000',
                                     maxLength: 14
@@ -139,6 +143,8 @@
                                         textTransform: 'capitalize',
                                         isRequired: true,
                                         isDropdown: true,
+                                        isDisabled:
+                                            selectedUserType?.name === 'Owner',
                                         dropdownWidthClass: 'w-col-136'
                                     }"
                                     [options]="departments"
@@ -150,7 +156,7 @@
                             </div>
                             <div class="col-5">
                                 <app-ta-input-dropdown
-                                    formControlName="mainOfficeId"
+                                    formControlName="companyOfficeId"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',
                                         type: 'text',
@@ -169,11 +175,15 @@
                             </div>
                             <div class="col-3 no-p-left">
                                 <app-ta-tab-switch
-                                    [tabs]="typeOfEmploye"
+                                    [tabs]="
+                                        selectedUserType?.name === 'Owner'
+                                            ? ownerType
+                                            : typeOfEmploye
+                                    "
+                                    [type]="'type2-modal-popup'"
                                     (switchClicked)="
                                         onSelectedTab($event, 'user-admin')
                                     "
-                                    [type]="'type2-modal-popup'"
                                 >
                                 </app-ta-tab-switch>
                             </div>
@@ -185,12 +195,11 @@
                             <div class="phone-extension">
                                 <div class="phone-field">
                                     <app-ta-input
-                                        formControlName="employePhone"
+                                        formControlName="phone"
                                         [inputConfig]="{
                                             name: 'Phone',
                                             type: 'text',
                                             label: 'Phone',
-                                            isRequired: true,
                                             placeholderIcon: 'phone',
                                             mask: '(000) 000-0000',
                                             maxLength: 14
@@ -212,7 +221,7 @@
                                 </div>
                                 <app-ta-input
                                     *ngIf="isPhoneExtExist"
-                                    formControlName="employePhoneExt"
+                                    formControlName="extensionPhone"
                                     [inputConfig]="{
                                         name: 'phone-extension',
                                         type: 'text',
@@ -225,7 +234,7 @@
                             </div>
                             <div class="email-field">
                                 <app-ta-input
-                                    formControlName="employeEmail"
+                                    formControlName="email"
                                     [inputConfig]="{
                                         name: 'Email',
                                         type: 'text',
@@ -234,6 +243,8 @@
                                         isRequired: true,
                                         minLength: 5,
                                         maxLength: 64,
+                                        isDisabled:
+                                            selectedUserType?.name === 'Owner',
                                         textTransform: 'lowercase'
                                     }"
                                 ></app-ta-input>
@@ -245,11 +256,11 @@
                         <div
                             class="checkbox-card-header"
                             [ngClass]="{
-                                pointer: userForm.get('isIncludePayroll').value
+                                pointer: userForm.get('includeInPayroll').value
                             }"
                         >
                             <app-ta-checkbox
-                                formControlName="isIncludePayroll"
+                                formControlName="includeInPayroll"
                                 [label]="'Include in Payroll'"
                             ></app-ta-checkbox>
                             <svg-icon
@@ -257,7 +268,7 @@
                                 src="assets/svg/common/ic_arrow_down_updated.svg"
                                 [ngClass]="{
                                     visible:
-                                        userForm.get('isIncludePayroll').value,
+                                        userForm.get('includeInPayroll').value,
                                     rotate: !payrollCheckboxCard
                                 }"
                                 (click)="toggleCheckboxCard()"
@@ -265,15 +276,14 @@
                         </div>
                         <div
                             *ngIf="
-                                userForm.get('isIncludePayroll').value &&
+                                userForm.get('includeInPayroll').value &&
                                 payrollCheckboxCard
                             "
                             class="checkbox-card-body"
                             [ngClass]="{
-                                active: userForm.get('isIncludePayroll').value
+                                active: userForm.get('includeInPayroll').value
                             }"
                         >
-                            <!-- [canAddNew]="true" -->
                             <div class="row">
                                 <div class="col-5">
                                     <app-ta-input-dropdown
@@ -284,7 +294,14 @@
                                             label: 'Payment Type',
                                             textTransform: 'capitalize',
                                             isDropdown: true,
-                                            isDisabled: !isPaymentTypeAvailable,
+                                            isDisabled:
+                                                !isPaymentTypeAvailable ||
+                                                selectedUserType?.name ===
+                                                    'Owner',
+                                            isRequired:
+                                                isPaymentTypeAvailable &&
+                                                selectedUserType?.name !==
+                                                    'Owner',
                                             dropdownWidthClass: 'w-col-177'
                                         }"
                                         [options]="paymentOptions"
@@ -311,10 +328,10 @@
                                 <div class="col-3 no-p-left">
                                     <app-ta-tab-switch
                                         [tabs]="typeOfPayroll"
+                                        [type]="'type2-modal-popup'"
                                         (switchClicked)="
                                             onSelectedTab($event, '1099-w2')
                                         "
-                                        [type]="'type2-modal-popup'"
                                     >
                                     </app-ta-tab-switch>
                                 </div>
@@ -390,7 +407,7 @@
                                 class="custom-bank-row last-row"
                                 [ngClass]="{
                                     'no-m-bottom':
-                                        !userForm.get('isIncludePayroll').value
+                                        !userForm.get('includeInPayroll').value
                                 }"
                             >
                                 <div class="bank-field">
@@ -464,9 +481,7 @@
                     </div>
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 2">
-                    Additional Tab TO DO
-                </div>
+                <div class="m-tab" *ngIf="selectedTab === 2"></div>
             </div>
         </form>
     </div>

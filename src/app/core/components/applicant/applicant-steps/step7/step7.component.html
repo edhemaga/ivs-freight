@@ -367,7 +367,10 @@
                         trackBy: trackByIdentity
                     "
                 >
-                    <div [ngClass]="['title-box' + i, 'title-box']">
+                    <div
+                        class="d-flex flex-column"
+                        [ngClass]="['title-box' + i, 'title-box']"
+                    >
                         <p
                             class="m-0 ta-font-regular"
                             [ngClass]="
@@ -379,6 +382,17 @@
                             {{ question.title }}
                             <span class="required-star">*</span>
                         </p>
+
+                        <ng-container
+                            *ngIf="
+                                displayRadioRequiredNoteArray[i]
+                                    .displayRadioRequiredNote
+                            "
+                        >
+                            <p class="m-0 ta-font-semi-bold required">
+                                Required
+                            </p>
+                        </ng-container>
                     </div>
 
                     <div class="radios-box">
@@ -388,6 +402,10 @@
                             [disabled]="
                                 selectedMode === 'REVIEW_MODE' ||
                                 selectedMode === 'FEEDBACK_MODE'
+                            "
+                            [displayRequiredNote]="
+                                displayRadioRequiredNoteArray[i]
+                                    .displayRadioRequiredNote
                             "
                             (changedValue)="
                                 handleInputSelect($event, 'ANSWER-CHOICE')

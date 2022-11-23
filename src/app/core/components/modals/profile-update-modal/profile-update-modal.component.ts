@@ -300,7 +300,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
     private updateUserProfile() {
         const {
-            address,
             addressUnit,
             createNewPassword,
             oldPassword,

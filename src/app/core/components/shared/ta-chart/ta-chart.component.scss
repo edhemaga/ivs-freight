@@ -21,6 +21,26 @@
                 height: 11px;
             }
         }
+
+        &.light_green {
+            svg-icon {
+                svg {
+                    rect {
+                        fill: #80cbba !important;
+                    }
+                }
+            }
+        }
+
+        &.light_red {
+            svg-icon {
+                svg {
+                    rect {
+                        fill: #ef9a9a !important;
+                    }
+                }
+            }
+        }
     }
 
     &.hover {

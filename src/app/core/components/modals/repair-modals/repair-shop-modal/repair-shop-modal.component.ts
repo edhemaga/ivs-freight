@@ -373,8 +373,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepairShop() {
-        let { address, addressUnit, openHours, bankId, ...form } =
-            this.repairShopForm.value;
+        let { addressUnit, openHours, ...form } = this.repairShopForm.value;
 
         openHours = openHours.map((item) => {
             if (item.isDay) {
@@ -446,8 +445,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepairShop(id: number) {
-        let { address, addressUnit, openHours, bankId, ...form } =
-            this.repairShopForm.value;
+        let { addressUnit, openHours, ...form } = this.repairShopForm.value;
 
         openHours = openHours.map((item) => {
             if (item.isDay) {

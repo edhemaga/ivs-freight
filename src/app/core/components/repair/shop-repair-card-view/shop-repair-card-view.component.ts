@@ -6,6 +6,7 @@ import {
     SimpleChanges,
     ChangeDetectorRef,
     OnDestroy,
+    ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { RepairShopResponse } from 'appcoretruckassist';
@@ -25,6 +26,8 @@ export class ShopRepairCardViewComponent
     implements OnInit, OnChanges, OnDestroy
 {
     private destroy$ = new Subject<void>();
+    @ViewChild('reparExpensesChart', { static: false })
+    public reparExpensesChart: any;
     @Input() repairShopCardViewData: RepairShopResponse;
     @Input() templateCard: boolean;
     public noteControl: FormControl = new FormControl();
@@ -33,6 +36,106 @@ export class ShopRepairCardViewComponent
     public shopsDropdowns: any[] = [];
     public shopsList: any;
     public repairShopObject: any;
+
+    barChartConfig: any = {
+        dataProperties: [
+            {
+                defaultConfig: {
+                    type: 'line',
+                    data: [
+                        1050, 950, 2200, 1100, 1250, 1550, 2100, 2500, 2000,
+                        1150, 1300, 1700,
+                    ],
+                    label: 'Salary',
+                    yAxisID: 'y-axis-1',
+                    borderColor: '#6D82C7',
+                    pointBackgroundColor: '#FFFFFF',
+                    pointHoverBackgroundColor: '#6D82C7',
+                    pointHoverBorderColor: '#FFFFFF',
+                    pointHoverRadius: 3,
+                    pointBorderWidth: 2,
+                },
+            },
+            {
+                defaultConfig: {
+                    type: 'bar',
+                    data: [
+                        2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500,
+                        1400, 2200, 2800,
+                    ],
+                    label: 'Miles',
+                    yAxisID: 'y-axis-0',
+                    borderColor: '#FFCC80',
+                    backgroundColor: '#FFCC80',
+                    hoverBackgroundColor: '#FFA726',
+                    barThickness: 18,
+                },
+            },
+        ],
+        showLegend: false,
+        chartValues: [46, 755, 0, 36.854],
+        onHoverAnnotation: true,
+        hoverTimeDisplay: true,
+        defaultType: 'bar',
+        chartWidth: '417',
+        chartHeight: '130',
+        offset: true,
+        allowAnimation: true,
+        animationOnlyOnLoad: true,
+        dataLabels: [
+            '',
+            'NOV',
+            '',
+            '2021',
+            '',
+            'MAR',
+            '',
+            'MAY',
+            '',
+            'JUL',
+            '',
+            'SEP',
+        ],
+        noChartImage: 'assets/svg/common/yellow_no_data.svg',
+    };
+
+    public barChartLegend: any[] = [
+        {
+            title: 'Repair',
+            value: 46755,
+            image: 'assets/svg/common/round_yellow.svg',
+            elementId: 1,
+        },
+        {
+            title: 'Cost',
+            value: 36854,
+            image: 'assets/svg/common/round_blue.svg',
+            prefix: '$',
+            elementId: 0,
+        },
+    ];
+
+    public barAxes: object = {
+        verticalLeftAxes: {
+            visible: true,
+            minValue: 0,
+            maxValue: 4000,
+            stepSize: 1000,
+            showGridLines: true,
+        },
+        verticalRightAxes: {
+            visible: true,
+            minValue: 0,
+            maxValue: 2800,
+            stepSize: 700,
+            showGridLines: false,
+        },
+        horizontalAxes: {
+            visible: true,
+            position: 'bottom',
+            showGridLines: false,
+        },
+    };
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,

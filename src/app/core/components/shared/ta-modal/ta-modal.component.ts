@@ -222,7 +222,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                                 this.uploadFileService.uploadFiles(null);
                                 clearTimeout(timeout);
                             },
-                            data?.setFasterTimeout ? 200 : 2000
+                            data?.setFasterTimeout ? 1000 : 2000
                         );
                     }
                 }

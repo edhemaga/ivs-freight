@@ -111,12 +111,24 @@
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [isCardOpen]="true"
             >
-                <div class="charts-template perfomance">
-                    <app-ta-tab-switch
-                        [tabs]="shipperTabs"
-                        [type]="'type2-modal-popup'"
+                <div
+                    class="charts-template perfomance"
+                    [class.p-0]="stackedBarChart.hoveringStatus"
+                >
+                    <div *ngIf="!stackedBarChart.hoveringStatus">
+                        <app-ta-tab-switch
+                            [tabs]="shipperTabs"
+                            [type]="'type2-modal-popup'"
+                        >
+                        </app-ta-tab-switch>
+                    </div>
+                    <app-ta-chart
+                        #stackedBarChart
+                        [chartConfig]="stackedBarChartConfig"
+                        [axesProperties]="stackedBarAxes"
+                        [legendAttributes]="stackedBarChartLegend"
                     >
-                    </app-ta-tab-switch>
+                    </app-ta-chart>
                 </div>
             </app-ta-custom-card>
             <!--------Note--------->
