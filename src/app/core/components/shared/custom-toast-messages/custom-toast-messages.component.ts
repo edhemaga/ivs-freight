@@ -111,6 +111,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'account/signupcompany',
             value: 'COMPANY',
+            blockLeft: true,
+        },
+        {
+            api: 'company',
+            value: 'COMPANY',
         },
         {
             api: 'truck',
@@ -268,13 +273,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 item.api === apiEndPoint || apiEndPoint.indexOf(item.api) > -1
         );
         this.actionType = item ? item.value : '';
+        let blockLeft = item.blockLeft ? true : false; 
 
         let splitUrl = this.httpRequest.url.split('/');
         let splitLength = splitUrl.length;
         let lastPlace = splitLength - 1;
         let lastVal = parseInt(splitUrl[lastPlace]);
-
-        if (this.actionType == 'LOGIN' || this.actionType == 'COMPANY') {
+ 
+        if (this.actionType == 'LOGIN' || ( this.actionType == 'COMPANY' && blockLeft ) ) {
             this.leftSideMove = false;
         }
 
@@ -643,12 +649,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = trailerNum;
                 break;
             case 'COMPANY':
-                let compName = this.httpRequest.body?.companyName
-                    ? this.httpRequest.body.companyName
-                    : '';
+                let compName = this.httpRequest.body?.companyName ? this.httpRequest.body.companyName : '';
 
                 if (!compName) {
-                    compName = this.DetailsDataService.mainData.companyName;
+                    compName = this.DetailsDataService?.mainData?.companyName ? this.DetailsDataService?.mainData?.companyName : this.DetailsDataService?.mainData?.name ;
                 }
 
                 this.message = compName;

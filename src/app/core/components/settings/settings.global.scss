@@ -48,6 +48,7 @@ p {
     display: grid;
     grid-template-rows: 32px 1fr;
     row-gap: 12px;
+    padding-bottom: 18px;
 
     .settings-col-1 {
         grid-template-rows: 1 / 2;
