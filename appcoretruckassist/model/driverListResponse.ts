@@ -16,5 +16,6 @@ export interface DriverListResponse {
     pagination?: DriverShortResponsePagination;
     activeCount?: number;
     inactiveCount?: number;
+    applicantCount?: number;
 }
 
