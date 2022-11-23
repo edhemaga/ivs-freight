@@ -614,7 +614,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         this.selectedBankAccountFormArray[index],
                     ];
                 },
-                error: (err) => {
+                error: () => {
                     this.notificationService.error(
                         "Can't add new bank",
                         'Error'
@@ -1012,8 +1012,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public addCompanyDivision() {
         const {
             addressUnit,
-            timeZone,
-            currency,
             departmentContacts,
             bankAccounts,
             bankCards,
@@ -1126,7 +1124,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .addCompanyDivision(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: CreateResponse) => {
+                next: () => {
                     this.notificationService.success(
                         'Successfully added company division',
                         'Success'
@@ -1245,8 +1243,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public updateCompanyDivision(id: number) {
         const {
             addressUnit,
-            timeZone,
-            currency,
             departmentContacts,
             bankAccounts,
             bankCards,
@@ -1393,14 +1389,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public updateCompany() {
         const {
-            address,
             addressUnit,
-            timeZone,
             email,
             ein,
             name,
-            currency,
-            companyType,
             dateOfIncorporation,
             departmentContacts,
             bankAccounts,

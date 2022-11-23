@@ -289,8 +289,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
 
     private updateTaskById(id: number) {
-        const { departmentIds, deadline, companyUserIds, ...form } =
-            this.taskForm.value;
+        const { deadline, ...form } = this.taskForm.value;
 
         const newData: UpdateTodoCommand = {
             id: id,
@@ -309,8 +308,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
 
     private addTask() {
-        const { departmentIds, deadline, companyUserIds, ...form } =
-            this.taskForm.value;
+        const { deadline, ...form } = this.taskForm.value;
 
         const newData: CreateTodoCommand = {
             ...form,

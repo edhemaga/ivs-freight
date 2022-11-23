@@ -692,7 +692,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public commandEvent(event: boolean) {
+    public commandEvent() {
         this.isHazardousVisible = !this.isHazardousVisible;
     }
 

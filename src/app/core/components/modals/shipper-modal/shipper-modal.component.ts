@@ -518,14 +518,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private addShipper() {
-        const { address, addressUnit, shipperContacts, ...form } =
+        const { addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
         let receivingShipping = this.receivingShippingObject();
         let newData: CreateShipperCommand = {
             ...form,
             address: {
                 ...this.selectedAddress,
-                addressUnit: this.shipperForm.get('addressUnit').value,
+                addressUnit: addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,
@@ -567,7 +567,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private updateShipper(id: number) {
-        const { address, addressUnit, shipperContacts, ...form } =
+        const { addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
 
         let receivingShipping = this.receivingShippingObject();
@@ -577,7 +577,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             ...form,
             address: {
                 ...this.selectedAddress,
-                addressUnit: this.shipperForm.get('addressUnit').value,
+                addressUnit: addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,
