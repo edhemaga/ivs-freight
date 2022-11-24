@@ -9,14 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BrokerResponsePagination } from './brokerResponsePagination';
+import { FileResponse } from './fileResponse';
 
 
-export interface GetBrokerListResponse { 
-    pagination?: BrokerResponsePagination;
-    brokerCount?: number;
-    banCount?: number;
-    dnuCount?: number;
-    shipperCount?: number;
+export interface CompanySettingsDocumentsResponse { 
+    files?: Array<FileResponse> | null;
 }
 

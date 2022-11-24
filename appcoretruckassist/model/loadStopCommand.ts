@@ -9,16 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LoadStopType } from './loadStopType';
+import { LoadStopItemCommand } from './loadStopItemCommand';
+import { TimeType } from './timeType';
 
 
 export interface LoadStopCommand { 
     id?: number | null;
-    stopType?: any;
+    stopType?: LoadStopType;
     stopOrder?: number;
     shipperId?: number;
     dateFrom?: string;
     dateTo?: string | null;
-    timeType?: any;
+    timeType?: TimeType;
     timeFrom?: string | null;
     timeTo?: string | null;
     arrive?: string | null;
@@ -29,6 +32,6 @@ export interface LoadStopCommand {
     totalLegMiles?: number | null;
     totalLegHours?: number | null;
     totalLegMinutes?: number | null;
-    items?: Array<any> | null;
+    items?: Array<LoadStopItemCommand> | null;
 }
 
