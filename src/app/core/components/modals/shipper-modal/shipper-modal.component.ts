@@ -41,8 +41,6 @@ import { NotificationService } from '../../../services/notification/notification
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';
 import { convertTimeFromBackend } from '../../../utils/methods.calculations';
-import { CreateShipperCommand } from 'appcoretruckassist/model/createShipperCommand';
-import { UpdateShipperCommand } from 'appcoretruckassist/model/updateShipperCommand';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -521,7 +519,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         const { addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
         let receivingShipping = this.receivingShippingObject();
-        let newData: CreateShipperCommand = {
+        let newData: any = {
             ...form,
             address: {
                 ...this.selectedAddress,
@@ -572,7 +570,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
         let receivingShipping = this.receivingShippingObject();
 
-        let newData: UpdateShipperCommand = {
+        let newData: any = {
             id: id,
             ...form,
             address: {

@@ -10,8 +10,6 @@ import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { EditMedicalCommand } from '../../../../../../appcoretruckassist/model/editMedicalCommand';
-import { CreateMedicalCommand } from '../../../../../../appcoretruckassist/model/createMedicalCommand';
 import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
@@ -72,7 +70,7 @@ export class MedicalTService implements OnDestroy {
     }
 
     /* Observable<CreateMedicalResponse> */
-    public addMedical(data: CreateMedicalCommand): Observable<any> {
+    public addMedical(data: any): Observable<any> {
         const sortedParams = getFunctionParams(
             this.medicalService.apiMedicalPost,
             data
@@ -112,7 +110,7 @@ export class MedicalTService implements OnDestroy {
         );
     }
 
-    public updateMedical(data: EditMedicalCommand): Observable<object> {
+    public updateMedical(data: any): Observable<object> {
         const sortedParams = getFunctionParams(
             this.medicalService.apiMedicalPut,
             data

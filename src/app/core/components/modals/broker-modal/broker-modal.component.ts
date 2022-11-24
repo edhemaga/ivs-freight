@@ -45,8 +45,6 @@ import {
     name2_24Validation,
     creditLimitValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
-import { CreateBrokerCommand } from 'appcoretruckassist/model/createBrokerCommand';
-import { UpdateBrokerCommand } from 'appcoretruckassist/model/updateBrokerCommand';
 
 @Component({
     selector: 'app-broker-modal',
@@ -763,7 +761,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         let brAddresses = this.selectedBrokerAddress();
 
-        let newData: CreateBrokerCommand = {
+        let newData: any = {
             ...form,
             mainAddress: brAddresses.mainAddress,
             mainPoBox: brAddresses.mainPoBox,
@@ -826,7 +824,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         let brAddresses = this.selectedBrokerAddress();
 
-        let newData: UpdateBrokerCommand = {
+        let newData: any = {
             id: id,
             ...form,
             mainAddress: brAddresses.mainAddress,

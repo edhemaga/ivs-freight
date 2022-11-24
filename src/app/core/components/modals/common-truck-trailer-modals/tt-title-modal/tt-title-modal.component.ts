@@ -15,8 +15,6 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
-import { CreateTitleCommand } from 'appcoretruckassist/model/createTitleCommand';
-import { UpdateTitleCommand } from 'appcoretruckassist/model/updateTitleCommand';
 
 @Component({
     selector: 'app-tt-title-modal',
@@ -121,7 +119,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     private addTitle() {
         const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
-        const newData: CreateTitleCommand = {
+        const newData: any = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             purchaseDate: convertDateToBackend(purchaseDate),
@@ -152,7 +150,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     private updateTitle() {
         const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
-        const newData: UpdateTitleCommand = {
+        const newData: any = {
             id: this.editData.file_id,
             ...form,
             issueDate: convertDateToBackend(issueDate),

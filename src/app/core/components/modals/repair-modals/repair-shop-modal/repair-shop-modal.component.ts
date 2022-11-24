@@ -25,8 +25,6 @@ import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/
 import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
-import { CreateRepairShopCommand } from 'appcoretruckassist/model/createRepairShopCommand';
-import { UpdateRepairShopCommand } from 'appcoretruckassist/model/updateRepairShopCommand';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -391,7 +389,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        const newData: CreateRepairShopCommand = {
+        const newData: any = {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
@@ -463,7 +461,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        const newData: UpdateRepairShopCommand = {
+        const newData: any = {
             id: id,
             ...form,
             bankId: this.selectedBank ? this.selectedBank.id : null,

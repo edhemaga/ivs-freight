@@ -44,8 +44,6 @@ import {
     convertThousanSepInNumber,
     convertDateFromBackend,
 } from '../../../utils/methods.calculations';
-import { CreateDriverCommand } from 'appcoretruckassist/model/createDriverCommand';
-import { UpdateDriverCommand } from 'appcoretruckassist/model/updateDriverCommand';
 
 @Component({
     selector: 'app-driver-modal',
@@ -1052,7 +1050,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
-        const newData: CreateDriverCommand = {
+        const newData: any = {
             ...form,
             dateOfBirth: convertDateToBackend(
                 this.driverForm.get('dateOfBirth').value
@@ -1433,7 +1431,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
-        const newData: UpdateDriverCommand = {
+        const newData: any = {
             id: id,
             ...form,
             dateOfBirth: convertDateToBackend(

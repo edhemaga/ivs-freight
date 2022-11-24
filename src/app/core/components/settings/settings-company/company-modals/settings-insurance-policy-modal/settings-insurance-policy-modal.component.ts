@@ -42,8 +42,6 @@ import {
     convertDateFromBackend,
     convertNumberInThousandSep,
 } from '../../../../../utils/methods.calculations';
-import { CreateInsurancePolicyCommand } from 'appcoretruckassist/model/createInsurancePolicyCommand';
-import { UpdateInsurancePolicyCommand } from 'appcoretruckassist/model/updateInsurancePolicyCommand';
 
 @Component({
     selector: 'app-settings-insurance-policy-modal',
@@ -442,7 +440,7 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
-        let newData: CreateInsurancePolicyCommand = {
+        let newData: any = {
             companyId: company.divisions.length ? null : company.id,
             ...form,
             issued: convertDateToBackend(issued),
@@ -656,7 +654,7 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
-        let newData: UpdateInsurancePolicyCommand = {
+        let newData: any = {
             id: id,
             ...form,
             issued: convertDateToBackend(issued),

@@ -32,8 +32,6 @@ import {
     repairOdometerValidation,
     vehicleUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
-import { CreateRepairCommand } from 'appcoretruckassist/model/createRepairCommand';
-import { UpdateRepairCommand } from 'appcoretruckassist/model/updateRepairCommand';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -615,7 +613,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
-        let newData: CreateRepairCommand = null;
+        let newData: any = null;
 
         if (this.selectedHeaderTab === 2) {
             newData = {
@@ -693,7 +691,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
-        let newData: UpdateRepairCommand = null;
+        let newData: any = null;
 
         if (this.selectedHeaderTab === 2) {
             newData = {

@@ -20,8 +20,6 @@ import { DriversMinimalListQuery } from './driver-details-minimal-list-state/dri
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-import { CreateDriverCommand } from 'appcoretruckassist/model/createDriverCommand';
-import { UpdateDriverCommand } from 'appcoretruckassist/model/updateDriverCommand';
 
 @Injectable({
     providedIn: 'root',
@@ -92,7 +90,7 @@ export class DriverTService {
 
     /* Observable<CreateDriverResponse> */
     // Create Driver
-    public addDriver(data: CreateDriverCommand): Observable<any> {
+    public addDriver(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.driverService.apiDriverPost().pipe(
             tap((res: any) => {
@@ -265,7 +263,7 @@ export class DriverTService {
         return of(null);
     }
 
-    public updateDriver(data: UpdateDriverCommand): Observable<object> {
+    public updateDriver(data: any): Observable<object> {
         return this.driverService.apiDriverPut().pipe(
             tap((res: any) => {
                 const subDriver = this.getDriverById(data.id)

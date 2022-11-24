@@ -24,12 +24,6 @@ import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trai
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { TrucksDetailsListStore } from '../../truck/state/truck-details-list-state/truck-details-list.store';
 import { TrailerDetailsListStore } from '../../trailer/state/trailer-details-list-state/trailer-details-list.store';
-import { CreateRegistrationCommand } from 'appcoretruckassist/model/createRegistrationCommand';
-import { UpdateRegistrationCommand } from 'appcoretruckassist/model/updateRegistrationCommand';
-import { CreateInspectionCommand } from 'appcoretruckassist/model/createInspectionCommand';
-import { UpdateInspectionCommand } from 'appcoretruckassist/model/updateInspectionCommand';
-import { CreateTitleCommand } from 'appcoretruckassist/model/createTitleCommand';
-import { UpdateTitleCommand } from 'appcoretruckassist/model/updateTitleCommand';
 
 @Injectable({
     providedIn: 'root',
@@ -54,7 +48,7 @@ export class CommonTruckTrailerService {
 
     // Registration
     public addRegistration(
-        data: CreateRegistrationCommand,
+        data: any,
         tabSelected?: string
     ): Observable<any> {
         return this.registrationService.apiRegistrationPost().pipe(
@@ -129,7 +123,7 @@ export class CommonTruckTrailerService {
     }
 
     public updateRegistration(
-        data: UpdateRegistrationCommand,
+        data: any,
         tabSelected?: string
     ): Observable<object> {
         return this.registrationService.apiRegistrationPut().pipe(
@@ -175,7 +169,7 @@ export class CommonTruckTrailerService {
     }
 
     public addInspection(
-        data: CreateInspectionCommand,
+        data: any,
         tabSelected?: string
     ): Observable<any> {
         return this.inspectionService.apiInspectionPost().pipe(
@@ -247,7 +241,7 @@ export class CommonTruckTrailerService {
     }
 
     public updateInspection(
-        data: UpdateInspectionCommand,
+        data: any,
         tabSelected?: string
     ): Observable<object> {
         return this.inspectionService.apiInspectionPut().pipe(
@@ -271,7 +265,7 @@ export class CommonTruckTrailerService {
     }
 
     public addTitle(
-        data: CreateTitleCommand,
+        data: any,
         tabSelected?: string
     ): Observable<any> {
         return this.titleService.apiTitlePost().pipe(
@@ -343,7 +337,7 @@ export class CommonTruckTrailerService {
     }
 
     public updateTitle(
-        data: UpdateTitleCommand,
+        data: any,
         tabSelected?: string
     ): Observable<object> {
         return this.titleService.apiTitlePut().pipe(

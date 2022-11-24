@@ -35,8 +35,6 @@ import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component'
 import { Subject, takeUntil, merge } from 'rxjs';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
-import { UpdateOwnerCommand } from 'appcoretruckassist/model/updateOwnerCommand';
-import { CreateOwnerCommand } from 'appcoretruckassist/model/createOwnerCommand';
 
 @Component({
     selector: 'app-owner-modal',
@@ -341,7 +339,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.ownerForm.value;
 
-        const newData: UpdateOwnerCommand = {
+        const newData: any = {
             id: id,
             ...form,
             ownerType: this.selectedTab,
@@ -405,7 +403,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.ownerForm.value;
 
-        const newData: CreateOwnerCommand = {
+        const newData: any = {
             ...form,
             ownerType: this.selectedTab,
             name:

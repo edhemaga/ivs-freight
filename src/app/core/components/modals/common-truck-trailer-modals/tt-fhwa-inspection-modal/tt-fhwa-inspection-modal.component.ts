@@ -15,8 +15,6 @@ import {
     convertDateFromBackend,
     convertDateToBackend,
 } from '../../../../utils/methods.calculations';
-import { UpdateInspectionCommand } from 'appcoretruckassist/model/updateInspectionCommand';
-import { CreateInspectionCommand } from 'appcoretruckassist/model/createInspectionCommand';
 
 @Component({
     selector: 'app-tt-fhwa-inspection-modal',
@@ -113,7 +111,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
     private updateInspection() {
         const { issueDate, ...form } = this.fhwaInspectionForm.value;
-        const newData: UpdateInspectionCommand = {
+        const newData: any = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             id: this.editData.file_id,
@@ -140,7 +138,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
     private addInspection() {
         const { issueDate, ...form } = this.fhwaInspectionForm.value;
-        const newData: CreateInspectionCommand = {
+        const newData: any = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             truckId: this.editData.modal === 'truck' ? this.editData.id : null,

@@ -16,8 +16,6 @@ import { ShipperStore } from './shipper.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperDetailsListStore } from './shipper-details-state/shipper-details-list-state/shipper-details-list.store';
-import { CreateShipperCommand } from 'appcoretruckassist/model/createShipperCommand';
-import { UpdateShipperCommand } from 'appcoretruckassist/model/updateShipperCommand';
 
 @Injectable({
     providedIn: 'root',
@@ -38,7 +36,7 @@ export class ShipperTService implements OnDestroy {
     ) {}
 
     // Create Shipper
-    public addShipper(data: CreateShipperCommand): Observable<CreateResponse> {
+    public addShipper(data: any): Observable<CreateResponse> {
         return this.shipperService.apiShipperPost().pipe(
             tap((res: any) => {
                 const subShipper = this.getShipperById(res.id)
@@ -76,7 +74,7 @@ export class ShipperTService implements OnDestroy {
     }
 
     // Update Shipper
-    public updateShipper(data: UpdateShipperCommand): Observable<any> {
+    public updateShipper(data: any): Observable<any> {
         return this.shipperService.apiShipperPut().pipe(
             tap(() => {
                 const subShipper = this.getShipperById(data.id)

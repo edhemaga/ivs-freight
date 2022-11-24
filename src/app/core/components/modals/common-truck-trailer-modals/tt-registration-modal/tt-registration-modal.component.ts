@@ -17,8 +17,6 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
-import { UpdateRegistrationCommand } from 'appcoretruckassist/model/updateRegistrationCommand';
-import { CreateRegistrationCommand } from 'appcoretruckassist/model/createRegistrationCommand';
 
 @Component({
     selector: 'app-tt-registration-modal',
@@ -126,7 +124,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     private updateRegistration() {
         const { issueDate, expDate, ...form } = this.registrationForm.value;
-        const newData: UpdateRegistrationCommand = {
+        const newData: any = {
             id: this.editData.file_id,
             ...form,
             issueDate: convertDateToBackend(issueDate),
@@ -155,7 +153,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     private addRegistration() {
         const { issueDate, expDate, ...form } = this.registrationForm.value;
-        const newData: CreateRegistrationCommand = {
+        const newData: any = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             expDate: convertDateToBackend(expDate),
