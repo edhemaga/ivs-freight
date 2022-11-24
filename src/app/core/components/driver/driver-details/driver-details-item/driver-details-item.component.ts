@@ -94,7 +94,6 @@ export class DriverDetailsItemComponent
         this.activeCdl = this.drivers[0].data.cdls.filter(
             (item) => item.status === 1
         );
-
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -122,7 +121,7 @@ export class DriverDetailsItemComponent
                                             DriverCdlModalComponent,
                                             { size: 'small' },
                                             {
-                                                id: res.data.driver.id,
+                                                id: res.data.driver?.id,
                                                 file_id:
                                                     res.data.driver.file_id,
                                                 type: 'renew-licence',
@@ -150,6 +149,7 @@ export class DriverDetailsItemComponent
     }
     public getExpireDate() {
         this.dataCDl = this.drivers[1]?.data?.cdls?.map((ele) => {
+          
             let endDate = moment(ele.expDate);
             if (
                 moment(ele.expDate).isBefore(moment()) ||
