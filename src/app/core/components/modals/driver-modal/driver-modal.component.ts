@@ -382,11 +382,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get('routing'),
                         this.driverForm.get('account')
                     );
-
-                console.log(
-                    'form component: ',
-                    this.driverForm.get('routing').errors
-                );
             });
     }
 
@@ -1988,12 +1983,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.notificationService.error(errorMessage, 'Error');
                 },
             });
-    }
-
-    // Checkbox card
-    public ownerCheckboxCard: boolean = true;
-    public toggleCheckboxCard() {
-        this.ownerCheckboxCard = !this.ownerCheckboxCard;
     }
 
     ngOnDestroy(): void {

@@ -2151,12 +2151,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    // Checkbox Card
-    public useACHCheckboxCard: boolean = true;
-    public toggleCheckboxCard() {
-        this.useACHCheckboxCard = !this.useACHCheckboxCard;
-    }
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

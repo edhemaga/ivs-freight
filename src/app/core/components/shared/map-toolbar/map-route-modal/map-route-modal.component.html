@@ -82,71 +82,48 @@
         </div>
 
         <!-- Fuel Cost -->
-        <div class="custom-checkbox-card">
-            <div class="divider"></div>
-            <div
-                class="checkbox-card-header"
-                [ngClass]="{
-                    pointer: mapRouteForm.get('fuelCost').value
-                }"
-            >
-                <app-ta-checkbox
-                    formControlName="fuelCost"
-                    [label]="'Fuel Cost'"
-                    [name]="'Fuel Cost'"
-                ></app-ta-checkbox>
-                <svg-icon
-                    class="checkbox-card-header-arrow"
-                    src="assets/svg/common/ic_arrow_down_updated.svg"
-                    [ngClass]="{
-                        visible: mapRouteForm.get('fuelCost').value,
-                        rotate: !fuelCostCheckboxCard
-                    }"
-                    (click)="fuelCostCheckboxCard = !fuelCostCheckboxCard"
-                ></svg-icon>
-            </div>
-            <div
-                *ngIf="
-                    mapRouteForm.get('fuelCost').value && fuelCostCheckboxCard
-                "
-                class="checkbox-card-body"
-                [ngClass]="{
-                    'active-20': mapRouteForm.get('fuelCost').value
-                }"
-            >
-                <div class="row">
-                    <div class="col-6">
-                        <app-ta-input
-                            formControlName="fuelMpg"
-                            [inputConfig]="{
-                                name: 'Fuel Per Miles',
-                                type: 'text',
-                                label: 'Miles per Gallon',
-                                placeholderIcon: 'mileage',
-                                isRequired: true,
-                                thousandSeparator: true,
-                                maxLength: 5,
-                                customClass: 'line-input-26'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                    <div class="col-6">
-                        <app-ta-input
-                            formControlName="fuelPrice"
-                            [inputConfig]="{
-                                name: 'Fuel Price Map',
-                                type: 'text',
-                                label: 'Price per Gallon',
-                                placeholderIcon: 'dollar',
-                                isRequired: true,
-                                thousandSeparator: true,
-                                maxLength: 5,
-                                customClass: 'line-input-26'
-                            }"
-                        ></app-ta-input>
-                    </div>
+        <app-ta-checkbox-card
+            formControlName="fuelCost"
+            [label]="'Fuel Cost'"
+            [name]="'fuel-cost'"
+            [isCardOpen]="mapRouteForm.get('fuelCost').value"
+            [animationMarginParams]="{
+                marginTop: '12px',
+                marginBottom: '18px'
+            }"
+        >
+            <div class="row row-no-m">
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="fuelMpg"
+                        [inputConfig]="{
+                            name: 'Fuel Per Miles',
+                            type: 'text',
+                            label: 'Miles per Gallon',
+                            placeholderIcon: 'mileage',
+                            isRequired: true,
+                            thousandSeparator: true,
+                            maxLength: 5,
+                            customClass: 'line-input-26'
+                        }"
+                    ></app-ta-input>
+                </div>
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="fuelPrice"
+                        [inputConfig]="{
+                            name: 'Fuel Price Map',
+                            type: 'text',
+                            label: 'Price per Gallon',
+                            placeholderIcon: 'dollar',
+                            isRequired: true,
+                            thousandSeparator: true,
+                            maxLength: 5,
+                            customClass: 'line-input-26'
+                        }"
+                    ></app-ta-input>
                 </div>
             </div>
-        </div>
+        </app-ta-checkbox-card>
     </form>
 </app-ta-modal>
