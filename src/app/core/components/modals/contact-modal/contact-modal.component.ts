@@ -66,6 +66,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     public labelsContactEmails: any[] = [];
     public selectedContactEmail: any[] = [];
 
+    public disabledFormValidation: boolean = false;
+
     public dropZoneConfig: DropZoneConfig = {
         dropZoneType: 'image',
         dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
@@ -683,15 +685,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public disabledFormValidation: boolean = false;
     public companyContactLabelMode(event: boolean) {
         this.disabledFormValidation = event;
-    }
-
-    // Checkbox card
-    public sharedContactCheckboxCard: boolean = true;
-    public toggleCheckboxCard() {
-        this.sharedContactCheckboxCard = !this.sharedContactCheckboxCard;
     }
 
     ngOnDestroy(): void {

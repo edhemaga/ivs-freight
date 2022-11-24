@@ -55,6 +55,10 @@ export class UserTService {
         return this.userService.apiCompanyuserIdGet(id);
     }
 
+    public updateUserStatus(id: number): Observable<any> {
+        return this.userService.apiCompanyuserStatusIdPut(id);
+    }
+
     public getModalDropdowns(): Observable<CompanyUserModalResponse> {
         return this.userService.apiCompanyuserModalGet();
     }

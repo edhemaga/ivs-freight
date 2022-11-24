@@ -350,12 +350,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    // Checkbox card
-    public passwordCheckboxCard: boolean = true;
-    public toggleCheckboxCard() {
-        this.passwordCheckboxCard = !this.passwordCheckboxCard;
-    }
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

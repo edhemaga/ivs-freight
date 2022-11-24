@@ -8,30 +8,36 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, takeUntil } from 'rxjs';
-
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 import {
-    convertDateToBackend,
+    anyInputInLineIncorrect,
+    isAnyPropertyInObjectFalse,
+    isFormValueNotEqual,
+    isAnyRadioInArrayUnChecked,
+    filterUnceckedRadiosId,
+} from '../../state/utils/utils';
+
+import {
     convertDateFromBackend,
+    convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-import { ContactModel } from '../../state/model/education.model';
 import {
     ApplicantResponse,
     CreateEducationCommand,
     CreateEducationReviewCommand,
     EducationFeedbackResponse,
 } from 'appcoretruckassist/model/models';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { ApplicantQuestion } from '../../state/model/applicant-question.model';
+import { ContactModel } from '../../state/model/education.model';
 
 @Component({
     selector: 'app-step6',
@@ -69,6 +75,8 @@ export class Step6Component implements OnInit, OnDestroy {
 
     public selectedMode: string = SelectedMode.APPLICANT;
 
+    public subscription: Subscription;
+
     public educationForm: FormGroup;
     public contactForm: FormGroup;
 
@@ -77,13 +85,28 @@ export class Step6Component implements OnInit, OnDestroy {
 
     public applicantId: number;
     public educationId: number;
-    public emergencyContactsId: number[];
+    public emergencyContactReviewIds: any[];
+
+    public stepValues: any;
+    public lastItemStepValues: any;
+    public stepHasValues: boolean = false;
 
     private specialTrainingRadios: any;
     private otherTrainingRadios: any;
     private knowledgeOfSafetyRegulationsRadios: any;
     private driverForCompanyBeforeRadios: any;
     private unableForJobRadios: any;
+
+    public displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    }[] = [
+        { id: 0, displayRadioRequiredNote: false },
+        { id: 1, displayRadioRequiredNote: false },
+        { id: 2, displayRadioRequiredNote: false },
+        { id: 3, displayRadioRequiredNote: false },
+        { id: 4, displayRadioRequiredNote: false },
+    ];
 
     public contactsArray: ContactModel[] = [];
 
@@ -104,6 +127,7 @@ export class Step6Component implements OnInit, OnDestroy {
         '12',
     ];
     public collegeGrades: string[] = ['1', '2', '3', '4'];
+    public displayGradeRequiredNote: boolean = false;
 
     public helperIndex: number = 2;
     public selectedContactIndex: number;
@@ -280,9 +304,14 @@ export class Step6Component implements OnInit, OnDestroy {
         {},
         {},
     ];
+    public questionsHaveIncorrectFields: boolean = false;
     public hasIncorrectFields: boolean = false;
     public cardsWithIncorrectFields: boolean = false;
     public previousFormValuesOnReview: any;
+
+    public stepFeedbackValues: any;
+    public isUpperFormFeedbackValueUpdated: boolean = true;
+    public isBottomFormFeedbackValueUpdated: boolean = true;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -344,79 +373,16 @@ export class Step6Component implements OnInit, OnDestroy {
 
                 if (res.education) {
                     this.patchStepValues(res.education);
+
+                    this.stepHasValues = true;
                 }
             });
     }
 
     public patchStepValues(stepValues: EducationFeedbackResponse): void {
         console.log('stepValues', stepValues);
-        if (this.selectedMode === SelectedMode.REVIEW) {
-            if (stepValues.educationReview) {
-                const {
-                    isSpecialTrainingDescriptionValid,
-                    specialTrainingDescriptionMessage,
-                    isOtherTrainingDescriptionValid,
-                    otherTrainingDescriptionMessage,
-                    isFromValid,
-                    isToValid,
-                    datesMessage,
-                } = stepValues.educationReview;
-
-                this.openAnnotationArray[0] = {
-                    ...this.openAnnotationArray[0],
-                    lineInputs: [!isSpecialTrainingDescriptionValid],
-                    displayAnnotationButton:
-                        !isSpecialTrainingDescriptionValid &&
-                        !specialTrainingDescriptionMessage
-                            ? true
-                            : false,
-                    displayAnnotationTextArea: specialTrainingDescriptionMessage
-                        ? true
-                        : false,
-                };
-                this.openAnnotationArray[1] = {
-                    ...this.openAnnotationArray[1],
-                    lineInputs: [!isOtherTrainingDescriptionValid],
-                    displayAnnotationButton:
-                        !isOtherTrainingDescriptionValid &&
-                        !otherTrainingDescriptionMessage
-                            ? true
-                            : false,
-                    displayAnnotationTextArea: otherTrainingDescriptionMessage
-                        ? true
-                        : false,
-                };
-                this.openAnnotationArray[2] = {
-                    ...this.openAnnotationArray[2],
-                    lineInputs: [!isFromValid, !isToValid],
-                    displayAnnotationButton:
-                        (!isFromValid || !isToValid) && !datesMessage
-                            ? true
-                            : false,
-                    displayAnnotationTextArea: datesMessage ? true : false,
-                };
-
-                const inputFieldsArray = JSON.stringify(
-                    this.openAnnotationArray
-                        .filter((item) => Object.keys(item).length !== 0)
-                        .map((item) => item.lineInputs)
-                );
-
-                if (inputFieldsArray.includes('true')) {
-                    this.hasIncorrectFields = true;
-                } else {
-                    this.hasIncorrectFields = false;
-                }
-
-                this.educationForm.patchValue({
-                    questionReview1: specialTrainingDescriptionMessage,
-                    questionReview2: otherTrainingDescriptionMessage,
-                    questionReview4: datesMessage,
-                });
-            }
-        }
-
         const {
+            id,
             highestGrade,
             collegeGrade,
             emergencyContacts,
@@ -430,7 +396,7 @@ export class Step6Component implements OnInit, OnDestroy {
             to,
             unableForJob,
             unableForJobDescription,
-            id,
+            educationReview,
         } = stepValues;
 
         this.formStatus = 'VALID';
@@ -440,7 +406,23 @@ export class Step6Component implements OnInit, OnDestroy {
 
         this.educationId = id;
 
-        /*  const { emergencyContactReviews } = educationReview; */
+        this.emergencyContactReviewIds = emergencyContacts.map((item) => {
+            return item.emergencyContactReview
+                ? item.emergencyContactReview.id
+                : null;
+        });
+
+        console.log(
+            'this.emergencyContactReviewIds',
+            this.emergencyContactReviewIds
+        );
+
+        const itemReviewPlaceholder = {
+            isNameValid: true,
+            isPhoneValid: true,
+            isRelationshipValid: true,
+            emergencyContactMessage: null,
+        };
 
         const lastItemInContactsArray =
             emergencyContacts[emergencyContacts.length - 1];
@@ -452,13 +434,14 @@ export class Step6Component implements OnInit, OnDestroy {
         const filteredContactsArray = restOfTheItemsInContactsArray.map(
             (item) => {
                 return {
+                    id: item.id,
                     isEditingContact: false,
                     name: item.name,
                     phone: item.phone,
                     relationship: item.relationship,
                     emergencyContactReview: item.emergencyContactReview
                         ? item.emergencyContactReview
-                        : null,
+                        : itemReviewPlaceholder,
                 };
             }
         );
@@ -469,13 +452,10 @@ export class Step6Component implements OnInit, OnDestroy {
             name: lastItemInContactsArray.name,
             phone: lastItemInContactsArray.phone,
             relationship: lastItemInContactsArray.relationship,
-            /* emergencyContactReview: emergencyContactReviews
-        ? emergencyContactReviews[emergencyContactReviews.length - 1]
-        : null, */
             emergencyContactReview:
                 lastItemInContactsArray.emergencyContactReview
                     ? lastItemInContactsArray.emergencyContactReview
-                    : null,
+                    : itemReviewPlaceholder,
         };
 
         this.lastContactCard = {
@@ -484,7 +464,7 @@ export class Step6Component implements OnInit, OnDestroy {
             relationship: filteredLastItemInContactsArray.relationship,
         };
 
-        this.contactsArray = [...filteredContactsArray];
+        this.contactsArray = JSON.parse(JSON.stringify(filteredContactsArray));
 
         this.formValuesToPatch = filteredLastItemInContactsArray;
         this.previousFormValuesOnReview = filteredLastItemInContactsArray;
@@ -557,7 +537,137 @@ export class Step6Component implements OnInit, OnDestroy {
             } else {
                 this.unableForJobRadios[1].checked = true;
             }
-        }, 150);
+        }, 50);
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            if (stepValues.educationReview) {
+                const {
+                    isSpecialTrainingDescriptionValid,
+                    specialTrainingDescriptionMessage,
+                    isOtherTrainingDescriptionValid,
+                    otherTrainingDescriptionMessage,
+                    isFromValid,
+                    isToValid,
+                    datesMessage,
+                    isUnableToPreformJobDescriptionValid,
+                    unableToPreformJobDescriptionMessage,
+                } = stepValues.educationReview;
+
+                this.openAnnotationArray[0] = {
+                    ...this.openAnnotationArray[0],
+                    lineInputs: [!isSpecialTrainingDescriptionValid],
+                    displayAnnotationButton:
+                        !isSpecialTrainingDescriptionValid &&
+                        !specialTrainingDescriptionMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: specialTrainingDescriptionMessage
+                        ? true
+                        : false,
+                };
+                this.openAnnotationArray[1] = {
+                    ...this.openAnnotationArray[1],
+                    lineInputs: [!isOtherTrainingDescriptionValid],
+                    displayAnnotationButton:
+                        !isOtherTrainingDescriptionValid &&
+                        !otherTrainingDescriptionMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: otherTrainingDescriptionMessage
+                        ? true
+                        : false,
+                };
+                this.openAnnotationArray[2] = {
+                    ...this.openAnnotationArray[2],
+                    lineInputs: [!isFromValid, !isToValid],
+                    displayAnnotationButton:
+                        (!isFromValid || !isToValid) && !datesMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: datesMessage ? true : false,
+                };
+                this.openAnnotationArray[3] = {
+                    ...this.openAnnotationArray[3],
+                    lineInputs: [!isUnableToPreformJobDescriptionValid],
+                    displayAnnotationButton:
+                        !isUnableToPreformJobDescriptionValid &&
+                        !unableToPreformJobDescriptionMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea:
+                        unableToPreformJobDescriptionMessage ? true : false,
+                };
+
+                const inputFieldsArray = JSON.stringify(
+                    this.openAnnotationArray
+                        .filter((item) => Object.keys(item).length !== 0)
+                        .map((item) => item.lineInputs)
+                );
+
+                if (inputFieldsArray.includes('true')) {
+                    this.questionsHaveIncorrectFields = true;
+                } else {
+                    this.questionsHaveIncorrectFields = false;
+                }
+
+                this.educationForm.patchValue({
+                    questionReview1: specialTrainingDescriptionMessage,
+                    questionReview2: otherTrainingDescriptionMessage,
+                    questionReview4: datesMessage,
+                    questionReview5: unableToPreformJobDescriptionMessage,
+                });
+            }
+        }
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (educationReview) {
+                this.stepFeedbackValues = {
+                    ...this.stepFeedbackValues,
+                    ...educationReview,
+                };
+            }
+
+            const lastContactsItem =
+                emergencyContacts[emergencyContacts.length - 1];
+
+            console.log('lastContactsItem', lastContactsItem);
+
+            const lastContactsItemReview =
+                lastContactsItem.emergencyContactReview;
+
+            console.log('lastContactsItemReview', lastContactsItemReview);
+
+            this.stepFeedbackValues = {
+                ...this.stepFeedbackValues,
+                lastContactsItemReview: {
+                    isNameValid: lastContactsItemReview
+                        ? lastContactsItemReview?.isNameValid
+                        : true,
+                    isPhoneValid: lastContactsItemReview
+                        ? lastContactsItemReview?.isPhoneValid
+                        : true,
+                    isRelationshipValid: lastContactsItemReview
+                        ? lastContactsItemReview?.isRelationshipValid
+                        : true,
+                    emergencyContactMessage: lastContactsItemReview
+                        ? lastContactsItemReview.emergencyContactMessage
+                        : null,
+                },
+            };
+
+            const hasIncorrectValue = isAnyPropertyInObjectFalse(
+                this.stepFeedbackValues
+            );
+
+            if (hasIncorrectValue) {
+                this.startUpperFormFeedbackValueChangesMonitoring();
+            }
+
+            console.log('this.stepFeedbackValues', this.stepFeedbackValues);
+
+            this.stepValues = stepValues;
+            this.lastItemStepValues = lastContactsItem;
+        }
     }
 
     public handleInputSelect(event: any): void {
@@ -626,11 +736,19 @@ export class Step6Component implements OnInit, OnDestroy {
                 });
             }
         }
+
+        this.displayRadioRequiredNoteArray[
+            selectedCheckbox.index
+        ].displayRadioRequiredNote = false;
     }
 
     public onSchoolGradeClick(gradeIndex: number): void {
         if (this.selectedMode !== SelectedMode.APPLICANT) {
             return;
+        }
+
+        if (this.displayGradeRequiredNote) {
+            this.displayGradeRequiredNote = false;
         }
 
         this.selectedGrade = gradeIndex;
@@ -642,11 +760,13 @@ export class Step6Component implements OnInit, OnDestroy {
             return;
         }
 
+        if (this.displayGradeRequiredNote) {
+            this.displayGradeRequiredNote = false;
+        }
+
         this.selectedCollegeGrade = gradeIndex;
 
-        if (this.selectedCollegeGrade) {
-            this.selectedGrade = 11;
-        }
+        this.selectedGrade = 11;
     }
 
     public onDeleteContact(index: number): void {
@@ -659,7 +779,12 @@ export class Step6Component implements OnInit, OnDestroy {
 
     public onEditContact(index: number): void {
         if (this.isEditing) {
-            return;
+            this.isEditing = false;
+            this.contactsArray[this.selectedContactIndex].isEditingContact =
+                false;
+
+            this.helperIndex = 2;
+            this.selectedContactIndex = -1;
         }
 
         this.helperIndex = index;
@@ -669,6 +794,14 @@ export class Step6Component implements OnInit, OnDestroy {
         this.contactsArray[index].isEditingContact = true;
 
         const selectedContact = this.contactsArray[index];
+
+        if (this.lastContactCard) {
+            this.previousFormValuesOnEdit = {
+                name: this.lastContactCard.name,
+                phone: this.lastContactCard.phone,
+                relationship: this.lastContactCard.relationship,
+            };
+        }
 
         this.formValuesToPatch = selectedContact;
     }
@@ -728,6 +861,12 @@ export class Step6Component implements OnInit, OnDestroy {
 
     public onGetLastFormValues(event: any): void {
         this.lastContactCard = event;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (event) {
+                this.startBottomFormFeedbackValueChangesMonitoring();
+            }
+        }
     }
 
     public onHasIncorrectFields(event: any): void {
@@ -897,9 +1036,9 @@ export class Step6Component implements OnInit, OnDestroy {
         );
 
         if (inputFieldsArray.includes('true')) {
-            this.hasIncorrectFields = true;
+            this.questionsHaveIncorrectFields = true;
         } else {
-            this.hasIncorrectFields = false;
+            this.questionsHaveIncorrectFields = false;
         }
     }
 
@@ -936,9 +1075,178 @@ export class Step6Component implements OnInit, OnDestroy {
         this.formValuesToPatch = selectedContact;
     }
 
+    public startUpperFormFeedbackValueChangesMonitoring(): void {
+        if (this.stepFeedbackValues) {
+            const filteredIncorrectValues = Object.keys(
+                this.stepFeedbackValues
+            ).reduce((o, key) => {
+                this.stepFeedbackValues[key] === false &&
+                    (o[key] = this.stepFeedbackValues[key]);
+
+                return o;
+            }, {});
+
+            const hasIncorrectValues = Object.keys(
+                filteredIncorrectValues
+            ).length;
+
+            if (hasIncorrectValues) {
+                this.subscription = this.educationForm.valueChanges
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((updatedFormValues) => {
+                        const filteredFieldsWithIncorrectValues = Object.keys(
+                            filteredIncorrectValues
+                        ).reduce((o, key) => {
+                            const keyName = key
+                                .replace('Valid', '')
+                                .replace('is', '')
+                                .trim()
+                                .toLowerCase();
+
+                            const match = Object.keys(this.stepValues)
+                                .filter((item) =>
+                                    item.toLowerCase().includes(keyName)
+                                )
+                                .pop();
+
+                            o[keyName] = this.stepValues[match];
+
+                            if (keyName === 'from') {
+                                o['from'] = convertDateFromBackend(o['from']);
+                            }
+
+                            if (keyName === 'to') {
+                                o['to'] = convertDateFromBackend(o['to']);
+                            }
+
+                            if (keyName === 'unabletopreformjobdescription') {
+                                o['unabletopreformjobdescription'] =
+                                    this.stepValues.unableForJobDescription;
+                            }
+
+                            return o;
+                        }, {});
+
+                        const filteredUpdatedFieldsWithIncorrectValues =
+                            Object.keys(
+                                filteredFieldsWithIncorrectValues
+                            ).reduce((o, key) => {
+                                const keyName = key;
+
+                                if (keyName === 'specialtrainingdescription') {
+                                    o['specialtrainingdescription'] =
+                                        updatedFormValues.specialTrainingExplain;
+                                }
+
+                                if (keyName === 'othertrainingdescription') {
+                                    o['othertrainingdescription'] =
+                                        updatedFormValues.otherTrainingExplain;
+                                }
+
+                                if (keyName === 'from') {
+                                    o['from'] =
+                                        updatedFormValues.driverForCompanyBeforeExplain;
+                                }
+
+                                if (keyName === 'to') {
+                                    o['to'] =
+                                        updatedFormValues.driverForCompanyToExplain;
+                                }
+
+                                if (
+                                    keyName === 'unabletopreformjobdescription'
+                                ) {
+                                    o['unabletopreformjobdescription'] =
+                                        updatedFormValues.unableForJobExplain;
+                                }
+
+                                return o;
+                            }, {});
+
+                        const isFormNotEqual = isFormValueNotEqual(
+                            filteredFieldsWithIncorrectValues,
+                            filteredUpdatedFieldsWithIncorrectValues
+                        );
+
+                        if (isFormNotEqual) {
+                            this.isUpperFormFeedbackValueUpdated = true;
+                        } else {
+                            this.isUpperFormFeedbackValueUpdated = false;
+                        }
+                    });
+            }
+        }
+    }
+
+    public startBottomFormFeedbackValueChangesMonitoring(): void {
+        if (this.stepFeedbackValues) {
+            const filteredContactIncorrectValues = Object.keys(
+                this.stepFeedbackValues?.lastContactsItemReview
+            ).reduce((o, key) => {
+                this.stepFeedbackValues.lastContactsItemReview[key] === false &&
+                    (o[key] =
+                        this.stepFeedbackValues?.lastContactsItemReview[key]);
+
+                return o;
+            }, {});
+
+            const contactHasIncorrectValues = Object.keys(
+                filteredContactIncorrectValues
+            ).length;
+
+            if (contactHasIncorrectValues) {
+                const filteredFieldsWithIncorrectValues = Object.keys(
+                    filteredContactIncorrectValues
+                ).reduce((o, key) => {
+                    const keyName = key
+                        .replace('Valid', '')
+                        .replace('is', '')
+                        .trim()
+                        .toLowerCase();
+
+                    const match = Object.keys(this.lastItemStepValues)
+                        .filter((item) => item.toLowerCase().includes(keyName))
+                        .pop();
+
+                    o[keyName] = this.lastItemStepValues[match];
+
+                    return o;
+                }, {});
+
+                const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
+                    filteredFieldsWithIncorrectValues
+                ).reduce((o, key) => {
+                    const keyName = key;
+
+                    const match = Object.keys(this.lastItemStepValues)
+                        .filter((item) => item.toLowerCase().includes(keyName))
+                        .pop();
+
+                    o[keyName] = this.lastContactCard[match];
+
+                    return o;
+                }, {});
+
+                const isFormNotEqual = isFormValueNotEqual(
+                    filteredFieldsWithIncorrectValues,
+                    filteredUpdatedFieldsWithIncorrectValues
+                );
+
+                if (isFormNotEqual) {
+                    this.isBottomFormFeedbackValueUpdated = true;
+                } else {
+                    this.isBottomFormFeedbackValueUpdated = false;
+                }
+            }
+        }
+    }
+
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (this.selectedMode === SelectedMode.APPLICANT) {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
                 this.onSubmit();
             }
 
@@ -953,31 +1261,82 @@ export class Step6Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.educationForm.invalid) {
-            this.inputService.markInvalid(this.educationForm);
-            return;
-        }
-
-        if (this.formStatus === 'INVALID') {
-            this.markFormInvalid = true;
-            return;
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (
+                !this.isUpperFormFeedbackValueUpdated ||
+                !this.isBottomFormFeedbackValueUpdated
+            ) {
+                return;
+            }
         }
 
         const {
+            specialTraining,
             specialTrainingExplain,
+            otherTraining,
             otherTrainingExplain,
-            knowledgeOfSafetyRegulationsExplain,
+            knowledgeOfSafetyRegulations,
             driverForCompany,
             driverForCompanyBeforeExplain,
             driverForCompanyToExplain,
+            unableForJob,
             unableForJobExplain,
-            questionReview1,
-            questionReview2,
-            questionReview3,
-            questionReview4,
-            questionReview5,
-            ...educationForm
         } = this.educationForm.value;
+
+        const radioButtons = [
+            { id: 0, isChecked: specialTraining },
+            { id: 1, isChecked: otherTraining },
+            {
+                id: 2,
+                isChecked: knowledgeOfSafetyRegulations,
+            },
+            { id: 3, isChecked: driverForCompany },
+            { id: 4, isChecked: unableForJob },
+        ];
+
+        const isAnyRadioUnchecked = isAnyRadioInArrayUnChecked(radioButtons);
+
+        if (
+            this.educationForm.invalid ||
+            this.formStatus === 'INVALID' ||
+            !this.selectedGrade ||
+            isAnyRadioUnchecked ||
+            this.isEditing
+        ) {
+            if (this.educationForm.invalid) {
+                this.inputService.markInvalid(this.educationForm);
+            }
+
+            if (this.formStatus === 'INVALID') {
+                this.markFormInvalid = true;
+            }
+
+            if (this.selectedGrade < 0) {
+                this.displayGradeRequiredNote = true;
+            }
+
+            if (isAnyRadioUnchecked) {
+                const uncheckedRadios = filterUnceckedRadiosId(radioButtons);
+
+                this.displayRadioRequiredNoteArray =
+                    this.displayRadioRequiredNoteArray.map((item, index) => {
+                        if (
+                            uncheckedRadios.some(
+                                (someItem) => someItem === index
+                            )
+                        ) {
+                            return {
+                                ...item,
+                                displayRadioRequiredNote: true,
+                            };
+                        }
+
+                        return item;
+                    });
+            }
+
+            return;
+        }
 
         const filteredContactsArray = this.contactsArray.map((item) => {
             return {
@@ -994,15 +1353,17 @@ export class Step6Component implements OnInit, OnDestroy {
         };
 
         const saveData: CreateEducationCommand = {
-            ...educationForm,
             applicantId: this.applicantId,
             highestGrade: this.selectedGrade > -1 ? this.selectedGrade + 1 : -1,
             collegeGrade:
                 this.selectedCollegeGrade > -1
                     ? this.selectedCollegeGrade + 1
                     : -1,
+            specialTraining,
             specialTrainingDescription: specialTrainingExplain,
+            otherTraining,
             otherTrainingDescription: otherTrainingExplain,
+            knowledgeOfSafetyRegulations,
             driverBefore: driverForCompany,
             from: driverForCompany
                 ? convertDateToBackend(driverForCompanyBeforeExplain)
@@ -1010,6 +1371,7 @@ export class Step6Component implements OnInit, OnDestroy {
             to: driverForCompany
                 ? convertDateToBackend(driverForCompanyToExplain)
                 : null,
+            unableForJob,
             unableForJobDescription: unableForJobExplain,
             emergencyContacts: [
                 ...filteredContactsArray,
@@ -1017,10 +1379,24 @@ export class Step6Component implements OnInit, OnDestroy {
             ],
         };
 
-        console.log(saveData);
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT &&
+                !this.stepHasValues
+            ) {
+                return this.applicantActionsService.createEducation(saveData);
+            }
 
-        this.applicantActionsService
-            .createEducation(saveData)
+            if (
+                (this.selectedMode === SelectedMode.APPLICANT &&
+                    this.stepHasValues) ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
+                return this.applicantActionsService.updateEducation(saveData);
+            }
+        };
+
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -1065,29 +1441,50 @@ export class Step6Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
-        const { questionReview1, questionReview2, questionReview4 } =
-            this.educationForm.value;
+        const {
+            questionReview1,
+            questionReview2,
+            questionReview4,
+            questionReview5,
+        } = this.educationForm.value;
+
+        const contactsArrayReview = this.contactsArray.map((item, index) => {
+            const itemReview = item.emergencyContactReview;
+
+            return {
+                itemId: item.id,
+                isPrimary: false,
+                commonMessage: this.contactForm.get(`cardReview${index + 1}`)
+                    .value,
+                isNameValid: itemReview ? itemReview.isNameValid : true,
+                isPhoneValid: itemReview ? itemReview.isPhoneValid : true,
+                isRelationshipValid: itemReview
+                    ? itemReview.isRelationshipValid
+                    : true,
+                emergencyContactMessage: null,
+            };
+        });
 
         const lastItemReview =
             this.previousFormValuesOnReview.emergencyContactReview;
 
-        console.log('lastItem', lastItemReview);
-
         const lastItemId = this.previousFormValuesOnReview.id;
 
         const lastReviewedItemInContactsArray = {
-            emergencyContactId: lastItemId,
+            itemId: lastItemId,
+            isPrimary: true,
+            commonMessage: null,
             isNameValid: lastItemReview ? lastItemReview.isNameValid : true,
-            /*    isPhoneValid: lastItemReview ? !lastItemReview.isPhoneValid : true,
-      isRelationshipValid: lastItemReview
-        ? !lastItemReview.isRelationshipValid
-        : true, */
+            isPhoneValid: lastItemReview ? lastItemReview.isPhoneValid : true,
+            isRelationshipValid: lastItemReview
+                ? lastItemReview.isRelationshipValid
+                : true,
             emergencyContactMessage: this.lastContactCard.firstRowReview,
         };
 
         const saveData: CreateEducationReviewCommand = {
-            applicantId: this.applicantId,
-            // educationId: this.educationId,
+            applicantId: this.applicantId /* 
+            id: this.educationId, */,
             isSpecialTrainingDescriptionValid:
                 !this.openAnnotationArray[0].lineInputs[0],
             specialTrainingDescriptionMessage: questionReview1,
@@ -1097,12 +1494,16 @@ export class Step6Component implements OnInit, OnDestroy {
             isFromValid: !this.openAnnotationArray[2].lineInputs[0],
             isToValid: !this.openAnnotationArray[2].lineInputs[1],
             datesMessage: questionReview4,
-            emergencyContactReviews: [lastReviewedItemInContactsArray],
+            isUnableToPreformJobDescriptionValid:
+                !this.openAnnotationArray[3].lineInputs[0],
+            unableToPreformJobDescriptionMessage: questionReview5,
+            emergencyContactReviews: [
+                ...contactsArrayReview,
+                lastReviewedItemInContactsArray,
+            ],
         };
 
-        /*     console.log('saveData', saveData); */
-
-        const { emergencyContactReviews, ...rest } = saveData;
+        console.log('saveData', saveData);
 
         this.applicantActionsService
             .createEducationReview(saveData)
@@ -1113,17 +1514,59 @@ export class Step6Component implements OnInit, OnDestroy {
                         `/application/${this.applicantId}/7`,
                     ]);
 
-                    /*    this.applicantStore.update(1, (entity) => {
-            return {
-              ...entity,
-              education: {
-                ...entity.education,
-                educationReview: rest,
-              },
-            };
-          }); */
+                    const { emergencyContactReviews, ...stepValuesReview } =
+                        saveData;
 
-                    console.log('updatedStore', this.applicantStore);
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                education: {
+                                    ...store.applicant.education,
+                                    educationReview: stepValuesReview,
+                                    emergencyContacts:
+                                        store.applicant.education.emergencyContacts.map(
+                                            (item, index) => {
+                                                if (
+                                                    index ===
+                                                    store.applicant.education
+                                                        .emergencyContacts
+                                                        .length -
+                                                        1
+                                                ) {
+                                                    return {
+                                                        ...item,
+                                                        emergencyContactReview:
+                                                            {
+                                                                ...item.emergencyContactReview,
+                                                                isNameValid:
+                                                                    lastReviewedItemInContactsArray.isNameValid,
+                                                                isPhoneValid:
+                                                                    lastReviewedItemInContactsArray.isPhoneValid,
+                                                                isRelationshipValid:
+                                                                    lastReviewedItemInContactsArray.isRelationshipValid,
+                                                                emergencyContactMessage:
+                                                                    lastReviewedItemInContactsArray.emergencyContactMessage,
+                                                            },
+                                                    };
+                                                }
+
+                                                return {
+                                                    ...item,
+                                                    emergencyContactReview: {
+                                                        ...item.emergencyContactReview,
+                                                        ...contactsArrayReview[
+                                                            index
+                                                        ],
+                                                    },
+                                                };
+                                            }
+                                        ),
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);
@@ -1136,61 +1579,3 @@ export class Step6Component implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 }
-
-/*
-
-    this.contactForm = this.formBuilder.group({
-      cardReview1: [null],
-      cardReview2: [null],
-      cardReview3: [null],
-      cardReview4: [null],
-      cardReview5: [null],
-      cardReview6: [null],
-      cardReview7: [null],
-      cardReview8: [null],
-      cardReview9: [null],
-      cardReview10: [null],
-    }); */
-
-/* public openAnnotationArray: {
-    lineIndex?: number;
-    lineInputs?: boolean[];
-    displayAnnotationButton?: boolean;
-    displayAnnotationTextArea?: boolean;
-  }[] = [
-    {
-      lineIndex: 0,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 1,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 2,
-      lineInputs: [false, false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {
-      lineIndex: 3,
-      lineInputs: [false],
-      displayAnnotationButton: false,
-      displayAnnotationTextArea: false,
-    },
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ]; */

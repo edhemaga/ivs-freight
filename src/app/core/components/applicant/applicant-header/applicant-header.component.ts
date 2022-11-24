@@ -5,8 +5,14 @@ import {
     OnInit,
     SimpleChanges,
 } from '@angular/core';
+
+import { Subject, takeUntil } from 'rxjs';
+
+import { ApplicantQuery } from '../state/store/applicant.query';
+
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { INavigation } from '../state/model/navigation.model';
+import { ApplicantResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-applicant-header',
@@ -16,7 +22,11 @@ import { INavigation } from '../state/model/navigation.model';
 export class ApplicantHeaderComponent implements OnInit, OnChanges {
     @Input() mode: string;
 
+    private destroy$ = new Subject<void>();
+
     public selectedMode: string = SelectedMode.APPLICANT;
+
+    public applicantId: number;
 
     public menuItems: INavigation[] = [
         {
@@ -61,9 +71,9 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         },
     ];
 
-    storeArr = [
+    public isTabCompletedArray: { id: number; isCompleted: boolean }[] = [
         { id: 0, isCompleted: false },
-        { id: 1, isCompleted: true },
+        { id: 1, isCompleted: false },
         { id: 2, isCompleted: false },
         { id: 3, isCompleted: false },
         { id: 4, isCompleted: false },
@@ -73,13 +83,13 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
     ];
 
     reviewStoreArr = [
-        { id: 0, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 1, isReviewed: true, hasIncorrectAnswer: true },
-        { id: 2, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 3, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 4, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 5, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 6, isReviewed: true, hasIncorrectAnswer: false },
+        { id: 0, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 1, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 2, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 3, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 4, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 5, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 6, isReviewed: false, hasIncorrectAnswer: false },
         { id: 7, isReviewed: false, hasIncorrectAnswer: false },
     ];
 
@@ -94,9 +104,11 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 7, hasIncorrectAnswer: false },
     ];
 
-    constructor() {}
+    constructor(private applicantQuery: ApplicantQuery) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.getStepValuesFromStore();
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mode?.previousValue !== changes.mode?.currentValue) {
@@ -105,4 +117,91 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
     }
 
     public trackByIdentity = (index: number, item: any): number => index;
+
+    public getStepValuesFromStore(): void {
+        this.applicantQuery.applicant$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: ApplicantResponse) => {
+                this.applicantId = res.id;
+
+                if (this.selectedMode === SelectedMode.APPLICANT) {
+                    this.isTabCompletedArray = this.isTabCompletedArray.map(
+                        (item, index) => {
+                            if (index === 0) {
+                                return {
+                                    ...item,
+                                    isCompleted:
+                                        res.personalInfo &&
+                                        res.workExperience &&
+                                        res.cdlInformation &&
+                                        res.accidentRecords &&
+                                        res.trafficViolation &&
+                                        res.education &&
+                                        res.sevenDaysHos &&
+                                        res.drugAndAlcohol &&
+                                        res.driverRight &&
+                                        res.disclosureRelease &&
+                                        res.authorization
+                                            ? true
+                                            : false,
+                                };
+                            }
+
+                            if (index === 1) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.medicalCertificate
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 2) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.mvrAuth ? true : false,
+                                };
+                            }
+
+                            if (index === 3) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.pspAuth ? true : false,
+                                };
+                            }
+
+                            if (index === 4) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.sph ? true : false,
+                                };
+                            }
+
+                            if (index === 5) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.hosRule ? true : false,
+                                };
+                            }
+
+                            if (index === 6) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.ssn ? true : false,
+                                };
+                            }
+
+                            if (index === 7) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.cdlCard ? true : false,
+                                };
+                            }
+
+                            return item;
+                        }
+                    );
+                }
+            });
+    }
 }
