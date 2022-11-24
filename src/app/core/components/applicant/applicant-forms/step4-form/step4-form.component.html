@@ -249,7 +249,7 @@
             }"
             *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
         >
-            Add Another Accident
+            <p class="m-0 ta-font-bold">Add Another Accident</p>
         </button>
 
         <div
@@ -267,7 +267,7 @@
                 type="button"
                 class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
                 [ngClass]="{
-                    disabled: !isAccidentEdited
+                    disabled: !isAccidentEdited || !accidentForm.valid
                 }"
                 (click)="onSaveEditedAccident()"
             >

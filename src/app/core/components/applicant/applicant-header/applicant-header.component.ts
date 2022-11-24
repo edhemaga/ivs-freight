@@ -35,6 +35,11 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
             route: '/application',
         },
         {
+            title: 'Owner Info',
+            iconSrc: 'assets/svg/common/ic_company.svg',
+            route: '/owner-info',
+        },
+        {
             title: 'Medical Cert.',
             iconSrc: 'assets/svg/applicant/medical.svg',
             route: '/medical-certificate',
@@ -80,6 +85,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 5, isCompleted: false },
         { id: 6, isCompleted: false },
         { id: 7, isCompleted: false },
+        { id: 8, isCompleted: false },
     ];
 
     reviewStoreArr = [
@@ -91,6 +97,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 5, isReviewed: false, hasIncorrectAnswer: false },
         { id: 6, isReviewed: false, hasIncorrectAnswer: false },
         { id: 7, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 8, isReviewed: false, hasIncorrectAnswer: false },
     ];
 
     feedbackStoreArr = [
@@ -102,6 +109,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 5, hasIncorrectAnswer: false },
         { id: 6, hasIncorrectAnswer: false },
         { id: 7, hasIncorrectAnswer: false },
+        { id: 8, hasIncorrectAnswer: false },
     ];
 
     constructor(private applicantQuery: ApplicantQuery) {}
@@ -148,6 +156,10 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                             }
 
                             if (index === 1) {
+                                return item;
+                            }
+
+                            if (index === 2) {
                                 return {
                                     ...item,
                                     isCompleted: res.medicalCertificate
@@ -156,49 +168,47 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                                 };
                             }
 
-                            if (index === 2) {
+                            if (index === 3) {
                                 return {
                                     ...item,
                                     isCompleted: res.mvrAuth ? true : false,
                                 };
                             }
 
-                            if (index === 3) {
+                            if (index === 4) {
                                 return {
                                     ...item,
                                     isCompleted: res.pspAuth ? true : false,
                                 };
                             }
 
-                            if (index === 4) {
+                            if (index === 5) {
                                 return {
                                     ...item,
                                     isCompleted: res.sph ? true : false,
                                 };
                             }
 
-                            if (index === 5) {
+                            if (index === 6) {
                                 return {
                                     ...item,
                                     isCompleted: res.hosRule ? true : false,
                                 };
                             }
 
-                            if (index === 6) {
+                            if (index === 7) {
                                 return {
                                     ...item,
                                     isCompleted: res.ssn ? true : false,
                                 };
                             }
 
-                            if (index === 7) {
+                            if (index === 8) {
                                 return {
                                     ...item,
                                     isCompleted: res.cdlCard ? true : false,
                                 };
                             }
-
-                            return item;
                         }
                     );
                 }

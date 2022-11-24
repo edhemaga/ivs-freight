@@ -7,7 +7,8 @@
         .review-feedback-container {
             position: absolute;
             top: 0;
-            right: -435px;
+            right: 0;
+            transform: translateX(calc(100% + 5px));
             width: 429px;
         }
     }
@@ -76,7 +77,8 @@
             .review-feedback-container {
                 position: absolute;
                 top: 0;
-                right: -435px;
+                right: 0;
+                transform: translateX(calc(100% + 5px));
                 width: 429px;
             }
         }
@@ -265,8 +267,8 @@
     .another-class-group {
         .add-btn {
             line-height: 18px;
-            height: 26px;
-            padding: 4px 8px;
+            height: 32px;
+            padding: 4px 22px;
             border: none;
             outline: none;
             font-size: 14px;
@@ -302,8 +304,8 @@
 
             .add-btn {
                 margin-top: 0;
-                height: 26px;
-                padding: 4px 8px;
+                height: 32px;
+                padding: 4px 22px;
                 border: none;
                 outline: none;
                 font-size: 14px;
@@ -335,6 +337,7 @@
             }
 
             .cancel-btn {
+                height: 26px;
                 width: 150px;
                 height: 32px;
                 margin-right: 22px;
@@ -349,6 +352,7 @@
             }
 
             .save-btn {
+                height: 26px;
                 width: 150px;
                 height: 32px;
                 color: $ta-blue-5;
@@ -469,8 +473,8 @@
     .btn-container {
         .add-btn {
             margin-top: 22px;
-            height: 26px;
-            padding: 4px 8px;
+            height: 32px;
+            padding: 4px 22px;
             border: none;
             outline: none;
             font-size: 14px;
@@ -512,8 +516,8 @@
 
             .add-btn {
                 margin-top: 0;
-                height: 26px;
-                padding: 4px 8px;
+                height: 32px;
+                padding: 4px 22px;
                 border: none;
                 outline: none;
                 font-size: 14px;
@@ -545,6 +549,7 @@
             }
 
             .cancel-btn {
+                height: 26px;
                 width: 150px;
                 height: 32px;
                 margin-right: 22px;
@@ -559,6 +564,7 @@
             }
 
             .save-btn {
+                height: 26px;
                 width: 150px;
                 height: 32px;
                 color: $ta-blue-5;

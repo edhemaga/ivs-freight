@@ -311,35 +311,22 @@ export class Step8Component implements OnInit, OnDestroy {
             this.selectedAddress = address;
             this.selectedSapAddress = sapAddress;
         } else {
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('motorCarrier'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('phone'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('address'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('sapName'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('sapPhone'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('sapAddress'),
-                false
-            );
+            const inputsToValidate = [
+                'motorCarrier',
+                'phone',
+                'address',
+                'sapName',
+                'sapPhone',
+                'sapAddress',
+                'isAgreement',
+            ];
 
-            this.inputService.changeValidatorsCheck(
-                this.drugAlcoholStatementForm.get('isAgreement'),
-                false
-            );
+            for (let i = 0; i < inputsToValidate.length; i++) {
+                this.inputService.changeValidators(
+                    this.drugAlcoholStatementForm.get(inputsToValidate[i]),
+                    false
+                );
+            }
         }
 
         setTimeout(() => {
@@ -406,6 +393,16 @@ export class Step8Component implements OnInit, OnDestroy {
             .get('drugTest')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
+                const inputsToValidate = [
+                    'motorCarrier',
+                    'phone',
+                    'address',
+                    'sapName',
+                    'sapPhone',
+                    'sapAddress',
+                    'isAgreement',
+                ];
+
                 if (!value) {
                     const {
                         motorCarrier,
@@ -429,35 +426,14 @@ export class Step8Component implements OnInit, OnDestroy {
                         sapAddressUnit,
                     };
 
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('motorCarrier'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('phone'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('address'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapName'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapPhone'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapAddress'),
-                        false
-                    );
-
-                    this.inputService.changeValidatorsCheck(
-                        this.drugAlcoholStatementForm.get('isAgreement'),
-                        false
-                    );
+                    for (let i = 0; i < inputsToValidate.length; i++) {
+                        this.inputService.changeValidators(
+                            this.drugAlcoholStatementForm.get(
+                                inputsToValidate[i]
+                            ),
+                            false
+                        );
+                    }
                 } else {
                     if (this.previousStepValues) {
                         const {
@@ -483,28 +459,13 @@ export class Step8Component implements OnInit, OnDestroy {
                         });
                     }
 
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('motorCarrier')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('phone')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('address')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapName')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapPhone')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapAddress')
-                    );
-
-                    this.inputService.changeValidatorsCheck(
-                        this.drugAlcoholStatementForm.get('isAgreement')
-                    );
+                    for (let i = 0; i < inputsToValidate.length; i++) {
+                        this.inputService.changeValidators(
+                            this.drugAlcoholStatementForm.get(
+                                inputsToValidate[i]
+                            )
+                        );
+                    }
                 }
             });
     }

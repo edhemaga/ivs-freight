@@ -109,7 +109,8 @@
             .review-feedback-container {
                 position: absolute;
                 top: 0;
-                right: -435px;
+                right: 0;
+                transform: translateX(calc(100% + 5px));
                 width: 429px;
             }
         }
@@ -598,6 +599,11 @@
                         cursor: auto;
                         background: $bw2;
                         color: $bw5;
+                    }
+
+                    p {
+                        position: relative;
+                        top: 0.6px;
                     }
                 }
             }

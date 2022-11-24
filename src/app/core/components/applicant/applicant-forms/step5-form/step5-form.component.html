@@ -175,7 +175,7 @@
                 type="button"
                 class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
                 [ngClass]="{
-                    disabled: !isViolationEdited
+                    disabled: !isViolationEdited || !violationsForm.valid
                 }"
                 (click)="onSaveEditedViolation()"
             >

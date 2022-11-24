@@ -233,7 +233,7 @@
                 class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
                 (click)="onSaveEditedLicense()"
                 [ngClass]="{
-                    disabled: !isLicenseEdited
+                    disabled: !isLicenseEdited || !licenseForm.valid
                 }"
             >
                 Save Changes

@@ -918,6 +918,14 @@ export class Step2FormComponent
             .get('isDrivingPosition')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
+                const classOfEquipmentInputsToValidate = [
+                    'vehicleType',
+                    'trailerType',
+                    'trailerLength',
+                ];
+
+                const workExperienceInputsToValidate = ['cfrPart', 'fmCSA'];
+
                 if (!value) {
                     const { cfrPart, fmCSA, classOfEquipmentSubscription } =
                         this.workExperienceForm.value;
@@ -952,26 +960,31 @@ export class Step2FormComponent
 
                     this.isWorkExperienceClassOfEquipmentEdited = true;
 
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('vehicleType'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerType'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerLength'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('cfrPart'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('fmCSA'),
-                        false
-                    );
+                    for (
+                        let i = 0;
+                        i < classOfEquipmentInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.classOfEquipmentForm.get(
+                                classOfEquipmentInputsToValidate[i]
+                            ),
+                            false
+                        );
+                    }
+
+                    for (
+                        let i = 0;
+                        i < workExperienceInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.workExperienceForm.get(
+                                workExperienceInputsToValidate[i]
+                            ),
+                            false
+                        );
+                    }
                 } else {
                     if (this.previousClassOfEquipmentFormValues) {
                         const {
@@ -1000,21 +1013,29 @@ export class Step2FormComponent
                         this.classOfEquipmentArray = classOfEquipmentArray;
                     }
 
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('vehicleType')
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerType')
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerLength')
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('cfrPart')
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('fmCSA')
-                    );
+                    for (
+                        let i = 0;
+                        i < classOfEquipmentInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.classOfEquipmentForm.get(
+                                classOfEquipmentInputsToValidate[i]
+                            )
+                        );
+                    }
+
+                    for (
+                        let i = 0;
+                        i < workExperienceInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.workExperienceForm.get(
+                                workExperienceInputsToValidate[i]
+                            )
+                        );
+                    }
                 }
             });
     }

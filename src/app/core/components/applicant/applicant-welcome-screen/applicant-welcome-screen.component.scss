@@ -7,13 +7,14 @@
 
     .top-header {
         height: 30px;
-        background-color: $ta-blue-5;
+        background: $ta-blue-5;
         padding: 6px;
 
         &-title {
             color: $white;
             font-size: 14px;
             height: 18px;
+            text-transform: uppercase;
 
             &::-moz-selection {
                 color: $white;
