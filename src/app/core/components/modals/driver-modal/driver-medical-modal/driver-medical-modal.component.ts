@@ -111,7 +111,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                     return;
                 }
                 if (this.editData?.type === 'edit-medical') {
-                    this.updateMedical(this.editData.id);
+                    this.updateMedical();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -160,8 +160,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private updateMedical(id: number) {
-        const { issueDate, expDate, driver, note } = this.medicalForm.value;
+    private updateMedical() {
+        const { issueDate, expDate, note } = this.medicalForm.value;
         const documents = this.documents.map((item) => {
             return item.realFile;
         });
@@ -194,7 +194,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     }
 
     private addMedical() {
-        const { issueDate, expDate, driver, note } = this.medicalForm.value;
+        const { issueDate, expDate, note } = this.medicalForm.value;
         const documents = this.documents.map((item) => {
             return item.realFile;
         });

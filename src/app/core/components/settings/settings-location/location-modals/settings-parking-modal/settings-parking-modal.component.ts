@@ -138,7 +138,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     private createForm() {
         this.parkingForm = this.formBuilder.group({
-            isOwner: [false],
+            isOwner: [true],
             name: [null, [Validators.required, ...parkingNameValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
@@ -312,7 +312,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     }
 
     private updateParking(id: number) {
-        const { address, addressUnit, rent, ...form } = this.parkingForm.value;
+        const { addressUnit, rent, ...form } = this.parkingForm.value;
 
         if (this.selectedAddress) {
             this.selectedAddress = {
@@ -378,7 +378,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     }
 
     private addParking() {
-        const { address, addressUnit, rent, ...form } = this.parkingForm.value;
+        const { addressUnit, rent, ...form } = this.parkingForm.value;
 
         if (this.selectedAddress) {
             this.selectedAddress = {

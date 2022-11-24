@@ -68,11 +68,10 @@ export class FuelTService {
         pageIndex: number,
         pageSize: number
     ): Observable<any> {
-        return of();
-        // return this.fuelService.apiFuelTransactionModalFuelstopfranchiseGet(
-        //     pageIndex,
-        //     pageSize
-        // );
+        return this.fuelService.apiFuelTransactionModalFuelstopfranchiseGet(
+            pageIndex,
+            pageSize
+        );
     }
 
     public getFuelTransactionStoresByFranchiseId(
@@ -147,25 +146,15 @@ export class FuelTService {
         return this.fuelService.apiFuelFuelstopIdGet(fuelId);
     }
 
-    public addFuelStop(
-        data: any /*AddFuelStopCommand*/
-    ): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.fuelService.apiFuelFuelstopPost,
-            data
-        );
-        return this.fuelService.apiFuelFuelstopPost(...sortedParams);
+    public addFuelStop(data: any): Observable<CreateResponse> {
+        return this.fuelService.apiFuelFuelstopPost();
     }
 
     // For table method
     public updateFuelStopShortest(
-        data: any /*EditFuelStopCommand*/
+        data: any
     ): Observable<object> {
-        const sortedParams = getFunctionParams(
-            this.fuelService.apiFuelFuelstopPut,
-            data
-        );
-        return this.fuelService.apiFuelFuelstopPut(...sortedParams);
+        return this.fuelService.apiFuelFuelstopPut();
     }
 
     // For modal method

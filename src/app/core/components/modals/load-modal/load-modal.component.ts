@@ -695,7 +695,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public commandEvent(event: boolean) {
+    public commandEvent() {
         this.isHazardousVisible = !this.isHazardousVisible;
     }
 
@@ -1633,10 +1633,12 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private addLoad() {
         const { ...form } = this.loadForm.value;
+
         const documents = this.documents.map((item) => {
             return item.realFile;
         });
-        let newData: any /*CreateLoadCommand*/ = {
+
+        let newData: any = {
             type: this.headerTabs.find((item) => item.id === this.selectedTab)
                 .name as any,
             loadNumber: this.loadNumber,

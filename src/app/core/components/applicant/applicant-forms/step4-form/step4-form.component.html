@@ -120,7 +120,7 @@
         <div
             class="d-flex align-items-center justify-content-between group hazmat-spill-group"
         >
-            <div class="title-box">
+            <div class="d-flex flex-column title-box">
                 <p
                     class="m-0 ta-font-regular"
                     [ngStyle]="{
@@ -142,11 +142,16 @@
                         >*</span
                     >
                 </p>
+
+                <ng-container *ngIf="displayRadioRequiredNote">
+                    <p class="m-0 ta-font-semi-bold required">Required</p>
+                </ng-container>
             </div>
             <div class="radios-box">
                 <app-ta-input-radiobuttons
                     [buttons]="answerChoices"
                     [disabled]="selectedMode === 'REVIEW_MODE'"
+                    [displayRequiredNote]="displayRadioRequiredNote"
                     (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
                 ></app-ta-input-radiobuttons>
             </div>
@@ -167,7 +172,7 @@
                     isRequired: true,
                     isDropdown: true,
                     isDisabled: selectedMode === 'REVIEW_MODE',
-                    dropdownWidthClass: 'w-col-applicant-t-type',
+                    dropdownWidthClass: 'w-col-231',
                     dropdownImageInput: {
                         withText: true,
                         svg: true,
@@ -244,16 +249,6 @@
             }"
             *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
         >
-            <svg-icon
-                class="plus-icon"
-                src="assets/svg/common/ic_plus.svg
-  "
-                [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                }"
-            ></svg-icon>
-
             Add Another Accident
         </button>
 

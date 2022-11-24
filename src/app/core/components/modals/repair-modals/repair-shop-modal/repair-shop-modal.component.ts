@@ -1,13 +1,11 @@
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateRepairShopCommand } from 'appcoretruckassist/model/createRepairShopCommand';
-import { UpdateRepairShopCommand } from 'appcoretruckassist/model/updateRepairShopCommand';
 import {
     AddressEntity,
     CreateResponse,
     RepairShopModalResponse,
-    RepairShopResponse,
+    RepairShopResponse
 } from 'appcoretruckassist';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { RepairTService } from '../../../repair/state/repair.service';
@@ -378,8 +376,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepairShop() {
-        let { address, addressUnit, openHours, bankId, ...form } =
-            this.repairShopForm.value;
+        let { addressUnit, openHours, ...form } = this.repairShopForm.value;
 
         const documents = this.documents.map((item) => {
             return item.realFile;
@@ -401,7 +398,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        const newData: CreateRepairShopCommand = {
+        const newData: any = {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
@@ -456,8 +453,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepairShop(id: number) {
-        let { address, addressUnit, openHours, bankId, ...form } =
-            this.repairShopForm.value;
+        let { addressUnit, openHours, ...form } = this.repairShopForm.value;
 
         const documents = this.documents.map((item) => {
             return item.realFile;
@@ -479,7 +475,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        const newData: UpdateRepairShopCommand = {
+        const newData: any = {
             id: id,
             ...form,
             bankId: this.selectedBank ? this.selectedBank.id : null,

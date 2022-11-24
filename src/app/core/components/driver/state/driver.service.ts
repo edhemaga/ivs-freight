@@ -8,7 +8,7 @@ import {
     DriverMinimalListResponse,
     DriverResponse,
     GetDriverModalResponse,
-    OwnerService,
+    OwnerService
 } from 'appcoretruckassist';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
@@ -19,7 +19,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { DriversMinimalListQuery } from './driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
@@ -42,7 +42,8 @@ export class DriverTService {
         private driverMinimalQuery: DriversMinimalListQuery,
         private tableService: TruckassistTableService,
         private driverItemStore: DriversItemStore,
-        private dlStore: DriversDetailsListStore
+        private dlStore: DriversDetailsListStore,
+        private formDataService: FormDataService
     ) {}
 
     // Get Driver Minimal List
@@ -89,13 +90,9 @@ export class DriverTService {
 
     /* Observable<CreateDriverResponse> */
     // Create Driver
-    public addDriver(data: any /*CreateDriverCommand*/): Observable<any> {
-        const sortedParams = getFunctionParams(
-            this.driverService.apiDriverPost,
-            data
-        );
-
-        return this.driverService.apiDriverPost(...sortedParams).pipe(
+    public addDriver(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.driverService.apiDriverPost().pipe(
             tap((res: any) => {
                 const subDriver = this.getDriverById(res.id)
                     .pipe(takeUntil(this.destroy$))
@@ -266,13 +263,8 @@ export class DriverTService {
         return of(null);
     }
 
-    public updateDriver(data: any /*UpdateDriverCommand*/): Observable<object> {
-        const sortedParams = getFunctionParams(
-            this.driverService.apiDriverPut,
-            data
-        );
-
-        return this.driverService.apiDriverPut(...sortedParams).pipe(
+    public updateDriver(data: any): Observable<object> {
+        return this.driverService.apiDriverPut().pipe(
             tap((res: any) => {
                 const subDriver = this.getDriverById(data.id)
                     .pipe(takeUntil(this.destroy$))

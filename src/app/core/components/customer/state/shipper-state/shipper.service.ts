@@ -9,14 +9,13 @@ import {
     ShipperMinimalListResponse,
     ShipperModalResponse,
     ShipperResponse,
-    UpdateReviewCommand,
+    UpdateReviewCommand
 } from 'appcoretruckassist';
 import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperDetailsListStore } from './shipper-details-state/shipper-details-list-state/shipper-details-list.store';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
     providedIn: 'root',
@@ -36,13 +35,9 @@ export class ShipperTService implements OnDestroy {
         private sListStore: ShipperDetailsListStore
     ) {}
 
-    // Create Shipper -- CreateShipperCommand
+    // Create Shipper
     public addShipper(data: any): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.shipperService.apiShipperPost,
-            data
-        );
-        return this.shipperService.apiShipperPost(...sortedParams).pipe(
+        return this.shipperService.apiShipperPost().pipe(
             tap((res: any) => {
                 const subShipper = this.getShipperById(res.id)
                     .pipe(takeUntil(this.destroy$))
@@ -78,13 +73,9 @@ export class ShipperTService implements OnDestroy {
         );
     }
 
-    // Update Shipper -- UpdateShipperCommand
+    // Update Shipper
     public updateShipper(data: any): Observable<any> {
-        const sortedParams = getFunctionParams(
-            this.shipperService.apiShipperPut,
-            data
-        );
-        return this.shipperService.apiShipperPut(...sortedParams).pipe(
+        return this.shipperService.apiShipperPut().pipe(
             tap(() => {
                 const subShipper = this.getShipperById(data.id)
                     .pipe(takeUntil(this.destroy$))
@@ -142,12 +133,12 @@ export class ShipperTService implements OnDestroy {
             ban,
             dnu,
             pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
+            // pageSize,
+            // companyId,
+            // sort,
+            // search,
+            // search1,
+            // search2
         );
     }
 
@@ -263,12 +254,14 @@ export class ShipperTService implements OnDestroy {
 
     // Change Ban Status
     public changeBanStatus(id: number): Observable<any> {
-        return this.shipperService.apiShipperBanIdPut(id, 'response');
+        return of()
+       // return this.shipperService.apiShipperBanIdPut(id, 'response');
     }
 
     // Change Dnu Status
     public changeDnuStatus(id: number): Observable<any> {
-        return this.shipperService.apiShipperDnuIdPut(id, 'response');
+        return of()
+       // return this.shipperService.apiShipperDnuIdPut(id, 'response');
     }
 
     public getShipperDropdowns(): Observable<ShipperModalResponse> {

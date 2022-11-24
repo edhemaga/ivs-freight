@@ -3,7 +3,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
-import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
+import {
+    TitleModalResponse,
+    TitleResponse
+} from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../../services/notification/notification.service';
@@ -12,8 +15,6 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
-import { CreateTitleCommand } from 'appcoretruckassist/model/createTitleCommand';
-import { UpdateTitleCommand } from 'appcoretruckassist/model/updateTitleCommand';
 
 @Component({
     selector: 'app-tt-title-modal',
@@ -145,10 +146,12 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     private addTitle() {
         const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
+
         const documents = this.documents.map((item) => {
             return item.realFile;
         });
-        const newData: CreateTitleCommand = {
+
+        const newData: any = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             purchaseDate: convertDateToBackend(purchaseDate),
@@ -183,10 +186,12 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     private updateTitle() {
         const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
+
         const documents = this.documents.map((item) => {
             return item.realFile;
         });
-        const newData: UpdateTitleCommand = {
+
+        const newData: any = {
             id: this.editData.file_id,
             ...form,
             issueDate: convertDateToBackend(issueDate),

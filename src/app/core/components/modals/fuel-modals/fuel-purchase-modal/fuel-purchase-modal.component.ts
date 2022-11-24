@@ -17,12 +17,10 @@ import { GetFuelModalResponse } from '../../../../../../../appcoretruckassist/mo
 import { FuelDispatchHistoryResponse } from '../../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
 import { FuelStopFranchiseResponse } from '../../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import {
-    combineDateAndTimeToBackend,
     convertDateToBackend,
     convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
-import { EditFuelTransactionCommand } from '../../../../../../../appcoretruckassist/model/editFuelTransactionCommand';
 import { TruckTService } from '../../../truck/state/truck.service';
 import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
 import { FuelTransactionResponse } from '../../../../../../../appcoretruckassist/model/fuelTransactionResponse';
@@ -315,7 +313,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     private updateFuel(id: number) {
         const { ...form } = this.fuelForm.value;
 
-        const newData: EditFuelTransactionCommand = {
+        const newData: any = {
             id: id,
             truckId: this.selectedTruckType.id,
             trailerId: this.selectedTrailerType
@@ -326,7 +324,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 : null,
             transactionDate: convertDateToBackend(form.date),
             total: this.sumArrays.transform(this.subtotal),
-            fuelItems: this.premmapedItems('update'),
+            fuelItems: this.premmapedItems('update') as any,
         };
 
         this.fuelService
@@ -359,12 +357,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             fuelStopStoreId: this.selectedFuelStop
                 ? this.selectedFuelStop.storeId
                 : null,
-            transactionDate: combineDateAndTimeToBackend(
-                form.transactionDate,
-                form.transactionTime
-            ),
+            transactionDate: convertDateToBackend(form.transactionDate),
+            //  combineDateAndTimeToBackend(
+            //     form.transactionDate,
+            //     form.transactionTime
+            // ),
             total: this.sumArrays.transform(this.subtotal),
-            fuelItems: this.premmapedItems('create'),
+            fuelItems: this.premmapedItems('create') as any,
         };
         this.fuelService
             .addFuelTransaction(newData)
@@ -468,7 +467,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .get(formControlName)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
-                switchMap((value) => {
+                switchMap(() => {
                     if (
                         this.selectedTruckType &&
                         this.fuelForm.get('transactionDate').value
@@ -599,9 +598,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             return this.fuelItems.controls.map((item, index) => {
                 return {
                     id: item.get('id').value,
-                    itemFuel: this.selectedFuelItemsFormArray[index]
-                        ? this.selectedFuelItemsFormArray[index].id
-                        : null,
+                    itemfuel: 1,
                     price: item.get('price').value
                         ? convertThousanSepInNumber(item.get('price').value)
                         : null,
@@ -614,9 +611,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         } else {
             return this.fuelItems.controls.map((item, index) => {
                 return {
-                    itemFuel: this.selectedFuelItemsFormArray[index]
-                        ? this.selectedFuelItemsFormArray[index].id
-                        : null,
+                    itemfuel: 1,
                     price: item.get('price').value
                         ? convertThousanSepInNumber(item.get('price').value)
                         : null,

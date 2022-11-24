@@ -110,7 +110,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     private createForm() {
         this.officeForm = this.formBuilder.group({
-            isOwner: [false],
+            isOwner: [true],
             name: [null, [Validators.required, ...officeNameValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
@@ -284,7 +284,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
 
     private updateCompanyOffice(id: number) {
-        const { address, addressUnit, departmentContacts, rent, ...form } =
+        const { addressUnit, departmentContacts, rent, ...form } =
             this.officeForm.value;
 
         let newData: UpdateCompanyOfficeCommand = {
@@ -339,7 +339,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
 
     private addCompanyOffice() {
-        const { address, addressUnit, departmentContacts, rent, ...form } =
+        const { addressUnit, departmentContacts, rent, ...form } =
             this.officeForm.value;
 
         let newData: CreateCompanyOfficeCommand = {

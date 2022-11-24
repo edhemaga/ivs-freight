@@ -1552,7 +1552,7 @@ export class TaInputComponent
     }
 
     // Optimization for *ngFor
-    public trackIdentity = (index: number, data: any): number => index;
+    public trackIdentity = (index: number): number => index;
 
     //------------------- Date & Time Picker -------------------
 

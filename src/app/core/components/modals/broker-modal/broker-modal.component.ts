@@ -10,10 +10,9 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { BrokerModalResponse } from '../../../../../../appcoretruckassist';
-import { CreateBrokerCommand } from 'appcoretruckassist/model/createBrokerCommand';
-import { UpdateBrokerCommand } from 'appcoretruckassist/model/updateBrokerCommand';
 
 import {
+    BrokerResponse,
     CreateRatingCommand,
     CreateReviewCommand,
     SignInResponse,
@@ -772,7 +771,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         let brAddresses = this.selectedBrokerAddress();
 
-        let newData: CreateBrokerCommand = {
+        let newData: any = {
             ...form,
             mainAddress: brAddresses.mainAddress,
             mainPoBox: brAddresses.mainPoBox,
@@ -840,7 +839,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         let brAddresses = this.selectedBrokerAddress();
 
-        let newData: UpdateBrokerCommand = {
+        let newData: any = {
             id: id,
             ...form,
             mainAddress: brAddresses.mainAddress,

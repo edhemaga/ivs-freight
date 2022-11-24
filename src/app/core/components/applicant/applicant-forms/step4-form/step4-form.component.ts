@@ -59,6 +59,8 @@ export class Step4FormComponent
     @Input() formValuesToPatch?: any;
     @Input() markFormInvalid?: boolean;
     @Input() isReviewingCard: boolean;
+    @Input() displayRadioRequiredNote: boolean = false;
+    @Input() checkIsHazmatSpillNotChecked: boolean;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -70,6 +72,7 @@ export class Step4FormComponent
     @Output() openAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
+    @Output() radioRequiredNoteEmitter = new EventEmitter<any>();
 
     private destroy$ = new Subject<void>();
 
@@ -195,34 +198,53 @@ export class Step4FormComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mode?.previousValue !== changes.mode?.currentValue) {
             this.selectedMode = changes.mode?.currentValue;
+        }
 
-            if (this.selectedMode === SelectedMode.APPLICANT) {
-                if (
-                    changes.markFormInvalid?.previousValue !==
-                    changes.markFormInvalid?.currentValue
-                ) {
-                    this.inputService.markInvalid(this.accidentForm);
+        if (
+            this.selectedMode === SelectedMode.APPLICANT ||
+            this.selectedMode === SelectedMode.FEEDBACK
+        ) {
+            if (
+                changes.markFormInvalid?.previousValue !==
+                changes.markFormInvalid?.currentValue
+            ) {
+                this.inputService.markInvalid(this.accidentForm);
 
-                    this.markInvalidEmitter.emit(false);
-                }
+                this.markInvalidEmitter.emit(false);
             }
 
             if (
-                this.selectedMode === SelectedMode.REVIEW ||
-                this.selectedMode === SelectedMode.APPLICANT
+                changes.checkIsHazmatSpillNotChecked?.previousValue !==
+                changes.checkIsHazmatSpillNotChecked?.currentValue
             ) {
-                if (
-                    changes.formValuesToPatch?.previousValue !==
-                    changes.formValuesToPatch?.currentValue
-                ) {
-                    setTimeout(() => {
-                        this.patchForm(changes.formValuesToPatch.currentValue);
+                let hazmatSpillRadios: any;
 
-                        if (this.selectedMode === SelectedMode.APPLICANT) {
-                            this.startValueChangesMonitoring();
-                        }
-                    }, 100);
+                if (!changes.checkIsHazmatSpillNotChecked?.firstChange) {
+                    hazmatSpillRadios =
+                        this.accidentForm.get('hazmatSpill').value;
                 }
+
+                if (hazmatSpillRadios === null) {
+                    this.radioRequiredNoteEmitter.emit(true);
+                }
+            }
+        }
+
+        if (
+            this.selectedMode === SelectedMode.REVIEW ||
+            this.selectedMode === SelectedMode.APPLICANT
+        ) {
+            if (
+                changes.formValuesToPatch?.previousValue !==
+                changes.formValuesToPatch?.currentValue
+            ) {
+                setTimeout(() => {
+                    this.patchForm(changes.formValuesToPatch.currentValue);
+
+                    if (this.selectedMode === SelectedMode.APPLICANT) {
+                        this.startValueChangesMonitoring();
+                    }
+                }, 50);
             }
         }
     }
@@ -248,12 +270,8 @@ export class Step4FormComponent
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (formValue.accidentRecordReview) {
-                const {
-                    isLocationValid,
-                    isDateValid,
-                    isVehicleTypeValid,
-                    isDescriptionValid,
-                } = formValue.accidentRecordReview;
+                const { isLocationValid, isDateValid, isDescriptionValid } =
+                    formValue.accidentRecordReview;
 
                 this.openAnnotationArray[10] = {
                     ...this.openAnnotationArray[10],
@@ -261,7 +279,7 @@ export class Step4FormComponent
                 };
                 this.openAnnotationArray[11] = {
                     ...this.openAnnotationArray[11],
-                    lineInputs: [!isVehicleTypeValid, !isDescriptionValid],
+                    lineInputs: [false, !isDescriptionValid],
                 };
             }
         }
@@ -285,17 +303,17 @@ export class Step4FormComponent
                 this.hazmatSpillRadios[0].checked = true;
             } else {
                 this.hazmatSpillRadios[1].checked = true;
-            }
 
-            if (hazmatSpillValue === null) {
-                this.hazmatSpillRadios[0].checked = false;
-                this.hazmatSpillRadios[1].checked = false;
+                if (hazmatSpillValue === null) {
+                    this.hazmatSpillRadios[0].checked = false;
+                    this.hazmatSpillRadios[1].checked = false;
+                }
             }
 
             this.selectedVehicleType = this.vehicleType.find(
                 (item) => item.name === formValue?.vehicleType
             );
-        }, 150);
+        }, 50);
     }
 
     public startValueChangesMonitoring(): void {
@@ -348,6 +366,8 @@ export class Step4FormComponent
                     this.accidentForm.get('hazmatSpill').patchValue(false);
                 }
 
+                this.radioRequiredNoteEmitter.emit(false);
+
                 break;
             case InputSwitchActions.TRUCK_TYPE:
                 this.selectedVehicleType = event;
@@ -395,6 +415,7 @@ export class Step4FormComponent
         this.hazmatSpillRadios[0].checked = false;
         this.hazmatSpillRadios[1].checked = false;
 
+        this.selectedAddress = null;
         this.selectedVehicleType = null;
 
         this.formService.resetForm(this.accidentForm);

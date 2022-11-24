@@ -371,89 +371,67 @@
             </div>
         </app-ta-custom-card>
         <!-- Shared Contact -->
-        <div class="custom-checkbox-card">
-            <div class="divider"></div>
-            <div
-                class="checkbox-card-header"
-                [ngClass]="{ pointer: contactForm.get('shared').value }"
-            >
-                <app-ta-checkbox
-                    formControlName="shared"
-                    [label]="'Share Contact'"
-                ></app-ta-checkbox>
-                <svg-icon
-                    class="checkbox-card-header-arrow"
-                    src="assets/svg/common/ic_arrow_down_updated.svg"
-                    [ngClass]="{
-                        visible: contactForm.get('shared').value,
-                        rotate: !sharedContactCheckboxCard
-                    }"
-                    (click)="toggleCheckboxCard()"
-                ></svg-icon>
-            </div>
-            <div
-                *ngIf="
-                    contactForm.get('shared').value && sharedContactCheckboxCard
-                "
-                class="checkbox-card-body"
-                [ngClass]="{ 'active-20': contactForm.get('shared').value }"
-            >
-                <div *ngIf="contactForm.get('shared').value">
-                    <div class="row shared-contact-dropdown">
-                        <div class="col-12">
-                            <app-ta-input-dropdown
-                                formControlName="sharedLabelId"
-                                [template]="'groups'"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown Department',
-                                    minLength: 2,
-                                    maxLength: 36,
-                                    type: 'text',
-                                    label: 'Department',
-                                    isDropdown: true,
-                                    isRequired: true,
-                                    textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-456'
-                                }"
-                                [options]="[]"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'departments')
-                                "
-                            ></app-ta-input-dropdown>
-                        </div>
-                    </div>
+        <app-ta-checkbox-card
+            formControlName="shared"
+            [label]="'Share Contact'"
+            [name]="'share-contact'"
+            [isCardOpen]="contactForm.get('shared').value"
+            [animationMarginParams]="{
+                marginTop: '12px',
+                marginBottom: '18px'
+            }"
+        >
+            <div class="row row-no-m">
+                <div class="col-12">
+                    <app-ta-input-dropdown
+                        formControlName="sharedLabelId"
+                        [template]="'groups'"
+                        [inputConfig]="{
+                            name: 'Input Dropdown Department',
+                            minLength: 2,
+                            maxLength: 36,
+                            type: 'text',
+                            label: 'Department',
+                            isDropdown: true,
+                            isRequired: true,
+                            textTransform: 'capitalize',
+                            dropdownWidthClass: 'w-col-456'
+                        }"
+                        [options]="[]"
+                        (selectedItem)="onSelectDropdown($event, 'departments')"
+                    ></app-ta-input-dropdown>
                 </div>
             </div>
-            <div class="ta-card-body-overflow-none">
-                <app-ta-custom-card
-                    [cardName]="'Contact Image'"
-                    [isCardOpen]="true"
-                >
-                    <app-ta-logo-change
-                        [croppieOptions]="croppieOptions"
-                        [customClass]="'modal-container-S'"
-                        [imageUrl]="this.contactForm.get('avatar').value"
-                        (base64ImageEvent)="onUploadImage($event)"
-                        (validationEvent)="onImageValidation($event)"
-                    ></app-ta-logo-change>
-                </app-ta-custom-card>
-            </div>
-            <!-- Note -->
-            <app-ta-input-note
-                formControlName="note"
-                [isVisibleNote]="
-                    contactForm.get('note').value &&
-                    contactForm.get('note').value != 'null'
-                        ? contactForm.get('note').value
-                        : false
-                "
-                [note]="
-                    contactForm.get('note').value &&
-                    contactForm.get('note').value != 'null'
-                        ? contactForm.get('note').value
-                        : ''
-                "
-            ></app-ta-input-note>
+        </app-ta-checkbox-card>
+        <div class="ta-card-body-overflow-none">
+            <app-ta-custom-card
+                [cardName]="'Contact Image'"
+                [isCardOpen]="true"
+            >
+                <app-ta-logo-change
+                    [croppieOptions]="croppieOptions"
+                    [customClass]="'modal-container-S'"
+                    [imageUrl]="this.contactForm.get('avatar').value"
+                    (base64ImageEvent)="onUploadImage($event)"
+                    (validationEvent)="onImageValidation($event)"
+                ></app-ta-logo-change>
+            </app-ta-custom-card>
         </div>
+        <!-- Note -->
+        <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="
+                contactForm.get('note').value &&
+                contactForm.get('note').value != 'null'
+                    ? contactForm.get('note').value
+                    : false
+            "
+            [note]="
+                contactForm.get('note').value &&
+                contactForm.get('note').value != 'null'
+                    ? contactForm.get('note').value
+                    : ''
+            "
+        ></app-ta-input-note>
     </form>
 </app-ta-modal>

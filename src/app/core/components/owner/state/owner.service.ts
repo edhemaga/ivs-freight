@@ -4,7 +4,7 @@ import {
     GetOwnerListResponse,
     OwnerModalResponse,
     OwnerResponse,
-    OwnerService,
+    OwnerService
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 import { OwnerActiveQuery } from './owner-active-state/owner-active.query';
@@ -12,7 +12,6 @@ import { OwnerActiveStore } from './owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from './owner-inactive-state/owner-inactive.query';
 import { OwnerInactiveStore } from './owner-inactive-state/owner-inactive.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
     providedIn: 'root',
@@ -27,13 +26,9 @@ export class OwnerTService {
         private ownerInactiveQuery: OwnerInactiveQuery
     ) {}
 
-    // Add Owner -- CreateOwnerCommand
+    // Add Owner
     public addOwner(data: any): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.ownerService.apiOwnerPost,
-            data
-        );
-        return this.ownerService.apiOwnerPost(...sortedParams).pipe(
+        return this.ownerService.apiOwnerPost(data).pipe(
             tap((res: any) => {
                 const subOwner = this.getOwnerById(res.id).subscribe({
                     next: (owner: OwnerResponse | any) => {
@@ -66,13 +61,9 @@ export class OwnerTService {
         );
     }
 
-    // Update Owner -- UpdateOwnerCommand
+    // Update Owner
     public updateOwner(data: any): Observable<any> {
-        const sortedParams = getFunctionParams(
-            this.ownerService.apiOwnerPut,
-            data
-        );
-        return this.ownerService.apiOwnerPut(...sortedParams).pipe(
+        return this.ownerService.apiOwnerPut(data).pipe(
             tap(() => {
                 const subOwner = this.getOwnerById(data.id).subscribe({
                     next: (owner: OwnerResponse | any) => {

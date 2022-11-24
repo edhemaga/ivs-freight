@@ -8,9 +8,11 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { CreateRepairCommand } from 'appcoretruckassist/model/createRepairCommand';
-import { UpdateRepairCommand } from 'appcoretruckassist/model/updateRepairCommand';
-import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
+import {
+    RepairModalResponse,
+    RepairResponse,
+    RepairShopResponse
+} from 'appcoretruckassist';
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
@@ -635,14 +637,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepair() {
-        const { repairShopId, items, date, unit, odometer, invoice, ...form } =
+        const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
         const documents = this.documents.map((item) => {
             return item.realFile;
         });
 
-        let newData: CreateRepairCommand = null;
+        let newData: any = null;
 
         if (this.selectedHeaderTab === 2) {
             newData = {
@@ -719,14 +721,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepair(id: number) {
-        const { repairShopId, items, date, unit, odometer, invoice, ...form } =
+        const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
         const documents = this.documents.map((item) => {
             return item.realFile;
         });
 
-        let newData: UpdateRepairCommand = null;
+        let newData: any = null;
 
         if (this.selectedHeaderTab === 2) {
             newData = {
@@ -899,7 +901,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .getRepairById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any /*RepairResponse*/) => {
+                next: (res: RepairResponse) => {
                     if (!this.editData.type.includes('fo')) {
                         this.onModalHeaderTabChange(
                             this.headerTabs.find(

@@ -16,7 +16,6 @@ import { BrokerStore } from './broker.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
 import { BrokerDetailsListStore } from '../broker-details-state/broker-details-list-state/broker-details-list.store';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
     providedIn: 'root',
@@ -36,13 +35,9 @@ export class BrokerTService implements OnDestroy {
         private bls: BrokerDetailsListStore
     ) {}
 
-    // Add Broker -- CreateBrokerCommand
+    // Add Broker
     public addBroker(data: any): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.brokerService.apiBrokerPost,
-            data
-        );
-        return this.brokerService.apiBrokerPost(...sortedParams).pipe(
+        return this.brokerService.apiBrokerPost().pipe(
             tap((res: any) => {
                 const subBroker = this.getBrokerById(res.id).subscribe({
                     next: (broker: BrokerResponse | any) => {
@@ -76,13 +71,9 @@ export class BrokerTService implements OnDestroy {
         );
     }
 
-    // Update Broker -- UpdateBrokerCommand
+    // Update Broker
     public updateBroker(data: any): Observable<any> {
-        const sortedParams = getFunctionParams(
-            this.brokerService.apiBrokerPut,
-            data
-        );
-        return this.brokerService.apiBrokerPut(...sortedParams).pipe(
+        return this.brokerService.apiBrokerPut().pipe(
             tap(() => {
                 const subBroker = this.getBrokerById(data.id).subscribe({
                     next: (broker: BrokerResponse | any) => {
