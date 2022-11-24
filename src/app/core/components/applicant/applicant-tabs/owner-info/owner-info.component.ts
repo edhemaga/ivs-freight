@@ -39,6 +39,7 @@ import {
 } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { IdNameList } from '../../state/model/lists.model';
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 @Component({
     selector: 'app-owner-info',
@@ -48,7 +49,7 @@ import { IdNameList } from '../../state/model/lists.model';
 export class OwnerInfoComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public ownerInfoForm: FormGroup;
 
@@ -92,6 +93,63 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             name: 'Sole Proprietor',
         },
     ];
+
+    public openAnnotationArray: {
+        lineIndex?: number;
+        lineInputs?: boolean[];
+        displayAnnotationButton?: boolean;
+        displayAnnotationTextArea?: boolean;
+    }[] = [
+        {
+            lineIndex: 0,
+            lineInputs: [false, false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
+        {
+            lineIndex: 1,
+            lineInputs: [false, false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
+        {
+            lineIndex: 2,
+            lineInputs: [false, false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
+        {
+            lineIndex: 3,
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
+        {
+            lineIndex: 4,
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
+        {
+            lineIndex: 5,
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
+        {
+            lineIndex: 6,
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
+        {
+            lineIndex: 7,
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
+    ];
+    public hasIncorrectFields: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -146,6 +204,15 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             trailerYear: [null],
             trailerColor: [null],
             trailerLength: [null],
+
+            firstRowReview: [null],
+            secondRowReview: [null],
+            thirdRowReview: [null],
+            fourthRowReview: [null],
+            fifthRowReview: [null],
+            sixthRowReview: [null],
+            seventhRowReview: [null],
+            eightRowReview: [null],
         });
 
         this.inputService.customInputValidator(
@@ -498,6 +565,112 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
 
                 this.trailerLengthType = res.trailerLenghts;
             });
+    }
+
+    public incorrectInput(
+        event: any,
+        inputIndex: number,
+        lineIndex: number
+    ): void {
+        const selectedInputsLine = this.openAnnotationArray.find(
+            (item) => item.lineIndex === lineIndex
+        );
+
+        if (event) {
+            selectedInputsLine.lineInputs[inputIndex] = true;
+
+            if (!selectedInputsLine.displayAnnotationTextArea) {
+                selectedInputsLine.displayAnnotationButton = true;
+                selectedInputsLine.displayAnnotationTextArea = false;
+            }
+        }
+
+        if (!event) {
+            selectedInputsLine.lineInputs[inputIndex] = false;
+
+            const lineInputItems = selectedInputsLine.lineInputs;
+            const isAnyInputInLineIncorrect =
+                anyInputInLineIncorrect(lineInputItems);
+
+            if (!isAnyInputInLineIncorrect) {
+                selectedInputsLine.displayAnnotationButton = false;
+                selectedInputsLine.displayAnnotationTextArea = false;
+            }
+
+            switch (lineIndex) {
+                case 0:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.ownerInfoForm
+                            .get('firstRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                case 1:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.ownerInfoForm
+                            .get('secondRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                case 2:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.ownerInfoForm
+                            .get('thirdRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                case 3:
+                    this.ownerInfoForm.get('fourthRowReview').patchValue(null);
+
+                    break;
+                case 4:
+                    this.ownerInfoForm.get('fifthRowReview').patchValue(null);
+
+                    break;
+                case 5:
+                    this.ownerInfoForm.get('sixthRowReview').patchValue(null);
+
+                    break;
+                case 6:
+                    this.ownerInfoForm.get('seventhRowReview').patchValue(null);
+
+                    break;
+                case 7:
+                    this.ownerInfoForm.get('eightRowReview').patchValue(null);
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        const inputFieldsArray = JSON.stringify(
+            this.openAnnotationArray
+                .filter((item) => Object.keys(item).length !== 0)
+                .map((item) => item.lineInputs)
+        );
+
+        if (inputFieldsArray.includes('true')) {
+            this.hasIncorrectFields = true;
+        } else {
+            this.hasIncorrectFields = false;
+        }
+    }
+
+    public getAnnotationBtnClickValue(event: any): void {
+        if (event.type === 'open') {
+            this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
+                false;
+            this.openAnnotationArray[
+                event.lineIndex
+            ].displayAnnotationTextArea = true;
+        } else {
+            this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
+                true;
+            this.openAnnotationArray[
+                event.lineIndex
+            ].displayAnnotationTextArea = false;
+        }
     }
 
     public onStepAction(event: any): void {

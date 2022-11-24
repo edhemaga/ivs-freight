@@ -478,73 +478,72 @@ export class Step8Component implements OnInit, OnDestroy {
         const selectedInputsLine = this.openAnnotationArray.find(
             (item) => item.lineIndex === lineIndex
         );
-        {
-            if (event) {
-                selectedInputsLine.lineInputs[inputIndex] = true;
 
-                if (!selectedInputsLine.displayAnnotationTextArea) {
-                    selectedInputsLine.displayAnnotationButton = true;
-                    selectedInputsLine.displayAnnotationTextArea = false;
-                }
+        if (event) {
+            selectedInputsLine.lineInputs[inputIndex] = true;
+
+            if (!selectedInputsLine.displayAnnotationTextArea) {
+                selectedInputsLine.displayAnnotationButton = true;
+                selectedInputsLine.displayAnnotationTextArea = false;
+            }
+        }
+
+        if (!event) {
+            selectedInputsLine.lineInputs[inputIndex] = false;
+
+            const lineInputItems = selectedInputsLine.lineInputs;
+            const isAnyInputInLineIncorrect =
+                anyInputInLineIncorrect(lineInputItems);
+
+            if (!isAnyInputInLineIncorrect) {
+                selectedInputsLine.displayAnnotationButton = false;
+                selectedInputsLine.displayAnnotationTextArea = false;
             }
 
-            if (!event) {
-                selectedInputsLine.lineInputs[inputIndex] = false;
-
-                const lineInputItems = selectedInputsLine.lineInputs;
-                const isAnyInputInLineIncorrect =
-                    anyInputInLineIncorrect(lineInputItems);
-
-                if (!isAnyInputInLineIncorrect) {
-                    selectedInputsLine.displayAnnotationButton = false;
-                    selectedInputsLine.displayAnnotationTextArea = false;
-                }
-
-                switch (lineIndex) {
-                    case 0:
-                        if (!isAnyInputInLineIncorrect) {
-                            this.drugAlcoholStatementForm
-                                .get('firstRowReview')
-                                .patchValue(null);
-                        }
-                        break;
-                    case 1:
-                        if (!isAnyInputInLineIncorrect) {
-                            this.drugAlcoholStatementForm
-                                .get('secondRowReview')
-                                .patchValue(null);
-                        }
-                        break;
-                    case 2:
-                        if (!isAnyInputInLineIncorrect) {
-                            this.drugAlcoholStatementForm
-                                .get('thirdRowReview')
-                                .patchValue(null);
-                        }
-                        break;
-                    case 3:
-                        if (!isAnyInputInLineIncorrect) {
-                            this.drugAlcoholStatementForm
-                                .get('fourthRowReview')
-                                .patchValue(null);
-                        }
-                        break;
-                    default:
-                        break;
-                }
+            switch (lineIndex) {
+                case 0:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.drugAlcoholStatementForm
+                            .get('firstRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                case 1:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.drugAlcoholStatementForm
+                            .get('secondRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                case 2:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.drugAlcoholStatementForm
+                            .get('thirdRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                case 3:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.drugAlcoholStatementForm
+                            .get('fourthRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                default:
+                    break;
             }
+        }
 
-            const inputFieldsArray = JSON.stringify(
-                this.openAnnotationArray
-                    .filter((item) => Object.keys(item).length !== 0)
-                    .map((item) => item.lineInputs)
-            );
+        const inputFieldsArray = JSON.stringify(
+            this.openAnnotationArray
+                .filter((item) => Object.keys(item).length !== 0)
+                .map((item) => item.lineInputs)
+        );
 
-            if (inputFieldsArray.includes('true')) {
-                this.hasIncorrectFields = true;
-            } else {
-                this.hasIncorrectFields = false;
-            }
+        if (inputFieldsArray.includes('true')) {
+            this.hasIncorrectFields = true;
+        } else {
+            this.hasIncorrectFields = false;
         }
     }
 

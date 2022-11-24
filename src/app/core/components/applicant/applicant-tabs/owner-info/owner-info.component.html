@@ -52,8 +52,18 @@
                                                 label: 'Business Name',
                                                 isRequired: true,
                                                 textTransform: 'uppercase',
-                                                autoFocus: true
+                                                autoFocus: true,
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[0]
+                                                    .lineInputs[0]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 0, 0)
+                                            "
                                         ></app-ta-input>
                                     </div>
 
@@ -66,9 +76,60 @@
                                                 label: 'EIN',
                                                 mask: '00-0000000',
                                                 maxLength: 10,
-                                                isRequired: true
+                                                isRequired: true,
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[0]
+                                                    .lineInputs[1]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 1, 0)
+                                            "
                                         ></app-ta-input>
+                                    </div>
+
+                                    <!-- REVIEW AND FEEDBACK -->
+
+                                    <div
+                                        class="review-feedback-container"
+                                        *ngIf="
+                                            selectedMode === 'REVIEW_MODE' ||
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                    >
+                                        <app-applicant-review-feedback
+                                            formControlName="firstRowReview"
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[0]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[0]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="0"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' && ''
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
                                     </div>
                                 </div>
 
@@ -85,8 +146,18 @@
                                                 isRequired: true,
                                                 placeholderIcon: 'phone',
                                                 mask: '(000) 000-0000',
-                                                maxLength: 14
+                                                maxLength: 14,
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[1]
+                                                    .lineInputs[0]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 0, 1)
+                                            "
                                         ></app-ta-input>
                                     </div>
 
@@ -102,9 +173,60 @@
                                                 autocomplete: 'off',
                                                 minLength: 5,
                                                 maxLength: 64,
-                                                textTransform: 'lowercase'
+                                                textTransform: 'lowercase',
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[1]
+                                                    .lineInputs[1]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 1, 1)
+                                            "
                                         ></app-ta-input>
+                                    </div>
+
+                                    <!-- REVIEW AND FEEDBACK -->
+
+                                    <div
+                                        class="review-feedback-container"
+                                        *ngIf="
+                                            selectedMode === 'REVIEW_MODE' ||
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                    >
+                                        <app-applicant-review-feedback
+                                            formControlName="secondRowReview"
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[1]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[1]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="1"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' && ''
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
                                     </div>
                                 </div>
 
@@ -123,8 +245,18 @@
                                                 textTransform: 'capitalize',
                                                 dropdownWidthClass: 'w-col-481',
                                                 minLength: 12,
-                                                maxLength: 256
+                                                maxLength: 256,
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[2]
+                                                    .lineInputs[0]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 0, 2)
+                                            "
                                             [placeholderType]="'longAddress'"
                                             [activeAddress]="selectedAddress"
                                             (selectedAddress)="
@@ -145,9 +277,60 @@
                                                 label: 'Unit #',
                                                 minLength: 1,
                                                 maxLength: 10,
-                                                textTransform: 'uppercase'
+                                                textTransform: 'uppercase',
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[2]
+                                                    .lineInputs[1]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 1, 2)
+                                            "
                                         ></app-ta-input>
+                                    </div>
+
+                                    <!-- REVIEW AND FEEDBACK -->
+
+                                    <div
+                                        class="review-feedback-container"
+                                        *ngIf="
+                                            selectedMode === 'REVIEW_MODE' ||
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                    >
+                                        <app-applicant-review-feedback
+                                            formControlName="thirdRowReview"
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[2]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[2]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="2"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' && ''
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
                                     </div>
                                 </div>
 
@@ -194,8 +377,18 @@
                                                     !isBankSelected,
                                                 isRequired: isBankSelected,
                                                 maxLength: 17,
-                                                minLength: 5
+                                                minLength: 5,
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[3]
+                                                    .lineInputs[0]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 0, 3)
+                                            "
                                         ></app-ta-input>
                                     </div>
 
@@ -215,6 +408,47 @@
                                                 maxLength: 9
                                             }"
                                         ></app-ta-input>
+                                    </div>
+
+                                    <!-- REVIEW AND FEEDBACK -->
+
+                                    <div
+                                        class="review-feedback-container"
+                                        *ngIf="
+                                            selectedMode === 'REVIEW_MODE' ||
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                    >
+                                        <app-applicant-review-feedback
+                                            formControlName="fourthRowReview"
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[3]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[3]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="3"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' && ''
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
                                     </div>
                                 </div>
 
@@ -287,9 +521,60 @@
                                                     color: 'white',
                                                     isLoading:
                                                         loadingTruckVinDecoder
-                                                }
+                                                },
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[4]
+                                                    .lineInputs[0]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 0, 4)
+                                            "
                                         ></app-ta-input>
+                                    </div>
+
+                                    <!-- REVIEW AND FEEDBACK -->
+
+                                    <div
+                                        class="review-feedback-container"
+                                        *ngIf="
+                                            selectedMode === 'REVIEW_MODE' ||
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                    >
+                                        <app-applicant-review-feedback
+                                            formControlName="fifthRowReview"
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[4]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[4]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="4"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' && ''
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
                                     </div>
                                 </div>
 
@@ -335,8 +620,18 @@
                                                 isRequired: true,
                                                 textTransform: 'uppercase',
                                                 minLength: 1,
-                                                maxLength: 50
+                                                maxLength: 50,
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[5]
+                                                    .lineInputs[0]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 0, 5)
+                                            "
                                         ></app-ta-input>
                                     </div>
 
@@ -385,6 +680,47 @@
                                             "
                                         ></app-ta-input-dropdown>
                                     </div>
+
+                                    <!-- REVIEW AND FEEDBACK -->
+
+                                    <div
+                                        class="review-feedback-container"
+                                        *ngIf="
+                                            selectedMode === 'REVIEW_MODE' ||
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                    >
+                                        <app-applicant-review-feedback
+                                            formControlName="sixthRowReview"
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[5]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[5]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="5"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' && ''
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
+                                    </div>
                                 </div>
 
                                 <!-- DIVIDER -->
@@ -400,11 +736,6 @@
                                         <app-ta-checkbox
                                             formControlName="addTrailer"
                                             [name]="'addTrailer'"
-                                            [disabledStillCheckMark]="
-                                                selectedMode ===
-                                                    'REVIEW_MODE' ||
-                                                selectedMode === 'FEEDBACK_MODE'
-                                            "
                                         ></app-ta-checkbox>
 
                                         <p class="m-0 ta-font-extra-bold">
@@ -488,9 +819,60 @@
                                                     color: 'white',
                                                     isLoading:
                                                         loadingTrailerVinDecoder
-                                                }
+                                                },
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[6]
+                                                    .lineInputs[0]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 0, 6)
+                                            "
                                         ></app-ta-input>
+                                    </div>
+
+                                    <!-- REVIEW AND FEEDBACK -->
+
+                                    <div
+                                        class="review-feedback-container"
+                                        *ngIf="
+                                            selectedMode === 'REVIEW_MODE' ||
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                    >
+                                        <app-applicant-review-feedback
+                                            formControlName="seventhRowReview"
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[6]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[6]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="6"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' && ''
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
                                     </div>
                                 </div>
 
@@ -542,9 +924,60 @@
                                                     !isAddTrailerSelected,
                                                 textTransform: 'uppercase',
                                                 minLength: 1,
-                                                maxLength: 50
+                                                maxLength: 50,
+                                                incorrectInput:
+                                                    selectedMode ===
+                                                    'REVIEW_MODE'
                                             }"
+                                            [incorrectValue]="
+                                                openAnnotationArray[7]
+                                                    .lineInputs[0]
+                                            "
+                                            (incorrectEvent)="
+                                                incorrectInput($event, 0, 7)
+                                            "
                                         ></app-ta-input>
+                                    </div>
+
+                                    <!-- REVIEW AND FEEDBACK -->
+
+                                    <div
+                                        class="review-feedback-container"
+                                        *ngIf="
+                                            selectedMode === 'REVIEW_MODE' ||
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                    >
+                                        <app-applicant-review-feedback
+                                            formControlName="eightRowReview"
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[7]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[7]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="7"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' && ''
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
                                     </div>
                                 </div>
 
@@ -651,7 +1084,9 @@
         [filledCorrectly]="
             selectedMode === 'APPLICANT_MODE' && ownerInfoForm.valid
         "
-        [hasIncorrectFields]="selectedMode === 'REVIEW_MODE' && false"
+        [hasIncorrectFields]="
+            selectedMode === 'REVIEW_MODE' && hasIncorrectFields
+        "
         [mode]="selectedMode"
         (stepEvent)="onStepAction($event)"
     ></app-applicant-next-back-btn>
