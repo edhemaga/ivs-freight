@@ -15,7 +15,5 @@ import { ApplicantShortResponsePagination } from './applicantShortResponsePagina
 export interface GetApplicantListResponse { 
     pagination?: ApplicantShortResponsePagination;
     count?: number;
-    activeCount?: number;
-    inactiveCount?: number;
 }
 

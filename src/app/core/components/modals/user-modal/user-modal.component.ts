@@ -582,9 +582,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         extensionPhone: res.extensionPhone,
                         email: res.email,
                         includeInPayroll: res.includeInPayroll ? true : false,
-                        paymentType: res.paymentType
-                            ? res.paymentType.name
-                            : null,
+                        // paymentType: res.paymentType
+                        //     ? res.paymentType.name
+                        //     : null,
                         salary: res.salary
                             ? convertNumberInThousandSep(res.salary)
                             : null,
@@ -606,7 +606,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.selectedDepartment = res.department;
                     this.selectedOffice = res.companyOffice;
                     this.selectedUserType = res.userType;
-                    this.selectedPayment = res.paymentType;
+                    // this.selectedPayment = res.paymentType;
                     console.log('user status: ', res.status);
                     this.userStatus = res.status !== 1;
 

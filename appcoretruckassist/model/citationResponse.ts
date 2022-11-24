@@ -9,15 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApplicantCompanyInfoResponse } from './applicantCompanyInfoResponse';
+import { FileResponse } from './fileResponse';
 
 
-export interface PreviousEmployerProspectResponse { 
+export interface CitationResponse { 
     id?: number;
-    employerName?: string | null;
-    employeeName?: string | null;
-    ssn?: string | null;
-    doB?: string;
-    companyInfo?: ApplicantCompanyInfoResponse;
+    citationNo?: string | null;
+    cost?: number;
+    description?: string | null;
+    citationDate?: string;
+    paid?: boolean;
+    note?: string | null;
+    files?: Array<FileResponse> | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

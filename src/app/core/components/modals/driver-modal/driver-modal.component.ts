@@ -8,11 +8,9 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
     AddressEntity,
     CheckOwnerSsnEinResponse,
-    CreateDriverCommand,
     CreateResponse,
     DriverResponse,
-    GetDriverModalResponse,
-    UpdateDriverCommand,
+    GetDriverModalResponse
 } from 'appcoretruckassist';
 import {
     einNumberRegex,
@@ -1052,7 +1050,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
-        const newData: CreateDriverCommand = {
+        const newData: any = {
             ...form,
             dateOfBirth: convertDateToBackend(
                 this.driverForm.get('dateOfBirth').value
@@ -1433,7 +1431,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
-        const newData: UpdateDriverCommand = {
+        const newData: any = {
             id: id,
             ...form,
             dateOfBirth: convertDateToBackend(

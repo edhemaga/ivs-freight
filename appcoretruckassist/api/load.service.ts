@@ -19,15 +19,19 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateLoadCommand } from '../model/createLoadCommand';
-// @ts-ignore
 import { CreateLoadTemplateCommand } from '../model/createLoadTemplateCommand';
 // @ts-ignore
 import { CreateResponse } from '../model/createResponse';
 // @ts-ignore
+import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
+// @ts-ignore
+import { FileResponse } from '../model/fileResponse';
+// @ts-ignore
 import { GetHazardousMaterialDropdownModalQuery } from '../model/getHazardousMaterialDropdownModalQuery';
 // @ts-ignore
 import { HazardousMaterialResponse } from '../model/hazardousMaterialResponse';
+// @ts-ignore
+import { LoadBillingAdditionalCommand } from '../model/loadBillingAdditionalCommand';
 // @ts-ignore
 import { LoadListResponse } from '../model/loadListResponse';
 // @ts-ignore
@@ -35,7 +39,13 @@ import { LoadMinimalListResponse } from '../model/loadMinimalListResponse';
 // @ts-ignore
 import { LoadModalResponse } from '../model/loadModalResponse';
 // @ts-ignore
+import { LoadPaymentPayCommand } from '../model/loadPaymentPayCommand';
+// @ts-ignore
 import { LoadResponse } from '../model/loadResponse';
+// @ts-ignore
+import { LoadStatus } from '../model/loadStatus';
+// @ts-ignore
+import { LoadStopCommand } from '../model/loadStopCommand';
 // @ts-ignore
 import { LoadStopItemAutocompleteDescriptionResponse } from '../model/loadStopItemAutocompleteDescriptionResponse';
 // @ts-ignore
@@ -43,9 +53,9 @@ import { LoadTemplateListResponse } from '../model/loadTemplateListResponse';
 // @ts-ignore
 import { LoadTemplateResponse } from '../model/loadTemplateResponse';
 // @ts-ignore
-import { ProblemDetails } from '../model/problemDetails';
+import { LoadType } from '../model/loadType';
 // @ts-ignore
-import { UpdateLoadCommand } from '../model/updateLoadCommand';
+import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { UpdateLoadStatusCommand } from '../model/updateLoadStatusCommand';
 // @ts-ignore
@@ -84,6 +94,19 @@ export class LoadService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
@@ -119,6 +142,72 @@ export class LoadService {
             throw Error("key may not be null if value is not object or array");
         }
         return httpParams;
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiLoadFilesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<FileResponse>>;
+    public apiLoadFilesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<FileResponse>>>;
+    public apiLoadFilesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<FileResponse>>>;
+    public apiLoadFilesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiLoadFilesIdGet.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/load/files/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<Array<FileResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
     /**
@@ -639,14 +728,40 @@ export class LoadService {
     }
 
     /**
-     * @param createLoadCommand 
+     * @param type 
+     * @param loadNumber 
+     * @param loadTemplateId 
+     * @param dispatcherId 
+     * @param companyId 
+     * @param dispatchId 
+     * @param dateCreated 
+     * @param brokerId 
+     * @param brokerContactId 
+     * @param referenceNumber 
+     * @param generalCommodity 
+     * @param weight 
+     * @param loadRequirementsId 
+     * @param loadRequirementsTruckTypeId 
+     * @param loadRequirementsTrailerTypeId 
+     * @param loadRequirementsDoorType 
+     * @param loadRequirementsSuspension 
+     * @param loadRequirementsTrailerLengthId 
+     * @param loadRequirementsYear 
+     * @param loadRequirementsLiftgate 
+     * @param note 
+     * @param baseRate 
+     * @param adjustedRate 
+     * @param advancePay 
+     * @param additionalBillingRates 
+     * @param stops 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadPost(createLoadCommand?: CreateLoadCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiLoadPost(createLoadCommand?: CreateLoadCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiLoadPost(createLoadCommand?: CreateLoadCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiLoadPost(createLoadCommand?: CreateLoadCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, note?: string, baseRate?: number, adjustedRate?: number, advancePay?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiLoadPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, note?: string, baseRate?: number, adjustedRate?: number, advancePay?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiLoadPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, note?: string, baseRate?: number, adjustedRate?: number, advancePay?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiLoadPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, note?: string, baseRate?: number, adjustedRate?: number, advancePay?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -676,16 +791,111 @@ export class LoadService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (type !== undefined) {
+            localVarFormParams = localVarFormParams.append('Type', <any>type) as any || localVarFormParams;
+        }
+        if (loadNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadNumber', <any>loadNumber) as any || localVarFormParams;
+        }
+        if (loadTemplateId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadTemplateId', <any>loadTemplateId) as any || localVarFormParams;
+        }
+        if (dispatcherId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DispatcherId', <any>dispatcherId) as any || localVarFormParams;
+        }
+        if (companyId !== undefined) {
+            localVarFormParams = localVarFormParams.append('CompanyId', <any>companyId) as any || localVarFormParams;
+        }
+        if (dispatchId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DispatchId', <any>dispatchId) as any || localVarFormParams;
+        }
+        if (dateCreated !== undefined) {
+            localVarFormParams = localVarFormParams.append('DateCreated', <any>dateCreated) as any || localVarFormParams;
+        }
+        if (brokerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BrokerId', <any>brokerId) as any || localVarFormParams;
+        }
+        if (brokerContactId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BrokerContactId', <any>brokerContactId) as any || localVarFormParams;
+        }
+        if (referenceNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReferenceNumber', <any>referenceNumber) as any || localVarFormParams;
+        }
+        if (generalCommodity !== undefined) {
+            localVarFormParams = localVarFormParams.append('GeneralCommodity', <any>generalCommodity) as any || localVarFormParams;
+        }
+        if (weight !== undefined) {
+            localVarFormParams = localVarFormParams.append('Weight', <any>weight) as any || localVarFormParams;
+        }
+        if (loadRequirementsId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Id', <any>loadRequirementsId) as any || localVarFormParams;
+        }
+        if (loadRequirementsTruckTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TruckTypeId', <any>loadRequirementsTruckTypeId) as any || localVarFormParams;
+        }
+        if (loadRequirementsTrailerTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TrailerTypeId', <any>loadRequirementsTrailerTypeId) as any || localVarFormParams;
+        }
+        if (loadRequirementsDoorType !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.DoorType', <any>loadRequirementsDoorType) as any || localVarFormParams;
+        }
+        if (loadRequirementsSuspension !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Suspension', <any>loadRequirementsSuspension) as any || localVarFormParams;
+        }
+        if (loadRequirementsTrailerLengthId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TrailerLengthId', <any>loadRequirementsTrailerLengthId) as any || localVarFormParams;
+        }
+        if (loadRequirementsYear !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Year', <any>loadRequirementsYear) as any || localVarFormParams;
+        }
+        if (loadRequirementsLiftgate !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Liftgate', <any>loadRequirementsLiftgate) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (baseRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('BaseRate', <any>baseRate) as any || localVarFormParams;
+        }
+        if (adjustedRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('AdjustedRate', <any>adjustedRate) as any || localVarFormParams;
+        }
+        if (advancePay !== undefined) {
+            localVarFormParams = localVarFormParams.append('AdvancePay', <any>advancePay) as any || localVarFormParams;
+        }
+        if (additionalBillingRates) {
+            additionalBillingRates.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('AdditionalBillingRates', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (stops) {
+            stops.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Stops', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -700,10 +910,10 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createLoadCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -714,14 +924,59 @@ export class LoadService {
     }
 
     /**
-     * @param updateLoadCommand 
+     * @param id 
+     * @param dispatcherId 
+     * @param dateCreated 
+     * @param status 
+     * @param dispatchId 
+     * @param brokerId 
+     * @param brokerContactId 
+     * @param referenceNumber 
+     * @param generalCommodity 
+     * @param weight 
+     * @param loadRequirementsId 
+     * @param loadRequirementsTruckTypeId 
+     * @param loadRequirementsTrailerTypeId 
+     * @param loadRequirementsDoorType 
+     * @param loadRequirementsSuspension 
+     * @param loadRequirementsTrailerLengthId 
+     * @param loadRequirementsYear 
+     * @param loadRequirementsLiftgate 
+     * @param note 
+     * @param adjustedRate 
+     * @param revisedRate 
+     * @param tonuRate 
+     * @param additionalBillingRates 
+     * @param pays 
+     * @param stops 
+     * @param splitLoadPreviousStopOrder 
+     * @param splitLoadNextStopOrder 
+     * @param splitLoadSplitDate 
+     * @param splitLoadSplitTime 
+     * @param splitLoadSplitLocationCity 
+     * @param splitLoadSplitLocationState 
+     * @param splitLoadSplitLocationCounty 
+     * @param splitLoadSplitLocationAddress 
+     * @param splitLoadSplitLocationStreet 
+     * @param splitLoadSplitLocationStreetNumber 
+     * @param splitLoadSplitLocationCountry 
+     * @param splitLoadSplitLocationZipCode 
+     * @param splitLoadSplitLocationStateShortName 
+     * @param splitLoadSplitLocationAddressUnit 
+     * @param splitLoadNewDispatchId 
+     * @param splitLoadRateFirstLoad 
+     * @param splitLoadRateSecondLoad 
+     * @param splitLoadFirstLegMiles 
+     * @param splitLoadSecondLegMiles 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadPut(updateLoadCommand?: UpdateLoadCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiLoadPut(updateLoadCommand?: UpdateLoadCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiLoadPut(updateLoadCommand?: UpdateLoadCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiLoadPut(updateLoadCommand?: UpdateLoadCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, note?: string, adjustedRate?: number, revisedRate?: number, tonuRate?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, note?: string, adjustedRate?: number, revisedRate?: number, tonuRate?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, note?: string, adjustedRate?: number, revisedRate?: number, tonuRate?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, note?: string, adjustedRate?: number, revisedRate?: number, tonuRate?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -751,16 +1006,172 @@ export class LoadService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (dispatcherId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DispatcherId', <any>dispatcherId) as any || localVarFormParams;
+        }
+        if (dateCreated !== undefined) {
+            localVarFormParams = localVarFormParams.append('DateCreated', <any>dateCreated) as any || localVarFormParams;
+        }
+        if (status !== undefined) {
+            localVarFormParams = localVarFormParams.append('Status', <any>status) as any || localVarFormParams;
+        }
+        if (dispatchId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DispatchId', <any>dispatchId) as any || localVarFormParams;
+        }
+        if (brokerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BrokerId', <any>brokerId) as any || localVarFormParams;
+        }
+        if (brokerContactId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BrokerContactId', <any>brokerContactId) as any || localVarFormParams;
+        }
+        if (referenceNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('ReferenceNumber', <any>referenceNumber) as any || localVarFormParams;
+        }
+        if (generalCommodity !== undefined) {
+            localVarFormParams = localVarFormParams.append('GeneralCommodity', <any>generalCommodity) as any || localVarFormParams;
+        }
+        if (weight !== undefined) {
+            localVarFormParams = localVarFormParams.append('Weight', <any>weight) as any || localVarFormParams;
+        }
+        if (loadRequirementsId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Id', <any>loadRequirementsId) as any || localVarFormParams;
+        }
+        if (loadRequirementsTruckTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TruckTypeId', <any>loadRequirementsTruckTypeId) as any || localVarFormParams;
+        }
+        if (loadRequirementsTrailerTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TrailerTypeId', <any>loadRequirementsTrailerTypeId) as any || localVarFormParams;
+        }
+        if (loadRequirementsDoorType !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.DoorType', <any>loadRequirementsDoorType) as any || localVarFormParams;
+        }
+        if (loadRequirementsSuspension !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Suspension', <any>loadRequirementsSuspension) as any || localVarFormParams;
+        }
+        if (loadRequirementsTrailerLengthId !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.TrailerLengthId', <any>loadRequirementsTrailerLengthId) as any || localVarFormParams;
+        }
+        if (loadRequirementsYear !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Year', <any>loadRequirementsYear) as any || localVarFormParams;
+        }
+        if (loadRequirementsLiftgate !== undefined) {
+            localVarFormParams = localVarFormParams.append('LoadRequirements.Liftgate', <any>loadRequirementsLiftgate) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (adjustedRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('AdjustedRate', <any>adjustedRate) as any || localVarFormParams;
+        }
+        if (revisedRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('RevisedRate', <any>revisedRate) as any || localVarFormParams;
+        }
+        if (tonuRate !== undefined) {
+            localVarFormParams = localVarFormParams.append('TonuRate', <any>tonuRate) as any || localVarFormParams;
+        }
+        if (additionalBillingRates) {
+            additionalBillingRates.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('AdditionalBillingRates', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (pays) {
+            pays.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Pays', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (stops) {
+            stops.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Stops', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (splitLoadPreviousStopOrder !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.PreviousStopOrder', <any>splitLoadPreviousStopOrder) as any || localVarFormParams;
+        }
+        if (splitLoadNextStopOrder !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.NextStopOrder', <any>splitLoadNextStopOrder) as any || localVarFormParams;
+        }
+        if (splitLoadSplitDate !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitDate', <any>splitLoadSplitDate) as any || localVarFormParams;
+        }
+        if (splitLoadSplitTime !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitTime', <any>splitLoadSplitTime) as any || localVarFormParams;
+        }
+        if (splitLoadSplitLocationCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitLocation.City', <any>splitLoadSplitLocationCity) as any || localVarFormParams;
+        }
+        if (splitLoadSplitLocationState !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitLocation.State', <any>splitLoadSplitLocationState) as any || localVarFormParams;
+        }
+        if (splitLoadSplitLocationCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitLocation.County', <any>splitLoadSplitLocationCounty) as any || localVarFormParams;
+        }
+        if (splitLoadSplitLocationAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitLocation.Address', <any>splitLoadSplitLocationAddress) as any || localVarFormParams;
+        }
+        if (splitLoadSplitLocationStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitLocation.Street', <any>splitLoadSplitLocationStreet) as any || localVarFormParams;
+        }
+        if (splitLoadSplitLocationStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitLocation.StreetNumber', <any>splitLoadSplitLocationStreetNumber) as any || localVarFormParams;
+        }
+        if (splitLoadSplitLocationCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitLocation.Country', <any>splitLoadSplitLocationCountry) as any || localVarFormParams;
+        }
+        if (splitLoadSplitLocationZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitLocation.ZipCode', <any>splitLoadSplitLocationZipCode) as any || localVarFormParams;
+        }
+        if (splitLoadSplitLocationStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitLocation.StateShortName', <any>splitLoadSplitLocationStateShortName) as any || localVarFormParams;
+        }
+        if (splitLoadSplitLocationAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SplitLocation.AddressUnit', <any>splitLoadSplitLocationAddressUnit) as any || localVarFormParams;
+        }
+        if (splitLoadNewDispatchId !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.NewDispatchId', <any>splitLoadNewDispatchId) as any || localVarFormParams;
+        }
+        if (splitLoadRateFirstLoad !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.RateFirstLoad', <any>splitLoadRateFirstLoad) as any || localVarFormParams;
+        }
+        if (splitLoadRateSecondLoad !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.RateSecondLoad', <any>splitLoadRateSecondLoad) as any || localVarFormParams;
+        }
+        if (splitLoadFirstLegMiles !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.FirstLegMiles', <any>splitLoadFirstLegMiles) as any || localVarFormParams;
+        }
+        if (splitLoadSecondLegMiles !== undefined) {
+            localVarFormParams = localVarFormParams.append('SplitLoad.SecondLegMiles', <any>splitLoadSecondLegMiles) as any || localVarFormParams;
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -775,10 +1186,10 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateLoadCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

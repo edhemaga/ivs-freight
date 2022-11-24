@@ -4,10 +4,8 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import {
-    CreateTitleCommand,
     TitleModalResponse,
-    TitleResponse,
-    UpdateTitleCommand,
+    TitleResponse
 } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -121,7 +119,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     private addTitle() {
         const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
-        const newData: CreateTitleCommand = {
+        const newData: any = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             purchaseDate: convertDateToBackend(purchaseDate),
@@ -152,7 +150,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     private updateTitle() {
         const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
-        const newData: UpdateTitleCommand = {
+        const newData: any = {
             id: this.editData.file_id,
             ...form,
             issueDate: convertDateToBackend(issueDate),

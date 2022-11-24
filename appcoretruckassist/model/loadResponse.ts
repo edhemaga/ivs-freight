@@ -17,6 +17,7 @@ import { LoadStatusHistoryResponse } from './loadStatusHistoryResponse';
 import { LoadRequirementsResponse } from './loadRequirementsResponse';
 import { BrokerShortResponse } from './brokerShortResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
+import { FileResponse } from './fileResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
 import { LoadPaymentPayResponse } from './loadPaymentPayResponse';
 import { SplitLoadResponse } from './splitLoadResponse';
@@ -79,5 +80,6 @@ export interface LoadResponse {
     progressBar?: Array<LoadStopProgressBarResponse> | null;
     createdAt?: string;
     updatedAt?: string;
+    files?: Array<FileResponse> | null;
 }
 
