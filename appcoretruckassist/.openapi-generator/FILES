@@ -156,7 +156,6 @@ model/companyOfficeResponsePagination.ts
 model/companyOfficeShortResponse.ts
 model/companyPayrollResponse.ts
 model/companyResponse.ts
-model/companySettingsDocumentsResponse.ts
 model/companyShortResponse.ts
 model/companyUserModalResponse.ts
 model/companyUserResponse.ts
@@ -315,6 +314,7 @@ model/getFuelStopModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
 model/getModalFuelStopFranchiseByIdResponse.ts
+model/getModalFuelStopFranchiseResponse.ts
 model/getMvrModalResponse.ts
 model/getOwnerListResponse.ts
 model/getRatingReviewModalResponse.ts
@@ -322,6 +322,8 @@ model/getRouteListResponse.ts
 model/getStopListResponse.ts
 model/getTestModalResponse.ts
 model/getTrailerModalResponse.ts
+model/getTransactionModalFranchiseStopResponse.ts
+model/getTransactionModalFranchiseStopResponsePagination.ts
 model/getTruckModalResponse.ts
 model/hazardousMaterialResponse.ts
 model/hireApplicantCommand.ts
@@ -387,7 +389,9 @@ model/models.ts
 model/moveMultipleToApplicantsCommand.ts
 model/moveToApplicantsCommand.ts
 model/multipleChangeBanFlagCommand.ts
+model/multipleChangeBanFlagShippersCommand.ts
 model/multipleChangeDnuFlagCommand.ts
+model/multipleChangeDnuFlagShippersCommand.ts
 model/multipleChangeTrailerStatusCommand.ts
 model/multipleChangeTruckStatusCommand.ts
 model/mvrAuthFeedbackResponse.ts
