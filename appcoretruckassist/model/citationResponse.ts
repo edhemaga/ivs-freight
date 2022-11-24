@@ -10,25 +10,16 @@
  * Do not edit the class manually.
  */
 import { FileResponse } from './fileResponse';
-import { BankResponse } from './bankResponse';
-import { EnumValue } from './enumValue';
-import { AddressEntity } from './addressEntity';
 
 
-export interface OwnerResponse { 
+export interface CitationResponse { 
     id?: number;
-    name?: string | null;
-    ownerType?: EnumValue;
-    trailerCount?: number;
-    truckCount?: number;
-    ssnEin?: string | null;
-    phone?: string | null;
-    email?: string | null;
+    citationNo?: string | null;
+    cost?: number;
+    description?: string | null;
+    citationDate?: string;
+    paid?: boolean;
     note?: string | null;
-    bank?: BankResponse;
-    accountNumber?: string | null;
-    routingNumber?: string | null;
-    address?: AddressEntity;
     files?: Array<FileResponse> | null;
     createdAt?: string;
     updatedAt?: string;

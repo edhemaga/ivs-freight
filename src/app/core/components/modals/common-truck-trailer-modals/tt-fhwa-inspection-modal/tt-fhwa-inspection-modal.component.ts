@@ -4,9 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import {
-    CreateInspectionCommand,
-    InspectionResponse,
-    UpdateInspectionCommand,
+    InspectionResponse
 } from 'appcoretruckassist';
 
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -17,6 +15,8 @@ import {
     convertDateFromBackend,
     convertDateToBackend,
 } from '../../../../utils/methods.calculations';
+import { UpdateInspectionCommand } from 'appcoretruckassist/model/updateInspectionCommand';
+import { CreateInspectionCommand } from 'appcoretruckassist/model/createInspectionCommand';
 
 @Component({
     selector: 'app-tt-fhwa-inspection-modal',

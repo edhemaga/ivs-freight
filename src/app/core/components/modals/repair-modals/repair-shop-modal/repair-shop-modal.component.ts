@@ -3,11 +3,9 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
     AddressEntity,
-    CreateRepairShopCommand,
     CreateResponse,
     RepairShopModalResponse,
-    RepairShopResponse,
-    UpdateRepairShopCommand,
+    RepairShopResponse
 } from 'appcoretruckassist';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { RepairTService } from '../../../repair/state/repair.service';
@@ -27,6 +25,8 @@ import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/
 import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
+import { CreateRepairShopCommand } from 'appcoretruckassist/model/createRepairShopCommand';
+import { UpdateRepairShopCommand } from 'appcoretruckassist/model/updateRepairShopCommand';
 
 @Component({
     selector: 'app-repair-shop-modal',

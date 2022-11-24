@@ -8,6 +8,7 @@ import { ApplicantService } from './api/applicant.service';
 import { BankService } from './api/bank.service';
 import { BrokerService } from './api/broker.service';
 import { CdlService } from './api/cdl.service';
+import { CitationService } from './api/citation.service';
 import { CommentService } from './api/comment.service';
 import { CompanyService } from './api/company.service';
 import { CompanyAccountService } from './api/companyAccount.service';

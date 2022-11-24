@@ -9,11 +9,9 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import {
-    CreateRepairCommand,
     RepairModalResponse,
     RepairResponse,
-    RepairShopResponse,
-    UpdateRepairCommand,
+    RepairShopResponse
 } from 'appcoretruckassist';
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -34,6 +32,8 @@ import {
     repairOdometerValidation,
     vehicleUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
+import { CreateRepairCommand } from 'appcoretruckassist/model/createRepairCommand';
+import { UpdateRepairCommand } from 'appcoretruckassist/model/updateRepairCommand';
 
 @Component({
     selector: 'app-repair-order-modal',

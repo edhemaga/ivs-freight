@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
@@ -50,5 +51,6 @@ export interface RepairShopResponse {
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
     reviews?: Array<ReviewResponse> | null;
+    files?: Array<FileResponse> | null;
 }
 

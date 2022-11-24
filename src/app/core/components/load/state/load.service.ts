@@ -96,11 +96,11 @@ export class LoadTService {
     }
 
     public createLoad(data: CreateLoadCommand): Observable<CreateResponse> {
-        return this.loadServices.apiLoadPost(data);
+        return this.loadServices.apiLoadPost();
     }
 
     public updateLoad(data: UpdateLoadCommand): Observable<any> {
-        return this.loadServices.apiLoadPut(data);
+        return this.loadServices.apiLoadPut();
     }
 
     public deleteLoadById(id: number): Observable<any> {

@@ -3,8 +3,6 @@ import {
     routingBankValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { TruckModalComponent } from '../truck-modal/truck-modal.component';
-import { UpdateOwnerCommand } from '../../../../../../appcoretruckassist';
-import { CreateOwnerCommand } from '../../../../../../appcoretruckassist';
 import { OwnerResponse } from '../../../../../../appcoretruckassist';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { OwnerModalResponse } from '../../../../../../appcoretruckassist';
@@ -37,6 +35,8 @@ import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component'
 import { Subject, takeUntil, merge } from 'rxjs';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
+import { UpdateOwnerCommand } from 'appcoretruckassist/model/updateOwnerCommand';
+import { CreateOwnerCommand } from 'appcoretruckassist/model/createOwnerCommand';
 
 @Component({
     selector: 'app-owner-modal',

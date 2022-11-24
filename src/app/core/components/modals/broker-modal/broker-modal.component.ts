@@ -12,11 +12,9 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { BrokerModalResponse } from '../../../../../../appcoretruckassist';
 import {
     BrokerResponse,
-    CreateBrokerCommand,
     CreateRatingCommand,
     CreateReviewCommand,
     SignInResponse,
-    UpdateBrokerCommand,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 import {
@@ -47,6 +45,8 @@ import {
     name2_24Validation,
     creditLimitValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
+import { CreateBrokerCommand } from 'appcoretruckassist/model/createBrokerCommand';
+import { UpdateBrokerCommand } from 'appcoretruckassist/model/updateBrokerCommand';
 
 @Component({
     selector: 'app-broker-modal',

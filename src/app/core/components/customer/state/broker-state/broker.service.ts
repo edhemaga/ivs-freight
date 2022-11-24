@@ -5,12 +5,10 @@ import {
     BrokerModalResponse,
     BrokerResponse,
     BrokerService,
-    CreateBrokerCommand,
     CreateRatingCommand,
     CreateResponse,
     GetBrokerListResponse,
     RatingReviewService,
-    UpdateBrokerCommand,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { Observable, tap, of, Subject, takeUntil } from 'rxjs';
@@ -18,6 +16,8 @@ import { BrokerStore } from './broker.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
 import { BrokerDetailsListStore } from '../broker-details-state/broker-details-list-state/broker-details-list.store';
+import { CreateBrokerCommand } from 'appcoretruckassist/model/createBrokerCommand';
+import { UpdateBrokerCommand } from 'appcoretruckassist/model/updateBrokerCommand';
 
 @Injectable({
     providedIn: 'root',
@@ -39,7 +39,7 @@ export class BrokerTService implements OnDestroy {
 
     // Add Broker
     public addBroker(data: CreateBrokerCommand): Observable<CreateResponse> {
-        return this.brokerService.apiBrokerPost(data).pipe(
+        return this.brokerService.apiBrokerPost().pipe(
             tap((res: any) => {
                 const subBroker = this.getBrokerById(res.id).subscribe({
                     next: (broker: BrokerResponse | any) => {
@@ -75,7 +75,7 @@ export class BrokerTService implements OnDestroy {
 
     // Update Broker
     public updateBroker(data: UpdateBrokerCommand): Observable<any> {
-        return this.brokerService.apiBrokerPut(data).pipe(
+        return this.brokerService.apiBrokerPut().pipe(
             tap(() => {
                 const subBroker = this.getBrokerById(data.id).subscribe({
                     next: (broker: BrokerResponse | any) => {

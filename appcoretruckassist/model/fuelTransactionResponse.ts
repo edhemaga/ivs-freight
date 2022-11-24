@@ -9,8 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { FuelItemResponse } from './fuelItemResponse';
-import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
 import { FuelStopShortResponse } from './fuelStopShortResponse';
 import { DriverMinimalResponse } from './driverMinimalResponse';
@@ -22,7 +22,6 @@ export interface FuelTransactionResponse {
     id?: number;
     driver?: DriverMinimalResponse;
     truck?: TruckShortResponse;
-    trailer?: TrailerMinimalResponse;
     fuelCard?: FuelCardShortResponse;
     fuelStopStore?: FuelStopShortResponse;
     transactionDate?: string;
@@ -33,6 +32,7 @@ export interface FuelTransactionResponse {
     total?: number | null;
     fuelTransactionType?: EnumValue;
     fuelItems?: Array<FuelItemResponse> | null;
+    files?: Array<FileResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }

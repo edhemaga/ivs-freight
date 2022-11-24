@@ -21,9 +21,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import {
     AddressEntity,
-    CreateInsurancePolicyCommand,
-    InsurancePolicyModalResponse,
-    UpdateInsurancePolicyCommand,
+    InsurancePolicyModalResponse
 } from 'appcoretruckassist';
 
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
@@ -44,6 +42,8 @@ import {
     convertDateFromBackend,
     convertNumberInThousandSep,
 } from '../../../../../utils/methods.calculations';
+import { CreateInsurancePolicyCommand } from 'appcoretruckassist/model/createInsurancePolicyCommand';
+import { UpdateInsurancePolicyCommand } from 'appcoretruckassist/model/updateInsurancePolicyCommand';
 
 @Component({
     selector: 'app-settings-insurance-policy-modal',

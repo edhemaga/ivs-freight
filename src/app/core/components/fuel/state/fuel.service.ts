@@ -149,14 +149,14 @@ export class FuelTService {
     }
 
     public addFuelStop(data: AddFuelStopCommand): Observable<CreateResponse> {
-        return this.fuelService.apiFuelFuelstopPost(data);
+        return this.fuelService.apiFuelFuelstopPost();
     }
 
     // For table method
     public updateFuelStopShortest(
         data: EditFuelStopCommand
     ): Observable<object> {
-        return this.fuelService.apiFuelFuelstopPut(data);
+        return this.fuelService.apiFuelFuelstopPut();
     }
 
     // For modal method

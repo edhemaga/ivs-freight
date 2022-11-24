@@ -3,10 +3,8 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import {
-    CreateRegistrationCommand,
     RegistrationModalResponse,
-    RegistrationResponse,
-    UpdateRegistrationCommand,
+    RegistrationResponse
 } from 'appcoretruckassist';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
@@ -19,6 +17,8 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../../utils/methods.calculations';
+import { UpdateRegistrationCommand } from 'appcoretruckassist/model/updateRegistrationCommand';
+import { CreateRegistrationCommand } from 'appcoretruckassist/model/createRegistrationCommand';
 
 @Component({
     selector: 'app-tt-registration-modal',

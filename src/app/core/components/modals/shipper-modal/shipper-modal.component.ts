@@ -19,11 +19,9 @@ import {
     AddressEntity,
     CreateRatingCommand,
     CreateReviewCommand,
-    CreateShipperCommand,
     ShipperResponse,
     SignInResponse,
-    UpdateReviewCommand,
-    UpdateShipperCommand,
+    UpdateReviewCommand
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -43,6 +41,8 @@ import { NotificationService } from '../../../services/notification/notification
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';
 import { convertTimeFromBackend } from '../../../utils/methods.calculations';
+import { CreateShipperCommand } from 'appcoretruckassist/model/createShipperCommand';
+import { UpdateShipperCommand } from 'appcoretruckassist/model/updateShipperCommand';
 
 @Component({
     selector: 'app-shipper-modal',

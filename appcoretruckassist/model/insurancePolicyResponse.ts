@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { InsurancePolicyAddonResponse } from './insurancePolicyAddonResponse';
 import { AddressEntity } from './addressEntity';
 
@@ -22,8 +23,7 @@ export interface InsurancePolicyResponse {
     email?: string | null;
     address?: AddressEntity;
     insurancePolicyAddons?: Array<InsurancePolicyAddonResponse> | null;
+    files?: Array<FileResponse> | null;
     note?: string | null;
-    createdAt?: string;
-    updatedAt?: string;
 }
 

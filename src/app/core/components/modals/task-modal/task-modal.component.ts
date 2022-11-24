@@ -1,4 +1,3 @@
-import { CreateTodoCommand } from '../../../../../../appcoretruckassist';
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -10,8 +9,7 @@ import {
     SignInResponse,
     TodoModalResponse,
     TodoResponse,
-    UpdateCommentCommand,
-    UpdateTodoCommand,
+    UpdateCommentCommand
 } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -31,6 +29,8 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from '../../../utils/methods.calculations';
+import { UpdateTodoCommand } from 'appcoretruckassist/model/updateTodoCommand';
+import { CreateTodoCommand } from 'appcoretruckassist/model/createTodoCommand';
 
 @Component({
     selector: 'app-task-modal',

@@ -8,11 +8,9 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
     AddressEntity,
     CheckOwnerSsnEinResponse,
-    CreateDriverCommand,
     CreateResponse,
     DriverResponse,
-    GetDriverModalResponse,
-    UpdateDriverCommand,
+    GetDriverModalResponse
 } from 'appcoretruckassist';
 import {
     einNumberRegex,
@@ -46,6 +44,8 @@ import {
     convertThousanSepInNumber,
     convertDateFromBackend,
 } from '../../../utils/methods.calculations';
+import { CreateDriverCommand } from 'appcoretruckassist/model/createDriverCommand';
+import { UpdateDriverCommand } from 'appcoretruckassist/model/updateDriverCommand';
 
 @Component({
     selector: 'app-driver-modal',

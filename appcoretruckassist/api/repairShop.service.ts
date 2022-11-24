@@ -21,11 +21,15 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { ClusterResponse } from '../model/clusterResponse';
 // @ts-ignore
-import { CreateRepairShopCommand } from '../model/createRepairShopCommand';
+import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
 // @ts-ignore
-import { CreateResponse } from '../model/createResponse';
+import { DayOfWeek } from '../model/dayOfWeek';
+// @ts-ignore
+import { FileResponse } from '../model/fileResponse';
 // @ts-ignore
 import { MapMarkerListResponse } from '../model/mapMarkerListResponse';
+// @ts-ignore
+import { PayPeriod } from '../model/payPeriod';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
@@ -35,11 +39,13 @@ import { RepairShopMinimalListResponse } from '../model/repairShopMinimalListRes
 // @ts-ignore
 import { RepairShopModalResponse } from '../model/repairShopModalResponse';
 // @ts-ignore
+import { RepairShopOpenHoursCommand } from '../model/repairShopOpenHoursCommand';
+// @ts-ignore
 import { RepairShopResponse } from '../model/repairShopResponse';
 // @ts-ignore
-import { RepairedVehicleListResponse } from '../model/repairedVehicleListResponse';
+import { RepairShopServiceTypeCommand } from '../model/repairShopServiceTypeCommand';
 // @ts-ignore
-import { UpdateRepairShopCommand } from '../model/updateRepairShopCommand';
+import { RepairedVehicleListResponse } from '../model/repairedVehicleListResponse';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -275,6 +281,72 @@ export class RepairShopService {
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiRepairshopFilesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<FileResponse>>;
+    public apiRepairshopFilesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<FileResponse>>>;
+    public apiRepairshopFilesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<FileResponse>>>;
+    public apiRepairshopFilesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiRepairshopFilesIdGet.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/repairshop/files/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<Array<FileResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1202,14 +1274,40 @@ export class RepairShopService {
     }
 
     /**
-     * @param createRepairShopCommand 
+     * @param name 
+     * @param phone 
+     * @param phoneExt 
+     * @param email 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param pinned 
+     * @param note 
+     * @param companyOwned 
+     * @param bankId 
+     * @param account 
+     * @param routing 
+     * @param rent 
+     * @param payPeriod 
+     * @param weeklyDay 
+     * @param monthlyDay 
+     * @param serviceTypes 
+     * @param openHours 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairshopPost(createRepairShopCommand?: CreateRepairShopCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiRepairshopPost(createRepairShopCommand?: CreateRepairShopCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiRepairshopPost(createRepairShopCommand?: CreateRepairShopCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiRepairshopPost(createRepairShopCommand?: CreateRepairShopCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1239,16 +1337,111 @@ export class RepairShopService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (name !== undefined) {
+            localVarFormParams = localVarFormParams.append('Name', <any>name) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (phoneExt !== undefined) {
+            localVarFormParams = localVarFormParams.append('PhoneExt', <any>phoneExt) as any || localVarFormParams;
+        }
+        if (email !== undefined) {
+            localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (addressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
+        }
+        if (addressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.State', <any>addressState) as any || localVarFormParams;
+        }
+        if (addressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.County', <any>addressCounty) as any || localVarFormParams;
+        }
+        if (addressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Address', <any>addressAddress) as any || localVarFormParams;
+        }
+        if (addressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Street', <any>addressStreet) as any || localVarFormParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || localVarFormParams;
+        }
+        if (addressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Country', <any>addressCountry) as any || localVarFormParams;
+        }
+        if (addressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.ZipCode', <any>addressZipCode) as any || localVarFormParams;
+        }
+        if (addressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StateShortName', <any>addressStateShortName) as any || localVarFormParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
+        }
+        if (pinned !== undefined) {
+            localVarFormParams = localVarFormParams.append('Pinned', <any>pinned) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (companyOwned !== undefined) {
+            localVarFormParams = localVarFormParams.append('CompanyOwned', <any>companyOwned) as any || localVarFormParams;
+        }
+        if (bankId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BankId', <any>bankId) as any || localVarFormParams;
+        }
+        if (account !== undefined) {
+            localVarFormParams = localVarFormParams.append('Account', <any>account) as any || localVarFormParams;
+        }
+        if (routing !== undefined) {
+            localVarFormParams = localVarFormParams.append('Routing', <any>routing) as any || localVarFormParams;
+        }
+        if (rent !== undefined) {
+            localVarFormParams = localVarFormParams.append('Rent', <any>rent) as any || localVarFormParams;
+        }
+        if (payPeriod !== undefined) {
+            localVarFormParams = localVarFormParams.append('PayPeriod', <any>payPeriod) as any || localVarFormParams;
+        }
+        if (weeklyDay !== undefined) {
+            localVarFormParams = localVarFormParams.append('WeeklyDay', <any>weeklyDay) as any || localVarFormParams;
+        }
+        if (monthlyDay !== undefined) {
+            localVarFormParams = localVarFormParams.append('MonthlyDay', <any>monthlyDay) as any || localVarFormParams;
+        }
+        if (serviceTypes) {
+            serviceTypes.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('ServiceTypes', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (openHours) {
+            openHours.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('OpenHours', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1263,10 +1456,10 @@ export class RepairShopService {
         }
 
         let localVarPath = `/api/repairshop`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createRepairShopCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1277,14 +1470,42 @@ export class RepairShopService {
     }
 
     /**
-     * @param updateRepairShopCommand 
+     * @param id 
+     * @param name 
+     * @param phone 
+     * @param phoneExt 
+     * @param email 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param pinned 
+     * @param note 
+     * @param companyOwned 
+     * @param bankId 
+     * @param account 
+     * @param routing 
+     * @param rent 
+     * @param payPeriod 
+     * @param weeklyDay 
+     * @param monthlyDay 
+     * @param serviceTypes 
+     * @param openHours 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairshopPut(updateRepairShopCommand?: UpdateRepairShopCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiRepairshopPut(updateRepairShopCommand?: UpdateRepairShopCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiRepairshopPut(updateRepairShopCommand?: UpdateRepairShopCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiRepairshopPut(updateRepairShopCommand?: UpdateRepairShopCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1314,16 +1535,119 @@ export class RepairShopService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (name !== undefined) {
+            localVarFormParams = localVarFormParams.append('Name', <any>name) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (phoneExt !== undefined) {
+            localVarFormParams = localVarFormParams.append('PhoneExt', <any>phoneExt) as any || localVarFormParams;
+        }
+        if (email !== undefined) {
+            localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (addressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
+        }
+        if (addressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.State', <any>addressState) as any || localVarFormParams;
+        }
+        if (addressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.County', <any>addressCounty) as any || localVarFormParams;
+        }
+        if (addressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Address', <any>addressAddress) as any || localVarFormParams;
+        }
+        if (addressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Street', <any>addressStreet) as any || localVarFormParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || localVarFormParams;
+        }
+        if (addressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Country', <any>addressCountry) as any || localVarFormParams;
+        }
+        if (addressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.ZipCode', <any>addressZipCode) as any || localVarFormParams;
+        }
+        if (addressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StateShortName', <any>addressStateShortName) as any || localVarFormParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
+        }
+        if (pinned !== undefined) {
+            localVarFormParams = localVarFormParams.append('Pinned', <any>pinned) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (companyOwned !== undefined) {
+            localVarFormParams = localVarFormParams.append('CompanyOwned', <any>companyOwned) as any || localVarFormParams;
+        }
+        if (bankId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BankId', <any>bankId) as any || localVarFormParams;
+        }
+        if (account !== undefined) {
+            localVarFormParams = localVarFormParams.append('Account', <any>account) as any || localVarFormParams;
+        }
+        if (routing !== undefined) {
+            localVarFormParams = localVarFormParams.append('Routing', <any>routing) as any || localVarFormParams;
+        }
+        if (rent !== undefined) {
+            localVarFormParams = localVarFormParams.append('Rent', <any>rent) as any || localVarFormParams;
+        }
+        if (payPeriod !== undefined) {
+            localVarFormParams = localVarFormParams.append('PayPeriod', <any>payPeriod) as any || localVarFormParams;
+        }
+        if (weeklyDay !== undefined) {
+            localVarFormParams = localVarFormParams.append('WeeklyDay', <any>weeklyDay) as any || localVarFormParams;
+        }
+        if (monthlyDay !== undefined) {
+            localVarFormParams = localVarFormParams.append('MonthlyDay', <any>monthlyDay) as any || localVarFormParams;
+        }
+        if (serviceTypes) {
+            serviceTypes.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('ServiceTypes', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (openHours) {
+            openHours.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('OpenHours', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1338,10 +1662,10 @@ export class RepairShopService {
         }
 
         let localVarPath = `/api/repairshop`;
-        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateRepairShopCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
