@@ -142,7 +142,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     private createForm() {
         this.terminalForm = this.formBuilder.group({
             // Terminal
-            isOwner: [false],
+            isOwner: [true],
             name: [null, [Validators.required, ...terminalNameValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
@@ -670,31 +670,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                     );
                 },
             });
-    }
-
-    // Checkbox Card
-    public officeCheckboxCard: boolean = true;
-    public parkingCheckboxCard: boolean = true;
-    public warehouseCheckboxCard: boolean = true;
-
-    public toggleCheckboxCard(action: string) {
-        switch (action) {
-            case 'office': {
-                this.officeCheckboxCard = !this.officeCheckboxCard;
-                break;
-            }
-            case 'parking': {
-                this.parkingCheckboxCard = !this.parkingCheckboxCard;
-                break;
-            }
-            case 'warehouse': {
-                this.warehouseCheckboxCard = !this.warehouseCheckboxCard;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
     }
 
     ngOnDestroy() {

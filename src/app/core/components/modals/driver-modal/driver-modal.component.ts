@@ -1990,12 +1990,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    // Checkbox card
-    public ownerCheckboxCard: boolean = true;
-    public toggleCheckboxCard() {
-        this.ownerCheckboxCard = !this.ownerCheckboxCard;
-    }
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

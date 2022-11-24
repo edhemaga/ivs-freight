@@ -44,6 +44,19 @@
                 max-height: 300px;
             }
 
+            //------------------------ Svg-Template-Logo Template ------------------------
+            .dropdown-option:not(:hover):not(.active) {
+                .svg-template-logo {
+                    height: 18px;
+
+                    svg:not(:hover) {
+                        path {
+                            fill: #aaaaaa;
+                        }
+                    }
+                }
+            }
+
             //------------------------ Default Template ------------------------
             .dropdown-option {
                 padding: 3px 4px;
@@ -56,19 +69,12 @@
                 text-overflow: ellipsis;
                 color: #ffffff;
 
+                // This class is for moving with keyboard
                 &.dropdown-option-hovered {
                     background-color: #1d1d1d;
                     color: #ffffff;
                     border-radius: 2px;
                     cursor: pointer;
-
-                    .svg-template-logo,
-                    .svg-template-grayscale {
-                        svg {
-                            -webkit-filter: grayscale(0);
-                            filter: grayscale(0);
-                        }
-                    }
 
                     .svgtext-template-logo {
                         &.hide-hover-icons {
@@ -90,14 +96,6 @@
                     color: #ffffff;
                     border-radius: 2px;
                     cursor: pointer;
-
-                    .svg-template-logo,
-                    .svg-template-grayscale {
-                        svg {
-                            -webkit-filter: grayscale(0);
-                            filter: grayscale(0);
-                        }
-                    }
                 }
 
                 &.disabled {
@@ -611,25 +609,7 @@
                     }
                 }
 
-                //------------------------ SVG Template ------------------------
-                .svg-template-logo {
-                    height: 18px;
-
-                    svg {
-                        -webkit-filter: grayscale(100%);
-                        filter: grayscale(100%);
-                    }
-
-                    &.active {
-                        position: relative;
-                        // SVG COLORIZED
-                        svg {
-                            -webkit-filter: grayscale(0);
-                            filter: grayscale(0);
-                            transition: all 0.3s ease-in-out;
-                        }
-                    }
-                }
+                //------------------------ Routing Dropdown ------------------------
 
                 &.routing_dropdown {
                     font-size: 11px;

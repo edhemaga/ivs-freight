@@ -1099,46 +1099,6 @@ export class SettingsInsurancePolicyModalComponent
         }
     }
 
-    // Checkbox Card
-    public commericalGeneralCheckboxCard: boolean = true;
-    public automobileLiabilityCheckboxCard: boolean = true;
-    public motorTruckCargoBreakDownCheckboxCard: boolean = true;
-    public physicalDamageDownCheckboxCard: boolean = true;
-    public trailerInterchangeCheckboxCard: boolean = true;
-
-    public toggleCheckboxCard(action: string) {
-        switch (action) {
-            case 'commercial-general': {
-                this.commericalGeneralCheckboxCard =
-                    !this.commericalGeneralCheckboxCard;
-                break;
-            }
-            case 'automobile-liability': {
-                this.automobileLiabilityCheckboxCard =
-                    !this.automobileLiabilityCheckboxCard;
-                break;
-            }
-            case 'motor-truck-cargo': {
-                this.motorTruckCargoBreakDownCheckboxCard =
-                    !this.motorTruckCargoBreakDownCheckboxCard;
-                break;
-            }
-            case 'physical-damage': {
-                this.physicalDamageDownCheckboxCard =
-                    !this.physicalDamageDownCheckboxCard;
-                break;
-            }
-            case 'trailer-interchange': {
-                this.trailerInterchangeCheckboxCard =
-                    !this.trailerInterchangeCheckboxCard;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

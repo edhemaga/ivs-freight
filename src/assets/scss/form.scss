@@ -235,112 +235,6 @@
         }
     }
 
-    //---------------- Custom Checkbox Card With Content In ----------------
-    .custom-checkbox-card {
-        display: block;
-
-        .checkbox-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 7px 4px;
-            line-height: 18px;
-
-            &.pointer {
-                cursor: pointer;
-
-                &:hover {
-                    transition: all 0.3s ease-in-out;
-                    .ta-checkbox-label {
-                        color: #3c3c3c !important;
-                    }
-
-                    .checkbox-card-header-arrow {
-                        svg {
-                            path {
-                                fill: #aaaaaa !important;
-                            }
-                        }
-                    }
-                }
-            }
-
-            .grouping-checkboxes {
-                display: flex;
-                align-items: center;
-                gap: 22px;
-            }
-
-            .checkbox-card-header-arrow {
-                svg {
-                    transform: rotate(0deg);
-                    transition: all 0.3s ease-in-out;
-                    opacity: 0;
-                    path {
-                        fill: #b7b7b7;
-                    }
-                }
-
-                &.visible {
-                    svg {
-                        transform: rotate(180deg);
-                        transition: all 0.3s ease-in-out;
-                        opacity: 1;
-                    }
-                }
-
-                &.rotate {
-                    svg {
-                        transform: rotate(0deg);
-                    }
-                }
-            }
-        }
-
-        .checkbox-card-body {
-            max-height: 0;
-            transition: all 0.3s ease-out;
-
-            &.active {
-                max-height: 600px;
-                margin-top: 12px;
-            }
-
-            &.active-20 {
-                max-height: 600px;
-                margin-top: 20px;
-            }
-
-            .animation-checkbox-card-tabs {
-                position: relative;
-                transform: translate(20%);
-                opacity: 0;
-                height: 0px;
-                transition: all 0.3s ease-in-out;
-
-                &.fade-checkbox-inputs {
-                    transform: translate(0);
-                    opacity: 1;
-                    height: 26px;
-                    margin-top: 26px;
-                    margin-bottom: 22px;
-                    transition: all 0.3s ease-in-out;
-
-                    // Override global class
-                    .row {
-                        margin-bottom: 0px !important;
-                    }
-                }
-            }
-
-            // Truck Modal
-            .animation-checkbox-card-tabs-truckModal {
-                height: 90px;
-                transition: all 0.3s ease-in-out;
-            }
-        }
-    }
-
     //---------------- Pay Type DRIVER ----------------
     .custom-row-paytype-driver {
         display: grid;
@@ -1169,7 +1063,6 @@
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
-    margin-bottom: 22px;
     position: relative;
 
     .old-password-message {
