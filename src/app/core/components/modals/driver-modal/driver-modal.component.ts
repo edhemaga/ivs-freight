@@ -382,11 +382,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get('routing'),
                         this.driverForm.get('account')
                     );
-
-                console.log(
-                    'form component: ',
-                    this.driverForm.get('routing').errors
-                );
             });
     }
 
