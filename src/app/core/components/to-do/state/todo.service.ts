@@ -9,8 +9,6 @@ import {
     TodoStatus,
     UpdateTodoStatusCommand,
 } from 'appcoretruckassist';
-import { CreateTodoCommand } from 'appcoretruckassist/model/createTodoCommand';
-import { UpdateTodoCommand } from 'appcoretruckassist/model/updateTodoCommand';
 
 @Injectable({
     providedIn: 'root',
