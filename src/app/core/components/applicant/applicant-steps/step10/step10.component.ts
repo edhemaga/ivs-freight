@@ -7,16 +7,17 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
     ApplicantResponse,
+    CreateDisclosureReviewCommand,
     DisclosureReleaseFeedbackResponse,
     UpdateDisclosureReleaseCommand,
 } from 'appcoretruckassist/model/models';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
     selector: 'app-step10',
@@ -92,8 +93,8 @@ export class Step10Component implements OnInit, OnDestroy {
 
     public handleCheckboxParagraphClick(type: string): void {
         if (
-            this.selectedMode === 'FEEDBACK_MODE' ||
-            this.selectedMode === 'REVIEW_MODE'
+            this.selectedMode === SelectedMode.FEEDBACK ||
+            this.selectedMode === SelectedMode.REVIEW
         ) {
             return;
         }
@@ -187,7 +188,7 @@ export class Step10Component implements OnInit, OnDestroy {
         };
 
         this.applicantActionsService
-            .createDisclosureAndRelease(saveData)
+            .updateDisclosureAndRelease(saveData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -225,7 +226,36 @@ export class Step10Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
-        this.router.navigate([`/application/${this.applicantId}/11`]);
+        const saveData: CreateDisclosureReviewCommand = {
+            applicantId: this.applicantId,
+        };
+
+        this.applicantActionsService
+            .createDisclosureAndReleaseReview(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/application/${this.applicantId}/11`,
+                    ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                disclosureRelease: {
+                                    ...store.applicant.disclosureRelease,
+                                    reviewed: true,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     ngOnDestroy(): void {

@@ -600,7 +600,7 @@ export class TaChartComponent implements OnInit {
             totalValue = totalValue + chartValue;
             this.legendAttributes.map((item2, a) => {
                 if (item2['elementId'] == i) {
-                    item2['value'] = chartValue;
+                    item2['value'] = Math.abs(chartValue);
                 }
 
                 if (

@@ -51,11 +51,20 @@
                     [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
                 ></svg-icon>
                 <p class="m-0 ta-font-regular">
-                    {{ companyInfo?.address.address }} #
-                    {{ companyInfo?.address.addressUnit }}<br />{{
-                        companyInfo?.address.city
-                    }}, {{ companyInfo?.address.stateShortName }}
-                    {{ companyInfo?.address.zipCode }},
+                    {{ companyInfo?.address.streetNumber }}
+                    {{ companyInfo?.address.street }}
+
+                    <ng-container *ngIf="companyInfo?.address.addressUnit">
+                        #{{ companyInfo?.address.addressUnit }}
+                    </ng-container>
+
+                    <br />
+
+                    {{ companyInfo?.address.city }},
+                    {{ companyInfo?.address.stateShortName
+                    }}<ng-container *ngIf="companyInfo?.address.zipCode">
+                        {{ companyInfo?.address.zipCode }}</ng-container
+                    >,
                     {{ companyInfo?.address.country }}
                 </p>
             </div>

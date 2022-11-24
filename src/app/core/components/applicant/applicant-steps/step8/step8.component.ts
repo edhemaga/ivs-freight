@@ -34,6 +34,7 @@ import {
     ApplicantResponse,
     CreateDrugAndAlcoholCommand,
     CreateDrugAndAlcoholReviewCommand,
+    DrugAndAlcoholFeedbackResponse,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -60,13 +61,14 @@ export class Step8Component implements OnInit, OnDestroy {
 
     public subscription: Subscription;
 
+    public stepHasValues: boolean = false;
     public stepValues: any;
+    public previousStepValues: any;
 
     public drugTestForm: FormGroup;
     public drugAlcoholStatementForm: FormGroup;
 
     public applicantId: number;
-    public drugAndAlcoholId: number;
 
     public selectedAddress: AddressEntity = null;
     public selectedSapAddress: AddressEntity = null;
@@ -182,12 +184,13 @@ export class Step8Component implements OnInit, OnDestroy {
 
                 if (res.drugAndAlcohol) {
                     this.patchStepValues(res.drugAndAlcohol);
+
+                    this.stepHasValues = true;
                 }
             });
     }
 
-    public patchStepValues(stepValues: any): void {
-        console.log('stepValues', stepValues);
+    public patchStepValues(stepValues: DrugAndAlcoholFeedbackResponse): void {
         const {
             positiveTest,
             motorCarrier,
@@ -196,8 +199,7 @@ export class Step8Component implements OnInit, OnDestroy {
             sapName,
             sapPhone,
             sapAddress,
-            certifyInfomation,
-            id,
+            certifyInformation,
             drugAndAlcoholReview,
         } = stepValues;
 
@@ -214,6 +216,7 @@ export class Step8Component implements OnInit, OnDestroy {
                     isSapPhoneValid,
                     sapPhoneMessage,
                     isSapAddressValid,
+                    isSapAddressUnitValid,
                     sapAddressMessage,
                 } = stepValues.drugAndAlcoholReview;
 
@@ -250,9 +253,12 @@ export class Step8Component implements OnInit, OnDestroy {
                 };
                 this.openAnnotationArray[3] = {
                     ...this.openAnnotationArray[3],
-                    lineInputs: [!isSapAddressValid],
+                    lineInputs: [!isSapAddressValid, !isSapAddressUnitValid],
                     displayAnnotationButton:
-                        !isSapAddressValid && !sapAddressMessage ? true : false,
+                        (!isSapAddressValid || !isSapAddressUnitValid) &&
+                        !sapAddressMessage
+                            ? true
+                            : false,
                     displayAnnotationTextArea: sapAddressMessage ? true : false,
                 };
 
@@ -289,8 +295,6 @@ export class Step8Component implements OnInit, OnDestroy {
 
         this.drugTestForm.get('drugTest').patchValue(positiveTest);
 
-        this.drugAndAlcoholId = id;
-
         if (positiveTest) {
             this.drugAlcoholStatementForm.patchValue({
                 motorCarrier,
@@ -301,11 +305,41 @@ export class Step8Component implements OnInit, OnDestroy {
                 sapPhone,
                 sapAddress: sapAddress.address,
                 sapAddressUnit: sapAddress.addressUnit,
-                isAgreement: certifyInfomation,
+                isAgreement: certifyInformation,
             });
 
             this.selectedAddress = address;
             this.selectedSapAddress = sapAddress;
+        } else {
+            this.inputService.changeValidators(
+                this.drugAlcoholStatementForm.get('motorCarrier'),
+                false
+            );
+            this.inputService.changeValidators(
+                this.drugAlcoholStatementForm.get('phone'),
+                false
+            );
+            this.inputService.changeValidators(
+                this.drugAlcoholStatementForm.get('address'),
+                false
+            );
+            this.inputService.changeValidators(
+                this.drugAlcoholStatementForm.get('sapName'),
+                false
+            );
+            this.inputService.changeValidators(
+                this.drugAlcoholStatementForm.get('sapPhone'),
+                false
+            );
+            this.inputService.changeValidators(
+                this.drugAlcoholStatementForm.get('sapAddress'),
+                false
+            );
+
+            this.inputService.changeValidatorsCheck(
+                this.drugAlcoholStatementForm.get('isAgreement'),
+                false
+            );
         }
 
         setTimeout(() => {
@@ -373,6 +407,28 @@ export class Step8Component implements OnInit, OnDestroy {
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (!value) {
+                    const {
+                        motorCarrier,
+                        phone,
+                        address,
+                        addressUnit,
+                        sapName,
+                        sapPhone,
+                        sapAddress,
+                        sapAddressUnit,
+                    } = this.drugAlcoholStatementForm.value;
+
+                    this.previousStepValues = {
+                        motorCarrier,
+                        phone,
+                        address,
+                        addressUnit,
+                        sapName,
+                        sapPhone,
+                        sapAddress,
+                        sapAddressUnit,
+                    };
+
                     this.inputService.changeValidators(
                         this.drugAlcoholStatementForm.get('motorCarrier'),
                         false
@@ -402,19 +458,31 @@ export class Step8Component implements OnInit, OnDestroy {
                         this.drugAlcoholStatementForm.get('isAgreement'),
                         false
                     );
-
-                    this.drugAlcoholStatementForm.patchValue({
-                        motorCarrier: null,
-                        phone: null,
-                        address: null,
-                        addressUnit: null,
-                        sapName: null,
-                        sapPhone: null,
-                        sapAddress: null,
-                        sapAddressUnit: null,
-                        isAgreement: null,
-                    });
                 } else {
+                    if (this.previousStepValues) {
+                        const {
+                            motorCarrier,
+                            phone,
+                            address,
+                            addressUnit,
+                            sapName,
+                            sapPhone,
+                            sapAddress,
+                            sapAddressUnit,
+                        } = this.previousStepValues;
+
+                        this.drugAlcoholStatementForm.patchValue({
+                            motorCarrier,
+                            phone,
+                            address,
+                            addressUnit,
+                            sapName,
+                            sapPhone,
+                            sapAddress,
+                            sapAddressUnit,
+                        });
+                    }
+
                     this.inputService.changeValidators(
                         this.drugAlcoholStatementForm.get('motorCarrier')
                     );
@@ -535,7 +603,7 @@ export class Step8Component implements OnInit, OnDestroy {
         }
     }
 
-    public startFeedbackValueChangesMonitoring() {
+    public startFeedbackValueChangesMonitoring(): void {
         if (this.stepFeedbackValues) {
             const filteredIncorrectValues = Object.keys(
                 this.stepFeedbackValues
@@ -743,17 +811,24 @@ export class Step8Component implements OnInit, OnDestroy {
             sapName: drugTestFormValue ? sapName : null,
             sapPhone: drugTestFormValue ? sapPhone : null,
             sapAddress: drugTestFormValue ? selectedSapAddress : null,
-            certifyInfomation: drugTestFormValue ? isAgreement : null,
+            certifyInformation: drugTestFormValue ? isAgreement : null,
         };
 
         const selectMatchingBackendMethod = () => {
-            if (this.selectedMode === SelectedMode.APPLICANT) {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT &&
+                !this.stepHasValues
+            ) {
                 return this.applicantActionsService.createDrugAndAlcohol(
                     saveData
                 );
             }
 
-            if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (
+                (this.selectedMode === SelectedMode.APPLICANT &&
+                    this.stepHasValues) ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
                 return this.applicantActionsService.updateDrugAndAlcohol(
                     saveData
                 );
@@ -782,7 +857,8 @@ export class Step8Component implements OnInit, OnDestroy {
                                     sapName: saveData.sapName,
                                     sapPhone: saveData.sapPhone,
                                     sapAddress: saveData.sapAddress,
-                                    // certifyInfomation: saveData.certifyInfomation,
+                                    certifyInformation:
+                                        saveData.certifyInformation,
                                 },
                             },
                         };
@@ -810,7 +886,6 @@ export class Step8Component implements OnInit, OnDestroy {
 
         const saveData: CreateDrugAndAlcoholReviewCommand = {
             applicantId: this.applicantId,
-            // drugAndAlcoholId: this.drugAndAlcoholId,
             isCarrierValid: !this.openAnnotationArray[0].lineInputs[0],
             isPhoneValid: !this.openAnnotationArray[0].lineInputs[1],
             carrierPhoneMessage: firstRowReview,
@@ -821,6 +896,7 @@ export class Step8Component implements OnInit, OnDestroy {
             isSapPhoneValid: !this.openAnnotationArray[2].lineInputs[1],
             sapPhoneMessage: thirdRowReview,
             isSapAddressValid: !this.openAnnotationArray[3].lineInputs[0],
+            isSapAddressUnitValid: !this.openAnnotationArray[3].lineInputs[1],
             sapAddressMessage: fourthRowReview,
         };
 

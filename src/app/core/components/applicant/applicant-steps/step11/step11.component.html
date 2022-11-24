@@ -190,29 +190,16 @@
 
             <!-- SIGNATURE PAD -->
 
-            <div
-                class="d-flex signature-pad-container"
-                *ngIf="selectedMode === 'APPLICANT_MODE'"
-            >
+            <div class="d-flex signature-pad-container">
                 <app-applicant-signature-pad
+                    [mode]="selectedMode"
+                    [signatureImgSrc]="signatureImgSrc"
+                    [displayRequiredNote]="displaySignatureRequiredNote"
                     (signatureEmitter)="onSignatureAction($event)"
+                    (removeRequiredNoteEmitter)="
+                        onRemoveSignatureRequiredNoteAction($event)
+                    "
                 ></app-applicant-signature-pad>
-
-                <img src="{{ signatureImgSrc }}" alt="signature" />
-            </div>
-
-            <div
-                class="d-flex justify-content-center align-items-center signature-image-container"
-                *ngIf="selectedMode !== 'APPLICANT_MODE'"
-            >
-                <img
-                    src="{{
-                        signatureImgSrc
-                            ? 'data:image/png;base64,' + signatureImgSrc
-                            : ''
-                    }}"
-                    alt="signature"
-                />
             </div>
         </form>
     </div>
