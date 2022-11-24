@@ -12,7 +12,6 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { BrokerModalResponse } from '../../../../../../appcoretruckassist';
 
 import {
-    BrokerResponse,
     CreateRatingCommand,
     CreateReviewCommand,
     SignInResponse,
