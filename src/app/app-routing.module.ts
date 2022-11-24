@@ -43,7 +43,6 @@ import { AccidentNonReportedResolver } from './core/components/safety/accident/s
 import { ApplicantResolver } from './core/components/applicant/state/resolver/applicant.resolver';
 import { FuelResolver } from './core/components/fuel/state/fule-state/fuel-state.resolver';
 import { ApplicantSphFormResolver } from './core/components/applicant/state/resolver/applicant-sph-form.resolver';
-import { OwnerInfoModule } from './core/components/applicant/applicant-tabs/owner-info/owner-info.module';
 
 const routes: Routes = [
     // Auth Routes

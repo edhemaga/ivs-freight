@@ -20,7 +20,7 @@
                     class="d-flex justify-content-center flex-column align-items-center w-100 mid-header"
                 >
                     <div
-                        class="d-flex align-items-center justify-content-center company-container"
+                        class="d-flex flex-column align-items-center justify-content-center company-container"
                     >
                         <div class="d-flex align-items-center company-name">
                             <span class="ta-font-black">{{
@@ -28,22 +28,31 @@
                             }}</span>
                         </div>
 
-                        <div class="d-flex align-items-center company-usdot">
-                            <span class="ta-font-regular"
-                                >USDOT # {{ companyInfo?.usDot }}</span
+                        <div>
+                            <div
+                                class="d-flex align-items-center company-usdot"
                             >
-                        </div>
+                                <span class="ta-font-regular"
+                                    >USDOT # {{ companyInfo?.usDot }}</span
+                                >
+                            </div>
 
-                        <div class="d-flex align-items-center company-phone">
-                            <svg-icon
-                                class="phone-icon"
-                                src="assets/svg/common/ic_phone.svg"
-                                [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
-                            ></svg-icon>
+                            <div
+                                class="d-flex align-items-center company-phone"
+                            >
+                                <svg-icon
+                                    class="phone-icon"
+                                    src="assets/svg/common/ic_phone.svg"
+                                    [svgStyle]="{
+                                        'width.px': 20,
+                                        'height.px': 20
+                                    }"
+                                ></svg-icon>
 
-                            <span class="ta-font-regular">{{
-                                companyInfo?.phone
-                            }}</span>
+                                <span class="ta-font-regular">{{
+                                    companyInfo?.phone
+                                }}</span>
+                            </div>
                         </div>
                     </div>
 
