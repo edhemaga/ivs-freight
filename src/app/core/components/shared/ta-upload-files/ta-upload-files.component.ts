@@ -53,7 +53,8 @@ export class TaUploadFilesComponent implements OnInit {
         message: string;
     }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
     @Input() slideWidth: number = 180;
-
+    @Input() categoryTag: string;
+    
     public currentSlide: number = 0;
 
     constructor(private uploadFileService: TaUploadFileService) {}
