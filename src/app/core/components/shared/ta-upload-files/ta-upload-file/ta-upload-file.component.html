@@ -196,9 +196,13 @@
         <div
             *ngIf="hasTag || categoryTag"
             class="ta-upload-file-tag"
-            [ngClass]="{ 'no-tag': (!categoryTag && !file?.tag) || file?.tag == 'No Tag' }"
+            [ngClass]="{
+                'no-tag': (!categoryTag && !file?.tag) || file?.tag == 'No Tag'
+            }"
         >
-            <span>{{ file?.tag ? file?.tag : categoryTag ? categoryTag : 'No Tag' }}</span>
+            <span>{{
+                file?.tag ? file?.tag : categoryTag ? categoryTag : 'No Tag'
+            }}</span>
         </div>
     </div>
 
