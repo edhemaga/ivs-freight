@@ -877,34 +877,6 @@ export class CustomerTableComponent
             }
         }
 
-        // this.mapListData.map((item, index) => {
-        //     let itemIndex = newMapList.findIndex(
-        //         (item2) => item2.id === item.id
-        //     );
-
-        //     console.log('mapListData item', item);
-        //     console.log('mapListData itemIndex', itemIndex);
-
-        //     if (itemIndex == -1) {
-        //         this.mapListData.splice(index, 1);
-        //         listChanged = true;
-        //     }
-        // });
-
-        // newMapList.map((item, index) => {
-        //     let itemIndex = this.mapListData.findIndex(
-        //         (item2) => item2.id === item.id
-        //     );
-
-        //     console.log('newMapList item', item);
-        //     console.log('newMapList itemIndex', itemIndex);
-
-        //     if (itemIndex == -1) {
-        //         this.mapListData.splice(index, 0, item);
-        //         listChanged = true;
-        //     }
-        // });
-
         if (listChanged || mapListResponse.changedSort) {
             //this.mapListData = mapListResponse.pagination.data;
             this.tableData[1].length = mapListResponse.pagination.count;

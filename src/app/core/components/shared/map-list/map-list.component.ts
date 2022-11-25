@@ -66,7 +66,6 @@ export class MapListComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mapListContent) {
             this.checkResizeButton();
-            console.log('mapListContent changes');
 
             this.mapListContent.map((data) => {
                 if (data.actionAnimation == 'delete') {
@@ -100,10 +99,8 @@ export class MapListComponent
     ngAfterContentInit() {
         this.listCards.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.highlightSearchedText();
-            console.log('listCards changes', this.listCards);
-            if (this.mapListExpanded) {
-                //this.calculateMapListSize();
 
+            if (this.mapListExpanded) {
                 var mapListElement =
                     document.querySelectorAll<HTMLElement>('.map-list-body')[0];
                 mapListElement.style.height = '';
@@ -114,8 +111,6 @@ export class MapListComponent
                     document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
                 var childrenElements = mapListElement.children;
-
-                console.log('childrenElements', childrenElements);
 
                 var childElementHeight = childrenElements[0].clientHeight;
                 var totalChildrenHeight =
@@ -129,12 +124,6 @@ export class MapListComponent
                 } else {
                     this.calculateMapListSize();
                 }
-
-                console.log('totalChildrenHeight', totalChildrenHeight);
-                console.log(
-                    'mapListElement height',
-                    mapListElement.clientHeight
-                );
             }
         });
     }
@@ -246,8 +235,6 @@ export class MapListComponent
             : '';
 
         this.mapsService.sortChange.next(directionSort);
-
-        //this.headActions.emit({ action: 'sort', direction: directionSort });
     }
 
     setSortTypes() {
@@ -382,24 +369,11 @@ export class MapListComponent
 
             this.highlightSearchedText();
 
-            // this.tableService.sendCurrentSearchTableData({
-            //   chip: 'searchOne',
-            //   search: this.searchText,
-            //   searchType: 'tabel',
-            // });
-
             this.mapsService.searchTextChanged(this.searchText);
         } else if (this.searchIsActive && this.searchText.length < 3) {
             this.searchIsActive = false;
 
             this.highlightSearchedText();
-
-            // this.tableService.sendCurrentSearchTableData({
-            //   chip: 'searchOne',
-            //   doReset: true,
-            //   //all: true, - Returns to Table view
-            //   searchType: 'tabel',
-            // });
 
             this.mapsService.searchTextChanged('');
         }

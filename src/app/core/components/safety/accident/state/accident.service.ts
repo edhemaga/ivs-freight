@@ -4,11 +4,9 @@ import {
     AccidentResponse,
     AccidentService,
     CreateResponse,
-    ClusterResponse,
 } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { AccidentModalResponse } from '../../../../../../../appcoretruckassist/model/accidentModalResponse';
-import { GetRepairShopClustersQuery } from 'appcoretruckassist/model/getRepairShopClustersQuery';
 
 @Injectable({
     providedIn: 'root',
@@ -83,45 +81,5 @@ export class AccidentTService {
 
     public getModalDropdowns(): Observable<AccidentModalResponse> {
         return this.accidentService.apiAccidentModalGet();
-    }
-
-    public getAccidentClusters(
-        clustersQuery: GetRepairShopClustersQuery
-    ): Observable<Array<ClusterResponse>> {
-        return this.accidentService.apiAccidentClustersGet(
-            clustersQuery.northEastLatitude,
-            clustersQuery.northEastLongitude,
-            clustersQuery.southWestLatitude,
-            clustersQuery.southWestLongitude,
-            clustersQuery.zoomLevel
-        );
-    }
-
-    public getAccidentMapList(
-        northEastLatitude?: number,
-        northEastLongitude?: number,
-        southWestLatitude?: number,
-        southWestLongitude?: number,
-        pageIndex?: number,
-        pageSize?: number,
-        companyId?: number,
-        sort?: string,
-        search?: string,
-        search1?: string,
-        search2?: string
-    ) {
-        return this.accidentService.apiAccidentListmapGet(
-            northEastLatitude,
-            northEastLongitude,
-            southWestLatitude,
-            southWestLongitude,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        );
     }
 }

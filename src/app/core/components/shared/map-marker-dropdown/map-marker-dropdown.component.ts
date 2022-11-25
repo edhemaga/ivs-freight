@@ -125,8 +125,6 @@ export class MapMarkerDropdownComponent implements OnInit {
     }
 
     openClusterItemInfo(item2) {
-        console.log('openClusterItemInfo', item2);
-
         this.showClusterItemInfo.emit([this.item, item2]);
     }
 }

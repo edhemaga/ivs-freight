@@ -965,28 +965,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         }
 
-        // newMapList.map((item, index) => {
-        //     let itemIndex = this.mapListData.findIndex(
-        //         (item2) => item2.id === item.id
-        //     );
-
-        //     if (itemIndex == -1) {
-        //         this.mapListData.splice(index, 0, item);
-        //         listChanged = true;
-        //     }
-        // });
-
-        // this.mapListData.map((item, index) => {
-        //     let itemIndex = newMapList.findIndex(
-        //         (item2) => item2.id === item.id
-        //     );
-
-        //     if (itemIndex == -1) {
-        //         this.mapListData.splice(index, 1);
-        //         listChanged = true;
-        //     }
-        // });
-
         if (listChanged || mapListResponse.changedSort) {
             //this.mapListData = mapListResponse.pagination.data;
             this.tableData[2].length = mapListResponse.pagination.count;
