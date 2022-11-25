@@ -193,11 +193,15 @@
                                 toggler[i + 'cdl'] ? 'true' : 'false'
                             "
                         >
-                            <div class="divider"></div>
+                            <div
+                                class="divider"
+                                *ngIf="cdl?.files?.length"
+                            ></div>
 
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!cdl?.files?.length"
+                                *ngIf="cdl?.files?.length"
                             >
                                 <div class="icon-counter-wrapper">
                                     <div
@@ -236,6 +240,7 @@
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
                                     [type]="'details'"
+                                    [slideWidth]="315"
                                 ></app-ta-upload-files>
                             </div>
                             <div class="divider"></div>
@@ -324,10 +329,14 @@
                                 toggler[i + 'test'] ? 'true' : 'false'
                             "
                         >
-                            <div class="divider"></div>
+                            <div
+                                class="divider"
+                                *ngIf="test?.files?.length"
+                            ></div>
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!test?.files?.length"
+                                *ngIf="test?.files?.length"
                             >
                                 <div class="icon-counter-wrapper">
                                     <div
@@ -366,6 +375,7 @@
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
                                     [type]="'details'"
+                                    [slideWidth]="315"
                                 ></app-ta-upload-files>
                             </div>
                             <div class="divider"></div>
@@ -404,6 +414,9 @@
                     "
                     [options]="dataDropDownMvr"
                     [cardNameCommon]="med?.issueDate | formatDateP"
+                    [cardDocumentCounter]="
+                        med?.files?.length ? med.files.length : 0
+                    "
                     [expDateClose]="med?.expDate | formatDateP"
                     [optionsId]="med.id"
                     (dataDropDopwn)="getMedicalById(med.id)"
@@ -444,10 +457,14 @@
                                 toggler[i + 'medical'] ? 'true' : 'false'
                             "
                         >
-                            <div class="divider"></div>
+                            <div
+                                class="divider"
+                                *ngIf="med?.files?.length"
+                            ></div>
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!med?.files?.length"
+                                *ngIf="med?.files?.length"
                             >
                                 <div class="icon-counter-wrapper">
                                     <div
@@ -486,6 +503,7 @@
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
                                     [type]="'details'"
+                                    [slideWidth]="315"
                                 ></app-ta-upload-files>
                             </div>
                             <div class="divider"></div>
@@ -569,10 +587,14 @@
                                 toggler[i + 'mvr'] ? 'true' : 'false'
                             "
                         >
-                            <div class="divider"></div>
+                            <div
+                                class="divider"
+                                *ngIf="mvr?.files?.length"
+                            ></div>
                             <div
                                 class="details-document-container"
                                 [class.disabled]="!mvr?.files?.length"
+                                *ngIf="mvr?.files?.length"
                             >
                                 <div
                                     class="icon-counter-wrapper"
@@ -611,6 +633,7 @@
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
                                     [type]="'details'"
+                                    [slideWidth]="315"
                                 ></app-ta-upload-files>
                             </div>
                             <div class="divider"></div>

@@ -30,7 +30,9 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() size: string = 'small'; // small | medium | large
     @Input() hasCarouselBottomTabs: boolean;
     @Input() tags: any[] = [];
-    @Input() type: string; // modal | table | details
+    @Input() type: string; // modal | table | details | todo
+    @Input() isRequired: boolean = false;
+    @Input() showRequired: boolean = false;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[] | UploadFile | any;
@@ -50,6 +52,8 @@ export class TaUploadFilesComponent implements OnInit {
         file: UploadFile;
         message: string;
     }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
+    @Input() slideWidth: number = 180;
+    @Input() categoryTag: string;
 
     public currentSlide: number = 0;
 
@@ -79,9 +83,20 @@ export class TaUploadFilesComponent implements OnInit {
                 break;
             }
             case 'delete': {
+                let isLastDeleted = false;
+                this.files.map((item, index) => {
+                    if (
+                        item.fileName == data.file.fileName &&
+                        index == this.files.length - 1
+                    ) {
+                        isLastDeleted = true;
+                    }
+                });
+
                 this.files = this.files.filter(
                     (item) => item.fileName !== data.file.fileName
                 );
+
                 if (data.file['fileId']) {
                     this.onFileEvent.emit({
                         files: this.files,
@@ -108,6 +123,31 @@ export class TaUploadFilesComponent implements OnInit {
 
                 if (!this.files.length) {
                     this.currentSlide = 0;
+                }
+
+                if (isLastDeleted) {
+                    const slideTo =
+                        this.modalCarousel.customClass == 'large'
+                            ? 3
+                            : this.modalCarousel.customClass == 'medium'
+                            ? 2
+                            : 1;
+                    const allowSlide =
+                        this.modalCarousel.customClass == 'large' &&
+                        this.files.length > 2
+                            ? true
+                            : this.modalCarousel.customClass == 'medium' &&
+                              this.files.length > 1
+                            ? true
+                            : this.modalCarousel.customClass == 'small' &&
+                              this.files.length > 0
+                            ? true
+                            : false;
+                    if (allowSlide) {
+                        this.modalCarousel.slideToFile(
+                            this.files.length - slideTo
+                        );
+                    }
                 }
                 break;
             }
@@ -156,6 +196,19 @@ export class TaUploadFilesComponent implements OnInit {
     // TruckBy ngFor files changes
     public identity(index: number, item: any): number {
         return item.name;
+    }
+
+    public downloadAllFiles() {
+        this.files.map((item) => {
+            fetch(item.url).then((t) => {
+                t.blob().then((b) => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(b);
+                    a.setAttribute('download', item.fileName);
+                    a.click();
+                });
+            });
+        });
     }
 
     ngOnDestroy(): void {

@@ -9,12 +9,15 @@ export class FormDataService {
     constructor() {}
 
     extractFormDataFromFunction(data) {
+        this.formData = new FormData();
         Object.entries(data).map((item: any) => {
             if (item[1] instanceof Array) {
                 item[1].forEach((element, ind) => {
-                    if (element instanceof Object) {
+                    if (
+                        element instanceof Object &&
+                        !(item[1][0] instanceof Blob)
+                    ) {
                         Object.entries(element).map((it, indx) => {
-                            console.log(it);
                             if (it[1] instanceof Object) {
                                 Object.entries(it[1]).map((at, indx) => {
                                     this.formData.append(
@@ -33,7 +36,10 @@ export class FormDataService {
                         this.formData.append(item[0], element);
                     }
                 });
-            } else if (item[1] instanceof Object) {
+            } else if (
+                item[1] instanceof Object &&
+                !(item[1][0] instanceof Blob)
+            ) {
                 Object.entries(item[1]).map((it, indx) => {
                     const insideData =
                         it[1] instanceof Object

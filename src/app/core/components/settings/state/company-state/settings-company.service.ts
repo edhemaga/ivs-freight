@@ -14,7 +14,7 @@ import {
     InsurancePolicyModalResponse,
     UpdateCompanyCommand,
     UpdateDivisionCompanyCommand,
-    UpdateFactoringCompanyCommand
+    UpdateFactoringCompanyCommand,
 } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CompanyStore } from './company-settings.store';
@@ -229,9 +229,7 @@ export class SettingsCompanyService implements OnDestroy {
         );
     }
 
-    public addInsurancePolicy(
-        data: any
-    ): Observable<CreateResponse> {
+    public addInsurancePolicy(data: any): Observable<CreateResponse> {
         return this.settingService.apiCompanyInsurancepolicyPost(data).pipe(
             tap((res: any) => {
                 const companySub = this.getCompany()
@@ -252,9 +250,7 @@ export class SettingsCompanyService implements OnDestroy {
         );
     }
 
-    public updateInsurancePolicy(
-        data: any
-    ): Observable<object> {
+    public updateInsurancePolicy(data: any): Observable<object> {
         return this.settingService.apiCompanyInsurancepolicyPut(data).pipe(
             tap((res: any) => {
                 const companySub = this.getCompany()
