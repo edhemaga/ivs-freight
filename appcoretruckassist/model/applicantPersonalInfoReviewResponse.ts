@@ -26,10 +26,7 @@ export interface ApplicantPersonalInfoReviewResponse {
     isSsnValid?: boolean;
     ssnMessage?: string | null;
     isAccountNumberValid?: boolean;
-    isRoutingNumberValid?: boolean;
-    accountRoutingMessage?: string | null;
-    isLegalWorkValid?: boolean;
-    legalWorkMessage?: string | null;
+    accountNumberMessage?: string | null;
     isAnotherNameValid?: boolean;
     anotherNameMessage?: string | null;
     isInMilitaryValid?: boolean;
