@@ -237,9 +237,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         //     "twicExpDate": null,
         //     "fuelCard": null,
         //     "mvrExpiration": 12,
-            
+
         //     "perMileSolo": null,
-            
+
         //     "perMileTeam": null,
         //     "commissionSolo": 27,
         //     "commissionTeam": null,

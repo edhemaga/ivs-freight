@@ -14,7 +14,9 @@ import { ShipperResponsePagination } from './shipperResponsePagination';
 
 export interface ShipperListResponse { 
     pagination?: ShipperResponsePagination;
-    shipperCount?: number;
+    count?: number;
+    banCount?: number;
+    dnuCount?: number;
     brokerCount?: number;
 }
 

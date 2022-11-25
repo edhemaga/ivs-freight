@@ -17,6 +17,7 @@ import { ShipperStore } from './shipper.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperDetailsListStore } from './shipper-details-state/shipper-details-list-state/shipper-details-list.store';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { GetRepairShopClustersQuery } from 'appcoretruckassist/model/getRepairShopClustersQuery';
 
 @Injectable({
@@ -34,11 +35,13 @@ export class ShipperTService implements OnDestroy {
         private shipperStore: ShipperStore,
         private shipperMinimalStore: ShipperMinimalListStore,
         private shipperMinimalQuery: ShipperMinimalListQuery,
-        private sListStore: ShipperDetailsListStore
+        private sListStore: ShipperDetailsListStore,
+        private formDataService: FormDataService
     ) {}
 
     // Create Shipper
     public addShipper(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
         return this.shipperService.apiShipperPost().pipe(
             tap((res: any) => {
                 const subShipper = this.getShipperById(res.id)
@@ -77,6 +80,7 @@ export class ShipperTService implements OnDestroy {
 
     // Update Shipper
     public updateShipper(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
         return this.shipperService.apiShipperPut().pipe(
             tap(() => {
                 const subShipper = this.getShipperById(data.id)

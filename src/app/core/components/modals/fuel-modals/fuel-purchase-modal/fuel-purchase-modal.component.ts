@@ -488,9 +488,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         .get('driverFullName')
                         .patchValue(res.firstName.concat(' ', res.lastName));
 
-                    this.fuelForm
-                        .get('trailerId')
-                        .patchValue(res.trailerNumber);
+                    // this.fuelForm
+                    //     .get('trailerId')
+                    //     .patchValue(res.trailerNumber);
                 }
             });
     }
