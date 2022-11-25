@@ -11,7 +11,7 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import {
     RepairModalResponse,
     RepairResponse,
-    RepairShopResponse
+    RepairShopResponse,
 } from 'appcoretruckassist';
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -640,8 +640,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         let newData: any = null;
@@ -724,8 +727,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         let newData: any = null;

@@ -21,7 +21,7 @@ import {
     CreateReviewCommand,
     ShipperResponse,
     SignInResponse,
-    UpdateReviewCommand
+    UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -525,8 +525,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             this.shipperForm.value;
         let receivingShipping = this.receivingShippingObject();
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         let newData: any = {
@@ -579,8 +582,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         const { addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         let receivingShipping = this.receivingShippingObject();

@@ -10,7 +10,7 @@ import {
     CheckOwnerSsnEinResponse,
     CreateResponse,
     DriverResponse,
-    GetDriverModalResponse
+    GetDriverModalResponse,
 } from 'appcoretruckassist';
 import {
     einNumberRegex,
@@ -1077,8 +1077,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {
@@ -1463,8 +1466,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {

@@ -3,10 +3,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
-import {
-    TitleModalResponse,
-    TitleResponse
-} from 'appcoretruckassist';
+import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../../services/notification/notification.service';
@@ -147,8 +144,11 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
     private addTitle() {
         const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {
@@ -187,8 +187,11 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
     private updateTitle() {
         const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {

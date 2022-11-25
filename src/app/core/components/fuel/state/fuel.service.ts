@@ -16,6 +16,7 @@ import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassis
 import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
 import { getFunctionParams } from '../../../utils/methods.globals';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
@@ -23,7 +24,8 @@ import { getFunctionParams } from '../../../utils/methods.globals';
 export class FuelTService {
     constructor(
         private fuelService: FuelService,
-        private fuelStore: FuelStore
+        private fuelStore: FuelStore,
+        private formDataService: FormDataService
     ) {}
 
     // **************** FUEL TRANSACTION ****************
@@ -88,19 +90,13 @@ export class FuelTService {
     }
 
     public addFuelTransaction(data: any): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.fuelService.apiFuelTransactionPost,
-            data
-        );
-        return this.fuelService.apiFuelTransactionPost(...sortedParams);
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelTransactionPost();
     }
 
     public updateFuelTransaction(data: any): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.fuelService.apiFuelTransactionPut,
-            data
-        );
-        return this.fuelService.apiFuelTransactionPut(...sortedParams);
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelTransactionPut();
     }
 
     public getFuelTransactionById(
@@ -147,19 +143,19 @@ export class FuelTService {
     }
 
     public addFuelStop(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
         return this.fuelService.apiFuelFuelstopPost();
     }
 
     // For table method
-    public updateFuelStopShortest(
-        data: any
-    ): Observable<object> {
+    public updateFuelStopShortest(data: any): Observable<object> {
         return this.fuelService.apiFuelFuelstopPut();
     }
 
     // For modal method
     public updateFuelStop(data: UpdateFuelStopCommand): Observable<object> {
-        return this.fuelService.apiFuelFuelstopUpdatePut(data);
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelFuelstopUpdatePut();
     }
 
     public getFuelStopModalDropdowns(

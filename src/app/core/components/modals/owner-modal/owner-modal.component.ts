@@ -344,8 +344,11 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.ownerForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {
@@ -414,8 +417,11 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.ownerForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {

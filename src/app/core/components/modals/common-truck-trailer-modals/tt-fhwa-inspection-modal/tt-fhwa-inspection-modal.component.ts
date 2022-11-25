@@ -3,9 +3,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
-import {
-    InspectionResponse
-} from 'appcoretruckassist';
+import { InspectionResponse } from 'appcoretruckassist';
 
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -118,9 +116,11 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
     private updateInspection() {
         const { issueDate, ...form } = this.fhwaInspectionForm.value;
-
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {
@@ -153,8 +153,11 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     private addInspection() {
         const { issueDate, ...form } = this.fhwaInspectionForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {

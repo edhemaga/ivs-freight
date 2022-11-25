@@ -1634,8 +1634,11 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
     private addLoad() {
         const { ...form } = this.loadForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         let newData: any = {

@@ -257,8 +257,11 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
     public updateTest() {
         const { testingDate, note } = this.drugForm.value;
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {
@@ -293,8 +296,11 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
     public addTest() {
         const { testingDate, note } = this.drugForm.value;
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
         const newData: any = {
             driverId: this.selectedDriver

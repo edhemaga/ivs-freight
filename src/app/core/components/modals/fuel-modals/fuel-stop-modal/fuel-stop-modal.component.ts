@@ -265,8 +265,11 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     private updateFuelStop(id: number) {
         const { businessName, ...form } = this.fuelStopForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: UpdateFuelStopCommand = {
@@ -300,8 +303,11 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     private addFuelStop() {
         const { businessName, ...form } = this.fuelStopForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {

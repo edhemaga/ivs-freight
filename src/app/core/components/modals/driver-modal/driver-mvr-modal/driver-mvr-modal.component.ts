@@ -190,8 +190,11 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
     private updateMVR() {
         const { issueDate, note } = this.mvrForm.value;
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
         const newData: any = {
             driverId: this.editData.id,
@@ -224,8 +227,11 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
     private addMVR() {
         const { issueDate, note } = this.mvrForm.value;
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
         const newData: any = {
             driverId: this.selectedDriver

@@ -162,8 +162,11 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
     private updateMedical() {
         const { issueDate, expDate, note } = this.medicalForm.value;
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
         const newData: any = {
             id: this.editData.file_id,
@@ -195,8 +198,11 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
     private addMedical() {
         const { issueDate, expDate, note } = this.medicalForm.value;
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
         const newData: any = {
             driverId: this.selectedDriver

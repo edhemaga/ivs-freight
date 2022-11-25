@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import {
     RegistrationModalResponse,
-    RegistrationResponse
+    RegistrationResponse,
 } from 'appcoretruckassist';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
@@ -152,8 +152,11 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     private updateRegistration() {
         const { issueDate, expDate, ...form } = this.registrationForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {
@@ -188,8 +191,11 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     private addRegistration() {
         const { issueDate, expDate, ...form } = this.registrationForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {

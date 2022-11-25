@@ -5,7 +5,7 @@ import {
     AddressEntity,
     CreateResponse,
     RepairShopModalResponse,
-    RepairShopResponse
+    RepairShopResponse,
 } from 'appcoretruckassist';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { RepairTService } from '../../../repair/state/repair.service';
@@ -378,8 +378,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private addRepairShop() {
         let { addressUnit, openHours, ...form } = this.repairShopForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         openHours = openHours.map((item) => {
@@ -455,8 +458,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private updateRepairShop(id: number) {
         let { addressUnit, openHours, ...form } = this.repairShopForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         openHours = openHours.map((item) => {

@@ -9,7 +9,7 @@ import {
     SignInResponse,
     TodoModalResponse,
     TodoResponse,
-    UpdateCommentCommand
+    UpdateCommentCommand,
 } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -314,8 +314,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
 
     private updateTaskById(id: number) {
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
         const { deadline, ...form } = this.taskForm.value;
 
@@ -340,8 +343,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private addTask() {
         const { deadline, ...form } = this.taskForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const newData: any = {

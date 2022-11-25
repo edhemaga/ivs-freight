@@ -764,8 +764,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.brokerForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         let brAddresses = this.selectedBrokerAddress();
@@ -832,8 +835,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.brokerForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         let brAddresses = this.selectedBrokerAddress();

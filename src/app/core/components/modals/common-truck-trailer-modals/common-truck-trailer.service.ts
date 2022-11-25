@@ -49,10 +49,7 @@ export class CommonTruckTrailerService {
     ) {}
 
     // Registration
-    public addRegistration(
-        data: any,
-        tabSelected?: string
-    ): Observable<any> {
+    public addRegistration(data: any, tabSelected?: string): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.registrationService.apiRegistrationPost().pipe(
             tap(() => {
@@ -172,10 +169,7 @@ export class CommonTruckTrailerService {
         return this.inspectionService.apiInspectionIdGet(id);
     }
 
-    public addInspection(
-        data: any,
-        tabSelected?: string
-    ): Observable<any> {
+    public addInspection(data: any, tabSelected?: string): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.inspectionService.apiInspectionPost().pipe(
             tap(() => {
@@ -249,6 +243,7 @@ export class CommonTruckTrailerService {
         data: any,
         tabSelected?: string
     ): Observable<object> {
+        console.log(data, 'datasent');
         this.formDataService.extractFormDataFromFunction(data);
         return this.inspectionService.apiInspectionPut().pipe(
             tap(() => {
@@ -270,10 +265,7 @@ export class CommonTruckTrailerService {
         return this.titleService.apiTitleIdGet(id);
     }
 
-    public addTitle(
-        data: any,
-        tabSelected?: string
-    ): Observable<any> {
+    public addTitle(data: any, tabSelected?: string): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.titleService.apiTitlePost().pipe(
             tap(() => {
@@ -343,10 +335,7 @@ export class CommonTruckTrailerService {
         );
     }
 
-    public updateTitle(
-        data: any,
-        tabSelected?: string
-    ): Observable<object> {
+    public updateTitle(data: any, tabSelected?: string): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.titleService.apiTitlePut().pipe(
             tap(() => {
