@@ -10,7 +10,7 @@ import {
     ShipperModalResponse,
     ShipperResponse,
     UpdateReviewCommand,
-    ClusterResponse
+    ClusterResponse,
 } from 'appcoretruckassist';
 import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
@@ -134,7 +134,7 @@ export class ShipperTService implements OnDestroy {
         return this.shipperService.apiShipperListGet(
             ban,
             dnu,
-            pageIndex,
+            pageIndex
             // pageSize,
             // companyId,
             // sort,
@@ -256,14 +256,14 @@ export class ShipperTService implements OnDestroy {
 
     // Change Ban Status
     public changeBanStatus(id: number): Observable<any> {
-        return of()
-       // return this.shipperService.apiShipperBanIdPut(id, 'response');
+        return of();
+        // return this.shipperService.apiShipperBanIdPut(id, 'response');
     }
 
     // Change Dnu Status
     public changeDnuStatus(id: number): Observable<any> {
-        return of()
-       // return this.shipperService.apiShipperDnuIdPut(id, 'response');
+        return of();
+        // return this.shipperService.apiShipperDnuIdPut(id, 'response');
     }
 
     public getShipperDropdowns(): Observable<ShipperModalResponse> {
@@ -291,8 +291,6 @@ export class ShipperTService implements OnDestroy {
         northEastLongitude?: number,
         southWestLatitude?: number,
         southWestLongitude?: number,
-        ban?: number,
-        dnu?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -306,8 +304,6 @@ export class ShipperTService implements OnDestroy {
             northEastLongitude,
             southWestLatitude,
             southWestLongitude,
-            ban,
-            dnu,
             pageIndex,
             pageSize,
             companyId,

@@ -604,8 +604,6 @@ export class MapsComponent implements OnInit, OnDestroy {
                     null,
                     null,
                     null,
-                    null,
-                    null,
                     this.sortBy,
                     this.searchText
                 )
