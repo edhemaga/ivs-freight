@@ -133,7 +133,7 @@ export class TaReCardComponent implements OnInit {
     }
 
     public sendData(data: any) {
-        console.log('--here---');
+        console.log('--sendData function---');
         this.data = data;
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
         // api start after every click
