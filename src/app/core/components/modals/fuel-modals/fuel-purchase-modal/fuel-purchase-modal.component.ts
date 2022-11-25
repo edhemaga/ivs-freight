@@ -24,6 +24,8 @@ import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
 import { TruckTService } from '../../../truck/state/truck.service';
 import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
 import { FuelTransactionResponse } from '../../../../../../../appcoretruckassist/model/fuelTransactionResponse';
+import { EnumValue } from '../../../../../../../appcoretruckassist/model/enumValue';
+
 import {
     convertDateFromBackend,
     convertDateFromBackendToTime,
@@ -51,14 +53,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public truckType: any[] = [];
     public fuelStops: any[] = [];
 
-    public fuelItemsDropdown: any[] = [];
-
     public selectedTruckType: any = null;
     public selectedDispatchHistory: any = null;
     public selectedTrailerType: any = null;
     public selectedFuelStop: any = null;
 
     public selectedFuelItemsFormArray: any[] = [];
+    public fuelItemsDropdown: any[] = [];
     public fuelItemsCounter: number = 0;
     public subtotal: { value: number; reorderingNumber: number }[] = [];
     public quantity: any[] = [];
@@ -69,7 +70,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     public documents: any[] = [];
 
+    public fuelTransactionType: EnumValue = null;
+
     public isFormDirty: boolean;
+
+    public fuelTransactionName: string = null;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -88,12 +93,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.getFuelTransactionFranchises();
         this.getTruckList();
 
-        if (this.editData) {
-            // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-            this.editData = {
-                ...this.editData,
-                id: 1,
-            };
+        if (this.editData?.type === 'edit') {
             this.getFuelById(this.editData.id);
         }
 
@@ -287,7 +287,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             }
             case 'fuel-items': {
                 this.selectedFuelItemsFormArray[index] = event;
-                console.log(this.selectedFuelItemsFormArray);
                 break;
             }
             default: {
@@ -389,7 +388,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: FuelTransactionResponse) => {
-                    console.log('FUEL BY ID: ', res);
+                    console.log('get by id: ', res);
                     this.fuelForm.patchValue({
                         efsAccount: null,
                         fuelCard: res.fuelCard,
@@ -415,30 +414,58 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     });
 
                     this.selectedTruckType = res.truck;
-                    this.selectedDispatchHistory.driverId = res.driver.id;
-                    this.selectedFuelStop = res.fuelStopStore;
+                    this.selectedDispatchHistory = {
+                        ...this.selectedDispatchHistory,
+                        driverId: res.driver?.id,
+                    };
+                    this.selectedFuelStop = {
+                        fuelStopFranchise: res.fuelStopStore.fuelStopFranchise,
+                        storeId: res.fuelStopStore.id,
+                        name: res.fuelStopStore.store,
+                        businessName:
+                            res.fuelStopStore.fuelStopFranchise.businessName,
+                        address: res.fuelStopStore.address,
+                        fullAddress: res.fuelStopStore.address.address,
+                    };
+
+                    this.fuelTransactionType = res.fuelTransactionType;
+
+                    this.fuelTransactionName = res.truck
+                        ? res.truck.truckNumber
+                        : null;
 
                     if (res.fuelItems.length) {
                         for (let i = 0; i < res.fuelItems.length; i++) {
                             this.fuelItems.push(
                                 this.createFuelItems({
-                                    id: res.fuelItems[i].id,
-                                    reorderingNumber: ++i,
-                                    itemId: res.fuelItems[
-                                        i
-                                    ].fuelTransactionId.toString(),
-                                    qty: res.fuelItems[i].qty.toString(),
-                                    price: res.fuelItems[i].price
+                                    id: res.fuelItems[i]?.id,
+                                    reorderingNumber: ++this.fuelItemsCounter,
+                                    itemId: res.fuelItems[i]?.category,
+                                    qty: res.fuelItems[i]?.qty.toString(),
+                                    price: res.fuelItems[i]?.price
                                         ? convertNumberInThousandSep(
                                               res.fuelItems[i].price
                                           )
                                         : null,
-                                    subtotal:
-                                        res.fuelItems[i].subtotal.toString(),
+                                    subtotal: res.fuelItems[i]?.subtotal
+                                        ? convertNumberInThousandSep(
+                                              res.fuelItems[i].subtotal
+                                          )
+                                        : null,
                                 })
                             );
+                            this.selectedFuelItemsFormArray[i] =
+                                res.fuelItems[i];
+                            this.subtotal = [
+                                ...this.subtotal,
+                                {
+                                    reorderingNumber: this.fuelItemsCounter,
+                                    value: res.fuelItems[i]?.subtotal,
+                                },
+                            ];
 
-                            this.subtotal[i] = res.fuelStopStore[i].subtotal;
+                            this.hoverRowTable.push(false);
+                            this.bluringFuelItemsPrice.push(false);
                         }
                     }
                 },
@@ -489,10 +516,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.fuelForm
                         .get('driverFullName')
                         .patchValue(res.firstName.concat(' ', res.lastName));
-
-                    // this.fuelForm
-                    //     .get('trailerId')
-                    //     .patchValue(res.trailerNumber);
                 }
             });
     }
@@ -599,9 +622,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         if (crud === 'update') {
             return this.fuelItems.controls.map((item, index) => {
                 return {
-                    id: this.selectedFuelItemsFormArray[index]
-                        ? this.selectedFuelItemsFormArray[index].id
-                        : null,
+                    id: 1,
+                    // this.selectedFuelItemsFormArray[index]
+                    //     ? this.selectedFuelItemsFormArray[index].id
+                    //     : null,
                     itemfuel: item.get('itemId').value,
                     price: item.get('price').value
                         ? convertThousanSepInNumber(item.get('price').value)

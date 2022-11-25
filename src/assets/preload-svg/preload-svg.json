@@ -65,6 +65,18 @@
       "iconPath": "/assets/svg/common/banks-dark/ic_bank_wells_fargo.svg"
     },
     {
+      "iconName": "ic_bank_truist.svg",
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_truist.svg"
+    },
+    {
+      "iconName": "ic_bank_renasant.svg",
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_renasant.svg"
+    },
+    {
+      "iconName": "ic_bank_green_dot.svg",
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_green_dot.svg"
+    },
+    {
       "iconName": "ic_color.svg",
       "iconPath": "/assets/svg/common/colors/ic_color.svg"
     },
