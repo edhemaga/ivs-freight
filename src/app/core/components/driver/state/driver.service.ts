@@ -105,6 +105,7 @@ export class DriverTService {
 
                             this.driverActiveStore.add(driver);
                             this.driverMinimimalListStore.add(driver);
+
                             const driverCount = JSON.parse(
                                 localStorage.getItem('driverTableCount')
                             );

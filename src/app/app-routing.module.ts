@@ -42,6 +42,7 @@ import { AccidentInactiveResolver } from './core/components/safety/accident/stat
 import { AccidentNonReportedResolver } from './core/components/safety/accident/state/accident-state/accident-non-reported/accident-non-reported.resolver';
 import { ApplicantResolver } from './core/components/applicant/state/resolver/applicant.resolver';
 import { FuelResolver } from './core/components/fuel/state/fule-state/fuel-state.resolver';
+import { ApplicantTableResolver } from './core/components/driver/state/applicant-state/applicant-table.resolver';
 
 const routes: Routes = [
     // Auth Routes
@@ -128,6 +129,7 @@ const routes: Routes = [
         resolve: {
             driverActive: DriverActiveResolver,
             driverInactive: DriverInactiveResolver,
+            applicantAdminTable: ApplicantTableResolver,
         },
     },
     {
