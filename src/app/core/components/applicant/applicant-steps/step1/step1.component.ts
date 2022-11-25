@@ -52,7 +52,6 @@ import {
     AddressEntity,
     CreateResponse,
     UpdatePersonalInfoCommand,
-    CreatePersonalInfoReviewCommand,
     PersonalInfoFeedbackResponse,
     ApplicantResponse,
     ApplicantModalResponse,

@@ -34,8 +34,6 @@ import {
     CdlFeedbackResponse,
     CdlRestrictionResponse,
     CountryType,
-    CreateApplicantCdlCommand,
-    CreateApplicantCdlReviewCommand,
     EnumValue,
 } from 'appcoretruckassist/model/models';
 
