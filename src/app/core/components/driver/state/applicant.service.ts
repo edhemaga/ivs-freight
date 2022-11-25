@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
     ApplicantAdminResponse,
     ApplicantService,
-    ApplicantShortResponse,
     CreateApplicantCommand,
     GetApplicantListResponse,
     ResendInviteCommand,
