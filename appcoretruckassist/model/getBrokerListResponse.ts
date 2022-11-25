@@ -14,7 +14,7 @@ import { BrokerResponsePagination } from './brokerResponsePagination';
 
 export interface GetBrokerListResponse { 
     pagination?: BrokerResponsePagination;
-    count?: number;
+    brokerCount?: number;
     banCount?: number;
     dnuCount?: number;
     shipperCount?: number;

@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { HosCommand } from './hosCommand';
+import { UpdateHosCommand } from './updateHosCommand';
 import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateSevenDaysHosCommand { 
-    hos?: Array<HosCommand> | null;
+    hos?: Array<UpdateHosCommand> | null;
     releasedDate?: string;
     location?: AddressEntity;
     workingForAnotherEmployer?: boolean;
