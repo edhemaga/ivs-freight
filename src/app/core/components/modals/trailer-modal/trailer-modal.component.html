@@ -199,13 +199,14 @@
                         formControlName="companyOwned"
                         [label]="'Company Owned'"
                         [name]="'company-owned'"
+                        [reverseLogic]="true"
                         [isCardOpen]="trailerForm.get('companyOwned').value"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '18px'
                         }"
                     >
-                        <div body class="row row-no-m">
+                        <div bodyFalse class="row row-no-m">
                             <div class="col-12">
                                 <app-ta-input-dropdown
                                     formControlName="ownerId"

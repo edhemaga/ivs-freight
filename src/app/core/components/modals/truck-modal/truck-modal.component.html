@@ -43,7 +43,13 @@
                                 }"
                             ></app-ta-input>
                         </div>
-                        <div class="col-8">
+                        <div
+                            [ngClass]="
+                                selectedTruckType?.name === 'Box Truck'
+                                    ? 'col-5'
+                                    : 'col-8'
+                            "
+                        >
                             <app-ta-input-dropdown
                                 formControlName="truckTypeId"
                                 [template]="'svgtext-template'"
@@ -64,13 +70,37 @@
                                             .replace(' ', '')
                                             .toLowerCase()
                                     },
-                                    dropdownWidthClass: 'w-col-308',
+                                    dropdownWidthClass:
+                                        selectedTruckType?.name === 'Box Truck'
+                                            ? 'w-col-188'
+                                            : 'w-col-308',
                                     customClass: 'truck-trailer-dropdown'
                                 }"
                                 [options]="truckType"
                                 [activeItem]="selectedTruckType"
                                 (selectedItem)="
                                     onSelectDropdown($event, 'truck-type')
+                                "
+                            ></app-ta-input-dropdown>
+                        </div>
+                        <div
+                            *ngIf="selectedTruckType?.name === 'Box Truck'"
+                            class="col-3 no-p-left"
+                        >
+                            <app-ta-input-dropdown
+                                formControlName="truckLengthId"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Length',
+                                    isDropdown: true,
+                                    isRequired: true,
+                                    dropdownWidthClass: 'w-col-108'
+                                }"
+                                [options]="truckLengths"
+                                [activeItem]="selectedTruckLengthId"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'truck-length')
                                 "
                             ></app-ta-input-dropdown>
                         </div>
@@ -183,13 +213,14 @@
                         formControlName="companyOwned"
                         [label]="'Company Owned'"
                         [name]="'company-owned'"
+                        [reverseLogic]="true"
                         [isCardOpen]="truckForm.get('companyOwned').value"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '18px'
                         }"
                     >
-                        <ng-container body>
+                        <ng-container bodyFalse>
                             <div class="row row-mb-26">
                                 <div class="col-12">
                                     <app-ta-input-dropdown

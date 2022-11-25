@@ -74,34 +74,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public brakes: any[] = [];
     public gearRatios: any[] = [];
     public fuelTypes: any[] = [];
-    public tollTransponders: any[] = [
-        {
-            groupName: 'Grupa 1',
-            items: [
-                {
-                    id: 1,
-                    name: 'Item 1',
-                },
-                {
-                    id: 2,
-                    name: 'Item 2',
-                },
-            ],
-        },
-        {
-            groupName: 'Grupa 2',
-            items: [
-                {
-                    id: 1,
-                    name: 'Item 2',
-                },
-                {
-                    id: 2,
-                    name: 'Item 2',
-                },
-            ],
-        },
-    ];
+    public truckLengths: any[] = [];
+    public tollTransponders: any[] = [];
 
     public selectedBrakes: any = null;
     public selectedShifter: any = null;
@@ -117,6 +91,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public selectedAPUnit: any = null;
     public selectedGearRatio: any = null;
     public selectedTollTransponders: any = null;
+
+    public selectedTruckLengthId: any = null;
 
     public selectedFrontWheels: any = null;
     public selectedRearWheels: any = null;
@@ -192,6 +168,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 [Validators.required, ...vehicleUnitValidation],
             ],
             truckTypeId: [null, Validators.required],
+            truckLengthId: [null],
             vin: [null, [Validators.required, ...vinNumberValidation]],
             truckMakeId: [null, Validators.required],
             model: [
@@ -349,6 +326,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .get('companyOwned')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
+                console.log(value);
                 if (!value) {
                     this.inputService.changeValidators(
                         this.truckForm.get('ownerId')
@@ -359,6 +337,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         false
                     );
                 }
+                console.log('validator: ', this.truckForm.get('ownerId'));
             });
     }
 
@@ -366,6 +345,19 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         switch (action) {
             case 'truck-type': {
                 this.selectedTruckType = event;
+                console.log(this.selectedTruckType);
+
+                if (this.selectedTruckType?.name === 'Box Truck') {
+                    this.inputService.changeValidators(
+                        this.truckForm.get('truckLengthId')
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.truckForm.get('truckLengthId'),
+                        false
+                    );
+                    this.selectedTruckLengthId = null;
+                }
                 break;
             }
             case 'truck-make': {
@@ -406,6 +398,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                 selectedtruckEngineModelId:
                                     this.selectedtruckEngineModelId,
                                 truckStatus: this.truckStatus,
+                                selectedTruckLengthId:
+                                    this.selectedTruckLengthId,
                                 id: this.editData?.id,
                             },
                         },
@@ -465,6 +459,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.selectedFuelType = event;
                 break;
             }
+            case 'truck-length': {
+                this.selectedTruckLengthId = event;
+                break;
+            }
             default: {
                 break;
             }
@@ -504,7 +502,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                         : null,
                                     fuelType: this.fuelTypes.find(
                                         (item) => item.name === res.fuelType
-                                    ).name,
+                                    )?.name,
                                 });
                                 this.loadingVinDecoder = false;
                                 this.selectedTruckMake = res.truckMake;
@@ -541,6 +539,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                             logoName: 'ic_color.svg',
                         };
                     });
+                    this.truckLengths = res.truckLengths;
                     this.engineOilTypes = res.engineOilTypes;
                     this.tollTransponders = res.ezPass.map((item) => {
                         return {
@@ -590,6 +589,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         truckMakeId: res.truckMake ? res.truckMake.name : null,
                         model: res.model,
                         year: res.year.toString(),
+                        truckLengthId: res.truckLength
+                            ? res.truckLength.name
+                            : null,
                         colorId: res.color ? res.color.name : null,
                         ownerId: res.owner ? res.owner.name : null,
                         commission: res.commission,
@@ -679,6 +681,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         : null;
                     this.selectedFuelType = res.fuelType;
                     this.truckStatus = res.status !== 1;
+                    this.selectedTruckLengthId = res.truckLength;
 
                     this.modalService.changeModalStatus({
                         name: 'deactivate',
@@ -701,6 +704,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 companyOwned: res.companyOwned,
                 truckNumber: res.truckNumber,
                 truckTypeId: res.truckTypeId,
+                truckLengthId: res.truckLengthId,
                 vin: res.vin,
                 truckMakeId: res.truckMakeId,
                 model: res.model,
@@ -785,6 +789,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 : null,
             truckMakeId: this.selectedTruckMake
                 ? this.selectedTruckMake.id
+                : null,
+            truckLengthId: this.selectedTruckLengthId
+                ? this.selectedTruckLengthId.id
                 : null,
             tollTransponder: this.selectedTollTransponders
                 ? this.selectedTollTransponders.id
@@ -904,6 +911,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 : null,
             truckMakeId: this.selectedTruckMake
                 ? this.selectedTruckMake.id
+                : null,
+            truckLengthId: this.selectedTruckLengthId
+                ? this.selectedTruckLengthId.id
                 : null,
             tollTransponder: this.selectedTollTransponders
                 ? this.selectedTollTransponders.id

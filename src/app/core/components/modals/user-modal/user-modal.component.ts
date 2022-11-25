@@ -429,13 +429,19 @@ export class UserModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.userForm.value;
 
+        if (this.selectedAddress) {
+            this.selectedAddress = {
+                ...this.selectedAddress,
+                addressUnit: addressUnit,
+            };
+        }
+
         const newData: UpdateCompanyUserCommand = {
             id: id,
             ...form,
-            address: {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            },
+            address: this.selectedAddress?.address
+                ? this.selectedAddress
+                : null,
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
                 : null,
@@ -492,12 +498,19 @@ export class UserModalComponent implements OnInit, OnDestroy {
             commission,
             ...form
         } = this.userForm.value;
-        const newData: CreateCompanyUserCommand = {
-            ...form,
-            address: {
+
+        if (this.selectedAddress) {
+            this.selectedAddress = {
                 ...this.selectedAddress,
                 addressUnit: addressUnit,
-            },
+            };
+        }
+
+        const newData: CreateCompanyUserCommand = {
+            ...form,
+            address: this.selectedAddress?.address
+                ? this.selectedAddress
+                : null,
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
                 : null,
@@ -607,7 +620,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.selectedOffice = res.companyOffice;
                     this.selectedUserType = res.userType;
                     // this.selectedPayment = res.paymentType;
-                    console.log('user status: ', res.status);
+
                     this.userStatus = res.status !== 1;
 
                     this.typeOfEmploye = this.typeOfEmploye.map(
