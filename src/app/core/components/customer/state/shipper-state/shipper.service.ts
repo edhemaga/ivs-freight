@@ -133,12 +133,12 @@ export class ShipperTService implements OnDestroy {
             ban,
             dnu,
             pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
+            // pageSize,
+            // companyId,
+            // sort,
+            // search,
+            // search1,
+            // search2
         );
     }
 
@@ -254,12 +254,14 @@ export class ShipperTService implements OnDestroy {
 
     // Change Ban Status
     public changeBanStatus(id: number): Observable<any> {
-        return this.shipperService.apiShipperBanIdPut(id, 'response');
+        return of()
+       // return this.shipperService.apiShipperBanIdPut(id, 'response');
     }
 
     // Change Dnu Status
     public changeDnuStatus(id: number): Observable<any> {
-        return this.shipperService.apiShipperDnuIdPut(id, 'response');
+        return of()
+       // return this.shipperService.apiShipperDnuIdPut(id, 'response');
     }
 
     public getShipperDropdowns(): Observable<ShipperModalResponse> {
