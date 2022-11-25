@@ -156,7 +156,7 @@
     &.tanker-liquid {
         svg {
             path: {
-                fill: $input-tankerliquidtrailer-path-fill !important;
+                fill: $input-tankertrailer-path-fill !important;
             }
         }
     }
@@ -165,6 +165,14 @@
         svg {
             path {
                 fill: $input-carhaulertrailer-path-fill !important;
+            }
+        }
+    }
+
+    &.carhaulerstinger {
+        svg {
+            path {
+                fill: $input-carhaulerstingertrailer-path-fill !important;
             }
         }
     }
@@ -204,7 +212,15 @@
     &.tanker-dry-bulk {
         svg {
             path: {
-                fill: $input-tankerdrybulktrailer-path-fill !important;
+                fill: $input-pneumatictankertrailer-path-fill !important;
+            }
+        }
+    }
+
+    &.unset-color {
+        svg {
+            path {
+                fill: rgb(255, 255, 255, 0.4) !important;
             }
         }
     }

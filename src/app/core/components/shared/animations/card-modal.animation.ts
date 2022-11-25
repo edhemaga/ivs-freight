@@ -42,3 +42,40 @@ export const card_modal_animation = (type: string) =>
         transition('false <=> true', [animate('.3s ease-in-out')]),
         transition('true <=> false', [animate('.3s ease-in-out')]),
     ]);
+
+export const card_modal_animation_false = (type: string) =>
+    trigger(type, [
+        state(
+            'false',
+            style({
+                height: '*',
+                overflow: 'visible',
+                opacity: '1',
+                'margin-top': '{{marginTop}}',
+                'margin-bottom': '{{marginBottom}}',
+            }),
+            {
+                params: {
+                    marginTop: '{{marginTop}}',
+                    marginBottom: '{{marginBottom}}',
+                },
+            }
+        ),
+        state(
+            'true',
+            style({
+                height: '0px',
+                overflow: 'hidden',
+                opacity: '0',
+                'margin-top': '0px',
+            })
+        ),
+        state(
+            'null',
+            style({
+                height: '*',
+            })
+        ),
+        transition('true <=> false', [animate('.3s ease-in-out')]),
+        transition('false <=> true', [animate('.3s ease-in-out')]),
+    ]);

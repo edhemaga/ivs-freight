@@ -12,9 +12,42 @@ export class FuelResolver implements Resolve<FuelState> {
     constructor(private fuelService: FuelTService) {}
 
     resolve(): Observable<FuelState> {
-        const fuelTransactions$ = this.fuelService.getFuelTransactionsList(undefined, 1, 25);
+        const fuelTransactions$ = this.fuelService.getFuelTransactionsList(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            1,
+            25
+        );
 
-        const fuelStops$ = this.fuelService.getFuelStopsList(1, 25);
+        const fuelStops$ = this.fuelService.getFuelStopsList(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            1,
+            25
+        );
 
         return forkJoin({
             fuelTransactions: fuelTransactions$,

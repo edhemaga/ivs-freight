@@ -110,7 +110,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     private createForm() {
         this.officeForm = this.formBuilder.group({
-            isOwner: [true],
+            isOwner: [false],
             name: [null, [Validators.required, ...officeNameValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
