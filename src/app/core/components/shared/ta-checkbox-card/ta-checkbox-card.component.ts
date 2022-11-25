@@ -1,18 +1,24 @@
 import { Component, Input, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { card_modal_animation } from '../animations/card-modal.animation';
+import {
+    card_modal_animation,
+    card_modal_animation_false,
+} from '../animations/card-modal.animation';
 
 @Component({
     selector: 'app-ta-checkbox-card',
     templateUrl: './ta-checkbox-card.component.html',
     styleUrls: ['./ta-checkbox-card.component.scss'],
-    animations: [card_modal_animation('showHideCardBody')],
+    animations: [
+        card_modal_animation('showHideCardBody'),
+        card_modal_animation_false('showHideCardBodyFalsy'),
+    ],
 })
 export class TaCheckboxCardComponent implements ControlValueAccessor {
     @Input() label: string;
     @Input() name: string; // must be set, because of multiple checkbox
     @Input() hasArrow: boolean = true;
-
+    @Input() reverseLogic: boolean = false;
     @Input() animationMarginParams = {
         marginTop: '12px',
         marginBottom: '12px',
@@ -24,7 +30,6 @@ export class TaCheckboxCardComponent implements ControlValueAccessor {
     @Input() set isCardOpen(value: boolean) {
         this.noActive = value ? 'active' : 'innactive';
         this._isCardOpen = value;
-        console.log(value);
     }
 
     constructor(@Self() public superControl: NgControl) {
@@ -50,6 +55,7 @@ export class TaCheckboxCardComponent implements ControlValueAccessor {
         event.stopPropagation();
         const oldNoActive = this.noActive;
         this.noActive = '';
+
         this._isCardOpen =
             oldNoActive == 'innactive' ? true : !this._isCardOpen;
     }

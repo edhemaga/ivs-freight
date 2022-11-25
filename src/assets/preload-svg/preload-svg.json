@@ -229,6 +229,10 @@
       "iconPath": "/assets/svg/common/trailermake/ic_trailer_wilson.svg"
     },
     {
+      "iconName": "ic_trailer_atro.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_atro.svg"
+    },
+    {
       "iconName": "ic_trailer_carhauler.svg",
       "iconPath": "/assets/svg/common/trailers/ic_trailer_carhauler.svg"
     },
