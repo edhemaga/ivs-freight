@@ -607,7 +607,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         if (listChanged || mapListResponse.changedSort) {
-            //this.mapListData = mapListResponse.pagination.data;
+            if ( mapListResponse.changedSort ) this.mapListData = mapListResponse.pagination.data;
             this.tableData[1].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }

@@ -966,7 +966,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         if (listChanged || mapListResponse.changedSort) {
-            //this.mapListData = mapListResponse.pagination.data;
+            if ( mapListResponse.changedSort ) this.mapListData = mapListResponse.pagination.data;
             this.tableData[2].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }
