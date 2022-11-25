@@ -17,7 +17,6 @@ import { DriversDetailsListStore } from './driver-details-list-state/driver-deta
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriverTService } from './driver.service';
 import { RenewCdlCommand } from '../../../../../../appcoretruckassist/model/renewCdlCommand';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({

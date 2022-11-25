@@ -10,7 +10,6 @@ import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({

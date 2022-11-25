@@ -15,7 +15,6 @@ import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model
 import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
 import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
-import { getFunctionParams } from '../../../utils/methods.globals';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
