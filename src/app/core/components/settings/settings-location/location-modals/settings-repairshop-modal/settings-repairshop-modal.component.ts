@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import {
     AddressEntity,
     RepairShopModalResponse,
-    RepairShopResponse
+    RepairShopResponse,
 } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -98,7 +98,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
 
     private createForm() {
         this.repairShopForm = this.formBuilder.group({
-            companyOwned: [true],
+            companyOwned: [false],
             name: [null, [Validators.required, ...repairShopValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],

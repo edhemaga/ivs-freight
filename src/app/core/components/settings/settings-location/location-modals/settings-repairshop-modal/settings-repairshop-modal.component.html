@@ -38,13 +38,14 @@
                         formControlName="companyOwned"
                         [label]="'Company Owned'"
                         [name]="'company-owned'"
+                        [reverseLogic]="true"
                         [isCardOpen]="repairShopForm.get('companyOwned').value"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '22px'
                         }"
                     >
-                        <ng-container body>
+                        <ng-container bodyFalse>
                             <div class="row">
                                 <div class="col-12">
                                     <app-ta-input

@@ -142,7 +142,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     private createForm() {
         this.terminalForm = this.formBuilder.group({
             // Terminal
-            isOwner: [true],
+            isOwner: [false],
             name: [null, [Validators.required, ...terminalNameValidation]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
