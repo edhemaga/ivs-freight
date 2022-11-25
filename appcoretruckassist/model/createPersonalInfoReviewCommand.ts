@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PreviousAddressReviewCommand } from './previousAddressReviewCommand';
+import { CreatePreviousAddressReviewCommand } from './createPreviousAddressReviewCommand';
 
 
 export interface CreatePersonalInfoReviewCommand { 
-    id?: number | null;
     isFirstNameValid?: boolean;
     isLastNameValid?: boolean;
     isDoBValid?: boolean;
@@ -26,10 +25,7 @@ export interface CreatePersonalInfoReviewCommand {
     isSsnValid?: boolean;
     ssnMessage?: string | null;
     isAccountNumberValid?: boolean;
-    isRoutingNumberValid?: boolean;
-    accountRoutingMessage?: string | null;
-    isLegalWorkValid?: boolean;
-    legalWorkMessage?: string | null;
+    accountNumberMessage?: string | null;
     isAnotherNameValid?: boolean;
     anotherNameMessage?: string | null;
     isInMilitaryValid?: boolean;
@@ -40,7 +36,7 @@ export interface CreatePersonalInfoReviewCommand {
     misdemeanorMessage?: string | null;
     isDrunkDrivingValid?: boolean;
     drunkDrivingMessage?: string | null;
-    previousAddressReviews?: Array<PreviousAddressReviewCommand> | null;
+    previousAddressReviews?: Array<CreatePreviousAddressReviewCommand> | null;
     applicantId?: number;
 }
 

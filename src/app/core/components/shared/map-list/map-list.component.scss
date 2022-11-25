@@ -28,24 +28,24 @@
             width: 100%;
             height: 100vh;
 
-            .si-content-wrapper {
-                position: relative;
-                width: 360px;
-                border: none;
+            // .si-content-wrapper {
+            //     position: relative;
+            //     width: 360px;
+            //     border: none;
 
-                padding: 8px;
-                overflow: visible;
+            //     padding: 8px;
+            //     overflow: visible;
 
-                .si-content {
-                    max-width: none !important;
-                    max-height: none !important;
-                    overflow: hidden;
-                    transition: height 0.2s ease-in-out;
-                }
-            }
+            //     .si-content {
+            //         max-width: none !important;
+            //         max-height: none !important;
+            //         overflow: hidden;
+            //         transition: height 0.2s ease-in-out;
+            //     }
+            // }
 
             .marker-business-name {
-                font-size: 18px;
+                font-size: 16px;
                 font-weight: 700;
                 color: $bw6-2;
                 text-transform: uppercase;
@@ -484,13 +484,13 @@
     margin-top: 2px;
 }
 
-.show-more {
-    position: absolute;
-    top: 2px;
-    right: 2px;
+// .show-more {
+//     position: absolute;
+//     top: 2px;
+//     right: 2px;
 
-    cursor: pointer;
-}
+//     cursor: pointer;
+// }
 
 .blue-resize-svg {
     svg {
