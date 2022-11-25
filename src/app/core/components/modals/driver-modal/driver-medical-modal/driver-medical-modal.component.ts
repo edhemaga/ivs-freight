@@ -111,7 +111,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                     return;
                 }
                 if (this.editData?.type === 'edit-medical') {
-                    this.updateMedical(this.editData.id);
+                    this.updateMedical();
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -134,24 +134,39 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
-
-        if (event.action == 'delete') {
-            this.medicalForm.patchValue({
-                files: null,
-            });
-
-            if (event.deleteId) {
-                this.filesForDelete.push(event.deleteId);
+        switch (event.action) {
+            case 'add': {
+                this.medicalForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
             }
+            case 'delete': {
+                this.medicalForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
 
-            this.fileModified = true;
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
         }
     }
 
-    private updateMedical(id: number) {
-        const { issueDate, expDate, driver, note } = this.medicalForm.value;
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+    private updateMedical() {
+        const { issueDate, expDate, note } = this.medicalForm.value;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
         const newData: any = {
             id: this.editData.file_id,
@@ -182,9 +197,12 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     }
 
     private addMedical() {
-        const { issueDate, expDate, driver, note } = this.medicalForm.value;
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        const { issueDate, expDate, note } = this.medicalForm.value;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
         const newData: any = {
             driverId: this.selectedDriver
@@ -225,6 +243,9 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                         issueDate: convertDateFromBackend(res.issueDate),
                         expDate: convertDateFromBackend(res.expDate),
                         note: res.note,
+                        files: res.files.length
+                            ? JSON.stringify(res.files)
+                            : null,
                     });
 
                     this.documents = res.files ? (res.files as any) : [];

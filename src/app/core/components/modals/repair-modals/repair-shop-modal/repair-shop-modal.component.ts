@@ -3,11 +3,9 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
     AddressEntity,
-    CreateRepairShopCommand,
     CreateResponse,
     RepairShopModalResponse,
     RepairShopResponse,
-    UpdateRepairShopCommand,
 } from 'appcoretruckassist';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { RepairTService } from '../../../repair/state/repair.service';
@@ -61,6 +59,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     ];
 
     public isFormDirty: boolean;
+    public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -103,6 +104,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             routing: [null, routingBankValidation],
             account: [null, accountBankValidation],
             note: [null],
+            files: [null],
         });
 
         this.inputService.customInputValidator(
@@ -120,8 +122,30 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
+        console.log(data);
         switch (data.action) {
             case 'close': {
+                if (this.editData?.canOpenModal) {
+                    switch (this.editData?.key) {
+                        case 'repair-modal': {
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: RepairOrderModalComponent,
+                                size: 'large',
+                                type: this.editData?.type,
+                                closing: 'fastest',
+                            });
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }
                 break;
             }
             case 'save': {
@@ -140,7 +164,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
-                        clearTimeout: !!this.editData?.canOpenModal,
                     });
                 }
                 break;
@@ -157,24 +180,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
             default: {
                 break;
-            }
-        }
-
-        if (this.editData?.canOpenModal) {
-            switch (this.editData?.key) {
-                case 'repair-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: { key: this.editData?.key, value: null },
-                        component: RepairOrderModalComponent,
-                        size: 'large',
-                        type: this.editData?.type,
-                    });
-                    break;
-                }
-                default: {
-                    break;
-                }
             }
         }
     }
@@ -340,6 +345,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.selectedBank = res.bank;
                     this.isPhoneExtExist = !!res.phoneExt;
                     this.isRepairShopFavourite = res.pinned;
+                    this.documents = res.files;
 
                     this.services = res.serviceTypes.map((item) => {
                         return {
@@ -370,8 +376,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepairShop() {
-        let { address, addressUnit, openHours, bankId, ...form } =
-            this.repairShopForm.value;
+        let { addressUnit, openHours, ...form } = this.repairShopForm.value;
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         openHours = openHours.map((item) => {
             if (item.isDay) {
@@ -389,7 +401,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        const newData: CreateRepairShopCommand = {
+        const newData: any = {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
@@ -400,6 +412,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     active: item.active,
                 };
             }),
+            files: documents,
         };
 
         this.shopService
@@ -411,6 +424,27 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         'Repair shop added',
                         'Success: '
                     );
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'repair-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: RepairOrderModalComponent,
+                                    size: 'large',
+                                    type: this.editData?.type,
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () => {
                     this.notificationService.error(
@@ -422,8 +456,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepairShop(id: number) {
-        let { address, addressUnit, openHours, bankId, ...form } =
-            this.repairShopForm.value;
+        let { addressUnit, openHours, ...form } = this.repairShopForm.value;
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         openHours = openHours.map((item) => {
             if (item.isDay) {
@@ -441,7 +481,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        const newData: UpdateRepairShopCommand = {
+        const newData: any = {
             id: id,
             ...form,
             bankId: this.selectedBank ? this.selectedBank.id : null,
@@ -453,6 +493,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     active: item.active,
                 };
             }),
+            files: documents ? documents : this.repairShopForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.shopService
@@ -518,6 +560,34 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     );
                 },
             });
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.repairShopForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.repairShopForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {

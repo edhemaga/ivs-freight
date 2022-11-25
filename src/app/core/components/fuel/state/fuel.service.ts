@@ -1,23 +1,21 @@
 import { Observable } from 'rxjs';
-import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
 import { Injectable } from '@angular/core';
 import {
     FuelService,
     FuelStopListResponse,
+    FuelStopResponse,
     FuelTransactionListResponse,
 } from 'appcoretruckassist';
 
 import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
-import { EditFuelStopCommand } from '../../../../../../appcoretruckassist/model/editFuelStopCommand';
-import { AddFuelStopCommand } from '../../../../../../appcoretruckassist/model/addFuelStopCommand';
 import { UpdateFuelStopCommand } from '../../../../../../appcoretruckassist/model/updateFuelStopCommand';
 import { FuelStore } from './fule-state/fuel-state.store';
 import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model/getFuelModalResponse';
 import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
 import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
-import { getFunctionParams } from '../../../utils/methods.globals';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
@@ -25,7 +23,8 @@ import { getFunctionParams } from '../../../utils/methods.globals';
 export class FuelTService {
     constructor(
         private fuelService: FuelService,
-        private fuelStore: FuelStore
+        private fuelStore: FuelStore,
+        private formDataService: FormDataService
     ) {}
 
     // **************** FUEL TRANSACTION ****************
@@ -89,19 +88,13 @@ export class FuelTService {
     }
 
     public addFuelTransaction(data: any): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.fuelService.apiFuelTransactionPost,
-            data
-        );
-        return this.fuelService.apiFuelTransactionPost(...sortedParams);
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelTransactionPost();
     }
 
     public updateFuelTransaction(data: any): Observable<CreateResponse> {
-        const sortedParams = getFunctionParams(
-            this.fuelService.apiFuelTransactionPut,
-            data
-        );
-        return this.fuelService.apiFuelTransactionPut(...sortedParams);
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelTransactionPut();
     }
 
     public getFuelTransactionById(
@@ -146,20 +139,20 @@ export class FuelTService {
         return this.fuelService.apiFuelFuelstopIdGet(fuelId);
     }
 
-    public addFuelStop(data: AddFuelStopCommand): Observable<CreateResponse> {
-        return this.fuelService.apiFuelFuelstopPost(data);
+    public addFuelStop(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelFuelstopPost();
     }
 
     // For table method
-    public updateFuelStopShortest(
-        data: EditFuelStopCommand
-    ): Observable<object> {
-        return this.fuelService.apiFuelFuelstopPut(data);
+    public updateFuelStopShortest(data: any): Observable<object> {
+        return this.fuelService.apiFuelFuelstopPut();
     }
 
     // For modal method
     public updateFuelStop(data: UpdateFuelStopCommand): Observable<object> {
-        return this.fuelService.apiFuelFuelstopUpdatePut(data);
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelFuelstopUpdatePut();
     }
 
     public getFuelStopModalDropdowns(

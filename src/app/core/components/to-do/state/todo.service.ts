@@ -4,11 +4,9 @@ import { Injectable } from '@angular/core';
 import { flatMap, Observable } from 'rxjs';
 import { TodoStore } from './todo.store';
 import {
-    CreateTodoCommand,
     TodoModalResponse,
     TodoResponse,
     TodoStatus,
-    UpdateTodoCommand,
     UpdateTodoStatusCommand,
 } from 'appcoretruckassist';
 
@@ -57,7 +55,7 @@ export class TodoTService {
         return this.todoService.apiTodoStatusPut(todo);
     }
 
-    public updateTodo(data: UpdateTodoCommand) {
+    public updateTodo(data: any) {
         return this.todoService
             .apiTodoPut(data)
             .pipe(
@@ -70,7 +68,7 @@ export class TodoTService {
             });
     }
 
-    public addTodo(data: CreateTodoCommand) {
+    public addTodo(data: any) {
         return this.todoService
             .apiTodoPost(data)
             .pipe(

@@ -10,9 +10,7 @@ import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { EditMedicalCommand } from '../../../../../../appcoretruckassist/model/editMedicalCommand';
-import { CreateMedicalCommand } from '../../../../../../appcoretruckassist/model/createMedicalCommand';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
@@ -25,7 +23,8 @@ export class MedicalTService implements OnDestroy {
         private driverStore: DriversActiveStore,
         private tableService: TruckassistTableService,
         private driverItemStore: DriversItemStore,
-        private dlStore: DriversDetailsListStore
+        private dlStore: DriversDetailsListStore,
+        private formDataService: FormDataService
     ) {}
 
     public deleteMedicalById(id: number): Observable<any> {
@@ -72,13 +71,9 @@ export class MedicalTService implements OnDestroy {
     }
 
     /* Observable<CreateMedicalResponse> */
-    public addMedical(data: CreateMedicalCommand): Observable<any> {
-        const sortedParams = getFunctionParams(
-            this.medicalService.apiMedicalPost,
-            data
-        );
-
-        return this.medicalService.apiMedicalPost(...sortedParams).pipe(
+    public addMedical(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.medicalService.apiMedicalPost().pipe(
             tap((res: any) => {
                 const subDriver = this.driverService
                     .getDriverById(data.driverId)
@@ -112,12 +107,9 @@ export class MedicalTService implements OnDestroy {
         );
     }
 
-    public updateMedical(data: EditMedicalCommand): Observable<object> {
-        const sortedParams = getFunctionParams(
-            this.medicalService.apiMedicalPut,
-            data
-        );
-        return this.medicalService.apiMedicalPut(...sortedParams).pipe(
+    public updateMedical(data: any): Observable<object> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.medicalService.apiMedicalPut().pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const subDriver = this.driverService

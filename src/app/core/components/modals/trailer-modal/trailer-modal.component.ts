@@ -196,6 +196,24 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }): void {
         let trailerUnit = this.trailerForm.get('trailerNumber').value;
         if (data.action === 'close') {
+            if (this.editData?.canOpenModal) {
+                switch (this.editData?.key) {
+                    case 'repair-modal': {
+                        this.modalService.setProjectionModal({
+                            action: 'close',
+                            payload: { key: this.editData?.key, value: null },
+                            component: RepairOrderModalComponent,
+                            size: 'large',
+                            type: 'Trailer',
+                            closing: 'fastest',
+                        });
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            }
             return;
         } else {
             let successMessage = `Trailer "${trailerUnit}" ${
@@ -253,7 +271,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.modalService.setModalSpinner({
                             action: null,
                             status: true,
-                            clearTimeout: !!this.editData?.canOpenModal,
+                            setFasterTimeout: !!this.editData?.canOpenModal,
                         });
                     }
                 }
@@ -265,24 +283,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         action: 'delete',
                         status: true,
                     });
-                }
-            }
-        }
-
-        if (this.editData?.canOpenModal) {
-            switch (this.editData?.key) {
-                case 'repair-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: { key: this.editData?.key, value: null },
-                        component: RepairOrderModalComponent,
-                        size: 'large',
-                        type: 'Trailer',
-                    });
-                    break;
-                }
-                default: {
-                    break;
                 }
             }
         }
@@ -405,6 +405,27 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         `Trailer "${trailerUnit} added"`,
                         'Success'
                     );
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'repair-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: RepairOrderModalComponent,
+                                    size: 'large',
+                                    type: 'Trailer',
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () =>
                     this.notificationService.error(
@@ -780,12 +801,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         });
                 }
             });
-    }
-
-    // Checkbox Card
-    public companyOwnedCheckboxCard: boolean = true;
-    public toggleCheckboxCard() {
-        this.companyOwnedCheckboxCard = !this.companyOwnedCheckboxCard;
     }
 
     ngOnDestroy(): void {

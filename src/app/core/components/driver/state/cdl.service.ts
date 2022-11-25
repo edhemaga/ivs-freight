@@ -17,7 +17,7 @@ import { DriversDetailsListStore } from './driver-details-list-state/driver-deta
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriverTService } from './driver.service';
 import { RenewCdlCommand } from '../../../../../../appcoretruckassist/model/renewCdlCommand';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
@@ -31,17 +31,14 @@ export class CdlTService implements OnDestroy {
         private tableService: TruckassistTableService,
         private driverItemStore: DriversItemStore,
         private notificationService: NotificationService,
-        private dlStore: DriversDetailsListStore
+        private dlStore: DriversDetailsListStore,
+        private formDataService: FormDataService
     ) {}
 
     /* Observable<CreateCdlResponse> */
     public addCdl(data: /* CreateCdlCommand */ any): Observable<any> {
-        const sortedParams = getFunctionParams(
-            this.cdlService.apiCdlPost,
-            data
-        );
-
-        return this.cdlService.apiCdlPost(...sortedParams).pipe(
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.cdlService.apiCdlPost().pipe(
             tap((res: CreateResponse) => {
                 const subDriver = this.driverService
                     .getDriverById(data.driverId)
@@ -82,8 +79,8 @@ export class CdlTService implements OnDestroy {
     }
 
     public updateCdl(data: any): Observable<any> {
-        const sortedParams = getFunctionParams(this.cdlService.apiCdlPut, data);
-        return this.cdlService.apiCdlPut(...sortedParams).pipe(
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.cdlService.apiCdlPut().pipe(
             tap((res: any) => {
                 const subDriver = this.driverService
                     .getDriverById(data.driverId)

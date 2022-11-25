@@ -195,69 +195,40 @@
                         ></app-ta-input-dropdown>
                     </div>
                     <!-- Company Owned -->
-                    <div class="custom-checkbox-card">
-                        <div class="divider"></div>
-                        <div
-                            class="checkbox-card-header"
-                            [ngClass]="{
-                                pointer: !trailerForm.get('companyOwned').value
-                            }"
-                        >
-                            <app-ta-checkbox
-                                formControlName="companyOwned"
-                                [label]="'Company Owned'"
-                            ></app-ta-checkbox>
-                            <svg-icon
-                                class="checkbox-card-header-arrow"
-                                src="assets/svg/common/ic_arrow_down_updated.svg"
-                                [ngClass]="{
-                                    visible:
-                                        !trailerForm.get('companyOwned')?.value,
-                                    rotate: !companyOwnedCheckboxCard
-                                }"
-                                (click)="toggleCheckboxCard()"
-                            ></svg-icon>
-                        </div>
-                        <div
-                            *ngIf="
-                                !trailerForm.get('companyOwned').value &&
-                                companyOwnedCheckboxCard
-                            "
-                            class="checkbox-card-body"
-                            [ngClass]="{
-                                'active-20':
-                                    !trailerForm.get('companyOwned').value
-                            }"
-                        >
-                            <div *ngIf="!trailerForm.get('companyOwned').value">
-                                <div class="row owner-dropdown">
-                                    <div class="col-12">
-                                        <app-ta-input-dropdown
-                                            formControlName="ownerId"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                label: 'Owner',
-                                                isDropdown: true,
-                                                isRequired: true,
-                                                dropdownWidthClass: 'w-col-456'
-                                            }"
-                                            [canAddNew]="true"
-                                            [canOpenModal]="true"
-                                            [options]="ownerType"
-                                            [activeItem]="selectedOwner"
-                                            (selectedItem)="
-                                                onSelectDropdown(
-                                                    $event,
-                                                    'owner'
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                    </div>
-                                </div>
+                    <app-ta-checkbox-card
+                        formControlName="companyOwned"
+                        [label]="'Company Owned'"
+                        [name]="'company-owned'"
+                        [isCardOpen]="trailerForm.get('companyOwned').value"
+                        [animationMarginParams]="{
+                            marginTop: '12px',
+                            marginBottom: '18px'
+                        }"
+                    >
+                        <div class="row row-no-m">
+                            <div class="col-12">
+                                <app-ta-input-dropdown
+                                    formControlName="ownerId"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown',
+                                        type: 'text',
+                                        label: 'Owner',
+                                        isDropdown: true,
+                                        isRequired: true,
+                                        dropdownWidthClass: 'w-col-456'
+                                    }"
+                                    [canAddNew]="true"
+                                    [canOpenModal]="true"
+                                    [options]="ownerType"
+                                    [activeItem]="selectedOwner"
+                                    (selectedItem)="
+                                        onSelectDropdown($event, 'owner')
+                                    "
+                                ></app-ta-input-dropdown>
                             </div>
                         </div>
-                    </div>
+                    </app-ta-checkbox-card>
+
                     <app-ta-input-note
                         formControlName="note"
                         [isVisibleNote]="

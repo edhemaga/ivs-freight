@@ -19,13 +19,31 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { AddressEntity, CreateResponse } from 'appcoretruckassist';
+import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
 import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { FormService } from '../../../services/form/form.service';
+import { UserTService } from '../../user/state/user.service';
+import { CompanyUserModalResponse } from '../../../../../../appcoretruckassist/model/companyUserModalResponse';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SettingsOfficeModalComponent } from '../../settings/settings-location/location-modals/settings-office-modal/settings-office-modal.component';
+import { Options } from 'ng5-slider';
+import { CreateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/createCompanyUserCommand';
+import { CompanyUserResponse } from '../../../../../../appcoretruckassist/model/companyUserResponse';
+import { UpdateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/updateCompanyUserCommand';
+import {
+    convertNumberInThousandSep,
+    convertDateFromBackend,
+} from '../../../utils/methods.calculations';
+import {
+    convertThousanSepInNumber,
+    convertDateToBackend,
+} from '../../../utils/methods.calculations';
+import { HttpResponseBase } from '@angular/common/http';
 
 @Component({
     selector: 'app-user-modal',
@@ -37,6 +55,7 @@ import { NotificationService } from '../../../services/notification/notification
 })
 export class UserModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+
     @Input() editData: any;
 
     public userForm: FormGroup;
@@ -53,73 +72,104 @@ export class UserModalComponent implements OnInit, OnDestroy {
         },
     ];
 
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
-
     public typeOfEmploye = [
         {
-            id: 998,
-            label: 'employe',
-            value: 'user',
+            id: 3,
             name: 'User',
             checked: true,
         },
         {
-            id: 999,
-            label: 'employe',
-            value: 'admin',
+            id: 4,
             name: 'Admin',
             checked: false,
         },
     ];
 
+    public ownerType = [
+        {
+            id: 10,
+            name: 'Owner',
+            checked: true,
+        },
+    ];
+
     public typeOfPayroll = [
         {
-            id: 300,
-            label: 'payroll',
-            value: '1099',
+            id: 5,
             name: '1099',
             checked: true,
         },
         {
-            id: 301,
-            label: 'payroll',
-            value: 'W-2',
+            id: 6,
             name: 'W-2',
             checked: false,
         },
     ];
+
+    public animationObject = {
+        value: this.selectedTab,
+        params: { height: '0px' },
+    };
+
+    public commissionOptions: Options = {
+        floor: 2.5,
+        ceil: 25,
+        step: 0.5,
+        showSelectionBar: true,
+        hideLimitLabels: true,
+    };
+
     public labelsBank: any[] = [];
     public departments: any[] = [];
     public offices: any[] = [];
+    public paymentOptions: any[] = [];
+
+    public helperForManagers: any[] = [];
+    public heleperForDispatchers: any[] = [];
 
     public selectedDepartment: any = null;
     public selectedOffice: any = null;
     public selectedBank: any = null;
-
+    public selectedPayment: any = null;
     public selectedAddress: AddressEntity = null;
-    public isPhoneExtExist: boolean = false;
 
+    public selectedUserType: EnumValue = null;
+
+    public selectedUserAdmin: any = this.typeOfEmploye[0];
+    public selectedW21099: any = this.typeOfPayroll[0];
+
+    public isPhoneExtExist: boolean = false;
     public isBankSelected: boolean = false;
 
-    public isDirty: boolean;
+    public isFormDirty: boolean;
+
+    public isPaymentTypeAvailable: boolean = false;
+
+    public allowOnlyCommission: boolean = false;
+    public allowPairCommissionBase: boolean = false;
+
+    public userFullName: string = null;
+
+    public userStatus: boolean = true;
 
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
+        private userService: UserTService,
         private bankVerificationService: BankVerificationService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit() {
         this.createForm();
+        this.getModalDropdowns();
         this.onBankSelected();
 
         if (this.editData) {
-            this.editUserById(this.editData.id);
+            this.getUserById(this.editData.id);
         }
     }
 
@@ -129,26 +179,38 @@ export class UserModalComponent implements OnInit, OnDestroy {
             lastName: [null, [Validators.required, ...lastNameValidation]],
             address: [null, [...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            personalPhone: [null, [phoneFaxRegex, Validators.required]],
+            personalPhone: [null, [phoneFaxRegex]],
             personalEmail: [null],
             departmentId: [
                 null,
                 [Validators.required, ...departmentValidation],
             ],
-            mainOfficeId: [null],
+            companyOfficeId: [null],
             userType: [null],
-            employePhone: [null, [phoneFaxRegex, Validators.required]],
-            employePhoneExt: [null, [...phoneExtension]],
-            employeEmail: [null, [Validators.required]],
-            isIncludePayroll: [false],
+            isAdmin: [false],
+            phone: [null, [phoneFaxRegex]],
+            extensionPhone: [null, [...phoneExtension]],
+            email: [null, [Validators.required]],
+            includeInPayroll: [false],
+            paymentType: [null],
             salary: [null, salaryValidation],
             startDate: [null],
-            payrollType: [null],
+            is1099: [null],
             bankId: [null, [...bankValidation]],
             routingNumber: [null, routingBankValidation],
             accountNumber: [null, accountBankValidation],
+            base: [null],
+            commission: [null],
             note: [null],
         });
+
+        this.formService.checkFormChange(this.userForm);
+
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
 
         this.inputService.customInputValidator(
             this.userForm.get('personalEmail'),
@@ -157,7 +219,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         );
 
         this.inputService.customInputValidator(
-            this.userForm.get('employeEmail'),
+            this.userForm.get('email'),
             'email',
             this.destroy$
         );
@@ -169,7 +231,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'save': {
-                if (this.userForm.invalid) {
+                if (this.userForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.userForm);
                     return;
                 }
@@ -188,6 +250,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
+            case 'deactivate': {
+                if (this.editData) {
+                    this.updateUserStatus(this.editData.id, data);
+                }
+                break;
+            }
+
             case 'delete': {
                 if (this.editData) {
                     this.deleteUserById(this.editData.id);
@@ -234,33 +303,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onTypeOfEmploye(event: any) {}
-
-    public onTypeOfPayroll(event: any) {}
-
-    public onSelectDropdown(event: any, action: string) {
-        switch (action) {
-            case 'department': {
-                this.selectedDepartment = event;
-                break;
-            }
-            case 'office': {
-                this.selectedOffice = event;
-                break;
-            }
-            case 'bank': {
-                this.selectedBank = event;
-                if (!event) {
-                    this.userForm.get('bankId').patchValue(null);
-                }
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
     public onSaveNewBank(bank: { data: any; action: string }) {
         this.selectedBank = bank.data;
 
@@ -288,18 +330,386 @@ export class UserModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private updateUser(id: number) {}
+    public onSelectedTab(event: any, action: string) {
+        switch (action) {
+            case 'user-admin': {
+                this.selectedUserAdmin = event;
+                break;
+            }
+            case '1099-w2': {
+                this.selectedW21099 = event;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
 
-    private addUser() {}
+    public onSelectDropdown(event: any, action: string) {
+        switch (action) {
+            case 'department': {
+                this.selectedDepartment = event;
 
-    private deleteUserById(id: number) {}
+                if (
+                    ['Dispatch', 'Manager'].includes(
+                        this.selectedDepartment?.name
+                    )
+                ) {
+                    this.isPaymentTypeAvailable = true;
 
-    private editUserById(id: number) {}
+                    this.paymentOptions =
+                        this.selectedDepartment.name === 'Dispatch'
+                            ? this.heleperForDispatchers
+                            : this.helperForManagers;
+                } else {
+                    this.isPaymentTypeAvailable = false;
+                    this.paymentOptions = [];
+                    this.allowOnlyCommission = false;
+                    this.allowPairCommissionBase = false;
+                    this.userForm.get('paymentType').reset();
+                    this.selectedPayment = null;
+                }
+                break;
+            }
+            case 'office': {
+                if (event?.canOpenModal) {
+                    this.ngbActiveModal.close();
+                    this.modalService.setProjectionModal({
+                        action: 'open',
+                        payload: {
+                            key: 'user-modal',
+                            value: {},
+                        },
+                        component: SettingsOfficeModalComponent,
+                        size: 'small',
+                        type: 'user-modal',
+                    });
+                } else {
+                    this.selectedOffice = event;
+                }
 
-    // Checkbox Card
-    public payrollCheckboxCard: boolean = true;
-    public toggleCheckboxCard() {
-        this.payrollCheckboxCard = !this.payrollCheckboxCard;
+                break;
+            }
+            case 'bank': {
+                this.selectedBank = event;
+                if (!event) {
+                    this.userForm.get('bankId').patchValue(null);
+                }
+                break;
+            }
+            case 'payment': {
+                this.selectedPayment = event;
+
+                this.allowOnlyCommission = ['Load %', 'Revenue %'].includes(
+                    this.selectedPayment?.name
+                );
+
+                this.allowPairCommissionBase = [
+                    'Base + Load %',
+                    'Base + Revenue %',
+                ].includes(this.selectedPayment?.name);
+
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    private updateUser(id: number) {
+        const {
+            addressUnit,
+            includeInPayroll,
+            salary,
+            startDate,
+            base,
+            commission,
+            ...form
+        } = this.userForm.value;
+
+        const newData: UpdateCompanyUserCommand = {
+            id: id,
+            ...form,
+            address: {
+                ...this.selectedAddress,
+                addressUnit: addressUnit,
+            },
+            departmentId: this.selectedDepartment
+                ? this.selectedDepartment.id
+                : null,
+            companyOfficeId: this.selectedOffice
+                ? this.selectedOffice.id
+                : null,
+            userType: this.selectedUserType
+                ? this.selectedUserType.name === 'Owner'
+                    ? this.selectedUserType.id
+                    : 0
+                : 0,
+            isAdmin: this.selectedUserAdmin
+                ? this.selectedUserAdmin.name === 'Admin'
+                    ? true
+                    : false
+                : false,
+            includeInPayroll: includeInPayroll,
+            paymentType: this.selectedPayment ? this.selectedPayment.id : null,
+            salary: salary ? convertThousanSepInNumber(salary) : null,
+            startDate: startDate ? convertDateToBackend(startDate) : null,
+            is1099: this.selectedW21099
+                ? this.selectedW21099.name === '1099'
+                    ? true
+                    : false
+                : false,
+            bankId: this.selectedBank ? this.selectedBank.id : null,
+            base: base ? convertThousanSepInNumber(base) : null,
+            commission: commission ? parseFloat(commission) : null,
+        };
+
+        this.userService
+            .updateUser(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success(
+                        'Successfully created user.',
+                        'Success'
+                    );
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
+    }
+
+    private addUser() {
+        const {
+            addressUnit,
+            includeInPayroll,
+            salary,
+            startDate,
+            base,
+            commission,
+            ...form
+        } = this.userForm.value;
+        const newData: CreateCompanyUserCommand = {
+            ...form,
+            address: {
+                ...this.selectedAddress,
+                addressUnit: addressUnit,
+            },
+            departmentId: this.selectedDepartment
+                ? this.selectedDepartment.id
+                : null,
+            companyOfficeId: this.selectedOffice
+                ? this.selectedOffice.id
+                : null,
+            userType: null,
+            isAdmin: this.selectedUserAdmin
+                ? this.selectedUserAdmin.name === 'Admin'
+                    ? true
+                    : false
+                : false,
+            includeInPayroll: includeInPayroll,
+            paymentType: this.selectedPayment ? this.selectedPayment.id : null,
+            salary: salary ? convertThousanSepInNumber(salary) : null,
+            startDate: startDate ? convertDateToBackend(startDate) : null,
+            is1099: this.selectedW21099
+                ? this.selectedW21099.name === '1099'
+                    ? true
+                    : false
+                : false,
+            bankId: this.selectedBank ? this.selectedBank.id : null,
+            base: base ? convertThousanSepInNumber(base) : null,
+            commission: commission ? parseFloat(commission) : null,
+        };
+        this.userService
+            .addUser(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success(
+                        'Successfully created user.',
+                        'Success'
+                    );
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
+    }
+
+    private deleteUserById(id: number) {
+        this.userService
+            .deleteUserById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success(
+                        'Successfully deleted user.',
+                        'Success'
+                    );
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
+    }
+
+    private getUserById(id: number) {
+        this.userService
+            .getUserByid(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: CompanyUserResponse) => {
+                    console.log(res);
+                    this.userForm.patchValue({
+                        firstName: res.firstName,
+                        lastName: res.lastName,
+                        address: res.address?.address,
+                        addressUnit: res.address?.addressUnit,
+                        personalPhone: res.personalPhone,
+                        personalEmail: res.personalEmail,
+                        departmentId: res.department
+                            ? res.department.name
+                            : null,
+                        companyOfficeId: res.companyOffice
+                            ? res.companyOffice.name
+                            : null,
+                        userType: res.userType ? res.userType.name : null,
+                        isAdmin: res.isAdmin,
+                        phone: res.phone,
+                        extensionPhone: res.extensionPhone,
+                        email: res.email,
+                        includeInPayroll: res.includeInPayroll ? true : false,
+                        // paymentType: res.paymentType
+                        //     ? res.paymentType.name
+                        //     : null,
+                        salary: res.salary
+                            ? convertNumberInThousandSep(res.salary)
+                            : null,
+                        startDate: res.startDate
+                            ? convertDateFromBackend(res.startDate)
+                            : null,
+                        is1099: res.is1099,
+                        bankId: res.bank ? res.bank.name : null,
+                        routingNumber: res.routingNumber,
+                        accountNumber: res.accountNumber,
+                        base: res.base
+                            ? convertNumberInThousandSep(res.base)
+                            : null,
+                        commission: res.commission,
+                        note: res.note,
+                    });
+
+                    this.selectedAddress = res.address;
+                    this.selectedDepartment = res.department;
+                    this.selectedOffice = res.companyOffice;
+                    this.selectedUserType = res.userType;
+                    // this.selectedPayment = res.paymentType;
+                    console.log('user status: ', res.status);
+                    this.userStatus = res.status !== 1;
+
+                    this.typeOfEmploye = this.typeOfEmploye.map(
+                        (item, index) => {
+                            return {
+                                ...item,
+                                checked: res.isAdmin && index === 1,
+                            };
+                        }
+                    );
+
+                    this.typeOfPayroll = this.typeOfPayroll.map(
+                        (item, index) => {
+                            return {
+                                ...item,
+                                checked: !res.is1099 && index === 1,
+                            };
+                        }
+                    );
+
+                    this.onSelectedTab(
+                        res.isAdmin
+                            ? this.typeOfEmploye[1]
+                            : this.typeOfEmploye[0],
+                        'user-admin'
+                    );
+
+                    this.onSelectedTab(
+                        res.is1099
+                            ? this.typeOfPayroll[0]
+                            : this.typeOfPayroll[1],
+                        '1099-w2'
+                    );
+
+                    this.selectedBank = res.bank;
+
+                    this.userFullName = res.firstName?.concat(
+                        ' ',
+                        res.lastName
+                    );
+
+                    this.isPhoneExtExist = !!res.extensionPhone;
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
+    }
+
+    private updateUserStatus(
+        id: number,
+        data: { action: string; bool: boolean }
+    ) {
+        let successMessage = `"${this.userFullName}" ${
+            data.action === 'deactivate' ? 'Deactivated' : 'Activated'
+        }`;
+        let errorMessage = `Failed to ${
+            data.action === 'deactivate' ? 'Deactivate' : 'Activate'
+        } "${this.userFullName}"`;
+
+        this.userService
+            .updateUserStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: HttpResponseBase) => {
+                    if (res.status === 200 || res.status === 204) {
+                        this.userStatus = !this.userStatus;
+
+                        this.modalService.changeModalStatus({
+                            name: 'deactivate',
+                            status: this.userStatus,
+                        });
+
+                        this.notificationService.success(
+                            successMessage,
+                            'Success'
+                        );
+                    }
+                },
+                error: () => {
+                    this.notificationService.error(errorMessage, 'Error');
+                },
+            });
+    }
+
+    private getModalDropdowns() {
+        this.userService
+            .getModalDropdowns()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: CompanyUserModalResponse) => {
+                    console.log('drop: ', res);
+                    this.departments = res.departments;
+                    this.labelsBank = res.banks;
+                    this.offices = res.officeShortResponses;
+                    this.helperForManagers = res.managerResponses;
+                    this.heleperForDispatchers = res.dispatcherResponses;
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
     }
 
     ngOnDestroy(): void {

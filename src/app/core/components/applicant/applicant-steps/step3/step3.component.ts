@@ -34,8 +34,6 @@ import {
     CdlFeedbackResponse,
     CdlRestrictionResponse,
     CountryType,
-    CreateApplicantCdlCommand,
-    CreateApplicantCdlReviewCommand,
     EnumValue,
 } from 'appcoretruckassist/model/models';
 
@@ -703,7 +701,7 @@ export class Step3Component implements OnInit, OnDestroy {
             ),
         };
 
-        const saveData: CreateApplicantCdlCommand = {
+        const saveData: any = {
             applicantId: this.applicantId,
             cdlDenied: permit,
             cdlDeniedExplanation: permitExplain,
@@ -817,7 +815,7 @@ export class Step3Component implements OnInit, OnDestroy {
             expDateMessage: this.lastLicenseCard.secondRowReview,
         };
 
-        const saveData: CreateApplicantCdlReviewCommand = {
+        const saveData: any = {
             applicantId: this.applicantId,
             isCdlDeniedExplanationValid:
                 !this.openAnnotationArray[14].lineInputs[0],

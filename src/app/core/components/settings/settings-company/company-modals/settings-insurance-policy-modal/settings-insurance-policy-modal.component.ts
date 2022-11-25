@@ -18,12 +18,9 @@ import {
     trailerValueInsurancePolicyValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-
 import {
     AddressEntity,
-    CreateInsurancePolicyCommand,
     InsurancePolicyModalResponse,
-    UpdateInsurancePolicyCommand,
 } from 'appcoretruckassist';
 
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
@@ -442,7 +439,7 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
-        let newData: CreateInsurancePolicyCommand = {
+        let newData: any = {
             companyId: company.divisions.length ? null : company.id,
             ...form,
             issued: convertDateToBackend(issued),
@@ -656,7 +653,7 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
-        let newData: UpdateInsurancePolicyCommand = {
+        let newData: any = {
             id: id,
             ...form,
             issued: convertDateToBackend(issued),
@@ -1095,46 +1092,6 @@ export class SettingsInsurancePolicyModalComponent
                         break;
                     }
                 }
-            }
-        }
-    }
-
-    // Checkbox Card
-    public commericalGeneralCheckboxCard: boolean = true;
-    public automobileLiabilityCheckboxCard: boolean = true;
-    public motorTruckCargoBreakDownCheckboxCard: boolean = true;
-    public physicalDamageDownCheckboxCard: boolean = true;
-    public trailerInterchangeCheckboxCard: boolean = true;
-
-    public toggleCheckboxCard(action: string) {
-        switch (action) {
-            case 'commercial-general': {
-                this.commericalGeneralCheckboxCard =
-                    !this.commericalGeneralCheckboxCard;
-                break;
-            }
-            case 'automobile-liability': {
-                this.automobileLiabilityCheckboxCard =
-                    !this.automobileLiabilityCheckboxCard;
-                break;
-            }
-            case 'motor-truck-cargo': {
-                this.motorTruckCargoBreakDownCheckboxCard =
-                    !this.motorTruckCargoBreakDownCheckboxCard;
-                break;
-            }
-            case 'physical-damage': {
-                this.physicalDamageDownCheckboxCard =
-                    !this.physicalDamageDownCheckboxCard;
-                break;
-            }
-            case 'trailer-interchange': {
-                this.trailerInterchangeCheckboxCard =
-                    !this.trailerInterchangeCheckboxCard;
-                break;
-            }
-            default: {
-                break;
             }
         }
     }

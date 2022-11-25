@@ -99,7 +99,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'delete': {
-                this.deleteFactoringCompanyById(this.editData.company);
+                this.deleteFactoringCompanyById();
                 this.modalService.setModalSpinner({
                     action: 'delete',
                     status: true,
@@ -114,15 +114,8 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     }
 
     private updateFactoringCompany(company: any) {
-        const {
-            name,
-            phone,
-            email,
-            address,
-            addressUnit,
-            noticeOfAssigment,
-            note,
-        } = this.factoringForm.value;
+        const { name, phone, email, addressUnit, noticeOfAssigment, note } =
+            this.factoringForm.value;
 
         if (this.selectedAddress) {
             this.selectedAddress = {
@@ -163,7 +156,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteFactoringCompanyById(company: any) {
+    private deleteFactoringCompanyById() {
         this.settingsCompanyService
             .deleteFactoringCompanyById(this.editData.company.id)
             .pipe(takeUntil(this.destroy$))

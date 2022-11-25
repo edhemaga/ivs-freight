@@ -1,0 +1,35 @@
+<div class="custom-checkbox-card">
+    <div class="divider"></div>
+    <div
+        class="checkbox-card-header"
+        [ngClass]="{ pointer: getSuperControl.value }"
+    >
+        <app-ta-checkbox
+            [formControl]="getSuperControl"
+            [label]="label"
+            [name]="name"
+        ></app-ta-checkbox>
+        <svg-icon
+            *ngIf="hasArrow"
+            class="checkbox-card-header-arrow"
+            src="assets/svg/common/ic_arrow_down_updated.svg"
+            [ngClass]="{
+                visible: getSuperControl.value,
+                rotate: !_isCardOpen
+            }"
+            (click)="onToggleCard($event)"
+        ></svg-icon>
+    </div>
+
+    <div
+        class="checkbox-card-body"
+        [ngClass]="noActive"
+        [ngStyle]="animationMarginParams"
+        [@showHideCardBody]="{
+            value: _isCardOpen?.toString(),
+            params: animationMarginParams
+        }"
+    >
+        <ng-content></ng-content>
+    </div>
+</div>

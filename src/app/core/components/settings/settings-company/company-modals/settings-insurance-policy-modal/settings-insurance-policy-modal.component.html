@@ -115,7 +115,7 @@
                     [inputConfig]="{
                         name: 'address-unit',
                         type: 'text',
-                        label: 'Unit No.',
+                        label: 'Unit #',
                         textTransform: 'uppercase',
                         minLength: 1,
                         maxLength: 10
@@ -124,674 +124,517 @@
             </div>
         </div>
         <!-- Commerical General Liability -->
-        <div class="custom-checkbox-card">
-            <div class="divider"></div>
-            <div
-                class="checkbox-card-header"
-                [ngClass]="{
-                    pointer: insurancePolicyForm.get(
-                        'commericalGeneralLiability'
-                    ).value
-                }"
-            >
-                <app-ta-checkbox
-                    formControlName="commericalGeneralLiability"
-                    [label]="'Commercial General Liability'"
-                    [name]="'Commercial'"
-                ></app-ta-checkbox>
-                <svg-icon
-                    class="checkbox-card-header-arrow"
-                    src="assets/svg/common/ic_arrow_down_updated.svg"
-                    [ngClass]="{
-                        visible: insurancePolicyForm.get(
-                            'commericalGeneralLiability'
-                        ).value,
-                        rotate: !commericalGeneralCheckboxCard
+        <app-ta-checkbox-card
+            formControlName="commericalGeneralLiability"
+            [label]="'Commercial General Liability'"
+            [name]="'commercial-general-liability'"
+            [isCardOpen]="
+                insurancePolicyForm.get('commericalGeneralLiability').value
+            "
+            [animationMarginParams]="{
+                marginTop: '12px',
+                marginBottom: '22px'
+            }"
+        >
+            <div class="insurance-policy-rating">
+                <app-ta-input
+                    formControlName="commericalPolicy"
+                    [inputConfig]="{
+                        name: 'Policy',
+                        type: 'text',
+                        label: 'Policy #',
+                        isRequired: true,
+                        textTransform: 'capitalize',
+                        customClass: 'line-input-26-in-card'
                     }"
-                    (click)="toggleCheckboxCard('commercial-general')"
-                ></svg-icon>
+                ></app-ta-input>
+                <app-ta-input
+                    formControlName="commericalInsurerName"
+                    [inputConfig]="{
+                        name: 'Insurer Name',
+                        type: 'text',
+                        label: 'Insurer Name',
+                        isRequired: true,
+                        textTransform: 'uppercase',
+                        minLength: 2,
+                        maxLength: 64,
+                        customClass: 'line-input-26-in-card'
+                    }"
+                ></app-ta-input>
+                <app-ta-input-dropdown
+                    formControlName="commericalRating"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Rating',
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-78',
+                        customClass: 'line-input-26-in-card'
+                    }"
+                    [options]="ratings"
+                    [activeItem]="selectedCommericalRating"
+                    (selectedItem)="onSelectDropdown($event, 'commercial')"
+                ></app-ta-input-dropdown>
             </div>
-            <div
-                *ngIf="
-                    insurancePolicyForm.get('commericalGeneralLiability')
-                        .value && commericalGeneralCheckboxCard
-                "
-                class="checkbox-card-body"
-                [ngClass]="{
-                    'active-20': insurancePolicyForm.get(
-                        'commericalGeneralLiability'
-                    ).value
-                }"
-            >
-                <div
-                    *ngIf="
-                        insurancePolicyForm.get('commericalGeneralLiability')
-                            .value
-                    "
-                >
-                    <div class="insurance-policy-rating">
-                        <app-ta-input
-                            formControlName="commericalPolicy"
-                            [inputConfig]="{
-                                name: 'Policy',
-                                type: 'text',
-                                label: 'Policy #',
-                                isRequired: true,
-                                textTransform: 'capitalize',
-                                customClass: 'line-input-26-in-card'
-                            }"
-                        ></app-ta-input>
-                        <app-ta-input
-                            formControlName="commericalInsurerName"
-                            [inputConfig]="{
-                                name: 'Insurer Name',
-                                type: 'text',
-                                label: 'Insurer Name',
-                                isRequired: true,
-                                textTransform: 'uppercase',
-                                minLength: 2,
-                                maxLength: 64,
-                                customClass: 'line-input-26-in-card'
-                            }"
-                        ></app-ta-input>
-                        <app-ta-input-dropdown
-                            formControlName="commericalRating"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Rating',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-78',
-                                customClass: 'line-input-26-in-card'
-                            }"
-                            [options]="ratings"
-                            [activeItem]="selectedCommericalRating"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'commercial')
-                            "
-                        ></app-ta-input-dropdown>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="commericalOccurrence"
-                                [inputConfig]="{
-                                    name: 'Each Occurrence',
-                                    type: 'text',
-                                    label: 'Each Occurrence',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11,
-                                    customClass: 'line-input-26-in-card'
-                                }"
-                            ></app-ta-input>
-                        </div>
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="commericalDamage"
-                                [inputConfig]="{
-                                    name: 'Damage',
-                                    type: 'text',
-                                    label: 'Damage To Rented Prem.',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11,
-                                    customClass: 'line-input-26-in-card'
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="commericalInj"
-                                [inputConfig]="{
-                                    name: 'personal-adver-inj',
-                                    type: 'text',
-                                    label: 'Personal & Adver. Inj.',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11,
-                                    customClass: 'line-input-26-in-card'
-                                }"
-                            ></app-ta-input>
-                        </div>
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="commericalMedical"
-                                [inputConfig]="{
-                                    name: 'Medical Expenses',
-                                    type: 'text',
-                                    label: 'Medical Expenses',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11,
-                                    customClass: 'line-input-26-in-card'
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
-                    <div class="row last-row">
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="commericalGeneralAggregate"
-                                [inputConfig]="{
-                                    name: 'General Aggregate',
-                                    type: 'text',
-                                    label: 'General Aggregate',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11,
-                                    customClass: 'line-input-26-in-card'
-                                }"
-                            ></app-ta-input>
-                        </div>
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="commericalProducts"
-                                [inputConfig]="{
-                                    name: 'products-comp-op-agg',
-                                    type: 'text',
-                                    label: 'Products Comp/OP Agg.',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11,
-                                    customClass: 'line-input-26-in-card'
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="commericalOccurrence"
+                        [inputConfig]="{
+                            name: 'Each Occurrence',
+                            type: 'text',
+                            label: 'Each Occurrence',
+                            placeholderIcon: 'dollar',
+                            customClass:
+                                'dollar-placeholderIcon line-input-26-in-card',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
+                </div>
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="commericalDamage"
+                        [inputConfig]="{
+                            name: 'Damage',
+                            type: 'text',
+                            label: 'Damage To Rented Prem.',
+                            placeholderIcon: 'dollar',
+                            customClass:
+                                'dollar-placeholderIcon line-input-26-in-card',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
                 </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="commericalInj"
+                        [inputConfig]="{
+                            name: 'personal-adver-inj',
+                            type: 'text',
+                            label: 'Personal & Adver. Inj.',
+                            placeholderIcon: 'dollar',
+                            customClass:
+                                'dollar-placeholderIcon line-input-26-in-card',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
+                </div>
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="commericalMedical"
+                        [inputConfig]="{
+                            name: 'Medical Expenses',
+                            type: 'text',
+                            label: 'Medical Expenses',
+                            placeholderIcon: 'dollar',
+                            customClass:
+                                'dollar-placeholderIcon line-input-26-in-card',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
+                </div>
+            </div>
+            <div class="row last-row">
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="commericalGeneralAggregate"
+                        [inputConfig]="{
+                            name: 'General Aggregate',
+                            type: 'text',
+                            label: 'General Aggregate',
+                            placeholderIcon: 'dollar',
+                            customClass:
+                                'dollar-placeholderIcon line-input-26-in-card',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
+                </div>
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="commericalProducts"
+                        [inputConfig]="{
+                            name: 'products-comp-op-agg',
+                            type: 'text',
+                            label: 'Products Comp/OP Agg.',
+                            placeholderIcon: 'dollar',
+                            customClass:
+                                'dollar-placeholderIcon line-input-26-in-card',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
+                </div>
+            </div>
+        </app-ta-checkbox-card>
+
         <!-- Atomobile Liability -->
-        <div class="custom-checkbox-card">
-            <div class="divider"></div>
-            <div
-                class="checkbox-card-header"
-                [ngClass]="{
-                    pointer: insurancePolicyForm.get('automobileLiability')
-                        .value
-                }"
-            >
-                <app-ta-checkbox
-                    formControlName="automobileLiability"
-                    [label]="'Automobile Liability'"
-                    [name]="'Automobile'"
-                ></app-ta-checkbox>
-                <svg-icon
-                    class="checkbox-card-header-arrow"
-                    src="assets/svg/common/ic_arrow_down_updated.svg"
-                    [ngClass]="{
-                        visible: insurancePolicyForm.get('automobileLiability')
-                            .value,
-                        rotate: !automobileLiabilityCheckboxCard
+        <app-ta-checkbox-card
+            formControlName="automobileLiability"
+            [label]="'Automobile Liability'"
+            [name]="'automobile-liability'"
+            [isCardOpen]="insurancePolicyForm.get('automobileLiability').value"
+            [animationMarginParams]="{
+                marginTop: '12px',
+                marginBottom: '22px'
+            }"
+        >
+            <div class="insurance-policy-rating">
+                <app-ta-input
+                    formControlName="automobilePolicy"
+                    [inputConfig]="{
+                        name: 'Policy',
+                        type: 'text',
+                        label: 'Policy #',
+                        isRequired: true,
+                        textTransform: 'capitalize'
                     }"
-                    (click)="toggleCheckboxCard('automobile-liability')"
-                ></svg-icon>
+                ></app-ta-input>
+                <app-ta-input
+                    formControlName="automobileInsurerName"
+                    [inputConfig]="{
+                        name: 'Insurer Name',
+                        type: 'text',
+                        label: 'Insurer Name',
+                        isRequired: true,
+                        textTransform: 'uppercase',
+                        minLength: 2,
+                        maxLength: 64
+                    }"
+                ></app-ta-input>
+                <app-ta-input-dropdown
+                    formControlName="automobileRating"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Rating',
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-78'
+                    }"
+                    [options]="ratings"
+                    [activeItem]="selectedAutomobileRating"
+                    (selectedItem)="onSelectDropdown($event, 'automobile')"
+                ></app-ta-input-dropdown>
             </div>
-            <div
-                *ngIf="
-                    insurancePolicyForm.get('automobileLiability').value &&
-                    automobileLiabilityCheckboxCard
-                "
-                class="checkbox-card-body"
-                [ngClass]="{
-                    'active-20': insurancePolicyForm.get('automobileLiability')
-                        .value
-                }"
-            >
-                <div
-                    *ngIf="insurancePolicyForm.get('automobileLiability').value"
-                >
-                    <div class="insurance-policy-rating">
-                        <app-ta-input
-                            formControlName="automobilePolicy"
-                            [inputConfig]="{
-                                name: 'Policy',
-                                type: 'text',
-                                label: 'Policy #',
-                                isRequired: true,
-                                textTransform: 'capitalize'
-                            }"
-                        ></app-ta-input>
-                        <app-ta-input
-                            formControlName="automobileInsurerName"
-                            [inputConfig]="{
-                                name: 'Insurer Name',
-                                type: 'text',
-                                label: 'Insurer Name',
-                                isRequired: true,
-                                textTransform: 'uppercase',
-                                minLength: 2,
-                                maxLength: 64
-                            }"
-                        ></app-ta-input>
-                        <app-ta-input-dropdown
-                            formControlName="automobileRating"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Rating',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-78'
-                            }"
-                            [options]="ratings"
-                            [activeItem]="selectedAutomobileRating"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'automobile')
-                            "
-                        ></app-ta-input-dropdown>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="automobileAccident"
-                                [inputConfig]="{
-                                    name: 'Bodily Injury',
-                                    type: 'text',
-                                    label: 'Bodily Injury (Accident)',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11
-                                }"
-                            ></app-ta-input>
-                        </div>
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="automobileInjuryPerson"
-                                [inputConfig]="{
-                                    name: 'Bodily Injury',
-                                    type: 'text',
-                                    label: 'Bodily Injury (Person)',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
-                    <div class="row last-row">
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="automobileLimit"
-                                [inputConfig]="{
-                                    name: 'combined-single-limit',
-                                    type: 'text',
-                                    label: 'Combined Single Limit',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11
-                                }"
-                            ></app-ta-input>
-                        </div>
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="automobileDamage"
-                                [inputConfig]="{
-                                    name: 'Damage',
-                                    type: 'text',
-                                    label: 'Property Damage',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="automobileAccident"
+                        [inputConfig]="{
+                            name: 'Bodily Injury',
+                            type: 'text',
+                            label: 'Bodily Injury (Accident)',
+                            placeholderIcon: 'dollar',
+                            customClass: 'dollar-placeholderIcon',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
+                </div>
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="automobileInjuryPerson"
+                        [inputConfig]="{
+                            name: 'Bodily Injury',
+                            type: 'text',
+                            label: 'Bodily Injury (Person)',
+                            placeholderIcon: 'dollar',
+                            customClass: 'dollar-placeholderIcon',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
                 </div>
             </div>
-        </div>
+            <div class="row row-no-m">
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="automobileLimit"
+                        [inputConfig]="{
+                            name: 'combined-single-limit',
+                            type: 'text',
+                            label: 'Combined Single Limit',
+                            placeholderIcon: 'dollar',
+                            customClass: 'dollar-placeholderIcon',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
+                </div>
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="automobileDamage"
+                        [inputConfig]="{
+                            name: 'Damage',
+                            type: 'text',
+                            label: 'Property Damage',
+                            placeholderIcon: 'dollar',
+                            customClass: 'dollar-placeholderIcon',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
+                </div>
+            </div>
+        </app-ta-checkbox-card>
+
         <!-- Motor Truck Cargo -->
-        <div class="custom-checkbox-card">
-            <div class="divider"></div>
-            <div
-                class="checkbox-card-header"
-                [ngClass]="{
-                    pointer: insurancePolicyForm.get('motorTruckCargo').value
-                }"
-            >
-                <div class="grouping-checkboxes">
-                    <app-ta-checkbox
-                        formControlName="motorTruckCargo"
-                        [label]="'Motor Truck Cargo'"
-                        [name]="'MotorTruck'"
-                    ></app-ta-checkbox>
-                    <app-ta-checkbox
+        <app-ta-checkbox-card
+            formControlName="motorTruckCargo"
+            [label]="'Motor Truck Cargo'"
+            [name]="'motor-truck-cargo'"
+            [isCardOpen]="insurancePolicyForm.get('motorTruckCargo').value"
+            [animationMarginParams]="{
+                marginTop: '12px',
+                marginBottom: '22px'
+            }"
+        >
+            <!-- <app-ta-checkbox
                         formControlName="reeferBreakdown"
                         [label]="'Reefer Breakdown'"
                         [disabled]="
                             !insurancePolicyForm.get('motorTruckCargo').value
                         "
                         [name]="'ReeferBreakdown'"
-                    ></app-ta-checkbox>
-                </div>
-
-                <svg-icon
-                    class="checkbox-card-header-arrow"
-                    src="assets/svg/common/ic_arrow_down_updated.svg"
-                    [ngClass]="{
-                        visible:
-                            insurancePolicyForm.get('motorTruckCargo').value,
-                        rotate: !motorTruckCargoBreakDownCheckboxCard
+                    ></app-ta-checkbox> -->
+            <div class="insurance-policy-rating">
+                <app-ta-input
+                    formControlName="motorPolicy"
+                    [inputConfig]="{
+                        name: 'Policy',
+                        type: 'text',
+                        label: 'Policy #',
+                        isRequired: true,
+                        textTransform: 'capitalize'
                     }"
-                    (click)="toggleCheckboxCard('motor-truck-cargo')"
-                ></svg-icon>
+                ></app-ta-input>
+                <app-ta-input
+                    formControlName="motorInsurerName"
+                    [inputConfig]="{
+                        name: 'Insurer Name',
+                        type: 'text',
+                        label: 'Insurer Name',
+                        isRequired: true,
+                        textTransform: 'uppercase',
+                        minLength: 2,
+                        maxLength: 64
+                    }"
+                ></app-ta-input>
+                <app-ta-input-dropdown
+                    formControlName="motorRating"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Rating',
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-78'
+                    }"
+                    [options]="ratings"
+                    [activeItem]="selectedMotorRating"
+                    (selectedItem)="onSelectDropdown($event, 'motor')"
+                ></app-ta-input-dropdown>
             </div>
-            <div
-                *ngIf="
-                    insurancePolicyForm.get('motorTruckCargo').value &&
-                    motorTruckCargoBreakDownCheckboxCard
-                "
-                class="checkbox-card-body"
-                [ngClass]="{
-                    'active-20':
-                        insurancePolicyForm.get('motorTruckCargo').value
-                }"
-            >
-                <div *ngIf="insurancePolicyForm.get('motorTruckCargo').value">
-                    <div class="insurance-policy-rating">
-                        <app-ta-input
-                            formControlName="motorPolicy"
-                            [inputConfig]="{
-                                name: 'Policy',
-                                type: 'text',
-                                label: 'Policy #',
-                                isRequired: true,
-                                textTransform: 'capitalize'
-                            }"
-                        ></app-ta-input>
-                        <app-ta-input
-                            formControlName="motorInsurerName"
-                            [inputConfig]="{
-                                name: 'Insurer Name',
-                                type: 'text',
-                                label: 'Insurer Name',
-                                isRequired: true,
-                                textTransform: 'uppercase',
-                                minLength: 2,
-                                maxLength: 64
-                            }"
-                        ></app-ta-input>
-                        <app-ta-input-dropdown
-                            formControlName="motorRating"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Rating',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-78'
-                            }"
-                            [options]="ratings"
-                            [activeItem]="selectedMotorRating"
-                            (selectedItem)="onSelectDropdown($event, 'motor')"
-                        ></app-ta-input-dropdown>
-                    </div>
-                    <div class="row last-row">
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="motorConveyance"
-                                [inputConfig]="{
-                                    name: 'single-conveyance',
-                                    type: 'text',
-                                    label: 'Single Conveyance',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11
-                                }"
-                            ></app-ta-input>
-                        </div>
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="motorDeductable"
-                                [inputConfig]="{
-                                    name: 'Deductable',
-                                    type: 'text',
-                                    label: 'Deductable',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 10
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
+            <div class="row row-no-m">
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="motorConveyance"
+                        [inputConfig]="{
+                            name: 'single-conveyance',
+                            type: 'text',
+                            label: 'Single Conveyance',
+                            placeholderIcon: 'dollar',
+                            customClass: 'dollar-placeholderIcon',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
+                </div>
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="motorDeductable"
+                        [inputConfig]="{
+                            name: 'Deductable',
+                            type: 'text',
+                            label: 'Deductable',
+                            placeholderIcon: 'dollar',
+                            customClass: 'dollar-placeholderIcon',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 10
+                        }"
+                    ></app-ta-input>
                 </div>
             </div>
-        </div>
+        </app-ta-checkbox-card>
+
         <!-- Physical Damage -->
-        <div class="custom-checkbox-card">
-            <div class="divider"></div>
-            <div
-                class="checkbox-card-header"
-                [ngClass]="{
-                    pointer: insurancePolicyForm.get('physicalDamage').value
-                }"
-            >
-                <app-ta-checkbox
-                    formControlName="physicalDamage"
-                    [label]="'Physical Damage'"
-                    [name]="'PhysicalDamage'"
-                ></app-ta-checkbox>
-
-                <svg-icon
-                    class="checkbox-card-header-arrow"
-                    src="assets/svg/common/ic_arrow_down_updated.svg"
-                    [ngClass]="{
-                        visible:
-                            insurancePolicyForm.get('physicalDamage').value,
-                        rotate: !physicalDamageDownCheckboxCard
+        <app-ta-checkbox-card
+            formControlName="physicalDamage"
+            [label]="'Physical Damage'"
+            [name]="'physical-damage'"
+            [isCardOpen]="insurancePolicyForm.get('physicalDamage').value"
+            [animationMarginParams]="{
+                marginTop: '12px',
+                marginBottom: '22px'
+            }"
+        >
+            <div class="insurance-policy-rating">
+                <app-ta-input
+                    formControlName="physicalPolicy"
+                    [inputConfig]="{
+                        name: 'Policy',
+                        type: 'text',
+                        label: 'Policy #',
+                        isRequired: true,
+                        textTransform: 'capitalize'
                     }"
-                    (click)="toggleCheckboxCard('physical-damage')"
-                ></svg-icon>
+                ></app-ta-input>
+                <app-ta-input
+                    formControlName="physicalInsurerName"
+                    [inputConfig]="{
+                        name: 'Insurer Name',
+                        type: 'text',
+                        label: 'Insurer Name',
+                        isRequired: true,
+                        textTransform: 'uppercase',
+                        minLength: 2,
+                        maxLength: 64
+                    }"
+                ></app-ta-input>
+                <app-ta-input-dropdown
+                    formControlName="physicalRating"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Rating',
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-78'
+                    }"
+                    [options]="ratings"
+                    [activeItem]="selectedPhysicalDamageRating"
+                    (selectedItem)="onSelectDropdown($event, 'physical damage')"
+                ></app-ta-input-dropdown>
             </div>
-            <div
-                *ngIf="
-                    insurancePolicyForm.get('physicalDamage').value &&
-                    physicalDamageDownCheckboxCard
-                "
-                class="checkbox-card-body"
-                [ngClass]="{
-                    'active-20': insurancePolicyForm.get('physicalDamage').value
-                }"
-            >
-                <div *ngIf="insurancePolicyForm.get('physicalDamage').value">
-                    <div class="insurance-policy-rating">
-                        <app-ta-input
-                            formControlName="physicalPolicy"
-                            [inputConfig]="{
-                                name: 'Policy',
-                                type: 'text',
-                                label: 'Policy #',
-                                isRequired: true,
-                                textTransform: 'capitalize'
-                            }"
-                        ></app-ta-input>
-                        <app-ta-input
-                            formControlName="physicalInsurerName"
-                            [inputConfig]="{
-                                name: 'Insurer Name',
-                                type: 'text',
-                                label: 'Insurer Name',
-                                isRequired: true,
-                                textTransform: 'uppercase',
-                                minLength: 2,
-                                maxLength: 64
-                            }"
-                        ></app-ta-input>
-                        <app-ta-input-dropdown
-                            formControlName="physicalRating"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Rating',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-78'
-                            }"
-                            [options]="ratings"
-                            [activeItem]="selectedPhysicalDamageRating"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'physical damage')
-                            "
-                        ></app-ta-input-dropdown>
-                    </div>
-                    <div class="row last-row">
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="physicalCollision"
-                                [inputConfig]="{
-                                    name: 'compreh-collision',
-                                    type: 'text',
-                                    label: 'Comprehen. & Collision',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11
-                                }"
-                            ></app-ta-input>
-                        </div>
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="physicalDeductable"
-                                [inputConfig]="{
-                                    name: 'Deductable',
-                                    type: 'text',
-                                    label: 'Deductable',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 10
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
+            <div class="row row-no-m">
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="physicalCollision"
+                        [inputConfig]="{
+                            name: 'compreh-collision',
+                            type: 'text',
+                            label: 'Comprehen. & Collision',
+                            placeholderIcon: 'dollar',
+                            customClass: 'dollar-placeholderIcon',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
+                </div>
+                <div class="col-6">
+                    <app-ta-input
+                        formControlName="physicalDeductable"
+                        [inputConfig]="{
+                            name: 'Deductable',
+                            type: 'text',
+                            label: 'Deductable',
+                            placeholderIcon: 'dollar',
+                            customClass: 'dollar-placeholderIcon',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 10
+                        }"
+                    ></app-ta-input>
                 </div>
             </div>
-        </div>
+        </app-ta-checkbox-card>
+
         <!-- Trailer Interchange -->
-        <div class="custom-checkbox-card">
-            <div class="divider"></div>
-            <div
-                class="checkbox-card-header"
-                [ngClass]="{
-                    pointer: insurancePolicyForm.get('trailerInterchange').value
-                }"
-            >
-                <app-ta-checkbox
-                    formControlName="trailerInterchange"
-                    [label]="'Trailer Interchange'"
-                    [name]="'TrailerInterchange'"
-                ></app-ta-checkbox>
-
-                <svg-icon
-                    class="checkbox-card-header-arrow"
-                    src="assets/svg/common/ic_arrow_down_updated.svg"
-                    [ngClass]="{
-                        visible:
-                            insurancePolicyForm.get('trailerInterchange').value,
-                        rotate: !trailerInterchangeCheckboxCard
+        <app-ta-checkbox-card
+            formControlName="trailerInterchange"
+            [label]="'Trailer Interchange'"
+            [name]="'trailer-interchange'"
+            [isCardOpen]="insurancePolicyForm.get('trailerInterchange').value"
+            [animationMarginParams]="{
+                marginTop: '12px',
+                marginBottom: '22px'
+            }"
+        >
+            <div class="insurance-policy-rating">
+                <app-ta-input
+                    formControlName="trailerPolicy"
+                    [inputConfig]="{
+                        name: 'Policy',
+                        type: 'text',
+                        label: 'Policy #',
+                        isRequired: true,
+                        textTransform: 'capitalize'
                     }"
-                    (click)="toggleCheckboxCard('trailer-interchange')"
-                ></svg-icon>
+                ></app-ta-input>
+                <app-ta-input
+                    formControlName="trailerInsurerName"
+                    [inputConfig]="{
+                        name: 'Insurer Name',
+                        type: 'text',
+                        label: 'Insurer Name',
+                        isRequired: true,
+                        textTransform: 'uppercase',
+                        minLength: 2,
+                        maxLength: 64
+                    }"
+                ></app-ta-input>
+                <app-ta-input-dropdown
+                    formControlName="trailerRating"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Rating',
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-78'
+                    }"
+                    [options]="ratings"
+                    [activeItem]="selectedTrailerRating"
+                    (selectedItem)="
+                        onSelectDropdown($event, 'trailer interchange')
+                    "
+                ></app-ta-input-dropdown>
             </div>
-            <div
-                *ngIf="
-                    insurancePolicyForm.get('trailerInterchange').value &&
-                    trailerInterchangeCheckboxCard
-                "
-                class="checkbox-card-body"
-                [ngClass]="{
-                    'active-20':
-                        insurancePolicyForm.get('trailerInterchange').value
-                }"
-            >
-                <div
-                    *ngIf="insurancePolicyForm.get('trailerInterchange').value"
-                >
-                    <div class="insurance-policy-rating">
-                        <app-ta-input
-                            formControlName="trailerPolicy"
-                            [inputConfig]="{
-                                name: 'Policy',
-                                type: 'text',
-                                label: 'Policy #',
-                                isRequired: true,
-                                textTransform: 'capitalize'
-                            }"
-                        ></app-ta-input>
-                        <app-ta-input
-                            formControlName="trailerInsurerName"
-                            [inputConfig]="{
-                                name: 'Insurer Name',
-                                type: 'text',
-                                label: 'Insurer Name',
-                                isRequired: true,
-                                textTransform: 'uppercase',
-                                minLength: 2,
-                                maxLength: 64
-                            }"
-                        ></app-ta-input>
-                        <app-ta-input-dropdown
-                            formControlName="trailerRating"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Rating',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-78'
-                            }"
-                            [options]="ratings"
-                            [activeItem]="selectedTrailerRating"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'trailer interchange')
-                            "
-                        ></app-ta-input-dropdown>
-                    </div>
-                    <div class="row last-row">
-                        <div class="col-12">
-                            <app-ta-input
-                                formControlName="trailerValue"
-                                [inputConfig]="{
-                                    name: 'trailer-value-insurance-policy',
-                                    type: 'text',
-                                    label: 'Value',
-                                    placeholderIcon: 'dollar',
-                                    customClass: 'dollar-placeholderIcon',
-                                    thousandSeparator: true,
-                                    minLength: 4,
-                                    maxLength: 11
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
+            <div class="row row-no-m">
+                <div class="col-12">
+                    <app-ta-input
+                        formControlName="trailerValue"
+                        [inputConfig]="{
+                            name: 'trailer-value-insurance-policy',
+                            type: 'text',
+                            label: 'Value',
+                            placeholderIcon: 'dollar',
+                            customClass: 'dollar-placeholderIcon',
+                            thousandSeparator: true,
+                            minLength: 4,
+                            maxLength: 11
+                        }"
+                    ></app-ta-input>
                 </div>
             </div>
-        </div>
+        </app-ta-checkbox-card>
+
         <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
                 [hasCounter]="documents.length ? documents.length : 0"

@@ -10,15 +10,17 @@ import {
 import { Observable } from 'rxjs';
 import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/model/loadMinimalListResponse';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
-import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
-import { UpdateLoadCommand } from '../../../../../../appcoretruckassist/model/updateLoadCommand';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class LoadTService {
-    constructor(private loadServices: LoadService) {}
+    constructor(
+        private loadServices: LoadService,
+        private formDataService: FormDataService
+    ) {}
 
     // Get Load List
     // statusType -> 1 - pending, 2 - active, 3 - closed
@@ -95,12 +97,14 @@ export class LoadTService {
         );
     }
 
-    public createLoad(data: CreateLoadCommand): Observable<CreateResponse> {
-        return this.loadServices.apiLoadPost(data);
+    public createLoad(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.loadServices.apiLoadPost();
     }
 
-    public updateLoad(data: UpdateLoadCommand): Observable<any> {
-        return this.loadServices.apiLoadPut(data);
+    public updateLoad(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.loadServices.apiLoadPut();
     }
 
     public deleteLoadById(id: number): Observable<any> {

@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { FuelTransactionResponse } from './fuelTransactionResponse';
 import { FuelStopExtensionResponse } from './fuelStopExtensionResponse';
 import { AddressEntity } from './addressEntity';
@@ -31,6 +32,7 @@ export interface FuelStopResponse {
     latitude?: number | null;
     fuelTransactions?: Array<FuelTransactionResponse> | null;
     fuelStopExtensions?: Array<FuelStopExtensionResponse> | null;
+    files?: Array<FileResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }
