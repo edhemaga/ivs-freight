@@ -364,6 +364,7 @@ export class DriverDetailsItemComponent
     }
 
     public getCdlById(id: number) {
+        console.log('--here--getCdlById', id);
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
@@ -371,6 +372,7 @@ export class DriverDetailsItemComponent
     }
 
     public getMedicalById(id: number) {
+        console.log('--here--getMedicalById')
         this.medicalService
             .getMedicalById(id)
             .pipe(takeUntil(this.destroy$))
@@ -378,6 +380,7 @@ export class DriverDetailsItemComponent
     }
 
     public getMvrById(id: number) {
+        console.log('--here--getMvrById')
         this.mvrService
             .getMvrById(id)
             .pipe(takeUntil(this.destroy$))
@@ -385,6 +388,7 @@ export class DriverDetailsItemComponent
     }
 
     public getTestById(id: number) {
+        console.log('--here--getTestById')
         this.testService
             .getTestById(id)
             .pipe(takeUntil(this.destroy$))

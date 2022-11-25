@@ -511,7 +511,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 let issuedDate = dateFromData
                     ? moment(dateFromData).format('MM/DD/YY')
                     : '';
-                if (this.httpRequest.method == 'POST') {
+                if (this.httpRequest.method == 'POST'|| this.httpRequest.method == 'PUT') {
                     this.actionTitle =
                         this.toastrType == 'toast-error'
                             ? 'ADD NEW'
@@ -519,7 +519,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     this.actionType =
                         this.actionType == 'MVR'
                             ? 'MVR - ' + driverName
-                            : 'MEDICAL - ' + driverName;
+                            : 'MEDICAL - ' + driverName;      
                     this.message = 'Issued: ' + issuedDate;
                 }
                 break;

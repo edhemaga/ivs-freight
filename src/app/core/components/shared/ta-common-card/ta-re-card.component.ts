@@ -133,9 +133,10 @@ export class TaReCardComponent implements OnInit {
     }
 
     public sendData(data: any) {
+        console.log('--here---');
         this.data = data;
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
-        this.dataDropDopwn.emit(data);
+        //this.dataDropDopwn.emit(data);
     }
     public toggleCard(event: any) {
         event.preventDefault();
@@ -153,7 +154,6 @@ export class TaReCardComponent implements OnInit {
             } else {
                 this.animationStarted = true;
             }
-            //this.animationStarted = !this.animationStarted;
             
             let timeOut = 0;
             if ( this.isCardOpen ) {
