@@ -212,7 +212,10 @@
                                     ></app-ta-input-dropdown>
                                 </div>
                             </div>
-                            <div class="row row-no-m">
+                            <div
+                                *ngIf="truckForm.get('companyOwned').value"
+                                class="row row-no-m"
+                            >
                                 <div class="col-12">
                                     <app-ta-ngx-slider
                                         [sliderName]="'Commission'"
