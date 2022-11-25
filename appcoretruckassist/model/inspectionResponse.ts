@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface InspectionResponse { 
@@ -16,5 +17,6 @@ export interface InspectionResponse {
     issueDate?: string;
     expDate?: string;
     note?: string | null;
+    files?: Array<FileResponse> | null;
 }
 

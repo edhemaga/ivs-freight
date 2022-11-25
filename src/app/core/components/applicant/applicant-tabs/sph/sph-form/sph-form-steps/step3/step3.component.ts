@@ -22,9 +22,10 @@ import {
 } from '../../../../../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
 
-import { ApplicantSphFormQuery } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.query';
-import { ApplicantSphFormStore } from 'src/app/core/components/applicant/state/store/applicant-sph-form-store/applicant-sph-form.store';
+import { ApplicantQuery } from 'src/app/core/components/applicant/state/store/applicant.query';
+import { ApplicantStore } from 'src/app/core/components/applicant/state/store/applicant.store';
 
 import { ApplicantQuestion } from '../../../../../state/model/applicant-question.model';
 import { InputSwitchActions } from '../../../../../state/enum/input-switch-actions.enum';
@@ -50,6 +51,10 @@ export class Step3Component implements OnInit, AfterViewInit {
     public otherViolationsRadios: any;
     public drugAndAlcoholRegulationRadios: any;
     public aspRehabilitationRadios: any;
+
+    public previousEmployerProspectId: number;
+
+    public previousStepValues: any;
 
     public selectedAddress: AddressEntity = null;
 
@@ -192,8 +197,9 @@ export class Step3Component implements OnInit, AfterViewInit {
         private formBuilder: FormBuilder,
         private router: Router,
         private inputService: TaInputService,
-        private applicantSphFormStore: ApplicantSphFormStore,
-        private applicantSphFormQuery: ApplicantSphFormQuery
+        private applicantActionsService: ApplicantActionsService,
+        private applicantStore: ApplicantStore,
+        private applicantQuery: ApplicantQuery
     ) {}
 
     ngOnInit(): void {
@@ -236,17 +242,17 @@ export class Step3Component implements OnInit, AfterViewInit {
     }
 
     public getStepValuesFromStore(): void {
-        let stepValuesResponse: any;
-
-        this.applicantSphFormQuery.stepThreeList$
+        this.applicantQuery.applicantSphForm$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                stepValuesResponse = res;
-            });
+                this.previousEmployerProspectId = res.id;
 
-        if (stepValuesResponse) {
-            this.patchStepValues(stepValuesResponse);
-        }
+                if (res.sphDrugAndAlcohol) {
+                    this.patchStepValues(res.sphDrugAndAlcohol);
+
+                    /*  this.stepHasValues = true; */
+                }
+            });
     }
 
     public patchStepValues(stepValues: any): void {
@@ -333,6 +339,40 @@ export class Step3Component implements OnInit, AfterViewInit {
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value) {
+                    console.log(this.drugAndAlcoholTestingHistoryForm.value);
+
+                    const {
+                        applicantNotSubject,
+                        employmentFromDate,
+                        employmentToDate,
+                        alcoholTest,
+                        controledSubstances,
+                        refusedToSubmit,
+                        otherViolations,
+                        drugAndAlcoholRegulation,
+                        sapName,
+                        phone,
+                        address,
+                        addressUnit,
+                        aspRehabilitation,
+                    } = this.drugAndAlcoholTestingHistoryForm.value;
+
+                    this.previousStepValues = {
+                        applicantNotSubject,
+                        employmentFromDate,
+                        employmentToDate,
+                        alcoholTest,
+                        controledSubstances,
+                        refusedToSubmit,
+                        otherViolations,
+                        drugAndAlcoholRegulation,
+                        sapName,
+                        phone,
+                        address,
+                        addressUnit,
+                        aspRehabilitation,
+                    };
+
                     this.inputService.changeValidators(
                         this.drugAndAlcoholTestingHistoryForm.get(
                             'employmentFromDate'
@@ -393,27 +433,41 @@ export class Step3Component implements OnInit, AfterViewInit {
                         ),
                         false
                     );
-
-                    this.drugAndAlcoholTestingHistoryForm.patchValue({
-                        employmentFromDate: null,
-                        employmentToDate: null,
-                        alcoholTest: null,
-                        controledSubstances: null,
-                        refusedToSubmit: null,
-                        otherViolations: null,
-                        drugAndAlcoholRegulation: null,
-                        sapName: null,
-                        phone: null,
-                        address: null,
-                        addressUnit: null,
-                        aspRehabilitation: null,
-                    });
-
-                    this.radioButtonsArray.forEach((item) => {
-                        item.buttons[0].checked = false;
-                        item.buttons[1].checked = false;
-                    });
                 } else {
+                    if (this.previousStepValues) {
+                        const {
+                            applicantNotSubject,
+                            employmentFromDate,
+                            employmentToDate,
+                            alcoholTest,
+                            controledSubstances,
+                            refusedToSubmit,
+                            otherViolations,
+                            drugAndAlcoholRegulation,
+                            sapName,
+                            phone,
+                            address,
+                            addressUnit,
+                            aspRehabilitation,
+                        } = this.previousStepValues;
+
+                        this.drugAndAlcoholTestingHistoryForm.patchValue({
+                            applicantNotSubject,
+                            employmentFromDate,
+                            employmentToDate,
+                            alcoholTest,
+                            controledSubstances,
+                            refusedToSubmit,
+                            otherViolations,
+                            drugAndAlcoholRegulation,
+                            sapName,
+                            phone,
+                            address,
+                            addressUnit,
+                            aspRehabilitation,
+                        });
+                    }
+
                     this.inputService.changeValidators(
                         this.drugAndAlcoholTestingHistoryForm.get(
                             'employmentFromDate'
@@ -516,7 +570,7 @@ export class Step3Component implements OnInit, AfterViewInit {
         }
 
         if (event.action === 'back-step') {
-            this.router.navigate(['/sph-form/2']);
+            this.router.navigate(['/sph-form/1/2']);
         }
     }
 
@@ -550,41 +604,50 @@ export class Step3Component implements OnInit, AfterViewInit {
         };
 
         const saveData: CreatePreviousEmployerDrugAndAlcoholCommand = {
-            /* previousEmployerProspectId :, */
+            previousEmployerProspectId: this.previousEmployerProspectId,
             notSubjectToDot: applicantNotSubject,
-            employmentFrom: convertDateToBackend(employmentFromDate),
-            employmentTo: convertDateToBackend(employmentToDate),
-            higherAlcoholConcentration: alcoholTest,
-            positiveDrugTest: controledSubstances,
-            refusedToSubmitTest: refusedToSubmit,
-            otherViolations,
-            violatedDot: drugAndAlcoholRegulation,
-            sapName,
-            phone,
-            address: selectedAddress,
-            hasPositiveTests: aspRehabilitation,
+            employmentFrom: applicantNotSubject
+                ? null
+                : convertDateToBackend(employmentFromDate),
+            employmentTo: applicantNotSubject
+                ? null
+                : convertDateToBackend(employmentToDate),
+            higherAlcoholConcentration: applicantNotSubject
+                ? null
+                : alcoholTest,
+            positiveDrugTest: applicantNotSubject ? null : controledSubstances,
+            refusedToSubmitTest: applicantNotSubject ? null : refusedToSubmit,
+            otherViolations: applicantNotSubject ? null : otherViolations,
+            violatedDot: applicantNotSubject ? null : drugAndAlcoholRegulation,
+            sapName: applicantNotSubject ? null : sapName,
+            phone: applicantNotSubject ? null : phone,
+            address: applicantNotSubject ? null : selectedAddress,
+            hasPositiveTests: applicantNotSubject ? null : aspRehabilitation,
         };
 
-        /*   this.applicantActionsService
-      .createDrugAndAlcoholSphForm(saveData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.router.navigate(['/sph-form-end']);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
- */
-        this.applicantSphFormStore.update(1, (entity) => {
-            return {
-                ...entity,
-                step3: saveData,
-            };
-        });
-
         console.log('saveData', saveData);
+
+        this.applicantActionsService
+            .createDrugAndAlcoholSphForm(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate(['/sph-form-end']);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicantSphForm: {
+                                ...store.applicantSphForm,
+                                sphDrugAndAlcohol: saveData,
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     ngOnDestroy(): void {

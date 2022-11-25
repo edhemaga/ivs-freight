@@ -18,7 +18,6 @@ import { FuelTService } from '../../../fuel/state/fuel.service';
 import { GetFuelStopModalResponse } from '../../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { NotificationService } from '../../../../services/notification/notification.service';
 import { FuelStopResponse } from '../../../../../../../appcoretruckassist/model/fuelStopResponse';
-import { AddFuelStopCommand } from '../../../../../../../appcoretruckassist/model/addFuelStopCommand';
 
 @Component({
     selector: 'app-fuel-stop-modal',
@@ -259,8 +258,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     }
 
     private updateFuelStop(id: number) {
-        const { address, addressUnit, businessName, ...form } =
-            this.fuelStopForm.value;
+        const { businessName, ...form } = this.fuelStopForm.value;
 
         const newData: UpdateFuelStopCommand = {
             id: id,
@@ -289,10 +287,9 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     }
 
     private addFuelStop() {
-        const { address, addressUnit, businessName, ...form } =
-            this.fuelStopForm.value;
+        const { businessName, ...form } = this.fuelStopForm.value;
 
-        const newData: AddFuelStopCommand = {
+        const newData: any = {
             ...form,
             address: this.selectedAddress,
             businessName: !this.selectedFuelStop ? businessName : null,

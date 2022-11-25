@@ -943,37 +943,17 @@
                 <!-------------------------------- Payroll Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 3">
                     <!-- Truck Assist -->
-                    <div class="custom-checkbox-card">
-                        <div class="divider"></div>
-                        <div
-                            class="checkbox-card-header"
-                            [ngClass]="{
-                                pointer: companyForm.get('useACHPayout').value
-                            }"
-                        >
-                            <app-ta-checkbox
-                                formControlName="useACHPayout"
-                                [label]="truckAssistText"
-                                [name]="'Use ACH Payout'"
-                            ></app-ta-checkbox>
-                            <svg-icon
-                                class="checkbox-card-header-arrow visible"
-                                src="assets/svg/common/ic_arrow_down_updated.svg"
-                                [ngClass]="{
-                                    rotate: !useACHCheckboxCard,
-                                    visible:
-                                        companyForm.get('useACHPayout').value
-                                }"
-                                (click)="toggleCheckboxCard()"
-                            ></svg-icon>
-                        </div>
-                        <div
-                            *ngIf="
-                                companyForm.get('useACHPayout').value &&
-                                useACHCheckboxCard
-                            "
-                            class="checkbox-card-body active"
-                        >
+                    <app-ta-checkbox-card
+                        formControlName="useACHPayout"
+                        [label]="'Use ACH Payout'"
+                        [name]="'use-ach-payout'"
+                        [isCardOpen]="companyForm.get('useACHPayout').value"
+                        [animationMarginParams]="{
+                            marginTop: '12px',
+                            marginBottom: '18px'
+                        }"
+                    >
+                        <div class="checkbox-card-body active">
                             <div class="use-truck-assist-header">
                                 THIS PROCESS MAY TAKE UP TO 5 DAYS.
                             </div>
@@ -983,7 +963,8 @@
                             </div>
                             <div class="use-truck-assist-price">Pricing</div>
                         </div>
-                    </div>
+                    </app-ta-checkbox-card>
+
                     <app-ta-custom-card
                         [cardName]="'Driver & Owner'"
                         [isCardOpen]="true"

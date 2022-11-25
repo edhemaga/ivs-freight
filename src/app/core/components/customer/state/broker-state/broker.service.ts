@@ -5,12 +5,10 @@ import {
     BrokerModalResponse,
     BrokerResponse,
     BrokerService,
-    CreateBrokerCommand,
     CreateRatingCommand,
     CreateResponse,
     GetBrokerListResponse,
     RatingReviewService,
-    UpdateBrokerCommand,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { Observable, tap, of, Subject, takeUntil } from 'rxjs';
@@ -38,8 +36,8 @@ export class BrokerTService implements OnDestroy {
     ) {}
 
     // Add Broker
-    public addBroker(data: CreateBrokerCommand): Observable<CreateResponse> {
-        return this.brokerService.apiBrokerPost(data).pipe(
+    public addBroker(data: any): Observable<CreateResponse> {
+        return this.brokerService.apiBrokerPost().pipe(
             tap((res: any) => {
                 const subBroker = this.getBrokerById(res.id).subscribe({
                     next: (broker: BrokerResponse | any) => {
@@ -74,8 +72,8 @@ export class BrokerTService implements OnDestroy {
     }
 
     // Update Broker
-    public updateBroker(data: UpdateBrokerCommand): Observable<any> {
-        return this.brokerService.apiBrokerPut(data).pipe(
+    public updateBroker(data: any): Observable<any> {
+        return this.brokerService.apiBrokerPut().pipe(
             tap(() => {
                 const subBroker = this.getBrokerById(data.id).subscribe({
                     next: (broker: BrokerResponse | any) => {

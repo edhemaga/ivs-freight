@@ -3,9 +3,21 @@
     position: relative;
     top: 1px;
 
+    transition: all 0.3s ease-in-out;
+
     label {
         display: flex;
         align-items: center;
+    }
+
+    /* Required Text Checkbox */
+    .required-text-checkbox {
+        position: absolute;
+        left: -80px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #f44336;
+        line-height: 18px;
     }
 
     /* Hide the default checkbox */
@@ -25,6 +37,8 @@
         border-radius: 2px;
         cursor: pointer;
 
+        transition: all 0.3s ease-in-out;
+
         /* Create the mark/indicator (hidden when not checked) */
         &::after {
             content: '';
@@ -40,26 +54,20 @@
         }
 
         &.invalid {
-            background-color: #e57373;
-            &:hover {
-                transition: all 0.3s ease-in-out;
-                background-color: #ef5350 !important;
-            }
+            background-color: #f44336 !important;
         }
 
         &.disabled {
-            background-color: #97a8dc !important;
+            background-color: #6d82c7 !important;
 
             &:hover {
-                transition: all 0.3s ease-in-out;
-                background-color: #97a8dc !important;
+                background-color: #6d82c7 !important;
             }
         }
     }
 
     &:hover .ta-checkbox ~ .ta-mark {
         background-color: #919191;
-        transition: all 0.3s ease-in-out;
     }
 
     .ta-checkbox:checked ~ .ta-checkbox-label {
@@ -72,7 +80,7 @@
     }
 
     .ta-checkbox:checked:hover ~ .ta-mark {
-        background-color: #536bc2;
+        background-color: #255bb9;
         transition: all 0.3s ease-in-out;
     }
 

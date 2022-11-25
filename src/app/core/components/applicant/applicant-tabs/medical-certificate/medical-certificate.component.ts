@@ -1,21 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+import {
+    convertDateToBackend,
+    convertDateFromBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+
+import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import {
+    ApplicantResponse,
+    MedicalCertificateFeedbackResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-medical-certificate',
     templateUrl: './medical-certificate.component.html',
     styleUrls: ['./medical-certificate.component.scss'],
 })
-export class MedicalCertificateComponent implements OnInit {
+export class MedicalCertificateComponent implements OnInit, OnDestroy {
+    private destroy$ = new Subject<void>();
+
     public selectedMode: string = SelectedMode.APPLICANT;
 
     public medicalCertificateForm: FormGroup;
+
+    public applicantId: number;
+
+    public stepHasValues: boolean = false;
 
     public documents: any[] = [];
 
@@ -42,25 +64,78 @@ export class MedicalCertificateComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private inputService: TaInputService
+        private inputService: TaInputService,
+        private router: Router,
+        private applicantStore: ApplicantStore,
+        private applicantQuery: ApplicantQuery,
+        private applicantActionsService: ApplicantActionsService
     ) {}
 
     ngOnInit(): void {
         this.createForm();
+
+        this.getStepValuesFromStore();
     }
 
     private createForm(): void {
         this.medicalCertificateForm = this.formBuilder.group({
             fromDate: [null, Validators.required],
             toDate: [null, Validators.required],
+            files: [null, Validators.required],
 
             firstRowReview: [null],
             secondRowReview: [null],
         });
     }
 
+    public getStepValuesFromStore(): void {
+        this.applicantQuery.applicant$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: ApplicantResponse) => {
+                this.applicantId = res.id;
+
+                if (res.medicalCertificate) {
+                    this.patchStepValues(res.medicalCertificate);
+
+                    this.stepHasValues = true;
+                }
+            });
+    }
+
+    public patchStepValues(
+        stepValues: MedicalCertificateFeedbackResponse
+    ): void {
+        console.log('stepValues', stepValues);
+        const { issueDate, expireDate } = stepValues;
+
+        this.medicalCertificateForm.patchValue({
+            fromDate: convertDateFromBackend(issueDate),
+            toDate: convertDateFromBackend(expireDate),
+        });
+    }
+
     public onFilesAction(event: any): void {
         this.documents = event.files;
+
+        switch (event.action) {
+            case 'add':
+                this.medicalCertificateForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+
+                break;
+            case 'delete':
+                this.medicalCertificateForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+
+                break;
+
+            default:
+                break;
+        }
     }
 
     public incorrectInput(
@@ -147,7 +222,10 @@ export class MedicalCertificateComponent implements OnInit {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (this.selectedMode === SelectedMode.APPLICANT) {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
                 this.onSubmit();
             }
 
@@ -162,7 +240,73 @@ export class MedicalCertificateComponent implements OnInit {
             this.inputService.markInvalid(this.medicalCertificateForm);
             return;
         }
+
+        const { fromDate, toDate } = this.medicalCertificateForm.value;
+
+        const documents = this.documents.map((item) => {
+            return item.realFile;
+        });
+
+        const saveData: any = {
+            applicantId: this.applicantId,
+            issueDate: convertDateToBackend(fromDate),
+            expireDate: convertDateToBackend(toDate),
+            files: documents,
+        };
+
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT &&
+                !this.stepHasValues
+            ) {
+                return this.applicantActionsService.createMedicalCertificate(
+                    saveData
+                );
+            }
+
+            if (
+                (this.selectedMode === SelectedMode.APPLICANT &&
+                    this.stepHasValues) ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
+                return this.applicantActionsService.updateMedicalCertificate(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/mvr-authorization/${this.applicantId}`,
+                    ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                medicalCertificate: {
+                                    ...store.applicant.medicalCertificate,
+                                    issueDate: saveData.issueDate,
+                                    expireDate: saveData.expireDate,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     public onSubmitReview(): void {}
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

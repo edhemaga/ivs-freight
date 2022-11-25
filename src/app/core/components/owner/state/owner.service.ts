@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
-    CreateOwnerCommand,
     CreateResponse,
     GetOwnerListResponse,
     OwnerModalResponse,
     OwnerResponse,
-    OwnerService,
-    UpdateOwnerCommand,
+    OwnerService
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 import { OwnerActiveQuery } from './owner-active-state/owner-active.query';
@@ -29,7 +27,7 @@ export class OwnerTService {
     ) {}
 
     // Add Owner
-    public addOwner(data: CreateOwnerCommand): Observable<CreateResponse> {
+    public addOwner(data: any): Observable<CreateResponse> {
         return this.ownerService.apiOwnerPost(data).pipe(
             tap((res: any) => {
                 const subOwner = this.getOwnerById(res.id).subscribe({
@@ -64,7 +62,7 @@ export class OwnerTService {
     }
 
     // Update Owner
-    public updateOwner(data: UpdateOwnerCommand): Observable<any> {
+    public updateOwner(data: any): Observable<any> {
         return this.ownerService.apiOwnerPut(data).pipe(
             tap(() => {
                 const subOwner = this.getOwnerById(data.id).subscribe({

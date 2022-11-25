@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { FuelItemResponse } from './fuelItemResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
@@ -33,6 +34,7 @@ export interface FuelTransactionResponse {
     total?: number | null;
     fuelTransactionType?: EnumValue;
     fuelItems?: Array<FuelItemResponse> | null;
+    files?: Array<FileResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }
