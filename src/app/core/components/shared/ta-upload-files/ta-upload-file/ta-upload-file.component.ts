@@ -51,6 +51,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     @Input() isReview: boolean;
     @Input() reviewMode: string;
     @Input() feedbackText: string;
+    @Input() categoryTag: string;
 
     public documentReviewInputControl: FormControl = new FormControl(null);
     public documentReviewInputVisible: boolean = false;

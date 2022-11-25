@@ -156,7 +156,6 @@ model/companyOfficeResponsePagination.ts
 model/companyOfficeShortResponse.ts
 model/companyPayrollResponse.ts
 model/companyResponse.ts
-model/companySettingsDocumentsResponse.ts
 model/companyShortResponse.ts
 model/companyUserModalResponse.ts
 model/companyUserResponse.ts
@@ -390,7 +389,9 @@ model/models.ts
 model/moveMultipleToApplicantsCommand.ts
 model/moveToApplicantsCommand.ts
 model/multipleChangeBanFlagCommand.ts
+model/multipleChangeBanFlagShippersCommand.ts
 model/multipleChangeDnuFlagCommand.ts
+model/multipleChangeDnuFlagShippersCommand.ts
 model/multipleChangeTrailerStatusCommand.ts
 model/multipleChangeTruckStatusCommand.ts
 model/mvrAuthFeedbackResponse.ts

@@ -11,14 +11,12 @@
  */
 import { FuelStopExtensionResponse } from './fuelStopExtensionResponse';
 import { AddressEntity } from './addressEntity';
-import { FuelStopFranchiseMinimalResponse } from './fuelStopFranchiseMinimalResponse';
 
 
 export interface FuelStopShortResponse { 
     id?: number;
     companyId?: number | null;
     businessName?: string | null;
-    fuelStopFranchise?: FuelStopFranchiseMinimalResponse;
     store?: string | null;
     phone?: string | null;
     fax?: string | null;

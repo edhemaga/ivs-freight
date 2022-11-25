@@ -10,7 +10,7 @@ import {
     CheckOwnerSsnEinResponse,
     CreateResponse,
     DriverResponse,
-    GetDriverModalResponse
+    GetDriverModalResponse,
 } from 'appcoretruckassist';
 import {
     einNumberRegex,
@@ -82,6 +82,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public driverStatus: boolean = true;
 
     public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
 
     public isFormDirty: boolean;
 
@@ -280,6 +282,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             mailNotificationPayroll: [true],
             pushNotificationPayroll: [false],
             smsNotificationPayroll: [false],
+            files: [null],
         });
 
         this.inputService.customInputValidator(
@@ -714,6 +717,30 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.driverForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.driverForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     private einNumberChange() {
@@ -1050,6 +1077,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
         const newData: any = {
             ...form,
             dateOfBirth: convertDateToBackend(
@@ -1277,6 +1311,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     ? teamDriver
                     : false
                 : null,
+            files: documents,
         };
 
         let driverFullName = newData.firstName + ' ' + newData.lastName;
@@ -1430,6 +1465,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             addressUnit,
             ...form
         } = this.driverForm.value;
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         const newData: any = {
             id: id,
@@ -1660,6 +1702,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     ? teamDriver
                     : false
                 : null,
+            files: documents ? documents : this.driverForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         let driverFullName =
@@ -1763,6 +1807,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         mailNotificationPayroll: res.payroll.mailNotification,
                         pushNotificationPayroll: res.payroll.pushNotification,
                         smsNotificationPayroll: res.payroll.smsNotification,
+                        files: res.files.length
+                            ? JSON.stringify(res.files)
+                            : null,
                     });
 
                     this.driverForm
@@ -1833,6 +1880,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     );
 
                     this.selectedBank = res.bank ? res.bank : null;
+
+                    this.documents = res.files;
 
                     this.selectedPayType = res.payType
                         ? res.payType.id === 0

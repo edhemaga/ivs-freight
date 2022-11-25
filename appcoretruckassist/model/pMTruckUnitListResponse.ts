@@ -14,7 +14,5 @@ import { PMTruckUnitResponsePagination } from './pMTruckUnitResponsePagination';
 
 export interface PMTruckUnitListResponse { 
     pagination?: PMTruckUnitResponsePagination;
-    pmTruckCount?: number;
-    pmTrailerCount?: number;
 }
 

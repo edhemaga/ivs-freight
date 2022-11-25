@@ -11,7 +11,7 @@ import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { getFunctionParams } from 'src/app/core/utils/methods.globals';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
@@ -25,7 +25,8 @@ export class MvrTService implements OnDestroy {
         private driverStore: DriversActiveStore,
         private tableService: TruckassistTableService,
         private driverItemStore: DriversItemStore,
-        private dlStore: DriversDetailsListStore
+        private dlStore: DriversDetailsListStore,
+        private formDataService: FormDataService
     ) {}
 
     public deleteMvrById(id: number): Observable<any> {
@@ -70,11 +71,8 @@ export class MvrTService implements OnDestroy {
 
     /* Observable<CreateMvrResponse> */
     public addMvr(data: any): Observable<any> {
-        const sortedParams = getFunctionParams(
-            this.mvrService.apiMvrPost,
-            data
-        );
-        return this.mvrService.apiMvrPost(...sortedParams).pipe(
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.mvrService.apiMvrPost().pipe(
             tap(() => {
                 const subDriver = this.driverService
                     .getDriverById(data.driverId)
@@ -109,8 +107,8 @@ export class MvrTService implements OnDestroy {
     }
 
     public updateMvr(data: any): Observable<object> {
-        const sortedParams = getFunctionParams(this.mvrService.apiMvrPut, data);
-        return this.mvrService.apiMvrPut(...sortedParams).pipe(
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.mvrService.apiMvrPut().pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const subDriver = this.driverService

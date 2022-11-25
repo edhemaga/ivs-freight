@@ -43,6 +43,9 @@ export class TaUploadDropzoneComponent {
 
     @Input() disableUnsupportedPreview: boolean = false; // only for modals upload
 
+    @Input() isRequired: boolean = false;
+    @Input() showRequired: boolean = false;
+
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[];
         action: string;

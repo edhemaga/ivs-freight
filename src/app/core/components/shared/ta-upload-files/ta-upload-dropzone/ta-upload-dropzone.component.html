@@ -1,6 +1,14 @@
 <!-- Dropzone -->
-<div class="ta-upload-dropzone" *ngIf="!unSupporetedType">
-    <label for="pdf" class="ta-upload-dropzone-label">
+<div
+    class="ta-upload-dropzone"
+    *ngIf="!unSupporetedType"
+    [class.required]="isRequired && showRequired && !textChangeOverModal"
+>
+    <label
+        for="pdf"
+        class="ta-upload-dropzone-label"
+        [class.required]="isRequired && showRequired && !textChangeOverModal"
+    >
         <svg-icon
             class="ta-upload-dropzone-area"
             [class.expand]="dropZoneConfig.globalDropZone"
@@ -22,6 +30,11 @@
                         ? 'DRAG FILES HERE'
                         : "DROP IT LIKE IT'S HOT"
                 }}
+                <span
+                    class="required"
+                    *ngIf="isRequired && !textChangeOverModal"
+                    >*</span
+                >
             </span>
             <!-- Media -->
             <span

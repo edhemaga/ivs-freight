@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import {
     AddressEntity,
     RepairShopModalResponse,
-    RepairShopResponse
+    RepairShopResponse,
 } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';

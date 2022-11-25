@@ -156,7 +156,10 @@
                 class="attachment-icon"
                 src="assets/svg/common/ic_attachment.svg"
             ></svg-icon>
-            <p *ngIf="!resPage" class="card-document-counter">
+            <p
+                *ngIf="!resPage && cardDocumentCounter"
+                class="card-document-counter"
+            >
                 {{ cardDocumentCounter }}
             </p>
         </div>
