@@ -117,8 +117,52 @@
         padding-left: 63px;
     }
 
+    &.dropdown-input-image-truck-focus {
+        &::-webkit-input-placeholder {
+            padding-left: 63px;
+        }
+
+        &::-moz-placeholder {
+            padding-left: 63px;
+        }
+
+        &:-ms-input-placeholder {
+            padding-left: 63px;
+        }
+
+        &::-ms-input-placeholder {
+            padding-left: 63px;
+        }
+
+        &::placeholder {
+            padding-left: 63px;
+        }
+    }
+
     &.dropdown-input-image-trailer {
         padding-left: 68px;
+    }
+
+    &.dropdown-input-image-trailer-focus {
+        &::-webkit-input-placeholder {
+            padding-left: 68px;
+        }
+
+        &::-moz-placeholder {
+            padding-left: 68px;
+        }
+
+        &:-ms-input-placeholder {
+            padding-left: 68px;
+        }
+
+        &::-ms-input-placeholder {
+            padding-left: 68px;
+        }
+
+        &::placeholder {
+            padding-left: 68px;
+        }
     }
 
     &.dropdown-input-image-color {

@@ -33,130 +33,136 @@
                         formControlName="isOwner"
                         [label]="'Company Owned'"
                         [name]="'company-owned'"
+                        [reverseLogic]="true"
                         [isCardOpen]="terminalForm.get('isOwner').value"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '22px'
                         }"
                     >
-                        <div class="row">
-                            <div class="col-12">
-                                <app-ta-input
-                                    formControlName="name"
-                                    [inputConfig]="{
-                                        name: 'Terminal Name',
-                                        type: 'text',
-                                        label: 'Terminal Name',
-                                        isRequired: true,
-                                        textTransform: 'capitalize',
-                                        autoFocus: editData?.type !== 'edit',
-                                        minLength: 1,
-                                        maxLength: 64
-                                    }"
-                                ></app-ta-input>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-10">
-                                <app-input-address-dropdown
-                                    formControlName="address"
-                                    [inputConfig]="{
-                                        name: 'Address',
-                                        type: 'text',
-                                        label: 'Address, City, State Zip',
-                                        isRequired: true,
-                                        placeholderIcon: 'address',
-                                        textTransform: 'capitalize',
-                                        dropdownWidthClass: 'w-col-376',
-                                        minLength: 6,
-                                        maxLength: 256
-                                    }"
-                                    [placeholderType]="'longAddress'"
-                                    [activeAddress]="selectedAddress"
-                                    (selectedAddress)="onHandleAddress($event)"
-                                ></app-input-address-dropdown>
-                            </div>
-                            <div class="col-2">
-                                <app-ta-input
-                                    formControlName="addressUnit"
-                                    [inputConfig]="{
-                                        name: 'address-unit',
-                                        type: 'text',
-                                        label: 'Unit #',
-                                        textTransform: 'uppercase',
-                                        minLength: 1,
-                                        maxLength: 10
-                                    }"
-                                ></app-ta-input>
-                            </div>
-                        </div>
-                        <div
-                            class="phone-ext-email-small-modal row-no-m"
-                            [ngClass]="{
-                                'active-phone-ext': isTerminalPhoneExtExist
-                            }"
-                        >
-                            <div
-                                class="phone-extension phone-ext-email-small-modal-my-20"
-                            >
-                                <div class="phone-field">
+                        <ng-container bodyFalse>
+                            <div class="row">
+                                <div class="col-12">
                                     <app-ta-input
-                                        formControlName="phone"
+                                        formControlName="name"
                                         [inputConfig]="{
-                                            name: 'Phone',
+                                            name: 'Terminal Name',
                                             type: 'text',
-                                            label: 'Phone',
-                                            placeholderIcon: 'phone',
+                                            label: 'Terminal Name',
                                             isRequired: true,
-                                            mask: '(000) 000-0000',
-                                            maxLength: 14
+                                            textTransform: 'capitalize',
+                                            autoFocus:
+                                                editData?.type !== 'edit',
+                                            minLength: 1,
+                                            maxLength: 64
                                         }"
                                     ></app-ta-input>
                                 </div>
-                                <div
-                                    class="extension-field"
-                                    *ngIf="!isTerminalPhoneExtExist"
-                                    (click)="
-                                        isTerminalPhoneExtExist =
-                                            !isTerminalPhoneExtExist
-                                    "
-                                    ngbTooltip
-                                    mainTooltip="Add Extension"
-                                    position="top"
-                                    tooltipBackground="#6c6c6c"
-                                >
-                                    <svg-icon
-                                        src="assets/svg/common/ic_plus.svg"
-                                    ></svg-icon>
+                            </div>
+                            <div class="row">
+                                <div class="col-10">
+                                    <app-input-address-dropdown
+                                        formControlName="address"
+                                        [inputConfig]="{
+                                            name: 'Address',
+                                            type: 'text',
+                                            label: 'Address, City, State Zip',
+                                            isRequired: true,
+                                            placeholderIcon: 'address',
+                                            textTransform: 'capitalize',
+                                            dropdownWidthClass: 'w-col-376',
+                                            minLength: 6,
+                                            maxLength: 256
+                                        }"
+                                        [placeholderType]="'longAddress'"
+                                        [activeAddress]="selectedAddress"
+                                        (selectedAddress)="
+                                            onHandleAddress($event)
+                                        "
+                                    ></app-input-address-dropdown>
                                 </div>
-                                <app-ta-input
-                                    *ngIf="isTerminalPhoneExtExist"
-                                    formControlName="extensionPhone"
-                                    [inputConfig]="{
-                                        name: 'phone-extension',
-                                        type: 'text',
-                                        label: 'Ext.',
-                                        minLength: 1,
-                                        maxLength: 8,
-                                        placeholderIcon: 'phone-extension'
-                                    }"
-                                ></app-ta-input>
+                                <div class="col-2">
+                                    <app-ta-input
+                                        formControlName="addressUnit"
+                                        [inputConfig]="{
+                                            name: 'address-unit',
+                                            type: 'text',
+                                            label: 'Unit #',
+                                            textTransform: 'uppercase',
+                                            minLength: 1,
+                                            maxLength: 10
+                                        }"
+                                    ></app-ta-input>
+                                </div>
                             </div>
-                            <div class="email-field">
-                                <app-ta-input
-                                    formControlName="email"
-                                    [inputConfig]="{
-                                        name: 'Email',
-                                        type: 'text',
-                                        label: 'Email',
-                                        placeholderIcon: 'email',
-                                        minLength: 5,
-                                        maxLength: 64,
-                                        textTransform: 'lowercase'
-                                    }"
-                                ></app-ta-input>
+                            <div
+                                class="phone-ext-email-small-modal row-no-m"
+                                [ngClass]="{
+                                    'active-phone-ext': isTerminalPhoneExtExist
+                                }"
+                            >
+                                <div
+                                    class="phone-extension phone-ext-email-small-modal-my-20"
+                                >
+                                    <div class="phone-field">
+                                        <app-ta-input
+                                            formControlName="phone"
+                                            [inputConfig]="{
+                                                name: 'Phone',
+                                                type: 'text',
+                                                label: 'Phone',
+                                                placeholderIcon: 'phone',
+                                                isRequired: true,
+                                                mask: '(000) 000-0000',
+                                                maxLength: 14
+                                            }"
+                                        ></app-ta-input>
+                                    </div>
+                                    <div
+                                        class="extension-field"
+                                        *ngIf="!isTerminalPhoneExtExist"
+                                        (click)="
+                                            isTerminalPhoneExtExist =
+                                                !isTerminalPhoneExtExist
+                                        "
+                                        ngbTooltip
+                                        mainTooltip="Add Extension"
+                                        position="top"
+                                        tooltipBackground="#6c6c6c"
+                                    >
+                                        <svg-icon
+                                            src="assets/svg/common/ic_plus.svg"
+                                        ></svg-icon>
+                                    </div>
+                                    <app-ta-input
+                                        *ngIf="isTerminalPhoneExtExist"
+                                        formControlName="extensionPhone"
+                                        [inputConfig]="{
+                                            name: 'phone-extension',
+                                            type: 'text',
+                                            label: 'Ext.',
+                                            minLength: 1,
+                                            maxLength: 8,
+                                            placeholderIcon: 'phone-extension'
+                                        }"
+                                    ></app-ta-input>
+                                </div>
+                                <div class="email-field">
+                                    <app-ta-input
+                                        formControlName="email"
+                                        [inputConfig]="{
+                                            name: 'Email',
+                                            type: 'text',
+                                            label: 'Email',
+                                            placeholderIcon: 'email',
+                                            minLength: 5,
+                                            maxLength: 64,
+                                            textTransform: 'lowercase'
+                                        }"
+                                    ></app-ta-input>
+                                </div>
                             </div>
-                        </div>
+                        </ng-container>
                     </app-ta-checkbox-card>
 
                     <!-- Office -->
@@ -171,6 +177,7 @@
                         }"
                     >
                         <div
+                            body
                             class="phone-ext-email-small-modal phone-ext-email-small-modal-my-20 row-no-m"
                             [ngClass]="{
                                 'active-phone-ext': isOfficePhoneExtExist
@@ -251,129 +258,131 @@
                             marginBottom: '22px'
                         }"
                     >
-                        <div
-                            class="phone-ext-email-small-modal phone-ext-email-mt20-mb-32 last-row"
-                            [ngClass]="{
-                                'active-phone-ext': isParkingPhoneExtExist
-                            }"
-                        >
-                            <div class="phone-extension">
-                                <div class="phone-field">
+                        <ng-container body>
+                            <div
+                                class="phone-ext-email-small-modal phone-ext-email-mt20-mb-32 last-row"
+                                [ngClass]="{
+                                    'active-phone-ext': isParkingPhoneExtExist
+                                }"
+                            >
+                                <div class="phone-extension">
+                                    <div class="phone-field">
+                                        <app-ta-input
+                                            formControlName="parkingPhone"
+                                            [inputConfig]="{
+                                                name: 'Phone',
+                                                type: 'text',
+                                                label: 'Phone',
+                                                placeholderIcon: 'phone',
+                                                isRequired: true,
+                                                mask: '(000) 000-0000',
+                                                maxLength: 14
+                                            }"
+                                        ></app-ta-input>
+                                    </div>
+                                    <div
+                                        class="extension-field"
+                                        *ngIf="!isParkingPhoneExtExist"
+                                        (click)="
+                                            isParkingPhoneExtExist =
+                                                !isParkingPhoneExtExist
+                                        "
+                                        ngbTooltip
+                                        mainTooltip="Add Extension"
+                                        position="top"
+                                        tooltipBackground="#6c6c6c"
+                                    >
+                                        <svg-icon
+                                            src="assets/svg/common/ic_plus.svg"
+                                        ></svg-icon>
+                                    </div>
                                     <app-ta-input
-                                        formControlName="parkingPhone"
+                                        *ngIf="isParkingPhoneExtExist"
+                                        formControlName="parkingExtPhone"
                                         [inputConfig]="{
-                                            name: 'Phone',
+                                            name: 'phone-extension',
                                             type: 'text',
-                                            label: 'Phone',
-                                            placeholderIcon: 'phone',
-                                            isRequired: true,
-                                            mask: '(000) 000-0000',
-                                            maxLength: 14
+                                            label: 'Ext.',
+                                            minLength: 1,
+                                            maxLength: 8,
+                                            placeholderIcon: 'phone-extension'
                                         }"
                                     ></app-ta-input>
                                 </div>
-                                <div
-                                    class="extension-field"
-                                    *ngIf="!isParkingPhoneExtExist"
-                                    (click)="
-                                        isParkingPhoneExtExist =
-                                            !isParkingPhoneExtExist
-                                    "
-                                    ngbTooltip
-                                    mainTooltip="Add Extension"
-                                    position="top"
-                                    tooltipBackground="#6c6c6c"
-                                >
-                                    <svg-icon
-                                        src="assets/svg/common/ic_plus.svg"
-                                    ></svg-icon>
-                                </div>
-                                <app-ta-input
-                                    *ngIf="isParkingPhoneExtExist"
-                                    formControlName="parkingExtPhone"
-                                    [inputConfig]="{
-                                        name: 'phone-extension',
-                                        type: 'text',
-                                        label: 'Ext.',
-                                        minLength: 1,
-                                        maxLength: 8,
-                                        placeholderIcon: 'phone-extension'
-                                    }"
-                                ></app-ta-input>
-                            </div>
-                            <div class="email-field">
-                                <app-ta-input
-                                    formControlName="parkingEmail"
-                                    [inputConfig]="{
-                                        name: 'Email',
-                                        type: 'text',
-                                        label: 'Email',
-                                        placeholderIcon: 'email',
-                                        minLength: 5,
-                                        maxLength: 64,
-                                        textTransform: 'lowercase'
-                                    }"
-                                ></app-ta-input>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <app-ta-input
-                                    formControlName="terminalParkingSlot"
-                                    [inputConfig]="{
-                                        name: 'Parking Slot',
-                                        type: 'text',
-                                        label: 'Parking Slot # (Truck)',
-                                        minLength: 1,
-                                        maxLength: 64
-                                    }"
-                                ></app-ta-input>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <app-ta-input
-                                    formControlName="terminalFullParkingSlot"
-                                    [inputConfig]="{
-                                        name: 'Full Parking Slot',
-                                        type: 'text',
-                                        label: 'Full Parking Slot # (Semi Truck - Trailer)',
-                                        minLength: 1,
-                                        maxLength: 128
-                                    }"
-                                ></app-ta-input>
-                            </div>
-                        </div>
-                        <div
-                            class="parking-gate-securityCamera parking-gate-securityCamera-location-terminal row-no-m"
-                        >
-                            <div class="gate-field">
-                                <p>Gate</p>
-                                <div class="gate-radio">
-                                    <app-ta-tab-switch
-                                        [tabs]="gateBtns"
-                                        (switchClicked)="
-                                            onAction($event, 'gate')
-                                        "
-                                        [type]="'type2-modal-popup'"
-                                    >
-                                    </app-ta-tab-switch>
+                                <div class="email-field">
+                                    <app-ta-input
+                                        formControlName="parkingEmail"
+                                        [inputConfig]="{
+                                            name: 'Email',
+                                            type: 'text',
+                                            label: 'Email',
+                                            placeholderIcon: 'email',
+                                            minLength: 5,
+                                            maxLength: 64,
+                                            textTransform: 'lowercase'
+                                        }"
+                                    ></app-ta-input>
                                 </div>
                             </div>
-                            <div class="camera-field">
-                                <p>Security Camera</p>
-                                <div class="camera-radio">
-                                    <app-ta-tab-switch
-                                        [tabs]="cameraBtns"
-                                        (switchClicked)="
-                                            onAction($event, 'camera')
-                                        "
-                                        [type]="'type2-modal-popup'"
-                                    >
-                                    </app-ta-tab-switch>
+                            <div class="row">
+                                <div class="col-12">
+                                    <app-ta-input
+                                        formControlName="terminalParkingSlot"
+                                        [inputConfig]="{
+                                            name: 'Parking Slot',
+                                            type: 'text',
+                                            label: 'Parking Slot # (Truck)',
+                                            minLength: 1,
+                                            maxLength: 64
+                                        }"
+                                    ></app-ta-input>
                                 </div>
                             </div>
-                        </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <app-ta-input
+                                        formControlName="terminalFullParkingSlot"
+                                        [inputConfig]="{
+                                            name: 'Full Parking Slot',
+                                            type: 'text',
+                                            label: 'Full Parking Slot # (Semi Truck - Trailer)',
+                                            minLength: 1,
+                                            maxLength: 128
+                                        }"
+                                    ></app-ta-input>
+                                </div>
+                            </div>
+                            <div
+                                class="parking-gate-securityCamera parking-gate-securityCamera-location-terminal row-no-m"
+                            >
+                                <div class="gate-field">
+                                    <p>Gate</p>
+                                    <div class="gate-radio">
+                                        <app-ta-tab-switch
+                                            [tabs]="gateBtns"
+                                            (switchClicked)="
+                                                onAction($event, 'gate')
+                                            "
+                                            [type]="'type2-modal-popup'"
+                                        >
+                                        </app-ta-tab-switch>
+                                    </div>
+                                </div>
+                                <div class="camera-field">
+                                    <p>Security Camera</p>
+                                    <div class="camera-radio">
+                                        <app-ta-tab-switch
+                                            [tabs]="cameraBtns"
+                                            (switchClicked)="
+                                                onAction($event, 'camera')
+                                            "
+                                            [type]="'type2-modal-popup'"
+                                        >
+                                        </app-ta-tab-switch>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
                     </app-ta-checkbox-card>
 
                     <!-- Warehouse -->
@@ -390,6 +399,7 @@
                         }"
                     >
                         <div
+                            body
                             class="phone-ext-email-small-modal phone-ext-email-small-modal-my-20 row-no-m"
                             [ngClass]="{
                                 'active-phone-ext': isWarehousePhoneExtExist

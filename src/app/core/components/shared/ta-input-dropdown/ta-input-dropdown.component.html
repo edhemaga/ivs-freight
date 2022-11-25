@@ -168,7 +168,6 @@
                         'add-new': option.name === 'Add New',
                         active: option.id === activeItem?.id,
                         trailerContainer: option.name === 'Container',
-                        semisleeper: option.name === 'Semi w/Sleeper',
                         lowboyrgn: option.name === 'Low Boy/RGN'
                     }"
                     (click)="onActiveItem(option)"
@@ -179,15 +178,12 @@
                         }}"
                         [ngClass]="{
                             active: option.id === activeItem?.id,
-                            'hide-hover-icons':
-                                inputConfig?.customClass ===
-                                    'truck-trailer-dropdown' &&
-                                !['No Results', 'Add New'].includes(
-                                    option.name
-                                ),
                             'no-svg': !option?.logoName,
                             'hazardous-svg':
-                                option?.logoName?.includes('hazardous')
+                                option?.logoName?.includes('hazardous'),
+                            'truck-trailer-logo':
+                                inputConfig?.customClass ===
+                                'truck-trailer-dropdown'
                         }"
                         [src]="
                             option?.logoName
@@ -197,11 +193,7 @@
                     <div
                         class="svgtext-template-text"
                         [ngClass]="{
-                            'truck-text': option?.subFolder === 'trucks',
-                            'move-hover-text':
-                                inputConfig?.customClass ===
-                                    'truck-trailer-dropdown' &&
-                                !['No Results', 'Add New'].includes(option.name)
+                            'truck-text': option?.subFolder === 'trucks'
                         }"
                         [innerHtml]="
                             option?.number
@@ -469,7 +461,9 @@
                     <img
                         *ngIf="option.logoName"
                         class="svg-template-logo"
-                        [ngClass]="{ active: option.id === activeItem?.id }"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id
+                        }"
                         [src]="
                             this.imageBase64Service.sanitizer(option.logoName)
                         "

@@ -578,61 +578,63 @@
                             marginBottom: '18px'
                         }"
                     >
-                        <div class="switch-margin">
-                            <app-ta-tab-switch
-                                [tabs]="ownerTabs"
-                                (switchClicked)="tabOwnerChange($event)"
-                                [type]="'type2-modal-popup'"
-                            ></app-ta-tab-switch>
-                        </div>
+                        <ng-container body>
+                            <div class="switch-margin">
+                                <app-ta-tab-switch
+                                    [tabs]="ownerTabs"
+                                    (switchClicked)="tabOwnerChange($event)"
+                                    [type]="'type2-modal-popup'"
+                                ></app-ta-tab-switch>
+                            </div>
 
-                        <div
-                            class="animation-checkbox-card-tabs"
-                            [ngClass]="{
-                                'fade-checkbox-inputs':
-                                    selectedOwnerTab?.name.toLowerCase() ===
-                                    'company'
-                            }"
-                        >
-                            <div class="row">
-                                <div class="col-4">
-                                    <app-ta-input
-                                        formControlName="ein"
-                                        [inputConfig]="{
-                                            name: 'EIN',
-                                            type: 'text',
-                                            label: 'EIN #',
-                                            isRequired: true,
-                                            mask: '00-0000000',
-                                            maxLength: 10,
-                                            loadingSpinner: {
-                                                size: 'small',
-                                                color: 'white',
-                                                isLoading: loadingOwnerEin
-                                            }
-                                        }"
-                                    ></app-ta-input>
-                                </div>
-                                <div class="col-8">
-                                    <app-ta-input
-                                        formControlName="bussinesName"
-                                        [inputConfig]="{
-                                            name: 'Business Name',
-                                            type: 'text',
-                                            label: 'Business Name',
-                                            isRequired: !!owner,
-                                            textTransform: 'uppercase',
-                                            isDisabled: !!(
-                                                !driverForm.get('ein').value ||
-                                                owner
-                                            ),
-                                            minLength: 2,
-                                            maxLength: 64
-                                        }"
-                                    ></app-ta-input>
+                            <div
+                                class="animation-checkbox-card-tabs"
+                                [ngClass]="{
+                                    'fade-checkbox-inputs':
+                                        selectedOwnerTab?.name.toLowerCase() ===
+                                        'company'
+                                }"
+                            >
+                                <div class="row">
+                                    <div class="col-4">
+                                        <app-ta-input
+                                            formControlName="ein"
+                                            [inputConfig]="{
+                                                name: 'EIN',
+                                                type: 'text',
+                                                label: 'EIN #',
+                                                isRequired: true,
+                                                mask: '00-0000000',
+                                                maxLength: 10,
+                                                loadingSpinner: {
+                                                    size: 'small',
+                                                    color: 'white',
+                                                    isLoading: loadingOwnerEin
+                                                }
+                                            }"
+                                        ></app-ta-input>
+                                    </div>
+                                    <div class="col-8">
+                                        <app-ta-input
+                                            formControlName="bussinesName"
+                                            [inputConfig]="{
+                                                name: 'Business Name',
+                                                type: 'text',
+                                                label: 'Business Name',
+                                                isRequired: !!owner,
+                                                textTransform: 'uppercase',
+                                                isDisabled: !!(
+                                                    !driverForm.get('ein')
+                                                        .value || owner
+                                                ),
+                                                minLength: 2,
+                                                maxLength: 64
+                                            }"
+                                        ></app-ta-input>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </ng-container>
                     </app-ta-checkbox-card>
 
                     <!-- Off duty Location -->

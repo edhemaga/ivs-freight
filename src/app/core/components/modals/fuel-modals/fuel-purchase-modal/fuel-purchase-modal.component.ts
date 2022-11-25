@@ -282,12 +282,12 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'fuel': {
-                console.log(event);
                 this.selectedFuelStop = event;
                 break;
             }
             case 'fuel-items': {
                 this.selectedFuelItemsFormArray[index] = event;
+                console.log(this.selectedFuelItemsFormArray);
                 break;
             }
             default: {
@@ -597,8 +597,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         if (crud === 'update') {
             return this.fuelItems.controls.map((item, index) => {
                 return {
-                    id: item.get('id').value,
-                    itemfuel: 1,
+                    id: this.selectedFuelItemsFormArray[index]
+                        ? this.selectedFuelItemsFormArray[index].id
+                        : null,
+                    itemfuel: item.get('itemId').value,
                     price: item.get('price').value
                         ? convertThousanSepInNumber(item.get('price').value)
                         : null,
@@ -611,7 +613,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         } else {
             return this.fuelItems.controls.map((item, index) => {
                 return {
-                    itemfuel: 1,
+                    itemfuel: this.selectedFuelItemsFormArray[index]
+                        ? this.selectedFuelItemsFormArray[index].id
+                        : null,
                     price: item.get('price').value
                         ? convertThousanSepInNumber(item.get('price').value)
                         : null,
