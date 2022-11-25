@@ -8,7 +8,7 @@ import {
     DriverMinimalListResponse,
     DriverResponse,
     GetDriverModalResponse,
-    OwnerService
+    OwnerService,
 } from 'appcoretruckassist';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
@@ -264,6 +264,7 @@ export class DriverTService {
     }
 
     public updateDriver(data: any): Observable<object> {
+        this.formDataService.extractFormDataFromFunction(data);
         return this.driverService.apiDriverPut().pipe(
             tap((res: any) => {
                 const subDriver = this.getDriverById(data.id)

@@ -23,47 +23,29 @@
         [customClass]="size"
         [customDetailsPageClass]="customClassName"
         (activeSlide)="currentSlide = $event"
+        [slideWidth]="slideWidth"
     >
         <div
             class="ta-upload-carousel-container"
             *ngFor="let file of files; let ind = index; trackBy: identity"
         >
-            <div [ngSwitch]="size">
-                <div *ngSwitchCase="'small'">
-                    <app-ta-upload-file
-                        *ngIf="currentSlide === ind"
-                        [file]="file"
-                        [hasTag]="hasTag"
-                        [isReview]="isReview"
-                        [reviewMode]="reviewMode"
-                        [feedbackText]="feedbackText"
-                        [hasNumberOfPages]="hasNumberOfPages"
-                        [customClassName]="customClassName"
-                        (fileAction)="onFileAction($event)"
-                        (documentReviewInputEvent)="
-                            documentReviewInputEventMethod($event)
-                        "
-                        [tags]="tags"
-                        [type]="type"
-                    ></app-ta-upload-file>
-                </div>
-                <div *ngSwitchDefault>
-                    <app-ta-upload-file
-                        [file]="file"
-                        [hasTag]="hasTag"
-                        [isReview]="isReview"
-                        [reviewMode]="reviewMode"
-                        [feedbackText]="feedbackText"
-                        [hasNumberOfPages]="hasNumberOfPages"
-                        [customClassName]="customClassName"
-                        (fileAction)="onFileAction($event)"
-                        (documentReviewInputEvent)="
-                            documentReviewInputEventMethod($event)
-                        "
-                        [tags]="tags"
-                        [type]="type"
-                    ></app-ta-upload-file>
-                </div>
+            <div>
+                <app-ta-upload-file
+                    [file]="file"
+                    [hasTag]="hasTag"
+                    [isReview]="isReview"
+                    [reviewMode]="reviewMode"
+                    [feedbackText]="feedbackText"
+                    [hasNumberOfPages]="hasNumberOfPages"
+                    [customClassName]="customClassName"
+                    (fileAction)="onFileAction($event)"
+                    (documentReviewInputEvent)="
+                        documentReviewInputEventMethod($event)
+                    "
+                    [tags]="tags"
+                    [type]="type"
+                    [categoryTag]="categoryTag"
+                ></app-ta-upload-file>
             </div>
         </div>
     </app-ta-upload-files-carousel>
@@ -73,5 +55,7 @@
             reviewMode !== 'REVIEW_MODE'
         "
         (onFileEvent)="onUploadFiles($event)"
+        [isRequired]="isRequired"
+        [showRequired]="showRequired"
     ></app-ta-upload-dropzone>
 </div>
