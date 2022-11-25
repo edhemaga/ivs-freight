@@ -33,20 +33,7 @@ export class FuelTService {
     // **************** FUEL TRANSACTION ****************
 
     public getFuelTransactionsList(
-        fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>,
-        fuelTransactionSpecParamsTruckIds?: Array<number>,
-        fuelTransactionSpecParamsCategoryIds?: Array<number>,
-        fuelTransactionSpecParamsDateFrom?: string,
-        fuelTransactionSpecParamsDateTo?: string,
-        fuelTransactionSpecParamsLong?: number,
-        fuelTransactionSpecParamsLat?: number,
-        fuelTransactionSpecParamsDistance?: number,
-        fuelTransactionSpecParamsLastFrom?: number,
-        fuelTransactionSpecParamsLastTo?: number,
-        fuelTransactionSpecParamsCostFrom?: number,
-        fuelTransactionSpecParamsCostTo?: number,
-        fuelTransactionSpecParamsPpgFrom?: number,
-        fuelTransactionSpecParamsPpgTo?: number,
+        fuelTransactionSpecParamsFuelStopStoreId?: number,
         fuelTransactionSpecParamsPageIndex?: number,
         fuelTransactionSpecParamsPageSize?: number,
         fuelTransactionSpecParamsCompanyId?: number,
@@ -56,20 +43,7 @@ export class FuelTService {
         fuelTransactionSpecParamsSearch2?: string
     ): Observable<FuelTransactionListResponse> {
         return this.fuelService.apiFuelTransactionListGet(
-            fuelTransactionSpecParamsFuelStopStoreIds,
-            fuelTransactionSpecParamsTruckIds,
-            fuelTransactionSpecParamsCategoryIds,
-            fuelTransactionSpecParamsDateFrom,
-            fuelTransactionSpecParamsDateTo,
-            fuelTransactionSpecParamsLong,
-            fuelTransactionSpecParamsLat,
-            fuelTransactionSpecParamsDistance,
-            fuelTransactionSpecParamsLastFrom,
-            fuelTransactionSpecParamsLastTo,
-            fuelTransactionSpecParamsCostFrom,
-            fuelTransactionSpecParamsCostTo,
-            fuelTransactionSpecParamsPpgFrom,
-            fuelTransactionSpecParamsPpgTo,
+            fuelTransactionSpecParamsFuelStopStoreId,
             fuelTransactionSpecParamsPageIndex,
             fuelTransactionSpecParamsPageSize,
             fuelTransactionSpecParamsCompanyId,
@@ -136,19 +110,6 @@ export class FuelTService {
 
     // Get Fule Stops
     public getFuelStopsList(
-        truckIds?: Array<number>,
-        categoryIds?: Array<number>,
-        dateFrom?: string,
-        dateTo?: string,
-        _long?: number,
-        lat?: number,
-        distance?: number,
-        lastFrom?: number,
-        lastTo?: number,
-        costFrom?: number,
-        costTo?: number,
-        ppgFrom?: number,
-        ppgTo?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -158,19 +119,6 @@ export class FuelTService {
         search2?: string
     ): Observable<FuelStopListResponse> {
         return this.fuelService.apiFuelFuelstopListGet(
-            truckIds,
-            categoryIds,
-            dateFrom,
-            dateTo,
-            _long,
-            lat,
-            distance,
-            lastFrom,
-            lastTo,
-            costFrom,
-            costTo,
-            ppgFrom,
-            ppgTo,
             pageIndex,
             pageSize,
             companyId,
