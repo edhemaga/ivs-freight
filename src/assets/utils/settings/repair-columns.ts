@@ -759,7 +759,7 @@ export function getRepairsShopColumnDefinition() {
         {
             ngTemplate: 'attachments',
             title: 'Attachments',
-            field: 'additionalData.files',
+            field: 'files',
             name: '',
             moveRight: true,
             headIconStyle: {

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
     ApplicantAdminResponse,
     ApplicantService,
-    ApplicantShortResponse,
     CreateApplicantCommand,
     GetApplicantListResponse,
     ResendInviteCommand,
@@ -24,11 +23,7 @@ export class ApplicantTService {
                 const subApplicant = this.getApplicantByIdAdmin(res.id)
                     .subscribe({
                         next: (applicant: ApplicantAdminResponse | any) => {
-                            console.log('Dodaje se novi aplicant');
-                            console.log(applicant);
-
-                            this.updateStoreApplicant = applicant;
-
+                            this.applicantStore.add(applicant)
                             const applicantCount = JSON.parse(
                                 localStorage.getItem('accountTableCount')
                             );
@@ -59,24 +54,6 @@ export class ApplicantTService {
         data: UpdateApplicantCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantAdminPut(data);
-    }
-
-    set updateStoreApplicantList(data: ApplicantShortResponse[]) {
-        this.applicantStore.update((store) => {
-            return {
-                ...store,
-                applicant: data,
-            };
-        });
-    }
-
-    set updateStoreApplicant(data: ApplicantShortResponse) {
-        this.applicantStore.update((store) => {
-            return {
-                ...store,
-                applicant: data,
-            };
-        });
     }
 
     // Get Applicant Admin List
