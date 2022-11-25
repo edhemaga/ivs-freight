@@ -204,6 +204,7 @@ export class FuelTService {
 
     // For modal method
     public updateFuelStop(data: UpdateFuelStopCommand): Observable<object> {
+        this.formDataService.extractFormDataFromFunction(data);
         return this.fuelService.apiFuelFuelstopUpdatePut();
     }
 
