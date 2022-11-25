@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 
@@ -66,12 +66,15 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     resizeObserver: ResizeObserver;
     fuelData: FuelTransactionListResponse | FuelStopListResponse;
 
+    mapListData = [];
+
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private thousandSeparator: TaThousandSeparatorPipe,
         public datePipe: DatePipe,
-        private fuelQuery: FuelQuery
+        private fuelQuery: FuelQuery,
+        private ref: ChangeDetectorRef
     ) {}
     ngOnInit(): void {
         this.sendFuelData();
@@ -420,6 +423,8 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (td.data.length) {
             this.viewData = [...td.data];
 
+            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
+
             this.viewData = this.viewData.map((data) => {
                 return this.selectedTab === 'active'
                     ? this.mapFuelTransactionsData(data)
@@ -567,6 +572,45 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     selectItem(id) {
         this.mapsComponent.clickedMarker(id);
+    }
+
+    updateMapList(mapListResponse) {
+        var newMapList = mapListResponse.pagination.data;
+        var listChanged = false;
+
+        for ( var i = 0; i < this.mapListData.length; i++ ) {
+            let item = this.mapListData[i];
+
+            let itemIndex = newMapList.findIndex(
+                (item2) => item2.id === item.id
+            );
+
+            if (itemIndex == -1) {
+                this.mapListData.splice(i, 1);
+                listChanged = true;
+                i--;
+            }
+        }
+
+        for ( var b = 0; b < newMapList.length; b++ ) {
+            let item = newMapList[b];
+
+            let itemIndex = this.mapListData.findIndex(
+                (item2) => item2.id === item.id
+            );
+
+            if (itemIndex == -1) {
+                this.mapListData.splice(b, 0, item);
+                listChanged = true;
+                b--;
+            }
+        }
+
+        if (listChanged || mapListResponse.changedSort) {
+            if ( mapListResponse.changedSort ) this.mapListData = mapListResponse.pagination.data;
+            this.tableData[1].length = mapListResponse.pagination.count;
+            this.ref.detectChanges();
+        }
     }
 
     ngOnDestroy(): void {
