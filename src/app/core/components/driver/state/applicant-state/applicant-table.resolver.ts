@@ -33,7 +33,7 @@ export class ApplicantTableResolver implements Resolve<ApplicantTableState> {
                         })
                     );
 
-                    this.applicantService.updateStoreApplicantList = applicantPagination.pagination.data
+                    this.store.set(applicantPagination.pagination.data);
                 })
             );
     }
