@@ -48,6 +48,8 @@ export class SphStep2FormComponent
     @Input() isEditing: boolean;
     @Input() formValuesToPatch?: any;
     @Input() markFormInvalid?: boolean;
+    @Input() displayRadioRequiredNote: boolean = false;
+    @Input() checkIsHazmatSpillNotChecked: boolean;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -55,6 +57,7 @@ export class SphStep2FormComponent
     @Output() formStatusEmitter = new EventEmitter<any>();
     @Output() markInvalidEmitter = new EventEmitter<any>();
     @Output() lastFormValuesEmitter = new EventEmitter<any>();
+    @Output() radioRequiredNoteEmitter = new EventEmitter<any>();
 
     public accidentForm: FormGroup;
 
@@ -134,6 +137,21 @@ export class SphStep2FormComponent
 
                 this.startValueChangesMonitoring();
             }, 50);
+        }
+
+        if (
+            changes.checkIsHazmatSpillNotChecked?.previousValue !==
+            changes.checkIsHazmatSpillNotChecked?.currentValue
+        ) {
+            let hazmatSpillRadios: any;
+
+            if (!changes.checkIsHazmatSpillNotChecked?.firstChange) {
+                hazmatSpillRadios = this.accidentForm.get('hazmatSpill').value;
+            }
+
+            if (hazmatSpillRadios === null) {
+                this.radioRequiredNoteEmitter.emit(true);
+            }
         }
     }
 
@@ -230,6 +248,8 @@ export class SphStep2FormComponent
                 } else {
                     this.accidentForm.get('hazmatSpill').patchValue(false);
                 }
+
+                this.radioRequiredNoteEmitter.emit(false);
 
                 break;
 

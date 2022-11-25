@@ -359,7 +359,7 @@ const routes: Routes = [
             ).then((m) => m.SphFormModule),
 
         canActivate: [AuthGuard],
-        resolve: { applicantSphForm: ApplicantSphFormResolver },
+        /* resolve: { applicantSphForm: ApplicantSphFormResolver }, */
     },
     {
         path: 'sph-form-end',

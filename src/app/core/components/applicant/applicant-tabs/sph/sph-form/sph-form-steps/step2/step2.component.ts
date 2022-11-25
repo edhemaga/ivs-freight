@@ -16,6 +16,11 @@ import {
     convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
 
+import {
+    filterUnceckedRadiosId,
+    isAnyRadioInArrayUnChecked,
+} from 'src/app/core/components/applicant/state/utils/utils';
+
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from 'src/app/core/components/applicant/state/services/applicant-actions.service';
 
@@ -75,6 +80,17 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     public consideredForEmploymentAgainRadios: any;
 
     public formValuesToPatch: any;
+
+    public displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    }[] = [
+        { id: 0, displayRadioRequiredNote: false },
+        { id: 1, displayRadioRequiredNote: false },
+        { id: 2, displayRadioRequiredNote: false },
+    ];
+    public displayRadioRequiredNote: boolean = false;
+    public checkIsHazmatSpillNotChecked: boolean = false;
 
     public questions: ApplicantQuestion[] = [
         {
@@ -430,6 +446,10 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
                         );
                     }
                 }
+
+                this.displayRadioRequiredNoteArray[
+                    selectedCheckbox.index
+                ].displayRadioRequiredNote = false;
                 break;
             case InputSwitchActions.REASON_FOR_LEAVING:
                 this.selectedReasonForLeaving = event;
@@ -584,6 +604,14 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
         this.lastAccidentCard = event;
     }
 
+    public onGetRadioRequiredNoteEmit(event: any): void {
+        if (event) {
+            this.displayRadioRequiredNote = true;
+        } else {
+            this.displayRadioRequiredNote = false;
+        }
+    }
+
     public getDropdownLists(): void {
         this.applicantQuery.applicantDropdownLists$
             .pipe(takeUntil(this.destroy$))
@@ -619,21 +647,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public onSubmit(): void {
-        if (
-            this.accidentHistoryForm.invalid ||
-            this.formStatus === 'INVALID' ||
-            this.isEditing
-        ) {
-            if (this.accidentHistoryForm.invalid) {
-                this.inputService.markInvalid(this.accidentHistoryForm);
-            }
-
-            if (this.formStatus === 'INVALID') {
-                this.markFormInvalid = true;
-            }
-
-            return;
-        }
+        this.checkIsHazmatSpillNotChecked = true;
 
         const {
             applicantWorkForCompany,
@@ -643,6 +657,54 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
             consideredForEmploymentAgain,
             noSafetyPerformance,
         } = this.accidentHistoryForm.value;
+
+        const radioButtons = [
+            { id: 0, isChecked: applicantWorkForCompany },
+            { id: 1, isChecked: motorVehicleForCompany },
+            {
+                id: 2,
+                isChecked: consideredForEmploymentAgain,
+            },
+        ];
+
+        const isAnyRadioUnchecked = isAnyRadioInArrayUnChecked(radioButtons);
+
+        if (
+            this.accidentHistoryForm.invalid ||
+            this.formStatus === 'INVALID' ||
+            this.isEditing ||
+            isAnyRadioUnchecked
+        ) {
+            if (this.accidentHistoryForm.invalid) {
+                this.inputService.markInvalid(this.accidentHistoryForm);
+            }
+
+            if (this.formStatus === 'INVALID') {
+                this.markFormInvalid = true;
+            }
+
+            if (isAnyRadioUnchecked) {
+                const uncheckedRadios = filterUnceckedRadiosId(radioButtons);
+
+                this.displayRadioRequiredNoteArray =
+                    this.displayRadioRequiredNoteArray.map((item, index) => {
+                        if (
+                            uncheckedRadios.some(
+                                (someItem) => someItem === index
+                            )
+                        ) {
+                            return {
+                                ...item,
+                                displayRadioRequiredNote: true,
+                            };
+                        }
+
+                        return item;
+                    });
+            }
+
+            return;
+        }
 
         const filteredAccidentArray = this.accidentArray.map((item) => {
             return {
