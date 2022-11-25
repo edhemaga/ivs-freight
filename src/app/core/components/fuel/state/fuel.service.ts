@@ -192,11 +192,13 @@ export class FuelTService {
     }
 
     public addFuelStop(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
         return this.fuelService.apiFuelFuelstopPost();
     }
 
     // For table method
     public updateFuelStopShortest(data: any): Observable<object> {
+        this.formDataService.extractFormDataFromFunction(data);
         return this.fuelService.apiFuelFuelstopPut();
     }
 
