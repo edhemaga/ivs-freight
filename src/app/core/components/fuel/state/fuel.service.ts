@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
 import { Injectable } from '@angular/core';
 import {
