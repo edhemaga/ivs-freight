@@ -18,10 +18,9 @@ import {
     trailerValueInsurancePolicyValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-
 import {
     AddressEntity,
-    InsurancePolicyModalResponse
+    InsurancePolicyModalResponse,
 } from 'appcoretruckassist';
 
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';

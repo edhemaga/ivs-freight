@@ -637,7 +637,9 @@ export function getFunctionParams(func, data, callableFnc?) {
             sortedArray[indxOf] = !item[1] ? undefined : item[1];
         });
 
-    console.log(callableFnc.subscribe(item => console.log("WHAT IS ITEM", item)));
+    console.log(
+        callableFnc.subscribe((item) => console.log('WHAT IS ITEM', item))
+    );
 
     return sortedArray;
 }
