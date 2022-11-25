@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccidentItemReviewCommand } from './accidentItemReviewCommand';
+import { CreateAccidentItemReviewCommand } from './createAccidentItemReviewCommand';
 
 
 export interface CreateAccidentRecordReviewCommand { 
     applicantId?: number;
-    accidentReviews?: Array<AccidentItemReviewCommand> | null;
+    accidentReviews?: Array<CreateAccidentItemReviewCommand> | null;
 }
 

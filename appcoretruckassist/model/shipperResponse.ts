@@ -33,8 +33,6 @@ export interface ShipperResponse {
     shippingTo?: string | null;
     receivingOpenTwentyFourHours?: boolean;
     shippingOpenTwentyFourHours?: boolean;
-    ban?: boolean;
-    dnu?: boolean;
     note?: string | null;
     shippingHoursSameReceiving?: boolean;
     shipperContacts?: Array<ShipperContactResponse> | null;

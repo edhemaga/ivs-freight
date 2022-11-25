@@ -82,7 +82,7 @@ export class ApplicantActionsService {
     public createCdlInformation(
         data: CreateApplicantCdlCommand
     ): Observable<object> {
-        return this.applicantService.apiApplicantCdlPost(data);
+        return this.applicantService.apiApplicantCdlPost();
     }
 
     public createAccidentRecord(
@@ -172,7 +172,7 @@ export class ApplicantActionsService {
     public updateCdlInformation(
         data: UpdateApplicantCdlCommand
     ): Observable<object> {
-        return this.applicantService.apiApplicantCdlPut(data);
+        return this.applicantService.apiApplicantCdlPut();
     }
 
     public updateAccidentRecord(
@@ -294,7 +294,7 @@ export class ApplicantActionsService {
     public createCdlInformationReview(
         data: CreateApplicantCdlReviewCommand
     ): Observable<object> {
-        return this.applicantService.apiApplicantCdlReviewPost(data);
+        return this.applicantService.apiApplicantCdlReviewPost();
     }
 
     public createAccidentRecordReview(

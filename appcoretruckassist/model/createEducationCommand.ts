@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EmergencyContactCommand } from './emergencyContactCommand';
+import { CreateEmergencyContactCommand } from './createEmergencyContactCommand';
 
 
 export interface CreateEducationCommand { 
@@ -25,7 +25,7 @@ export interface CreateEducationCommand {
     to?: string | null;
     unableForJob?: boolean;
     unableForJobDescription?: string | null;
-    emergencyContacts?: Array<EmergencyContactCommand> | null;
+    emergencyContacts?: Array<CreateEmergencyContactCommand> | null;
     applicantId?: number;
 }
 

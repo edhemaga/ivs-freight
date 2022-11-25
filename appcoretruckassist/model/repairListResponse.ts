@@ -16,5 +16,6 @@ export interface RepairListResponse {
     pagination?: RepairResponsePagination;
     truckCount?: number | null;
     trailerCount?: number | null;
+    repairShopCount?: number;
 }
 

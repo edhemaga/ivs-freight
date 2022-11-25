@@ -9,13 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CdlLicenseCommand } from './cdlLicenseCommand';
+import { CountryType } from './countryType';
+import { ClassType } from './classType';
 
 
 export interface CreateApplicantCdlCommand { 
-    cdlDenied?: boolean;
-    cdlDeniedExplanation?: string | null;
-    applicantId?: number;
-    licences?: Array<CdlLicenseCommand> | null;
+    licenseNumber?: string | null;
+    country?: CountryType;
+    stateId?: number;
+    classType?: ClassType;
+    expDate?: string;
+    restrictions?: Array<number> | null;
+    endorsements?: Array<number> | null;
 }
 
