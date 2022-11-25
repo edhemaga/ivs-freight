@@ -12,29 +12,61 @@ export class FuelResolver implements Resolve<FuelState> {
     constructor(private fuelService: FuelTService) {}
 
     resolve(): Observable<FuelState> {
-        // const fuelTransactions$ = this.fuelService.getFuelTransactionsList(undefined, 1, 25);
+        const fuelTransactions$ = this.fuelService.getFuelTransactionsList(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            1,
+            25
+        );
 
-        // const fuelStops$ = this.fuelService.getFuelStopsList(1, 25);
+        const fuelStops$ = this.fuelService.getFuelStopsList(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            1,
+            25
+        );
 
-        return null;
-        //  forkJoin({
-        //     fuelTransactions: fuelTransactions$,
-        //     fuelStops: fuelStops$,
-        // }).pipe(
-        //     tap((data) => {
-        //         localStorage.setItem(
-        //             'fuelTableCount',
-        //             JSON.stringify({
-        //                 fuelTransactions:
-        //                     data.fuelTransactions.pagination.count,
-        //                 fuelStops: data.fuelStops.pagination.count,
-        //             })
-        //         );
+        return forkJoin({
+            fuelTransactions: fuelTransactions$,
+            fuelStops: fuelStops$,
+        }).pipe(
+            tap((data) => {
+                localStorage.setItem(
+                    'fuelTableCount',
+                    JSON.stringify({
+                        fuelTransactions:
+                            data.fuelTransactions.pagination.count,
+                        fuelStops: data.fuelStops.pagination.count,
+                    })
+                );
 
-        //         this.fuelService.updateStoreFuelTransactionsList =
-        //             data.fuelTransactions;
-        //         this.fuelService.updateStoreFuelStopList = data.fuelStops;
-        //     })
-        // );
+                this.fuelService.updateStoreFuelTransactionsList =
+                    data.fuelTransactions;
+                this.fuelService.updateStoreFuelStopList = data.fuelStops;
+            })
+        );
     }
 }
