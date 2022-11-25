@@ -26,7 +26,7 @@ export function getApplicantColumnsDefinition() {
         {
             ngTemplate: 'nameLink',
             title: 'Name',
-            field: 'fullName',
+            field: 'name',
             name: 'Name',
             hidden: false,
             isPined: true,
@@ -54,7 +54,7 @@ export function getApplicantColumnsDefinition() {
         {
             ngTemplate: 'text',
             title: 'Invited',
-            field: 'invited',
+            field: 'tableInvited',
             name: 'Invited',
             hidden: false,
             isPined: false,
@@ -78,7 +78,7 @@ export function getApplicantColumnsDefinition() {
         {
             ngTemplate: 'text',
             title: 'Accepted',
-            field: 'accepted',
+            field: 'tableAccepted',
             name: 'Accepted',
             hidden: false,
             isPined: false,
@@ -125,7 +125,7 @@ export function getApplicantColumnsDefinition() {
         {
             ngTemplate: 'text',
             title: 'Dob',
-            field: 'dob',
+            field: 'tableDOB',
             name: 'Dob',
             hidden: false,
             isPined: false,
@@ -172,7 +172,7 @@ export function getApplicantColumnsDefinition() {
         {
             ngTemplate: 'applicant-progress',
             title: 'App.',
-            field: 'applicantProgress',
+            field: 'tableApplicantProgress',
             name: 'App.',
             hidden: false,
             isPined: false,
@@ -221,7 +221,7 @@ export function getApplicantColumnsDefinition() {
         {
             ngTemplate: 'progress',
             title: 'Medical Exp.',
-            field: 'medical',
+            field: 'tableMedical',
             name: 'Medical Exp.',
             hidden: false,
             isPined: false,
@@ -243,7 +243,7 @@ export function getApplicantColumnsDefinition() {
         {
             ngTemplate: 'progress',
             title: 'CDL Exp.',
-            field: 'cdl',
+            field: 'tableCdl',
             name: 'CDL Exp.',
             isPined: false,
             hidden: false,
@@ -264,9 +264,9 @@ export function getApplicantColumnsDefinition() {
         },
         {
             ngTemplate: 'applicant-review',
-            title: 'Review',
-            field: 'rev',
-            name: 'Review',
+            title: 'Status',
+            field: 'tableRev',
+            name: 'Status',
             isPined: false,
             hidden: false,
             width: 123,
@@ -317,7 +317,7 @@ export function getApplicantColumnsDefinition() {
         {
             ngTemplate: 'favorite',
             title: 'Favorite',
-            field: 'favorite',
+            field: 'isFavorite',
             name: '',
             hidden: false,
             width: 40,

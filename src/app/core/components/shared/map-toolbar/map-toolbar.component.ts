@@ -434,7 +434,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    onShowMapSettings(mapSettingsPopup: any) {
+    onShowMapSettings() {
         this.modalService.openModal(
             MapSettingsModalComponent,
             { size: 'small' },
@@ -443,54 +443,22 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
                 type: 'edit',
             }
         );
-        // this.mapSettingsPopup = mapSettingsPopup;
-
-        // if (mapSettingsPopup.isOpen()) {
-        //   mapSettingsPopup.close();
-
-        //   this.resetMapForm();
-        // } else {
-        //   mapSettingsPopup.open({});
-        // }
-
-        // if (this.addRoutePopup && this.addRoutePopup.isOpen()) {
-        //   this.addRoutePopup.close();
-        //   this.routeToEdit = {};
-        // }
-
-        // this.mapSettingsPopupOpen = mapSettingsPopup.isOpen();
-        // this.optionsPopupContent[4].active = false;
     }
 
-    onShowRoutePopover(addRoutePopup: any) {
+    onShowRoutePopover() {
+        var routeInfo = {
+            routeName: 'Route 0' + (this.activeTableData.length + 1),
+        };
+
         this.modalService.openModal(
             MapRouteModalComponent,
             { size: 'small' },
             {
+                ...routeInfo,
                 mapId: this.activeTableData.id,
                 type: 'add',
             }
         );
-
-        // ,
-        // {
-        //   ...this.routeToEdit,
-        //   type: 'edit',
-        // }
-
-        // this.addRoutePopup = addRoutePopup;
-
-        // if (addRoutePopup.isOpen()) {
-        //   addRoutePopup.close();
-        //   this.routeToEdit = {};
-
-        //   this.resetRouteForm();
-        // } else {
-        //   addRoutePopup.open({});
-        // }
-
-        // this.addRoutePopupOpen = addRoutePopup.isOpen();
-        // this.optionsPopupContent[4].active = false;
     }
 
     onShowLayersPopover(layersPopup: any) {
@@ -545,7 +513,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    public onSelectDropdown(event: any, action: string, index?: number) {
+    public onSelectDropdown(event: any) {
         this.selectedTruckType = event;
     }
 

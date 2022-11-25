@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EmergencyContactReviewCommand } from './emergencyContactReviewCommand';
+import { CreateEmergencyContactReviewCommand } from './createEmergencyContactReviewCommand';
 
 
 export interface CreateEducationReviewCommand { 
-    id?: number | null;
     isSpecialTrainingDescriptionValid?: boolean;
     specialTrainingDescriptionMessage?: string | null;
     isOtherTrainingDescriptionValid?: boolean;
@@ -23,7 +22,7 @@ export interface CreateEducationReviewCommand {
     datesMessage?: string | null;
     isUnableToPreformJobDescriptionValid?: boolean | null;
     unableToPreformJobDescriptionMessage?: string | null;
-    emergencyContactReviews?: Array<EmergencyContactReviewCommand> | null;
+    emergencyContactReviews?: Array<CreateEmergencyContactReviewCommand> | null;
     applicantId?: number;
 }
 
