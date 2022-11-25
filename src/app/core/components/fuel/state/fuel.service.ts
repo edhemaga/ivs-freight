@@ -16,7 +16,6 @@ import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model
 import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
 import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
-import { getFunctionParams } from '../../../utils/methods.globals';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { GetRepairShopClustersQuery } from 'appcoretruckassist/model/getRepairShopClustersQuery';
 
@@ -43,14 +42,14 @@ export class FuelTService {
         fuelTransactionSpecParamsSearch2?: string
     ): Observable<FuelTransactionListResponse> {
         return this.fuelService.apiFuelTransactionListGet(
-            fuelTransactionSpecParamsFuelStopStoreId,
-            fuelTransactionSpecParamsPageIndex,
-            fuelTransactionSpecParamsPageSize,
-            fuelTransactionSpecParamsCompanyId,
-            fuelTransactionSpecParamsSort,
-            fuelTransactionSpecParamsSearch,
-            fuelTransactionSpecParamsSearch1,
-            fuelTransactionSpecParamsSearch2
+            // fuelTransactionSpecParamsFuelStopStoreId,
+            // fuelTransactionSpecParamsPageIndex,
+            // fuelTransactionSpecParamsPageSize,
+            // fuelTransactionSpecParamsCompanyId,
+            // fuelTransactionSpecParamsSort,
+            // fuelTransactionSpecParamsSearch,
+            // fuelTransactionSpecParamsSearch1,
+            // fuelTransactionSpecParamsSearch2
         );
     }
 
@@ -119,13 +118,13 @@ export class FuelTService {
         search2?: string
     ): Observable<FuelStopListResponse> {
         return this.fuelService.apiFuelFuelstopListGet(
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
+            // pageIndex,
+            // pageSize,
+            // companyId,
+            // sort,
+            // search,
+            // search1,
+            // search2
         );
     }
 
