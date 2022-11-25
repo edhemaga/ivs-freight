@@ -18,7 +18,6 @@ import { FuelDispatchHistoryResponse } from '../../../../../../../appcoretruckas
 import { FuelStopFranchiseResponse } from '../../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import {
     combineDateAndTimeToBackend,
-    convertDateToBackend,
     convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
@@ -323,7 +322,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             fuelStopStoreId: this.selectedFuelStop
                 ? this.selectedFuelStop.storeId
                 : null,
-            transactionDate: convertDateToBackend(form.date),
+            transactionDate: combineDateAndTimeToBackend(
+                form.transactionDate,
+                form.transactionTime
+            ),
             total: this.sumArrays.transform(this.subtotal),
             fuelItems: this.premmapedItems('update') as any,
         };
