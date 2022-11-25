@@ -1,0 +1,78 @@
+.custom-checkbox-card {
+    display: block;
+
+    .checkbox-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 7px 4px;
+        line-height: 18px;
+
+        &.pointer {
+            cursor: pointer;
+
+            &:hover {
+                transition: all 0.3s ease-in-out;
+
+                .ta-checkbox-label {
+                    color: #3c3c3c !important;
+                }
+
+                .checkbox-card-header-arrow {
+                    svg {
+                        path {
+                            fill: #aaaaaa !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        // For two or more checkboxes
+        .grouping-checkboxes {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .checkbox-card-header-arrow {
+            svg {
+                transform: rotate(0deg);
+                transition: all 0.3s ease-in-out;
+                opacity: 0;
+                path {
+                    fill: #b7b7b7;
+                }
+            }
+
+            &.visible {
+                svg {
+                    transform: rotate(180deg);
+                    transition: all 0.3s ease-in-out;
+                    opacity: 1;
+                }
+            }
+
+            &.rotate {
+                svg {
+                    transform: rotate(0deg);
+                }
+            }
+        }
+    }
+
+    .checkbox-card-body {
+        &.innactive {
+            height: 0px !important;
+            overflow: hidden !important;
+            opacity: 0 !important;
+            margin-top: 0px !important;
+            margin-bottom: 0px !important;
+        }
+
+        &.active {
+            overflow: visible !important;
+            opacity: 1 !important;
+        }
+    }
+}

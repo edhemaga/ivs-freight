@@ -10,8 +10,6 @@ import {
 import { Observable } from 'rxjs';
 import { LoadMinimalListResponse } from '../../../../../../appcoretruckassist/model/loadMinimalListResponse';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist/model/loadModalResponse';
-import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
-import { UpdateLoadCommand } from '../../../../../../appcoretruckassist/model/updateLoadCommand';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
 
 @Injectable({
@@ -95,12 +93,12 @@ export class LoadTService {
         );
     }
 
-    public createLoad(data: CreateLoadCommand): Observable<CreateResponse> {
-        return this.loadServices.apiLoadPost(data);
+    public createLoad(data: any): Observable<CreateResponse> {
+        return this.loadServices.apiLoadPost();
     }
 
-    public updateLoad(data: UpdateLoadCommand): Observable<any> {
-        return this.loadServices.apiLoadPut(data);
+    public updateLoad(data: any): Observable<any> {
+        return this.loadServices.apiLoadPut();
     }
 
     public deleteLoadById(id: number): Observable<any> {

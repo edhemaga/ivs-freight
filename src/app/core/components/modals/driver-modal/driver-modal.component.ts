@@ -8,11 +8,9 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
     AddressEntity,
     CheckOwnerSsnEinResponse,
-    CreateDriverCommand,
     CreateResponse,
     DriverResponse,
-    GetDriverModalResponse,
-    UpdateDriverCommand,
+    GetDriverModalResponse
 } from 'appcoretruckassist';
 import {
     einNumberRegex,
@@ -179,47 +177,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         if (data.action === 'close') {
             return;
         }
-        // Change Driver Status
-
-        let fullName =
-            this.driverForm.get('firstName').value +
-            ' ' +
-            this.driverForm.get('lastName').value;
-
-        let successMessage = `"${fullName}" ${
-            data.action === 'deactivate' ? 'Deactivated' : 'Activated'
-        }`;
-        let errorMessage = `Failed to ${
-            data.action === 'deactivate' ? 'Deactivate' : 'Activate'
-        } "${fullName}"`;
 
         if (data.action === 'deactivate' && this.editData) {
-            this.driverTService
-                .changeDriverStatus(
-                    this.editData.id,
-                    !this.driverStatus ? 'active' : 'inactive'
-                )
-                .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res: HttpResponseBase) => {
-                        if (res.status === 200 || res.status === 204) {
-                            this.driverStatus = !this.driverStatus;
-
-                            this.modalService.changeModalStatus({
-                                name: 'deactivate',
-                                status: this.driverStatus,
-                            });
-
-                            this.notificationService.success(
-                                successMessage,
-                                'Success'
-                            );
-                        }
-                    },
-                    error: () => {
-                        this.notificationService.error(errorMessage, 'Error');
-                    },
-                });
+            this.updateDriverStatus(data);
         }
         // Save And Add New
         else if (data.action === 'save and add new') {
@@ -420,11 +380,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get('routing'),
                         this.driverForm.get('account')
                     );
-
-                console.log(
-                    'form component: ',
-                    this.driverForm.get('routing').errors
-                );
             });
     }
 
@@ -1091,13 +1046,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             pushNotificationPayroll,
             smsNotificationPayroll,
             mvrExpiration,
-            address,
             addressUnit,
-            bussinesName,
             ...form
         } = this.driverForm.value;
 
-        const newData: CreateDriverCommand = {
+        const newData: any = {
             ...form,
             dateOfBirth: convertDateToBackend(
                 this.driverForm.get('dateOfBirth').value
@@ -1474,13 +1427,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             pushNotificationPayroll,
             smsNotificationPayroll,
 
-            address,
             addressUnit,
-            bussinesName,
             ...form
         } = this.driverForm.value;
 
-        const newData: UpdateDriverCommand = {
+        const newData: any = {
             id: id,
             ...form,
             dateOfBirth: convertDateToBackend(
@@ -1504,7 +1455,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     : this.driverForm.get('bussinesName').value,
             address: {
                 ...this.selectedAddress,
-                addressUnit: this.driverForm.get('addressUnit').value,
+                addressUnit: addressUnit,
             },
             bankId: this.selectedBank ? this.selectedBank.id : null,
             payType: this.selectedPayType ? this.selectedPayType.id : null,
@@ -1996,10 +1947,40 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    // Checkbox card
-    public ownerCheckboxCard: boolean = true;
-    public toggleCheckboxCard() {
-        this.ownerCheckboxCard = !this.ownerCheckboxCard;
+    private updateDriverStatus(data: { action: string; bool: boolean }) {
+        let successMessage = `"${this.driverFullName}" ${
+            data.action === 'deactivate' ? 'Deactivated' : 'Activated'
+        }`;
+        let errorMessage = `Failed to ${
+            data.action === 'deactivate' ? 'Deactivate' : 'Activate'
+        } "${this.driverFullName}"`;
+
+        this.driverTService
+            .changeDriverStatus(
+                this.editData.id,
+                !this.driverStatus ? 'active' : 'inactive'
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: HttpResponseBase) => {
+                    if (res.status === 200 || res.status === 204) {
+                        this.driverStatus = !this.driverStatus;
+
+                        this.modalService.changeModalStatus({
+                            name: 'deactivate',
+                            status: this.driverStatus,
+                        });
+
+                        this.notificationService.success(
+                            successMessage,
+                            'Success'
+                        );
+                    }
+                },
+                error: () => {
+                    this.notificationService.error(errorMessage, 'Error');
+                },
+            });
     }
 
     ngOnDestroy(): void {

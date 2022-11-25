@@ -131,15 +131,18 @@
             </div>
         </div>
         <!-- Company Owned -->
-        <div class="custom-checkbox-card">
-            <div class="divider"></div>
-            <div class="checkbox-card-header pointer">
-                <app-ta-checkbox
-                    formControlName="companyOwned"
-                    [label]="'Company Owned'"
-                ></app-ta-checkbox>
-            </div>
-        </div>
+        <app-ta-checkbox-card
+            formControlName="companyOwned"
+            [label]="'Company Owned'"
+            [name]="'company-owned'"
+            [hasArrow]="false"
+            [animationMarginParams]="{
+                marginTop: '0px',
+                marginBottom: '0px'
+            }"
+        >
+        </app-ta-checkbox-card>
+
         <!-- Repair Shop Servies -->
         <app-ta-custom-card
             [hasCounter]="pickedServices() ? pickedServices() : 0"

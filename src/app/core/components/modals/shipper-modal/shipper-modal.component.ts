@@ -19,11 +19,9 @@ import {
     AddressEntity,
     CreateRatingCommand,
     CreateReviewCommand,
-    CreateShipperCommand,
     ShipperResponse,
     SignInResponse,
-    UpdateReviewCommand,
-    UpdateShipperCommand,
+    UpdateReviewCommand
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -518,14 +516,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private addShipper() {
-        const { address, addressUnit, shipperContacts, ...form } =
+        const { addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
         let receivingShipping = this.receivingShippingObject();
-        let newData: CreateShipperCommand = {
+        let newData: any = {
             ...form,
             address: {
                 ...this.selectedAddress,
-                addressUnit: this.shipperForm.get('addressUnit').value,
+                addressUnit: addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,
@@ -567,17 +565,17 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private updateShipper(id: number) {
-        const { address, addressUnit, shipperContacts, ...form } =
+        const { addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
 
         let receivingShipping = this.receivingShippingObject();
 
-        let newData: UpdateShipperCommand = {
+        let newData: any = {
             id: id,
             ...form,
             address: {
                 ...this.selectedAddress,
-                addressUnit: this.shipperForm.get('addressUnit').value,
+                addressUnit: addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,

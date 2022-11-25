@@ -1,17 +1,26 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { Router } from '@angular/router';
+
 import { Subject, takeUntil } from 'rxjs';
 
 import { convertDateFromBackend } from './../../../../utils/methods.calculations';
 
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import {
+    ApplicantResponse,
+    PspAuthFeedbackResponse,
+    UpdatePspAuthCommand,
+} from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { ApplicantResponse } from 'appcoretruckassist';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
     selector: 'app-psp-authorization',
@@ -25,14 +34,24 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
 
     public pspAuthorizationForm: FormGroup;
 
-    public signature: any;
+    public companyName: string;
+
+    public applicantId: number;
+
+    public signature: string;
+    public signatureImgSrc: string;
+    public displaySignatureRequiredNote: boolean = false;
 
     public applicantCardInfo: any;
 
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private applicantQuery: ApplicantQuery
+        private router: Router,
+        private applicantStore: ApplicantStore,
+        private applicantQuery: ApplicantQuery,
+        private applicantActionsService: ApplicantActionsService,
+        private imageBase64Service: ImageBase64Service
     ) {}
 
     ngOnInit(): void {
@@ -62,7 +81,37 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
                     ssn: personalInfo?.ssn,
                     dob: convertDateFromBackend(personalInfo?.doB),
                 };
+
+                this.applicantId = res.id;
+
+                this.companyName = res.companyInfo.name;
+
+                if (res.pspAuth) {
+                    this.patchStepValues(res.pspAuth);
+                }
             });
+    }
+
+    public patchStepValues(stepValues: PspAuthFeedbackResponse): void {
+        const {
+            isConfirm,
+            isAuthorize,
+            isFurtherUnderstand,
+            isPspReport,
+            isDisclosureRegardingReport,
+            signature,
+        } = stepValues;
+
+        this.pspAuthorizationForm.patchValue({
+            isConfirm,
+            isAuthorize,
+            isFurtherUnderstand,
+            isPspReport,
+            isDisclosureRegardingReport,
+        });
+
+        this.signatureImgSrc = signature;
+        this.signature = signature;
     }
 
     public handleCheckboxParagraphClick(type: string): void {
@@ -110,12 +159,25 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public onSignatureAction(event: any): void {
-        this.signature = event;
+        if (event) {
+            this.signature = this.imageBase64Service.getStringFromBase64(event);
+        } else {
+            this.signature = null;
+        }
+    }
+
+    public onRemoveSignatureRequiredNoteAction(event: any): void {
+        if (event) {
+            this.displaySignatureRequiredNote = false;
+        }
     }
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (this.selectedMode === SelectedMode.APPLICANT) {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
                 this.onSubmit();
             }
 
@@ -126,10 +188,70 @@ export class PspAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.pspAuthorizationForm.invalid) {
-            this.inputService.markInvalid(this.pspAuthorizationForm);
+        if (this.pspAuthorizationForm.invalid || !this.signature) {
+            if (this.pspAuthorizationForm.invalid) {
+                this.inputService.markInvalid(this.pspAuthorizationForm);
+            }
+
+            if (!this.signature) {
+                this.displaySignatureRequiredNote = true;
+            }
+
             return;
         }
+
+        const {
+            isConfirm,
+            isAuthorize,
+            isFurtherUnderstand,
+            isPspReport,
+            isDisclosureRegardingReport,
+        } = this.pspAuthorizationForm.value;
+
+        const saveData: UpdatePspAuthCommand = {
+            applicantId: this.applicantId,
+            isConfirm,
+            isAuthorize,
+            isFurtherUnderstand,
+            isPspReport,
+            isDisclosureRegardingReport,
+            signature:
+                this.selectedMode === SelectedMode.APPLICANT
+                    ? this.signature
+                    : this.signatureImgSrc,
+        };
+
+        this.applicantActionsService
+            .updatePspAuthorization(saveData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([`/sph/${this.applicantId}`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                pspAuth: {
+                                    ...store.applicant.pspAuth,
+                                    isConfirm: saveData.isConfirm,
+                                    isAuthorize: saveData.isAuthorize,
+                                    isFurtherUnderstand:
+                                        saveData.isFurtherUnderstand,
+                                    isPspReport: saveData.isPspReport,
+                                    isDisclosureRegardingReport:
+                                        saveData.isDisclosureRegardingReport,
+                                    signature: saveData.signature,
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     public onSubmitReview(): void {}

@@ -3,10 +3,8 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import {
-    CreateRegistrationCommand,
     RegistrationModalResponse,
-    RegistrationResponse,
-    UpdateRegistrationCommand,
+    RegistrationResponse
 } from 'appcoretruckassist';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
@@ -126,7 +124,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     private updateRegistration() {
         const { issueDate, expDate, ...form } = this.registrationForm.value;
-        const newData: UpdateRegistrationCommand = {
+        const newData: any = {
             id: this.editData.file_id,
             ...form,
             issueDate: convertDateToBackend(issueDate),
@@ -155,7 +153,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     private addRegistration() {
         const { issueDate, expDate, ...form } = this.registrationForm.value;
-        const newData: CreateRegistrationCommand = {
+        const newData: any = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             expDate: convertDateToBackend(expDate),

@@ -19,6 +19,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { BrokerContactCommand } from '../model/brokerContactCommand';
+// @ts-ignore
 import { BrokerInvoiceAgeingResponse } from '../model/brokerInvoiceAgeingResponse';
 // @ts-ignore
 import { BrokerLoadsResponse } from '../model/brokerLoadsResponse';
@@ -29,9 +31,11 @@ import { BrokerModalResponse } from '../model/brokerModalResponse';
 // @ts-ignore
 import { BrokerResponse } from '../model/brokerResponse';
 // @ts-ignore
-import { CreateBrokerCommand } from '../model/createBrokerCommand';
+import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
 // @ts-ignore
-import { CreateResponse } from '../model/createResponse';
+import { CreditType } from '../model/creditType';
+// @ts-ignore
+import { FileResponse } from '../model/fileResponse';
 // @ts-ignore
 import { GetBrokerListResponse } from '../model/getBrokerListResponse';
 // @ts-ignore
@@ -44,8 +48,6 @@ import { MultipleChangeDnuFlagCommand } from '../model/multipleChangeDnuFlagComm
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { StatusSetMultipleBrokerCommand } from '../model/statusSetMultipleBrokerCommand';
-// @ts-ignore
-import { UpdateBrokerCommand } from '../model/updateBrokerCommand';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -601,6 +603,72 @@ export class BrokerService {
             {
                 context: localVarHttpContext,
                 body: multipleChangeDnuFlagCommand,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiBrokerFilesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<FileResponse>>;
+    public apiBrokerFilesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<FileResponse>>>;
+    public apiBrokerFilesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<FileResponse>>>;
+    public apiBrokerFilesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiBrokerFilesIdGet.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/broker/files/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<Array<FileResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1441,14 +1509,56 @@ export class BrokerService {
     }
 
     /**
-     * @param createBrokerCommand 
+     * @param businessName 
+     * @param dbaName 
+     * @param mcNumber 
+     * @param ein 
+     * @param email 
+     * @param phone 
+     * @param mainAddressCity 
+     * @param mainAddressState 
+     * @param mainAddressCounty 
+     * @param mainAddressAddress 
+     * @param mainAddressStreet 
+     * @param mainAddressStreetNumber 
+     * @param mainAddressCountry 
+     * @param mainAddressZipCode 
+     * @param mainAddressStateShortName 
+     * @param mainAddressAddressUnit 
+     * @param billingAddressCity 
+     * @param billingAddressState 
+     * @param billingAddressCounty 
+     * @param billingAddressAddress 
+     * @param billingAddressStreet 
+     * @param billingAddressStreetNumber 
+     * @param billingAddressCountry 
+     * @param billingAddressZipCode 
+     * @param billingAddressStateShortName 
+     * @param billingAddressAddressUnit 
+     * @param mainPoBoxCity 
+     * @param mainPoBoxState 
+     * @param mainPoBoxZipCode 
+     * @param mainPoBoxPoBox 
+     * @param billingPoBoxCity 
+     * @param billingPoBoxState 
+     * @param billingPoBoxZipCode 
+     * @param billingPoBoxPoBox 
+     * @param isCheckedBillingAddress 
+     * @param isCredit 
+     * @param creditType 
+     * @param creditLimit 
+     * @param availableCredit 
+     * @param payTerm 
+     * @param note 
+     * @param brokerContacts 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiBrokerPost(createBrokerCommand?: CreateBrokerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiBrokerPost(createBrokerCommand?: CreateBrokerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiBrokerPost(createBrokerCommand?: CreateBrokerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiBrokerPost(createBrokerCommand?: CreateBrokerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiBrokerPost(businessName?: string, dbaName?: string, mcNumber?: string, ein?: string, email?: string, phone?: string, mainAddressCity?: string, mainAddressState?: string, mainAddressCounty?: string, mainAddressAddress?: string, mainAddressStreet?: string, mainAddressStreetNumber?: string, mainAddressCountry?: string, mainAddressZipCode?: string, mainAddressStateShortName?: string, mainAddressAddressUnit?: string, billingAddressCity?: string, billingAddressState?: string, billingAddressCounty?: string, billingAddressAddress?: string, billingAddressStreet?: string, billingAddressStreetNumber?: string, billingAddressCountry?: string, billingAddressZipCode?: string, billingAddressStateShortName?: string, billingAddressAddressUnit?: string, mainPoBoxCity?: string, mainPoBoxState?: string, mainPoBoxZipCode?: string, mainPoBoxPoBox?: string, billingPoBoxCity?: string, billingPoBoxState?: string, billingPoBoxZipCode?: string, billingPoBoxPoBox?: string, isCheckedBillingAddress?: boolean, isCredit?: boolean, creditType?: CreditType, creditLimit?: number, availableCredit?: number, payTerm?: number, note?: string, brokerContacts?: Array<BrokerContactCommand>, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiBrokerPost(businessName?: string, dbaName?: string, mcNumber?: string, ein?: string, email?: string, phone?: string, mainAddressCity?: string, mainAddressState?: string, mainAddressCounty?: string, mainAddressAddress?: string, mainAddressStreet?: string, mainAddressStreetNumber?: string, mainAddressCountry?: string, mainAddressZipCode?: string, mainAddressStateShortName?: string, mainAddressAddressUnit?: string, billingAddressCity?: string, billingAddressState?: string, billingAddressCounty?: string, billingAddressAddress?: string, billingAddressStreet?: string, billingAddressStreetNumber?: string, billingAddressCountry?: string, billingAddressZipCode?: string, billingAddressStateShortName?: string, billingAddressAddressUnit?: string, mainPoBoxCity?: string, mainPoBoxState?: string, mainPoBoxZipCode?: string, mainPoBoxPoBox?: string, billingPoBoxCity?: string, billingPoBoxState?: string, billingPoBoxZipCode?: string, billingPoBoxPoBox?: string, isCheckedBillingAddress?: boolean, isCredit?: boolean, creditType?: CreditType, creditLimit?: number, availableCredit?: number, payTerm?: number, note?: string, brokerContacts?: Array<BrokerContactCommand>, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiBrokerPost(businessName?: string, dbaName?: string, mcNumber?: string, ein?: string, email?: string, phone?: string, mainAddressCity?: string, mainAddressState?: string, mainAddressCounty?: string, mainAddressAddress?: string, mainAddressStreet?: string, mainAddressStreetNumber?: string, mainAddressCountry?: string, mainAddressZipCode?: string, mainAddressStateShortName?: string, mainAddressAddressUnit?: string, billingAddressCity?: string, billingAddressState?: string, billingAddressCounty?: string, billingAddressAddress?: string, billingAddressStreet?: string, billingAddressStreetNumber?: string, billingAddressCountry?: string, billingAddressZipCode?: string, billingAddressStateShortName?: string, billingAddressAddressUnit?: string, mainPoBoxCity?: string, mainPoBoxState?: string, mainPoBoxZipCode?: string, mainPoBoxPoBox?: string, billingPoBoxCity?: string, billingPoBoxState?: string, billingPoBoxZipCode?: string, billingPoBoxPoBox?: string, isCheckedBillingAddress?: boolean, isCredit?: boolean, creditType?: CreditType, creditLimit?: number, availableCredit?: number, payTerm?: number, note?: string, brokerContacts?: Array<BrokerContactCommand>, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiBrokerPost(businessName?: string, dbaName?: string, mcNumber?: string, ein?: string, email?: string, phone?: string, mainAddressCity?: string, mainAddressState?: string, mainAddressCounty?: string, mainAddressAddress?: string, mainAddressStreet?: string, mainAddressStreetNumber?: string, mainAddressCountry?: string, mainAddressZipCode?: string, mainAddressStateShortName?: string, mainAddressAddressUnit?: string, billingAddressCity?: string, billingAddressState?: string, billingAddressCounty?: string, billingAddressAddress?: string, billingAddressStreet?: string, billingAddressStreetNumber?: string, billingAddressCountry?: string, billingAddressZipCode?: string, billingAddressStateShortName?: string, billingAddressAddressUnit?: string, mainPoBoxCity?: string, mainPoBoxState?: string, mainPoBoxZipCode?: string, mainPoBoxPoBox?: string, billingPoBoxCity?: string, billingPoBoxState?: string, billingPoBoxZipCode?: string, billingPoBoxPoBox?: string, isCheckedBillingAddress?: boolean, isCredit?: boolean, creditType?: CreditType, creditLimit?: number, availableCredit?: number, payTerm?: number, note?: string, brokerContacts?: Array<BrokerContactCommand>, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1478,16 +1588,157 @@ export class BrokerService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (businessName !== undefined) {
+            localVarFormParams = localVarFormParams.append('BusinessName', <any>businessName) as any || localVarFormParams;
+        }
+        if (dbaName !== undefined) {
+            localVarFormParams = localVarFormParams.append('DbaName', <any>dbaName) as any || localVarFormParams;
+        }
+        if (mcNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('McNumber', <any>mcNumber) as any || localVarFormParams;
+        }
+        if (ein !== undefined) {
+            localVarFormParams = localVarFormParams.append('Ein', <any>ein) as any || localVarFormParams;
+        }
+        if (email !== undefined) {
+            localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (mainAddressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.City', <any>mainAddressCity) as any || localVarFormParams;
+        }
+        if (mainAddressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.State', <any>mainAddressState) as any || localVarFormParams;
+        }
+        if (mainAddressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.County', <any>mainAddressCounty) as any || localVarFormParams;
+        }
+        if (mainAddressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.Address', <any>mainAddressAddress) as any || localVarFormParams;
+        }
+        if (mainAddressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.Street', <any>mainAddressStreet) as any || localVarFormParams;
+        }
+        if (mainAddressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.StreetNumber', <any>mainAddressStreetNumber) as any || localVarFormParams;
+        }
+        if (mainAddressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.Country', <any>mainAddressCountry) as any || localVarFormParams;
+        }
+        if (mainAddressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.ZipCode', <any>mainAddressZipCode) as any || localVarFormParams;
+        }
+        if (mainAddressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.StateShortName', <any>mainAddressStateShortName) as any || localVarFormParams;
+        }
+        if (mainAddressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.AddressUnit', <any>mainAddressAddressUnit) as any || localVarFormParams;
+        }
+        if (billingAddressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.City', <any>billingAddressCity) as any || localVarFormParams;
+        }
+        if (billingAddressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.State', <any>billingAddressState) as any || localVarFormParams;
+        }
+        if (billingAddressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.County', <any>billingAddressCounty) as any || localVarFormParams;
+        }
+        if (billingAddressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.Address', <any>billingAddressAddress) as any || localVarFormParams;
+        }
+        if (billingAddressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.Street', <any>billingAddressStreet) as any || localVarFormParams;
+        }
+        if (billingAddressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.StreetNumber', <any>billingAddressStreetNumber) as any || localVarFormParams;
+        }
+        if (billingAddressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.Country', <any>billingAddressCountry) as any || localVarFormParams;
+        }
+        if (billingAddressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.ZipCode', <any>billingAddressZipCode) as any || localVarFormParams;
+        }
+        if (billingAddressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.StateShortName', <any>billingAddressStateShortName) as any || localVarFormParams;
+        }
+        if (billingAddressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.AddressUnit', <any>billingAddressAddressUnit) as any || localVarFormParams;
+        }
+        if (mainPoBoxCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainPoBox.City', <any>mainPoBoxCity) as any || localVarFormParams;
+        }
+        if (mainPoBoxState !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainPoBox.State', <any>mainPoBoxState) as any || localVarFormParams;
+        }
+        if (mainPoBoxZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainPoBox.ZipCode', <any>mainPoBoxZipCode) as any || localVarFormParams;
+        }
+        if (mainPoBoxPoBox !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainPoBox.PoBox', <any>mainPoBoxPoBox) as any || localVarFormParams;
+        }
+        if (billingPoBoxCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingPoBox.City', <any>billingPoBoxCity) as any || localVarFormParams;
+        }
+        if (billingPoBoxState !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingPoBox.State', <any>billingPoBoxState) as any || localVarFormParams;
+        }
+        if (billingPoBoxZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingPoBox.ZipCode', <any>billingPoBoxZipCode) as any || localVarFormParams;
+        }
+        if (billingPoBoxPoBox !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingPoBox.PoBox', <any>billingPoBoxPoBox) as any || localVarFormParams;
+        }
+        if (isCheckedBillingAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('IsCheckedBillingAddress', <any>isCheckedBillingAddress) as any || localVarFormParams;
+        }
+        if (isCredit !== undefined) {
+            localVarFormParams = localVarFormParams.append('IsCredit', <any>isCredit) as any || localVarFormParams;
+        }
+        if (creditType !== undefined) {
+            localVarFormParams = localVarFormParams.append('CreditType', <any>creditType) as any || localVarFormParams;
+        }
+        if (creditLimit !== undefined) {
+            localVarFormParams = localVarFormParams.append('CreditLimit', <any>creditLimit) as any || localVarFormParams;
+        }
+        if (availableCredit !== undefined) {
+            localVarFormParams = localVarFormParams.append('AvailableCredit', <any>availableCredit) as any || localVarFormParams;
+        }
+        if (payTerm !== undefined) {
+            localVarFormParams = localVarFormParams.append('PayTerm', <any>payTerm) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (brokerContacts) {
+            brokerContacts.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('BrokerContacts', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1502,10 +1753,10 @@ export class BrokerService {
         }
 
         let localVarPath = `/api/broker`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createBrokerCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1516,14 +1767,57 @@ export class BrokerService {
     }
 
     /**
-     * @param updateBrokerCommand 
+     * @param id 
+     * @param businessName 
+     * @param dbaName 
+     * @param mcNumber 
+     * @param ein 
+     * @param email 
+     * @param phone 
+     * @param mainAddressCity 
+     * @param mainAddressState 
+     * @param mainAddressCounty 
+     * @param mainAddressAddress 
+     * @param mainAddressStreet 
+     * @param mainAddressStreetNumber 
+     * @param mainAddressCountry 
+     * @param mainAddressZipCode 
+     * @param mainAddressStateShortName 
+     * @param mainAddressAddressUnit 
+     * @param billingAddressCity 
+     * @param billingAddressState 
+     * @param billingAddressCounty 
+     * @param billingAddressAddress 
+     * @param billingAddressStreet 
+     * @param billingAddressStreetNumber 
+     * @param billingAddressCountry 
+     * @param billingAddressZipCode 
+     * @param billingAddressStateShortName 
+     * @param billingAddressAddressUnit 
+     * @param mainPoBoxCity 
+     * @param mainPoBoxState 
+     * @param mainPoBoxZipCode 
+     * @param mainPoBoxPoBox 
+     * @param billingPoBoxCity 
+     * @param billingPoBoxState 
+     * @param billingPoBoxZipCode 
+     * @param billingPoBoxPoBox 
+     * @param creditLimit 
+     * @param availableCredit 
+     * @param creditType 
+     * @param payTerm 
+     * @param note 
+     * @param isCheckedBillingAddress 
+     * @param brokerContacts 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiBrokerPut(updateBrokerCommand?: UpdateBrokerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiBrokerPut(updateBrokerCommand?: UpdateBrokerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiBrokerPut(updateBrokerCommand?: UpdateBrokerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiBrokerPut(updateBrokerCommand?: UpdateBrokerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiBrokerPut(id?: number, businessName?: string, dbaName?: string, mcNumber?: string, ein?: string, email?: string, phone?: string, mainAddressCity?: string, mainAddressState?: string, mainAddressCounty?: string, mainAddressAddress?: string, mainAddressStreet?: string, mainAddressStreetNumber?: string, mainAddressCountry?: string, mainAddressZipCode?: string, mainAddressStateShortName?: string, mainAddressAddressUnit?: string, billingAddressCity?: string, billingAddressState?: string, billingAddressCounty?: string, billingAddressAddress?: string, billingAddressStreet?: string, billingAddressStreetNumber?: string, billingAddressCountry?: string, billingAddressZipCode?: string, billingAddressStateShortName?: string, billingAddressAddressUnit?: string, mainPoBoxCity?: string, mainPoBoxState?: string, mainPoBoxZipCode?: string, mainPoBoxPoBox?: string, billingPoBoxCity?: string, billingPoBoxState?: string, billingPoBoxZipCode?: string, billingPoBoxPoBox?: string, creditLimit?: number, availableCredit?: number, creditType?: CreditType, payTerm?: number, note?: string, isCheckedBillingAddress?: boolean, brokerContacts?: Array<BrokerContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiBrokerPut(id?: number, businessName?: string, dbaName?: string, mcNumber?: string, ein?: string, email?: string, phone?: string, mainAddressCity?: string, mainAddressState?: string, mainAddressCounty?: string, mainAddressAddress?: string, mainAddressStreet?: string, mainAddressStreetNumber?: string, mainAddressCountry?: string, mainAddressZipCode?: string, mainAddressStateShortName?: string, mainAddressAddressUnit?: string, billingAddressCity?: string, billingAddressState?: string, billingAddressCounty?: string, billingAddressAddress?: string, billingAddressStreet?: string, billingAddressStreetNumber?: string, billingAddressCountry?: string, billingAddressZipCode?: string, billingAddressStateShortName?: string, billingAddressAddressUnit?: string, mainPoBoxCity?: string, mainPoBoxState?: string, mainPoBoxZipCode?: string, mainPoBoxPoBox?: string, billingPoBoxCity?: string, billingPoBoxState?: string, billingPoBoxZipCode?: string, billingPoBoxPoBox?: string, creditLimit?: number, availableCredit?: number, creditType?: CreditType, payTerm?: number, note?: string, isCheckedBillingAddress?: boolean, brokerContacts?: Array<BrokerContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiBrokerPut(id?: number, businessName?: string, dbaName?: string, mcNumber?: string, ein?: string, email?: string, phone?: string, mainAddressCity?: string, mainAddressState?: string, mainAddressCounty?: string, mainAddressAddress?: string, mainAddressStreet?: string, mainAddressStreetNumber?: string, mainAddressCountry?: string, mainAddressZipCode?: string, mainAddressStateShortName?: string, mainAddressAddressUnit?: string, billingAddressCity?: string, billingAddressState?: string, billingAddressCounty?: string, billingAddressAddress?: string, billingAddressStreet?: string, billingAddressStreetNumber?: string, billingAddressCountry?: string, billingAddressZipCode?: string, billingAddressStateShortName?: string, billingAddressAddressUnit?: string, mainPoBoxCity?: string, mainPoBoxState?: string, mainPoBoxZipCode?: string, mainPoBoxPoBox?: string, billingPoBoxCity?: string, billingPoBoxState?: string, billingPoBoxZipCode?: string, billingPoBoxPoBox?: string, creditLimit?: number, availableCredit?: number, creditType?: CreditType, payTerm?: number, note?: string, isCheckedBillingAddress?: boolean, brokerContacts?: Array<BrokerContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiBrokerPut(id?: number, businessName?: string, dbaName?: string, mcNumber?: string, ein?: string, email?: string, phone?: string, mainAddressCity?: string, mainAddressState?: string, mainAddressCounty?: string, mainAddressAddress?: string, mainAddressStreet?: string, mainAddressStreetNumber?: string, mainAddressCountry?: string, mainAddressZipCode?: string, mainAddressStateShortName?: string, mainAddressAddressUnit?: string, billingAddressCity?: string, billingAddressState?: string, billingAddressCounty?: string, billingAddressAddress?: string, billingAddressStreet?: string, billingAddressStreetNumber?: string, billingAddressCountry?: string, billingAddressZipCode?: string, billingAddressStateShortName?: string, billingAddressAddressUnit?: string, mainPoBoxCity?: string, mainPoBoxState?: string, mainPoBoxZipCode?: string, mainPoBoxPoBox?: string, billingPoBoxCity?: string, billingPoBoxState?: string, billingPoBoxZipCode?: string, billingPoBoxPoBox?: string, creditLimit?: number, availableCredit?: number, creditType?: CreditType, payTerm?: number, note?: string, isCheckedBillingAddress?: boolean, brokerContacts?: Array<BrokerContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1553,16 +1847,162 @@ export class BrokerService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (businessName !== undefined) {
+            localVarFormParams = localVarFormParams.append('BusinessName', <any>businessName) as any || localVarFormParams;
+        }
+        if (dbaName !== undefined) {
+            localVarFormParams = localVarFormParams.append('DbaName', <any>dbaName) as any || localVarFormParams;
+        }
+        if (mcNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('McNumber', <any>mcNumber) as any || localVarFormParams;
+        }
+        if (ein !== undefined) {
+            localVarFormParams = localVarFormParams.append('Ein', <any>ein) as any || localVarFormParams;
+        }
+        if (email !== undefined) {
+            localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (mainAddressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.City', <any>mainAddressCity) as any || localVarFormParams;
+        }
+        if (mainAddressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.State', <any>mainAddressState) as any || localVarFormParams;
+        }
+        if (mainAddressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.County', <any>mainAddressCounty) as any || localVarFormParams;
+        }
+        if (mainAddressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.Address', <any>mainAddressAddress) as any || localVarFormParams;
+        }
+        if (mainAddressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.Street', <any>mainAddressStreet) as any || localVarFormParams;
+        }
+        if (mainAddressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.StreetNumber', <any>mainAddressStreetNumber) as any || localVarFormParams;
+        }
+        if (mainAddressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.Country', <any>mainAddressCountry) as any || localVarFormParams;
+        }
+        if (mainAddressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.ZipCode', <any>mainAddressZipCode) as any || localVarFormParams;
+        }
+        if (mainAddressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.StateShortName', <any>mainAddressStateShortName) as any || localVarFormParams;
+        }
+        if (mainAddressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainAddress.AddressUnit', <any>mainAddressAddressUnit) as any || localVarFormParams;
+        }
+        if (billingAddressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.City', <any>billingAddressCity) as any || localVarFormParams;
+        }
+        if (billingAddressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.State', <any>billingAddressState) as any || localVarFormParams;
+        }
+        if (billingAddressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.County', <any>billingAddressCounty) as any || localVarFormParams;
+        }
+        if (billingAddressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.Address', <any>billingAddressAddress) as any || localVarFormParams;
+        }
+        if (billingAddressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.Street', <any>billingAddressStreet) as any || localVarFormParams;
+        }
+        if (billingAddressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.StreetNumber', <any>billingAddressStreetNumber) as any || localVarFormParams;
+        }
+        if (billingAddressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.Country', <any>billingAddressCountry) as any || localVarFormParams;
+        }
+        if (billingAddressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.ZipCode', <any>billingAddressZipCode) as any || localVarFormParams;
+        }
+        if (billingAddressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.StateShortName', <any>billingAddressStateShortName) as any || localVarFormParams;
+        }
+        if (billingAddressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingAddress.AddressUnit', <any>billingAddressAddressUnit) as any || localVarFormParams;
+        }
+        if (mainPoBoxCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainPoBox.City', <any>mainPoBoxCity) as any || localVarFormParams;
+        }
+        if (mainPoBoxState !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainPoBox.State', <any>mainPoBoxState) as any || localVarFormParams;
+        }
+        if (mainPoBoxZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainPoBox.ZipCode', <any>mainPoBoxZipCode) as any || localVarFormParams;
+        }
+        if (mainPoBoxPoBox !== undefined) {
+            localVarFormParams = localVarFormParams.append('MainPoBox.PoBox', <any>mainPoBoxPoBox) as any || localVarFormParams;
+        }
+        if (billingPoBoxCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingPoBox.City', <any>billingPoBoxCity) as any || localVarFormParams;
+        }
+        if (billingPoBoxState !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingPoBox.State', <any>billingPoBoxState) as any || localVarFormParams;
+        }
+        if (billingPoBoxZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingPoBox.ZipCode', <any>billingPoBoxZipCode) as any || localVarFormParams;
+        }
+        if (billingPoBoxPoBox !== undefined) {
+            localVarFormParams = localVarFormParams.append('BillingPoBox.PoBox', <any>billingPoBoxPoBox) as any || localVarFormParams;
+        }
+        if (creditLimit !== undefined) {
+            localVarFormParams = localVarFormParams.append('CreditLimit', <any>creditLimit) as any || localVarFormParams;
+        }
+        if (availableCredit !== undefined) {
+            localVarFormParams = localVarFormParams.append('AvailableCredit', <any>availableCredit) as any || localVarFormParams;
+        }
+        if (creditType !== undefined) {
+            localVarFormParams = localVarFormParams.append('CreditType', <any>creditType) as any || localVarFormParams;
+        }
+        if (payTerm !== undefined) {
+            localVarFormParams = localVarFormParams.append('PayTerm', <any>payTerm) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (isCheckedBillingAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('IsCheckedBillingAddress', <any>isCheckedBillingAddress) as any || localVarFormParams;
+        }
+        if (brokerContacts) {
+            brokerContacts.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('BrokerContacts', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1577,10 +2017,10 @@ export class BrokerService {
         }
 
         let localVarPath = `/api/broker`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateBrokerCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -78,5 +78,6 @@ export interface AccidentResponse {
     createdAt?: string;
     updatedAt?: string;
     files?: Array<FileResponse> | null;
+    medies?: Array<FileResponse> | null;
 }
 

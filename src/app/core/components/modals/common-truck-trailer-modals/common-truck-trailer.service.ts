@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-    CreateInspectionCommand,
-    CreateRegistrationCommand,
-    CreateTitleCommand,
     InspectionResponse,
     InspectionService,
     RegistrationResponse,
@@ -11,9 +8,6 @@ import {
     TitleService,
     TruckResponse,
     TrailerResponse,
-    UpdateInspectionCommand,
-    UpdateRegistrationCommand,
-    UpdateTitleCommand,
     RegistrationModalResponse,
     TitleModalResponse,
 } from 'appcoretruckassist';
@@ -54,10 +48,10 @@ export class CommonTruckTrailerService {
 
     // Registration
     public addRegistration(
-        data: CreateRegistrationCommand,
+        data: any,
         tabSelected?: string
     ): Observable<any> {
-        return this.registrationService.apiRegistrationPost(data).pipe(
+        return this.registrationService.apiRegistrationPost().pipe(
             tap(() => {
                 // Truck Add Registration
                 if (data.truckId) {
@@ -129,10 +123,10 @@ export class CommonTruckTrailerService {
     }
 
     public updateRegistration(
-        data: UpdateRegistrationCommand,
+        data: any,
         tabSelected?: string
     ): Observable<object> {
-        return this.registrationService.apiRegistrationPut(data).pipe(
+        return this.registrationService.apiRegistrationPut().pipe(
             tap(() => {
                 this.updateDataAnimation(tabSelected);
             })
@@ -175,10 +169,10 @@ export class CommonTruckTrailerService {
     }
 
     public addInspection(
-        data: CreateInspectionCommand,
+        data: any,
         tabSelected?: string
     ): Observable<any> {
-        return this.inspectionService.apiInspectionPost(data).pipe(
+        return this.inspectionService.apiInspectionPost().pipe(
             tap(() => {
                 // Truck Add Inspection
                 if (data.truckId) {
@@ -247,10 +241,10 @@ export class CommonTruckTrailerService {
     }
 
     public updateInspection(
-        data: UpdateInspectionCommand,
+        data: any,
         tabSelected?: string
     ): Observable<object> {
-        return this.inspectionService.apiInspectionPut(data).pipe(
+        return this.inspectionService.apiInspectionPut().pipe(
             tap(() => {
                 this.updateDataAnimation(tabSelected);
             })
@@ -271,10 +265,10 @@ export class CommonTruckTrailerService {
     }
 
     public addTitle(
-        data: CreateTitleCommand,
+        data: any,
         tabSelected?: string
     ): Observable<any> {
-        return this.titleService.apiTitlePost(data).pipe(
+        return this.titleService.apiTitlePost().pipe(
             tap(() => {
                 // Truck Add Inspection
                 if (data.truckId) {
@@ -343,10 +337,10 @@ export class CommonTruckTrailerService {
     }
 
     public updateTitle(
-        data: UpdateTitleCommand,
+        data: any,
         tabSelected?: string
     ): Observable<object> {
-        return this.titleService.apiTitlePut(data).pipe(
+        return this.titleService.apiTitlePut().pipe(
             tap(() => {
                 this.updateDataAnimation(tabSelected);
             })

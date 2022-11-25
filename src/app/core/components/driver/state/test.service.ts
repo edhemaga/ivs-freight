@@ -11,8 +11,6 @@ import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
-import { CreateTestCommand } from 'appcoretruckassist/model/createTestCommand';
-import { EditTestCommand } from 'appcoretruckassist/model/editTestCommand';
 import { getFunctionParams } from 'src/app/core/utils/methods.globals';
 
 @Injectable({
@@ -30,7 +28,7 @@ export class TestTService implements OnDestroy {
     ) {}
 
     /* Observable<CreateTestResponse> */
-    public addTest(data: CreateTestCommand): Observable<any> {
+    public addTest(data: any): Observable<any> {
         const sortedParams = getFunctionParams(
             this.drugService.apiTestPost,
             data
@@ -71,7 +69,7 @@ export class TestTService implements OnDestroy {
         );
     }
 
-    public updateTest(data: EditTestCommand): Observable<object> {
+    public updateTest(data: any): Observable<object> {
         const sortedParams = getFunctionParams(
             this.drugService.apiTestPut,
             data

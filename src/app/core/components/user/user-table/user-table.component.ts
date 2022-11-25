@@ -439,6 +439,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // On Body Actions
     onTableBodyActions(event: any) {
+        console.log('actions: ', event);
         if (event.type === 'edit') {
             this.modalService.openModal(
                 UserModalComponent,
@@ -446,6 +447,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 {
                     ...event,
                     type: 'edit',
+                    disableButton: event.data?.userType?.name !== 'Owner',
                 }
             );
         }

@@ -1,15 +1,16 @@
 <app-ta-modal
     [modalTitle]="editData?.type !== 'edit' ? 'Add User' : 'Edit User'"
     [editData]="editData"
-    [editName]="editData?.id"
+    [editName]="userFullName"
     [isModalValid]="userForm.valid && isFormDirty"
+    [disableDelete]="selectedUserType?.name === 'Owner'"
     (action)="onModalAction($event)"
 >
     <div origin>
         <app-ta-tab-switch
             [tabs]="tabs"
-            (switchClicked)="tabChange($event)"
             [type]="'type1-modal-popup'"
+            (switchClicked)="tabChange($event)"
         >
         </app-ta-tab-switch>
 
@@ -34,6 +35,8 @@
                                     isRequired: true,
                                     minLength: 2,
                                     maxLength: 26,
+                                    isDisabled:
+                                        selectedUserType?.name === 'Owner',
                                     textTransform: 'capitalize',
                                     autoFocus: editData?.type !== 'edit'
                                 }"
@@ -49,6 +52,8 @@
                                     minLength: 2,
                                     maxLength: 26,
                                     isRequired: true,
+                                    isDisabled:
+                                        selectedUserType?.name === 'Owner',
                                     textTransform: 'capitalize'
                                 }"
                             ></app-ta-input>
@@ -95,7 +100,6 @@
                                     name: 'Phone',
                                     type: 'text',
                                     label: 'Personal Phone',
-                                    isRequired: true,
                                     placeholderIcon: 'phone',
                                     mask: '(000) 000-0000',
                                     maxLength: 14
@@ -139,6 +143,8 @@
                                         textTransform: 'capitalize',
                                         isRequired: true,
                                         isDropdown: true,
+                                        isDisabled:
+                                            selectedUserType?.name === 'Owner',
                                         dropdownWidthClass: 'w-col-136'
                                     }"
                                     [options]="departments"
@@ -150,7 +156,7 @@
                             </div>
                             <div class="col-5">
                                 <app-ta-input-dropdown
-                                    formControlName="mainOfficeId"
+                                    formControlName="companyOfficeId"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',
                                         type: 'text',
@@ -169,11 +175,15 @@
                             </div>
                             <div class="col-3 no-p-left">
                                 <app-ta-tab-switch
-                                    [tabs]="typeOfEmploye"
+                                    [tabs]="
+                                        selectedUserType?.name === 'Owner'
+                                            ? ownerType
+                                            : typeOfEmploye
+                                    "
+                                    [type]="'type2-modal-popup'"
                                     (switchClicked)="
                                         onSelectedTab($event, 'user-admin')
                                     "
-                                    [type]="'type2-modal-popup'"
                                 >
                                 </app-ta-tab-switch>
                             </div>
@@ -185,12 +195,11 @@
                             <div class="phone-extension">
                                 <div class="phone-field">
                                     <app-ta-input
-                                        formControlName="employePhone"
+                                        formControlName="phone"
                                         [inputConfig]="{
                                             name: 'Phone',
                                             type: 'text',
                                             label: 'Phone',
-                                            isRequired: true,
                                             placeholderIcon: 'phone',
                                             mask: '(000) 000-0000',
                                             maxLength: 14
@@ -212,7 +221,7 @@
                                 </div>
                                 <app-ta-input
                                     *ngIf="isPhoneExtExist"
-                                    formControlName="employePhoneExt"
+                                    formControlName="extensionPhone"
                                     [inputConfig]="{
                                         name: 'phone-extension',
                                         type: 'text',
@@ -225,7 +234,7 @@
                             </div>
                             <div class="email-field">
                                 <app-ta-input
-                                    formControlName="employeEmail"
+                                    formControlName="email"
                                     [inputConfig]="{
                                         name: 'Email',
                                         type: 'text',
@@ -234,239 +243,213 @@
                                         isRequired: true,
                                         minLength: 5,
                                         maxLength: 64,
+                                        isDisabled:
+                                            selectedUserType?.name === 'Owner',
                                         textTransform: 'lowercase'
                                     }"
                                 ></app-ta-input>
                             </div>
                         </div>
                     </app-ta-custom-card>
-                    <div class="custom-checkbox-card">
-                        <div class="divider"></div>
-                        <div
-                            class="checkbox-card-header"
-                            [ngClass]="{
-                                pointer: userForm.get('isIncludePayroll').value
-                            }"
-                        >
-                            <app-ta-checkbox
-                                formControlName="isIncludePayroll"
-                                [label]="'Include in Payroll'"
-                            ></app-ta-checkbox>
-                            <svg-icon
-                                class="checkbox-card-header-arrow"
-                                src="assets/svg/common/ic_arrow_down_updated.svg"
-                                [ngClass]="{
-                                    visible:
-                                        userForm.get('isIncludePayroll').value,
-                                    rotate: !payrollCheckboxCard
-                                }"
-                                (click)="toggleCheckboxCard()"
-                            ></svg-icon>
-                        </div>
-                        <div
-                            *ngIf="
-                                userForm.get('isIncludePayroll').value &&
-                                payrollCheckboxCard
-                            "
-                            class="checkbox-card-body"
-                            [ngClass]="{
-                                active: userForm.get('isIncludePayroll').value
-                            }"
-                        >
-                            <!-- [canAddNew]="true" -->
-                            <div class="row">
-                                <div class="col-5">
-                                    <app-ta-input-dropdown
-                                        formControlName="paymentType"
-                                        [inputConfig]="{
-                                            name: 'Input Dropdown',
-                                            type: 'text',
-                                            label: 'Payment Type',
-                                            textTransform: 'capitalize',
-                                            isDropdown: true,
-                                            isDisabled: !isPaymentTypeAvailable,
-                                            dropdownWidthClass: 'w-col-177'
-                                        }"
-                                        [options]="paymentOptions"
-                                        [activeItem]="selectedPayment"
-                                        (selectedItem)="
-                                            onSelectDropdown($event, 'payment')
-                                        "
-                                    ></app-ta-input-dropdown>
-                                </div>
-                                <div class="col-4">
-                                    <app-ta-input
-                                        formControlName="startDate"
-                                        [inputConfig]="{
-                                            name: 'datepicker',
-                                            type: 'text',
-                                            label: 'Start Date',
-                                            isDropdown: true,
-                                            placeholderIcon: 'date',
-                                            isRequired: true,
-                                            customClass: 'datetimeclass'
-                                        }"
-                                    ></app-ta-input>
-                                </div>
-                                <div class="col-3 no-p-left">
-                                    <app-ta-tab-switch
-                                        [tabs]="typeOfPayroll"
-                                        (switchClicked)="
-                                            onSelectedTab($event, '1099-w2')
-                                        "
-                                        [type]="'type2-modal-popup'"
-                                    >
-                                    </app-ta-tab-switch>
-                                </div>
+                    <app-ta-checkbox-card
+                        formControlName="includeInPayroll"
+                        [label]="'Include in Payroll'"
+                        [name]="'include-in-payroll'"
+                        [isCardOpen]="userForm.get('includeInPayroll').value"
+                        [animationMarginParams]="{
+                            marginTop: '12px',
+                            marginBottom: '22px'
+                        }"
+                    >
+                        <div class="row">
+                            <div class="col-5">
+                                <app-ta-input-dropdown
+                                    formControlName="paymentType"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown',
+                                        type: 'text',
+                                        label: 'Payment Type',
+                                        textTransform: 'capitalize',
+                                        isDropdown: true,
+                                        isDisabled:
+                                            !isPaymentTypeAvailable ||
+                                            selectedUserType?.name === 'Owner',
+                                        isRequired:
+                                            isPaymentTypeAvailable &&
+                                            selectedUserType?.name !== 'Owner',
+                                        dropdownWidthClass: 'w-col-177'
+                                    }"
+                                    [options]="paymentOptions"
+                                    [activeItem]="selectedPayment"
+                                    (selectedItem)="
+                                        onSelectDropdown($event, 'payment')
+                                    "
+                                ></app-ta-input-dropdown>
                             </div>
-                            <div class="row">
-                                <div
-                                    *ngIf="allowPairCommissionBase"
-                                    class="col-6"
-                                >
-                                    <app-ta-input
-                                        formControlName="base"
-                                        [inputConfig]="{
-                                            name: 'Salary',
-                                            type: 'text',
-                                            label: 'Base',
-                                            isRequired: true,
-                                            placeholderIcon: 'dollar',
-                                            customClass:
-                                                'dollar-placeholderIcon',
-                                            thousandSeparator: true,
-                                            minLength: 4,
-                                            maxLength: 8
-                                        }"
-                                    ></app-ta-input>
-                                </div>
-                                <div
-                                    [ngClass]="
-                                        allowPairCommissionBase
-                                            ? 'col-6'
-                                            : 'col-12'
+                            <div class="col-4">
+                                <app-ta-input
+                                    formControlName="startDate"
+                                    [inputConfig]="{
+                                        name: 'datepicker',
+                                        type: 'text',
+                                        label: 'Start Date',
+                                        isDropdown: true,
+                                        placeholderIcon: 'date',
+                                        isRequired: true,
+                                        customClass: 'datetimeclass'
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                            <div class="col-3 no-p-left">
+                                <app-ta-tab-switch
+                                    [tabs]="typeOfPayroll"
+                                    [type]="'type2-modal-popup'"
+                                    (switchClicked)="
+                                        onSelectedTab($event, '1099-w2')
                                     "
                                 >
-                                    <app-ta-input
-                                        *ngIf="
-                                            !allowOnlyCommission &&
-                                            !allowPairCommissionBase
-                                        "
-                                        formControlName="salary"
-                                        [inputConfig]="{
-                                            name: 'Salary',
-                                            type: 'text',
-                                            label: 'Salary',
-                                            isRequired: true,
-                                            placeholderIcon: 'dollar',
-                                            customClass:
-                                                'dollar-placeholderIcon',
-                                            thousandSeparator: true,
-                                            minLength: 4,
-                                            maxLength: 8
-                                        }"
-                                    ></app-ta-input>
-
-                                    <app-ta-ngx-slider
-                                        *ngIf="
-                                            allowOnlyCommission ||
-                                            allowPairCommissionBase
-                                        "
-                                        [sliderName]="'Commission'"
-                                        [sliderOptions]="commissionOptions"
-                                        [startedValue]="
-                                            userForm.get('commission').value
-                                        "
-                                        [customClass]="'custom-truck-modal'"
-                                        (onUserValueChange)="
-                                            userForm
-                                                .get('commission')
-                                                .setValue($event)
-                                        "
-                                    ></app-ta-ngx-slider>
-                                </div>
-                            </div>
-                            <div
-                                class="custom-bank-row last-row"
-                                [ngClass]="{
-                                    'no-m-bottom':
-                                        !userForm.get('isIncludePayroll').value
-                                }"
-                            >
-                                <div class="bank-field">
-                                    <app-ta-input-dropdown
-                                        formControlName="bankId"
-                                        [template]="'svg-template'"
-                                        [inputConfig]="{
-                                            name: 'Input Dropdown  Bank Name',
-                                            type: 'text',
-                                            label: 'Bank Name',
-                                            minLength: 2,
-                                            maxLength: 64,
-                                            textTransform: 'uppercase',
-                                            isDropdown: true,
-                                            dropdownWidthClass: 'w-col-164'
-                                        }"
-                                        [canAddNew]="true"
-                                        [options]="labelsBank"
-                                        [activeItem]="selectedBank"
-                                        (selectedItem)="
-                                            onSelectDropdown($event, 'bank')
-                                        "
-                                        (saveItem)="onSaveNewBank($event)"
-                                    ></app-ta-input-dropdown>
-                                </div>
-                                <div class="bank-field">
-                                    <app-ta-input
-                                        formControlName="routingNumber"
-                                        [inputConfig]="{
-                                            name: 'routing-bank',
-                                            type: 'text',
-                                            label: 'Routing #',
-                                            isDisabled: !isBankSelected,
-                                            isRequired: isBankSelected,
-                                            minLength: 9,
-                                            maxLength: 9
-                                        }"
-                                    ></app-ta-input>
-                                </div>
-                                <div class="bank-field">
-                                    <app-ta-input
-                                        formControlName="accountNumber"
-                                        [inputConfig]="{
-                                            name: 'account-bank',
-                                            type: 'text',
-                                            label: 'Account #',
-                                            isDisabled: !isBankSelected,
-                                            isRequired: isBankSelected,
-                                            minLength: 5,
-                                            maxLength: 17
-                                        }"
-                                    ></app-ta-input>
-                                </div>
+                                </app-ta-tab-switch>
                             </div>
                         </div>
-                        <app-ta-input-note
-                            formControlName="note"
-                            [isVisibleNote]="
-                                userForm.get('note').value &&
-                                userForm.get('note').value != 'null'
-                                    ? userForm.get('note').value
-                                    : false
-                            "
-                            [note]="
-                                userForm.get('note').value &&
-                                userForm.get('note').value != 'null'
-                                    ? userForm.get('note').value
-                                    : ''
-                            "
-                        ></app-ta-input-note>
-                    </div>
+                        <div class="row">
+                            <div *ngIf="allowPairCommissionBase" class="col-6">
+                                <app-ta-input
+                                    formControlName="base"
+                                    [inputConfig]="{
+                                        name: 'Salary',
+                                        type: 'text',
+                                        label: 'Base',
+                                        isRequired: true,
+                                        placeholderIcon: 'dollar',
+                                        customClass: 'dollar-placeholderIcon',
+                                        thousandSeparator: true,
+                                        minLength: 4,
+                                        maxLength: 8
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                            <div
+                                [ngClass]="
+                                    allowPairCommissionBase ? 'col-6' : 'col-12'
+                                "
+                            >
+                                <app-ta-input
+                                    *ngIf="
+                                        !allowOnlyCommission &&
+                                        !allowPairCommissionBase
+                                    "
+                                    formControlName="salary"
+                                    [inputConfig]="{
+                                        name: 'Salary',
+                                        type: 'text',
+                                        label: 'Salary',
+                                        isRequired: true,
+                                        placeholderIcon: 'dollar',
+                                        customClass: 'dollar-placeholderIcon',
+                                        thousandSeparator: true,
+                                        minLength: 4,
+                                        maxLength: 8
+                                    }"
+                                ></app-ta-input>
+
+                                <app-ta-ngx-slider
+                                    *ngIf="
+                                        allowOnlyCommission ||
+                                        allowPairCommissionBase
+                                    "
+                                    [sliderName]="'Commission'"
+                                    [sliderOptions]="commissionOptions"
+                                    [startedValue]="
+                                        userForm.get('commission').value
+                                    "
+                                    [customClass]="'custom-truck-modal'"
+                                    (onUserValueChange)="
+                                        userForm
+                                            .get('commission')
+                                            .setValue($event)
+                                    "
+                                ></app-ta-ngx-slider>
+                            </div>
+                        </div>
+                        <div
+                            class="custom-bank-row row-no-m"
+                            [ngClass]="{
+                                'no-m-bottom':
+                                    !userForm.get('includeInPayroll').value
+                            }"
+                        >
+                            <div class="bank-field">
+                                <app-ta-input-dropdown
+                                    formControlName="bankId"
+                                    [template]="'svg-template'"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown  Bank Name',
+                                        type: 'text',
+                                        label: 'Bank Name',
+                                        minLength: 2,
+                                        maxLength: 64,
+                                        textTransform: 'uppercase',
+                                        isDropdown: true,
+                                        dropdownWidthClass: 'w-col-164'
+                                    }"
+                                    [canAddNew]="true"
+                                    [options]="labelsBank"
+                                    [activeItem]="selectedBank"
+                                    (selectedItem)="
+                                        onSelectDropdown($event, 'bank')
+                                    "
+                                    (saveItem)="onSaveNewBank($event)"
+                                ></app-ta-input-dropdown>
+                            </div>
+                            <div class="bank-field">
+                                <app-ta-input
+                                    formControlName="routingNumber"
+                                    [inputConfig]="{
+                                        name: 'routing-bank',
+                                        type: 'text',
+                                        label: 'Routing #',
+                                        isDisabled: !isBankSelected,
+                                        isRequired: isBankSelected,
+                                        minLength: 9,
+                                        maxLength: 9
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                            <div class="bank-field">
+                                <app-ta-input
+                                    formControlName="accountNumber"
+                                    [inputConfig]="{
+                                        name: 'account-bank',
+                                        type: 'text',
+                                        label: 'Account #',
+                                        isDisabled: !isBankSelected,
+                                        isRequired: isBankSelected,
+                                        minLength: 5,
+                                        maxLength: 17
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                        </div>
+                    </app-ta-checkbox-card>
+
+                    <app-ta-input-note
+                        formControlName="note"
+                        [isVisibleNote]="
+                            userForm.get('note').value &&
+                            userForm.get('note').value != 'null'
+                                ? userForm.get('note').value
+                                : false
+                        "
+                        [note]="
+                            userForm.get('note').value &&
+                            userForm.get('note').value != 'null'
+                                ? userForm.get('note').value
+                                : ''
+                        "
+                    ></app-ta-input-note>
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 2">
-                    Additional Tab TO DO
-                </div>
+                <div class="m-tab" *ngIf="selectedTab === 2"></div>
             </div>
         </form>
     </div>

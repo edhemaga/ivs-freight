@@ -4,15 +4,13 @@ import { Injectable, OnDestroy } from '@angular/core';
 import {
     CreateRatingCommand,
     CreateResponse,
-    CreateShipperCommand,
     RatingReviewService,
     ShipperListResponse,
     ShipperMinimalListResponse,
     ShipperModalResponse,
     ShipperResponse,
     UpdateReviewCommand,
-    UpdateShipperCommand,
-    ClusterResponse,
+    ClusterResponse
 } from 'appcoretruckassist';
 import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
@@ -40,8 +38,8 @@ export class ShipperTService implements OnDestroy {
     ) {}
 
     // Create Shipper
-    public addShipper(data: CreateShipperCommand): Observable<CreateResponse> {
-        return this.shipperService.apiShipperPost(data).pipe(
+    public addShipper(data: any): Observable<CreateResponse> {
+        return this.shipperService.apiShipperPost().pipe(
             tap((res: any) => {
                 const subShipper = this.getShipperById(res.id)
                     .pipe(takeUntil(this.destroy$))
@@ -78,8 +76,8 @@ export class ShipperTService implements OnDestroy {
     }
 
     // Update Shipper
-    public updateShipper(data: UpdateShipperCommand): Observable<any> {
-        return this.shipperService.apiShipperPut(data).pipe(
+    public updateShipper(data: any): Observable<any> {
+        return this.shipperService.apiShipperPut().pipe(
             tap(() => {
                 const subShipper = this.getShipperById(data.id)
                     .pipe(takeUntil(this.destroy$))
@@ -137,12 +135,12 @@ export class ShipperTService implements OnDestroy {
             ban,
             dnu,
             pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
+            // pageSize,
+            // companyId,
+            // sort,
+            // search,
+            // search1,
+            // search2
         );
     }
 
@@ -258,12 +256,14 @@ export class ShipperTService implements OnDestroy {
 
     // Change Ban Status
     public changeBanStatus(id: number): Observable<any> {
-        return this.shipperService.apiShipperBanIdPut(id, 'response');
+        return of()
+       // return this.shipperService.apiShipperBanIdPut(id, 'response');
     }
 
     // Change Dnu Status
     public changeDnuStatus(id: number): Observable<any> {
-        return this.shipperService.apiShipperDnuIdPut(id, 'response');
+        return of()
+       // return this.shipperService.apiShipperDnuIdPut(id, 'response');
     }
 
     public getShipperDropdowns(): Observable<ShipperModalResponse> {

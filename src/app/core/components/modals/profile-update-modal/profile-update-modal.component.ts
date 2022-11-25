@@ -300,7 +300,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
     private updateUserProfile() {
         const {
-            address,
             addressUnit,
             createNewPassword,
             oldPassword,
@@ -349,12 +348,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                     );
                 },
             });
-    }
-
-    // Checkbox card
-    public passwordCheckboxCard: boolean = true;
-    public toggleCheckboxCard() {
-        this.passwordCheckboxCard = !this.passwordCheckboxCard;
     }
 
     ngOnDestroy(): void {

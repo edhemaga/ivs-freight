@@ -19,9 +19,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateResponse } from '../model/createResponse';
-// @ts-ignore
-import { CreateTodoCommand } from '../model/createTodoCommand';
+import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
@@ -32,8 +30,6 @@ import { TodoModalResponse } from '../model/todoModalResponse';
 import { TodoResponse } from '../model/todoResponse';
 // @ts-ignore
 import { TodoStatus } from '../model/todoStatus';
-// @ts-ignore
-import { UpdateTodoCommand } from '../model/updateTodoCommand';
 // @ts-ignore
 import { UpdateTodoStatusCommand } from '../model/updateTodoStatusCommand';
 
@@ -70,6 +66,19 @@ export class TodoService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
@@ -431,14 +440,21 @@ export class TodoService {
     }
 
     /**
-     * @param createTodoCommand 
+     * @param departmentIds 
+     * @param title 
+     * @param description 
+     * @param url 
+     * @param deadline 
+     * @param companyUserIds 
+     * @param note 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTodoPost(createTodoCommand?: CreateTodoCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiTodoPost(createTodoCommand?: CreateTodoCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiTodoPost(createTodoCommand?: CreateTodoCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiTodoPost(createTodoCommand?: CreateTodoCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTodoPost(departmentIds?: Array<number>, title?: string, description?: string, url?: string, deadline?: string, companyUserIds?: Array<number>, note?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiTodoPost(departmentIds?: Array<number>, title?: string, description?: string, url?: string, deadline?: string, companyUserIds?: Array<number>, note?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiTodoPost(departmentIds?: Array<number>, title?: string, description?: string, url?: string, deadline?: string, companyUserIds?: Array<number>, note?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiTodoPost(departmentIds?: Array<number>, title?: string, description?: string, url?: string, deadline?: string, companyUserIds?: Array<number>, note?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -468,16 +484,54 @@ export class TodoService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (departmentIds) {
+            departmentIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('DepartmentIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (title !== undefined) {
+            localVarFormParams = localVarFormParams.append('Title', <any>title) as any || localVarFormParams;
+        }
+        if (description !== undefined) {
+            localVarFormParams = localVarFormParams.append('Description', <any>description) as any || localVarFormParams;
+        }
+        if (url !== undefined) {
+            localVarFormParams = localVarFormParams.append('Url', <any>url) as any || localVarFormParams;
+        }
+        if (deadline !== undefined) {
+            localVarFormParams = localVarFormParams.append('Deadline', <any>deadline) as any || localVarFormParams;
+        }
+        if (companyUserIds) {
+            companyUserIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('CompanyUserIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -492,10 +546,10 @@ export class TodoService {
         }
 
         let localVarPath = `/api/todo`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createTodoCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -506,14 +560,24 @@ export class TodoService {
     }
 
     /**
-     * @param updateTodoCommand 
+     * @param id 
+     * @param departmentIds 
+     * @param title 
+     * @param description 
+     * @param status 
+     * @param url 
+     * @param deadline 
+     * @param companyUserIds 
+     * @param note 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTodoPut(updateTodoCommand?: UpdateTodoCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiTodoPut(updateTodoCommand?: UpdateTodoCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiTodoPut(updateTodoCommand?: UpdateTodoCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public apiTodoPut(updateTodoCommand?: UpdateTodoCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTodoPut(id?: number, departmentIds?: Array<number>, title?: string, description?: string, status?: TodoStatus, url?: string, deadline?: string, companyUserIds?: Array<number>, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiTodoPut(id?: number, departmentIds?: Array<number>, title?: string, description?: string, status?: TodoStatus, url?: string, deadline?: string, companyUserIds?: Array<number>, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiTodoPut(id?: number, departmentIds?: Array<number>, title?: string, description?: string, status?: TodoStatus, url?: string, deadline?: string, companyUserIds?: Array<number>, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiTodoPut(id?: number, departmentIds?: Array<number>, title?: string, description?: string, status?: TodoStatus, url?: string, deadline?: string, companyUserIds?: Array<number>, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -543,16 +607,65 @@ export class TodoService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (departmentIds) {
+            departmentIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('DepartmentIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (title !== undefined) {
+            localVarFormParams = localVarFormParams.append('Title', <any>title) as any || localVarFormParams;
+        }
+        if (description !== undefined) {
+            localVarFormParams = localVarFormParams.append('Description', <any>description) as any || localVarFormParams;
+        }
+        if (status !== undefined) {
+            localVarFormParams = localVarFormParams.append('Status', <any>status) as any || localVarFormParams;
+        }
+        if (url !== undefined) {
+            localVarFormParams = localVarFormParams.append('Url', <any>url) as any || localVarFormParams;
+        }
+        if (deadline !== undefined) {
+            localVarFormParams = localVarFormParams.append('Deadline', <any>deadline) as any || localVarFormParams;
+        }
+        if (companyUserIds) {
+            companyUserIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('CompanyUserIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -567,10 +680,10 @@ export class TodoService {
         }
 
         let localVarPath = `/api/todo`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateTodoCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

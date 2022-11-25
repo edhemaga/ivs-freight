@@ -3,8 +3,6 @@ import {
     routingBankValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { TruckModalComponent } from '../truck-modal/truck-modal.component';
-import { UpdateOwnerCommand } from '../../../../../../appcoretruckassist';
-import { CreateOwnerCommand } from '../../../../../../appcoretruckassist';
 import { OwnerResponse } from '../../../../../../appcoretruckassist';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { OwnerModalResponse } from '../../../../../../appcoretruckassist';
@@ -337,12 +335,11 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             lastName,
             ssn,
             ein,
-            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
 
-        const newData: UpdateOwnerCommand = {
+        const newData: any = {
             id: id,
             ...form,
             ownerType: this.selectedTab,
@@ -402,12 +399,11 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             lastName,
             ssn,
             ein,
-            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
 
-        const newData: CreateOwnerCommand = {
+        const newData: any = {
             ...form,
             ownerType: this.selectedTab,
             name:

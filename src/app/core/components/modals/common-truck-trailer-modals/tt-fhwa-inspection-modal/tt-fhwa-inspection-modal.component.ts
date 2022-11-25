@@ -4,9 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import {
-    CreateInspectionCommand,
-    InspectionResponse,
-    UpdateInspectionCommand,
+    InspectionResponse
 } from 'appcoretruckassist';
 
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -113,7 +111,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
     private updateInspection() {
         const { issueDate, ...form } = this.fhwaInspectionForm.value;
-        const newData: UpdateInspectionCommand = {
+        const newData: any = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             id: this.editData.file_id,
@@ -140,7 +138,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
     private addInspection() {
         const { issueDate, ...form } = this.fhwaInspectionForm.value;
-        const newData: CreateInspectionCommand = {
+        const newData: any = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             truckId: this.editData.modal === 'truck' ? this.editData.id : null,

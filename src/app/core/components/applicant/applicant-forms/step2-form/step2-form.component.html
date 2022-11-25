@@ -371,6 +371,13 @@
             *ngIf="classOfEquipmentArray?.length"
             formGroupName="classOfEquipmentCards"
             class="d-flex flex-column justify-content-center equipment-container"
+            [ngStyle]="{
+                'margin-bottom':
+                    isEditingClassOfEquipment &&
+                    classOfEquipmentArray?.length === 1
+                        ? '0'
+                        : '32px'
+            }"
         >
             <div
                 class="d-flex flex-column"
@@ -536,12 +543,13 @@
                         name: 'Input Dropdown',
                         type: 'text',
                         label: 'Trailer Type',
-                        isDisabled: !isTruckSelected,
-                        isRequired: isTruckSelected,
-                        isDropdown: true,
                         isDisabled:
+                            (selectedMode === 'APPLICANT_MODE' &&
+                                (!isTruckSelected || !!isBoxTruckSelected)) ||
                             selectedMode === 'REVIEW_MODE' ||
                             selectedMode === 'FEEDBACK_MODE',
+                        isRequired: isTruckSelected,
+                        isDropdown: true,
                         dropdownWidthClass: 'w-col-211',
                         customClass: 'truck-trailer-dropdown',
                         dropdownImageInput: {
@@ -569,7 +577,7 @@
                         }
                     }"
                     [activeItem]="selectedTrailerType"
-                    [options]="trailerType"
+                    [options]="filteredTrailerType"
                     (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
                 ></app-ta-input-dropdown>
             </div>
@@ -581,11 +589,14 @@
                         type: 'text',
                         label: 'Length',
                         isDropdown: true,
-                        isDisabled: !isTruckSelected,
-                        isRequired: isTruckSelected,
                         isDisabled:
+                            (selectedMode === 'APPLICANT_MODE' &&
+                                !isTruckSelected) ||
                             selectedMode === 'REVIEW_MODE' ||
                             selectedMode === 'FEEDBACK_MODE',
+
+                        isRequired: isTruckSelected,
+
                         dropdownWidthClass: 'w-col-130'
                     }"
                     [options]="trailerLengthType"
@@ -615,15 +626,6 @@
                     !isEditingClassOfEquipment
                 "
             >
-                <svg-icon
-                    class="plus-icon"
-                    src="assets/svg/common/ic_plus.svg"
-                    [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                    }"
-                ></svg-icon>
-
                 Add Another Class Of Equipment
             </button>
 
@@ -642,7 +644,9 @@
                     type="button"
                     class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
                     [ngClass]="{
-                        disabled: !isClassOfEquipmentEdited
+                        disabled:
+                            !isClassOfEquipmentEdited ||
+                            !classOfEquipmentForm.valid
                     }"
                     (click)="onSaveEditedClassOfEquipment()"
                 >
@@ -662,7 +666,7 @@
                     trackBy: trackByIdentity
                 "
             >
-                <div class="question-title-box">
+                <div class="d-flex flex-column question-title-box">
                     <p
                         class="m-0 noselect ta-font-regular"
                         class="m-0 ta-font-regular"
@@ -674,6 +678,15 @@
                     >
                         {{ question.title }} <span>*</span>
                     </p>
+
+                    <ng-container
+                        *ngIf="
+                            displayRadioRequiredNoteArray[i]
+                                .displayRadioRequiredNote
+                        "
+                    >
+                        <p class="m-0 ta-font-semi-bold required">Required</p>
+                    </ng-container>
                 </div>
 
                 <div class="question-radios-box">
@@ -683,6 +696,10 @@
                         [disabled]="
                             selectedMode === 'REVIEW_MODE' ||
                             selectedMode === 'FEEDBACK_MODE'
+                        "
+                        [displayRequiredNote]="
+                            displayRadioRequiredNoteArray[i]
+                                .displayRadioRequiredNote
                         "
                         (changedValue)="
                             handleInputSelect($event, 'ANSWER-CHOICE')
@@ -786,17 +803,7 @@
             (click)="onAddSecondOrLastEmployer()"
             *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
         >
-            <svg-icon
-                class="plus-icon"
-                src="assets/svg/common/ic_plus.svg
-   "
-                [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                }"
-            ></svg-icon>
-
-            Add Second Or Last Employer
+            <p class="m-0 ta-font-bold">Add Second Or Last Employer</p>
         </button>
 
         <div
@@ -814,7 +821,11 @@
                 type="button"
                 class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
                 [ngClass]="{
-                    disabled: !isWorkExperienceEdited
+                    disabled:
+                        !isWorkExperienceEdited ||
+                        !isWorkExperienceClassOfEquipmentEdited ||
+                        !workExperienceForm.valid ||
+                        !classOfEquipmentForm.valid
                 }"
                 (click)="onSaveEditedWorkExperience()"
             >
