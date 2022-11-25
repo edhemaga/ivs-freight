@@ -9,6 +9,7 @@ export class FormDataService {
     constructor() {}
 
     extractFormDataFromFunction(data) {
+        this.formData = new FormData();
         Object.entries(data).map((item: any) => {
             if (item[1] instanceof Array) {
                 item[1].forEach((element, ind) => {
