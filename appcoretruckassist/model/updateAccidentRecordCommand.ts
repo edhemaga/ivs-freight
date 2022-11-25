@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccidentItemCommand } from './accidentItemCommand';
+import { UpdateAccidentItemCommand } from './updateAccidentItemCommand';
 
 
 export interface UpdateAccidentRecordCommand { 
     applicantId?: number;
     noAccidentInThreeYears?: boolean;
-    accidents?: Array<AccidentItemCommand> | null;
+    accidents?: Array<UpdateAccidentItemCommand> | null;
 }
 

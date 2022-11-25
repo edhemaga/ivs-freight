@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TrafficViolationItemCommand } from './trafficViolationItemCommand';
+import { CreateTrafficViolationItemCommand } from './createTrafficViolationItemCommand';
 
 
 export interface CreateTrafficViolationCommand { 
@@ -17,7 +17,7 @@ export interface CreateTrafficViolationCommand {
     notBeenConvicted?: boolean;
     onlyOneHoldLicense?: boolean;
     certifyViolations?: boolean;
-    trafficViolationItems?: Array<TrafficViolationItemCommand> | null;
+    trafficViolationItems?: Array<CreateTrafficViolationItemCommand> | null;
     applicantId?: number;
 }
 

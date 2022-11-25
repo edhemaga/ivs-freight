@@ -52,7 +52,6 @@ import {
     AddressEntity,
     CreateResponse,
     UpdatePersonalInfoCommand,
-    CreatePersonalInfoReviewCommand,
     PersonalInfoFeedbackResponse,
     ApplicantResponse,
     ApplicantModalResponse,
@@ -784,10 +783,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     isSsnValid,
                     ssnMessage,
                     isAccountNumberValid,
-                    isRoutingNumberValid,
-                    accountRoutingMessage,
-                    isLegalWorkValid,
-                    legalWorkMessage,
+                    // isRoutingNumberValid,
+                    // accountRoutingMessage,
+                    // isLegalWorkValid,
+                    // legalWorkMessage,
                     isAnotherNameValid,
                     anotherNameMessage,
                     isInMilitaryValid,
@@ -832,25 +831,25 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         !isSsnValid && !ssnMessage ? true : false,
                     displayAnnotationTextArea: ssnMessage ? true : false,
                 };
-                this.openAnnotationArray[8] = {
-                    ...this.openAnnotationArray[8],
-                    lineInputs: [!isAccountNumberValid, !isRoutingNumberValid],
-                    displayAnnotationButton:
-                        (!isAccountNumberValid || !isRoutingNumberValid) &&
-                        !accountRoutingMessage
-                            ? true
-                            : false,
-                    displayAnnotationTextArea: accountRoutingMessage
-                        ? true
-                        : false,
-                };
-                this.openAnnotationArray[9] = {
-                    ...this.openAnnotationArray[9],
-                    lineInputs: [!isLegalWorkValid],
-                    displayAnnotationButton:
-                        !isLegalWorkValid && !legalWorkMessage ? true : false,
-                    displayAnnotationTextArea: legalWorkMessage ? true : false,
-                };
+                // this.openAnnotationArray[8] = {
+                //     ...this.openAnnotationArray[8],
+                //     lineInputs: [!isAccountNumberValid, !isRoutingNumberValid],
+                //     displayAnnotationButton:
+                //         (!isAccountNumberValid || !isRoutingNumberValid) &&
+                //         !accountRoutingMessage
+                //             ? true
+                //             : false,
+                //     displayAnnotationTextArea: accountRoutingMessage
+                //         ? true
+                //         : false,
+                // };
+                // this.openAnnotationArray[9] = {
+                //     ...this.openAnnotationArray[9],
+                //     lineInputs: [!isLegalWorkValid],
+                //     displayAnnotationButton:
+                //         !isLegalWorkValid && !legalWorkMessage ? true : false,
+                //     displayAnnotationTextArea: legalWorkMessage ? true : false,
+                // };
                 this.openAnnotationArray[10] = {
                     ...this.openAnnotationArray[10],
                     lineInputs: [!isAnotherNameValid],
@@ -915,9 +914,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     firstRowReview: personalInfoMessage,
                     secondRowReview: phoneMessage,
                     thirdRowReview: ssnMessage,
-                    fourthRowReview: accountRoutingMessage,
+                    // fourthRowReview: accountRoutingMessage,
 
-                    questionReview1: legalWorkMessage,
+                    // questionReview1: legalWorkMessage,
                     questionReview2: anotherNameMessage,
                     questionReview3: inMilitaryMessage,
                     questionReview4: felonyMessage,
@@ -1937,7 +1936,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                       };
                   });
 
-        const saveData: CreatePersonalInfoReviewCommand = {
+        const saveData: any = {
             applicantId: this.applicantId,
             id: this.personalInfoId,
             isFirstNameValid: !this.openAnnotationArray[0].lineInputs[0],

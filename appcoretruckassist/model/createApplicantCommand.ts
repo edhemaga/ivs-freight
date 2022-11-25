@@ -16,6 +16,7 @@ export interface CreateApplicantCommand {
     lastName?: string | null;
     phone?: string | null;
     email?: string | null;
+    isOwner?: boolean;
     note?: string | null;
 }
 

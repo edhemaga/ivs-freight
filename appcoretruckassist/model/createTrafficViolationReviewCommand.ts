@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TrafficViolationItemReviewCommand } from './trafficViolationItemReviewCommand';
+import { CreateTrafficViolationItemReviewCommand } from './createTrafficViolationItemReviewCommand';
 
 
 export interface CreateTrafficViolationReviewCommand { 
-    trafficViolationReviews?: Array<TrafficViolationItemReviewCommand> | null;
+    trafficViolationReviews?: Array<CreateTrafficViolationItemReviewCommand> | null;
     applicantId?: number;
 }
 
