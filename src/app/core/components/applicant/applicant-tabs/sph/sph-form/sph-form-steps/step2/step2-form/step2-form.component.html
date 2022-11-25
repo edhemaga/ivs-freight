@@ -115,42 +115,29 @@
         </div>
     </div>
 
-    <!-- BTN CONTAINER -->
+    <!-- BTN -->
 
-    <div class="d-flex justify-content-center align-items-center btn-container">
-        <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-            (click)="onAddAnotherAccident()"
-            [ngClass]="{
-                disabled: accidentForm.invalid
-            }"
-            *ngIf="!isEditing"
-        >
-            <p class="m-0 ta-font-bold">Add Another Accident</p>
-        </button>
+    <div class="d-flex align-items-center justify-content-center">
+        <ng-container *ngIf="!isEditing">
+            <app-applicant-add-save-btn
+                [addBtn]="true"
+                [btnText]="'Add Another Accident'"
+                [disabledValue]="accidentForm.invalid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </ng-container>
 
-        <div
-            class="d-flex align-items-center mx-auto justify-content-center btn-container"
-            *ngIf="isEditing"
-        >
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-                (click)="onCancelEditAccident()"
-            >
-                Cancel
-            </button>
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-                (click)="onSaveEditedAccident()"
-                [ngClass]="{
-                    disabled: !isAccidentEdited || !accidentForm.valid
-                }"
-            >
-                Save Changes
-            </button>
-        </div>
+        <ng-container *ngIf="isEditing">
+            <app-applicant-add-save-btn
+                [cancelBtn]="true"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+
+            <app-applicant-add-save-btn
+                [saveBtn]="true"
+                [disabledValue]="!isAccidentEdited || !accidentForm.valid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </ng-container>
     </div>
 </div>

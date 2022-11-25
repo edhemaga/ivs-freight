@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     AfterViewInit,
     Component,
@@ -443,7 +445,7 @@ export class Step2FormComponent
         }
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.workExperienceForm = this.formBuilder.group({
@@ -1724,6 +1726,46 @@ export class Step2FormComponent
         }
 
         this.isEditingClassOfEquipmentEmitter.emit(false);
+    }
+
+    public onGetBtnClickValue(
+        event: any,
+        classOfEquipmentBtn?: boolean,
+        type?: number
+    ): void {
+        if (classOfEquipmentBtn) {
+            if (type === 1) {
+                this.onAddClassOfEquipment();
+            }
+
+            if (type === 2) {
+                this.onCancelEditClassOfEquipment();
+            }
+
+            if (type === 3) {
+                this.onSaveEditedClassOfEquipment();
+            }
+        } else {
+            if (event.notDisabledClick) {
+                this.onAddSecondOrLastEmployer();
+            }
+
+            if (event.cancelClick) {
+                this.onCancelEditWorkExperience();
+            }
+
+            if (event.saveClick) {
+                this.onSaveEditedWorkExperience();
+            }
+
+            if (event.reviewCancelClick) {
+                this.onCancelReviewWorkExperience();
+            }
+
+            if (event.reviewSaveClick) {
+                this.onAddAnnotation();
+            }
+        }
     }
 
     public getDropdownLists(): void {

@@ -869,18 +869,15 @@
                         Previous addresses for the past 3 years?
                     </h5>
 
-                    <button
-                        type="button"
-                        class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-                        (click)="onAddNewAddress()"
-                        [ngClass]="{
-                            disabled:
-                                !isLastAddedPreviousAddressValid &&
-                                !isLastInputDeleted
-                        }"
-                    >
-                        <p class="m-0 ta-font-bold">Add Address</p>
-                    </button>
+                    <app-applicant-add-save-btn
+                        [addBtn]="true"
+                        [btnText]="'Add Address'"
+                        [disabledValue]="
+                            !isLastAddedPreviousAddressValid &&
+                            !isLastInputDeleted
+                        "
+                        (clickValueEmitter)="onGetBtnClickValue($event)"
+                    ></app-applicant-add-save-btn>
                 </div>
             </div>
 

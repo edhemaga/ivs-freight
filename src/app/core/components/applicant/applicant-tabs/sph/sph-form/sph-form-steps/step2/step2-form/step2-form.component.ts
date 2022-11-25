@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     AfterViewInit,
     Component,
@@ -313,6 +315,20 @@ export class SphStep2FormComponent
         this.selectedAddress = null;
 
         this.subscription.unsubscribe();
+    }
+
+    public onGetBtnClickValue(event: any): void {
+        if (event.notDisabledClick) {
+            this.onAddAnotherAccident();
+        }
+
+        if (event.cancelClick) {
+            this.onCancelEditAccident();
+        }
+
+        if (event.saveClick) {
+            this.onSaveEditedAccident();
+        }
     }
 
     ngOnDestroy(): void {

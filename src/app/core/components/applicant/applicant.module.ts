@@ -15,6 +15,7 @@ import { ApplicantSignaturePadComponent } from './applicant-signature-pad/applic
 import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/applicant-welcome-screen.component';
 import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-end-screen.component';
 import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn/applicant-next-back-btn.component';
+import { ApplicantAddSaveBtnComponent } from './applicant-add-save-btn/applicant-add-save-btn.component';
 
 import { Step1Component } from './applicant-steps/step1/step1.component';
 import { Step2Component } from './applicant-steps/step2/step2.component';
@@ -43,6 +44,7 @@ import { SharedModule } from '../shared/shared.module';
         ApplicantFooterComponent,
         ApplicantSignaturePadComponent,
         ApplicantNextBackBtnComponent,
+        ApplicantAddSaveBtnComponent,
         ApplicantWelcomeScreenComponent,
         ApplicantEndScreenComponent,
 
@@ -76,6 +78,7 @@ import { SharedModule } from '../shared/shared.module';
     ],
     exports: [
         ApplicantNextBackBtnComponent,
+        ApplicantAddSaveBtnComponent,
         ApplicantHeaderComponent,
         ApplicantFooterComponent,
         ApplicantSignaturePadComponent,

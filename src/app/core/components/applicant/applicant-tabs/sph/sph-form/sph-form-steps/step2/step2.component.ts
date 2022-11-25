@@ -177,7 +177,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
         this.consideredForEmploymentAgainRadios = radioButtonsArray[2].buttons;
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.accidentHistoryForm = this.formBuilder.group({
@@ -199,13 +199,12 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
         this.applicantQuery.applicantSphForm$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.previousEmployerProspectId = res.id;
-
-                if (res.sphAccidentHistory) {
-                    this.patchStepValues(res.sphAccidentHistory);
-
-                    /*  this.stepHasValues = true; */
-                }
+                // dodaj tip
+                // this.previousEmployerProspectId = res.id;
+                // if (res.sphAccidentHistory) {
+                //     this.patchStepValues(res.sphAccidentHistory);
+                //     /*  this.stepHasValues = true; */
+                // }
             });
     }
 
@@ -547,7 +546,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterViewInit {
         this.helperIndex = 2;
     }
 
-    public cancelAccidentEditing(event: any): void {
+    public cancelAccidentEditing(_: any): void {
         this.isEditing = false;
         this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
             false;
