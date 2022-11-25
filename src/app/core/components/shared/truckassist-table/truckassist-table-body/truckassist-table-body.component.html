@@ -3726,7 +3726,22 @@
                                 </div>
 
                                 <!-- Attachments -->
-                                <div class="attacment-container"></div>
+                                <div class="attacment-container">
+                                    <app-ta-upload-files
+                                        [customClassName]="
+                                            'todo-details'
+                                        "
+                                        [files]="
+                                        row.files
+                                                ? row.files
+                                                : []
+                                        "
+                                        [size]="'extraLarge'"
+                                        [reviewMode]="'REVIEW_MODE'"
+                                        [type]="'todo'"
+                                        [slideWidth]="209"
+                                    ></app-ta-upload-files>
+                                </div>
                             </div>
                         </div>
                     </div>
