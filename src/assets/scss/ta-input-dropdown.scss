@@ -45,7 +45,7 @@
             }
 
             //------------------------ Svg-Template-Logo Template ------------------------
-            .dropdown-option:not(:hover):not(.active) {
+            .dropdown-option:not(:hover):not(.active):not(.dropdown-option-hovered) {
                 .svg-template-logo {
                     height: 18px;
 
