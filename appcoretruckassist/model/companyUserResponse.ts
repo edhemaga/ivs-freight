@@ -39,6 +39,7 @@ export interface CompanyUserResponse {
     bank?: BankResponse;
     routingNumber?: string | null;
     accountNumber?: string | null;
+    paymentType?: EnumValue;
     status?: number | null;
     avatar?: string | null;
     base?: number | null;
