@@ -42,7 +42,7 @@
         .ta-upload-dropzone-text {
             margin: 0;
             margin-top: 18px;
-            color: #424242;
+            color: #B7B7B7;
             font-size: 14px;
             font-weight: 600;
             position: relative;
@@ -70,23 +70,35 @@
                 font-weight: 600;
             }
         }
-
-        &:hover {
-            transition: all 0.3 ease-in-out;
-            background-color: #eeeeee;
-        }
-
-        &.required {
-            background-color: #e5737333;
-
-            &:hover {
-                background-color: #e573734d;
-            }
-        }
     }
 
     input[type='file'] {
         display: none;
+    }
+
+    .ta-upload-dropzone-label {
+        &.required {
+            background-color: #e5737333;
+
+            .ta-upload-dropzone-text {
+                color: #6c6c6c;
+            }
+        }
+    }
+
+    &:hover {
+        .ta-upload-dropzone-label {
+            transition: all 0.3 ease-in-out;
+            background-color: #eeeeee;
+
+            .ta-upload-dropzone-text {
+                color: #6c6c6c;
+            }
+
+            &.required {
+                background-color: #e573734d;
+            }
+        }
     }
 }
 
