@@ -65,6 +65,10 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     }
 
     private createForm() {
+        var routeName = this.editData?.routeName
+            ? this.editData?.routeName
+            : null;
+
         this.mapRouteForm = this.formBuilder.group({
             routeName: [null, [Validators.required, Validators.maxLength(16)]],
             routeType: [null],
@@ -75,12 +79,29 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             fuelPrice: [null, Validators.maxLength(5)],
         });
 
+        if (routeName) {
+            this.setRouteNamePlaceholder();
+            this.isFormDirty = true;
+        }
+
         this.formService.checkFormChange(this.mapRouteForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    private setRouteNamePlaceholder() {
+        var routeName = this.editData?.routeName
+            ? this.editData?.routeName
+            : null;
+
+        this.mapRouteForm.patchValue({
+            routeName: routeName,
+        });
+
+        if (routeName) this.isFormDirty = true;
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {

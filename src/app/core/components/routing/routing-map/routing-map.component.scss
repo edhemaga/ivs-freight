@@ -101,6 +101,8 @@
 }
 
 .routing-container {
+    padding-right: 0px !important;
+
     .marker-container {
         top: -25px !important;
 
@@ -123,10 +125,18 @@
     }
 
     .marker-icon {
-        transition: none !important;
+        transition: 0.2s;
 
         svg {
             outline: none;
+        }
+
+        &.edit-marker {
+            transform: translate(-50%, -10%) scale(1.5) !important;
+
+            #Ellipse_6245 {
+                transform: translate(1113px, 983px) scale(0.75);
+            }
         }
 
         &.selected-marker {
@@ -188,7 +198,7 @@
         align-items: center;
         justify-content: space-between;
         height: 18px;
-        margin: 2px 4px 0px 2px;
+        margin: 2px 0px 0px 2px;
 
         .header-content-container {
             display: flex;
@@ -341,6 +351,12 @@
     border-radius: 2px;
 
     z-index: 2;
+
+    &.disable-hover {
+        &:hover {
+            background: none !important;
+        }
+    }
 
     &.focused-route {
         .focused-route-number-background {
@@ -1006,6 +1022,11 @@
 .stop-picker-marker-animation-backwards {
     animation-duration: 200ms;
     animation-name: stop-picker-animation-backwards;
+
+    #Ellipse_9166 {
+        animation-duration: 200ms;
+        animation-name: stop-picker-animation;
+    }
 }
 
 @-webkit-keyframes stop-picker-animation {

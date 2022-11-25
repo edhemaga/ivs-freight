@@ -5,6 +5,7 @@ import {
     FuelStopListResponse,
     FuelStopResponse,
     FuelTransactionListResponse,
+    ClusterResponse,
 } from 'appcoretruckassist';
 
 import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
@@ -16,6 +17,7 @@ import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassis
 import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { GetRepairShopClustersQuery } from 'appcoretruckassist/model/getRepairShopClustersQuery';
 
 @Injectable({
     providedIn: 'root',
@@ -40,14 +42,14 @@ export class FuelTService {
         fuelTransactionSpecParamsSearch2?: string
     ): Observable<FuelTransactionListResponse> {
         return this.fuelService.apiFuelTransactionListGet(
-            fuelTransactionSpecParamsFuelStopStoreId,
-            fuelTransactionSpecParamsPageIndex,
-            fuelTransactionSpecParamsPageSize,
-            fuelTransactionSpecParamsCompanyId,
-            fuelTransactionSpecParamsSort,
-            fuelTransactionSpecParamsSearch,
-            fuelTransactionSpecParamsSearch1,
-            fuelTransactionSpecParamsSearch2
+            // fuelTransactionSpecParamsFuelStopStoreId,
+            // fuelTransactionSpecParamsPageIndex,
+            // fuelTransactionSpecParamsPageSize,
+            // fuelTransactionSpecParamsCompanyId,
+            // fuelTransactionSpecParamsSort,
+            // fuelTransactionSpecParamsSearch,
+            // fuelTransactionSpecParamsSearch1,
+            // fuelTransactionSpecParamsSearch2
         );
     }
 
@@ -116,13 +118,13 @@ export class FuelTService {
         search2?: string
     ): Observable<FuelStopListResponse> {
         return this.fuelService.apiFuelFuelstopListGet(
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
+            // pageIndex,
+            // pageSize,
+            // companyId,
+            // sort,
+            // search,
+            // search1,
+            // search2
         );
     }
 
@@ -199,6 +201,64 @@ export class FuelTService {
         return this.fuelService.apiFuelFuelstopCheckStoreFranchiseIdStoreGet(
             franchiseId,
             store
+        );
+    }
+
+    public getFuelStopClusters(
+        clustersQuery: GetRepairShopClustersQuery
+    ): Observable<Array<ClusterResponse>> {
+        return this.fuelService.apiFuelClustersGet(
+            clustersQuery.northEastLatitude,
+            clustersQuery.northEastLongitude,
+            clustersQuery.southWestLatitude,
+            clustersQuery.southWestLongitude,
+            clustersQuery.zoomLevel
+        );
+    }
+
+    public getFuelStopMapList(
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        lastFrom?: number,
+        lastTo?: number,
+        costFrom?: number,
+        costTo?: number,
+        ppgFrom?: number,
+        ppgTo?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ) {
+        return this.fuelService.apiFuelListmapGet(
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            _long,
+            lat,
+            distance,
+            lastFrom,
+            lastTo,
+            costFrom,
+            costTo,
+            ppgFrom,
+            ppgTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
         );
     }
 }
