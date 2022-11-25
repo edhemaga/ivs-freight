@@ -12,11 +12,9 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { BrokerModalResponse } from '../../../../../../appcoretruckassist';
 import {
     BrokerResponse,
-    CreateBrokerCommand,
     CreateRatingCommand,
     CreateReviewCommand,
     SignInResponse,
-    UpdateBrokerCommand,
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 import {
@@ -763,7 +761,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         let brAddresses = this.selectedBrokerAddress();
 
-        let newData: CreateBrokerCommand = {
+        let newData: any = {
             ...form,
             mainAddress: brAddresses.mainAddress,
             mainPoBox: brAddresses.mainPoBox,
@@ -826,7 +824,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         let brAddresses = this.selectedBrokerAddress();
 
-        let newData: UpdateBrokerCommand = {
+        let newData: any = {
             id: id,
             ...form,
             mainAddress: brAddresses.mainAddress,

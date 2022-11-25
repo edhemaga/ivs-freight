@@ -4,14 +4,12 @@ import { Injectable, OnDestroy } from '@angular/core';
 import {
     CreateRatingCommand,
     CreateResponse,
-    CreateShipperCommand,
     RatingReviewService,
     ShipperListResponse,
     ShipperMinimalListResponse,
     ShipperModalResponse,
     ShipperResponse,
-    UpdateReviewCommand,
-    UpdateShipperCommand,
+    UpdateReviewCommand
 } from 'appcoretruckassist';
 import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
@@ -38,8 +36,8 @@ export class ShipperTService implements OnDestroy {
     ) {}
 
     // Create Shipper
-    public addShipper(data: CreateShipperCommand): Observable<CreateResponse> {
-        return this.shipperService.apiShipperPost(data).pipe(
+    public addShipper(data: any): Observable<CreateResponse> {
+        return this.shipperService.apiShipperPost().pipe(
             tap((res: any) => {
                 const subShipper = this.getShipperById(res.id)
                     .pipe(takeUntil(this.destroy$))
@@ -76,8 +74,8 @@ export class ShipperTService implements OnDestroy {
     }
 
     // Update Shipper
-    public updateShipper(data: UpdateShipperCommand): Observable<any> {
-        return this.shipperService.apiShipperPut(data).pipe(
+    public updateShipper(data: any): Observable<any> {
+        return this.shipperService.apiShipperPut().pipe(
             tap(() => {
                 const subShipper = this.getShipperById(data.id)
                     .pipe(takeUntil(this.destroy$))

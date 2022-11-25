@@ -10,13 +10,11 @@ import {
     CompanyResponse,
     CompanyService,
     CreateDivisionCompanyCommand,
-    CreateInsurancePolicyCommand,
     CreateResponse,
     InsurancePolicyModalResponse,
     UpdateCompanyCommand,
     UpdateDivisionCompanyCommand,
-    UpdateFactoringCompanyCommand,
-    UpdateInsurancePolicyCommand,
+    UpdateFactoringCompanyCommand
 } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CompanyStore } from './company-settings.store';
@@ -232,7 +230,7 @@ export class SettingsCompanyService implements OnDestroy {
     }
 
     public addInsurancePolicy(
-        data: CreateInsurancePolicyCommand
+        data: any
     ): Observable<CreateResponse> {
         return this.settingService.apiCompanyInsurancepolicyPost(data).pipe(
             tap((res: any) => {
@@ -255,7 +253,7 @@ export class SettingsCompanyService implements OnDestroy {
     }
 
     public updateInsurancePolicy(
-        data: UpdateInsurancePolicyCommand
+        data: any
     ): Observable<object> {
         return this.settingService.apiCompanyInsurancepolicyPut(data).pipe(
             tap((res: any) => {

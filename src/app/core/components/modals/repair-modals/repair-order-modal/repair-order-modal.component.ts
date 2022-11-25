@@ -9,11 +9,9 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import {
-    CreateRepairCommand,
     RepairModalResponse,
     RepairResponse,
-    RepairShopResponse,
-    UpdateRepairCommand,
+    RepairShopResponse
 } from 'appcoretruckassist';
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -615,7 +613,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
-        let newData: CreateRepairCommand = null;
+        let newData: any = null;
 
         if (this.selectedHeaderTab === 2) {
             newData = {
@@ -693,7 +691,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
-        let newData: UpdateRepairCommand = null;
+        let newData: any = null;
 
         if (this.selectedHeaderTab === 2) {
             newData = {

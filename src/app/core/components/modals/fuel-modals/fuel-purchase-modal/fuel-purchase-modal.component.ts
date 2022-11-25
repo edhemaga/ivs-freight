@@ -21,7 +21,6 @@ import {
     convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
-import { EditFuelTransactionCommand } from '../../../../../../../appcoretruckassist/model/editFuelTransactionCommand';
 import { TruckTService } from '../../../truck/state/truck.service';
 import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
 import { FuelTransactionResponse } from '../../../../../../../appcoretruckassist/model/fuelTransactionResponse';
@@ -314,7 +313,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     private updateFuel(id: number) {
         const { ...form } = this.fuelForm.value;
 
-        const newData: EditFuelTransactionCommand = {
+        const newData: any = {
             id: id,
             truckId: this.selectedTruckType.id,
             trailerId: this.selectedTrailerType

@@ -5,15 +5,11 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { RepairService } from 'appcoretruckassist/api/repair.service';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import {
-    CreateRepairCommand,
     CreateResponse,
     RepairResponse,
-    UpdateRepairCommand,
-    CreateRepairShopCommand,
     RepairShopListResponse,
     RepairShopModalResponse,
     RepairShopService,
-    UpdateRepairShopCommand,
     RepairListResponse,
     RepairShopMinimalResponse,
 } from 'appcoretruckassist';
@@ -51,7 +47,7 @@ export class RepairTService implements OnDestroy {
     ) {}
 
     // <----------------------- Repair Truck And Trailer -------------------->
-    public addRepair(data: CreateRepairCommand): Observable<CreateResponse> {
+    public addRepair(data: any): Observable<CreateResponse> {
         return this.repairService.apiRepairPost(data).pipe(
             tap((res: any) => {
                 const subShop = this.getRepairShopById(data.repairShopId)
@@ -106,7 +102,7 @@ export class RepairTService implements OnDestroy {
         );
     }
 
-    public updateRepair(data: UpdateRepairCommand): Observable<object> {
+    public updateRepair(data: any): Observable<object> {
         return this.repairService.apiRepairPut(data).pipe(
             tap(() => {
                 const subShop = this.getRepairShopById(data.repairShopId)
@@ -263,7 +259,7 @@ export class RepairTService implements OnDestroy {
 
     // <----------------------- Repair Shop -------------------->
     public addRepairShop(
-        data: CreateRepairShopCommand
+        data: any
     ): Observable<CreateResponse> {
         return this.shopServices.apiRepairshopPost(data).pipe(
             tap((res: any) => {
@@ -297,7 +293,7 @@ export class RepairTService implements OnDestroy {
         );
     }
 
-    public updateRepairShop(data: UpdateRepairShopCommand): Observable<object> {
+    public updateRepairShop(data: any): Observable<object> {
         return this.shopServices.apiRepairshopPut(data).pipe(
             tap(() => {
                 const subShop = this.getRepairShopById(data.id)

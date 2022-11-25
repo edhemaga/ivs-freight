@@ -21,9 +21,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import {
     AddressEntity,
-    CreateInsurancePolicyCommand,
-    InsurancePolicyModalResponse,
-    UpdateInsurancePolicyCommand,
+    InsurancePolicyModalResponse
 } from 'appcoretruckassist';
 
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
@@ -442,7 +440,7 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
-        let newData: CreateInsurancePolicyCommand = {
+        let newData: any = {
             companyId: company.divisions.length ? null : company.id,
             ...form,
             issued: convertDateToBackend(issued),
@@ -656,7 +654,7 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
-        let newData: UpdateInsurancePolicyCommand = {
+        let newData: any = {
             id: id,
             ...form,
             issued: convertDateToBackend(issued),

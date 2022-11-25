@@ -6,15 +6,25 @@ import {
 } from '@angular/common/http';
 import { catchError, Observable, tap } from 'rxjs';
 import { NotificationService } from './core/services/notification/notification.service';
+import { FormDataService } from './core/services/formData/form-data.service';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
-    constructor(private notificationService: NotificationService) {}
+    constructor(
+        private notificationService: NotificationService,
+        private formDataService: FormDataService
+    ) {}
 
     intercept(
         httpRequest: HttpRequest<any>,
         next: HttpHandler
     ): Observable<any> {
+        if (httpRequest.body) {
+            if (httpRequest.body instanceof FormData) {
+                httpRequest = this.handleBodyIn(httpRequest);
+            }
+        }
+
         return next.handle(httpRequest).pipe(
             catchError((error: any) => {
                 if (httpRequest.url.indexOf('api') > -1) {
@@ -30,7 +40,6 @@ export class AppInterceptor implements HttpInterceptor {
                         );
                     }, timeOutValue);
                 }
-
                 return next.handle(httpRequest);
             }),
             tap({
@@ -53,5 +62,18 @@ export class AppInterceptor implements HttpInterceptor {
                 },
             })
         );
+    }
+
+    handleBodyIn(req: HttpRequest<any>) {
+        if (['post', 'put'].includes(req.method.toLowerCase())) {
+            if (req.body instanceof FormData) {
+                const serviceData = this.formDataService.formDataValue;
+
+                req = req.clone({
+                    body: serviceData,
+                });
+            }
+        }
+        return req;
     }
 }
