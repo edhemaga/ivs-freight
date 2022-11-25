@@ -136,6 +136,7 @@ export class TaReCardComponent implements OnInit {
         console.log('--here---');
         this.data = data;
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
+        // api start after every click
         //this.dataDropDopwn.emit(data);
     }
     public toggleCard(event: any) {
