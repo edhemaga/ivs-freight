@@ -13,6 +13,7 @@ import {
     QueryList,
     SecurityContext,
     ViewEncapsulation,
+    AfterContentInit,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
@@ -26,7 +27,9 @@ import { DomSanitizer } from '@angular/platform-browser';
     styleUrls: ['./map-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class MapListComponent implements OnInit, OnChanges, OnDestroy {
+export class MapListComponent
+    implements OnInit, OnChanges, OnDestroy, AfterContentInit
+{
     private destroy$ = new Subject<void>();
 
     @Input() sortTypes: any[] = [];
@@ -63,8 +66,9 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mapListContent) {
             this.checkResizeButton();
+            console.log('mapListContent changes');
 
-            this.mapListContent.map((data, index) => {
+            this.mapListContent.map((data) => {
                 if (data.actionAnimation == 'delete') {
                     this.deleteAnimation(data.id);
                 }
@@ -96,34 +100,49 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     ngAfterContentInit() {
         this.listCards.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.highlightSearchedText();
+            console.log('listCards changes', this.listCards);
+            if (this.mapListExpanded) {
+                //this.calculateMapListSize();
+
+                var mapListElement =
+                    document.querySelectorAll<HTMLElement>('.map-list-body')[0];
+                mapListElement.style.height = '';
+
+                this.checkResizeButton();
+            } else {
+                var mapListElement =
+                    document.querySelectorAll<HTMLElement>('.map-list-body')[0];
+
+                var childrenElements = mapListElement.children;
+
+                console.log('childrenElements', childrenElements);
+
+                var childElementHeight = childrenElements[0].clientHeight;
+                var totalChildrenHeight =
+                    childElementHeight * this.listCards.length;
+
+                if (totalChildrenHeight < mapListElement.clientHeight) {
+                    mapListElement.style.height = '';
+                    this.mapListExpanded = true;
+
+                    this.checkResizeButton();
+                } else {
+                    this.calculateMapListSize();
+                }
+
+                console.log('totalChildrenHeight', totalChildrenHeight);
+                console.log(
+                    'mapListElement height',
+                    mapListElement.clientHeight
+                );
+            }
         });
     }
 
     resizeMapList() {
         this.mapListExpanded = !this.mapListExpanded;
 
-        var mapListElement =
-            document.querySelectorAll<HTMLElement>('.map-list-body')[0];
-
-        var mapListContainer = document.querySelectorAll<HTMLElement>(
-            '.map-list-container'
-        )[0];
-
-        var containerHeight = mapListContainer.clientHeight; // total height - padding
-
-        var mapListHeight = mapListElement.clientHeight;
-        var expandedHeight = mapListElement.scrollHeight;
-        mapListElement.style.height = mapListHeight + 'px';
-
-        if (this.mapListExpanded) {
-            setTimeout(() => {
-                mapListElement.style.height = expandedHeight + 'px';
-            }, 10);
-        } else {
-            setTimeout(() => {
-                mapListElement.style.height = containerHeight / 2 - 110 + 'px';
-            }, 10);
-        }
+        this.calculateMapListSize();
     }
 
     openPopover(t2) {
@@ -138,7 +157,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     changeSortType(item) {
-        this.sortTypes.map((data: any, index) => {
+        this.sortTypes.map((data: any) => {
             if (data.isActive) {
                 data.isActive = false;
             }
@@ -361,6 +380,8 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
         if (this.searchText?.length >= 3) {
             this.searchIsActive = true;
 
+            this.highlightSearchedText();
+
             // this.tableService.sendCurrentSearchTableData({
             //   chip: 'searchOne',
             //   search: this.searchText,
@@ -385,26 +406,28 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     highlightSearchedText() {
-        if (this.searchText?.length >= 3) {
-            document
-                .querySelectorAll<HTMLElement>(
-                    '.map-list-card-container .title-text, .map-list-card-container .address-text'
-                )
-                .forEach((title: HTMLElement, i) => {
-                    var text = title.textContent;
+        document
+            .querySelectorAll<HTMLElement>(
+                '.map-list-card-container .title-text, .map-list-card-container .address-text'
+            )
+            .forEach((title: HTMLElement) => {
+                var text = title.textContent;
 
-                    const regex = new RegExp(this.searchText, 'gi');
-                    const newText = text.replace(regex, (match: string) => {
+                const regex = new RegExp(this.searchText, 'gi');
+                const newText = text.replace(regex, (match: string) => {
+                    if (match.length >= 3) {
                         return `<mark class='highlighted-text'>${match}</mark>`;
-                    });
-                    const sanitzed = this.sanitizer.sanitize(
-                        SecurityContext.HTML,
-                        newText
-                    );
-
-                    title.innerHTML = sanitzed;
+                    } else {
+                        return match;
+                    }
                 });
-        }
+                const sanitzed = this.sanitizer.sanitize(
+                    SecurityContext.HTML,
+                    newText
+                );
+
+                title.innerHTML = sanitzed;
+            });
     }
 
     deleteAnimation(id) {
@@ -413,9 +436,32 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
         );
 
         if (mapListCard) {
-            var cardHeight = mapListCard.clientHeight;
-
             mapListCard.classList.add('delete-animation');
+        }
+    }
+
+    calculateMapListSize() {
+        var mapListElement =
+            document.querySelectorAll<HTMLElement>('.map-list-body')[0];
+
+        var mapListContainer = document.querySelectorAll<HTMLElement>(
+            '.map-list-container'
+        )[0];
+
+        var containerHeight = mapListContainer.clientHeight; // total height - padding
+
+        var mapListHeight = mapListElement.clientHeight;
+        var expandedHeight = mapListElement.scrollHeight;
+        mapListElement.style.height = mapListHeight + 'px';
+
+        if (this.mapListExpanded) {
+            setTimeout(() => {
+                mapListElement.style.height = expandedHeight + 'px';
+            }, 10);
+        } else {
+            setTimeout(() => {
+                mapListElement.style.height = containerHeight / 2 - 110 + 'px';
+            }, 10);
         }
     }
 

@@ -90,7 +90,7 @@ export class MapMarkerDropdownComponent implements OnInit {
         this.showAllDays = !this.showAllDays;
     }
 
-    showMoreOptions(event) {
+    showMoreOptions() {
         //event.preventDefault();
         //event.stopPropagation();
 

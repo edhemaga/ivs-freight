@@ -15,6 +15,8 @@ import { MapsService } from '../../../services/shared/maps.service';
 import { RepairTService } from '../../repair/state/repair.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 import { FuelTService } from '../../fuel/state/fuel.service';
+import { AccidentTService } from '../../safety/accident/state/accident.service';
+import { RoadsideService } from '../../safety/violation/state/roadside.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
@@ -127,6 +129,8 @@ export class MapsComponent implements OnInit, OnDestroy {
         private repairShopService: RepairTService,
         private shipperService: ShipperTService,
         private fuelStopService: FuelTService,
+        private accidentService: AccidentTService,
+        private roadsideService: RoadsideService,
         private notificationService: NotificationService
     ) {}
 
@@ -158,7 +162,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         this.agmMap = map;
 
         if (this.mapType == 'repairShop' || this.mapType == 'shipper' || this.mapType == 'fuelStop') {
-            map.addListener('idle', (ev) => {
+            map.addListener('idle', () => {
                 // update the coordinates here
 
                 clearTimeout(this.clustersTimeout);
@@ -199,6 +203,9 @@ export class MapsComponent implements OnInit, OnDestroy {
                         } else if (this.mapType == 'fuelStop') {
                             console.log('getFuelStop data.id', data.id);
                             this.getFuelStop(data.id, index);
+                        } else if (this.mapType == 'accident') {
+                            console.log('getAccident data.id', data.id);
+                            this.getAccident(data.id, index);
                         }
                     } else {
                         data.isSelected = true;
@@ -242,15 +249,15 @@ export class MapsComponent implements OnInit, OnDestroy {
         this.ref.detectChanges();
     }
 
-    mapClick(event) {
-        this.viewData.map((data: any, index) => {
+    mapClick() {
+        this.viewData.map((data: any) => {
             if (data.isSelected) {
                 data.isSelected = false;
                 data.isExpanded = false;
             }
         });
 
-        this.clusterMarkers.map((data: any, index) => {
+        this.clusterMarkers.map((data: any) => {
             if (data.isSelected) {
                 data.isSelected = false;
                 if (data.detailedInfo) {
@@ -707,17 +714,25 @@ export class MapsComponent implements OnInit, OnDestroy {
                 });
 
             console.log('sortName', this.sortBy);
+
             this.fuelStopService
                 .getFuelStopMapList(
                     clustersObj.northEastLatitude,
                     clustersObj.northEastLongitude,
                     clustersObj.southWestLatitude,
                     clustersObj.southWestLongitude,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
+                    null, //_long,
+                    null, //lat,
+                    null, //distance,
+                    null, //lastFrom,
+                    null, //lastTo,
+                    null, //costFrom,
+                    null, //costTo,
+                    null, //ppgFrom,
+                    null, //ppgTo,
+                    null, //pageIndex,
+                    null, //pageSize,
+                    null, //companyId
                     null, //this.sortBy
                     this.searchText
                 )
@@ -745,12 +760,129 @@ export class MapsComponent implements OnInit, OnDestroy {
                     this.updateMapList.emit(mapListData);
                     // this.mapsService.updateMapList(mapListResponse);
                 });
+        } else if ( this.mapType == 'accident' ) {
+            this.accidentService
+                .getAccidentClusters(clustersObj)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((clustersResponse: any) => {
+                    var clustersToShow = [];
+                    var markersToShow = [];
+                    var newMarkersAdded = false;
+                    console.log('clustersResponse', clustersResponse);
+
+                    clustersResponse.map((clusterItem) => {
+                        if (clusterItem.count > 1) {
+                            let clusterIndex = this.clusterMarkers.findIndex(
+                                (item) =>
+                                    item.latitude === clusterItem.latitude &&
+                                    item.longitude === clusterItem.longitude
+                            );
+
+                            console.log('clusterItem', clusterIndex);
+
+                            if (clusterIndex == -1) {
+                                this.clusterMarkers.push(clusterItem);
+                            }
+
+                            clustersToShow.push(clusterItem.latitude);
+                        } else {
+                            let markerIndex = this.viewData.findIndex(
+                                (item) => item.id === clusterItem.id
+                            );
+
+                            if (markerIndex == -1) {
+                                this.viewData.push(clusterItem);
+                                newMarkersAdded = true;
+                            }
+
+                            markersToShow.push(clusterItem.id);
+                        }
+                    });
+
+                    this.viewData.map((item) => {
+                        if (
+                            markersToShow.includes(item.id) &&
+                            !item.showMarker
+                        ) {
+                            item.showMarker = true;
+                        } else if (
+                            !markersToShow.includes(item.id) &&
+                            item.showMarker
+                        ) {
+                            item.showMarker = false;
+                        }
+                    });
+
+                    this.clusterMarkers.map((cluster) => {
+                        if (
+                            clustersToShow.includes(cluster.latitude) &&
+                            !cluster.showMarker
+                        ) {
+                            cluster.fadeIn = true;
+                            setTimeout(() => {
+                                cluster.fadeIn = false;
+                                this.ref.detectChanges();
+                            }, 200);
+
+                            cluster.showMarker = true;
+                        } else if (
+                            !clustersToShow.includes(cluster.latitude) &&
+                            cluster.showMarker
+                        ) {
+                            cluster.fadeOut = true;
+                            setTimeout(() => {
+                                cluster.fadeOut = false;
+                                cluster.showMarker = false;
+                                this.ref.detectChanges();
+                            }, 200);
+                        }
+                    });
+
+                    if (newMarkersAdded) this.markersDropAnimation();
+
+                    this.ref.detectChanges();
+                });
+
+            console.log('sortName', this.sortBy);
+            this.accidentService
+                .getAccidentMapList(
+                    clustersObj.northEastLatitude,
+                    clustersObj.northEastLongitude,
+                    clustersObj.southWestLatitude,
+                    clustersObj.southWestLongitude,
+                    null,
+                    null,
+                    null,
+                    this.sortBy,
+                    this.searchText
+                )
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((mapListResponse: any) => {
+                    console.log('shipper list', mapListResponse);
+
+                    var mapListData = { ...mapListResponse };
+                    mapListData.pagination.data.map((data) => {
+                        data.raiting = {
+                            hasLiked: data.currentCompanyUserRating === 1,
+                            hasDislike: data.currentCompanyUserRating === -1,
+                            likeCount: data?.upCount ? data.upCount : '0',
+                            dislikeCount: data?.downCount
+                                ? data.downCount
+                                : '0',
+                        };
+                    });
+
+                    mapListData.changedSort = changedSearchOrSort;
+
+                    this.updateMapList.emit(mapListData);
+                    // this.mapsService.updateMapList(mapListResponse);
+                });
         }
         console.log('mapType', this.mapType);
     }
 
     clickedCluster(cluster) {
-        this.clusterMarkers.map((data: any, index) => {
+        this.clusterMarkers.map((data: any) => {
             if (
                 data.isSelected &&
                 (data.latitude != cluster.latitude ||
@@ -903,6 +1035,37 @@ export class MapsComponent implements OnInit, OnDestroy {
             });
     }
 
+    getAccident(id, index) {
+        this.accidentService
+            .getAccidentById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    this.viewData[index] = { ...this.viewData[index], ...res };
+
+                    console.log('get fuel stop', res);
+
+                    // this.viewData[index].raiting = {
+                    //     hasLiked: res.currentCompanyUserRating === 1,
+                    //     hasDislike: res.currentCompanyUserRating === -1,
+                    //     likeCount: res?.upCount ? res.upCount : '0',
+                    //     dislikeCount: res?.downCount ? res.downCount : '0',
+                    // };
+
+                    setTimeout(() => {
+                        this.viewData[index].isSelected = true;
+                        this.ref.detectChanges();
+                    }, 200);
+                },
+                error: () => {
+                    this.notificationService.error(
+                        `Cant' get shipper by ${id}`,
+                        'Error'
+                    );
+                },
+            });
+    }
+
     updateRef() {
         this.ref.detectChanges();
     }
@@ -984,6 +1147,31 @@ export class MapsComponent implements OnInit, OnDestroy {
                         );
                     },
                 });
+        } else if (this.mapType == 'accident') {
+            this.accidentService
+                .getAccidentById(item.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res) => {
+                        cluster.detailedInfo = res;
+
+                        console.log('get accident', res);
+                        // cluster.detailedInfo.raiting = {
+                        //     hasLiked: res.currentCompanyUserRating === 1,
+                        //     hasDislike: res.currentCompanyUserRating === -1,
+                        //     likeCount: res?.upCount ? res.upCount : '0',
+                        //     dislikeCount: res?.downCount ? res.downCount : '0',
+                        // };
+
+                        this.ref.detectChanges();
+                    },
+                    error: () => {
+                        this.notificationService.error(
+                            `Cant' get shipper by ${item.id}`,
+                            'Error'
+                        );
+                    },
+                });
         }
     }
 
@@ -991,12 +1179,6 @@ export class MapsComponent implements OnInit, OnDestroy {
         var bounds = this.agmMap.getBounds();
         var ne = bounds.getNorthEast(); // LatLng of the north-east corner
         var sw = bounds.getSouthWest(); // LatLng of the south-west corder
-        var nw = new google.maps.LatLng(ne.lat(), sw.lng());
-        var se = new google.maps.LatLng(sw.lat(), ne.lng());
-
-        var mapCenter = this.agmMap.getCenter();
-
-        var clustersZoomLevel = this.mapZoom <= 18 ? this.mapZoom - 3 : 15;
 
         var clustersObject = {
             northEastLatitude: ne.lat(),

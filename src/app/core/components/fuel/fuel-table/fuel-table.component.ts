@@ -578,27 +578,55 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         var newMapList = mapListResponse.pagination.data;
         var listChanged = false;
 
-        newMapList.map((item, index) => {
-            let itemIndex = this.mapListData.findIndex(
-                (item2) => item2.id === item.id
-            );
+        for ( var i = 0; i < this.mapListData.length; i++ ) {
+            let item = this.mapListData[i];
 
-            if (itemIndex == -1) {
-                this.mapListData.splice(index, 0, item);
-                listChanged = true;
-            }
-        });
-
-        this.mapListData.map((item, index) => {
             let itemIndex = newMapList.findIndex(
                 (item2) => item2.id === item.id
             );
 
             if (itemIndex == -1) {
-                this.mapListData.splice(index, 1);
+                this.mapListData.splice(i, 1);
                 listChanged = true;
+                i--;
             }
-        });
+        }
+
+        for ( var b = 0; b < newMapList.length; b++ ) {
+            let item = newMapList[b];
+
+            let itemIndex = this.mapListData.findIndex(
+                (item2) => item2.id === item.id
+            );
+
+            if (itemIndex == -1) {
+                this.mapListData.splice(b, 0, item);
+                listChanged = true;
+                b--;
+            }
+        }
+
+        // newMapList.map((item, index) => {
+        //     let itemIndex = this.mapListData.findIndex(
+        //         (item2) => item2.id === item.id
+        //     );
+
+        //     if (itemIndex == -1) {
+        //         this.mapListData.splice(index, 0, item);
+        //         listChanged = true;
+        //     }
+        // });
+
+        // this.mapListData.map((item, index) => {
+        //     let itemIndex = newMapList.findIndex(
+        //         (item2) => item2.id === item.id
+        //     );
+
+        //     if (itemIndex == -1) {
+        //         this.mapListData.splice(index, 1);
+        //         listChanged = true;
+        //     }
+        // });
 
         if (listChanged || mapListResponse.changedSort) {
             //this.mapListData = mapListResponse.pagination.data;

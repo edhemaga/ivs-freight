@@ -565,7 +565,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         ).companyUserId;
         this.getMapList(companyUserId, 1, 4);
 
-        this.tableData[this.selectedMapIndex].routes.map((item, index) => {
+        this.tableData[this.selectedMapIndex].routes.map((item) => {
             //this.calculateDistanceBetweenStops(index);
             this.calculateRouteWidth(item);
         });
@@ -610,7 +610,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 if (res.type == 'map') {
                     this.updateMapData(res.id, res.data);
                 } else if (res.type == 'route') {
-                    this.addRoute(res.mapId, res.data);
+                    this.addRoute(res.mapId);
                 } else if (res.type == 'edit-route') {
                     this.getRouteList(
                         this.tableData[this.selectedMapIndex].id,
@@ -641,7 +641,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     initAddressFields() {
         new Array(this.tableData[this.selectedMapIndex].routes.length)
             .fill(1)
-            .map((item, index) => {
+            .map(() => {
                 this.addressInputs.push(
                     this.formBuilder.group({
                         address: [],
@@ -761,7 +761,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
         document
             .querySelectorAll('.route-info-card')
-            .forEach((cardElement: HTMLElement, i) => {
+            .forEach((cardElement: HTMLElement) => {
                 var cardId = parseInt(cardElement.getAttribute('data-id'));
                 var cardData = this.tableData[
                     this.selectedMapIndex
@@ -858,7 +858,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         event.currentIndex
                     );
                     const previousIndex = orderPosition[0];
-                    const nextIndex = orderPosition[1];
 
                     moveItemInArray(
                         event.container.data,
@@ -937,11 +936,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 );
                 const rectElement = routeElement.getBoundingClientRect();
 
-                const out =
-                    route.y < 0 ||
-                    route.x < 0 ||
-                    route.y > rectZone.height - rectElement.height ||
-                    route.x > rectZone.width - rectElement.width;
+                // const out =
+                //     route.y < 0 ||
+                //     route.x < 0 ||
+                //     route.y > rectZone.height - rectElement.height ||
+                //     route.x > rectZone.width - rectElement.width;
 
                 if (rectElement.right > rectZone.right - 20) {
                     route.x -= rectElement.right - rectZone.right + 20;
@@ -1127,7 +1126,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                     zipCode: '',
                                 };
 
-                                result.address_components.map((item, index) => {
+                                result.address_components.map((item) => {
                                     if (item.types.indexOf('locality') > -1) {
                                         address.city = item.long_name;
                                     } else if (
@@ -1199,17 +1198,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     }
                 );
             }
-        });
-
-        map.addListener('idle', (ev) => {
-            // update the coordinates here
-            var bounds = map.getBounds();
-            var ne = bounds.getNorthEast(); // LatLng of the north-east corner
-            var sw = bounds.getSouthWest(); // LatLng of the south-west corder
-            var nw = new google.maps.LatLng(ne.lat(), sw.lng());
-            var se = new google.maps.LatLng(sw.lat(), ne.lng());
-
-            var mapCenter = map.getCenter();
         });
     }
 
@@ -1443,7 +1431,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         this.tableData[this.selectedMapIndex].routes[i]
                             .fuelPrice;
 
-                    let fuelShort = fuel.toFixed(1);
                     let tripCostShort = tripCost.toFixed(1);
 
                     this.tableData[this.selectedMapIndex].routes[i].stops[
@@ -1584,12 +1571,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 })
             );
 
-            const lastId = Math.max(
-                ...this.tableData[this.selectedMapIndex].routes.map(
-                    (item) => item.id
-                )
-            );
-
             const newRoute = JSON.parse(JSON.stringify(route));
             newRoute.id = 0;
             newRoute.isFocused = false;
@@ -1667,8 +1648,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
     reverseRouteStops(id) {
         let route = this.getRouteById(id);
-
-        const routeIndex = this.getRouteIndexById(id);
 
         if (route && route.stops && route.stops.length) {
             const routeElement: HTMLElement = document.querySelector(
@@ -2235,7 +2214,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
         this.DetailsDataService.setNewData(route);
 
-        this.dropdownActions.map((action, index) => {
+        this.dropdownActions.map((action) => {
             if (
                 route.stops.length == 0 &&
                 [
@@ -2907,7 +2886,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     return item.id === mapId;
                 });
 
-                var newRoutes = [];
                 this.tableData[mapIndex].routes = [];
 
                 var routesArr = routes.pagination.data;
@@ -2954,7 +2932,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     this.tableData[mapIndex].routes.push(newRoute);
                 });
 
-                this.tableData[mapIndex].routes.map((item, index) => {
+                this.tableData[mapIndex].routes.map((item) => {
                     //this.calculateDistanceBetweenStops(index);
                     this.calculateRouteWidth(item);
                     if (item.stops?.length > 1) {
@@ -2980,26 +2958,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.mapToolbar.getSelectedTabTableData();
     }
 
-    addRoute(mapId: number, updatedData: any) {
+    addRoute(mapId: number) {
         this.addressInputs.push(
             this.formBuilder.group({
                 address: [],
             })
         );
-
-        var newRoute = {
-            id: updatedData.id,
-            name: updatedData.name,
-            hidden: false,
-            expanded: false,
-            routeType: 'Practical',
-            truckId: '',
-            stopTime: '',
-            mpg: '',
-            fuelPrice: '',
-            stops: [],
-            color: this.findRouteColor(),
-        };
 
         this.getRouteList(mapId, 1, 8);
 

@@ -224,7 +224,7 @@
             <div
                 class="action-div"
                 #op="ngbPopover"
-                (click)="onShowMapSettings(op)"
+                (click)="onShowMapSettings()"
                 [autoClose]="true"
                 [ngbPopover]="mapSettingsPopover"
                 [placement]="'bottom-right'"
@@ -259,7 +259,7 @@
     <div
         class="modal-open-container"
         #op2="ngbPopover"
-        (click)="onShowRoutePopover(op2)"
+        (click)="onShowRoutePopover()"
         [ngbPopover]="addRoutePopover"
         [disablePopover]="
             activeTableData?.length < 8 || routeToEdit?.id ? false : true
