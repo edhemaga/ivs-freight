@@ -189,45 +189,47 @@
                             marginBottom: '18px'
                         }"
                     >
-                        <div class="row row-mb-26">
-                            <div class="col-12">
-                                <app-ta-input-dropdown
-                                    formControlName="ownerId"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Owner',
-                                        isRequired: true,
-                                        isDropdown: true,
-                                        dropdownWidthClass: 'w-col-456'
-                                    }"
-                                    [options]="ownerType"
-                                    [canAddNew]="true"
-                                    [canOpenModal]="true"
-                                    [activeItem]="selectedOwner"
-                                    (selectedItem)="
-                                        onSelectDropdown($event, 'owner')
-                                    "
-                                ></app-ta-input-dropdown>
+                        <ng-container body>
+                            <div class="row row-mb-26">
+                                <div class="col-12">
+                                    <app-ta-input-dropdown
+                                        formControlName="ownerId"
+                                        [inputConfig]="{
+                                            name: 'Input Dropdown',
+                                            type: 'text',
+                                            label: 'Owner',
+                                            isRequired: true,
+                                            isDropdown: true,
+                                            dropdownWidthClass: 'w-col-456'
+                                        }"
+                                        [options]="ownerType"
+                                        [canAddNew]="true"
+                                        [canOpenModal]="true"
+                                        [activeItem]="selectedOwner"
+                                        (selectedItem)="
+                                            onSelectDropdown($event, 'owner')
+                                        "
+                                    ></app-ta-input-dropdown>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row row-no-m">
-                            <div class="col-12">
-                                <app-ta-ngx-slider
-                                    [sliderName]="'Commission'"
-                                    [sliderOptions]="commissionOptions"
-                                    [startedValue]="
-                                        truckForm.get('commission').value
-                                    "
-                                    [customClass]="'custom-truck-modal'"
-                                    (onUserValueChange)="
-                                        truckForm
-                                            .get('commission')
-                                            .setValue($event)
-                                    "
-                                ></app-ta-ngx-slider>
+                            <div class="row row-no-m">
+                                <div class="col-12">
+                                    <app-ta-ngx-slider
+                                        [sliderName]="'Commission'"
+                                        [sliderOptions]="commissionOptions"
+                                        [startedValue]="
+                                            truckForm.get('commission').value
+                                        "
+                                        [customClass]="'custom-truck-modal'"
+                                        (onUserValueChange)="
+                                            truckForm
+                                                .get('commission')
+                                                .setValue($event)
+                                        "
+                                    ></app-ta-ngx-slider>
+                                </div>
                             </div>
-                        </div>
+                        </ng-container>
                     </app-ta-checkbox-card>
 
                     <app-ta-input-note

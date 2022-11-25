@@ -9,6 +9,9 @@
             [label]="label"
             [name]="name"
         ></app-ta-checkbox>
+
+        <ng-content select="[header]"></ng-content>
+
         <svg-icon
             *ngIf="hasArrow"
             class="checkbox-card-header-arrow"
@@ -30,6 +33,6 @@
             params: animationMarginParams
         }"
     >
-        <ng-content></ng-content>
+        <ng-content select="[body]"></ng-content>
     </div>
 </div>
