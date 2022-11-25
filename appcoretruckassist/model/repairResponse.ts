@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { TruckMinimalResponse } from './truckMinimalResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
@@ -36,5 +37,6 @@ export interface RepairResponse {
     createdAt?: string;
     updatedAt?: string;
     items?: Array<RepairItemResponse> | null;
+    files?: Array<FileResponse> | null;
 }
 

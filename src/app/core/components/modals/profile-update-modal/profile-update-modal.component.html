@@ -119,120 +119,94 @@
                         </div>
                     </div>
                     <!-- IsOwner -->
-                    <div class="custom-checkbox-card">
-                        <div class="divider"></div>
+                    <app-ta-checkbox-card
+                        formControlName="createNewPassword"
+                        [label]="'Create New Password'"
+                        [name]="'create-new-password'"
+                        [isCardOpen]="
+                            profileUserForm.get('createNewPassword').value
+                        "
+                        [animationMarginParams]="{
+                            marginTop: '12px',
+                            marginBottom: '18px'
+                        }"
+                    >
                         <div
-                            class="checkbox-card-header"
-                            [ngClass]="{
-                                pointer:
-                                    profileUserForm.get('createNewPassword')
-                                        .value
-                            }"
+                            *ngIf="!setNewPassword"
+                            class="profile-update-old-password-row"
                         >
-                            <app-ta-checkbox
-                                formControlName="createNewPassword"
-                                [label]="'Create New Password'"
-                            ></app-ta-checkbox>
-                            <svg-icon
-                                class="checkbox-card-header-arrow"
-                                src="assets/svg/common/ic_arrow_down_updated.svg"
-                                [ngClass]="{
-                                    visible:
-                                        profileUserForm.get('createNewPassword')
-                                            .value,
-                                    rotate: !passwordCheckboxCard
+                            <app-ta-input
+                                formControlName="oldPassword"
+                                [inputConfig]="{
+                                    name: 'Password',
+                                    type: 'password',
+                                    label: 'Password',
+                                    placeholderIcon: 'password',
+                                    isRequired: true,
+                                    autocomplete: 'off',
+                                    minLength: 8,
+                                    maxLength: 64,
+                                    loadingSpinner: {
+                                        size: 'small',
+                                        color: 'white',
+                                        isLoading: loadingOldPassword
+                                    }
                                 }"
-                                (click)="toggleCheckboxCard()"
-                            ></svg-icon>
-                        </div>
-                        <div
-                            *ngIf="
-                                profileUserForm.get('createNewPassword')
-                                    .value && passwordCheckboxCard
-                            "
-                            class="checkbox-card-body"
-                            [ngClass]="{
-                                active: profileUserForm.get('createNewPassword')
-                                    .value
-                            }"
-                        >
-                            <div
-                                *ngIf="!setNewPassword"
-                                class="profile-update-old-password-row"
+                            ></app-ta-input>
+                            <p
+                                *ngIf="!userPasswordTyping"
+                                class="old-password-message"
                             >
-                                <app-ta-input
-                                    formControlName="oldPassword"
-                                    [inputConfig]="{
-                                        name: 'Password',
-                                        type: 'password',
-                                        label: 'Password',
-                                        placeholderIcon: 'password',
-                                        isRequired: true,
-                                        autocomplete: 'off',
-                                        minLength: 8,
-                                        maxLength: 64,
-                                        loadingSpinner: {
-                                            size: 'small',
-                                            color: 'white',
-                                            isLoading: loadingOldPassword
-                                        }
-                                    }"
-                                ></app-ta-input>
-                                <p
-                                    *ngIf="!userPasswordTyping"
-                                    class="old-password-message"
-                                >
-                                    Before you set new password please confirm
-                                    current.
-                                </p>
-                                <div
-                                    class="old-password-checkmark"
-                                    [ngClass]="{
-                                        valid: correctPassword
-                                    }"
-                                    (click)="onSetNewPassword()"
-                                >
-                                    <p>CONFIRM</p>
-                                </div>
+                                Before you set new password please confirm
+                                current.
+                            </p>
+                            <div
+                                class="old-password-checkmark"
+                                [ngClass]="{
+                                    valid: correctPassword
+                                }"
+                                (click)="onSetNewPassword()"
+                            >
+                                <p>CONFIRM</p>
                             </div>
-                            <div *ngIf="setNewPassword">
-                                <div class="row row-mb-22">
-                                    <div class="col-6">
-                                        <app-ta-input
-                                            formControlName="newPassword"
-                                            [inputConfig]="{
-                                                name: 'Password',
-                                                type: 'password',
-                                                label: 'New Password',
-                                                placeholderIcon: 'password',
-                                                isRequired: true,
-                                                autocomplete: 'off',
-                                                minLength: 8,
-                                                maxLength: 64,
-                                                customClass: 'line-input-26'
-                                            }"
-                                        ></app-ta-input>
-                                    </div>
-                                    <div class="col-6">
-                                        <app-ta-input
-                                            formControlName="password"
-                                            [inputConfig]="{
-                                                name: 'Password',
-                                                type: 'password',
-                                                label: 'Confirm Password',
-                                                placeholderIcon: 'password',
-                                                isRequired: true,
-                                                autocomplete: 'off',
-                                                minLength: 8,
-                                                maxLength: 64,
-                                                customClass: 'line-input-26'
-                                            }"
-                                        ></app-ta-input>
-                                    </div>
+                        </div>
+                        <div *ngIf="setNewPassword">
+                            <div class="row row-no-m">
+                                <div class="col-6">
+                                    <app-ta-input
+                                        formControlName="newPassword"
+                                        [inputConfig]="{
+                                            name: 'Password',
+                                            type: 'password',
+                                            label: 'New Password',
+                                            placeholderIcon: 'password',
+                                            isRequired: true,
+                                            autocomplete: 'off',
+                                            minLength: 8,
+                                            maxLength: 64,
+                                            customClass: 'line-input-26'
+                                        }"
+                                    ></app-ta-input>
+                                </div>
+                                <div class="col-6">
+                                    <app-ta-input
+                                        formControlName="password"
+                                        [inputConfig]="{
+                                            name: 'Password',
+                                            type: 'password',
+                                            label: 'Confirm Password',
+                                            placeholderIcon: 'password',
+                                            isRequired: true,
+                                            autocomplete: 'off',
+                                            minLength: 8,
+                                            maxLength: 64,
+                                            customClass: 'line-input-26'
+                                        }"
+                                    ></app-ta-input>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </app-ta-checkbox-card>
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">

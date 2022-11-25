@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { ShipperContactResponse } from './shipperContactResponse';
 import { AddressEntity } from './addressEntity';
 import { ReviewResponse } from './reviewResponse';
@@ -32,8 +33,6 @@ export interface ShipperResponse {
     shippingTo?: string | null;
     receivingOpenTwentyFourHours?: boolean;
     shippingOpenTwentyFourHours?: boolean;
-    ban?: boolean;
-    dnu?: boolean;
     note?: string | null;
     shippingHoursSameReceiving?: boolean;
     shipperContacts?: Array<ShipperContactResponse> | null;
@@ -47,6 +46,7 @@ export interface ShipperResponse {
     deliveries?: number;
     avgPickupTime?: TimeOnly;
     avgDeliveryTime?: TimeOnly;
+    files?: Array<FileResponse> | null;
     createdAt?: string;
 }
 

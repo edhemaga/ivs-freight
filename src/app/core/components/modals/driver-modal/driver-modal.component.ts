@@ -8,11 +8,9 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
     AddressEntity,
     CheckOwnerSsnEinResponse,
-    CreateDriverCommand,
     CreateResponse,
     DriverResponse,
-    GetDriverModalResponse,
-    UpdateDriverCommand,
+    GetDriverModalResponse
 } from 'appcoretruckassist';
 import {
     einNumberRegex,
@@ -382,11 +380,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get('routing'),
                         this.driverForm.get('account')
                     );
-
-                console.log(
-                    'form component: ',
-                    this.driverForm.get('routing').errors
-                );
             });
     }
 
@@ -1057,7 +1050,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
-        const newData: CreateDriverCommand = {
+        const newData: any = {
             ...form,
             dateOfBirth: convertDateToBackend(
                 this.driverForm.get('dateOfBirth').value
@@ -1438,7 +1431,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
-        const newData: UpdateDriverCommand = {
+        const newData: any = {
             id: id,
             ...form,
             dateOfBirth: convertDateToBackend(
@@ -1988,12 +1981,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.notificationService.error(errorMessage, 'Error');
                 },
             });
-    }
-
-    // Checkbox card
-    public ownerCheckboxCard: boolean = true;
-    public toggleCheckboxCard() {
-        this.ownerCheckboxCard = !this.ownerCheckboxCard;
     }
 
     ngOnDestroy(): void {

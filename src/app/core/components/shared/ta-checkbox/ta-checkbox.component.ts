@@ -17,7 +17,6 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 export class TaCheckboxComponent implements ControlValueAccessor {
     @Input() label: string;
     @Input() required: boolean = false;
-    @Input() invalid: boolean = false;
     @Input() disabled: boolean = false;
     @Input() disabledStillCheckMark: boolean = false;
     @Input() svg: string;

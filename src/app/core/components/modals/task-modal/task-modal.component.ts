@@ -1,4 +1,3 @@
-import { CreateTodoCommand } from '../../../../../../appcoretruckassist';
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -10,8 +9,7 @@ import {
     SignInResponse,
     TodoModalResponse,
     TodoResponse,
-    UpdateCommentCommand,
-    UpdateTodoCommand,
+    UpdateCommentCommand
 } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -291,7 +289,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private updateTaskById(id: number) {
         const { deadline, ...form } = this.taskForm.value;
 
-        const newData: UpdateTodoCommand = {
+        const newData: any = {
             id: id,
             ...form,
             deadline: deadline ? convertDateToBackend(deadline) : null,
@@ -310,7 +308,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     private addTask() {
         const { deadline, ...form } = this.taskForm.value;
 
-        const newData: CreateTodoCommand = {
+        const newData: any = {
             ...form,
             deadline: deadline ? convertDateToBackend(deadline) : null,
             departmentIds: this.selectedDepartments

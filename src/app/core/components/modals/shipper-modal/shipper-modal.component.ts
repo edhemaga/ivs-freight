@@ -19,11 +19,9 @@ import {
     AddressEntity,
     CreateRatingCommand,
     CreateReviewCommand,
-    CreateShipperCommand,
     ShipperResponse,
     SignInResponse,
-    UpdateReviewCommand,
-    UpdateShipperCommand,
+    UpdateReviewCommand
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -521,7 +519,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         const { addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
         let receivingShipping = this.receivingShippingObject();
-        let newData: CreateShipperCommand = {
+        let newData: any = {
             ...form,
             address: {
                 ...this.selectedAddress,
@@ -572,7 +570,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
         let receivingShipping = this.receivingShippingObject();
 
-        let newData: UpdateShipperCommand = {
+        let newData: any = {
             id: id,
             ...form,
             address: {

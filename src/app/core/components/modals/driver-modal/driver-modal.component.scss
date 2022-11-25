@@ -23,3 +23,23 @@
 .switch-margin {
     margin-bottom: 12px;
 }
+
+.animation-checkbox-card-tabs {
+    position: relative;
+    transform: translate(20%);
+    opacity: 0;
+    height: 0px;
+    transition: all 0.3s ease-in-out;
+
+    &.fade-checkbox-inputs {
+        transform: translate(0);
+        opacity: 1;
+        height: 26px;
+        margin-top: 26px;
+
+        // Override global class
+        .row {
+            margin-bottom: 0px !important;
+        }
+    }
+}
