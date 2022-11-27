@@ -8,6 +8,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &.circle_counter {
+        border-radius: 100% !important;
+        color: #ffffff !important;
+        margin-left:  4px;
+    }
+
     p {
         margin: 0 !important;
         position: relative;
