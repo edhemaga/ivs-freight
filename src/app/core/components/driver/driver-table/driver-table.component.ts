@@ -87,6 +87,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        console.log('Driver test');
         this.sendDriverData();
 
         // Confirmation Subscribe
