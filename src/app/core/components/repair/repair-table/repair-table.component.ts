@@ -534,6 +534,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       };
                   })
                 : null,
+            tableAttachments: data?.files ? data.files : [],
         };
     }
 
@@ -578,6 +579,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       };
                   })
                 : null,
+            tableAttachments: data?.files ? data.files : [],
         };
     }
 
@@ -594,6 +596,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 likeCount: data?.upCount ? data.upCount : '0',
                 dislikeCount: data?.downCount ? data.downCount : '0',
             },
+            tableAttachments: data?.files ? data.files : [],
         };
     }
 

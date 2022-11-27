@@ -3727,15 +3727,14 @@
 
                                 <!-- Attachments -->
                                 <div class="attacment-container">
-                                    <!-- <app-ta-upload-files
-                                        *ngIf="row[column.field]"
+                                    <app-ta-upload-files
                                         [customClassName]="'todo-details'"
-                                        [files]="row[column.field] ? row[column.field] : []"
+                                        [files]="row?.tableAttachments ? row.tableAttachments : []"
                                         [size]="'extraLarge'"
                                         [reviewMode]="'REVIEW_MODE'"
                                         [type]="'todo'"
                                         [slideWidth]="209"
-                                    ></app-ta-upload-files> -->
+                                    ></app-ta-upload-files>
                                 </div>
                             </div>
                         </div>

@@ -690,6 +690,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : null,
                 },
             ],
+            tableAttachments: data?.files ? data.files : []
         };
     }
 
