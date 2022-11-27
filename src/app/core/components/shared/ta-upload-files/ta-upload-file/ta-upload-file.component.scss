@@ -8,10 +8,15 @@
     align-items: center;
     position: relative;
     transition: all 0.3s ease-in-out;
+    overflow: hidden;
+
+    &.modal {
+        background-color: #F3F3F3;
+    }
 
     &:hover {
         transition: all 0.3s ease-in-out;
-        background-color: #e5e5e5;
+        background-color: #F3F3F3;
     }
 
     // ----------------- File Header Actions Review ----------

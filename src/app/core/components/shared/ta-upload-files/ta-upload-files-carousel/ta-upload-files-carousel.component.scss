@@ -15,7 +15,7 @@
         .carousel-slider {
             position: relative;
             transform: translateX(0);
-            transition: all 0.5s ease-in-out;
+            transition: all 0.3s ease-in-out;
             display: flex;
 
             &.multiple-slider {
@@ -26,14 +26,12 @@
 
     .ta-upload-carousel-control-bg {
         position: absolute;
-        top: 32%;
         width: 24px;
-        height: 32px;
+        height: 100%;
         cursor: pointer;
         border-radius: 2px;
         text-align: center;
         display: none;
-        transform: translate(-5%, 22%);
         transition: all 0.3s ease-in-out;
 
         &.show {
@@ -117,7 +115,6 @@
         }
 
         .ta-upload-carousel-control-bg {
-            top: 41%;
 
             &.next {
                 left: 94%;
@@ -138,7 +135,6 @@
         }
 
         .ta-upload-carousel-control-bg {
-            top: 41%;
 
             &.prev {
                 left: 1.5%;

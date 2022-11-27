@@ -1,5 +1,6 @@
 <div
     class="ta-upload-file-container {{ customClassName }}"
+    [class.modal]="!customClassName || customClassName == ''"
     [class.keep_open]="t2?.isOpen()"
 >
     <!-- File Header Actions -->
