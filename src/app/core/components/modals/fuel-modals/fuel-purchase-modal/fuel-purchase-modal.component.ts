@@ -130,7 +130,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     return;
                 }
                 if (this.editData) {
-                    this.updateFuel(this.editData.id);
+                    this.fuelTransactionType?.name !== 'Manual'
+                        ? this.updateFuelEFS(this.editData.id)
+                        : this.updateFuel(this.editData.id);
+
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -323,6 +326,35 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     this.notificationService.success(
                         'Successfully updated fuel transaction',
+                        'Success'
+                    );
+                },
+                error: (error: any) => {
+                    this.notificationService.error(error, 'Error');
+                },
+            });
+    }
+
+    private updateFuelEFS(id: number) {
+        const { ...form } = this.fuelForm.value;
+
+        const newData: any = {
+            id: id,
+            truckId: this.selectedTruckType.id,
+            trailerId: this.selectedTrailerType
+                ? this.selectedTrailerType.id
+                : null,
+            files: [],
+            filesForDeleteIds: [],
+        };
+
+        this.fuelService
+            .updateFuelTransactionEFS(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success(
+                        'Successfully updated fuel transaction efs.',
                         'Success'
                     );
                 },

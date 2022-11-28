@@ -125,6 +125,11 @@ export class FuelTService {
         return this.fuelService.apiFuelTransactionPut();
     }
 
+    public updateFuelTransactionEFS(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelEFSTransactionPut();
+    }
+
     public getFuelTransactionById(
         id: number
     ): Observable<FuelTransactionResponse> {
