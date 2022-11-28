@@ -4,6 +4,7 @@ import {
     OnDestroy,
     ViewChild,
     AfterViewInit,
+    ChangeDetectorRef,
 } from '@angular/core';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -94,6 +95,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         searchThree: undefined,
     };
 
+    mapListData = [];
+
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
@@ -104,7 +107,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         private repairService: RepairTService,
         public datePipe: DatePipe,
         private thousandSeparator: TaThousandSeparatorPipe,
-        private reviewRatingService: ReviewsRatingService
+        private reviewRatingService: ReviewsRatingService,
+        private ref: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -469,6 +473,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (td.data.length) {
             this.viewData = td.data;
+
+            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
             this.viewData = this.viewData.map((data: any, index: number) => {
                 if (this.selectedTab === 'active') {
@@ -924,6 +930,45 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         clearInterval(inetval);
                     }, 1000);
                 });
+        }
+    }
+
+    updateMapList(mapListResponse) {
+        var newMapList = mapListResponse.pagination.data;
+        var listChanged = false;
+
+        for ( var i = 0; i < this.mapListData.length; i++ ) {
+            let item = this.mapListData[i];
+
+            let itemIndex = newMapList.findIndex(
+                (item2) => item2.id === item.id
+            );
+
+            if (itemIndex == -1) {
+                this.mapListData.splice(i, 1);
+                listChanged = true;
+                i--;
+            }
+        }
+
+        for ( var b = 0; b < newMapList.length; b++ ) {
+            let item = newMapList[b];
+
+            let itemIndex = this.mapListData.findIndex(
+                (item2) => item2.id === item.id
+            );
+
+            if (itemIndex == -1) {
+                this.mapListData.splice(b, 0, item);
+                listChanged = true;
+                b--;
+            }
+        }
+
+        if (listChanged || mapListResponse.changedSort) {
+            if ( mapListResponse.changedSort ) this.mapListData = mapListResponse.pagination.data;
+            this.tableData[2].length = mapListResponse.pagination.count;
+            this.ref.detectChanges();
         }
     }
 

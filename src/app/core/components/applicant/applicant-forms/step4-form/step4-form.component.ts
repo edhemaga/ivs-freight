@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     AfterViewInit,
     Component,
@@ -476,6 +478,28 @@ export class Step4FormComponent
         this.formService.resetForm(this.accidentForm);
 
         this.subscription.unsubscribe();
+    }
+
+    public onGetBtnClickValue(event: any): void {
+        if (event.notDisabledClick) {
+            this.onAddAccident();
+        }
+
+        if (event.cancelClick) {
+            this.onCancelEditAccident();
+        }
+
+        if (event.saveClick) {
+            this.onSaveEditedAccident();
+        }
+
+        if (event.reviewCancelClick) {
+            this.onCancelReviewAccident();
+        }
+
+        if (event.reviewSaveClick) {
+            this.onAddAnnotation();
+        }
     }
 
     public getDropdownLists(): void {

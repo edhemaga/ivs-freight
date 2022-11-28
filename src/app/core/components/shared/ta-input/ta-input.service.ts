@@ -185,8 +185,8 @@ export class TaInputService {
         validators: any[] = [],
         reset: boolean = true
     ): void {
-        const validation = [Validators.required, ...validators];
         if (hasValidation) {
+            const validation = [Validators.required, ...validators];
             formControl.setValidators(validation);
         } else {
             if (formControl && formControl.hasValidator(Validators.required)) {

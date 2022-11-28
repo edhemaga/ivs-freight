@@ -2,26 +2,36 @@
     <div class="divider"></div>
     <div
         class="checkbox-card-header"
-        [ngClass]="{ pointer: getSuperControl.value }"
+        [ngClass]="{
+            pointer: reverseLogic
+                ? !getSuperControl.value
+                : getSuperControl.value
+        }"
     >
         <app-ta-checkbox
             [formControl]="getSuperControl"
             [label]="label"
             [name]="name"
         ></app-ta-checkbox>
+
+        <ng-content select="[header]"></ng-content>
+
         <svg-icon
             *ngIf="hasArrow"
             class="checkbox-card-header-arrow"
             src="assets/svg/common/ic_arrow_down_updated.svg"
             [ngClass]="{
-                visible: getSuperControl.value,
-                rotate: !_isCardOpen
+                visible: reverseLogic
+                    ? !getSuperControl.value
+                    : getSuperControl.value,
+                rotate: reverseLogic ? _isCardOpen : !_isCardOpen
             }"
             (click)="onToggleCard($event)"
         ></svg-icon>
     </div>
 
     <div
+        *ngIf="!reverseLogic"
         class="checkbox-card-body"
         [ngClass]="noActive"
         [ngStyle]="animationMarginParams"
@@ -30,6 +40,19 @@
             params: animationMarginParams
         }"
     >
-        <ng-content></ng-content>
+        <ng-content select="[body]"></ng-content>
+    </div>
+
+    <div
+        *ngIf="reverseLogic"
+        class="checkbox-card-body-falsy"
+        [ngClass]="noActive"
+        [ngStyle]="animationMarginParams"
+        [@showHideCardBodyFalsy]="{
+            value: _isCardOpen?.toString(),
+            params: animationMarginParams
+        }"
+    >
+        <ng-content select="[bodyFalse]"></ng-content>
     </div>
 </div>

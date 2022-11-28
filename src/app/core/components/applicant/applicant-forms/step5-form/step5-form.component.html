@@ -145,65 +145,44 @@
         </div>
     </div>
 
-    <!-- ADD ANOTHER VIOLATION -->
+    <!-- BTN -->
 
-    <div class="d-flex justify-content-center align-items-center btn-container">
-        <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-            [ngClass]="{
-                disabled: violationsForm.invalid
-            }"
-            *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
-            (click)="onAddViolation()"
-        >
-            <p class="m-0 ta-font-bold">Add Another Violation</p>
-        </button>
+    <div class="d-flex justify-content-center align-items-center">
+        <ng-container *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing">
+            <app-applicant-add-save-btn
+                [addBtn]="true"
+                [btnText]="'Add Another Violation'"
+                [disabledValue]="violationsForm.invalid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </ng-container>
 
-        <div
-            class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
-            *ngIf="isEditing"
-        >
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-                (click)="onCancelEditAccident()"
-            >
-                Cancel
-            </button>
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-                [ngClass]="{
-                    disabled: !isViolationEdited
-                }"
-                (click)="onSaveEditedViolation()"
-            >
-                Save Changes
-            </button>
-        </div>
+        <ng-container *ngIf="isEditing">
+            <app-applicant-add-save-btn
+                [cancelBtn]="true"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
 
-        <div
-            class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
-            *ngIf="isReviewingCard"
-        >
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-                (click)="onCancelReviewViolation()"
-            >
-                Cancel
-            </button>
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-                [ngClass]="{
-                    disabled: !isCardReviewedIncorrect
-                }"
-                (click)="onAddAnnotation()"
-            >
-                Add Annotation
-            </button>
-        </div>
+            <app-applicant-add-save-btn
+                [saveBtn]="true"
+                [disabledValue]="!isViolationEdited || !violationsForm.valid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </ng-container>
+
+        <ng-container *ngIf="isReviewingCard">
+            <app-applicant-add-save-btn
+                [cancelBtn]="true"
+                [reviewBtn]="true"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+
+            <app-applicant-add-save-btn
+                [saveBtn]="true"
+                [reviewBtn]="true"
+                [disabledValue]="!isCardReviewedIncorrect"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </ng-container>
     </div>
 </div>

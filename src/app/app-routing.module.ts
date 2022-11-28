@@ -42,6 +42,7 @@ import { AccidentInactiveResolver } from './core/components/safety/accident/stat
 import { AccidentNonReportedResolver } from './core/components/safety/accident/state/accident-state/accident-non-reported/accident-non-reported.resolver';
 import { ApplicantResolver } from './core/components/applicant/state/resolver/applicant.resolver';
 import { FuelResolver } from './core/components/fuel/state/fule-state/fuel-state.resolver';
+import { ApplicantTableResolver } from './core/components/driver/state/applicant-state/applicant-table.resolver';
 import { ApplicantSphFormResolver } from './core/components/applicant/state/resolver/applicant-sph-form.resolver';
 
 const routes: Routes = [
@@ -129,6 +130,7 @@ const routes: Routes = [
         resolve: {
             driverActive: DriverActiveResolver,
             driverInactive: DriverInactiveResolver,
+            applicantAdminTable: ApplicantTableResolver,
         },
     },
     {
@@ -304,12 +306,22 @@ const routes: Routes = [
         resolve: { applicant: ApplicantResolver },
     },
     {
+        path: 'owner-info/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/owner-info/owner-info.module'
+            ).then((m) => m.OwnerInfoModule),
+        canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
+    },
+    {
         path: 'medical-certificate/:id',
         loadChildren: () =>
             import(
                 './core/components/applicant/applicant-tabs/medical-certificate/medical-certificate.module'
             ).then((m) => m.MedicalCertificateModule),
         canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'mvr-authorization/:id',
@@ -318,6 +330,7 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/mvr-authorization/mvr-authorization.module'
             ).then((m) => m.MvrAuthorizationModule),
         canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'psp-authorization/:id',
@@ -326,6 +339,7 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/psp-authorization/psp-authorization.module'
             ).then((m) => m.PspAuthorizationModule),
         canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'sph/:id',
@@ -335,6 +349,7 @@ const routes: Routes = [
             ).then((m) => m.SphModule),
 
         canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'sph-form/1',
@@ -344,12 +359,13 @@ const routes: Routes = [
             ).then((m) => m.SphFormModule),
 
         canActivate: [AuthGuard],
-        resolve: { applicantSphForm: ApplicantSphFormResolver },
+        /* resolve: { applicantSphForm: ApplicantSphFormResolver }, */
     },
     {
         path: 'sph-form-end',
         component: SphFormThankYouComponent,
         data: { title: 'End Screen' },
+        resolve: { applicantSphForm: ApplicantSphFormResolver },
     },
     {
         path: 'hos-rules/:id',
@@ -358,6 +374,7 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/hos-rules/hos-rules.module'
             ).then((m) => m.HosRulesModule),
         canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'ssn-card/:id',
@@ -366,6 +383,7 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/ssn-card/ssn-card.module'
             ).then((m) => m.SsnCardModule),
         canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'cdl-card/:id',
@@ -374,6 +392,7 @@ const routes: Routes = [
                 './core/components/applicant/applicant-tabs/cdl-card/cdl-card.module'
             ).then((m) => m.CdlCardModule),
         canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
     },
     {
         path: 'accounting',
@@ -393,6 +412,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
+
     exports: [RouterModule],
 })
 export class AppRoutingModule {}
