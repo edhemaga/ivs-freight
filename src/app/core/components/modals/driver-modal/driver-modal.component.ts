@@ -1110,58 +1110,53 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             },
             bankId: this.selectedBank ? this.selectedBank.id : null,
             payType: this.selectedPayType ? this.selectedPayType.id : null,
-            solo: {
-                emptyMile:
-                    this.selectedPayType?.name === 'Per Mile'
-                        ? !this.hasMilesSameRate
-                            ? ['Solo', 'Combined'].includes(this.fleetType)
-                                ? this.fleetType === 'Combined'
-                                    ? soloDriver
-                                        ? soloEmptyMile
-                                            ? parseFloat(soloEmptyMile)
-                                            : null
-                                        : null
-                                    : soloEmptyMile
-                                    ? parseFloat(soloEmptyMile)
-                                    : null
-                                : null
-                            : null
-                        : null,
-                loadedMile:
-                    this.selectedPayType?.name === 'Per Mile'
-                        ? !this.hasMilesSameRate
-                            ? ['Solo', 'Combined'].includes(this.fleetType)
-                                ? this.fleetType === 'Combined'
-                                    ? soloDriver
-                                        ? soloLoadedMile
-                                            ? parseFloat(soloLoadedMile)
-                                            : null
-                                        : null
-                                    : soloLoadedMile
-                                    ? parseFloat(soloLoadedMile)
-                                    : null
-                                : null
-                            : null
-                        : null,
-                perStop:
-                    this.selectedPayType?.name === 'Per Mile'
-                        ? !this.hasMilesSameRate
-                            ? ['Solo', 'Combined'].includes(this.fleetType)
-                                ? this.fleetType === 'Combined'
-                                    ? soloDriver
-                                        ? soloPerStop
-                                            ? convertThousanSepInNumber(
-                                                  soloPerStop
-                                              )
-                                            : null
-                                        : null
-                                    : soloPerStop
-                                    ? convertThousanSepInNumber(soloPerStop)
-                                    : null
-                                : null
-                            : null
-                        : null,
-            },
+            solo:
+                this.selectedPayType?.name === 'Per Mile'
+                    ? {
+                          emptyMile: !this.hasMilesSameRate
+                              ? ['Solo', 'Combined'].includes(this.fleetType)
+                                  ? this.fleetType === 'Combined'
+                                      ? soloDriver
+                                          ? soloEmptyMile
+                                              ? parseFloat(soloEmptyMile)
+                                              : null
+                                          : null
+                                      : soloEmptyMile
+                                      ? parseFloat(soloEmptyMile)
+                                      : null
+                                  : null
+                              : null,
+
+                          loadedMile: !this.hasMilesSameRate
+                              ? ['Solo', 'Combined'].includes(this.fleetType)
+                                  ? this.fleetType === 'Combined'
+                                      ? soloDriver
+                                          ? soloLoadedMile
+                                              ? parseFloat(soloLoadedMile)
+                                              : null
+                                          : null
+                                      : soloLoadedMile
+                                      ? parseFloat(soloLoadedMile)
+                                      : null
+                                  : null
+                              : null,
+                          perStop: !this.hasMilesSameRate
+                              ? ['Solo', 'Combined'].includes(this.fleetType)
+                                  ? this.fleetType === 'Combined'
+                                      ? soloDriver
+                                          ? soloPerStop
+                                              ? convertThousanSepInNumber(
+                                                    soloPerStop
+                                                )
+                                              : null
+                                          : null
+                                      : soloPerStop
+                                      ? convertThousanSepInNumber(soloPerStop)
+                                      : null
+                                  : null
+                              : null,
+                      }
+                    : null,
             perMileSolo:
                 this.selectedPayType?.name === 'Per Mile'
                     ? this.hasMilesSameRate
@@ -1178,58 +1173,52 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             : null
                         : null
                     : null,
-            team: {
-                emptyMile:
-                    this.selectedPayType?.name === 'Per Mile'
-                        ? !this.hasMilesSameRate
-                            ? ['Team', 'Combined'].includes(this.fleetType)
-                                ? this.fleetType === 'Combined'
-                                    ? teamDriver
-                                        ? teamEmptyMile
-                                            ? parseFloat(teamEmptyMile)
-                                            : null
-                                        : null
-                                    : teamEmptyMile
-                                    ? parseFloat(teamEmptyMile)
-                                    : null
-                                : null
-                            : null
-                        : null,
-                loadedMile:
-                    this.selectedPayType?.name === 'Per Mile'
-                        ? !this.hasMilesSameRate
-                            ? ['Team', 'Combined'].includes(this.fleetType)
-                                ? this.fleetType === 'Combined'
-                                    ? teamDriver
-                                        ? teamLoadedMile
-                                            ? parseFloat(teamLoadedMile)
-                                            : null
-                                        : null
-                                    : teamLoadedMile
-                                    ? parseFloat(teamLoadedMile)
-                                    : null
-                                : null
-                            : null
-                        : null,
-                perStop:
-                    this.selectedPayType?.name === 'Per Mile'
-                        ? !this.hasMilesSameRate
-                            ? ['Team', 'Combined'].includes(this.fleetType)
-                                ? this.fleetType === 'Combined'
-                                    ? teamDriver
-                                        ? teamPerStop
-                                            ? convertThousanSepInNumber(
-                                                  teamPerStop
-                                              )
-                                            : null
-                                        : null
-                                    : teamPerStop
-                                    ? convertThousanSepInNumber(teamPerStop)
-                                    : null
-                                : null
-                            : null
-                        : null,
-            },
+            team:
+                this.selectedPayType?.name === 'Per Mile'
+                    ? {
+                          emptyMile: !this.hasMilesSameRate
+                              ? ['Team', 'Combined'].includes(this.fleetType)
+                                  ? this.fleetType === 'Combined'
+                                      ? teamDriver
+                                          ? teamEmptyMile
+                                              ? parseFloat(teamEmptyMile)
+                                              : null
+                                          : null
+                                      : teamEmptyMile
+                                      ? parseFloat(teamEmptyMile)
+                                      : null
+                                  : null
+                              : null,
+                          loadedMile: !this.hasMilesSameRate
+                              ? ['Team', 'Combined'].includes(this.fleetType)
+                                  ? this.fleetType === 'Combined'
+                                      ? teamDriver
+                                          ? teamLoadedMile
+                                              ? parseFloat(teamLoadedMile)
+                                              : null
+                                          : null
+                                      : teamLoadedMile
+                                      ? parseFloat(teamLoadedMile)
+                                      : null
+                                  : null
+                              : null,
+                          perStop: !this.hasMilesSameRate
+                              ? ['Team', 'Combined'].includes(this.fleetType)
+                                  ? this.fleetType === 'Combined'
+                                      ? teamDriver
+                                          ? teamPerStop
+                                              ? convertThousanSepInNumber(
+                                                    teamPerStop
+                                                )
+                                              : null
+                                          : null
+                                      : teamPerStop
+                                      ? convertThousanSepInNumber(teamPerStop)
+                                      : null
+                                  : null
+                              : null,
+                      }
+                    : null,
             perMileTeam:
                 this.selectedPayType?.name === 'Per Mile'
                     ? this.hasMilesSameRate

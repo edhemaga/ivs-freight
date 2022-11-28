@@ -338,8 +338,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private updateFuelEFS(id: number) {
-        const { ...form } = this.fuelForm.value;
-
         const newData: any = {
             id: id,
             truckId: this.selectedTruckType.id,
