@@ -4,19 +4,19 @@
     padding-top: 22px;
 
     .step-title {
-        color: $ta-blue;
+        color: $ta-blue-5;
         font-size: 32px;
         height: 39px;
         margin-bottom: 22px !important;
 
         &::-moz-selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
         }
 
         &::selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
         }
     }
 
@@ -64,22 +64,33 @@
             }
         }
 
-        .grade-hovered {
-            background: $ta-blue-3;
-            color: $white;
+        .grade-required {
+            background: $ta-red-6;
+            color: $ta-red-2;
 
             &:hover {
-                background: $ta-blue;
+                background: $ta-red-2;
+                color: $white;
             }
         }
 
+        .grade-hovered-required {
+            background: $ta-red-2 !important;
+            color: $white !important;
+        }
+
+        .grade-hovered {
+            background: $ta-blue-6;
+            color: $ta-blue-5;
+        }
+
         .grade-selected {
-            background: $ta-blue;
+            background: $ta-blue-5;
             color: $white;
         }
 
         .all-before-selected {
-            background: $ta-blue-3;
+            background: $ta-blue-5;
             color: $white;
         }
 
@@ -111,6 +122,25 @@
         }
     }
 
+    .required-container {
+        margin-top: 6px;
+
+        p {
+            font-size: 11px;
+            color: $ta-red-2;
+
+            &::-moz-selection {
+                color: $ta-red-2;
+                background: rgb(239, 83, 80, 0.2);
+            }
+
+            &::selection {
+                color: $ta-red-2;
+                background: rgb(239, 83, 80, 0.2);
+            }
+        }
+    }
+
     .form-section {
         .top-questions-container,
         .bottom-questions-container {
@@ -122,7 +152,8 @@
                 .review-feedback-container {
                     position: absolute;
                     top: 0;
-                    right: -435px;
+                    right: 0;
+                    transform: translateX(calc(100% + 5px));
                     width: 429px;
                 }
             }
@@ -163,6 +194,21 @@
                                 color: $bw6-2;
                                 background: rgb(108, 108, 108, 0.2);
                             }
+                        }
+                    }
+
+                    .required {
+                        font-size: 11px;
+                        color: $ta-red-2;
+
+                        &::-moz-selection {
+                            color: $ta-red-2;
+                            background: rgb(239, 83, 80, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-red-2;
+                            background: rgb(239, 83, 80, 0.2);
                         }
                     }
 
@@ -222,16 +268,6 @@
         .general-title {
             margin-top: 22px !important;
             margin-bottom: 22px !important;
-
-            &::-moz-selection {
-                color: $ta-blue;
-                background: rgb(83, 107, 194, 0.2);
-            }
-
-            &::selection {
-                color: $ta-blue;
-                background: rgb(83, 107, 194, 0.2);
-            }
         }
 
         .date-group {
@@ -275,7 +311,8 @@
                     .review-feedback-container {
                         position: absolute;
                         top: 0;
-                        right: -435px;
+                        right: 0;
+                        transform: translateX(calc(100% + 5px));
                         width: 429px;
                     }
                 }

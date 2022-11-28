@@ -32,20 +32,18 @@
                 <!-------------------------------- Basic Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 1">
                     <!-- Company owned -->
-                    <div class="custom-checkbox-card">
-                        <div class="divider"></div>
-                        <div
-                            class="checkbox-card-header"
-                            [ngClass]="{
-                                pointer: officeForm.get('isOwner').value
-                            }"
-                        >
-                            <app-ta-checkbox
-                                formControlName="isOwner"
-                                [label]="'Company Owned'"
-                            ></app-ta-checkbox>
-                        </div>
-                        <div class="checkbox-card-body active-20">
+                    <app-ta-checkbox-card
+                        formControlName="isOwner"
+                        [label]="'Company Owned'"
+                        [name]="'company-owned'"
+                        [reverseLogic]="true"
+                        [isCardOpen]="officeForm.get('isOwner').value"
+                        [animationMarginParams]="{
+                            marginTop: '12px',
+                            marginBottom: '22px'
+                        }"
+                    >
+                        <ng-container bodyFalse>
                             <div class="row">
                                 <div class="col-12">
                                     <app-ta-input
@@ -92,7 +90,7 @@
                                         [inputConfig]="{
                                             name: 'address-unit',
                                             type: 'text',
-                                            label: 'Unit No.',
+                                            label: 'Unit #',
                                             textTransform: 'uppercase',
                                             minLength: 1,
                                             maxLength: 10
@@ -101,7 +99,7 @@
                                 </div>
                             </div>
                             <div
-                                class="phone-ext-email-small-modal last-row"
+                                class="phone-ext-email-small-modal row-no-m"
                                 [ngClass]="{
                                     'active-phone-ext': isPhoneExtExist
                                 }"
@@ -164,8 +162,9 @@
                                     ></app-ta-input>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </ng-container>
+                    </app-ta-checkbox-card>
+
                     <!-- Department Contacts -->
                     <app-ta-custom-card
                         [hasCounter]="
@@ -176,9 +175,9 @@
                         [cardName]="'Department Contact'"
                         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                         [hasArrow]="true"
-                        [hasBodyData]="departmentContacts.length > 0"
                         [isCardOpen]="departmentContacts.length > 0"
                         [hasScrollBody]="departmentContacts.length > 10"
+                        [hasBodyData]="departmentContacts.length > 0"
                         (onOpenCard)="isDepartmentContactCardOpen = $event"
                         (onActionEvent)="addDepartmentContacts($event)"
                         [animationMarginParams]="{
@@ -190,6 +189,7 @@
                             formArrayName="departmentContacts"
                             class="common-fake-table-modal common-fake-table-modal-office-department-contacts"
                             *ngIf="departmentContacts.length"
+                            (scroll)="onScrollingBrokerContacts($event)"
                         >
                             <div class="common-fake-table-label">
                                 <p>DEPARTMENT <span>*</span></p>
@@ -252,8 +252,6 @@
                                                 type: 'text',
                                                 minLength: 1,
                                                 maxLength: 8,
-                                                placeholderIcon:
-                                                    'phone-extension',
                                                 hideErrorMessage: true,
                                                 blackInput: true,
                                                 hideRequiredCheck: true
@@ -280,7 +278,7 @@
                                             class="common-fake-table-delete"
                                             [ngClass]="{
                                                 scrolling:
-                                                    isContactCardsScrolling
+                                                    isDepartmentCardsScrolling
                                             }"
                                             (click)="
                                                 removeDepartmentContacts(ind)

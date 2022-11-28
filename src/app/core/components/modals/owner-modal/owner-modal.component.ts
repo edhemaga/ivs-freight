@@ -3,8 +3,6 @@ import {
     routingBankValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { TruckModalComponent } from '../truck-modal/truck-modal.component';
-import { UpdateOwnerCommand } from '../../../../../../appcoretruckassist';
-import { CreateOwnerCommand } from '../../../../../../appcoretruckassist';
 import { OwnerResponse } from '../../../../../../appcoretruckassist';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { OwnerModalResponse } from '../../../../../../appcoretruckassist';
@@ -75,6 +73,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     public selectedBank: any = null;
     public isBankSelected: boolean = false;
 
+    public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -113,6 +115,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             accountNumber: [null, accountBankValidation],
             routingNumber: [null, routingBankValidation],
             note: [null],
+            files: [null],
         });
 
         this.inputService.customInputValidator(
@@ -207,6 +210,39 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
             case 'close': {
+                if (this.editData?.canOpenModal) {
+                    switch (this.editData?.key) {
+                        case 'truck-modal': {
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: TruckModalComponent,
+                                size: 'small',
+                                closing: 'fastest',
+                            });
+                            break;
+                        }
+                        case 'trailer-modal': {
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: TrailerModalComponent,
+                                size: 'small',
+                                closing: 'fastest',
+                            });
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }
                 break;
             }
             case 'save': {
@@ -225,7 +261,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
-                        clearTimeout: !!this.editData?.canOpenModal,
+                        setFasterTimeout: !!this.editData?.canOpenModal,
                     });
                 }
 
@@ -241,32 +277,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             }
             default: {
                 break;
-            }
-        }
-
-        if (this.editData?.canOpenModal) {
-            switch (this.editData?.key) {
-                case 'truck-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: { key: this.editData?.key, value: null },
-                        component: TruckModalComponent,
-                        size: 'small',
-                    });
-                    break;
-                }
-                case 'trailer-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: { key: this.editData?.key, value: null },
-                        component: TrailerModalComponent,
-                        size: 'small',
-                    });
-                    break;
-                }
-                default: {
-                    break;
-                }
             }
         }
     }
@@ -313,12 +323,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.ownerForm
             .get('bankId')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                this.isBankSelected = this.bankVerificationService.onSelectBank(
-                    this.selectedBank ? this.selectedBank.name : value,
-                    this.ownerForm.get('routingNumber'),
-                    this.ownerForm.get('accountNumber')
-                );
+            .subscribe(async (value) => {
+                this.isBankSelected =
+                    await this.bankVerificationService.onSelectBank(
+                        this.selectedBank ? this.selectedBank.name : value,
+                        this.ownerForm.get('routingNumber'),
+                        this.ownerForm.get('accountNumber')
+                    );
             });
     }
 
@@ -329,12 +340,18 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             lastName,
             ssn,
             ein,
-            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
 
-        const newData: UpdateOwnerCommand = {
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        const newData: any = {
             id: id,
             ...form,
             ownerType: this.selectedTab,
@@ -345,6 +362,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
+            files: documents ? documents : this.ownerForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.ownerModalService
@@ -394,12 +413,18 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             lastName,
             ssn,
             ein,
-            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
 
-        const newData: CreateOwnerCommand = {
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        const newData: any = {
             ...form,
             ownerType: this.selectedTab,
             name:
@@ -409,6 +434,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
+            files: documents,
         };
 
         this.ownerModalService
@@ -420,6 +446,40 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         `"${bussinesName}" added`,
                         'Success'
                     );
+
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'truck-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: TruckModalComponent,
+                                    size: 'small',
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            case 'trailer-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: TrailerModalComponent,
+                                    size: 'small',
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () => {
                     this.notificationService.error(
@@ -456,6 +516,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     });
                     this.selectedAddress = res.address;
                     this.selectedBank = res.bank;
+                    this.documents = res.files;
                     this.tabChange(
                         this.tabs.find((item) => item.id === res.ownerType.id)
                     );
@@ -484,6 +545,34 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     );
                 },
             });
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.ownerForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.ownerForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {

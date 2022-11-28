@@ -296,7 +296,7 @@
             *ngIf="!isEditing"
         >
             <div class="d-flex align-items-center justify-content-between">
-                <div class="permit-title-box">
+                <div class="d-flex flex-column permit-title-box">
                     <p
                         class="m-0 ta-font-regular"
                         [ngClass]="
@@ -309,6 +309,10 @@
                         vehicle ever been denided, suspended, or revoked?
                         <span class="required-star">*</span>
                     </p>
+
+                    <ng-container *ngIf="displayRadioRequiredNote">
+                        <p class="m-0 ta-font-semi-bold required">Required</p>
+                    </ng-container>
                 </div>
 
                 <div class="permit-radios-box">
@@ -316,6 +320,7 @@
                         #cmp
                         [buttons]="answerChoices"
                         [disabled]="selectedMode === 'REVIEW_MODE'"
+                        [displayRequiredNote]="displayRadioRequiredNote"
                         (changedValue)="handleInputSelect($event, 'PERMIT')"
                     ></app-ta-input-radiobuttons>
                 </div>
@@ -388,6 +393,7 @@
         [nextStep]="true"
         [filledCorrectly]="
             selectedMode === 'APPLICANT_MODE' &&
+            !isEditing &&
             permitForm.valid &&
             formStatus === 'VALID'
         "

@@ -41,8 +41,9 @@ import { AccidentActiveResolver } from './core/components/safety/accident/state/
 import { AccidentInactiveResolver } from './core/components/safety/accident/state/accident-state/accident-inactive/accident-inactive.resolver';
 import { AccidentNonReportedResolver } from './core/components/safety/accident/state/accident-state/accident-non-reported/accident-non-reported.resolver';
 import { ApplicantResolver } from './core/components/applicant/state/resolver/applicant.resolver';
-import { ApplicantSphFormResolver } from './core/components/applicant/state/resolver/applicant-sph-form.resolver';
 import { FuelResolver } from './core/components/fuel/state/fule-state/fuel-state.resolver';
+import { ApplicantTableResolver } from './core/components/driver/state/applicant-state/applicant-table.resolver';
+import { ApplicantSphFormResolver } from './core/components/applicant/state/resolver/applicant-sph-form.resolver';
 
 const routes: Routes = [
     // Auth Routes
@@ -129,6 +130,7 @@ const routes: Routes = [
         resolve: {
             driverActive: DriverActiveResolver,
             driverInactive: DriverInactiveResolver,
+            applicantAdminTable: ApplicantTableResolver,
         },
     },
     {
@@ -304,6 +306,15 @@ const routes: Routes = [
         resolve: { applicant: ApplicantResolver },
     },
     {
+        path: 'owner-info/:id',
+        loadChildren: () =>
+            import(
+                './core/components/applicant/applicant-tabs/owner-info/owner-info.module'
+            ).then((m) => m.OwnerInfoModule),
+        canActivate: [AuthGuard],
+        resolve: { applicant: ApplicantResolver },
+    },
+    {
         path: 'medical-certificate/:id',
         loadChildren: () =>
             import(
@@ -348,12 +359,13 @@ const routes: Routes = [
             ).then((m) => m.SphFormModule),
 
         canActivate: [AuthGuard],
-        resolve: { applicantSphForm: ApplicantSphFormResolver },
+        /* resolve: { applicantSphForm: ApplicantSphFormResolver }, */
     },
     {
         path: 'sph-form-end',
         component: SphFormThankYouComponent,
         data: { title: 'End Screen' },
+        resolve: { applicantSphForm: ApplicantSphFormResolver },
     },
     {
         path: 'hos-rules/:id',
@@ -400,6 +412,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
+
     exports: [RouterModule],
 })
 export class AppRoutingModule {}

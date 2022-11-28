@@ -19,9 +19,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateRepairCommand } from '../model/createRepairCommand';
+import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
 // @ts-ignore
-import { CreateResponse } from '../model/createResponse';
+import { FileResponse } from '../model/fileResponse';
 // @ts-ignore
 import { PMTrailerListResponse } from '../model/pMTrailerListResponse';
 // @ts-ignore
@@ -39,11 +39,19 @@ import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { RepairAutocompleteDescriptionResponse } from '../model/repairAutocompleteDescriptionResponse';
 // @ts-ignore
+import { RepairItemCommand } from '../model/repairItemCommand';
+// @ts-ignore
 import { RepairListResponse } from '../model/repairListResponse';
 // @ts-ignore
 import { RepairModalResponse } from '../model/repairModalResponse';
 // @ts-ignore
 import { RepairResponse } from '../model/repairResponse';
+// @ts-ignore
+import { RepairServiceTypeCommand } from '../model/repairServiceTypeCommand';
+// @ts-ignore
+import { RepairType } from '../model/repairType';
+// @ts-ignore
+import { RepairUnitType } from '../model/repairUnitType';
 // @ts-ignore
 import { UpdatePMTrailerListDefaultCommand } from '../model/updatePMTrailerListDefaultCommand';
 // @ts-ignore
@@ -52,8 +60,6 @@ import { UpdatePMTrailerUnitListCommand } from '../model/updatePMTrailerUnitList
 import { UpdatePMTruckDefaultListCommand } from '../model/updatePMTruckDefaultListCommand';
 // @ts-ignore
 import { UpdatePMTruckUnitListCommand } from '../model/updatePMTruckUnitListCommand';
-// @ts-ignore
-import { UpdateRepairCommand } from '../model/updateRepairCommand';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -88,6 +94,19 @@ export class RepairService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // @ts-ignore
     private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
@@ -180,6 +199,72 @@ export class RepairService {
 
         let localVarPath = `/api/repair/autocomplete/description/${this.configuration.encodeParam({name: "description", value: description, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<RepairAutocompleteDescriptionResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiRepairFilesIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<FileResponse>>;
+    public apiRepairFilesIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<FileResponse>>>;
+    public apiRepairFilesIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<FileResponse>>>;
+    public apiRepairFilesIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiRepairFilesIdGet.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/repair/files/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<Array<FileResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -1738,14 +1823,26 @@ export class RepairService {
     }
 
     /**
-     * @param createRepairCommand 
+     * @param repairType 
+     * @param unitType 
+     * @param truckId 
+     * @param trailerId 
+     * @param odometer 
+     * @param date 
+     * @param invoice 
+     * @param repairShopId 
+     * @param total 
+     * @param serviceTypes 
+     * @param note 
+     * @param items 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPost(createRepairCommand?: CreateRepairCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiRepairPost(createRepairCommand?: CreateRepairCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiRepairPost(createRepairCommand?: CreateRepairCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiRepairPost(createRepairCommand?: CreateRepairCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1775,16 +1872,69 @@ export class RepairService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (repairType !== undefined) {
+            localVarFormParams = localVarFormParams.append('RepairType', <any>repairType) as any || localVarFormParams;
+        }
+        if (unitType !== undefined) {
+            localVarFormParams = localVarFormParams.append('UnitType', <any>unitType) as any || localVarFormParams;
+        }
+        if (truckId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckId', <any>truckId) as any || localVarFormParams;
+        }
+        if (trailerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerId', <any>trailerId) as any || localVarFormParams;
+        }
+        if (odometer !== undefined) {
+            localVarFormParams = localVarFormParams.append('Odometer', <any>odometer) as any || localVarFormParams;
+        }
+        if (date !== undefined) {
+            localVarFormParams = localVarFormParams.append('Date', <any>date) as any || localVarFormParams;
+        }
+        if (invoice !== undefined) {
+            localVarFormParams = localVarFormParams.append('Invoice', <any>invoice) as any || localVarFormParams;
+        }
+        if (repairShopId !== undefined) {
+            localVarFormParams = localVarFormParams.append('RepairShopId', <any>repairShopId) as any || localVarFormParams;
+        }
+        if (total !== undefined) {
+            localVarFormParams = localVarFormParams.append('Total', <any>total) as any || localVarFormParams;
+        }
+        if (serviceTypes) {
+            serviceTypes.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('ServiceTypes', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (items) {
+            items.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Items', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1799,10 +1949,10 @@ export class RepairService {
         }
 
         let localVarPath = `/api/repair`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createRepairCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1813,14 +1963,25 @@ export class RepairService {
     }
 
     /**
-     * @param updateRepairCommand 
+     * @param id 
+     * @param repairType 
+     * @param odometer 
+     * @param date 
+     * @param invoice 
+     * @param repairShopId 
+     * @param total 
+     * @param serviceTypes 
+     * @param note 
+     * @param items 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPut(updateRepairCommand?: UpdateRepairCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiRepairPut(updateRepairCommand?: UpdateRepairCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiRepairPut(updateRepairCommand?: UpdateRepairCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiRepairPut(updateRepairCommand?: UpdateRepairCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1850,16 +2011,68 @@ export class RepairService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (repairType !== undefined) {
+            localVarFormParams = localVarFormParams.append('RepairType', <any>repairType) as any || localVarFormParams;
+        }
+        if (odometer !== undefined) {
+            localVarFormParams = localVarFormParams.append('Odometer', <any>odometer) as any || localVarFormParams;
+        }
+        if (date !== undefined) {
+            localVarFormParams = localVarFormParams.append('Date', <any>date) as any || localVarFormParams;
+        }
+        if (invoice !== undefined) {
+            localVarFormParams = localVarFormParams.append('Invoice', <any>invoice) as any || localVarFormParams;
+        }
+        if (repairShopId !== undefined) {
+            localVarFormParams = localVarFormParams.append('RepairShopId', <any>repairShopId) as any || localVarFormParams;
+        }
+        if (total !== undefined) {
+            localVarFormParams = localVarFormParams.append('Total', <any>total) as any || localVarFormParams;
+        }
+        if (serviceTypes) {
+            serviceTypes.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('ServiceTypes', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (items) {
+            items.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Items', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1874,10 +2087,10 @@ export class RepairService {
         }
 
         let localVarPath = `/api/repair`;
-        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateRepairCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

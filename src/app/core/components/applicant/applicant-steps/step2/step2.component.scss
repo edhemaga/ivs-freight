@@ -16,18 +16,18 @@
     }
 
     .step-title {
-        color: $ta-blue;
+        color: $ta-blue-5;
         font-size: 32px;
         height: 39px;
 
         &::-moz-selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
         }
 
         &::selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
         }
     }
 
@@ -116,7 +116,8 @@
             .review-feedback-container {
                 position: absolute;
                 top: 0;
-                right: -435px;
+                right: 0;
+                transform: translateX(calc(100% + 5px));
                 width: 429px;
             }
         }

@@ -13,7 +13,7 @@ import { DriverMvrModalComponent } from '../../modals/driver-modal/driver-mvr-mo
 
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { DriverListResponse } from 'appcoretruckassist';
+import { ApplicantShortResponse, DriverListResponse } from 'appcoretruckassist';
 
 import {
     Confirmation,
@@ -33,6 +33,7 @@ import {
 import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
 import { ApplicantModalComponent } from '../../modals/applicant-modal/applicant-modal.component';
+import { ApplicantTableQuery } from '../state/applicant-state/applicant-table.query';
 
 @Component({
     selector: 'app-driver-table',
@@ -51,6 +52,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     activeViewMode: string = 'List';
     driversActive: DriversActiveState[] = [];
     driversInactive: DriversInactiveState[] = [];
+    applicantData: ApplicantShortResponse[] = [];
     loadingPage: boolean = true;
     backFilterQuery = {
         active: 1,
@@ -73,6 +75,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private driversActiveQuery: DriversActiveQuery,
         private driversInactiveQuery: DriversInactiveQuery,
+        private applicantQuery: ApplicantTableQuery,
         private tableService: TruckassistTableService,
         public datePipe: DatePipe,
         private driverTService: DriverTService,
@@ -380,12 +383,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       contentType: '',
                   },
                   {
-                      title: 'Add to Favourites',
-                      name: 'add-to-favourites',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
                       title: 'Delete',
                       name: 'delete-applicant',
                       type: 'driver',
@@ -448,11 +445,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     sendDriverData() {
         this.initTableOptions();
 
+        const applicantCount = JSON.parse(
+            localStorage.getItem('applicantTableCount')
+        );
+
         const driverCount = JSON.parse(
             localStorage.getItem('driverTableCount')
         );
 
-        const applicantsData = this.getTabData(null);
+        const applicantsData =
+            this.selectedTab === 'applicants'
+                ? this.getTabData('applicants')
+                : [];
 
         const driverActiveData =
             this.selectedTab === 'active' ? this.getTabData('active') : [];
@@ -464,7 +468,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: 'Applicants',
                 field: 'applicants',
-                length: applicantsData.length,
+                length: applicantCount.applicant,
                 data: applicantsData,
                 extended: true,
                 gridNameTitle: 'Driver',
@@ -513,14 +517,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.driversInactive = this.driversInactiveQuery.getAll();
 
             return this.driversInactive?.length ? this.driversInactive : [];
-        } else {
-            let mockData = [];
+        } else if ('applicants') {
+            this.applicantData = this.applicantQuery.getAll();
 
-            for (let i = 0; i < 10; i++) {
-                mockData.push({});
-            }
-
-            return mockData;
+            return this.applicantData?.length ? this.applicantData : [];
         }
     }
 
@@ -546,18 +546,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (td.data.length) {
             this.viewData = td.data;
 
-            this.viewData = this.viewData.map((data: any, index: number) => {
+            this.viewData = this.viewData.map((data: any) => {
                 return this.selectedTab === 'applicants'
-                    ? this.mapApplicantsData(data, index)
+                    ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
-
-            // For Testing
-            // if (this.selectedTab !== 'applicants') {
-            //   for (let i = 0; i < 1000; i++) {
-            //     this.viewData.push(this.viewData[0]);
-            //   }
-            // }
         } else {
             this.viewData = [];
         }
@@ -693,108 +686,144 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : null,
                 },
             ],
+            tableAttachments: data?.files ? data.files : []
         };
     }
 
-    mapApplicantsData(data: any, index: number) {
+    mapApplicantsData(data: any) {
         return {
-            fullName: 'Angelo Trotter',
-            invited: '04/04/44',
-            accepted: '04/04/44',
-            phone: '(325) 540-1157',
-            dob: '04/04/44',
-            email: 'angelo.T@gmail.com',
-            applicantProgress: [
+            ...data,
+            isSelected: false,
+            tableInvited: data?.invitedDate
+                ? this.datePipe.transform(data.invitedDate, 'MM/dd/yy')
+                : '',
+            tableAccepted: data?.acceptedDate
+                ? this.datePipe.transform(data.acceptedDate, 'MM/dd/yy')
+                : '',
+            tableDOB: data?.doB ? data.doB : '',
+            tableApplicantProgress: [
                 {
                     title: 'App.',
-                    status: 'Done',
+                    status: data.applicationStatus,
                     width: 34,
                     class: 'complete-icon',
                     percentage: 34,
                 },
                 {
                     title: 'Mvr',
-                    status: 'In Progres',
+                    status: data.mvrStatus,
                     width: 34,
                     class: 'complete-icon',
                     percentage: 34,
                 },
                 {
                     title: 'Psp',
-                    status: 'Wrong',
+                    status: data.pspStatus,
                     width: 29,
                     class: 'wrong-icon',
                     percentage: 34,
                 },
                 {
                     title: 'Sph',
-                    status: 'No Started',
+                    status: data.sphStatus,
                     width: 30,
                     class: 'complete-icon',
                     percentage: 34,
                 },
                 {
                     title: 'Hos',
-                    status: 'Done',
+                    status: data.hosStatus,
                     width: 32,
                     class: 'done-icon',
                     percentage: 34,
                 },
                 {
                     title: 'Ssn',
-                    status: 'Done',
+                    status: data.ssnStatus,
                     width: 29,
                     class: 'wrong-icon',
                     percentage: 34,
                 },
             ],
-            // Complete, Done, Wrong, In Progres, Not Started
-            medical: {
-                class:
-                    index === 0
-                        ? 'complete-icon'
-                        : index === 1
-                        ? 'done-icon'
-                        : index === 2
-                        ? 'wrong-icon'
-                        : '',
-                hideProgres: index !== 3,
+            tableMedical: {
+                class: '',
+                hideProgres: false,
                 isApplicant: true,
-                expirationDays: this.thousandSeparator.transform('3233'),
-                percentage: 34,
+                expirationDays: data?.medicalDaysLeft
+                    ? this.thousandSeparator.transform(data.medicalDaysLeft)
+                    : '',
+                percentage: data?.medicalPercentage
+                    ? data.medicalPercentage
+                    : null,
             },
-            cdl: {
-                class:
-                    index === 0
-                        ? 'complete-icon'
-                        : index === 1
-                        ? 'done-icon'
-                        : index === 2
-                        ? 'wrong-icon'
-                        : '',
-                hideProgres: index !== 3,
+            tableCdl: {
+                class: '',
+                hideProgres: false,
                 isApplicant: true,
-                expirationDays: this.thousandSeparator.transform('12'),
-                percentage: 10,
+                expirationDays: data?.cdlDaysLeft
+                    ? this.thousandSeparator.transform(data.cdlDaysLeft)
+                    : '',
+                percentage: data?.cdlPercentage ? data.cdlPercentage : null,
             },
-            rev: {
-                title:
-                    index === 0
-                        ? 'Reviewed'
-                        : index === 1
-                        ? 'Finished'
-                        : index === 2
-                        ? 'Incomplete'
-                        : 'Ready',
+            tableRev: {
+                title: 'Incomplete',
                 iconLink:
-                    index === 0 || index === 2
-                        ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
-                        : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
+                    '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg',
+                // index === 0 || index === 2
+                //     ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
+                //     : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
             },
-            hire: true,
-            favorite: false,
+            hire: false,
+            isFavorite: false,
         };
     }
+
+    // Applicant Interface
+    // return {
+    //     // Complete, Done, Wrong, In Progres, Not Started
+    //     medical: {
+    //         class:
+    //             index === 0
+    //                 ? 'complete-icon'
+    //                 : index === 1
+    //                 ? 'done-icon'
+    //                 : index === 2
+    //                 ? 'wrong-icon'
+    //                 : '',
+    //         hideProgres: index !== 3,
+    //         isApplicant: true,
+    //         expirationDays: this.thousandSeparator.transform('3233'),
+    //         percentage: 34,
+    //     },
+    //     cdl: {
+    //         class:
+    //             index === 0
+    //                 ? 'complete-icon'
+    //                 : index === 1
+    //                 ? 'done-icon'
+    //                 : index === 2
+    //                 ? 'wrong-icon'
+    //                 : '',
+    //         hideProgres: index !== 3,
+    //         isApplicant: true,
+    //         expirationDays: this.thousandSeparator.transform('12'),
+    //         percentage: 10,
+    //     },
+    //     rev: {
+    //         title:
+    //             index === 0
+    //                 ? 'Reviewed'
+    //                 : index === 1
+    //                 ? 'Finished'
+    //                 : index === 2
+    //                 ? 'Incomplete'
+    //                 : 'Ready',
+    //         iconLink:
+    //             index === 0 || index === 2
+    //                 ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
+    //                 : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
+    //     },
+    // };
 
     // Get Avatar Color
     getAvatarColors() {

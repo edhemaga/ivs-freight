@@ -9,16 +9,16 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
 
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { ApplicantResponse, MvrAuthFeedbackResponse } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { ApplicantResponse } from 'appcoretruckassist';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
     selector: 'app-mvr-authorization',
@@ -45,6 +45,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public signature: string;
     public signatureImgSrc: string;
+    public displaySignatureRequiredNote: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -118,8 +119,36 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
                 this.applicantId = res.id;
 
-                /* this.stepHasValues = true; */
+                if (res.mvrAuth) {
+                    this.patchStepValues(res.mvrAuth);
+
+                    this.stepHasValues = true;
+                }
             });
+    }
+
+    public patchStepValues(stepValues: MvrAuthFeedbackResponse): void {
+        console.log('stepValues', stepValues);
+        const {
+            isEmployee,
+            isPeriodicallyObtained,
+            isInformationCorrect,
+            dontHaveMvr,
+            onlyLicense,
+            signature,
+        } = stepValues;
+
+        this.mvrAuthorizationForm.patchValue({
+            isConsentRelease: isEmployee,
+            isPeriodicallyObtained,
+            isInformationCorrect,
+            licenseCheck: onlyLicense,
+        });
+
+        this.dontHaveMvrForm.get('dontHaveMvr').patchValue(dontHaveMvr);
+
+        this.signatureImgSrc = signature;
+        this.signature = signature;
     }
 
     public requestDrivingRecordFromEmployer(): void {
@@ -197,6 +226,12 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
             this.signature = this.imageBase64Service.getStringFromBase64(event);
         } else {
             this.signature = null;
+        }
+    }
+
+    public onRemoveSignatureRequiredNoteAction(event: any): void {
+        if (event) {
+            this.displaySignatureRequiredNote = false;
         }
     }
 
@@ -305,9 +340,9 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                 this.inputService.markInvalid(this.mvrAuthorizationForm);
             }
 
-            /* if (!this.signature) {
-        
-      } */
+            if (!this.signature) {
+                this.displaySignatureRequiredNote = true;
+            }
 
             return;
         }
@@ -321,8 +356,11 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
         const { dontHaveMvr } = this.dontHaveMvrForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const saveData: any = {
@@ -367,6 +405,26 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                     this.router.navigate([
                         `/psp-authorization/${this.applicantId}`,
                     ]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                mvrAuth: {
+                                    ...store.applicant.mvrAuth,
+                                    isEmployee: saveData.isEmployee,
+                                    isPeriodicallyObtained:
+                                        saveData.isPeriodicallyObtained,
+                                    isInformationCorrect:
+                                        saveData.isInformationCorrect,
+                                    dontHaveMvr: saveData.dontHaveMvr,
+                                    onlyLicense: saveData.onlyLicense,
+                                    signature: saveData.signature,
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);

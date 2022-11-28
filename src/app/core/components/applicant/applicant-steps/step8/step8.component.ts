@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     Component,
     OnDestroy,
@@ -34,6 +36,7 @@ import {
     ApplicantResponse,
     CreateDrugAndAlcoholCommand,
     CreateDrugAndAlcoholReviewCommand,
+    DrugAndAlcoholFeedbackResponse,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -54,7 +57,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.FEEDBACK;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public drugTestRadios: any;
 
@@ -189,7 +192,7 @@ export class Step8Component implements OnInit, OnDestroy {
             });
     }
 
-    public patchStepValues(stepValues: any): void {
+    public patchStepValues(stepValues: DrugAndAlcoholFeedbackResponse): void {
         const {
             positiveTest,
             motorCarrier,
@@ -310,35 +313,22 @@ export class Step8Component implements OnInit, OnDestroy {
             this.selectedAddress = address;
             this.selectedSapAddress = sapAddress;
         } else {
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('motorCarrier'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('phone'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('address'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('sapName'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('sapPhone'),
-                false
-            );
-            this.inputService.changeValidators(
-                this.drugAlcoholStatementForm.get('sapAddress'),
-                false
-            );
+            const inputsToValidate = [
+                'motorCarrier',
+                'phone',
+                'address',
+                'sapName',
+                'sapPhone',
+                'sapAddress',
+                'isAgreement',
+            ];
 
-            this.inputService.changeValidatorsCheck(
-                this.drugAlcoholStatementForm.get('isAgreement'),
-                false
-            );
+            for (let i = 0; i < inputsToValidate.length; i++) {
+                this.inputService.changeValidators(
+                    this.drugAlcoholStatementForm.get(inputsToValidate[i]),
+                    false
+                );
+            }
         }
 
         setTimeout(() => {
@@ -405,6 +395,16 @@ export class Step8Component implements OnInit, OnDestroy {
             .get('drugTest')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
+                const inputsToValidate = [
+                    'motorCarrier',
+                    'phone',
+                    'address',
+                    'sapName',
+                    'sapPhone',
+                    'sapAddress',
+                    'isAgreement',
+                ];
+
                 if (!value) {
                     const {
                         motorCarrier,
@@ -428,35 +428,14 @@ export class Step8Component implements OnInit, OnDestroy {
                         sapAddressUnit,
                     };
 
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('motorCarrier'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('phone'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('address'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapName'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapPhone'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapAddress'),
-                        false
-                    );
-
-                    this.inputService.changeValidatorsCheck(
-                        this.drugAlcoholStatementForm.get('isAgreement'),
-                        false
-                    );
+                    for (let i = 0; i < inputsToValidate.length; i++) {
+                        this.inputService.changeValidators(
+                            this.drugAlcoholStatementForm.get(
+                                inputsToValidate[i]
+                            ),
+                            false
+                        );
+                    }
                 } else {
                     if (this.previousStepValues) {
                         const {
@@ -482,28 +461,13 @@ export class Step8Component implements OnInit, OnDestroy {
                         });
                     }
 
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('motorCarrier')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('phone')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('address')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapName')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapPhone')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAlcoholStatementForm.get('sapAddress')
-                    );
-
-                    this.inputService.changeValidatorsCheck(
-                        this.drugAlcoholStatementForm.get('isAgreement')
-                    );
+                    for (let i = 0; i < inputsToValidate.length; i++) {
+                        this.inputService.changeValidators(
+                            this.drugAlcoholStatementForm.get(
+                                inputsToValidate[i]
+                            )
+                        );
+                    }
                 }
             });
     }
@@ -516,73 +480,72 @@ export class Step8Component implements OnInit, OnDestroy {
         const selectedInputsLine = this.openAnnotationArray.find(
             (item) => item.lineIndex === lineIndex
         );
-        {
-            if (event) {
-                selectedInputsLine.lineInputs[inputIndex] = true;
 
-                if (!selectedInputsLine.displayAnnotationTextArea) {
-                    selectedInputsLine.displayAnnotationButton = true;
-                    selectedInputsLine.displayAnnotationTextArea = false;
-                }
+        if (event) {
+            selectedInputsLine.lineInputs[inputIndex] = true;
+
+            if (!selectedInputsLine.displayAnnotationTextArea) {
+                selectedInputsLine.displayAnnotationButton = true;
+                selectedInputsLine.displayAnnotationTextArea = false;
+            }
+        }
+
+        if (!event) {
+            selectedInputsLine.lineInputs[inputIndex] = false;
+
+            const lineInputItems = selectedInputsLine.lineInputs;
+            const isAnyInputInLineIncorrect =
+                anyInputInLineIncorrect(lineInputItems);
+
+            if (!isAnyInputInLineIncorrect) {
+                selectedInputsLine.displayAnnotationButton = false;
+                selectedInputsLine.displayAnnotationTextArea = false;
             }
 
-            if (!event) {
-                selectedInputsLine.lineInputs[inputIndex] = false;
-
-                const lineInputItems = selectedInputsLine.lineInputs;
-                const isAnyInputInLineIncorrect =
-                    anyInputInLineIncorrect(lineInputItems);
-
-                if (!isAnyInputInLineIncorrect) {
-                    selectedInputsLine.displayAnnotationButton = false;
-                    selectedInputsLine.displayAnnotationTextArea = false;
-                }
-
-                switch (lineIndex) {
-                    case 0:
-                        if (!isAnyInputInLineIncorrect) {
-                            this.drugAlcoholStatementForm
-                                .get('firstRowReview')
-                                .patchValue(null);
-                        }
-                        break;
-                    case 1:
-                        if (!isAnyInputInLineIncorrect) {
-                            this.drugAlcoholStatementForm
-                                .get('secondRowReview')
-                                .patchValue(null);
-                        }
-                        break;
-                    case 2:
-                        if (!isAnyInputInLineIncorrect) {
-                            this.drugAlcoholStatementForm
-                                .get('thirdRowReview')
-                                .patchValue(null);
-                        }
-                        break;
-                    case 3:
-                        if (!isAnyInputInLineIncorrect) {
-                            this.drugAlcoholStatementForm
-                                .get('fourthRowReview')
-                                .patchValue(null);
-                        }
-                        break;
-                    default:
-                        break;
-                }
+            switch (lineIndex) {
+                case 0:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.drugAlcoholStatementForm
+                            .get('firstRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                case 1:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.drugAlcoholStatementForm
+                            .get('secondRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                case 2:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.drugAlcoholStatementForm
+                            .get('thirdRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                case 3:
+                    if (!isAnyInputInLineIncorrect) {
+                        this.drugAlcoholStatementForm
+                            .get('fourthRowReview')
+                            .patchValue(null);
+                    }
+                    break;
+                default:
+                    break;
             }
+        }
 
-            const inputFieldsArray = JSON.stringify(
-                this.openAnnotationArray
-                    .filter((item) => Object.keys(item).length !== 0)
-                    .map((item) => item.lineInputs)
-            );
+        const inputFieldsArray = JSON.stringify(
+            this.openAnnotationArray
+                .filter((item) => Object.keys(item).length !== 0)
+                .map((item) => item.lineInputs)
+        );
 
-            if (inputFieldsArray.includes('true')) {
-                this.hasIncorrectFields = true;
-            } else {
-                this.hasIncorrectFields = false;
-            }
+        if (inputFieldsArray.includes('true')) {
+            this.hasIncorrectFields = true;
+        } else {
+            this.hasIncorrectFields = false;
         }
     }
 

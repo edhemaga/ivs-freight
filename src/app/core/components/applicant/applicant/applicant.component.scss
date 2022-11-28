@@ -20,7 +20,7 @@
                 position: relative;
                 height: 42px;
                 width: 42px;
-                background: $bw-9;
+                background: $ta-light-grey-2;
                 border-radius: 3px;
                 cursor: pointer;
                 transition: background 0.3s ease-in-out;
@@ -37,13 +37,13 @@
                 }
 
                 &:hover {
-                    background: $bw4;
+                    background: $bw6-2;
                 }
             }
 
             .step-text {
                 margin: 6px auto 0 auto !important;
-                color: $bw5;
+                color: $bw6-2;
                 font-size: 14px;
                 line-height: 14px;
                 cursor: pointer;
@@ -53,26 +53,26 @@
                     opacity 0.3s ease-in-out;
 
                 &::-moz-selection {
-                    color: $bw5;
-                    background: rgb(145, 145, 145, 0.2);
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
                 }
 
                 &::selection {
-                    color: $bw5;
-                    background: rgb(145, 145, 145, 0.2);
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
                 }
 
                 &:hover {
-                    color: $bw6-2;
+                    color: $ta-black;
 
                     &::-moz-selection {
                         color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        background: rgb(66, 66, 66, 0.2);
                     }
 
                     &::selection {
                         color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        background: rgb(66, 66, 66, 0.2);
                     }
                 }
             }
@@ -133,11 +133,21 @@
                 pointer-events: none !important;
 
                 .bullet {
-                    background: $ta-blue !important;
+                    background: $ta-blue-5 !important;
                 }
 
                 .step-text {
-                    color: $ta-blue !important;
+                    color: $ta-blue-9 !important;
+
+                    &::-moz-selection {
+                        color: $ta-blue-9;
+                        background: rgb(37, 91, 185, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-blue-9;
+                        background: rgb(37, 91, 185, 0.2);
+                    }
                 }
             }
 
@@ -248,7 +258,7 @@
             &.completed-step {
                 &.step-active {
                     .bullet {
-                        background: $ta-blue;
+                        background: $ta-blue-5;
 
                         &::before {
                             display: none;
@@ -266,12 +276,12 @@
                     .step-text {
                         visibility: visible;
                         opacity: 1;
-                        color: $ta-blue;
+                        color: $ta-blue-9;
                     }
                 }
 
                 .bullet {
-                    background: $ta-blue-3;
+                    background: $ta-blue-7;
 
                     &::before {
                         display: inline-block;
@@ -286,7 +296,7 @@
                     }
 
                     &:hover {
-                        background: $ta-light-blue;
+                        background: $ta-blue-5;
 
                         &::before {
                             display: none;
@@ -304,7 +314,7 @@
                     &:hover + .step-text {
                         visibility: visible;
                         opacity: 1;
-                        color: $ta-light-blue;
+                        color: $ta-blue-9;
                     }
                 }
 

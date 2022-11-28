@@ -23,17 +23,17 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     public routeTabs: { id: number; name: string; checked: boolean }[] = [
         {
             id: 1,
-            name: 'Practical',
+            name: 'PRACTICAL',
             checked: true,
         },
         {
             id: 2,
-            name: 'Shortest',
+            name: 'SHORTEST',
             checked: false,
         },
         {
             id: 3,
-            name: 'Cheapest',
+            name: 'CHEAPEST',
             checked: false,
         },
     ];
@@ -41,7 +41,6 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     public selectedTruckType: any = null;
     public truckType: any[] = [];
 
-    public durationCheckboxCard: boolean = true;
     public fuelCostCheckboxCard: boolean = true;
 
     private destroy$ = new Subject<void>();
@@ -66,16 +65,24 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     }
 
     private createForm() {
+        var routeName = this.editData?.routeName
+            ? this.editData?.routeName
+            : null;
+
         this.mapRouteForm = this.formBuilder.group({
             routeName: [null, [Validators.required, Validators.maxLength(16)]],
             routeType: [null],
             truckId: [null],
-            duration: [null],
-            durationTime: [null],
+            stopTime: [null],
             fuelCost: [null],
             fuelMpg: [null, Validators.maxLength(5)],
             fuelPrice: [null, Validators.maxLength(5)],
         });
+
+        if (routeName) {
+            this.setRouteNamePlaceholder();
+            this.isFormDirty = true;
+        }
 
         this.formService.checkFormChange(this.mapRouteForm);
         this.formService.formValueChange$
@@ -85,8 +92,19 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             });
     }
 
+    private setRouteNamePlaceholder() {
+        var routeName = this.editData?.routeName
+            ? this.editData?.routeName
+            : null;
+
+        this.mapRouteForm.patchValue({
+            routeName: routeName,
+        });
+
+        if (routeName) this.isFormDirty = true;
+    }
+
     public onModalAction(data: { action: string; bool: boolean }) {
-        console.log('from modal, ', data);
         switch (data.action) {
             case 'close': {
                 break;
@@ -98,13 +116,11 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                 }
 
                 if (this.editData?.type === 'edit') {
-                    if (this.isFormDirty) {
-                        this.updateRoute(this.editData.id);
-                        this.modalService.setModalSpinner({
-                            action: 'create-map-route',
-                            status: true,
-                        });
-                    }
+                    this.updateRoute(this.editData.id);
+                    this.modalService.setModalSpinner({
+                        action: 'create-map-route',
+                        status: true,
+                    });
                 } else {
                     this.addRoute();
                     this.modalService.setModalSpinner({
@@ -112,14 +128,10 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                         status: true,
                     });
                 }
-
-                console.log('put action create map');
-
                 break;
             }
 
             case 'reset-map-routing': {
-                console.log('put action reset map');
                 this.resetForm();
                 break;
             }
@@ -150,7 +162,6 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .getTruckList(1, 1, 25)
             .pipe(takeUntil(this.destroy$))
             .subscribe((trucks: TruckListResponse) => {
-                console.log('trucks: ', trucks.pagination.data);
                 this.truckType = trucks.pagination.data.map((truck) => {
                     return {
                         ...truck.truckType,
@@ -195,8 +206,6 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             stops: this.editData.stops ? this.editData.stops : [],
         };
 
-        console.log('updateRoute newData', newData);
-
         this.routingService
             .updateRoute(newData)
             .pipe(takeUntil(this.destroy$))
@@ -225,7 +234,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                     this.mapRouteForm.patchValue({
                         routeName: res.name,
                     });
-                    console.log('getRouteById', res);
+                    console.log(res);
                 },
                 error: () => {
                     this.notificationService.error(

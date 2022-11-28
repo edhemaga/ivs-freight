@@ -119,43 +119,19 @@
                         </div>
                     </div>
                     <!-- IsOwner -->
-                    <div class="custom-checkbox-card">
-                        <div class="divider"></div>
-                        <div
-                            class="checkbox-card-header"
-                            [ngClass]="{
-                                pointer:
-                                    profileUserForm.get('createNewPassword')
-                                        .value
-                            }"
-                        >
-                            <app-ta-checkbox
-                                formControlName="createNewPassword"
-                                [label]="'Create New Password'"
-                            ></app-ta-checkbox>
-                            <svg-icon
-                                class="checkbox-card-header-arrow"
-                                src="assets/svg/common/ic_arrow_down_updated.svg"
-                                [ngClass]="{
-                                    visible:
-                                        profileUserForm.get('createNewPassword')
-                                            .value,
-                                    rotate: !passwordCheckboxCard
-                                }"
-                                (click)="toggleCheckboxCard()"
-                            ></svg-icon>
-                        </div>
-                        <div
-                            *ngIf="
-                                profileUserForm.get('createNewPassword')
-                                    .value && passwordCheckboxCard
-                            "
-                            class="checkbox-card-body"
-                            [ngClass]="{
-                                active: profileUserForm.get('createNewPassword')
-                                    .value
-                            }"
-                        >
+                    <app-ta-checkbox-card
+                        formControlName="createNewPassword"
+                        [label]="'Create New Password'"
+                        [name]="'create-new-password'"
+                        [isCardOpen]="
+                            profileUserForm.get('createNewPassword').value
+                        "
+                        [animationMarginParams]="{
+                            marginTop: '12px',
+                            marginBottom: '18px'
+                        }"
+                    >
+                        <ng-container body>
                             <div
                                 *ngIf="!setNewPassword"
                                 class="profile-update-old-password-row"
@@ -196,7 +172,7 @@
                                 </div>
                             </div>
                             <div *ngIf="setNewPassword">
-                                <div class="row row-mb-22">
+                                <div class="row row-no-m">
                                     <div class="col-6">
                                         <app-ta-input
                                             formControlName="newPassword"
@@ -231,8 +207,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </ng-container>
+                    </app-ta-checkbox-card>
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">

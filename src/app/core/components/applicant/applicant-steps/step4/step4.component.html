@@ -295,6 +295,10 @@
                         [isEditing]="isEditing"
                         [formValuesToPatch]="formValuesToPatch"
                         [isReviewingCard]="isReviewingCard"
+                        [displayRadioRequiredNote]="displayRadioRequiredNote"
+                        [checkIsHazmatSpillNotChecked]="
+                            checkIsHazmatSpillNotChecked
+                        "
                         (cancelFormEditingEmitter)="
                             cancelAccidentEditing($event)
                         "
@@ -305,6 +309,9 @@
                         "
                         (cardOpenAnnotationArrayValuesEmitter)="
                             onGetCardOpenAnnotationArrayValues($event)
+                        "
+                        (radioRequiredNoteEmitter)="
+                            onGetRadioRequiredNoteEmit($event)
                         "
                     ></app-step4-form>
                 </div>
@@ -325,6 +332,8 @@
                 [markFormInvalid]="markFormInvalid"
                 [formValuesToPatch]="formValuesToPatch"
                 [isReviewingCard]="isReviewingCard"
+                [displayRadioRequiredNote]="displayRadioRequiredNote"
+                [checkIsHazmatSpillNotChecked]="checkIsHazmatSpillNotChecked"
                 (formValuesEmitter)="getAccidentFormValues($event)"
                 (formStatusEmitter)="onGetFormStatus($event)"
                 (markInvalidEmitter)="onMarkInvalidEmit($event)"
@@ -333,6 +342,7 @@
                 (openAnnotationArrayValuesEmitter)="
                     onGetOpenAnnotationArrayValues($event)
                 "
+                (radioRequiredNoteEmitter)="onGetRadioRequiredNoteEmit($event)"
             ></app-step4-form>
         </form>
     </div>
@@ -346,7 +356,9 @@
     <app-applicant-next-back-btn
         [nextStep]="true"
         [filledCorrectly]="
-            selectedMode === 'APPLICANT_MODE' && formStatus === 'VALID'
+            selectedMode === 'APPLICANT_MODE' &&
+            formStatus === 'VALID' &&
+            !isEditing
         "
         [hasIncorrectFields]="
             selectedMode === 'REVIEW_MODE' &&

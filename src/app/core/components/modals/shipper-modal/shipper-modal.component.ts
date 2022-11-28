@@ -19,11 +19,9 @@ import {
     AddressEntity,
     CreateRatingCommand,
     CreateReviewCommand,
-    CreateShipperCommand,
     ShipperResponse,
     SignInResponse,
     UpdateReviewCommand,
-    UpdateShipperCommand,
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -42,7 +40,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';
-import moment from 'moment';
+import { convertTimeFromBackend } from '../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -100,6 +98,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public user: SignInResponse = JSON.parse(localStorage.getItem('user'));
 
+    public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -149,6 +151,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shippingTo: [null],
             note: [null],
             shipperContacts: this.formBuilder.array([]),
+            files: [null],
         });
 
         this.inputService.customInputValidator(
@@ -518,14 +521,22 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private addShipper() {
-        const { address, addressUnit, shipperContacts, ...form } =
+        const { addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
         let receivingShipping = this.receivingShippingObject();
-        let newData: CreateShipperCommand = {
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        let newData: any = {
             ...form,
             address: {
                 ...this.selectedAddress,
-                addressUnit: this.shipperForm.get('addressUnit').value,
+                addressUnit: addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,
@@ -534,6 +545,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 receivingShipping.shipping.shippingOpenTwentyFourHours,
             shippingFrom: receivingShipping.shipping.shippingFrom,
             shippingTo: receivingShipping.shipping.shippingTo,
+            files: documents,
         };
 
         for (let index = 0; index < shipperContacts.length; index++) {
@@ -567,17 +579,24 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private updateShipper(id: number) {
-        const { address, addressUnit, shipperContacts, ...form } =
+        const { addressUnit, shipperContacts, ...form } =
             this.shipperForm.value;
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         let receivingShipping = this.receivingShippingObject();
 
-        let newData: UpdateShipperCommand = {
+        let newData: any = {
             id: id,
             ...form,
             address: {
                 ...this.selectedAddress,
-                addressUnit: this.shipperForm.get('addressUnit').value,
+                addressUnit: addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,
@@ -586,6 +605,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 receivingShipping.shipping.shippingOpenTwentyFourHours,
             shippingFrom: receivingShipping.shipping.shippingFrom,
             shippingTo: receivingShipping.shipping.shippingTo,
+            files: documents ? documents : this.shipperForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         for (let index = 0; index < shipperContacts.length; index++) {
@@ -653,33 +674,30 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         receivingAppointment: reasponse.receivingAppointment,
                         receivingOpenTwentyFourHours:
                             reasponse.receivingOpenTwentyFourHours,
-                        receivingFrom: moment(
-                            reasponse.receivingFrom,
-                            'HH:mm:SS A'
-                        ).toDate(),
-                        receivingTo: moment(
-                            reasponse.receivingTo,
-                            'HH:mm:SS A'
-                        ).toDate(),
+                        receivingFrom: convertTimeFromBackend(
+                            reasponse.receivingFrom
+                        ),
+                        receivingTo: convertTimeFromBackend(
+                            reasponse.receivingTo
+                        ),
                         shippingHoursSameReceiving:
                             reasponse.shippingHoursSameReceiving,
                         shippingAppointment: reasponse.shippingAppointment,
                         shippingOpenTwentyFourHours:
                             reasponse.shippingOpenTwentyFourHours,
-                        shippingFrom: moment(
-                            reasponse.shippingFrom,
-                            'HH:mm:SS A'
-                        ).toDate(),
-                        shippingTo: moment(
-                            reasponse.shippingTo,
-                            'HH:mm:SS A'
-                        ).toDate(),
+                        shippingFrom: convertTimeFromBackend(
+                            reasponse.shippingFrom
+                        ),
+                        shippingTo: convertTimeFromBackend(
+                            reasponse.shippingTo
+                        ),
                         note: reasponse.note,
                         shipperContacts: [],
                     });
 
                     this.selectedAddress = reasponse.address;
                     this.isPhoneExtExist = !!reasponse.phoneExt;
+                    this.documents = reasponse.files;
 
                     if (reasponse.phoneExt) {
                         this.isPhoneExtExist = true;
@@ -843,6 +861,34 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             }
         }
         return { receiving, shipping };
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.shipperForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.shipperForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {

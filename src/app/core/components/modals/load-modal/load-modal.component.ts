@@ -36,13 +36,13 @@ import { Subject, takeUntil } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { ILoadStatus } from './load-modal-statuses/load-modal-statuses.component';
-import { CreateLoadCommand } from '../../../../../../appcoretruckassist/model/createLoadCommand';
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
 } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
+import { convertTimeFromBackend } from '../../../utils/methods.calculations';
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
@@ -210,6 +210,9 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
     public isAvailableAdvanceRate: boolean = false;
 
     public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
+
     public comments: any[] = [];
 
     public loadStopRoutes: {
@@ -317,6 +320,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
             detentionRate: [null],
             stops: this.formBuilder.array([]),
             note: [null],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.loadForm);
@@ -691,12 +695,36 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public commandEvent(event: boolean) {
+    public commandEvent() {
         this.isHazardousVisible = !this.isHazardousVisible;
     }
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.loadForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.loadForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     /* Comments */
@@ -1056,20 +1084,14 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.loadForm
                     .get('timeFrom')
                     .patchValue(
-                        moment(
-                            loadStop.get('timeFrom').value,
-                            'HH:mm:SS A'
-                        ).toDate()
+                        convertTimeFromBackend(loadStop.get('timeFrom').value)
                     );
             }
             if (loadStop.get('timeTo').value) {
                 this.loadForm
                     .get('timeTo')
                     .patchValue(
-                        moment(
-                            loadStop.get('timeTo').value,
-                            'HH:mm:SS A'
-                        ).toDate()
+                        convertTimeFromBackend(loadStop.get('timeTo').value)
                     );
             }
         } else {
@@ -1611,7 +1633,15 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private addLoad() {
         const { ...form } = this.loadForm.value;
-        let newData: CreateLoadCommand = {
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        let newData: any = {
             type: this.headerTabs.find((item) => item.id === this.selectedTab)
                 .name as any,
             loadNumber: this.loadNumber,
@@ -1666,6 +1696,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
             advancePay: convertThousanSepInNumber(form.advancePay),
             additionalBillingRates: this.premmapedAdditionalBillingRate(),
             stops: this.premmapedStops() as any,
+            files: documents,
         };
 
         this.loadService
@@ -1677,10 +1708,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                         'Successfully created load',
                         'Success'
                     );
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                    });
                 },
                 error: (error: any) => {
                     this.notificationService.success(

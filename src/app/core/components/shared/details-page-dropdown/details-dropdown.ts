@@ -8,7 +8,6 @@ import {
     Output,
     SimpleChanges,
     ViewEncapsulation,
-    ChangeDetectorRef,
 } from '@angular/core';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import {
@@ -54,23 +53,8 @@ import {
             transition(':enter', [
                 style({ height: '10px', overflow: 'hidden' }),
                 animate(
-                    '100ms cubic-bezier(0, 0, 0.60, 1.99)',
+                    '300ms ease',
                     style({ height: '26px', overflow: 'auto' })
-                ),
-            ]),
-            transition(':leave', [
-                animate(
-                    '100ms cubic-bezier(0.68, -0.6, 0.32, 1.6)',
-                    style({ height: 0 })
-                ),
-            ]),
-        ]),
-        trigger('hideAnimation', [
-            transition(':enter', [
-                style({ height: '26px', overflow: 'hidden' }),
-                animate(
-                    '100ms ease',
-                    style({ height: '10px', overflow: 'auto' })
                 ),
             ]),
             transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
@@ -78,41 +62,10 @@ import {
         trigger('borderShowAnimation', [
             transition(':enter', [
                 style({ height: '0px', opacity: 0 }),
-                animate('100ms ease', style({ height: '*', opacity: 1 })),
+                animate('300ms ease', style({ height: '*', opacity: 1 })),
             ]),
             transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
         ]),
-        trigger('showAnimation2', [
-            state(
-                'true',
-                style({
-                    height: '26px',
-                    overflow: 'hidden'
-                })
-            ),
-            state(
-                'false',
-                style({
-                    height: '10px',
-                    overflow: 'auto'
-                })
-            ),
-            state(
-                'null',
-                style({
-                    height: '10px',
-                    overflow: 'hidden',
-                })
-            ),
-            transition('false => true', [
-                animate('100ms cubic-bezier(0, 0, 0.60, 1.99)'),
-            ]),
-            transition('true => false', [
-                animate('60ms ease'),
-            ]),
-            transition('true <=> false', [animate('0.1s ease')]),
-        ]),
-        
     ],
 })
 export class DetailsDropdownComponent implements OnInit, OnChanges {
@@ -129,13 +82,8 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     tooltip: any;
     dropDownActive: number = -1;
     subtypeHovered: any = false;
-    isAnimated: any = false;
-    isOpened: any = false;
 
-    constructor(
-        private DetailsDataService: DetailsDataService,
-        private ref: ChangeDetectorRef
-    ) {}
+    constructor(private DetailsDataService: DetailsDataService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.options?.currentValue) {
@@ -153,25 +101,15 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     toggleDropdown(tooltip: any) {
         this.tooltip = tooltip;
         if (tooltip.isOpen()) {
-            //this.dropdownClosed();
-            //tooltip.close();
-            console.log('--here----')
+            tooltip.close();
         } else {
-            
-            setTimeout(()=>{
-                this.isOpened = true;
-            }, 1)
-            
             tooltip.open({ data: this.dropContent });
             if (this.data) {
                 this.DetailsDataService.setNewData(this.data);
             }
         }
 
-        if ( tooltip.isOpen() ) {
-            this.dropDownActive = this.id;
-        }
-        //this.dropDownActive = tooltip.isOpen() ? this.id : -1;
+        this.dropDownActive = tooltip.isOpen() ? this.id : -1;
     }
 
     setDropContent() {
@@ -229,31 +167,8 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
     }
 
     dropdownClosed() {
-        if (!this.isOpened) {
-            return false;
-        }
-        
-        if (!this.isAnimated) {
-            this.isAnimated = true;
-            this.ref.detectChanges();
-            this.tooltip.open();
-        }
-
-        setTimeout(()=>{
-            this.isOpened = false;
-        }, 1);
-        
-        let mainElementHolder = document.querySelector(
-            '.details-dropdown-body'
-        );
-        mainElementHolder?.classList.add('closeAnimation');
-
-        setTimeout(() => {
-            this.tooltip.close();
-            this.isAnimated = false;
-            this.options.map((item) => {
-                item['openSubtype'] = false;
-            });
-        }, 70);
+        this.options.map((item) => {
+            item['openSubtype'] = false;
+        });
     }
 }

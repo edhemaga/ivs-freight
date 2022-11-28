@@ -9,11 +9,9 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import {
-    CreateRepairCommand,
     RepairModalResponse,
     RepairResponse,
     RepairShopResponse,
-    UpdateRepairCommand,
 } from 'appcoretruckassist';
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -88,6 +86,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public services: any[] = [];
     public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
 
     // Sum of items
     public subtotal: { id: number; value: number }[] = [];
@@ -153,6 +153,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             repairShopId: [null, Validators.required],
             items: this.formBuilder.array([]),
             note: [null],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.repairOrderForm);
@@ -480,6 +481,30 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.repairOrderForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.repairOrderForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     public identity(index: number, item: any): string {
@@ -612,10 +637,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepair() {
-        const { repairShopId, items, date, unit, odometer, invoice, ...form } =
+        const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
-        let newData: CreateRepairCommand = null;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        let newData: any = null;
 
         if (this.selectedHeaderTab === 2) {
             newData = {
@@ -638,6 +670,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     };
                 }),
                 items: this.premmapedItems(),
+                files: documents,
             };
         } else {
             newData = {
@@ -667,6 +700,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     };
                 }),
                 items: this.premmapedItems(),
+                files: documents,
             };
         }
 
@@ -690,10 +724,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepair(id: number) {
-        const { repairShopId, items, date, unit, odometer, invoice, ...form } =
+        const { date, unit, odometer, invoice, ...form } =
             this.repairOrderForm.value;
 
-        let newData: UpdateRepairCommand = null;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        let newData: any = null;
 
         if (this.selectedHeaderTab === 2) {
             newData = {
@@ -718,6 +759,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     };
                 }),
                 items: this.premmapedItems(),
+                files: documents ? documents : this.repairOrderForm.value.files,
+                filesForDeleteIds: this.filesForDelete,
             };
         } else {
             newData = {
@@ -752,6 +795,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     };
                 }),
                 items: this.premmapedItems(),
+                files: documents ? documents : this.repairOrderForm.value.files,
+                filesForDeleteIds: this.filesForDelete,
             };
         }
 
@@ -877,6 +922,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         ),
                         'edit-mode'
                     );
+
+                    this.documents = res.files;
 
                     this.repairOrderForm.patchValue({
                         repairType: res.repairType ? res.repairType.name : null,

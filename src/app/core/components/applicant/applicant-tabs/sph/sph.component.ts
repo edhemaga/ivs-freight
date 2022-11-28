@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
@@ -9,17 +9,21 @@ import { convertDateFromBackend } from './../../../../utils/methods.calculations
 
 import { SphModalComponent } from './sph-modal/sph-modal.component';
 
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import {
+    ApplicantResponse,
+    SphFeedbackResponse,
+    UpdateSphCommand,
+} from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { ApplicantResponse, UpdateSphCommand } from 'appcoretruckassist';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
     selector: 'app-sph',
@@ -37,6 +41,7 @@ export class SphComponent implements OnInit, OnDestroy {
 
     public signature: string;
     public signatureImgSrc: string;
+    public displaySignatureRequiredNote: boolean = false;
 
     public applicantCardInfo: any;
 
@@ -77,7 +82,24 @@ export class SphComponent implements OnInit, OnDestroy {
                 };
 
                 this.applicantId = res.id;
+
+                if (res.sph) {
+                    this.patchStepValues(res.sph);
+                }
             });
+    }
+
+    public patchStepValues(stepValues: SphFeedbackResponse): void {
+        console.log('stepValues', stepValues);
+        const { authorize, hasReadAndUnderstood, signature } = stepValues;
+
+        this.sphForm.patchValue({
+            isTested: authorize,
+            hasReadAndUnderstood,
+        });
+
+        this.signatureImgSrc = signature;
+        this.signature = signature;
     }
 
     public handleCheckboxParagraphClick(type: string): void {
@@ -105,6 +127,12 @@ export class SphComponent implements OnInit, OnDestroy {
             this.signature = this.imageBase64Service.getStringFromBase64(event);
         } else {
             this.signature = null;
+        }
+    }
+
+    public onRemoveSignatureRequiredNoteAction(event: any): void {
+        if (event) {
+            this.displaySignatureRequiredNote = false;
         }
     }
 
@@ -140,9 +168,9 @@ export class SphComponent implements OnInit, OnDestroy {
                 this.inputService.markInvalid(this.sphForm);
             }
 
-            /* if (!this.signature) {
-        
-      } */
+            if (!this.signature) {
+                this.displaySignatureRequiredNote = true;
+            }
 
             return;
         }
@@ -159,15 +187,30 @@ export class SphComponent implements OnInit, OnDestroy {
                     : this.signatureImgSrc,
         };
 
-        console.log('saveData', saveData);
-
         this.applicantActionsService
             .updateSph(saveData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
                     this.router.navigate([`/hos-rules/${this.applicantId}`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                sph: {
+                                    ...store.applicant.sph,
+                                    authorize: saveData.authorize,
+                                    hasReadAndUnderstood:
+                                        saveData.hasReadAndUnderstood,
+                                    signature: saveData.signature,
+                                },
+                            },
+                        };
+                    });
                 },
+
                 error: (err) => {
                     console.log(err);
                 },

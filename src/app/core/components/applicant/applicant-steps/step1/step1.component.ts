@@ -15,6 +15,8 @@ import {
     anyInputInLineIncorrect,
     isAnyValueInArrayTrue,
     isFormValueNotEqual,
+    isAnyRadioInArrayUnChecked,
+    filterUnceckedRadiosId,
 } from '../../state/utils/utils';
 
 import {
@@ -50,7 +52,6 @@ import {
     AddressEntity,
     CreateResponse,
     UpdatePersonalInfoCommand,
-    CreatePersonalInfoReviewCommand,
     PersonalInfoFeedbackResponse,
     ApplicantResponse,
     ApplicantModalResponse,
@@ -66,9 +67,22 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public personalInfoRadios: any;
+
+    public displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    }[] = [
+        { id: 0, displayRadioRequiredNote: false },
+        { id: 1, displayRadioRequiredNote: false },
+        { id: 2, displayRadioRequiredNote: false },
+        { id: 3, displayRadioRequiredNote: false },
+        { id: 4, displayRadioRequiredNote: false },
+        { id: 5, displayRadioRequiredNote: false },
+        { id: 6, displayRadioRequiredNote: false },
+    ];
 
     public subscription: Subscription;
 
@@ -77,7 +91,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     public companyName: string;
 
     public applicantId: number;
-    public personalInfoId: number;
+    public personalInfoId: number | null = null;
     public previousAddressesId: number[];
 
     public personalInfoForm: FormGroup;
@@ -107,25 +121,48 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     public questions: ApplicantQuestion[] = [
         {
-            title: 'Do you have legal right to work in the US?',
-            formControlName: 'legalWork',
-            formControlNameExplain: 'legalWorkExplain',
+            title: 'Are you a US citizen?',
+            formControlName: 'usCitizen',
+            formControlNameExplain: 'usCitizenExplain',
             answerChoices: [
                 {
                     id: 1,
                     label: 'YES',
-                    value: 'legalWorkYes',
-                    name: 'legalWorkYes',
+                    value: 'usCitizenYes',
+                    name: 'usCitizenYes',
                     checked: false,
                     index: 0,
                 },
                 {
                     id: 2,
                     label: 'NO',
+                    value: 'usCitizenNo',
+                    name: 'usCitizenNo',
+                    checked: false,
+                    index: 0,
+                },
+            ],
+        },
+        {
+            title: 'Do you have legal right to work in the US?',
+            formControlName: 'legalWork',
+            formControlNameExplain: 'legalWorkExplain',
+            answerChoices: [
+                {
+                    id: 3,
+                    label: 'YES',
+                    value: 'legalWorkYes',
+                    name: 'legalWorkYes',
+                    checked: false,
+                    index: 1,
+                },
+                {
+                    id: 4,
+                    label: 'NO',
                     value: 'legalWorkNo',
                     name: 'legalWorkNo',
                     checked: false,
-                    index: 0,
+                    index: 1,
                 },
             ],
         },
@@ -135,20 +172,20 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             formControlNameExplain: 'anotherNameExplain',
             answerChoices: [
                 {
-                    id: 3,
+                    id: 5,
                     label: 'YES',
                     value: 'anotherNameYes',
                     name: 'anotherNameYes',
                     checked: false,
-                    index: 1,
+                    index: 2,
                 },
                 {
-                    id: 4,
+                    id: 6,
                     label: 'NO',
                     value: 'anotherNameNo',
                     name: 'anotherNameNo',
                     checked: false,
-                    index: 1,
+                    index: 2,
                 },
             ],
         },
@@ -158,20 +195,20 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             formControlNameExplain: 'inMilitaryExplain',
             answerChoices: [
                 {
-                    id: 5,
+                    id: 7,
                     label: 'YES',
                     value: 'inMilitaryYes',
                     name: 'inMilitaryYes',
                     checked: false,
-                    index: 2,
+                    index: 3,
                 },
                 {
-                    id: 6,
+                    id: 8,
                     label: 'NO',
                     value: 'inMilitaryNo',
                     name: 'inMilitaryNo',
                     checked: false,
-                    index: 2,
+                    index: 3,
                 },
             ],
         },
@@ -181,20 +218,20 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             formControlNameExplain: 'felonyExplain',
             answerChoices: [
                 {
-                    id: 7,
+                    id: 9,
                     label: 'YES',
                     value: 'felonyYes',
                     name: 'felonyYes',
                     checked: false,
-                    index: 3,
+                    index: 4,
                 },
                 {
-                    id: 8,
+                    id: 10,
                     label: 'NO',
                     value: 'felonyNo',
                     name: 'felonyNo',
                     checked: false,
-                    index: 3,
+                    index: 4,
                 },
             ],
         },
@@ -204,20 +241,20 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             formControlNameExplain: 'misdemeanorExplain',
             answerChoices: [
                 {
-                    id: 9,
+                    id: 11,
                     label: 'YES',
                     value: 'misdemeanorYes',
                     name: 'misdemeanorYes',
                     checked: false,
-                    index: 4,
+                    index: 5,
                 },
                 {
-                    id: 10,
+                    id: 12,
                     label: 'NO',
                     value: 'misdemeanorNo',
                     name: 'misdemeanorNo',
                     checked: false,
-                    index: 4,
+                    index: 5,
                 },
             ],
         },
@@ -227,20 +264,20 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             formControlNameExplain: 'drunkDrivingExplain',
             answerChoices: [
                 {
-                    id: 11,
+                    id: 13,
                     label: 'YES',
                     value: 'drunkDrivingYes',
                     name: 'drunkDrivingYes',
                     checked: false,
-                    index: 5,
+                    index: 6,
                 },
                 {
-                    id: 12,
+                    id: 14,
                     label: 'NO',
                     value: 'drunkDrivingNo',
                     name: 'drunkDrivingNo',
                     checked: false,
-                    index: 5,
+                    index: 6,
                 },
             ],
         },
@@ -317,6 +354,12 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
         },
+        {
+            lineIndex: 15,
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        },
     ];
     public cardReviewIndex: number = 0;
     public hasIncorrectFields: boolean = false;
@@ -366,13 +409,15 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             bankId: [null, [...bankValidation]],
             accountNumber: [null, accountBankValidation],
             routingNumber: [null, routingBankValidation],
+            usCitizen: [null, Validators.required],
+            usCitizenExplain: [null],
             legalWork: [null, Validators.required],
+            legalWorkExplain: [null],
             anotherName: [null, Validators.required],
             inMilitary: [null, Validators.required],
             felony: [null, Validators.required],
             misdemeanor: [null, Validators.required],
             drunkDriving: [null, Validators.required],
-            legalWorkExplain: [null],
             anotherNameExplain: [null],
             inMilitaryExplain: [null],
             felonyExplain: [null],
@@ -390,6 +435,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             questionReview4: [null],
             questionReview5: [null],
             questionReview6: [null],
+            questionReview7: [null],
         });
 
         this.inputService.customInputValidator(
@@ -428,13 +474,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             bankName,
             accountNumber,
             routingNumber,
+            usCitizen,
             legalWork,
             anotherName,
             inMilitary,
             felony,
             misdemeanor,
             drunkDriving,
-            // legalWorkDescription,
             anotherNameDescription,
             inMilitaryDescription,
             felonyDescription,
@@ -451,16 +497,16 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             phone,
             email,
             ssn,
-            bankId: bankName,
+            bankId: bankName ? bankName : null,
             accountNumber,
             routingNumber,
+            usCitizen,
             legalWork,
             anotherName,
             inMilitary,
             felony,
             misdemeanor,
             drunkDriving,
-            // legalWorkExplain: legalWorkDescription,
             anotherNameExplain: anotherNameDescription,
             inMilitaryExplain: inMilitaryDescription,
             felonyExplain: felonyDescription,
@@ -468,7 +514,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             drunkDrivingExplain: drunkDrivingDescription,
         });
 
-        let bankId: any;
+        let bankId: any = null;
 
         if (bank) {
             const { id: bankNumberId } = bank;
@@ -487,7 +533,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 this.personalInfoForm.get('isAgreement').value;
 
             if (isAgreementValue) {
-                if (legalWork) {
+                if (usCitizen) {
                     this.personalInfoRadios[0].buttons[0].checked = true;
                 } else {
                     this.personalInfoRadios[0].buttons[1].checked = true;
@@ -498,58 +544,69 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     }
                 }
 
-                if (anotherName) {
+                if (legalWork) {
                     this.personalInfoRadios[1].buttons[0].checked = true;
                 } else {
                     this.personalInfoRadios[1].buttons[1].checked = true;
 
-                    if (anotherName === null) {
+                    if (legalWork === null) {
                         this.personalInfoRadios[1].buttons[0].checked = false;
                         this.personalInfoRadios[1].buttons[1].checked = false;
                     }
                 }
 
-                if (inMilitary) {
+                if (anotherName) {
                     this.personalInfoRadios[2].buttons[0].checked = true;
                 } else {
                     this.personalInfoRadios[2].buttons[1].checked = true;
 
-                    if (inMilitary === null) {
+                    if (anotherName === null) {
                         this.personalInfoRadios[2].buttons[0].checked = false;
                         this.personalInfoRadios[2].buttons[1].checked = false;
                     }
                 }
 
-                if (felony) {
+                if (inMilitary) {
                     this.personalInfoRadios[3].buttons[0].checked = true;
                 } else {
                     this.personalInfoRadios[3].buttons[1].checked = true;
 
-                    if (felony === null) {
+                    if (inMilitary === null) {
                         this.personalInfoRadios[3].buttons[0].checked = false;
                         this.personalInfoRadios[3].buttons[1].checked = false;
                     }
                 }
 
-                if (misdemeanor) {
+                if (felony) {
                     this.personalInfoRadios[4].buttons[0].checked = true;
                 } else {
                     this.personalInfoRadios[4].buttons[1].checked = true;
 
-                    if (misdemeanor === null) {
+                    if (felony === null) {
                         this.personalInfoRadios[4].buttons[0].checked = false;
                         this.personalInfoRadios[4].buttons[1].checked = false;
                     }
                 }
 
-                if (drunkDriving) {
+                if (misdemeanor) {
                     this.personalInfoRadios[5].buttons[0].checked = true;
                 } else {
                     this.personalInfoRadios[5].buttons[1].checked = true;
 
-                    if (drunkDriving === null) {
+                    if (misdemeanor === null) {
                         this.personalInfoRadios[5].buttons[0].checked = false;
                         this.personalInfoRadios[5].buttons[1].checked = false;
+                    }
+                }
+
+                if (drunkDriving) {
+                    this.personalInfoRadios[6].buttons[0].checked = true;
+                } else {
+                    this.personalInfoRadios[6].buttons[1].checked = true;
+
+                    if (drunkDriving === null) {
+                        this.personalInfoRadios[6].buttons[0].checked = false;
+                        this.personalInfoRadios[6].buttons[1].checked = false;
                     }
                 }
             }
@@ -591,11 +648,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 });
 
                 if (this.selectedMode === SelectedMode.REVIEW) {
-                    const {
-                        isAddressValid,
-                        isAddressUnitValid,
-                        addressMessage,
-                    } = personalInfoReview || {};
+                    let { isAddressValid, isAddressUnitValid, addressMessage } =
+                        personalInfoReview || {};
 
                     const firstEmptyObjectInList =
                         this.openAnnotationArray.find(
@@ -607,16 +661,25 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                             firstEmptyObjectInList
                         );
 
+                    if (
+                        isAddressValid == undefined ||
+                        isAddressValid === null
+                    ) {
+                        isAddressValid = true;
+                    }
+
+                    if (
+                        isAddressUnitValid == undefined ||
+                        isAddressUnitValid === null
+                    ) {
+                        isAddressUnitValid = true;
+                    }
+
                     this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
                         lineIndex: this.openAnnotationArray.indexOf(
                             firstEmptyObjectInList
                         ),
-                        lineInputs: [
-                            isAddressValid === null ? false : !isAddressValid,
-                            isAddressUnitValid === null
-                                ? false
-                                : !isAddressUnitValid,
-                        ],
+                        lineInputs: [!isAddressValid, !isAddressUnitValid],
                         displayAnnotationButton:
                             (!isAddressValid || !isAddressUnitValid) &&
                             !addressMessage
@@ -628,7 +691,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     };
 
                     this.previousAddresses.at(addresses.length - 1).patchValue({
-                        [`cardReview${i + 1}`]: addressMessage,
+                        [`cardReview${i + 1}`]: addressMessage
+                            ? addressMessage
+                            : null,
                     });
                 }
             } else {
@@ -651,7 +716,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     const selectedPreviousAddressReview =
                         previousAddresses[i].previousAddressReview;
 
-                    let isPreviousAddressValid: any = null;
+                    let isPreviousAddressValid: any = true;
                     let previousAddressMessage: any = null;
 
                     if (selectedPreviousAddressReview) {
@@ -662,10 +727,12 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                             selectedPreviousAddressReview.previousAddressMessage;
                     }
 
-                    console.log(
-                        'isPreviousAddressValid',
-                        isPreviousAddressValid
-                    );
+                    if (
+                        isPreviousAddressValid == undefined ||
+                        isPreviousAddressValid === null
+                    ) {
+                        isPreviousAddressValid = true;
+                    }
 
                     const firstEmptyObjectInList =
                         this.openAnnotationArray.find(
@@ -681,11 +748,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         lineIndex: this.openAnnotationArray.indexOf(
                             firstEmptyObjectInList
                         ),
-                        lineInputs: [
-                            isPreviousAddressValid === null
-                                ? false
-                                : !isPreviousAddressValid,
-                        ],
+                        lineInputs: [!isPreviousAddressValid],
                         displayAnnotationButton:
                             !isPreviousAddressValid && !previousAddressMessage
                                 ? true
@@ -695,13 +758,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                             : false,
                     };
 
-                    console.log(
-                        'this.openAnnotationArray',
-                        this.openAnnotationArray
-                    );
-
                     this.previousAddresses.at(i).patchValue({
-                        [`cardReview${i + 1}`]: previousAddressMessage,
+                        [`cardReview${i + 1}`]: previousAddressMessage
+                            ? previousAddressMessage
+                            : null,
                     });
                 }
             }
@@ -721,12 +781,12 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     isPhoneValid,
                     phoneMessage,
                     isSsnValid,
-                    // ssnBankMessage,
+                    ssnMessage,
                     isAccountNumberValid,
-                    isRoutingNumberValid,
-                    accountRoutingMessage,
-                    isLegalWorkValid,
-                    legalWorkMessage,
+                    // isRoutingNumberValid,
+                    // accountRoutingMessage,
+                    // isLegalWorkValid,
+                    // legalWorkMessage,
                     isAnotherNameValid,
                     anotherNameMessage,
                     isInMilitaryValid,
@@ -767,29 +827,29 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 this.openAnnotationArray[7] = {
                     ...this.openAnnotationArray[7],
                     lineInputs: [!isSsnValid],
-                    // displayAnnotationButton:
-                    //   !isSsnValid && !ssnBankMessage ? true : false,
-                    // displayAnnotationTextArea: ssnBankMessage ? true : false,
-                };
-                this.openAnnotationArray[8] = {
-                    ...this.openAnnotationArray[8],
-                    lineInputs: [!isAccountNumberValid, !isRoutingNumberValid],
                     displayAnnotationButton:
-                        (!isAccountNumberValid || !isRoutingNumberValid) &&
-                        !accountRoutingMessage
-                            ? true
-                            : false,
-                    displayAnnotationTextArea: accountRoutingMessage
-                        ? true
-                        : false,
+                        !isSsnValid && !ssnMessage ? true : false,
+                    displayAnnotationTextArea: ssnMessage ? true : false,
                 };
-                this.openAnnotationArray[9] = {
-                    ...this.openAnnotationArray[9],
-                    lineInputs: [!isLegalWorkValid],
-                    displayAnnotationButton:
-                        !isLegalWorkValid && !legalWorkMessage ? true : false,
-                    displayAnnotationTextArea: legalWorkMessage ? true : false,
-                };
+                // this.openAnnotationArray[8] = {
+                //     ...this.openAnnotationArray[8],
+                //     lineInputs: [!isAccountNumberValid, !isRoutingNumberValid],
+                //     displayAnnotationButton:
+                //         (!isAccountNumberValid || !isRoutingNumberValid) &&
+                //         !accountRoutingMessage
+                //             ? true
+                //             : false,
+                //     displayAnnotationTextArea: accountRoutingMessage
+                //         ? true
+                //         : false,
+                // };
+                // this.openAnnotationArray[9] = {
+                //     ...this.openAnnotationArray[9],
+                //     lineInputs: [!isLegalWorkValid],
+                //     displayAnnotationButton:
+                //         !isLegalWorkValid && !legalWorkMessage ? true : false,
+                //     displayAnnotationTextArea: legalWorkMessage ? true : false,
+                // };
                 this.openAnnotationArray[10] = {
                     ...this.openAnnotationArray[10],
                     lineInputs: [!isAnotherNameValid],
@@ -853,10 +913,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 this.personalInfoForm.patchValue({
                     firstRowReview: personalInfoMessage,
                     secondRowReview: phoneMessage,
-                    // thirdRowReview: ssnBankMessage,
-                    fourthRowReview: accountRoutingMessage,
+                    thirdRowReview: ssnMessage,
+                    // fourthRowReview: accountRoutingMessage,
 
-                    questionReview1: legalWorkMessage,
+                    // questionReview1: legalWorkMessage,
                     questionReview2: anotherNameMessage,
                     questionReview3: inMilitaryMessage,
                     questionReview4: felonyMessage,
@@ -936,6 +996,18 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                             selectedExplainFormControlName
                         )
                     );
+
+                    if (
+                        selectedCheckbox.index === 0 ||
+                        selectedCheckbox.index === 1
+                    ) {
+                        this.inputService.changeValidators(
+                            this.personalInfoForm.get(
+                                selectedExplainFormControlName
+                            ),
+                            false
+                        );
+                    }
                 } else {
                     this.personalInfoForm
                         .get(selectedFormControlName)
@@ -948,6 +1020,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         false
                     );
                 }
+
+                this.displayRadioRequiredNoteArray[
+                    selectedCheckbox.index
+                ].displayRadioRequiredNote = false;
 
                 break;
             case InputSwitchActions.PREVIOUS_ADDRESS:
@@ -980,12 +1056,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.personalInfoForm
             .get('bankId')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                this.isBankSelected = this.bankVerificationService.onSelectBank(
-                    this.selectedBank ? this.selectedBank.name : value,
-                    this.personalInfoForm.get('routingNumber'),
-                    this.personalInfoForm.get('accountNumber')
-                );
+            .subscribe(async (value) => {
+                this.isBankSelected =
+                    await this.bankVerificationService.onSelectBank(
+                        this.selectedBank ? this.selectedBank.name : value,
+                        this.personalInfoForm.get('routingNumber'),
+                        this.personalInfoForm.get('accountNumber')
+                    );
             });
     }
 
@@ -1196,6 +1273,12 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.isEditingArray[lastAddressIndex].isEditing = true;
     }
 
+    public onGetBtnClickValue(event: any): void {
+        if (event.notDisabledClick) {
+            this.onAddNewAddress();
+        }
+    }
+
     public getDropdownLists(): void {
         this.applicantQuery.applicantDropdownLists$
             .pipe(takeUntil(this.destroy$))
@@ -1254,33 +1337,20 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                                 .get('firstRowReview')
                                 .patchValue(null);
                         }
-
                         break;
                     case 1:
                         this.personalInfoForm
                             .get('secondRowReview')
                             .patchValue(null);
-
                         break;
                     case 7:
                         this.personalInfoForm
                             .get('thirdRowReview')
                             .patchValue(null);
-
                         break;
                     case 8:
                         this.personalInfoForm
                             .get('fourthRowReview')
-                            .patchValue(null);
-                        break;
-                    case 9:
-                        this.personalInfoForm
-                            .get('questionReview1')
-                            .patchValue(null);
-                        break;
-                    case 10:
-                        this.personalInfoForm
-                            .get('questionReview2')
                             .patchValue(null);
                         break;
                     case 11:
@@ -1301,6 +1371,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     case 14:
                         this.personalInfoForm
                             .get('questionReview6')
+                            .patchValue(null);
+                        break;
+                    case 15:
+                        this.personalInfoForm
+                            .get('questionReview7')
                             .patchValue(null);
                         break;
 
@@ -1480,11 +1555,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                                         ].addressUnit;
                                 }
 
-                                if (keyName === 'legalwork') {
-                                    o['legalwork'] =
-                                        updatedFormValues.legalWorkExplain;
-                                }
-
                                 if (keyName === 'anothername') {
                                     o['anothername'] =
                                         updatedFormValues.anotherNameExplain;
@@ -1625,11 +1695,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             }
         }
 
-        if (this.personalInfoForm.invalid) {
-            this.inputService.markInvalid(this.personalInfoForm);
-            return;
-        }
-
         const {
             firstRowReview,
             secondRowReview,
@@ -1646,14 +1711,65 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             email,
             previousAddresses,
             bankId,
+            usCitizen,
+            usCitizenExplain,
+            legalWork,
             legalWorkExplain,
+            anotherName,
             anotherNameExplain,
+            inMilitary,
             inMilitaryExplain,
+            felony,
             felonyExplain,
+            misdemeanor,
             misdemeanorExplain,
+            drunkDriving,
             drunkDrivingExplain,
             ...personalInfoForm
         } = this.personalInfoForm.value;
+
+        const radioButtons = [
+            { id: 0, isChecked: usCitizen },
+            { id: 1, isChecked: legalWork },
+            {
+                id: 2,
+                isChecked: anotherName,
+            },
+            { id: 3, isChecked: inMilitary },
+            { id: 4, isChecked: felony },
+            { id: 5, isChecked: misdemeanor },
+            { id: 6, isChecked: drunkDriving },
+        ];
+
+        const isAnyRadioUnchecked = isAnyRadioInArrayUnChecked(radioButtons);
+
+        if (this.personalInfoForm.invalid || isAnyRadioUnchecked) {
+            if (this.personalInfoForm.invalid) {
+                this.inputService.markInvalid(this.personalInfoForm);
+            }
+
+            if (isAnyRadioUnchecked) {
+                const uncheckedRadios = filterUnceckedRadiosId(radioButtons);
+
+                this.displayRadioRequiredNoteArray =
+                    this.displayRadioRequiredNoteArray.map((item, index) => {
+                        if (
+                            uncheckedRadios.some(
+                                (someItem) => someItem === index
+                            )
+                        ) {
+                            return {
+                                ...item,
+                                displayRadioRequiredNote: true,
+                            };
+                        }
+
+                        return item;
+                    });
+            }
+
+            return;
+        }
 
         this.selectedAddresses = this.selectedAddresses.filter(
             (item) => item.address
@@ -1683,11 +1799,17 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                           (item, index) =>
                               index !== this.selectedAddresses.length - 1
                       ),
-            legalWorkDescription: legalWorkExplain,
+            usCitizen,
+            legalWork,
+            anotherName,
             anotherNameDescription: anotherNameExplain,
+            inMilitary,
             inMilitaryDescription: inMilitaryExplain,
+            felony,
             felonyDescription: felonyExplain,
+            misdemeanor,
             misdemeanorDescription: misdemeanorExplain,
+            drunkDriving,
             drunkDrivingDescription: drunkDrivingExplain,
         };
 
@@ -1772,8 +1894,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         };
                     });
 
-                    console.log('STORE', this.applicantStore);
-
                     if (this.selectedMode === SelectedMode.FEEDBACK) {
                         if (this.subscription) {
                             this.subscription.unsubscribe();
@@ -1792,12 +1912,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             secondRowReview,
             thirdRowReview,
             fourthRowReview,
-            questionReview1,
-            questionReview2,
             questionReview3,
             questionReview4,
             questionReview5,
             questionReview6,
+            questionReview7,
         } = this.personalInfoForm.value;
 
         const previousAddresses =
@@ -1823,9 +1942,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                       };
                   });
 
-        const saveData: CreatePersonalInfoReviewCommand = {
+        const saveData: any = {
             applicantId: this.applicantId,
-            // personalInfoId: this.personalInfoId,
+            id: this.personalInfoId,
             isFirstNameValid: !this.openAnnotationArray[0].lineInputs[0],
             isLastNameValid: !this.openAnnotationArray[0].lineInputs[1],
             isDoBValid: !this.openAnnotationArray[0].lineInputs[2],
@@ -1849,25 +1968,26 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                       .value
                 : null,
             isSsnValid: !this.openAnnotationArray[7].lineInputs[0],
-            // isBankValid: !this.openAnnotationArray[7].lineInputs[1],
-            // ssnBankMessage: thirdRowReview,
+            ssnMessage: thirdRowReview,
             isAccountNumberValid: !this.openAnnotationArray[8].lineInputs[0],
             isRoutingNumberValid: !this.openAnnotationArray[8].lineInputs[1],
             accountRoutingMessage: fourthRowReview,
-            isLegalWorkValid: !this.openAnnotationArray[9].lineInputs[0],
-            legalWorkMessage: questionReview1,
-            isAnotherNameValid: !this.openAnnotationArray[10].lineInputs[0],
-            anotherNameMessage: questionReview2,
-            isInMilitaryValid: !this.openAnnotationArray[11].lineInputs[0],
-            inMilitaryMessage: questionReview3,
-            isFelonyValid: !this.openAnnotationArray[12].lineInputs[0],
-            felonyMessage: questionReview4,
-            isMisdemeanorValid: !this.openAnnotationArray[13].lineInputs[0],
-            misdemeanorMessage: questionReview5,
-            isDrunkDrivingValid: !this.openAnnotationArray[14].lineInputs[0],
-            drunkDrivingMessage: questionReview6,
+            isLegalWorkValid: true,
+            legalWorkMessage: null,
+            isAnotherNameValid: !this.openAnnotationArray[11].lineInputs[0],
+            anotherNameMessage: questionReview3,
+            isInMilitaryValid: !this.openAnnotationArray[12].lineInputs[0],
+            inMilitaryMessage: questionReview4,
+            isFelonyValid: !this.openAnnotationArray[13].lineInputs[0],
+            felonyMessage: questionReview5,
+            isMisdemeanorValid: !this.openAnnotationArray[14].lineInputs[0],
+            misdemeanorMessage: questionReview6,
+            isDrunkDrivingValid: !this.openAnnotationArray[15].lineInputs[0],
+            drunkDrivingMessage: questionReview7,
             previousAddressReviews: [...previousAddresses],
         };
+
+        console.log('saveData', saveData);
 
         this.applicantActionsService
             .createPersonalInfoReview(saveData)

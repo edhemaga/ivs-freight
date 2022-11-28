@@ -32,20 +32,18 @@
                 <!-------------------------------- Basic Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 1">
                     <!-- Company owned -->
-                    <div class="custom-checkbox-card">
-                        <div class="divider"></div>
-                        <div
-                            class="checkbox-card-header"
-                            [ngClass]="{
-                                pointer: parkingForm.get('isOwner').value
-                            }"
-                        >
-                            <app-ta-checkbox
-                                formControlName="isOwner"
-                                [label]="'Company Owned'"
-                            ></app-ta-checkbox>
-                        </div>
-                        <div class="checkbox-card-body active-20">
+                    <app-ta-checkbox-card
+                        formControlName="isOwner"
+                        [label]="'Company Owned'"
+                        [name]="'company-owned'"
+                        [reverseLogic]="true"
+                        [isCardOpen]="parkingForm.get('isOwner').value"
+                        [animationMarginParams]="{
+                            marginTop: '12px',
+                            marginBottom: '22px'
+                        }"
+                    >
+                        <ng-container bodyFalse>
                             <div class="row">
                                 <div class="col-12">
                                     <app-ta-input
@@ -57,7 +55,7 @@
                                             isRequired: true,
                                             autoFocus:
                                                 editData?.type !== 'edit',
-                                            textTransform: 'capitalize',
+                                            textTransform: 'uppercase',
                                             minLength: 1,
                                             maxLength: 64
                                         }"
@@ -92,7 +90,7 @@
                                         [inputConfig]="{
                                             name: 'address-unit',
                                             type: 'text',
-                                            label: 'Unit No.',
+                                            label: 'Unit #',
                                             textTransform: 'uppercase',
                                             minLength: 1,
                                             maxLength: 10
@@ -101,7 +99,7 @@
                                 </div>
                             </div>
                             <div
-                                class="phone-ext-email-small-modal last-row"
+                                class="phone-ext-email-small-modal row-no-m"
                                 [ngClass]="{
                                     'active-phone-ext': isPhoneExtExist
                                 }"
@@ -163,8 +161,9 @@
                                     ></app-ta-input>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </ng-container>
+                    </app-ta-checkbox-card>
+
                     <!-- Parking Slot -->
                     <app-ta-custom-card
                         [hasCounter]="
@@ -282,7 +281,7 @@
                                     type: 'text',
                                     label: 'Pay Period',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-148'
+                                    dropdownWidthClass: 'w-col-144'
                                 }"
                                 [options]="payPeriods"
                                 [activeItem]="selectedPayPeriod"
@@ -299,7 +298,7 @@
                                     isDropdown: true,
                                     isDisabled:
                                         !parkingForm.get('payPeriod').value,
-                                    dropdownWidthClass: 'w-col-148'
+                                    dropdownWidthClass: 'w-col-144'
                                 }"
                                 [options]="
                                     selectedDay?.name === 'Weekly'

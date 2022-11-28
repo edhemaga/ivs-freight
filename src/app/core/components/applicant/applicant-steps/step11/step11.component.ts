@@ -4,21 +4,21 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
     ApplicantResponse,
     AuthorizationFeedbackResponse,
     CreateAuthorizationReviewCommand,
     UpdateAuthorizationCommand,
 } from 'appcoretruckassist';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
     selector: 'app-step11',
@@ -36,6 +36,7 @@ export class Step11Component implements OnInit, OnDestroy {
 
     public signature: string;
     public signatureImgSrc: string;
+    public displaySignatureRequiredNote: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -96,8 +97,8 @@ export class Step11Component implements OnInit, OnDestroy {
 
     public handleCheckboxParagraphClick(type: string): void {
         if (
-            this.selectedMode === 'FEEDBACK_MODE' ||
-            this.selectedMode === 'REVIEW_MODE'
+            this.selectedMode === SelectedMode.FEEDBACK ||
+            this.selectedMode === SelectedMode.REVIEW
         ) {
             return;
         }
@@ -149,6 +150,12 @@ export class Step11Component implements OnInit, OnDestroy {
         }
     }
 
+    public onRemoveSignatureRequiredNoteAction(event: any): void {
+        if (event) {
+            this.displaySignatureRequiredNote = false;
+        }
+    }
+
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
             if (
@@ -174,8 +181,9 @@ export class Step11Component implements OnInit, OnDestroy {
                 this.inputService.markInvalid(this.authorizationForm);
             }
 
-            /*  if (!this.signature) {
-      } */
+            if (!this.signature) {
+                this.displaySignatureRequiredNote = true;
+            }
 
             return;
         }

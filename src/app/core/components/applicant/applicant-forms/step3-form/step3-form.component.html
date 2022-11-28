@@ -195,82 +195,52 @@
         </div>
     </div>
 
-    <!-- ADD MORE LICENSES -->
+    <!-- BTN -->
 
-    <div class="d-flex align-items-center btn-container">
-        <h4
-            class="text-center m-0 ta-font-bold"
-            *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
-        >
-            List any additional license(s) held in past 3 years
-        </h4>
+    <ng-container *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing">
+        <div class="d-flex align-items-center">
+            <h4 class="m-0 text-center ta-font-bold add-license-title">
+                List any additional license(s) held in past 3 years
+            </h4>
 
-        <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-            (click)="onAddLicense()"
-            [ngClass]="{
-                disabled: licenseForm.invalid
-            }"
-            *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
-        >
-            <svg-icon
-                class="plus-icon"
-                src="assets/svg/common/ic_plus.svg
-        "
-                [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                }"
-            ></svg-icon>
-
-            Add License
-        </button>
-
-        <div
-            class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
-            *ngIf="isEditing"
-        >
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-                (click)="onCancelEditLicense()"
-            >
-                Cancel
-            </button>
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-                (click)="onSaveEditedLicense()"
-                [ngClass]="{
-                    disabled: !isLicenseEdited
-                }"
-            >
-                Save Changes
-            </button>
+            <app-applicant-add-save-btn
+                [addBtn]="true"
+                [btnText]="'Add License'"
+                [disabledValue]="licenseForm.invalid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
         </div>
+    </ng-container>
 
-        <div
-            class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
-            *ngIf="isReviewingCard"
-        >
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-                (click)="onCancelReviewLicense()"
-            >
-                Cancel
-            </button>
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-                [ngClass]="{
-                    disabled: !isCardReviewedIncorrect
-                }"
-                (click)="onAddAnnotation()"
-            >
-                Add Annotation
-            </button>
+    <ng-container *ngIf="isEditing">
+        <div class="d-flex align-items-center justify-content-center">
+            <app-applicant-add-save-btn
+                [cancelBtn]="true"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+
+            <app-applicant-add-save-btn
+                [saveBtn]="true"
+                [disabledValue]="!isLicenseEdited || !licenseForm.valid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
         </div>
-    </div>
+    </ng-container>
+
+    <ng-container *ngIf="isReviewingCard">
+        <div class="d-flex align-items-center justify-content-center">
+            <app-applicant-add-save-btn
+                [cancelBtn]="true"
+                [reviewBtn]="true"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+
+            <app-applicant-add-save-btn
+                [saveBtn]="true"
+                [reviewBtn]="true"
+                [disabledValue]="!isCardReviewedIncorrect"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </div>
+    </ng-container>
 </div>

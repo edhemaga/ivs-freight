@@ -10,7 +10,7 @@
                 class="d-flex align-items-center tab"
                 [routerLinkActive]="
                     selectedMode === 'REVIEW_MODE' &&
-                    reviewStoreArr[i].isReviewed &&
+                    isTabCompletedArray[i].isReviewed &&
                     !reviewStoreArr[i].hasIncorrectAnswer
                         ? 'tab-active'
                         : selectedMode === 'REVIEW_MODE' &&
@@ -25,7 +25,7 @@
                 [ngClass]="{
                     'completed-tab':
                         (selectedMode === 'APPLICANT_MODE' &&
-                            storeArr[i].isCompleted) ||
+                            isTabCompletedArray[i].isCompleted) ||
                         (selectedMode === 'REVIEW_MODE' &&
                             reviewStoreArr[i].isReviewed &&
                             !reviewStoreArr[i].hasIncorrectAnswer),

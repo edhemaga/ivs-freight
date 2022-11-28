@@ -3303,7 +3303,7 @@
                                             'is-favorite-icon':
                                                 row[column.field],
                                             'not-favorite-icon':
-                                                row[column.field]
+                                                !row[column.field]
                                         }"
                                     ></div>
                                 </div>
@@ -3726,7 +3726,16 @@
                                 </div>
 
                                 <!-- Attachments -->
-                                <div class="attacment-container"></div>
+                                <div class="attacment-container">
+                                    <app-ta-upload-files
+                                        [customClassName]="'todo-details'"
+                                        [files]="row?.tableAttachments ? row.tableAttachments : []"
+                                        [size]="'extraLarge'"
+                                        [reviewMode]="'REVIEW_MODE'"
+                                        [type]="'todo'"
+                                        [slideWidth]="209"
+                                    ></app-ta-upload-files>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3761,7 +3770,7 @@
                                             'height.px': '18'
                                         }"
                                     ></svg-icon>
-                                </div>
+                                </div> 
 
                                 <!-- Media Content -->
                                 <div class="media-container"></div>
@@ -3818,7 +3827,11 @@
                 </tr>
 
                 <!-- Show More -->
-                <div class="show-more-container" *ngIf="viewData.length">
+                <div
+                    class="show-more-container"
+                    [ngStyle]="{ 'width.px': tableWidth }"
+                    *ngIf="viewData.length"
+                >
                     <div class="showing">
                         {{ viewData.length }} OF
                         {{ activeTableData.length }} SHOWING
@@ -3827,7 +3840,7 @@
                         class="show-more"
                         (click)="onShowMore()"
                         *ngIf="viewData.length < activeTableData.length"
-                    >
+                    > 
                         SHOW MORE
                     </div>
                 </div>

@@ -7,17 +7,17 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
     ApplicantResponse,
+    CreateDisclosureReviewCommand,
     DisclosureReleaseFeedbackResponse,
     UpdateDisclosureReleaseCommand,
-    CreateDisclosureReviewCommand,
 } from 'appcoretruckassist/model/models';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
     selector: 'app-step10',
@@ -32,6 +32,8 @@ export class Step10Component implements OnInit, OnDestroy {
     public disclosureReleaseForm: FormGroup;
 
     public applicantId: number;
+
+    public companyName: string;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -65,6 +67,8 @@ export class Step10Component implements OnInit, OnDestroy {
             .subscribe((res: ApplicantResponse) => {
                 this.applicantId = res.id;
 
+                this.companyName = res.companyInfo.name;
+
                 if (res.disclosureRelease) {
                     this.patchStepValues(res.disclosureRelease);
                 }
@@ -93,8 +97,8 @@ export class Step10Component implements OnInit, OnDestroy {
 
     public handleCheckboxParagraphClick(type: string): void {
         if (
-            this.selectedMode === 'FEEDBACK_MODE' ||
-            this.selectedMode === 'REVIEW_MODE'
+            this.selectedMode === SelectedMode.FEEDBACK ||
+            this.selectedMode === SelectedMode.REVIEW
         ) {
             return;
         }

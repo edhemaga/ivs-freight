@@ -126,16 +126,18 @@
         >
             <div
                 formArrayName="contactPhones"
-                class="contact-phone-container"
+                class="common-table-modal-container"
                 *ngIf="contactPhones.length"
             >
-                <div class="contact-phone-container-label">
+                <div
+                    class="common-table-modal-container-label common-table-modal-container-label-contact-modal-phone"
+                >
                     <p>PHONE</p>
                     <p>EXT</p>
                     <p>TYPE</p>
                 </div>
 
-                <div class="contact-phone-container-body">
+                <div class="common-table-modal-container-body">
                     <div
                         *ngFor="
                             let contactPh of contactPhones.controls;
@@ -144,10 +146,10 @@
                     >
                         <div
                             [formGroupName]="ind"
-                            class="contact-phone-container-body-card"
+                            class="common-table-modal-container-body-card"
                         >
                             <div
-                                class="contact-phone-radio-btn"
+                                class="common-table-modal-container-radio-btn"
                                 [ngClass]="{
                                     active: contactPh.get('primary').value
                                 }"
@@ -161,7 +163,9 @@
                                 tooltipBackground="#424242"
                                 (click)="setPrimary(contactPh, 'phone')"
                             ></div>
-                            <div class="contact-phone-card-content">
+                            <div
+                                class="common-table-modal-container-content common-table-modal-container-content-contact-modal-phone"
+                            >
                                 <app-ta-input
                                     formControlName="phone"
                                     [inputConfig]="{
@@ -177,7 +181,7 @@
                                 ></app-ta-input>
 
                                 <div
-                                    class="phone-extension"
+                                    class="common-table-modal-container-extension"
                                     *ngIf="!isContactPhoneExtExist[ind]"
                                     ngbTooltip
                                     mainTooltip="Add Extension"
@@ -234,7 +238,7 @@
                                     mainTooltip="Delete"
                                     position="top"
                                     tooltipBackground="#EF5350"
-                                    class="contact-phone-delete"
+                                    class="common-table-modal-container-delete"
                                     (click)="
                                         removeContactFeature(
                                             'contact-phone',
@@ -269,14 +273,16 @@
         >
             <div
                 formArrayName="contactEmails"
-                class="contact-email-container"
+                class="common-table-modal-container"
                 *ngIf="contactEmails.length"
             >
-                <div class="contact-email-container-label">
+                <div
+                    class="common-table-modal-container-label common-table-modal-container-label-contact-modal-email"
+                >
                     <p>EMAIL</p>
                     <p>TYPE</p>
                 </div>
-                <div class="contact-email-container-body">
+                <div class="common-table-modal-container-body">
                     <div
                         *ngFor="
                             let contactEm of contactEmails.controls;
@@ -285,10 +291,10 @@
                     >
                         <div
                             [formGroupName]="ind"
-                            class="contact-email-container-body-card"
+                            class="common-table-modal-container-body-card"
                         >
                             <div
-                                class="contact-email-radio-btn"
+                                class="common-table-modal-container-radio-btn"
                                 [ngClass]="{
                                     active: contactEm.get('primary').value
                                 }"
@@ -302,7 +308,9 @@
                                 tooltipBackground="#424242"
                                 (click)="setPrimary(contactEm, 'email')"
                             ></div>
-                            <div class="contact-email-card-content">
+                            <div
+                                class="common-table-modal-container-content common-table-modal-container-content-contact-modal-email"
+                            >
                                 <app-ta-input
                                     formControlName="email"
                                     [inputConfig]="{
@@ -344,7 +352,7 @@
                                     mainTooltip="Delete"
                                     position="top"
                                     tooltipBackground="#EF5350"
-                                    class="contact-email-delete"
+                                    class="common-table-modal-container-delete"
                                     (click)="
                                         removeContactFeature(
                                             'contact-email',
@@ -363,89 +371,67 @@
             </div>
         </app-ta-custom-card>
         <!-- Shared Contact -->
-        <div class="custom-checkbox-card">
-            <div class="divider"></div>
-            <div
-                class="checkbox-card-header"
-                [ngClass]="{ pointer: contactForm.get('shared').value }"
-            >
-                <app-ta-checkbox
-                    formControlName="shared"
-                    [label]="'Share Contact'"
-                ></app-ta-checkbox>
-                <svg-icon
-                    class="checkbox-card-header-arrow"
-                    src="assets/svg/common/ic_arrow_down_updated.svg"
-                    [ngClass]="{
-                        visible: contactForm.get('shared').value,
-                        rotate: !sharedContactCheckboxCard
-                    }"
-                    (click)="toggleCheckboxCard()"
-                ></svg-icon>
-            </div>
-            <div
-                *ngIf="
-                    contactForm.get('shared').value && sharedContactCheckboxCard
-                "
-                class="checkbox-card-body"
-                [ngClass]="{ 'active-20': contactForm.get('shared').value }"
-            >
-                <div *ngIf="contactForm.get('shared').value">
-                    <div class="row shared-contact-dropdown">
-                        <div class="col-12">
-                            <app-ta-input-dropdown
-                                formControlName="sharedLabelId"
-                                [template]="'groups'"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown Department',
-                                    minLength: 2,
-                                    maxLength: 36,
-                                    type: 'text',
-                                    label: 'Department',
-                                    isDropdown: true,
-                                    isRequired: true,
-                                    textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-455'
-                                }"
-                                [options]="sharedDepartments"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'departments')
-                                "
-                            ></app-ta-input-dropdown>
-                        </div>
-                    </div>
+        <app-ta-checkbox-card
+            formControlName="shared"
+            [label]="'Share Contact'"
+            [name]="'share-contact'"
+            [isCardOpen]="contactForm.get('shared').value"
+            [animationMarginParams]="{
+                marginTop: '12px',
+                marginBottom: '18px'
+            }"
+        >
+            <div body class="row row-no-m">
+                <div class="col-12">
+                    <app-ta-input-dropdown
+                        formControlName="sharedLabelId"
+                        [template]="'groups'"
+                        [inputConfig]="{
+                            name: 'Input Dropdown Department',
+                            minLength: 2,
+                            maxLength: 36,
+                            type: 'text',
+                            label: 'Department',
+                            isDropdown: true,
+                            isRequired: true,
+                            textTransform: 'capitalize',
+                            dropdownWidthClass: 'w-col-456'
+                        }"
+                        [options]="[]"
+                        (selectedItem)="onSelectDropdown($event, 'departments')"
+                    ></app-ta-input-dropdown>
                 </div>
             </div>
-            <div class="ta-card-body-overflow-none">
-                <app-ta-custom-card
-                    [cardName]="'Contact Image'"
-                    [isCardOpen]="true"
-                >
-                    <app-ta-logo-change
-                        [croppieOptions]="croppieOptions"
-                        [customClass]="'modal-container-S'"
-                        [imageUrl]="this.contactForm.get('avatar').value"
-                        (base64ImageEvent)="onUploadImage($event)"
-                        (validationEvent)="onImageValidation($event)"
-                    ></app-ta-logo-change>
-                </app-ta-custom-card>
-            </div>
-            <!-- Note -->
-            <app-ta-input-note
-                formControlName="note"
-                [isVisibleNote]="
-                    contactForm.get('note').value &&
-                    contactForm.get('note').value != 'null'
-                        ? contactForm.get('note').value
-                        : false
-                "
-                [note]="
-                    contactForm.get('note').value &&
-                    contactForm.get('note').value != 'null'
-                        ? contactForm.get('note').value
-                        : ''
-                "
-            ></app-ta-input-note>
+        </app-ta-checkbox-card>
+        <div class="ta-card-body-overflow-none">
+            <app-ta-custom-card
+                [cardName]="'Contact Image'"
+                [isCardOpen]="true"
+            >
+                <app-ta-logo-change
+                    [croppieOptions]="croppieOptions"
+                    [customClass]="'modal-container-S'"
+                    [imageUrl]="this.contactForm.get('avatar').value"
+                    (base64ImageEvent)="onUploadImage($event)"
+                    (validationEvent)="onImageValidation($event)"
+                ></app-ta-logo-change>
+            </app-ta-custom-card>
         </div>
+        <!-- Note -->
+        <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="
+                contactForm.get('note').value &&
+                contactForm.get('note').value != 'null'
+                    ? contactForm.get('note').value
+                    : false
+            "
+            [note]="
+                contactForm.get('note').value &&
+                contactForm.get('note').value != 'null'
+                    ? contactForm.get('note').value
+                    : ''
+            "
+        ></app-ta-input-note>
     </form>
 </app-ta-modal>

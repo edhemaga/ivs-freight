@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-    CreateInspectionCommand,
-    CreateRegistrationCommand,
-    CreateTitleCommand,
     InspectionResponse,
     InspectionService,
     RegistrationResponse,
@@ -11,9 +8,6 @@ import {
     TitleService,
     TruckResponse,
     TrailerResponse,
-    UpdateInspectionCommand,
-    UpdateRegistrationCommand,
-    UpdateTitleCommand,
     RegistrationModalResponse,
     TitleModalResponse,
 } from 'appcoretruckassist';
@@ -30,6 +24,7 @@ import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trai
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import { TrucksDetailsListStore } from '../../truck/state/truck-details-list-state/truck-details-list.store';
 import { TrailerDetailsListStore } from '../../trailer/state/trailer-details-list-state/trailer-details-list.store';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
@@ -49,15 +44,14 @@ export class CommonTruckTrailerService {
         private truckItemStore: TruckItemStore,
         private trailerItemStore: TrailerItemStore,
         private tdlStore: TrucksDetailsListStore,
-        private tadl: TrailerDetailsListStore
+        private tadl: TrailerDetailsListStore,
+        private formDataService: FormDataService
     ) {}
 
     // Registration
-    public addRegistration(
-        data: CreateRegistrationCommand,
-        tabSelected?: string
-    ): Observable<any> {
-        return this.registrationService.apiRegistrationPost(data).pipe(
+    public addRegistration(data: any, tabSelected?: string): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.registrationService.apiRegistrationPost().pipe(
             tap(() => {
                 // Truck Add Registration
                 if (data.truckId) {
@@ -129,10 +123,11 @@ export class CommonTruckTrailerService {
     }
 
     public updateRegistration(
-        data: UpdateRegistrationCommand,
+        data: any,
         tabSelected?: string
     ): Observable<object> {
-        return this.registrationService.apiRegistrationPut(data).pipe(
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.registrationService.apiRegistrationPut().pipe(
             tap(() => {
                 this.updateDataAnimation(tabSelected);
             })
@@ -174,11 +169,9 @@ export class CommonTruckTrailerService {
         return this.inspectionService.apiInspectionIdGet(id);
     }
 
-    public addInspection(
-        data: CreateInspectionCommand,
-        tabSelected?: string
-    ): Observable<any> {
-        return this.inspectionService.apiInspectionPost(data).pipe(
+    public addInspection(data: any, tabSelected?: string): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.inspectionService.apiInspectionPost().pipe(
             tap(() => {
                 // Truck Add Inspection
                 if (data.truckId) {
@@ -247,10 +240,12 @@ export class CommonTruckTrailerService {
     }
 
     public updateInspection(
-        data: UpdateInspectionCommand,
+        data: any,
         tabSelected?: string
     ): Observable<object> {
-        return this.inspectionService.apiInspectionPut(data).pipe(
+        console.log(data, 'datasent');
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.inspectionService.apiInspectionPut().pipe(
             tap(() => {
                 this.updateDataAnimation(tabSelected);
             })
@@ -270,11 +265,9 @@ export class CommonTruckTrailerService {
         return this.titleService.apiTitleIdGet(id);
     }
 
-    public addTitle(
-        data: CreateTitleCommand,
-        tabSelected?: string
-    ): Observable<any> {
-        return this.titleService.apiTitlePost(data).pipe(
+    public addTitle(data: any, tabSelected?: string): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.titleService.apiTitlePost().pipe(
             tap(() => {
                 // Truck Add Inspection
                 if (data.truckId) {
@@ -342,11 +335,9 @@ export class CommonTruckTrailerService {
         );
     }
 
-    public updateTitle(
-        data: UpdateTitleCommand,
-        tabSelected?: string
-    ): Observable<object> {
-        return this.titleService.apiTitlePut(data).pipe(
+    public updateTitle(data: any, tabSelected?: string): Observable<object> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.titleService.apiTitlePut().pipe(
             tap(() => {
                 this.updateDataAnimation(tabSelected);
             })

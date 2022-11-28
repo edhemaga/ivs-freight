@@ -41,7 +41,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public applicantId: number;
 
@@ -62,6 +62,7 @@ export class Step2Component implements OnInit, OnDestroy {
     public helperIndex: number = 2;
 
     public isEditing: boolean = false;
+    public isEditingClassOfEquipment: boolean = false;
     public isReviewingCard: boolean = false;
 
     public formValuesToPatch: any;
@@ -73,6 +74,15 @@ export class Step2Component implements OnInit, OnDestroy {
     public trailerLengthType: TrailerLengthResponse[] = [];
 
     public reasonsForLeaving: EnumValue[] = [];
+
+    public displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    }[] = [
+        { id: 0, displayRadioRequiredNote: false },
+        { id: 1, displayRadioRequiredNote: false },
+    ];
+    public checkIsHazmatSpillNotChecked: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -107,7 +117,7 @@ export class Step2Component implements OnInit, OnDestroy {
         this.hasNoWorkExperience();
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.workExperienceForm = this.formBuilder.group({
@@ -141,7 +151,6 @@ export class Step2Component implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: WorkExperienceFeedbackResponse): void {
-        console.log('stepValues', stepValues);
         const { haveWorkExperience, workExperienceItems } = stepValues;
 
         if (this.selectedMode === SelectedMode.REVIEW) {
@@ -542,7 +551,7 @@ export class Step2Component implements OnInit, OnDestroy {
         };
     }
 
-    public cancelWorkExperienceEditing(event: any): void {
+    public cancelWorkExperienceEditing(_: any): void {
         this.isEditing = false;
         this.workExperienceArray[
             this.selectedWorkExperienceIndex
@@ -689,7 +698,36 @@ export class Step2Component implements OnInit, OnDestroy {
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
-    public cancelWorkExperienceReview(event: any): void {
+    public onGetRadioRequiredNoteEmit(event: any): void {
+        if (event.displayRadioRequiredNote) {
+            this.displayRadioRequiredNoteArray[
+                event.id
+            ].displayRadioRequiredNote = true;
+        } else {
+            this.displayRadioRequiredNoteArray[
+                event.id
+            ].displayRadioRequiredNote = false;
+        }
+    }
+
+    public onGetClassOfEquipmentValues(event: any): void {
+        if (event.itemDeleted) {
+            this.lastWorkExperienceCard.classesOfEquipment.splice(
+                event.index,
+                1
+            );
+        }
+    }
+
+    public onGetIsEditingClassOfEquipmentStatus(event: any): void {
+        if (event) {
+            this.isEditingClassOfEquipment = true;
+        } else {
+            this.isEditingClassOfEquipment = false;
+        }
+    }
+
+    public cancelWorkExperienceReview(_: any): void {
         this.isReviewingCard = false;
 
         this.workExperienceArray[
@@ -968,9 +1006,12 @@ export class Step2Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        this.checkIsHazmatSpillNotChecked = true;
+
         if (
             this.formStatus === 'INVALID' ||
-            this.innerFormStatus === 'INVALID'
+            this.innerFormStatus === 'INVALID' ||
+            this.isEditing
         ) {
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;
@@ -1063,7 +1104,7 @@ export class Step2Component implements OnInit, OnDestroy {
                 accountForPeriodBetween:
                     this.lastWorkExperienceCard.accountForPeriod,
                 classesOfEquipment: this.lastWorkExperienceCard
-                    .classesOfEquipment[0].vehicleType
+                    .classesOfEquipment
                     ? this.lastWorkExperienceCard.classesOfEquipment.map(
                           (item, index) => {
                               return {
@@ -1105,6 +1146,8 @@ export class Step2Component implements OnInit, OnDestroy {
                       filteredLastWorkExperienceCard,
                   ],
         };
+
+        console.log('saveData', saveData);
 
         const storeWorkExperienceItems = saveData.workExperienceItems.map(
             (item) => {

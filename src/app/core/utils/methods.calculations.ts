@@ -101,9 +101,23 @@ export const convertDateFromBackend = (date: string) => {
     return moment(new Date(date)).format('MM/DD/YY');
 };
 
+//------------------------------- TIME FROM BACKEND -------------------------------
+export const convertTimeFromBackend = (time: string) => {
+    return moment(time, 'HH:mm:SS A').toDate();
+};
+
 //------------------------------- DATE FROM BACKEND TO TIME -------------------------------
 export const convertDateFromBackendToTime = (date: string) => {
     return moment(new Date(date)).format('LT');
+};
+
+export const combineDateAndTimeToBackend = (date: string, time: string) => {
+    console.log('date & time: ', date, time);
+    console.log(
+        'after: ',
+        moment(new Date(date + ' ' + time)).toISOString(true)
+    );
+    return moment(new Date(date + ' ' + time)).toISOString(true);
 };
 
 //------------------------------- Convert thousand separator in number -------------------------------

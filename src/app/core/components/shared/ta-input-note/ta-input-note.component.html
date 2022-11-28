@@ -2,13 +2,26 @@
     <div *ngIf="isVisibleDivider" class="divider"></div>
     <div
         class="note-header"
-        [class.active]="_isVisibleNote && _isVisibleNote != 'null'"
+        [class.active]="
+            noteType != 'details-card' &&
+            _isVisibleNote &&
+            _isVisibleNote != 'null'
+        "
+        [class.hover_on]="noteType != 'details-card'"
     >
-        <div class="note-label" (click)="openNote()">Note</div>
+        <div
+            class="note-label"
+            (click)="noteType != 'details-card' ? openNote() : ''"
+        >
+            Note
+        </div>
         <div
             class="note_tools_container"
             (click)="
-                !_isVisibleNote || _isVisibleNote == 'null' ? openNote() : ''
+                noteType != 'details-card' &&
+                (!_isVisibleNote || _isVisibleNote == 'null')
+                    ? openNote()
+                    : ''
             "
         >
             <app-ta-note-container

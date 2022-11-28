@@ -65,6 +65,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        console.log('Pocinje ngOnInit za Truck');
         this.sendTruckData();
 
         // Confirmation Subscribe
@@ -471,6 +472,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : null,
                 end: null,
             },
+            tableAttachments: data?.files ? data.files : []
         };
     }
 

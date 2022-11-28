@@ -18,7 +18,6 @@ import { FuelTService } from '../../../fuel/state/fuel.service';
 import { GetFuelStopModalResponse } from '../../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { NotificationService } from '../../../../services/notification/notification.service';
 import { FuelStopResponse } from '../../../../../../../appcoretruckassist/model/fuelStopResponse';
-import { AddFuelStopCommand } from '../../../../../../../appcoretruckassist/model/addFuelStopCommand';
 
 @Component({
     selector: 'app-fuel-stop-modal',
@@ -45,6 +44,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
     public companyId: number = null;
 
+    public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -55,16 +58,11 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        console.log('test')
         this.createForm();
         this.getModalDropdowns();
 
         if (this.editData?.type === 'edit') {
-            // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-            this.editData = {
-                ...this.editData,
-                id: 2,
-            };
-
             this.getFuelStopById(this.editData.id);
         }
 
@@ -85,6 +83,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             fax: [null, phoneFaxRegex],
             address: [null, [Validators.required, ...addressValidation]],
             note: [null],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.fuelStopForm);
@@ -265,8 +264,14 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     }
 
     private updateFuelStop(id: number) {
-        const { address, addressUnit, businessName, ...form } =
-            this.fuelStopForm.value;
+        const { businessName, ...form } = this.fuelStopForm.value;
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         const newData: UpdateFuelStopCommand = {
             id: id,
@@ -276,6 +281,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             fuelStopFranchiseId: this.selectedFuelStop
                 ? this.selectedFuelStop.id
                 : null,
+            files: documents ? documents : this.fuelStopForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.fuelService
@@ -287,10 +294,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                         'Success',
                         'Successfully fuel stop updated.'
                     );
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                    });
                 },
                 error: (error: any) => {
                     this.notificationService.error('Error', error);
@@ -299,16 +302,23 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     }
 
     private addFuelStop() {
-        const { address, addressUnit, businessName, ...form } =
-            this.fuelStopForm.value;
+        const { businessName, ...form } = this.fuelStopForm.value;
 
-        const newData: AddFuelStopCommand = {
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        const newData: any = {
             ...form,
             address: this.selectedAddress,
             businessName: !this.selectedFuelStop ? businessName : null,
             fuelStopFranchiseId: this.selectedFuelStop
                 ? this.selectedFuelStop.id
                 : null,
+            files: documents,
         };
 
         this.fuelService
@@ -320,10 +330,6 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                         'Success',
                         'Successfully fuel stop added.'
                     );
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                    });
                 },
                 error: (error: any) => {
                     this.notificationService.error('Error', error);
@@ -364,6 +370,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     this.fuelStopName = res.fuelStopFranchise
                         ? res.fuelStopFranchise.businessName
                         : res.businessName;
+
+                    this.documents = res.files;
 
                     if (!res.fuelStopFranchise) {
                         this.fuelStopForm
@@ -411,6 +419,34 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     this.notificationService.error('Error', error);
                 },
             });
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.fuelStopForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.fuelStopForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {

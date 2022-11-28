@@ -134,7 +134,7 @@
                                 [inputConfig]="{
                                     name: 'address-unit',
                                     type: 'text',
-                                    label: 'Unit No.',
+                                    label: 'Unit #',
                                     textTransform: 'uppercase',
                                     minLength: 1,
                                     maxLength: 10
@@ -165,6 +165,7 @@
                                 [name]="'truckassistACH'"
                                 [disabled]="disablePayType"
                                 [label]="'Use TruckAssist ACH'"
+                                [name]="'truckassist-ach'"
                             ></app-ta-checkbox>
 
                             <app-ta-input-dropdown
@@ -567,38 +568,17 @@
                     </app-ta-custom-card>
 
                     <!-- IsOwner -->
-                    <div class="custom-checkbox-card">
-                        <div class="divider"></div>
-                        <div
-                            class="checkbox-card-header"
-                            [ngClass]="{
-                                pointer: driverForm.get('isOwner').value
-                            }"
-                        >
-                            <app-ta-checkbox
-                                formControlName="isOwner"
-                                [label]="'Owner'"
-                            ></app-ta-checkbox>
-                            <svg-icon
-                                class="checkbox-card-header-arrow"
-                                src="assets/svg/common/ic_arrow_down_updated.svg"
-                                [ngClass]="{
-                                    visible: driverForm.get('isOwner').value,
-                                    rotate: !ownerCheckboxCard
-                                }"
-                                (click)="toggleCheckboxCard()"
-                            ></svg-icon>
-                        </div>
-                        <div
-                            *ngIf="
-                                driverForm.get('isOwner').value &&
-                                ownerCheckboxCard
-                            "
-                            class="checkbox-card-body"
-                            [ngClass]="{
-                                active: driverForm.get('isOwner').value
-                            }"
-                        >
+                    <app-ta-checkbox-card
+                        formControlName="isOwner"
+                        [label]="'Owner'"
+                        [name]="'owner'"
+                        [isCardOpen]="driverForm.get('isOwner').value"
+                        [animationMarginParams]="{
+                            marginTop: '12px',
+                            marginBottom: '18px'
+                        }"
+                    >
+                        <ng-container body>
                             <div class="switch-margin">
                                 <app-ta-tab-switch
                                     [tabs]="ownerTabs"
@@ -654,8 +634,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </ng-container>
+                    </app-ta-checkbox-card>
+
                     <!-- Off duty Location -->
                     <app-ta-custom-card
                         [hasCounter]="
@@ -680,7 +661,7 @@
                     >
                         <div
                             formArrayName="offDutyLocations"
-                            class="common-fake-table-modal common-fake-table-modal-off-duty-locations hide-overflow-x"
+                            class="common-fake-table-modal common-fake-table-modal-off-duty-locations"
                             *ngIf="offDutyLocations.length"
                         >
                             <div class="common-fake-table-label">

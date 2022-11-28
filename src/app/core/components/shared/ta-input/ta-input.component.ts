@@ -9,6 +9,7 @@ import {
     Output,
     Self,
     ViewChild,
+    ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { ITaInput } from './ta-input.config';
@@ -35,6 +36,7 @@ import { ImageBase64Service } from '../../../utils/base64.image';
         CalendarScrollService,
         TaThousandSeparatorPipe,
     ],
+    encapsulation: ViewEncapsulation.None,
 })
 export class TaInputComponent
     implements OnInit, OnDestroy, ControlValueAccessor
@@ -55,10 +57,15 @@ export class TaInputComponent
     @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
         new EventEmitter<any>();
 
-    @Output() blurInput: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output('blurInput') blurInput: EventEmitter<boolean> =
+        new EventEmitter<boolean>();
+
+    @Output('focusInput') focusInputEvent: EventEmitter<boolean> =
+        new EventEmitter<boolean>();
 
     @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
-    @Output() commandEvent: EventEmitter<any> = new EventEmitter<any>();
+    @Output('commandEvent') commandEvent: EventEmitter<any> =
+        new EventEmitter<any>();
 
     @Output('clear') clearInputEvent: EventEmitter<boolean> =
         new EventEmitter<any>();
@@ -119,15 +126,16 @@ export class TaInputComponent
 
     ngOnInit(): void {
         if (
-            (this.inputConfig.name === 'datepicker' ||
-                this.inputConfig.name === 'timepicker') &&
-            !this.inputConfig.isDisabled
+            this.inputConfig.name === 'datepicker' ||
+            this.inputConfig.name === 'timepicker'
         ) {
             this.calendarService.dateChanged
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((date) => {
-                    this.setTimeDateInput(date);
-                    this.t2.close();
+                    if (!this.inputConfig.isDisabled) {
+                        this.setTimeDateInput(date);
+                        this.t2.close();
+                    }
                 });
         }
 
@@ -231,9 +239,8 @@ export class TaInputComponent
     public writeValue(obj: any): void {
         this.changeInput.emit(obj);
         if (
-            (this.inputConfig.name === 'datepicker' ||
-                this.inputConfig.name === 'timepicker') &&
-            !this.inputConfig.isDisabled
+            this.inputConfig.name === 'datepicker' ||
+            this.inputConfig.name === 'timepicker'
         ) {
             if (obj) {
                 const timeout = setTimeout(() => {
@@ -262,6 +269,7 @@ export class TaInputComponent
     }
 
     public onFocus(e?): void {
+        this.focusInputEvent.emit(true);
         // Password
         if (this.inputConfig.type === 'password') {
             this.isVisiblePasswordEye = true;
@@ -1544,7 +1552,7 @@ export class TaInputComponent
     }
 
     // Optimization for *ngFor
-    public trackIdentity = (index: number, data: any): number => index;
+    public trackIdentity = (index: number): number => index;
 
     //------------------- Date & Time Picker -------------------
 

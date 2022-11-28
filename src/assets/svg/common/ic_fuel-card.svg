@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+  <g id="Fuel_Card" data-name="Fuel Card" transform="translate(-1319 -748.445)">
+    <rect id="Rectangle_57066" data-name="Rectangle 57066" width="18" height="18" transform="translate(1319 748.445)" fill="#ccc" opacity="0"/>
+    <path id="credit-card" d="M0,43.1a1.333,1.333,0,0,0,1.333,1.333H14.658A1.333,1.333,0,0,0,15.991,43.1V38.219H0Zm5.33-1.888a.334.334,0,0,1,.333-.333H9.439a.334.334,0,0,1,.333.333v1.11a.334.334,0,0,1-.333.333H5.664a.334.334,0,0,1-.333-.333Zm-3.554,0a.334.334,0,0,1,.333-.333h2a.334.334,0,0,1,.333.333v1.11a.334.334,0,0,1-.333.333h-2a.334.334,0,0,1-.333-.333Zm14.214-7.884v1.333H0V33.333A1.333,1.333,0,0,1,1.333,32H14.658A1.333,1.333,0,0,1,15.991,33.333Z" transform="translate(1320 719.227)" fill="#ccc" stroke="rgba(0,0,0,0)" stroke-width="1"/>
+  </g>
+</svg>

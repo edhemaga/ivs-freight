@@ -51,5 +51,5 @@ export class ConfirmationModalComponent {
         this.ngbActiveModal.close();
     }
 
-    public identity = (index: number, item: any): number => index;
+    public identity = (index: number, _: any): number => index;
 }

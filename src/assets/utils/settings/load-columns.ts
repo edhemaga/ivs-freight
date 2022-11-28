@@ -336,7 +336,7 @@ export function getLoadTemplateColumnDefinition() {
         {
             ngTemplate: 'attachments',
             title: 'Attachments',
-            field: 'additionalData.files',
+            field: 'tableAttachments',
             moveRight: true,
             name: '',
             hidden: false,
@@ -921,7 +921,7 @@ export function getLoadActiveAndPendingColumnDefinition() {
         {
             ngTemplate: 'attachments',
             title: 'Attachments',
-            field: 'additionalData.files',
+            field: 'tableAttachments',
             moveRight: true,
             name: '',
             hidden: false,
@@ -1615,7 +1615,7 @@ export function getLoadClosedColumnDefinition() {
         {
             ngTemplate: 'attachments',
             title: 'Attachments',
-            field: 'additionalData.files',
+            field: 'tableAttachments',
             moveRight: true,
             name: '',
             hidden: false,

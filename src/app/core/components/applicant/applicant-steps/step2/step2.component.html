@@ -290,6 +290,12 @@
                             [formValuesToPatch]="formValuesToPatch"
                             [isReviewingCard]="isReviewingCard"
                             [stepFeedbackValues]="stepFeedbackValues"
+                            [checkIsHazmatSpillNotChecked]="
+                                checkIsHazmatSpillNotChecked
+                            "
+                            [displayRadioRequiredNoteArray]="
+                                displayRadioRequiredNoteArray
+                            "
                             (formValuesEmitter)="
                                 getWorkExperienceFormValues($event)
                             "
@@ -304,6 +310,15 @@
                             "
                             (cardOpenAnnotationArrayValuesEmitter)="
                                 onGetCardOpenAnnotationArrayValues($event)
+                            "
+                            (radioRequiredNoteEmitter)="
+                                onGetRadioRequiredNoteEmit($event)
+                            "
+                            (classOfEquipmentformValuesEmitter)="
+                                onGetClassOfEquipmentValues($event)
+                            "
+                            (isEditingClassOfEquipmentEmitter)="
+                                onGetIsEditingClassOfEquipmentStatus($event)
                             "
                         ></app-step2-form>
                     </div>
@@ -326,6 +341,12 @@
                     [formValuesToPatch]="formValuesToPatch"
                     [isReviewingCard]="isReviewingCard"
                     [stepFeedbackValues]="stepFeedbackValues"
+                    [checkIsHazmatSpillNotChecked]="
+                        checkIsHazmatSpillNotChecked
+                    "
+                    [displayRadioRequiredNoteArray]="
+                        displayRadioRequiredNoteArray
+                    "
                     (formValuesEmitter)="getWorkExperienceFormValues($event)"
                     (formStatusEmitter)="onGetFormStatus($event)"
                     (innerFormStatusEmitter)="onGetInnerFormStatus($event)"
@@ -337,6 +358,15 @@
                     (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
                     (openAnnotationArrayValuesEmitter)="
                         onGetOpenAnnotationArrayValues($event)
+                    "
+                    (radioRequiredNoteEmitter)="
+                        onGetRadioRequiredNoteEmit($event)
+                    "
+                    (classOfEquipmentformValuesEmitter)="
+                        onGetClassOfEquipmentValues($event)
+                    "
+                    (isEditingClassOfEquipmentEmitter)="
+                        onGetIsEditingClassOfEquipmentStatus($event)
                     "
                 ></app-step2-form>
             </div>
@@ -382,6 +412,8 @@
         [nextStep]="true"
         [filledCorrectly]="
             workExperienceForm.valid &&
+            !isEditing &&
+            !isEditingClassOfEquipment &&
             ((selectedMode === 'APPLICANT_MODE' &&
                 formStatus === 'VALID' &&
                 innerFormStatus === 'VALID') ||

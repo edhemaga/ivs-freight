@@ -34,7 +34,7 @@
                         color:
                             selectedMode === 'FEEDBACK_MODE'
                                 ? '#919191'
-                                : '#6C6C6C'
+                                : '#424242'
                     }"
                 >
                     <p class="m-0 ta-font-regular">
@@ -102,7 +102,7 @@
                                 color:
                                     selectedMode === 'FEEDBACK_MODE'
                                         ? '#97A8DC'
-                                        : '#536bc2'
+                                        : '#3074d3'
                             }"
                             >https://dataqs.fmcsa.dot.gov</a
                         >. If you challenge crash or inspection information
@@ -176,22 +176,14 @@
                         }"
                     >
                         If you agree that the Prospective Employer may obtain
-                        such background reports, please read the<br />
-                        following and sign below
+                        such background reports, please read the following and
+                        sign below
                     </h3>
 
-                    <div
-                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    >
+                    <div class="d-flex checkbox-container">
                         <app-ta-checkbox
                             formControlName="isAuthorize"
                             [name]="'isAuthorize'"
-                            [label]="
-                                'I authorize ' +
-                                companyName +
-                                ' (“Prospective Employer”) to access the FMCSA Pre-Employment Screening Program (PSP)'
-                            "
-                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
                                 selectedMode === 'REVIEW_MODE' ||
                                 selectedMode === 'FEEDBACK_MODE'
@@ -202,10 +194,6 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color: pspAuthorizationForm.get('isAuthorize')
-                                    .value
-                                    ? '#3c3c3c'
-                                    : '#6c6c6c',
                                 cursor:
                                     selectedMode === 'REVIEW_MODE' ||
                                     selectedMode === 'FEEDBACK_MODE'
@@ -216,30 +204,26 @@
                                 handleCheckboxParagraphClick('isAuthorize')
                             "
                         >
-                            system to seek information regarding my commercial
-                            driving safety record and information regarding my
-                            safety inspection history. I understand that I am
-                            authorizing the release of safety performance
-                            information including crash data from the previous
-                            five (5) years and inspection history from the
-                            previous three (3) years. I understand and
-                            acknowledge that this release of information may
-                            assist the Prospective Employer to make a
-                            determination regarding my suitability as an
+                            I authorize {{ companyName }} (“Prospective
+                            Employer”) to access the FMCSA Pre-Employment
+                            Screening Program (PSP) system to seek information
+                            regarding my commercial driving safety record and
+                            information regarding my safety inspection history.
+                            I understand that I am authorizing the release of
+                            safety performance information including crash data
+                            from the previous five (5) years and inspection
+                            history from the previous three (3) years. I
+                            understand and acknowledge that this release of
+                            information may assist the Prospective Employer to
+                            make a determination regarding my suitability as an
                             employee.
                         </p>
                     </div>
 
-                    <div
-                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    >
+                    <div class="d-flex checkbox-container">
                         <app-ta-checkbox
                             formControlName="isFurtherUnderstand"
                             [name]="'isFurtherUnderstand'"
-                            [label]="
-                                'I further understand that neither the Prospective Employer nor the FMCSA contractor supplying the crash and'
-                            "
-                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
                                 selectedMode === 'REVIEW_MODE' ||
                                 selectedMode === 'FEEDBACK_MODE'
@@ -250,11 +234,6 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color: pspAuthorizationForm.get(
-                                    'isFurtherUnderstand'
-                                ).value
-                                    ? '#3c3c3c'
-                                    : '#6c6c6c',
                                 cursor:
                                     selectedMode === 'REVIEW_MODE' ||
                                     selectedMode === 'FEEDBACK_MODE'
@@ -267,13 +246,21 @@
                                 )
                             "
                         >
-                            safety information has the capability to correct any
-                            safety data that appears to be incorrect. I
-                            understand I may challenge the accuracy of the data
-                            by submitting a request to
+                            I further understand that neither the Prospective
+                            Employer nor the FMCSA contractor supplying the
+                            crash and safety information has the capability to
+                            correct any safety data that appears to be
+                            incorrect. I understand I may challenge the accuracy
+                            of the data by submitting a request to
                             <a
                                 href="https://dataqs.fmcsa.dot.gov"
                                 target="_blank"
+                                [ngStyle]="{
+                                    color:
+                                        selectedMode === 'FEEDBACK_MODE'
+                                            ? '#97A8DC'
+                                            : '#3074d3'
+                                }"
                                 >https://dataqs.fmcsa.dot.gov</a
                             >. If I challenge crash or inspection information
                             reported by a State, FMCSA cannot change or correct
@@ -283,16 +270,10 @@
                         </p>
                     </div>
 
-                    <div
-                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    >
+                    <div class="d-flex checkbox-container">
                         <app-ta-checkbox
                             formControlName="isPspReport"
                             [name]="'isPspReport'"
-                            [label]="
-                                'I understand that any crash or inspection in which I was involved will display on my PSP report. Since the PSP'
-                            "
-                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
                                 selectedMode === 'REVIEW_MODE' ||
                                 selectedMode === 'FEEDBACK_MODE'
@@ -303,10 +284,6 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color: pspAuthorizationForm.get('isPspReport')
-                                    .value
-                                    ? '#3c3c3c'
-                                    : '#6c6c6c',
                                 cursor:
                                     selectedMode === 'REVIEW_MODE' ||
                                     selectedMode === 'FEEDBACK_MODE'
@@ -317,10 +294,12 @@
                                 handleCheckboxParagraphClick('isPspReport')
                             "
                         >
-                            report does not report, or assign, or imply fault, I
-                            acknowledge it will include all CMV crashes where I
-                            was a driver or co-driver and where those crashes
-                            were reported to FMCSA, regardless of fault.
+                            I understand that any crash or inspection in which I
+                            was involved will display on my PSP report. Since
+                            the PSP report does not report, or assign, or imply
+                            fault, I acknowledge it will include all CMV crashes
+                            where I was a driver or co-driver and where those
+                            crashes were reported to FMCSA, regardless of fault.
                             Similarly, I understand all inspections, with or
                             without violations, will appear on my PSP report,
                             and State citations associated with FMCSR violations
@@ -329,16 +308,10 @@
                         </p>
                     </div>
 
-                    <div
-                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    >
+                    <div class="d-flex checkbox-container">
                         <app-ta-checkbox
                             formControlName="isDisclosureRegardingReport"
                             [name]="'isDisclosureRegardingReport'"
-                            [label]="
-                                'I have read the above Disclosure Regarding Background Reports provided to me by Prospective Employer and'
-                            "
-                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
                                 selectedMode === 'REVIEW_MODE' ||
                                 selectedMode === 'FEEDBACK_MODE'
@@ -349,11 +322,6 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color: pspAuthorizationForm.get(
-                                    'isDisclosureRegardingReport'
-                                ).value
-                                    ? '#3c3c3c'
-                                    : '#6c6c6c',
                                 cursor:
                                     selectedMode === 'REVIEW_MODE' ||
                                     selectedMode === 'FEEDBACK_MODE'
@@ -366,12 +334,14 @@
                                 )
                             "
                         >
-                            I understand that if I sign this Disclosure and
-                            Authorization, Prospective Employer may obtain a
-                            report of my crash and inspection history. I hereby
-                            authorize Prospective Employer and its employees,
-                            authorized agents, and/or affiliates to obtain the
-                            information authorized above.
+                            I have read the above Disclosure Regarding
+                            Background Reports provided to me by Prospective
+                            Employer and I understand that if I sign this
+                            Disclosure and Authorization, Prospective Employer
+                            may obtain a report of my crash and inspection
+                            history. I hereby authorize Prospective Employer and
+                            its employees, authorized agents, and/or affiliates
+                            to obtain the information authorized above.
                         </p>
                     </div>
 
@@ -492,7 +462,11 @@
                         <app-applicant-signature-pad
                             [mode]="selectedMode"
                             [signatureImgSrc]="signatureImgSrc"
+                            [displayRequiredNote]="displaySignatureRequiredNote"
                             (signatureEmitter)="onSignatureAction($event)"
+                            (removeRequiredNoteEmitter)="
+                                onRemoveSignatureRequiredNoteAction($event)
+                            "
                         ></app-applicant-signature-pad>
                     </div>
                 </form>

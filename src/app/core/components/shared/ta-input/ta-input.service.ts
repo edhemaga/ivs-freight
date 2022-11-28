@@ -37,7 +37,7 @@ export class TaInputService {
                 formGroup.get(key).markAsTouched();
                 formGroup.get(key).updateValueAndValidity();
 
-                if ((<FormArray>formGroup.get(key)).controls) {
+                if ((<FormArray>formGroup.get(key)).controls?.length) {
                     for (const nestedFormGroup of (<FormArray>(
                         formGroup.get(key)
                     )).controls) {
@@ -185,8 +185,8 @@ export class TaInputService {
         validators: any[] = [],
         reset: boolean = true
     ): void {
-        const validation = [Validators.required, ...validators];
         if (hasValidation) {
+            const validation = [Validators.required, ...validators];
             formControl.setValidators(validation);
         } else {
             if (formControl && formControl.hasValidator(Validators.required)) {

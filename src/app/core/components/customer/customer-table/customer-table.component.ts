@@ -4,6 +4,7 @@ import {
     OnDestroy,
     ViewChild,
     AfterViewInit,
+    ChangeDetectorRef,
 } from '@angular/core';
 
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
@@ -69,6 +70,8 @@ export class CustomerTableComponent
         searchThree: undefined,
     };
 
+    mapListData = [];
+
     constructor(
         private modalService: ModalService,
         private tableService: TruckassistTableService,
@@ -79,7 +82,8 @@ export class CustomerTableComponent
         private notificationService: NotificationService,
         private thousandSeparator: TaThousandSeparatorPipe,
         private reviewRatingService: ReviewsRatingService,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private ref: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -394,6 +398,8 @@ export class CustomerTableComponent
         if (td.data.length) {
             this.viewData = td.data;
 
+            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
+
             this.viewData = this.viewData.map((data: any) => {
                 if (this.selectedTab === 'active') {
                     return this.mapBrokerData(data);
@@ -401,9 +407,6 @@ export class CustomerTableComponent
                     return this.mapShipperData(data);
                 }
             });
-
-            // console.log('Customer Data');
-            // console.log(this.viewData);
 
             // For Testing
             // for (let i = 0; i < 1000; i++) {
@@ -623,9 +626,6 @@ export class CustomerTableComponent
     // Table Body Actions
     onTableBodyActions(event: any) {
         let businessName = '';
-
-        console.log('onTableBodyActions');
-        console.log(event);
         this.DetailsDataService.setNewData(event.data);
         // Edit Call
         if (event.type === 'show-more') {
@@ -837,6 +837,45 @@ export class CustomerTableComponent
 
         this.tableService.sendRowsSelected([]);
         this.tableService.sendResetSelectedColumns(true);
+    }
+
+    updateMapList(mapListResponse) {
+        var newMapList = mapListResponse.pagination.data;
+        var listChanged = false;
+
+        for ( var i = 0; i < this.mapListData.length; i++ ) {
+            let item = this.mapListData[i];
+
+            let itemIndex = newMapList.findIndex(
+                (item2) => item2.id === item.id
+            );
+
+            if (itemIndex == -1) {
+                this.mapListData.splice(i, 1);
+                listChanged = true;
+                i--;
+            }
+        }
+
+        for ( var b = 0; b < newMapList.length; b++ ) {
+            let item = newMapList[b];
+
+            let itemIndex = this.mapListData.findIndex(
+                (item2) => item2.id === item.id
+            );
+
+            if (itemIndex == -1) {
+                this.mapListData.splice(b, 0, item);
+                listChanged = true;
+                b--;
+            }
+        }
+
+        if (listChanged || mapListResponse.changedSort) {
+            if ( mapListResponse.changedSort ) this.mapListData = mapListResponse.pagination.data;
+            this.tableData[1].length = mapListResponse.pagination.count;
+            this.ref.detectChanges();
+        }
     }
 
     ngOnDestroy(): void {

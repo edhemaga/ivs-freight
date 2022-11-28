@@ -15,11 +15,11 @@ export class ModalService {
     private modalSpinner: Subject<{
         action: string;
         status: boolean;
-        clearTimeout?: boolean;
+        setFasterTimeout?: boolean;
     }> = new Subject<{
         action: string;
         status: boolean;
-        clearTimeout?: boolean;
+        setFasterTimeout?: boolean;
     }>();
 
     constructor(
@@ -40,12 +40,12 @@ export class ModalService {
     public setModalSpinner(data: {
         action: string;
         status: boolean;
-        clearTimeout?: boolean;
+        setFasterTimeout?: boolean;
     }) {
         this.modalSpinner.next({
             action: data.action,
             status: data.status,
-            clearTimeout: data.clearTimeout,
+            setFasterTimeout: data.setFasterTimeout,
         });
     }
 
@@ -59,10 +59,11 @@ export class ModalService {
         component: any;
         size: string;
         type?: string;
+        closing?: 'fastest' | 'slowlest';
     }) {
-        const timeout = setTimeout(() => {
-            // Closing Modal and Open New One
-            if (data.action === 'open') {
+        // Closing Modal and Open New One
+        if (data.action === 'open') {
+            const timeout = setTimeout(() => {
                 sessionStorage.setItem(
                     data.payload.key,
                     JSON.stringify(data.payload.value)
@@ -82,25 +83,33 @@ export class ModalService {
                         type: data.type,
                     }
                 );
-            }
-            // Closing Modal and Open Old One
-            if (data.action === 'close') {
-                this.openModal(
-                    data.component,
-                    { size: data.size },
-                    {
-                        storageData:
-                            this.encryptionDecryptionService.getLocalStorage(
-                                data.payload.key
-                            ),
-                        type: data.type,
-                    }
-                );
-                this.encryptionDecryptionService.removeItem(data.payload.key);
-            }
-
-            clearTimeout(timeout);
-        }, 500);
+                clearTimeout(timeout);
+            }, 500);
+        }
+        console.log('closing type: ', data?.closing);
+        // Closing Modal and Open Old One
+        if (data.action === 'close') {
+            const timeout = setTimeout(
+                () => {
+                    this.openModal(
+                        data.component,
+                        { size: data.size },
+                        {
+                            storageData:
+                                this.encryptionDecryptionService.getLocalStorage(
+                                    data.payload.key
+                                ),
+                            type: data.type,
+                        }
+                    );
+                    this.encryptionDecryptionService.removeItem(
+                        data.payload.key
+                    );
+                    clearTimeout(timeout);
+                },
+                data?.closing === 'fastest' ? 500 : 3000
+            );
+        }
     }
 
     public openModal(

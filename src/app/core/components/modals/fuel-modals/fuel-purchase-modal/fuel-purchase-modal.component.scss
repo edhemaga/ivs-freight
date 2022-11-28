@@ -5,7 +5,7 @@
         align-self: end;
         font-size: 18px;
         font-weight: 800;
-        color: #6c6c6c;
+        color: #2f2f2f;
         margin: 0;
         line-height: 18px;
         padding-right: 35px !important;
@@ -14,20 +14,24 @@
             font-size: 12px;
 
             &::-moz-selection {
-                background-color: #919191 !important;
+                background-color: rgb(47, 47, 47, 0.2) !important;
+                color: #2f2f2f !important;
             }
 
             &::selection {
-                background-color: #919191 !important;
+                background-color: rgb(47, 47, 47, 0.2) !important;
+                color: #2f2f2f !important;
             }
         }
 
         &::-moz-selection {
-            background-color: #919191 !important;
+            background-color: rgb(47, 47, 47, 0.2) !important;
+            color: #2f2f2f !important;
         }
 
         &::selection {
-            background-color: #919191 !important;
+            background-color: rgb(47, 47, 47, 0.2) !important;
+            color: #2f2f2f !important;
         }
     }
 }
@@ -40,7 +44,7 @@
     height: 26px !important;
     padding: 0 !important;
     margin: 0 !important;
-    background-color: #f7f7f7 !important;
+    background-color: #eeeeee !important;
 
     &:focus {
         .common-fake-table-card {
@@ -65,21 +69,21 @@
             user-select: none;
 
             &:nth-child(1) {
-                margin-left: 4px;
+                margin-left: 5px;
             }
 
             &:nth-child(2) {
-                margin-left: 18px;
+                margin-left: 17px;
             }
 
             &:nth-child(3) {
-                margin-left: 85px;
+                margin-left: 90px;
             }
             &:nth-child(4) {
-                margin-left: 48px;
+                margin-left: 58px;
             }
             &:nth-child(5) {
-                margin-left: 63px;
+                margin-left: 81px;
             }
             span {
                 color: #e57373;
@@ -89,36 +93,43 @@
     .common-fake-table-card {
         display: grid;
         grid-template-columns: 18px 114px 70px 80px 90px;
-        grid-template-rows: 26px;
+        grid-template-rows: 34px;
         -moz-column-gap: 12px;
         column-gap: 12px;
         row-gap: 2px;
         margin-bottom: 2px;
-        background-color: #f7f7f7;
+        background-color: #eeeeee;
         padding-right: 6px;
         position: relative;
         align-items: center;
+
+        .input-control {
+            background-color: transparent !important;
+        }
 
         p {
             margin: 0;
             padding: 0;
             font-size: 14px;
-            font-weight: 600;
-            color: #919191;
+            font-weight: 500;
+            color: #2f2f2f;
+
             &:nth-child(1) {
                 padding-left: 11px;
             }
 
-            &::-moz-selection {
-                background-color: #919191 !important;
-            }
-
-            &::selection {
-                background-color: #919191 !important;
-            }
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
         }
         .fuel-subtotal {
             justify-self: flex-end;
+            font-weight: 600;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .common-fake-table-delete {
@@ -151,6 +162,7 @@
             }
         }
         &:hover {
+            cursor: -webkit-grab;
             cursor: grab;
         }
 
@@ -167,4 +179,22 @@
 
 .cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// Fuel Item Price Container (from FormArray)
+.fuel-item-price-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .fuel-item-price-dollar {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18px;
+        color: #2f2f2f;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
 }

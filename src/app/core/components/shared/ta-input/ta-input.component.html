@@ -242,10 +242,12 @@
         class="input-dropdown-arrow {{ inputConfig.customClass }}"
         *ngIf="
             ((inputConfig.isDropdown || inputConfig.dropdownLabel) &&
-                !inputConfig.multiSelectDropdownActive) ||
+                !inputConfig.multiSelectDropdownActive &&
+                !inputConfig.isDisabled) ||
             ((inputConfig.name === 'datepicker' ||
                 inputConfig.name === 'timepicker') &&
-                !inputConfig.incorrectInput)
+                !inputConfig.incorrectInput &&
+                !inputConfig.isDisabled)
         "
         [ngClass]="{
             active:
@@ -483,11 +485,14 @@
         class="dropdown-selected-image {{
             inputConfig.dropdownImageInput?.class
         }}"
+        [ngClass]="{
+            'unset-color': focusInput && inputConfig.dropdownImageInput?.class
+        }"
         [svgStyle]="{
             fill:
                 inputConfig.dropdownImageInput?.color && !focusInput
                     ? inputConfig.dropdownImageInput?.color
-                    : '#b7b7b7'
+                    : '#ffffff'
         }"
     >
     </svg-icon>
@@ -758,12 +763,26 @@
                 inputConfig?.dropdownImageInput?.withText &&
                 inputConfig?.dropdownImageInput?.url &&
                 inputConfig?.dropdownImageInput?.template === 'truck' &&
-                !inputConfig?.dropdownImageInput?.remove,
+                !inputConfig?.dropdownImageInput?.remove &&
+                !focusInput,
+            'dropdown-input-image-truck-focus':
+                inputConfig?.dropdownImageInput?.withText &&
+                inputConfig?.dropdownImageInput?.url &&
+                inputConfig?.dropdownImageInput?.template === 'truck' &&
+                !inputConfig?.dropdownImageInput?.remove &&
+                focusInput,
             'dropdown-input-image-trailer':
                 inputConfig?.dropdownImageInput?.withText &&
                 inputConfig?.dropdownImageInput?.url &&
                 inputConfig?.dropdownImageInput?.template === 'trailer' &&
-                !inputConfig?.dropdownImageInput?.remove,
+                !inputConfig?.dropdownImageInput?.remove &&
+                !focusInput,
+            'dropdown-input-image-trailer-focus':
+                inputConfig?.dropdownImageInput?.withText &&
+                inputConfig?.dropdownImageInput?.url &&
+                inputConfig?.dropdownImageInput?.template === 'trailer' &&
+                !inputConfig?.dropdownImageInput?.remove &&
+                focusInput,
             'dropdown-input-image-color':
                 inputConfig?.dropdownImageInput?.withText &&
                 (inputConfig?.dropdownImageInput?.url ||
@@ -793,6 +812,7 @@
         "
         [(ngModel)]="input.value"
     />
+
     <!-- Input Label -->
     <label
         *ngIf="!inputConfig.multiSelectDropdownActive"

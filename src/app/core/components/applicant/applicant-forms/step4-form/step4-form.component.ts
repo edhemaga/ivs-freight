@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     AfterViewInit,
     Component,
@@ -59,6 +61,8 @@ export class Step4FormComponent
     @Input() formValuesToPatch?: any;
     @Input() markFormInvalid?: boolean;
     @Input() isReviewingCard: boolean;
+    @Input() displayRadioRequiredNote: boolean = false;
+    @Input() checkIsHazmatSpillNotChecked: boolean;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -70,6 +74,7 @@ export class Step4FormComponent
     @Output() openAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
+    @Output() radioRequiredNoteEmitter = new EventEmitter<any>();
 
     private destroy$ = new Subject<void>();
 
@@ -197,7 +202,10 @@ export class Step4FormComponent
             this.selectedMode = changes.mode?.currentValue;
         }
 
-        if (this.selectedMode === SelectedMode.APPLICANT) {
+        if (
+            this.selectedMode === SelectedMode.APPLICANT ||
+            this.selectedMode === SelectedMode.FEEDBACK
+        ) {
             if (
                 changes.markFormInvalid?.previousValue !==
                 changes.markFormInvalid?.currentValue
@@ -205,6 +213,22 @@ export class Step4FormComponent
                 this.inputService.markInvalid(this.accidentForm);
 
                 this.markInvalidEmitter.emit(false);
+            }
+
+            if (
+                changes.checkIsHazmatSpillNotChecked?.previousValue !==
+                changes.checkIsHazmatSpillNotChecked?.currentValue
+            ) {
+                let hazmatSpillRadios: any;
+
+                if (!changes.checkIsHazmatSpillNotChecked?.firstChange) {
+                    hazmatSpillRadios =
+                        this.accidentForm.get('hazmatSpill').value;
+                }
+
+                if (hazmatSpillRadios === null) {
+                    this.radioRequiredNoteEmitter.emit(true);
+                }
             }
         }
 
@@ -344,6 +368,8 @@ export class Step4FormComponent
                     this.accidentForm.get('hazmatSpill').patchValue(false);
                 }
 
+                this.radioRequiredNoteEmitter.emit(false);
+
                 break;
             case InputSwitchActions.TRUCK_TYPE:
                 this.selectedVehicleType = event;
@@ -452,6 +478,28 @@ export class Step4FormComponent
         this.formService.resetForm(this.accidentForm);
 
         this.subscription.unsubscribe();
+    }
+
+    public onGetBtnClickValue(event: any): void {
+        if (event.notDisabledClick) {
+            this.onAddAccident();
+        }
+
+        if (event.cancelClick) {
+            this.onCancelEditAccident();
+        }
+
+        if (event.saveClick) {
+            this.onSaveEditedAccident();
+        }
+
+        if (event.reviewCancelClick) {
+            this.onCancelReviewAccident();
+        }
+
+        if (event.reviewSaveClick) {
+            this.onAddAnnotation();
+        }
     }
 
     public getDropdownLists(): void {

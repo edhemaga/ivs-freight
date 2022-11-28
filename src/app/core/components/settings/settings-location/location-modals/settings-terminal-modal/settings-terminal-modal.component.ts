@@ -414,7 +414,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     }
 
     private updateTerminal(id: number) {
-        const { address, addressUnit, rent, ...form } = this.terminalForm.value;
+        const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: UpdateTerminalCommand = {
             id: id,
@@ -471,7 +471,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     }
 
     private addTerminal() {
-        const { address, addressUnit, rent, ...form } = this.terminalForm.value;
+        const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: CreateTerminalCommand = {
             ...form,
@@ -670,31 +670,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                     );
                 },
             });
-    }
-
-    // Checkbox Card
-    public officeCheckboxCard: boolean = true;
-    public parkingCheckboxCard: boolean = true;
-    public warehouseCheckboxCard: boolean = true;
-
-    public toggleCheckboxCard(action: string) {
-        switch (action) {
-            case 'office': {
-                this.officeCheckboxCard = !this.officeCheckboxCard;
-                break;
-            }
-            case 'parking': {
-                this.parkingCheckboxCard = !this.parkingCheckboxCard;
-                break;
-            }
-            case 'warehouse': {
-                this.warehouseCheckboxCard = !this.warehouseCheckboxCard;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
     }
 
     ngOnDestroy() {

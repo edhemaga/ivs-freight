@@ -6,7 +6,7 @@
     [ngbPopover]="dropdownPopover"
     [placement]="placement"
     class="details-dropdown-container"
-    [ngClass]="{ 'active-drop': t2.isOpen(), 'rightRotation' : leftIcon, 'leftRotation' : !leftIcon }"
+    [ngClass]="{ 'active-drop': dropDownActive === id, 'rightRotation' : leftIcon, 'leftRotation' : !leftIcon }"
     popoverClass="details-dropdown-popover {{customClassDropDown}}"
     triggers="manual"
     [container]="'body'"
@@ -20,16 +20,12 @@
 </div>
 
 <ng-template #dropdownPopover let-data="data">
-    <div class="dropdown-main-popover-body" >
+    <div class="dropdown-main-popover-body">
         <div class="details-dropdown-body">
-            <div
-                *ngFor="let action of options;let i=index; trackBy:identity"
-                class="autoClass"
-            >
+            <div *ngFor="let action of options;let i=index; trackBy:identity">
                 <div
                     class="action-holder"
-                    [@showAnimation2]="isOpened ? 'true' : 'false'"
-                   
+                    @showAnimation
                     [class.leftIcon]="leftIcon"
                     [class.disabledAction]="action.disabled"
                     [class.disabledActionMain]="action.disabled"
@@ -44,14 +40,13 @@
                             [class.blueIcon]="action.blueIcon"
                             [class.greenIcon]="action.greenIcon"
                         >
-                            <svg-icon name="{{action.iconName}}"></svg-icon>
+                            <svg-icon src="{{action.svg}}"></svg-icon>
                         </div>
                     </div>
                 </div>
                 <div
                     class="action-holder subTypeHolder"
-                    [@showAnimation2]="isOpened ? 'true' : 'false'"
-                    
+                    @showAnimation
                     [class.leftIcon]="leftIcon"
                     [class.hoveredSubtype]="subtypeHovered == i && action.openSubtype"
                     [class.disabledAction]="action.disabled"
@@ -66,7 +61,7 @@
                     >
                         <div class="actionTitle">{{action.title}}</div>
                         <div class="actionIcon arrowIcon">
-                            <svg-icon name="{{action.iconName}}" ></svg-icon>
+                            <svg-icon src="{{action.svg}}"></svg-icon>
                         </div>
                     </div>
                     <div
@@ -85,7 +80,6 @@
                 <div
                     class="border-holder"
                     @borderShowAnimation
-                    [@.disabled]="isAnimated"
                     *ngIf="action.title == 'border'"
                 >
                     <div class="action-border-line"></div>

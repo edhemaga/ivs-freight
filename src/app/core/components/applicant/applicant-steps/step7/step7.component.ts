@@ -16,23 +16,22 @@ import moment from 'moment';
 
 import {
     anyInputInLineIncorrect,
+    filterUnceckedRadiosId,
+    isAnyRadioInArrayUnChecked,
     isFormValueNotEqual,
 } from '../../state/utils/utils';
 
 import {
-    convertDateToBackend,
     convertDateFromBackend,
+    convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
-import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
+import { ApplicantStore } from '../../state/store/applicant.store';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import {
     AddressEntity,
     ApplicantResponse,
@@ -40,6 +39,9 @@ import {
     CreateSevenDaysHosReviewCommand,
     SevenDaysHosFeedbackResponse,
 } from 'appcoretruckassist/model/models';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 
 @Component({
     selector: 'app-step7',
@@ -151,6 +153,14 @@ export class Step7Component implements OnInit, OnDestroy {
 
     private anotherEmployerRadios: any;
     private intendToWorkForAnotherEmployerRadios: any;
+
+    public displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    }[] = [
+        { id: 0, displayRadioRequiredNote: false },
+        { id: 1, displayRadioRequiredNote: false },
+    ];
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -357,7 +367,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
     public handleCheckboxParagraphClick(type: string): void {
         if (
-            this.selectedMode === 'FEEDBACK_MODE' ||
+            this.selectedMode === SelectedMode.FEEDBACK ||
             this.selectedMode === SelectedMode.REVIEW
         ) {
             return;
@@ -413,6 +423,10 @@ export class Step7Component implements OnInit, OnDestroy {
                         .get(selectedFormControlName)
                         .patchValue(false);
                 }
+
+                this.displayRadioRequiredNoteArray[
+                    selectedCheckbox.index
+                ].displayRadioRequiredNote = false;
                 break;
 
             default:
@@ -616,11 +630,6 @@ export class Step7Component implements OnInit, OnDestroy {
             }
         }
 
-        if (this.sevenDaysHosForm.invalid) {
-            this.inputService.markInvalid(this.sevenDaysHosForm);
-            return;
-        }
-
         const {
             hosArray,
             isValidHos,
@@ -631,6 +640,41 @@ export class Step7Component implements OnInit, OnDestroy {
             firstRowReview,
             ...sevenDaysHosForm
         } = this.sevenDaysHosForm.value;
+
+        const radioButtons = [
+            { id: 0, isChecked: anotherEmployer },
+            { id: 1, isChecked: intendToWorkAnotherEmployer },
+        ];
+
+        const isAnyRadioUnchecked = isAnyRadioInArrayUnChecked(radioButtons);
+
+        if (this.sevenDaysHosForm.invalid || isAnyRadioUnchecked) {
+            if (this.sevenDaysHosForm.invalid) {
+                this.inputService.markInvalid(this.sevenDaysHosForm);
+            }
+
+            if (isAnyRadioUnchecked) {
+                const uncheckedRadios = filterUnceckedRadiosId(radioButtons);
+
+                this.displayRadioRequiredNoteArray =
+                    this.displayRadioRequiredNoteArray.map((item, index) => {
+                        if (
+                            uncheckedRadios.some(
+                                (someItem) => someItem === index
+                            )
+                        ) {
+                            return {
+                                ...item,
+                                displayRadioRequiredNote: true,
+                            };
+                        }
+
+                        return item;
+                    });
+            }
+
+            return;
+        }
 
         const filteredHosArray: { hours: number; date: string }[] =
             hosArray.map((item: { hos: string | number }, index: number) => {

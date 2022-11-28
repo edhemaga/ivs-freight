@@ -268,7 +268,7 @@ export function getAccidentColumns() {
         {
             ngTemplate: 'attachments',
             title: 'Attachments',
-            field: 'additionalData.files',
+            field: 'tableAttachments',
             name: '',
             moveRight: true,
             headIconStyle: {
@@ -607,7 +607,7 @@ export function getRoadsideInspectionColums() {
         {
             ngTemplate: 'attachments',
             title: 'Attachments',
-            field: 'additionalData.files',
+            field: 'tableAttachments',
             name: '',
             moveRight: true,
             headIconStyle: {

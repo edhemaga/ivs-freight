@@ -402,6 +402,14 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             !this.scene.children[mainIndx].children[indx]['commentActive'];
     }
 
+    toggleFiles(e: Event, mainIndx: number, indx: number) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.scene.children[mainIndx].children[indx]['filesActive'] =
+            !this.scene.children[mainIndx].children[indx]['filesActive'];
+    }
+
     toggleLinkShow(e: Event, mainIndx: number, indx: number) {
         e.preventDefault();
         e.stopPropagation();

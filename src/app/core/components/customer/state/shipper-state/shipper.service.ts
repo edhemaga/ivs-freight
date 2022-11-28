@@ -4,20 +4,21 @@ import { Injectable, OnDestroy } from '@angular/core';
 import {
     CreateRatingCommand,
     CreateResponse,
-    CreateShipperCommand,
     RatingReviewService,
     ShipperListResponse,
     ShipperMinimalListResponse,
     ShipperModalResponse,
     ShipperResponse,
     UpdateReviewCommand,
-    UpdateShipperCommand,
+    ClusterResponse,
 } from 'appcoretruckassist';
 import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperDetailsListStore } from './shipper-details-state/shipper-details-list-state/shipper-details-list.store';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { GetRepairShopClustersQuery } from 'appcoretruckassist/model/getRepairShopClustersQuery';
 
 @Injectable({
     providedIn: 'root',
@@ -34,12 +35,14 @@ export class ShipperTService implements OnDestroy {
         private shipperStore: ShipperStore,
         private shipperMinimalStore: ShipperMinimalListStore,
         private shipperMinimalQuery: ShipperMinimalListQuery,
-        private sListStore: ShipperDetailsListStore
+        private sListStore: ShipperDetailsListStore,
+        private formDataService: FormDataService
     ) {}
 
     // Create Shipper
-    public addShipper(data: CreateShipperCommand): Observable<CreateResponse> {
-        return this.shipperService.apiShipperPost(data).pipe(
+    public addShipper(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.shipperService.apiShipperPost().pipe(
             tap((res: any) => {
                 const subShipper = this.getShipperById(res.id)
                     .pipe(takeUntil(this.destroy$))
@@ -76,8 +79,9 @@ export class ShipperTService implements OnDestroy {
     }
 
     // Update Shipper
-    public updateShipper(data: UpdateShipperCommand): Observable<any> {
-        return this.shipperService.apiShipperPut(data).pipe(
+    public updateShipper(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.shipperService.apiShipperPut().pipe(
             tap(() => {
                 const subShipper = this.getShipperById(data.id)
                     .pipe(takeUntil(this.destroy$))
@@ -134,13 +138,13 @@ export class ShipperTService implements OnDestroy {
         return this.shipperService.apiShipperListGet(
             ban,
             dnu,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
+            pageIndex
+            // pageSize,
+            // companyId,
+            // sort,
+            // search,
+            // search1,
+            // search2
         );
     }
 
@@ -256,12 +260,14 @@ export class ShipperTService implements OnDestroy {
 
     // Change Ban Status
     public changeBanStatus(id: number): Observable<any> {
-        return this.shipperService.apiShipperBanIdPut(id, 'response');
+        return of();
+        // return this.shipperService.apiShipperBanIdPut(id, 'response');
     }
 
     // Change Dnu Status
     public changeDnuStatus(id: number): Observable<any> {
-        return this.shipperService.apiShipperDnuIdPut(id, 'response');
+        return of();
+        // return this.shipperService.apiShipperDnuIdPut(id, 'response');
     }
 
     public getShipperDropdowns(): Observable<ShipperModalResponse> {
@@ -270,6 +276,46 @@ export class ShipperTService implements OnDestroy {
 
     public getShipperMap(): Observable<any> {
         return this.shipperService.apiShipperMapGet();
+    }
+
+    public getShipperClusters(
+        clustersQuery: GetRepairShopClustersQuery
+    ): Observable<Array<ClusterResponse>> {
+        return this.shipperService.apiShipperClustersGet(
+            clustersQuery.northEastLatitude,
+            clustersQuery.northEastLongitude,
+            clustersQuery.southWestLatitude,
+            clustersQuery.southWestLongitude,
+            clustersQuery.zoomLevel
+        );
+    }
+
+    public getShipperMapList(
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ) {
+        return this.shipperService.apiShipperListmapGet(
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
     }
 
     //  <--------------------------------- Review ---------------------------------->

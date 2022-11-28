@@ -14,11 +14,40 @@ export class FuelResolver implements Resolve<FuelState> {
     resolve(): Observable<FuelState> {
         const fuelTransactions$ = this.fuelService.getFuelTransactionsList(
             undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
             1,
             25
         );
 
-        const fuelStops$ = this.fuelService.getFuelStopsList(1, 25);
+        const fuelStops$ = this.fuelService.getFuelStopsList(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            1,
+            25
+        );
 
         return forkJoin({
             fuelTransactions: fuelTransactions$,
@@ -29,8 +58,8 @@ export class FuelResolver implements Resolve<FuelState> {
                     'fuelTableCount',
                     JSON.stringify({
                         fuelTransactions:
-                            data.fuelTransactions.pagination.count,
-                        fuelStops: data.fuelStops.pagination.count,
+                            data.fuelTransactions.fuelTransactionCount,
+                        fuelStops: data.fuelStops.fuelStopCount,
                     })
                 );
 

@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
-    CreateOwnerCommand,
     CreateResponse,
     GetOwnerListResponse,
     OwnerModalResponse,
     OwnerResponse,
     OwnerService,
-    UpdateOwnerCommand,
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 import { OwnerActiveQuery } from './owner-active-state/owner-active.query';
@@ -14,6 +12,7 @@ import { OwnerActiveStore } from './owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from './owner-inactive-state/owner-inactive.query';
 import { OwnerInactiveStore } from './owner-inactive-state/owner-inactive.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
@@ -25,12 +24,14 @@ export class OwnerTService {
         private ownerActiveStore: OwnerActiveStore,
         private ownerInactiveStore: OwnerInactiveStore,
         private ownerActiveQuery: OwnerActiveQuery,
-        private ownerInactiveQuery: OwnerInactiveQuery
+        private ownerInactiveQuery: OwnerInactiveQuery,
+        private formDataService: FormDataService
     ) {}
 
     // Add Owner
-    public addOwner(data: CreateOwnerCommand): Observable<CreateResponse> {
-        return this.ownerService.apiOwnerPost(data).pipe(
+    public addOwner(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.ownerService.apiOwnerPost().pipe(
             tap((res: any) => {
                 const subOwner = this.getOwnerById(res.id).subscribe({
                     next: (owner: OwnerResponse | any) => {
@@ -64,8 +65,9 @@ export class OwnerTService {
     }
 
     // Update Owner
-    public updateOwner(data: UpdateOwnerCommand): Observable<any> {
-        return this.ownerService.apiOwnerPut(data).pipe(
+    public updateOwner(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.ownerService.apiOwnerPut().pipe(
             tap(() => {
                 const subOwner = this.getOwnerById(data.id).subscribe({
                     next: (owner: OwnerResponse | any) => {

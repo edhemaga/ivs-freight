@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
 import { Injectable } from '@angular/core';
 import {
@@ -6,13 +7,17 @@ import {
     FuelTransactionListResponse,
 } from 'appcoretruckassist';
 
-import { Observable } from 'rxjs';
 import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
-import { EditFuelStopCommand } from '../../../../../../appcoretruckassist/model/editFuelStopCommand';
-import { AddFuelStopCommand } from '../../../../../../appcoretruckassist/model/addFuelStopCommand';
 import { UpdateFuelStopCommand } from '../../../../../../appcoretruckassist/model/updateFuelStopCommand';
 import { FuelStore } from './fule-state/fuel-state.store';
+import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model/getFuelModalResponse';
+import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
+import { FuelStopFranchiseResponse } from '../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
+import { FuelTransactionResponse } from '../../../../../../appcoretruckassist/model/fuelTransactionResponse';
+import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { GetRepairShopClustersQuery } from '../../../../../../appcoretruckassist/model/getRepairShopClustersQuery';
+import { ClusterResponse } from '../../../../../../appcoretruckassist/model/clusterResponse';
 
 @Injectable({
     providedIn: 'root',
@@ -20,12 +25,27 @@ import { FuelStore } from './fule-state/fuel-state.store';
 export class FuelTService {
     constructor(
         private fuelService: FuelService,
-        private fuelStore: FuelStore
+        private fuelStore: FuelStore,
+        private formDataService: FormDataService
     ) {}
 
-    // Get Fuel Transactions
-    getFuelTransactionsList(
-        fuelTransactionSpecParamsFuelStopStoreId?: number,
+    // **************** FUEL TRANSACTION ****************
+
+    public getFuelTransactionsList(
+        fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>,
+        fuelTransactionSpecParamsTruckIds?: Array<number>,
+        fuelTransactionSpecParamsCategoryIds?: Array<number>,
+        fuelTransactionSpecParamsDateFrom?: string,
+        fuelTransactionSpecParamsDateTo?: string,
+        fuelTransactionSpecParamsLong?: number,
+        fuelTransactionSpecParamsLat?: number,
+        fuelTransactionSpecParamsDistance?: number,
+        fuelTransactionSpecParamsLastFrom?: number,
+        fuelTransactionSpecParamsLastTo?: number,
+        fuelTransactionSpecParamsCostFrom?: number,
+        fuelTransactionSpecParamsCostTo?: number,
+        fuelTransactionSpecParamsPpgFrom?: number,
+        fuelTransactionSpecParamsPpgTo?: number,
         fuelTransactionSpecParamsPageIndex?: number,
         fuelTransactionSpecParamsPageSize?: number,
         fuelTransactionSpecParamsCompanyId?: number,
@@ -35,7 +55,20 @@ export class FuelTService {
         fuelTransactionSpecParamsSearch2?: string
     ): Observable<FuelTransactionListResponse> {
         return this.fuelService.apiFuelTransactionListGet(
-            fuelTransactionSpecParamsFuelStopStoreId,
+            fuelTransactionSpecParamsFuelStopStoreIds,
+            fuelTransactionSpecParamsTruckIds,
+            fuelTransactionSpecParamsCategoryIds,
+            fuelTransactionSpecParamsDateFrom,
+            fuelTransactionSpecParamsDateTo,
+            fuelTransactionSpecParamsLong,
+            fuelTransactionSpecParamsLat,
+            fuelTransactionSpecParamsDistance,
+            fuelTransactionSpecParamsLastFrom,
+            fuelTransactionSpecParamsLastTo,
+            fuelTransactionSpecParamsCostFrom,
+            fuelTransactionSpecParamsCostTo,
+            fuelTransactionSpecParamsPpgFrom,
+            fuelTransactionSpecParamsPpgTo,
             fuelTransactionSpecParamsPageIndex,
             fuelTransactionSpecParamsPageSize,
             fuelTransactionSpecParamsCompanyId,
@@ -46,8 +79,75 @@ export class FuelTService {
         );
     }
 
+    set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
+        this.fuelStore.update((store) => {
+            return {
+                ...store,
+                fuelTransactions: data,
+            };
+        });
+    }
+
+    public getFuelTransactionModalDropdowns(): Observable<GetFuelModalResponse> {
+        return this.fuelService.apiFuelTransactionModalGet();
+    }
+
+    public getFuelTransactionFranchises(
+        pageIndex: number,
+        pageSize: number
+    ): Observable<any> {
+        return this.fuelService.apiFuelTransactionModalFuelstopfranchiseGet(
+            pageIndex,
+            pageSize
+        );
+    }
+
+    public getFuelTransactionStoresByFranchiseId(
+        id: number
+    ): Observable<FuelStopFranchiseResponse> {
+        return this.fuelService.apiFuelFuelstopfranchiseIdGet(id);
+    }
+
+    public getDriverBySelectedTruckAndDate(
+        truckId: number,
+        date: string
+    ): Observable<FuelDispatchHistoryResponse> {
+        return this.fuelService.apiFuelDispatchhistoryGet(truckId, date);
+    }
+
+    public addFuelTransaction(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelTransactionPost();
+    }
+
+    public updateFuelTransaction(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelTransactionPut();
+    }
+
+    public getFuelTransactionById(
+        id: number
+    ): Observable<FuelTransactionResponse> {
+        return this.fuelService.apiFuelTransactionIdGet(id);
+    }
+
+    // **************** FUEL STOP ****************
+
     // Get Fule Stops
-    getFuelStopsList(
+    public getFuelStopsList(
+        truckIds?: Array<number>,
+        categoryIds?: Array<number>,
+        dateFrom?: string,
+        dateTo?: string,
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        lastFrom?: number,
+        lastTo?: number,
+        costFrom?: number,
+        costTo?: number,
+        ppgFrom?: number,
+        ppgTo?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -57,6 +157,19 @@ export class FuelTService {
         search2?: string
     ): Observable<FuelStopListResponse> {
         return this.fuelService.apiFuelFuelstopListGet(
+            truckIds,
+            categoryIds,
+            dateFrom,
+            dateTo,
+            _long,
+            lat,
+            distance,
+            lastFrom,
+            lastTo,
+            costFrom,
+            costTo,
+            ppgFrom,
+            ppgTo,
             pageIndex,
             pageSize,
             companyId,
@@ -65,15 +178,6 @@ export class FuelTService {
             search1,
             search2
         );
-    }
-
-    set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
-        this.fuelStore.update((store) => {
-            return {
-                ...store,
-                fuelTransactions: data,
-            };
-        });
     }
 
     set updateStoreFuelStopList(data: FuelStopListResponse) {
@@ -89,20 +193,20 @@ export class FuelTService {
         return this.fuelService.apiFuelFuelstopIdGet(fuelId);
     }
 
-    public addFuelStop(data: AddFuelStopCommand): Observable<CreateResponse> {
-        return this.fuelService.apiFuelFuelstopPost(data);
+    public addFuelStop(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelFuelstopPost();
     }
 
     // For table method
-    public updateFuelStopShortest(
-        data: EditFuelStopCommand
-    ): Observable<object> {
-        return this.fuelService.apiFuelFuelstopPut(data);
+    public updateFuelStopShortest(data: any): Observable<object> {
+        return this.fuelService.apiFuelFuelstopPut();
     }
 
     // For modal method
     public updateFuelStop(data: UpdateFuelStopCommand): Observable<object> {
-        return this.fuelService.apiFuelFuelstopUpdatePut(data);
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.fuelService.apiFuelFuelstopUpdatePut();
     }
 
     public getFuelStopModalDropdowns(
@@ -149,6 +253,66 @@ export class FuelTService {
         return this.fuelService.apiFuelFuelstopCheckStoreFranchiseIdStoreGet(
             franchiseId,
             store
+        );
+    }
+
+    // Map Clusters
+
+    public getFuelStopClusters(
+        clustersQuery: GetRepairShopClustersQuery
+    ): Observable<Array<ClusterResponse>> {
+        return this.fuelService.apiFuelClustersGet(
+            clustersQuery.northEastLatitude,
+            clustersQuery.northEastLongitude,
+            clustersQuery.southWestLatitude,
+            clustersQuery.southWestLongitude,
+            clustersQuery.zoomLevel
+        );
+    }
+
+    public getFuelStopMapList(
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        lastFrom?: number,
+        lastTo?: number,
+        costFrom?: number,
+        costTo?: number,
+        ppgFrom?: number,
+        ppgTo?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ) {
+        return this.fuelService.apiFuelListmapGet(
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            _long,
+            lat,
+            distance,
+            lastFrom,
+            lastTo,
+            costFrom,
+            costTo,
+            ppgFrom,
+            ppgTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
         );
     }
 }

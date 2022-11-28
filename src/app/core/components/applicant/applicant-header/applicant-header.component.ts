@@ -35,6 +35,11 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
             route: '/application',
         },
         {
+            title: 'Owner Info',
+            iconSrc: 'assets/svg/common/ic_company.svg',
+            route: '/owner-info',
+        },
+        {
             title: 'Medical Cert.',
             iconSrc: 'assets/svg/applicant/medical.svg',
             route: '/medical-certificate',
@@ -71,7 +76,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         },
     ];
 
-    storeArr = [
+    public isTabCompletedArray: { id: number; isCompleted: boolean }[] = [
         { id: 0, isCompleted: false },
         { id: 1, isCompleted: false },
         { id: 2, isCompleted: false },
@@ -80,17 +85,19 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 5, isCompleted: false },
         { id: 6, isCompleted: false },
         { id: 7, isCompleted: false },
+        { id: 8, isCompleted: false },
     ];
 
     reviewStoreArr = [
-        { id: 0, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 1, isReviewed: true, hasIncorrectAnswer: true },
-        { id: 2, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 3, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 4, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 5, isReviewed: true, hasIncorrectAnswer: false },
-        { id: 6, isReviewed: true, hasIncorrectAnswer: false },
+        { id: 0, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 1, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 2, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 3, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 4, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 5, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 6, isReviewed: false, hasIncorrectAnswer: false },
         { id: 7, isReviewed: false, hasIncorrectAnswer: false },
+        { id: 8, isReviewed: false, hasIncorrectAnswer: false },
     ];
 
     feedbackStoreArr = [
@@ -102,6 +109,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 5, hasIncorrectAnswer: false },
         { id: 6, hasIncorrectAnswer: false },
         { id: 7, hasIncorrectAnswer: false },
+        { id: 8, hasIncorrectAnswer: false },
     ];
 
     constructor(private applicantQuery: ApplicantQuery) {}
@@ -123,6 +131,87 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
                 this.applicantId = res.id;
+
+                if (this.selectedMode === SelectedMode.APPLICANT) {
+                    this.isTabCompletedArray = this.isTabCompletedArray.map(
+                        (item, index) => {
+                            if (index === 0) {
+                                return {
+                                    ...item,
+                                    isCompleted:
+                                        res.personalInfo &&
+                                        res.workExperience &&
+                                        res.cdlInformation &&
+                                        res.accidentRecords &&
+                                        res.trafficViolation &&
+                                        res.education &&
+                                        res.sevenDaysHos &&
+                                        res.drugAndAlcohol &&
+                                        res.driverRight &&
+                                        res.disclosureRelease &&
+                                        res.authorization
+                                            ? true
+                                            : false,
+                                };
+                            }
+
+                            if (index === 1) {
+                                return item;
+                            }
+
+                            if (index === 2) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.medicalCertificate
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 3) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.mvrAuth ? true : false,
+                                };
+                            }
+
+                            if (index === 4) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.pspAuth ? true : false,
+                                };
+                            }
+
+                            if (index === 5) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.sph ? true : false,
+                                };
+                            }
+
+                            if (index === 6) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.hosRule ? true : false,
+                                };
+                            }
+
+                            if (index === 7) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.ssn ? true : false,
+                                };
+                            }
+
+                            if (index === 8) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.cdlCard ? true : false,
+                                };
+                            }
+                        }
+                    );
+                }
             });
     }
 }

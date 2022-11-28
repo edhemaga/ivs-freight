@@ -52,12 +52,12 @@
                 &.display-box {
                     svg {
                         path {
-                            fill: $ta-blue;
+                            fill: $ta-blue-5;
                         }
                     }
 
                     &:hover + p {
-                        color: $ta-blue;
+                        color: $ta-blue-5;
                     }
                 }
 
@@ -82,7 +82,7 @@
                 }
 
                 &.display-box {
-                    color: $ta-blue;
+                    color: $ta-blue-5;
                 }
             }
         }
@@ -112,17 +112,17 @@
                 h2 {
                     height: 24px;
                     font-size: 20px;
-                    color: $bw6-2;
+                    color: $ta-black;
                     text-transform: uppercase !important;
 
                     &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
                     }
 
                     &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
                     }
                 }
 
@@ -161,17 +161,17 @@
 
                 p {
                     font-size: 14px;
-                    color: $bw6-2;
+                    color: $ta-black;
                     line-height: 20px;
 
                     &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
                     }
 
                     &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
                     }
                 }
 
@@ -409,12 +409,16 @@
         }
     }
 
+    .logo-container {
+        margin-left: auto;
+    }
+
     .copyright-bar {
         height: 42px;
         border-top: 0.1rem solid $ta-gray-02;
 
         p {
-            color: $ta-blue-2;
+            color: $ta-blue-5;
             font-weight: 400;
             font-size: 14px;
             user-select: none;

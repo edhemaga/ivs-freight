@@ -27,7 +27,7 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
                         'driverTableCount',
                         JSON.stringify({
                             active: driverPagination.activeCount,
-                            inactive: driverPagination.inactiveCount,
+                            inactive: driverPagination.inactiveCount
                         })
                     );
 

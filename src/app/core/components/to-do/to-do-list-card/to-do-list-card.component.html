@@ -262,11 +262,30 @@
                                                 ></svg-icon>
                                             </div>
                                             <div
-                                                class="icon-box lighter-icon"
+                                                class="icon-box"
                                                 ngbTooltip
-                                                mainTooltip="Documents"
+                                                [mainTooltip]="
+                                                    item.files?.length
+                                                        ? 'Documents'
+                                                        : 'No Documents'
+                                                "
                                                 position="bottom"
+                                                (mousedown)="
+                                                    item.files?.length
+                                                        ? toggleFiles(
+                                                              $event,
+                                                              i,
+                                                              j
+                                                          )
+                                                        : ''
+                                                "
                                                 tooltipBackground="#6C6C6C"
+                                                [class.blue-icons]="
+                                                    item.filesActive
+                                                "
+                                                [class.lighter-icon]="
+                                                    !item.files?.length
+                                                "
                                             >
                                                 <svg-icon
                                                     src="assets/svg/common/ic_attachment.svg"
@@ -447,6 +466,65 @@
                                         [class.closed]="!item.linkActive"
                                     >
                                         {{ item.url }}
+                                    </div>
+                                </div>
+                                <div
+                                    class="comment_main_holder"
+                                    [@showHideCardBody]="
+                                        item.filesActive ? 'true' : 'false'
+                                    "
+                                >
+                                    <div
+                                        class="comment-holder"
+                                        [class.no_comments]="
+                                            !item.files?.length
+                                        "
+                                        [class.show_border]="
+                                            item.deadline && !item.commentActive
+                                        "
+                                    >
+                                        <div class="todo_list_holder files">
+                                            <div
+                                                class="todo_list_info_holder"
+                                                [class.expand]="
+                                                    item.files.length
+                                                "
+                                            >
+                                                <div
+                                                    class="todo_list_info_number_hold"
+                                                >
+                                                    <div
+                                                        class="todo_list_info_number"
+                                                    >
+                                                        {{ item.files?.length }}
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="todo_list_info_text"
+                                                >
+                                                    Document
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="files_holder"
+                                                *ngIf="item.files.length"
+                                            >
+                                                <app-ta-upload-files
+                                                    [customClassName]="
+                                                        'todo-details'
+                                                    "
+                                                    [files]="
+                                                        item.files
+                                                            ? item.files
+                                                            : []
+                                                    "
+                                                    [size]="'large'"
+                                                    [reviewMode]="'REVIEW_MODE'"
+                                                    [type]="'todo'"
+                                                    [slideWidth]="209"
+                                                ></app-ta-upload-files>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div

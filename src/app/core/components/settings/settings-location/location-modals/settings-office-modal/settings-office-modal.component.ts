@@ -24,6 +24,7 @@ import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { rentValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../../../services/form/form.service';
+import { UserModalComponent } from '../../../../modals/user-modal/user-modal.component';
 import {
     addressValidation,
     addressUnitValidation,
@@ -70,6 +71,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
 
     public officeName: string = null;
+
+    public isDepartmentCardsScrolling: boolean = false;
 
     public tabs: any[] = [
         {
@@ -147,6 +150,27 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
             case 'close': {
+                if (this.editData?.canOpenModal) {
+                    switch (this.editData?.key) {
+                        case 'user-modal': {
+                            this.modalService.setProjectionModal({
+                                action: 'close',
+                                payload: {
+                                    key: this.editData?.key,
+                                    value: null,
+                                },
+                                component: UserModalComponent,
+                                size: 'small',
+                                type: this.editData?.type,
+                                closing: 'fastest',
+                            });
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                }
                 break;
             }
             case 'save': {
@@ -260,7 +284,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
 
     private updateCompanyOffice(id: number) {
-        const { address, addressUnit, departmentContacts, rent, ...form } =
+        const { addressUnit, departmentContacts, rent, ...form } =
             this.officeForm.value;
 
         let newData: UpdateCompanyOfficeCommand = {
@@ -315,7 +339,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
 
     private addCompanyOffice() {
-        const { address, addressUnit, departmentContacts, rent, ...form } =
+        const { addressUnit, departmentContacts, rent, ...form } =
             this.officeForm.value;
 
         let newData: CreateCompanyOfficeCommand = {
@@ -358,6 +382,27 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                         'Successfuly created company office',
                         'Success'
                     );
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'user-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: UserModalComponent,
+                                    size: 'small',
+                                    type: this.editData?.type,
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
                 },
                 error: () => {
                     this.notificationService.error(
@@ -481,6 +526,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     );
                 },
             });
+    }
+
+    public onScrollingBrokerContacts(event: any) {
+        this.isDepartmentCardsScrolling = event.target.scrollLeft > 1;
     }
 
     ngOnDestroy(): void {

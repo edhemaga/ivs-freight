@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+    convertDateToBackend,
+    convertDateFromBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
@@ -15,7 +18,7 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { ApplicantResponse } from 'appcoretruckassist';
+import { ApplicantResponse, CdlCardFeedbackResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-cdl-card',
@@ -88,8 +91,22 @@ export class CdlCardComponent implements OnInit, OnDestroy {
             .subscribe((res: ApplicantResponse) => {
                 this.applicantId = res.id;
 
-                /* this.stepHasValues = true; */
+                if (res.cdlCard) {
+                    this.patchStepValues(res.cdlCard);
+
+                    this.stepHasValues = true;
+                }
             });
+    }
+
+    public patchStepValues(stepValues: CdlCardFeedbackResponse): void {
+        console.log('stepValues', stepValues);
+        const { issueDate, expireDate } = stepValues;
+
+        this.cdlCardForm.patchValue({
+            fromDate: convertDateFromBackend(issueDate),
+            toDate: convertDateFromBackend(expireDate),
+        });
     }
 
     public onFilesAction(event: any): void {
@@ -219,8 +236,11 @@ export class CdlCardComponent implements OnInit, OnDestroy {
 
         const { fromDate, toDate } = this.cdlCardForm.value;
 
-        const documents = this.documents.map((item) => {
-            return item.realFile;
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
         });
 
         const saveData: any = {
@@ -252,6 +272,20 @@ export class CdlCardComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.router.navigate([`/applicant/end`]);
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.cdlCard,
+                                cdlCard: {
+                                    ...store.applicant.medicalCertificate,
+                                    issueDate: saveData.issueDate,
+                                    expireDate: saveData.expireDate,
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);

@@ -103,17 +103,35 @@
                         trackBy: trackByIdentity
                     "
                 >
-                    <div [ngClass]="['title-box' + i, 'title-box']">
+                    <div
+                        class="d-flex flex-column"
+                        [ngClass]="['title-box' + i, 'title-box']"
+                    >
                         <p class="m-0 ta-font-regular">
                             {{ question.title }}
                             <span class="required-star">*</span>
                         </p>
+
+                        <ng-container
+                            *ngIf="
+                                displayRadioRequiredNoteArray[i]
+                                    .displayRadioRequiredNote
+                            "
+                        >
+                            <p class="m-0 ta-font-semi-bold required">
+                                Required
+                            </p>
+                        </ng-container>
                     </div>
 
                     <div class="radios-box">
                         <app-ta-input-radiobuttons
                             #cmp
                             [buttons]="question.answerChoices"
+                            [displayRequiredNote]="
+                                displayRadioRequiredNoteArray[i]
+                                    .displayRadioRequiredNote
+                            "
                             (changedValue)="
                                 handleInputSelect($event, 'ANSWER-CHOICE')
                             "
@@ -181,7 +199,7 @@
                         [inputConfig]="{
                             name: 'address-unit',
                             type: 'text',
-                            label: 'Unit No.',
+                            label: 'Unit #',
                             textTransform: 'uppercase',
                             minLength: 1,
                             maxLength: 10
@@ -195,17 +213,30 @@
             <div
                 class="d-flex align-items-center justify-content-between sap-question-container"
             >
-                <div Class=" title-box">
+                <div Class="d-flex flex-column title-box">
                     <p class="m-0 ta-font-regular">
                         {{ questions[5].title }}
                         <span class="required-star">*</span>
                     </p>
+
+                    <ng-container
+                        *ngIf="
+                            displayRadioRequiredNoteArray[5]
+                                .displayRadioRequiredNote
+                        "
+                    >
+                        <p class="m-0 ta-font-semi-bold required">Required</p>
+                    </ng-container>
                 </div>
 
                 <div class="radios-box">
                     <app-ta-input-radiobuttons
                         #cmp
                         [buttons]="questions[5].answerChoices"
+                        [displayRequiredNote]="
+                            displayRadioRequiredNoteArray[5]
+                                .displayRadioRequiredNote
+                        "
                         (changedValue)="
                             handleInputSelect($event, 'ANSWER-CHOICE')
                         "

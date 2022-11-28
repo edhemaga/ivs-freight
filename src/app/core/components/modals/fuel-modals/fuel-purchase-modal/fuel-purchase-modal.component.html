@@ -5,8 +5,9 @@
             : 'Edit Fuel Transaction'
     "
     [editData]="editData"
-    [editName]="editData?.id"
+    [editName]="fuelTransactionName"
     [isModalValid]="fuelForm.valid && isFormDirty"
+    [disableDelete]="true"
     (action)="onModalAction($event)"
 >
     <form
@@ -14,27 +15,106 @@
         [formGroup]="fuelForm"
         class="form-container form-container-without-mb"
     >
-        <div class="row">
+        <div
+            *ngIf="
+                editData?.type === 'edit' &&
+                fuelTransactionType?.name !== 'Manual'
+            "
+            class="row"
+        >
             <div class="col-6">
+                <app-ta-input
+                    formControlName="efsAccount"
+                    [inputConfig]="{
+                        name: 'EFS Account',
+                        type: 'text',
+                        label: 'EFS Account',
+                        isDisabled: true
+                    }"
+                ></app-ta-input>
+            </div>
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="fuelCard"
+                    [inputConfig]="{
+                        name: 'Fuel Card',
+                        type: 'text',
+                        label: 'Fuel Card',
+                        isDisabled: true,
+                        placeholderIcon: 'fuel-card'
+                    }"
+                ></app-ta-input>
+            </div>
+        </div>
+        <div class="row">
+            <div
+                [ngClass]="fuelForm.get('trailerId').value ? 'col-4' : 'col-6'"
+            >
                 <app-ta-input-dropdown
-                    formControlName="truckTypeId"
+                    formControlName="truckId"
                     [template]="'svgtext-template'"
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
-                        label: 'Truck #',
+                        label: 'Truck',
                         isRequired: true,
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-216'
+                        dropdownImageInput: {
+                            withText: true,
+                            svg: true,
+                            image: false,
+                            url: selectedTruckType?.logoName,
+                            template: 'truck',
+                            class: selectedTruckType?.name
+                                ?.trim()
+                                .replace(' ', '')
+                                .toLowerCase()
+                        },
+                        dropdownWidthClass: 'w-col-216',
+                        customClass: 'truck-trailer-dropdown'
                     }"
                     [options]="truckType"
                     [activeItem]="selectedTruckType"
+                    (pagination)="truckListPagination($event)"
                     (selectedItem)="onSelectDropDown($event, 'truck')"
                 ></app-ta-input-dropdown>
             </div>
-            <div class="col-6">
+            <div *ngIf="fuelForm.get('trailerId').value" class="col-4">
+                <app-ta-input-dropdown
+                    formControlName="trailerId"
+                    [template]="'svgtext-template'"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Truck',
+                        isRequired: true,
+                        isDropdown: true,
+                        dropdownImageInput: {
+                            withText: true,
+                            svg: true,
+                            image: false,
+                            url: selectedDispatchHistory?.logoName,
+                            template: 'truck',
+                            class: selectedDispatchHistory?.trailerTypeName
+                                ?.trim()
+                                .replace(' ', '')
+                                .toLowerCase()
+                        },
+                        dropdownWidthClass: 'w-col-216',
+                        customClass: 'truck-trailer-dropdown',
+                        isDisabled: true
+                    }"
+                ></app-ta-input-dropdown>
+            </div>
+            <div
+                [ngClass]="
+                    fuelForm.get('trailerId').value
+                        ? 'col-4 no-p-left'
+                        : 'col-6'
+                "
+            >
                 <app-ta-input
-                    formControlName="fullName"
+                    formControlName="driverFullName"
                     [inputConfig]="{
                         name: 'Full name',
                         type: 'text',
@@ -50,7 +130,7 @@
         <div class="row">
             <div class="col-6">
                 <app-ta-input
-                    formControlName="date"
+                    formControlName="transactionDate"
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',
@@ -58,6 +138,9 @@
                         placeholderIcon: 'date',
                         isRequired: true,
                         isDropdown: true,
+                        isDisabled:
+                            editData?.type === 'edit' &&
+                            fuelTransactionType?.name !== 'Manual',
                         customClass: 'datetimeclass'
                     }"
                 ></app-ta-input>
@@ -65,61 +148,111 @@
             <div class="col-6">
                 <!-- Time Picker -->
                 <app-ta-input
-                    formControlName="time"
+                    formControlName="transactionTime"
                     [inputConfig]="{
                         name: 'timepicker',
                         type: 'text',
-                        isDropdown: true,
                         label: 'Time',
                         placeholderIcon: 'time',
+                        isDropdown: true,
+                        isDisabled:
+                            editData?.type === 'edit' &&
+                            fuelTransactionType?.name !== 'Manual',
                         customClass: 'datetimeclass'
                     }"
                 ></app-ta-input>
             </div>
         </div>
         <div class="row last-row">
-            <div class="col-8">
+            <div class="col-12">
+                <div
+                    *ngIf="selectedFuelStop"
+                    class="selected-item-container"
+                    [ngClass]="{
+                        'non-editable':
+                            editData?.type === 'edit' &&
+                            fuelTransactionType?.name !== 'Manual'
+                    }"
+                >
+                    <div class="selected-item-label">
+                        Fuel Stop <span>*</span>
+                    </div>
+                    <p class="selected-item-name">
+                        {{ selectedFuelStop?.businessName }}
+                        {{ '#'.concat(' ', selectedFuelStop?.name) }}
+                    </p>
+                    <div class="selected-item-additional">
+                        <div
+                            *ngIf="selectedFuelStop?.address"
+                            class="selected-item-info"
+                        >
+                            <svg-icon
+                                src="assets/svg/common/ic_address.svg"
+                            ></svg-icon>
+                            <p>
+                                {{ selectedFuelStop?.fullAddress }}
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        *ngIf="
+                            editData?.type !== 'edit' ||
+                            fuelTransactionType?.name === 'Manual'
+                        "
+                        class="clear-selected-item"
+                    >
+                        <div
+                            ngbTooltip
+                            mainTooltip="Clear"
+                            tooltipBackground="#6c6c6c"
+                            position="top"
+                            class="clear-x"
+                            (click)="
+                                selectedFuelStop = null;
+                                fuelForm.get('fuelStopStoreId').patchValue(null)
+                            "
+                        >
+                            <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
+                        </div>
+                    </div>
+                </div>
                 <app-ta-input-dropdown
-                    formControlName="fuelStopId"
+                    *ngIf="!selectedFuelStop"
+                    formControlName="fuelStopStoreId"
+                    [template]="'fuel-franchise'"
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
                         label: 'Fuel Stop',
                         isRequired: true,
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-296'
+                        dropdownWidthClass: 'w-col-456'
                     }"
                     [options]="fuelStops"
                     [activeItem]="selectedFuelStop"
+                    (pagination)="paginationFuelStopPage($event)"
+                    (activeGroup)="getFuelStoresByFranchiseId($event)"
                     (selectedItem)="onSelectDropDown($event, 'fuel')"
                 ></app-ta-input-dropdown>
             </div>
-            <div class="col-4">
-                <app-ta-input-dropdown
-                    formControlName="storeId"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Store #',
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-148'
-                    }"
-                    [options]="storeType"
-                    [activeItem]="selectedStoreType"
-                    (selectedItem)="onSelectDropDown($event, 'store')"
-                ></app-ta-input-dropdown>
-            </div>
         </div>
+
         <!-- Fake Table Card -->
         <app-ta-custom-card
             [hasCounter]="fuelItems.length ? fuelItems.length : 0"
-            [cardName]="'Items'"
-            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-            [hasArrow]="false"
+            [cardName]="'Item'"
+            [headerSvgEnabled]="true"
+            [hasActionSvg]="
+                editData?.type !== 'edit' ||
+                fuelTransactionType?.name === 'Manual'
+                    ? 'assets/svg/common/ic_plus.svg'
+                    : null
+            "
             [isCommentData]="true"
             [isCardOpen]="fuelItems.length > 0"
             [hasBodyData]="fuelItems.length > 0"
             [hasScrollBody]="fuelItems.length > 10"
+            [actionText]="'ADD NEW ITEM'"
             (onActionEvent)="addFuelItems($event)"
         >
             <div
@@ -132,8 +265,8 @@
                 <div class="common-fake-table-label">
                     <p>#</p>
                     <p>ITEM <span>*</span></p>
-                    <p>QTY <span>*</span></p>
-                    <p>PRICE <span>*</span></p>
+                    <p>QTY</p>
+                    <p>PRICE</p>
                     <p>SUBTOTAL</p>
                 </div>
                 <div class="common-fake-table-body">
@@ -151,7 +284,7 @@
                             (mouseleave)="hoverRowTable[ind] = false"
                         >
                             <p *ngIf="!hoverRowTable[ind]">
-                                {{ fuelItem.get('id').value }}
+                                {{ fuelItem.get('reorderingNumber').value }}
                             </p>
                             <svg-icon
                                 class="common-fake-table-card-transfer-svg"
@@ -167,7 +300,10 @@
                                     dropdownWidthClass: 'w-col-114',
                                     hideErrorMessage: true,
                                     blackInput: true,
-                                    hideRequiredCheck: true
+                                    hideRequiredCheck: true,
+                                    isDisabled:
+                                        editData?.type === 'edit' &&
+                                        fuelTransactionType?.name !== 'Manual'
                                 }"
                                 [options]="fuelItemsDropdown"
                                 [activeItem]="selectedFuelItemsFormArray[ind]"
@@ -183,28 +319,60 @@
                                     type: 'text',
                                     hideErrorMessage: true,
                                     blackInput: true,
-                                    hideRequiredCheck: true
+                                    hideRequiredCheck: true,
+                                    isDisabled:
+                                        editData?.type === 'edit' &&
+                                        fuelTransactionType?.name !== 'Manual'
                                 }"
                                 (change)="onChange('qty', ind)"
                             ></app-ta-input>
-                            <app-ta-input
-                                formControlName="price"
-                                [inputConfig]="{
-                                    name: 'Price',
-                                    type: 'text',
-                                    minLength: 4,
-                                    maxLength: 11,
-                                    blackInput: true,
-                                    hideErrorMessage: true,
-                                    thousandSeparator: true,
-                                    hideRequiredCheck: true
-                                }"
-                                (change)="onChange('price', ind)"
-                            ></app-ta-input>
+                            <div class="fuel-item-price-container">
+                                <span
+                                    *ngIf="
+                                        fuelItem.get('price').value &&
+                                        bluringFuelItemsPrice[index]
+                                    "
+                                    class="fuel-item-price-dollar"
+                                >
+                                    $
+                                </span>
+
+                                <app-ta-input
+                                    formControlName="price"
+                                    [inputConfig]="{
+                                        name: 'Price',
+                                        type: 'text',
+                                        minLength: 4,
+                                        maxLength: 11,
+                                        blackInput: true,
+                                        hideClear:
+                                            !bluringFuelItemsPrice[index],
+                                        hideErrorMessage: true,
+                                        thousandSeparator: true,
+                                        hideRequiredCheck: true,
+                                        isDisabled:
+                                            editData?.type === 'edit' &&
+                                            fuelTransactionType?.name !==
+                                                'Manual'
+                                    }"
+                                    (blurInput)="
+                                        bluringFuelItemsPrice[index] = true
+                                    "
+                                    (focusInput)="
+                                        bluringFuelItemsPrice[index] = false
+                                    "
+                                    (change)="onChange('price', ind)"
+                                ></app-ta-input>
+                            </div>
+
                             <p class="fuel-subtotal">
-                                {{ subtotal[ind].value | currency }}
+                                {{ subtotal[ind]?.value | currency }}
                             </p>
                             <div
+                                *ngIf="
+                                    editData?.type !== 'edit' ||
+                                    fuelTransactionType?.name === 'Manual'
+                                "
                                 ngbTooltip
                                 mainTooltip="Delete"
                                 position="top"
@@ -220,12 +388,25 @@
                     </div>
                 </div>
             </div>
-            <div class="row fuel-total-row">
+            <div class="row row-no-mb fuel-total-row">
                 <p class="fuel-total">
                     <span class="fuel-total-text">TOTAL</span>
                     {{ subtotal | sumArrays | currency }}
                 </p>
             </div>
         </app-ta-custom-card>
+
+        <div class="ta-card-body-overflow-none">
+            <app-ta-custom-card
+                [hasCounter]="documents.length ? documents.length : 0"
+                [cardName]="'Documents'"
+                [isCardOpen]="documents.length > 0"
+            >
+                <app-ta-upload-files
+                    [files]="documents"
+                    (onFileEvent)="onFilesEvent($event)"
+                ></app-ta-upload-files>
+            </app-ta-custom-card>
+        </div>
     </form>
 </app-ta-modal>

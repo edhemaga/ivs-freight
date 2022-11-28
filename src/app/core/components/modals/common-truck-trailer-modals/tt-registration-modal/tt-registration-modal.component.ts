@@ -3,10 +3,8 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import {
-    CreateRegistrationCommand,
     RegistrationModalResponse,
     RegistrationResponse,
-    UpdateRegistrationCommand,
 } from 'appcoretruckassist';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
@@ -33,6 +31,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     public registrationForm: FormGroup;
 
     public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
 
     public isFormDirty: boolean;
 
@@ -66,6 +66,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             issueDate: [null, Validators.required],
             expDate: [null, Validators.required],
             note: [null],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.registrationForm);
@@ -122,16 +123,50 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.registrationForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.registrationForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     private updateRegistration() {
         const { issueDate, expDate, ...form } = this.registrationForm.value;
-        const newData: UpdateRegistrationCommand = {
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        const newData: any = {
             id: this.editData.file_id,
             ...form,
             issueDate: convertDateToBackend(issueDate),
             expDate: convertDateToBackend(expDate),
             stateId: this.selectedStateType ? this.selectedStateType.id : null,
+            files: documents ? documents : this.registrationForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.commonTruckTrailerService
@@ -155,14 +190,26 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     private addRegistration() {
         const { issueDate, expDate, ...form } = this.registrationForm.value;
-        const newData: CreateRegistrationCommand = {
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        const newData: any = {
             ...form,
             issueDate: convertDateToBackend(issueDate),
             expDate: convertDateToBackend(expDate),
             stateId: this.selectedStateType ? this.selectedStateType.id : null,
             trailerId:
-                this.editData.modal === 'trailer' ? this.editData.id : null,
-            truckId: this.editData.modal === 'truck' ? this.editData.id : null,
+                this.editData.modal === 'trailer'
+                    ? this.editData.id
+                    : undefined,
+            truckId:
+                this.editData.modal === 'truck' ? this.editData.id : undefined,
+            files: documents,
         };
 
         this.commonTruckTrailerService
@@ -196,8 +243,12 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                         licensePlate: res.licensePlate,
                         stateId: res.state ? res.state.stateShortName : null,
                         note: res.note,
+                        files: res.files.length
+                            ? JSON.stringify(res.files)
+                            : null,
                     });
 
+                    this.documents = res.files;
                     this.selectedStateType = res.state;
                 },
                 error: () => {

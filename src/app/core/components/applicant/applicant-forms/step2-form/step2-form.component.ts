@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     AfterViewInit,
     Component,
@@ -78,8 +80,14 @@ export class Step2FormComponent
     @Input() markInnerFormInvalid?: boolean;
     @Input() isReviewingCard: boolean;
     @Input() stepFeedbackValues?: any;
+    @Input() displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    };
+    @Input() checkIsHazmatSpillNotChecked: boolean;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
+    @Output() classOfEquipmentformValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
     @Output() saveFormEditingEmitter = new EventEmitter<any>();
     @Output() formStatusEmitter = new EventEmitter<any>();
@@ -91,6 +99,8 @@ export class Step2FormComponent
     @Output() openAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
+    @Output() radioRequiredNoteEmitter = new EventEmitter<any>();
+    @Output() isEditingClassOfEquipmentEmitter = new EventEmitter<any>();
 
     private destroy$ = new Subject<void>();
 
@@ -108,12 +118,16 @@ export class Step2FormComponent
 
     public isEditingClassOfEquipment: boolean = false;
     public isTruckSelected: boolean = false;
+    public isBoxTruckSelected: boolean = false;
     public isWorkExperienceEdited: boolean;
+    public isWorkExperienceClassOfEquipmentEdited: boolean = true;
     public isClassOfEquipmentEdited: boolean;
 
     public editingCardAddress: any;
     public previousFormValuesOnEdit: any;
     public previousClassOfEquipmentCardsListOnEdit: any;
+
+    public previousClassOfEquipmentFormValues: any;
 
     public selectedAddress: AddressEntity;
     public selectedVehicleType: any = null;
@@ -129,6 +143,7 @@ export class Step2FormComponent
     public trailerLengthType: TrailerLengthResponse[] = [];
 
     public filteredTrailerType: TrailerTypeResponse[] = [];
+    public filteredTrailerLength: TrailerLengthResponse[] = [];
 
     private cfrPartRadios: any;
     private fmcsaRadios: any;
@@ -302,22 +317,30 @@ export class Step2FormComponent
                           ).logoName
                         : null;
 
-                    const lastClassOfEquipmentCard = {
-                        vehicleType: res.vehicleType,
-                        vehicleTypeImageLocation: vehicleTypeImageLocation,
-                        trailerType: res.trailerType,
-                        trailerLength: res.trailerLength,
-                        trailerTypeImageLocation,
-                        isEditingClassOfEquipment: false,
-                    };
+                    let lastClassOfEquipmentCard = null;
+
+                    if (res.vehicleType) {
+                        lastClassOfEquipmentCard = {
+                            vehicleType: res.vehicleType,
+                            vehicleTypeImageLocation: vehicleTypeImageLocation,
+                            trailerType: res.trailerType,
+                            trailerLength: res.trailerLength,
+                            trailerTypeImageLocation,
+                            isEditingClassOfEquipment: false,
+                        };
+                    }
 
                     if (res.classOfEquipmentSubscription) {
-                        res.classesOfEquipment = [
-                            ...res.classOfEquipmentSubscription,
-                            lastClassOfEquipmentCard,
-                        ];
+                        res.classesOfEquipment = lastClassOfEquipmentCard
+                            ? [
+                                  ...res.classOfEquipmentSubscription,
+                                  lastClassOfEquipmentCard,
+                              ]
+                            : [...res.classOfEquipmentSubscription];
                     } else {
-                        res.classesOfEquipment = [lastClassOfEquipmentCard];
+                        res.classesOfEquipment = lastClassOfEquipmentCard
+                            ? [lastClassOfEquipmentCard]
+                            : [];
                     }
 
                     res.isDrivingPosition = !res.isDrivingPosition
@@ -352,42 +375,77 @@ export class Step2FormComponent
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.mode?.previousValue !== changes.mode?.currentValue) {
             this.selectedMode = changes.mode?.currentValue;
+        }
 
-            if (this.selectedMode === SelectedMode.APPLICANT) {
-                if (
-                    changes.markFormInvalid?.previousValue !==
-                    changes.markFormInvalid?.currentValue
-                ) {
-                    this.inputService.markInvalid(this.workExperienceForm);
-                    this.markInvalidEmitter.emit(false);
-                }
-
-                if (
-                    changes.markInnerFormInvalid?.previousValue !==
-                    changes.markInnerFormInvalid?.currentValue
-                ) {
-                    this.inputService.markInvalid(this.classOfEquipmentForm);
-                    this.markInnerFormInvalidEmitter.emit(false);
-                }
+        if (
+            this.selectedMode === SelectedMode.APPLICANT ||
+            this.selectedMode === SelectedMode.FEEDBACK
+        ) {
+            if (
+                changes.markFormInvalid?.previousValue !==
+                changes.markFormInvalid?.currentValue
+            ) {
+                this.inputService.markInvalid(this.workExperienceForm);
+                this.markInvalidEmitter.emit(false);
             }
 
             if (
-                changes.formValuesToPatch?.previousValue !==
-                changes.formValuesToPatch?.currentValue
+                changes.markInnerFormInvalid?.previousValue !==
+                changes.markInnerFormInvalid?.currentValue
             ) {
-                setTimeout(() => {
-                    this.patchForm(changes.formValuesToPatch.currentValue);
+                this.inputService.markInvalid(this.classOfEquipmentForm);
+                this.markInnerFormInvalidEmitter.emit(false);
+            }
 
-                    if (this.selectedMode === SelectedMode.APPLICANT) {
-                        this.startValueChangesMonitoring();
+            if (
+                changes.checkIsHazmatSpillNotChecked?.previousValue !==
+                changes.checkIsHazmatSpillNotChecked?.currentValue
+            ) {
+                let cfrPartRadios: any;
+                let fmcsaRadios: any;
+
+                if (!changes.checkIsHazmatSpillNotChecked?.firstChange) {
+                    cfrPartRadios =
+                        this.workExperienceForm.get('cfrPart').value;
+
+                    fmcsaRadios = this.workExperienceForm.get('cfrPart').value;
+                }
+
+                if (cfrPartRadios === null) {
+                    this.radioRequiredNoteEmitter.emit({
+                        id: 0,
+                        displayRadioRequiredNote: true,
+                    });
+                }
+
+                if (fmcsaRadios === null) {
+                    this.radioRequiredNoteEmitter.emit({
+                        id: 1,
+                        displayRadioRequiredNote: true,
+                    });
+                }
+            }
+        }
+
+        if (
+            changes.formValuesToPatch?.previousValue !==
+            changes.formValuesToPatch?.currentValue
+        ) {
+            setTimeout(() => {
+                this.patchForm(changes.formValuesToPatch.currentValue);
+
+                if (this.selectedMode === SelectedMode.APPLICANT) {
+                    this.startValueChangesMonitoring();
+
+                    if (!this.isWorkExperienceClassOfEquipmentEdited) {
                         this.startInnerFormValueChangesMonitoring();
                     }
-                }, 50);
-            }
+                }
+            }, 50);
         }
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.workExperienceForm = this.formBuilder.group({
@@ -601,6 +659,11 @@ export class Step2FormComponent
                     ...formValue.classesOfEquipment,
                 ];
 
+                console.log(
+                    'lastItemInClassOfEquipmentArray',
+                    lastItemInClassOfEquipmentArray
+                );
+
                 this.workExperienceForm.patchValue({
                     vehicleType: lastItemInClassOfEquipmentArray.vehicleType,
                     trailerType: lastItemInClassOfEquipmentArray.trailerType,
@@ -615,6 +678,23 @@ export class Step2FormComponent
                     trailerLength:
                         lastItemInClassOfEquipmentArray.trailerLength,
                 });
+
+                const vehicleTypeId = this.vehicleType.find(
+                    (item) =>
+                        item.name ===
+                        lastItemInClassOfEquipmentArray.vehicleType
+                ).id;
+
+                if (vehicleTypeId === 5) {
+                    this.isTruckSelected = false;
+                    this.isBoxTruckSelected = false;
+                } else if (vehicleTypeId === 2) {
+                    this.isTruckSelected = true;
+                    this.isBoxTruckSelected = true;
+                } else {
+                    this.isTruckSelected = true;
+                    this.isBoxTruckSelected = false;
+                }
 
                 setTimeout(() => {
                     const cfrPartValue =
@@ -679,13 +759,14 @@ export class Step2FormComponent
     public startInnerFormValueChangesMonitoring(): void {
         this.innerFormSubscription = this.classOfEquipmentForm.valueChanges
             .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const { vehicleType, trailerType, trailerLength } = value;
+            .subscribe((updatedFormValues) => {
+                const { vehicleType, trailerType, trailerLength } =
+                    updatedFormValues;
 
                 if (!vehicleType || !trailerType || !trailerLength) {
-                    this.isWorkExperienceEdited = false;
+                    this.isWorkExperienceClassOfEquipmentEdited = false;
                 } else {
-                    this.isWorkExperienceEdited = true;
+                    this.isWorkExperienceClassOfEquipmentEdited = true;
                 }
             });
     }
@@ -759,6 +840,14 @@ export class Step2FormComponent
                     ...newFormValues
                 } = updatedFormValues;
 
+                if (updatedFormValues.cfrPart === null) {
+                    newFormValues.cfrPart = false;
+                }
+
+                if (updatedFormValues.fmCSA === null) {
+                    newFormValues.fmCSA = false;
+                }
+
                 newFormValues.employerAddress = newEmployerAddress?.address;
 
                 const {
@@ -816,7 +905,8 @@ export class Step2FormComponent
 
                 if (
                     isFormValueEqual(previousFormValues, newFormValues) ||
-                    !this.classOfEquipmentForm.valid
+                    !this.isWorkExperienceClassOfEquipmentEdited ||
+                    !this.workExperienceForm.valid
                 ) {
                     this.isWorkExperienceEdited = false;
                 } else {
@@ -830,32 +920,32 @@ export class Step2FormComponent
             .get('isDrivingPosition')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                if (!value) {
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('vehicleType'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerType'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerLength'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('cfrPart'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('fmCSA'),
-                        false
-                    );
+                const classOfEquipmentInputsToValidate = [
+                    'vehicleType',
+                    'trailerType',
+                    'trailerLength',
+                ];
 
-                    this.workExperienceForm.patchValue({
-                        cfrPart: null,
-                        fmCSA: null,
-                    });
+                const workExperienceInputsToValidate = ['cfrPart', 'fmCSA'];
+
+                if (!value) {
+                    const { cfrPart, fmCSA, classOfEquipmentSubscription } =
+                        this.workExperienceForm.value;
+
+                    const { vehicleType, trailerType, trailerLength } =
+                        this.classOfEquipmentForm.value;
+
+                    this.previousClassOfEquipmentFormValues = {
+                        vehicleType,
+                        trailerType,
+                        trailerLength,
+                        cfrPart,
+                        fmCSA,
+                        classOfEquipmentArray: this.classOfEquipmentArray,
+                        classOfEquipmentSubscription,
+                    };
+
+                    this.classOfEquipmentArray = [];
 
                     this.classOfEquipmentForm.patchValue({
                         vehicleType: null,
@@ -863,37 +953,91 @@ export class Step2FormComponent
                         trailerLength: null,
                     });
 
-                    this.selectedVehicleType = null;
-                    this.selectedTrailerType = null;
-                    this.selectedTrailerLength = null;
+                    this.workExperienceForm.patchValue({
+                        cfrPart: null,
+                        fmCSA: null,
+                        classOfEquipmentSubscription: null,
+                        vehicleType: null,
+                    });
 
-                    this.classOfEquipmentArray = [];
+                    this.isWorkExperienceClassOfEquipmentEdited = true;
 
-                    if (this.cfrPartRadios) {
-                        this.cfrPartRadios[0].checked = false;
-                        this.cfrPartRadios[1].checked = false;
+                    for (
+                        let i = 0;
+                        i < classOfEquipmentInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.classOfEquipmentForm.get(
+                                classOfEquipmentInputsToValidate[i]
+                            ),
+                            false
+                        );
                     }
 
-                    if (this.fmcsaRadios) {
-                        this.fmcsaRadios[0].checked = false;
-                        this.fmcsaRadios[1].checked = false;
+                    for (
+                        let i = 0;
+                        i < workExperienceInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.workExperienceForm.get(
+                                workExperienceInputsToValidate[i]
+                            ),
+                            false
+                        );
                     }
                 } else {
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('vehicleType')
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerType')
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerLength')
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('cfrPart')
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('fmCSA')
-                    );
+                    if (this.previousClassOfEquipmentFormValues) {
+                        const {
+                            vehicleType,
+                            trailerType,
+                            trailerLength,
+                            cfrPart,
+                            fmCSA,
+                            classOfEquipmentArray,
+                            classOfEquipmentSubscription,
+                        } = this.previousClassOfEquipmentFormValues;
+
+                        this.classOfEquipmentForm.patchValue({
+                            vehicleType,
+                            trailerType,
+                            trailerLength,
+                        });
+
+                        this.workExperienceForm.patchValue({
+                            cfrPart,
+                            fmCSA,
+                            classOfEquipmentSubscription,
+                            vehicleType,
+                        });
+
+                        this.classOfEquipmentArray = classOfEquipmentArray;
+                    }
+
+                    for (
+                        let i = 0;
+                        i < classOfEquipmentInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.classOfEquipmentForm.get(
+                                classOfEquipmentInputsToValidate[i]
+                            )
+                        );
+                    }
+
+                    for (
+                        let i = 0;
+                        i < workExperienceInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.workExperienceForm.get(
+                                workExperienceInputsToValidate[i]
+                            )
+                        );
+                    }
                 }
             });
     }
@@ -913,62 +1057,98 @@ export class Step2FormComponent
             case InputSwitchActions.TRUCK_TYPE:
                 this.selectedVehicleType = event;
 
-                console.log(event);
+                console.log('event', event);
 
                 if (event) {
+                    this.isTruckSelected = true;
+                    this.isBoxTruckSelected = false;
+
+                    this.selectedTrailerType = null;
+                    this.selectedTrailerLength = null;
+
                     this.workExperienceForm
                         .get('vehicleType')
                         .patchValue(event.name);
 
-                    /*  switch (event.id) {
-            case 1:
-              this.isTruckSelected = true;
+                    this.classOfEquipmentForm.patchValue({
+                        trailerType: null,
+                        trailerLength: null,
+                    });
 
-              this.inputService.changeValidators(
-                this.classOfEquipmentForm.get('trailerType')
-              );
+                    this.inputService.changeValidators(
+                        this.classOfEquipmentForm.get('trailerType')
+                    );
 
-              this.inputService.changeValidators(
-                this.classOfEquipmentForm.get('trailerLength')
-              );
+                    this.inputService.changeValidators(
+                        this.classOfEquipmentForm.get('trailerLength')
+                    );
 
-              this.filteredTrailerType = this.trailerLengthType.filter(item => item.id !==)
+                    switch (event.id) {
+                        case 1:
+                            this.filteredTrailerType = this.trailerType.filter(
+                                (item) => item.id !== 14
+                            );
+                            break;
+                        case 2:
+                            this.isBoxTruckSelected = true;
 
-            default:
-              break;
-          }
- */
-                    if (event.id === 5 || event.id === 8) {
-                        this.isTruckSelected = false;
+                            this.inputService.changeValidators(
+                                this.classOfEquipmentForm.get('trailerType'),
+                                false
+                            );
 
-                        this.selectedTrailerType = null;
-                        this.selectedTrailerLength = null;
+                            break;
+                        case 3:
+                            this.filteredTrailerType = this.trailerType.filter(
+                                (item) => item.id !== 14
+                            );
 
-                        this.classOfEquipmentForm.patchValue({
-                            trailerType: null,
-                            trailerLength: null,
-                        });
+                            break;
+                        case 4:
+                            this.filteredTrailerType = this.trailerType.filter(
+                                (item) => item.id === 14
+                            );
 
-                        this.inputService.changeValidators(
-                            this.classOfEquipmentForm.get('trailerType'),
-                            false
-                        );
+                            break;
+                        case 5:
+                            this.isTruckSelected = false;
 
-                        this.inputService.changeValidators(
-                            this.classOfEquipmentForm.get('trailerLength'),
-                            false
-                        );
-                    } else {
-                        this.isTruckSelected = true;
+                            this.inputService.changeValidators(
+                                this.classOfEquipmentForm.get('trailerType'),
+                                false
+                            );
 
-                        this.inputService.changeValidators(
-                            this.classOfEquipmentForm.get('trailerType')
-                        );
+                            this.inputService.changeValidators(
+                                this.classOfEquipmentForm.get('trailerLength'),
+                                false
+                            );
 
-                        this.inputService.changeValidators(
-                            this.classOfEquipmentForm.get('trailerLength')
-                        );
+                            break;
+                        case 6:
+                            this.filteredTrailerType = this.trailerType.filter(
+                                (item) => item.id !== 14
+                            );
+
+                            break;
+                        case 7:
+                            this.filteredTrailerType = this.trailerType.filter(
+                                (item) => item.id !== 14
+                            );
+
+                            break;
+                        default:
+                            break;
                     }
+                } else {
+                    this.selectedVehicleType = null;
+                    this.selectedTrailerType = null;
+                    this.selectedTrailerLength = null;
+
+                    this.classOfEquipmentForm.patchValue({
+                        vehicleType: null,
+                        trailerType: null,
+                        trailerLength: null,
+                    });
                 }
 
                 break;
@@ -1009,6 +1189,11 @@ export class Step2FormComponent
                         .get(selectedFormControlName)
                         .patchValue(false);
                 }
+
+                this.radioRequiredNoteEmitter.emit({
+                    id: selectedCheckbox.index,
+                    displayRadioRequiredNote: false,
+                });
 
                 break;
             case InputSwitchActions.REASON_FOR_LEAVING:
@@ -1100,6 +1285,8 @@ export class Step2FormComponent
 
         this.classOfEquipmentArray = [];
 
+        this.previousClassOfEquipmentFormValues = null;
+
         this.formService.resetForm(this.workExperienceForm);
     }
 
@@ -1122,8 +1309,11 @@ export class Step2FormComponent
 
         this.formService.resetForm(this.workExperienceForm);
 
+        this.previousClassOfEquipmentFormValues = null;
+
         if (this.selectedMode === SelectedMode.APPLICANT) {
-            this.subscription.unsubscribe();
+            this.subscription?.unsubscribe();
+            this.innerFormSubscription?.unsubscribe();
         }
     }
 
@@ -1208,9 +1398,12 @@ export class Step2FormComponent
 
         this.selectedReasonForLeaving = null;
 
+        this.previousClassOfEquipmentFormValues = null;
+
         this.formService.resetForm(this.workExperienceForm);
 
-        this.subscription.unsubscribe();
+        this.subscription?.unsubscribe();
+        this.innerFormSubscription?.unsubscribe();
     }
 
     public onAddClassOfEquipment(): void {
@@ -1272,7 +1465,8 @@ export class Step2FormComponent
         this.selectedTrailerType = null;
         this.selectedTrailerLength = null;
 
-        this.classOfEquipmentForm.reset();
+        this.isTruckSelected = false;
+        this.isBoxTruckSelected = false;
 
         this.formService.resetForm(this.classOfEquipmentForm);
     }
@@ -1288,6 +1482,11 @@ export class Step2FormComponent
             this.helperClassOfEquipmentArray.splice(index, 1);
         } else {
             this.classOfEquipmentArray.splice(index, 1);
+
+            this.classOfEquipmentformValuesEmitter.emit({
+                itemDeleted: true,
+                index,
+            });
         }
     }
 
@@ -1316,7 +1515,22 @@ export class Step2FormComponent
         this.isEditingClassOfEquipment = true;
         this.classOfEquipmentArray[index].isEditingClassOfEquipment = true;
 
-        const selectedClassOfEquipment = this.classOfEquipmentArray[index];
+        const selectedClassOfEquipment: any = this.classOfEquipmentArray[index];
+
+        const vehicleTypeId = this.vehicleType.find(
+            (item) => item.name === selectedClassOfEquipment.vehicleType
+        ).id;
+
+        if (vehicleTypeId === 5) {
+            this.isTruckSelected = false;
+            this.isBoxTruckSelected = false;
+        } else if (vehicleTypeId === 2) {
+            this.isTruckSelected = true;
+            this.isBoxTruckSelected = true;
+        } else {
+            this.isTruckSelected = true;
+            this.isBoxTruckSelected = false;
+        }
 
         this.classOfEquipmentForm.patchValue({
             vehicleType: selectedClassOfEquipment.vehicleType,
@@ -1342,6 +1556,7 @@ export class Step2FormComponent
                         vehicleTypeImageLocation,
                         trailerTypeImageLocation,
                         isEditingClassOfEquipment,
+                        fifthRowReview,
                         ...previousFormValues
                     } = selectedClassOfEquipment;
 
@@ -1356,7 +1571,7 @@ export class Step2FormComponent
                         cardReview8,
                         cardReview9,
                         cardReview10,
-                        fifthRowReview,
+                        fifthRowReview: updatedFifthRowReview,
                         ...newFormValues
                     } = updatedFormValues;
 
@@ -1366,6 +1581,8 @@ export class Step2FormComponent
                         this.isClassOfEquipmentEdited = true;
                     }
                 });
+
+        this.isEditingClassOfEquipmentEmitter.emit(true);
     }
 
     public onCancelEditClassOfEquipment(): void {
@@ -1382,6 +1599,10 @@ export class Step2FormComponent
         this.classOfEquipmentArray =
             this.previousClassOfEquipmentCardsListOnEdit;
 
+        this.selectedVehicleType = null;
+        this.selectedTrailerType = null;
+        this.selectedTrailerLength = null;
+
         this.formService.resetForm(this.classOfEquipmentForm);
 
         this.classOfEquipmentSubscription.unsubscribe();
@@ -1393,16 +1614,18 @@ export class Step2FormComponent
         });
 
         this.selectedVehicleType = this.vehicleType.find(
-            (item) => item.name === this.previousFormValuesOnEdit.vehicleType
+            (item) => item.name === this.previousFormValuesOnEdit?.vehicleType
         );
 
-        if (
-            this.selectedVehicleType.id === 5 ||
-            this.selectedVehicleType.id === 8
-        ) {
+        if (this.selectedVehicleType?.id === 5) {
             this.isTruckSelected = false;
+            this.isBoxTruckSelected = false;
+        } else if (this.selectedVehicleType?.id === 2) {
+            this.isTruckSelected = true;
+            this.isBoxTruckSelected = true;
         } else {
             this.isTruckSelected = true;
+            this.isBoxTruckSelected = false;
 
             this.selectedTrailerType = this.trailerType.find(
                 (item) =>
@@ -1414,6 +1637,8 @@ export class Step2FormComponent
                     item.name === this.previousFormValuesOnEdit.trailerLength
             );
         }
+
+        this.isEditingClassOfEquipmentEmitter.emit(false);
     }
 
     public onSaveEditedClassOfEquipment(): void {
@@ -1499,6 +1724,48 @@ export class Step2FormComponent
                     item.name === this.previousFormValuesOnEdit.trailerLength
             );
         }
+
+        this.isEditingClassOfEquipmentEmitter.emit(false);
+    }
+
+    public onGetBtnClickValue(
+        event: any,
+        classOfEquipmentBtn?: boolean,
+        type?: number
+    ): void {
+        if (classOfEquipmentBtn) {
+            if (type === 1) {
+                this.onAddClassOfEquipment();
+            }
+
+            if (type === 2) {
+                this.onCancelEditClassOfEquipment();
+            }
+
+            if (type === 3) {
+                this.onSaveEditedClassOfEquipment();
+            }
+        } else {
+            if (event.notDisabledClick) {
+                this.onAddSecondOrLastEmployer();
+            }
+
+            if (event.cancelClick) {
+                this.onCancelEditWorkExperience();
+            }
+
+            if (event.saveClick) {
+                this.onSaveEditedWorkExperience();
+            }
+
+            if (event.reviewCancelClick) {
+                this.onCancelReviewWorkExperience();
+            }
+
+            if (event.reviewSaveClick) {
+                this.onAddAnnotation();
+            }
+        }
     }
 
     public getDropdownLists(): void {
@@ -1520,8 +1787,6 @@ export class Step2FormComponent
                         subFolder: 'trailers',
                     };
                 });
-
-                /*   console.log('trailer', this.trailerType); */
 
                 this.trailerLengthType = res.trailerLenghts;
 

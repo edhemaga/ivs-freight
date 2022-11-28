@@ -15,6 +15,23 @@ export class TruckActiveResolver implements Resolve<TruckActiveState> {
         private truckStore: TruckActiveStore
     ) {}
     resolve(): Observable<TruckActiveState | boolean> {
+        // Get Table Configuration
+        // const sub = this.tableService.getTableConfig(8).subscribe((res) => {
+        //     if (res?.config) {
+        //         const tableConfig = JSON.parse(res.config);
+
+        //         if (tableConfig) {
+        //             localStorage.setItem(
+        //                 `table-${res.tableType}-Configuration`,
+        //                 JSON.stringify(tableConfig)
+        //             );
+        //         }
+        //     }
+
+        //     sub.unsubscribe();
+        // });
+
+        // Get Table List
         return this.truckService.getTruckList(1, 1, 25).pipe(
             catchError(() => {
                 return of('No inactive trucks...');

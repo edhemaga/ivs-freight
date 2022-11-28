@@ -55,6 +55,9 @@ export class Step4Component implements OnInit, OnDestroy {
     public selectedAccidentIndex: number;
     public helperIndex: number = 2;
 
+    public displayRadioRequiredNote: boolean = false;
+    public checkIsHazmatSpillNotChecked: boolean = false;
+
     public isEditing: boolean = false;
     public isReviewingCard: boolean = false;
 
@@ -89,7 +92,7 @@ export class Step4Component implements OnInit, OnDestroy {
         this.hasNoAccidents();
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _): number => index;
 
     public createForm(): void {
         this.accidentForm = this.formBuilder.group({
@@ -305,7 +308,7 @@ export class Step4Component implements OnInit, OnDestroy {
         };
     }
 
-    public cancelAccidentEditing(event: any): void {
+    public cancelAccidentEditing(_: any): void {
         this.isEditing = false;
         this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
             false;
@@ -398,7 +401,15 @@ export class Step4Component implements OnInit, OnDestroy {
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
-    public cancelAccidentReview(event: any): void {
+    public onGetRadioRequiredNoteEmit(event: any): void {
+        if (event) {
+            this.displayRadioRequiredNote = true;
+        } else {
+            this.displayRadioRequiredNote = false;
+        }
+    }
+
+    public cancelAccidentReview(_: any): void {
         this.isReviewingCard = false;
 
         this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
@@ -534,8 +545,13 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.formStatus === 'INVALID') {
-            this.markFormInvalid = true;
+        this.checkIsHazmatSpillNotChecked = true;
+
+        if (this.formStatus === 'INVALID' || this.isEditing) {
+            if (this.formStatus === 'INVALID') {
+                this.markFormInvalid = true;
+            }
+
             return;
         }
 

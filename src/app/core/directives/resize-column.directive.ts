@@ -94,7 +94,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
             // Calculate width of column
             this.newColumnWidth = this.startWidth + (event.pageX - this.startX);
 
-            const maxWidth = this.tableColumn.minWidth * 2;
+            const maxWidth = this.tableColumn.minWidth * 3;
 
             if (!this.tableColumn.minWidth) {
                 this.resizeing.emit({

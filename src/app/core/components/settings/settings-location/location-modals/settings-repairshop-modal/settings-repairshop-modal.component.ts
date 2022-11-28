@@ -9,10 +9,8 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
     AddressEntity,
-    CreateRepairShopCommand,
     RepairShopModalResponse,
     RepairShopResponse,
-    UpdateRepairShopCommand,
 } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
@@ -210,10 +208,9 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepariShop(id: number) {
-        const { address, addressUnit, rent, ...form } =
-            this.repairShopForm.value;
+        const { addressUnit, rent, ...form } = this.repairShopForm.value;
 
-        const newData: UpdateRepairShopCommand = {
+        const newData: any = {
             id: id,
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
@@ -261,10 +258,9 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepairShop() {
-        const { address, addressUnit, rent, ...form } =
-            this.repairShopForm.value;
+        const { addressUnit, rent, ...form } = this.repairShopForm.value;
 
-        const newData: CreateRepairShopCommand = {
+        const newData: any = {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             rent: rent ? convertThousanSepInNumber(rent) : null,

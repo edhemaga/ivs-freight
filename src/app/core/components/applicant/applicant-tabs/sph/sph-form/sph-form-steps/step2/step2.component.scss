@@ -4,19 +4,19 @@
     padding-top: 22px;
 
     .step-title {
-        color: $ta-blue;
+        color: $ta-blue-5;
         font-size: 32px;
         height: 39px;
-        margin-bottom: 12px !important;
+        margin-bottom: 22px !important;
 
         &::-moz-selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
         }
 
         &::selection {
-            color: $ta-blue;
-            background: rgb(83, 107, 194, 0.2);
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
         }
     }
 
@@ -204,6 +204,21 @@
                             }
                         }
                     }
+
+                    .required {
+                        font-size: 11px;
+                        color: $ta-red-2;
+
+                        &::-moz-selection {
+                            color: $ta-red-2;
+                            background: rgb(239, 83, 80, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-red-2;
+                            background: rgb(239, 83, 80, 0.2);
+                        }
+                    }
                 }
 
                 .radios-box {
@@ -276,6 +291,21 @@
                             color: $bw6-2;
                             background: rgb(108, 108, 108, 0.2);
                         }
+                    }
+                }
+
+                .required {
+                    font-size: 11px;
+                    color: $ta-red-2;
+
+                    &::-moz-selection {
+                        color: $ta-red-2;
+                        background: rgb(239, 83, 80, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-red-2;
+                        background: rgb(239, 83, 80, 0.2);
                     }
                 }
             }

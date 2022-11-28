@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { WorkExperienceItemCommand } from './workExperienceItemCommand';
+import { CreateWorkExperienceItemCommand } from './createWorkExperienceItemCommand';
 
 
 export interface CreateWorkExperienceCommand { 
-    workExperienceItems?: Array<WorkExperienceItemCommand> | null;
+    workExperienceItems?: Array<CreateWorkExperienceItemCommand> | null;
     applicantId?: number;
     haveWorkExperience?: boolean;
 }
