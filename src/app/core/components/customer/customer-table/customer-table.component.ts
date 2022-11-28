@@ -408,9 +408,6 @@ export class CustomerTableComponent
                 }
             });
 
-            // console.log('Customer Data');
-            // console.log(this.viewData);
-
             // For Testing
             // for (let i = 0; i < 1000; i++) {
             //   this.viewData.push(this.viewData[0]);
@@ -629,9 +626,6 @@ export class CustomerTableComponent
     // Table Body Actions
     onTableBodyActions(event: any) {
         let businessName = '';
-
-        console.log('onTableBodyActions');
-        console.log(event);
         this.DetailsDataService.setNewData(event.data);
         // Edit Call
         if (event.type === 'show-more') {

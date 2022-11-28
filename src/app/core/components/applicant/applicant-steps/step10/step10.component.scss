@@ -21,20 +21,20 @@
     }
 
     .checkbox-container {
-        width: 820px;
-        margin-bottom: 12px;
+        width: 616px;
+        margin: 0 auto 12px auto;
 
         p {
             font-size: 14px;
             line-height: 18px;
-            cursor: pointer;
             user-select: none;
-            margin-top: -3px !important;
+            margin-top: 5px !important;
+            color: $black;
         }
     }
 
     .group-text {
-        width: 820px;
+        width: 616px;
 
         p {
             font-size: 14px;
@@ -42,13 +42,13 @@
             margin-bottom: 12px !important;
 
             &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+                color: $ta-black;
+                background: rgb(47, 47, 47, 0.2);
             }
 
             &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+                color: $ta-black;
+                background: rgb(47, 47, 47, 0.2);
             }
         }
     }

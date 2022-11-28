@@ -1273,6 +1273,12 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.isEditingArray[lastAddressIndex].isEditing = true;
     }
 
+    public onGetBtnClickValue(event: any): void {
+        if (event.notDisabledClick) {
+            this.onAddNewAddress();
+        }
+    }
+
     public getDropdownLists(): void {
         this.applicantQuery.applicantDropdownLists$
             .pipe(takeUntil(this.destroy$))

@@ -1,0 +1,73 @@
+@import 'src/theme/variables.scss';
+
+.add-btn {
+    height: 32px;
+    padding: 7px 22px;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    background: $bw2;
+    transition: background 0.2s ease-in-out;
+
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+
+    p {
+        position: relative;
+        top: 1px;
+        line-height: 18px;
+        font-size: 14px;
+        color: $ta-blue-5;
+        transition: color 0.2s ease-in-out;
+    }
+
+    &:hover {
+        background: $ta-blue-5;
+
+        p {
+            color: $white;
+        }
+    }
+
+    &.disabled {
+        cursor: auto;
+        background: $bw2;
+
+        p {
+            color: $bw5;
+        }
+    }
+
+    &.cancel {
+        width: 150px;
+        margin-right: 22px;
+        background: $ta-light-grey-4;
+
+        p {
+            color: $bw5;
+        }
+
+        &:hover {
+            background: $bw6-2;
+
+            p {
+                color: $white;
+            }
+        }
+    }
+
+    .save {
+        width: 150px;
+        background: $bw2;
+
+        p {
+            color: $ta-blue-5;
+        }
+
+        &:hover {
+            background: $ta-blue-5;
+        }
+    }
+}

@@ -126,15 +126,16 @@ export class TaInputComponent
 
     ngOnInit(): void {
         if (
-            (this.inputConfig.name === 'datepicker' ||
-                this.inputConfig.name === 'timepicker') &&
-            !this.inputConfig.isDisabled
+            this.inputConfig.name === 'datepicker' ||
+            this.inputConfig.name === 'timepicker'
         ) {
             this.calendarService.dateChanged
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((date) => {
-                    this.setTimeDateInput(date);
-                    this.t2.close();
+                    if (!this.inputConfig.isDisabled) {
+                        this.setTimeDateInput(date);
+                        this.t2.close();
+                    }
                 });
         }
 
@@ -238,9 +239,8 @@ export class TaInputComponent
     public writeValue(obj: any): void {
         this.changeInput.emit(obj);
         if (
-            (this.inputConfig.name === 'datepicker' ||
-                this.inputConfig.name === 'timepicker') &&
-            !this.inputConfig.isDisabled
+            this.inputConfig.name === 'datepicker' ||
+            this.inputConfig.name === 'timepicker'
         ) {
             if (obj) {
                 const timeout = setTimeout(() => {
