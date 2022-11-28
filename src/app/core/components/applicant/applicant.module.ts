@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { ApplicantRoutingModule } from './applicant-routing.module';
+
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 import { ApplicantComponent } from './applicant/applicant.component';
 import { ApplicantHeaderComponent } from './applicant-header/applicant-header.component';
@@ -13,6 +15,7 @@ import { ApplicantSignaturePadComponent } from './applicant-signature-pad/applic
 import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/applicant-welcome-screen.component';
 import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-end-screen.component';
 import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn/applicant-next-back-btn.component';
+import { ApplicantAddSaveBtnComponent } from './applicant-add-save-btn/applicant-add-save-btn.component';
 
 import { Step1Component } from './applicant-steps/step1/step1.component';
 import { Step2Component } from './applicant-steps/step2/step2.component';
@@ -33,7 +36,6 @@ import { Step3FormComponent } from './applicant-forms/step3-form/step3-form.comp
 import { Step2FormComponent } from './applicant-forms/step2-form/step2-form.component';
 
 import { SharedModule } from '../shared/shared.module';
-import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 @NgModule({
     declarations: [
@@ -42,7 +44,10 @@ import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
         ApplicantFooterComponent,
         ApplicantSignaturePadComponent,
         ApplicantNextBackBtnComponent,
+        ApplicantAddSaveBtnComponent,
         ApplicantWelcomeScreenComponent,
+        ApplicantEndScreenComponent,
+
         Step1Component,
         Step2Component,
         Step3Component,
@@ -60,7 +65,6 @@ import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
         Step4FormComponent,
         Step3FormComponent,
         Step2FormComponent,
-        ApplicantEndScreenComponent,
     ],
     imports: [
         CommonModule,
@@ -74,6 +78,7 @@ import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
     ],
     exports: [
         ApplicantNextBackBtnComponent,
+        ApplicantAddSaveBtnComponent,
         ApplicantHeaderComponent,
         ApplicantFooterComponent,
         ApplicantSignaturePadComponent,

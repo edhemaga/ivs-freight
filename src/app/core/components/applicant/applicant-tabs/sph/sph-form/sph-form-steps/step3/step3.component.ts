@@ -4,6 +4,7 @@ import {
     QueryList,
     ViewChildren,
     AfterViewInit,
+    OnDestroy,
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -14,6 +15,11 @@ import {
     convertDateToBackend,
     convertDateFromBackend,
 } from 'src/app/core/utils/methods.calculations';
+
+import {
+    filterUnceckedRadiosId,
+    isAnyRadioInArrayUnChecked,
+} from 'src/app/core/components/applicant/state/utils/utils';
 
 import {
     phoneFaxRegex,
@@ -37,7 +43,7 @@ import { CreatePreviousEmployerDrugAndAlcoholCommand } from 'appcoretruckassist/
     templateUrl: './step3.component.html',
     styleUrls: ['./step3.component.scss'],
 })
-export class Step3Component implements OnInit, AfterViewInit {
+export class Step3Component implements OnInit, AfterViewInit, OnDestroy {
     @ViewChildren('cmp') components: QueryList<any>;
 
     private destroy$ = new Subject<void>();
@@ -57,6 +63,18 @@ export class Step3Component implements OnInit, AfterViewInit {
     public previousStepValues: any;
 
     public selectedAddress: AddressEntity = null;
+
+    public displayRadioRequiredNoteArray: {
+        id: number;
+        displayRadioRequiredNote: boolean;
+    }[] = [
+        { id: 0, displayRadioRequiredNote: false },
+        { id: 1, displayRadioRequiredNote: false },
+        { id: 2, displayRadioRequiredNote: false },
+        { id: 3, displayRadioRequiredNote: false },
+        { id: 4, displayRadioRequiredNote: false },
+        { id: 5, displayRadioRequiredNote: false },
+    ];
 
     public questions: ApplicantQuestion[] = [
         {
@@ -221,7 +239,7 @@ export class Step3Component implements OnInit, AfterViewInit {
         this.aspRehabilitationRadios = this.radioButtonsArray[5].buttons;
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.drugAndAlcoholTestingHistoryForm = this.formBuilder.group({
@@ -338,6 +356,20 @@ export class Step3Component implements OnInit, AfterViewInit {
             .get('applicantNotSubject')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
+                const inputsToValidate = [
+                    'employmentFromDate',
+                    'employmentToDate',
+                    'alcoholTest',
+                    'controledSubstances',
+                    'refusedToSubmit',
+                    'otherViolations',
+                    'drugAndAlcoholRegulation',
+                    'sapName',
+                    'phone',
+                    'address',
+                    'aspRehabilitation',
+                ];
+
                 if (value) {
                     console.log(this.drugAndAlcoholTestingHistoryForm.value);
 
@@ -373,66 +405,14 @@ export class Step3Component implements OnInit, AfterViewInit {
                         aspRehabilitation,
                     };
 
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'employmentFromDate'
-                        ),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'employmentToDate'
-                        ),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'alcoholTest'
-                        ),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'controledSubstances'
-                        ),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'refusedToSubmit'
-                        ),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'otherViolations'
-                        ),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'drugAndAlcoholRegulation'
-                        ),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get('sapName'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get('phone'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get('address'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'aspRehabilitation'
-                        ),
-                        false
-                    );
+                    for (let i = 0; i < inputsToValidate.length; i++) {
+                        this.inputService.changeValidators(
+                            this.drugAndAlcoholTestingHistoryForm.get(
+                                inputsToValidate[i]
+                            ),
+                            false
+                        );
+                    }
                 } else {
                     if (this.previousStepValues) {
                         const {
@@ -468,53 +448,13 @@ export class Step3Component implements OnInit, AfterViewInit {
                         });
                     }
 
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'employmentFromDate'
-                        )
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'employmentToDate'
-                        )
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get('alcoholTest')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'controledSubstances'
-                        )
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'refusedToSubmit'
-                        )
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'otherViolations'
-                        )
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'drugAndAlcoholRegulation'
-                        )
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get('sapName')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get('phone')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get('address')
-                    );
-                    this.inputService.changeValidators(
-                        this.drugAndAlcoholTestingHistoryForm.get(
-                            'aspRehabilitation'
-                        )
-                    );
+                    for (let i = 0; i < inputsToValidate.length; i++) {
+                        this.inputService.changeValidators(
+                            this.drugAndAlcoholTestingHistoryForm.get(
+                                inputsToValidate[i]
+                            )
+                        );
+                    }
                 }
             });
     }
@@ -557,6 +497,10 @@ export class Step3Component implements OnInit, AfterViewInit {
                         .patchValue(false);
                 }
 
+                this.displayRadioRequiredNoteArray[
+                    selectedCheckbox.index
+                ].displayRadioRequiredNote = false;
+
                 break;
 
             default:
@@ -575,13 +519,6 @@ export class Step3Component implements OnInit, AfterViewInit {
     }
 
     public onSubmit(): void {
-        if (this.drugAndAlcoholTestingHistoryForm.invalid) {
-            this.inputService.markInvalid(
-                this.drugAndAlcoholTestingHistoryForm
-            );
-            return;
-        }
-
         const {
             applicantNotSubject,
             employmentFromDate,
@@ -596,6 +533,62 @@ export class Step3Component implements OnInit, AfterViewInit {
             addressUnit,
             aspRehabilitation,
         } = this.drugAndAlcoholTestingHistoryForm.value;
+
+        const radioButtons = [
+            { id: 0, isChecked: alcoholTest },
+            { id: 1, isChecked: controledSubstances },
+            {
+                id: 2,
+                isChecked: refusedToSubmit,
+            },
+            {
+                id: 3,
+                isChecked: otherViolations,
+            },
+            {
+                id: 4,
+                isChecked: otherViolations,
+            },
+            {
+                id: 5,
+                isChecked: drugAndAlcoholRegulation,
+            },
+        ];
+
+        const isAnyRadioUnchecked = isAnyRadioInArrayUnChecked(radioButtons);
+
+        if (
+            this.drugAndAlcoholTestingHistoryForm.invalid ||
+            isAnyRadioUnchecked
+        ) {
+            if (this.drugAndAlcoholTestingHistoryForm.invalid) {
+                this.inputService.markInvalid(
+                    this.drugAndAlcoholTestingHistoryForm
+                );
+            }
+
+            if (isAnyRadioUnchecked) {
+                const uncheckedRadios = filterUnceckedRadiosId(radioButtons);
+
+                this.displayRadioRequiredNoteArray =
+                    this.displayRadioRequiredNoteArray.map((item, index) => {
+                        if (
+                            uncheckedRadios.some(
+                                (someItem) => someItem === index
+                            )
+                        ) {
+                            return {
+                                ...item,
+                                displayRadioRequiredNote: true,
+                            };
+                        }
+
+                        return item;
+                    });
+            }
+
+            return;
+        }
 
         const selectedAddress = {
             ...this.selectedAddress,

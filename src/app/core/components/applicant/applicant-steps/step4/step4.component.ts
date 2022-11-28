@@ -92,7 +92,7 @@ export class Step4Component implements OnInit, OnDestroy {
         this.hasNoAccidents();
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _): number => index;
 
     public createForm(): void {
         this.accidentForm = this.formBuilder.group({
@@ -308,7 +308,7 @@ export class Step4Component implements OnInit, OnDestroy {
         };
     }
 
-    public cancelAccidentEditing(event: any): void {
+    public cancelAccidentEditing(_: any): void {
         this.isEditing = false;
         this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
             false;
@@ -409,7 +409,7 @@ export class Step4Component implements OnInit, OnDestroy {
         }
     }
 
-    public cancelAccidentReview(event: any): void {
+    public cancelAccidentReview(_: any): void {
         this.isReviewingCard = false;
 
         this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
