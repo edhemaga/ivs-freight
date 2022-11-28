@@ -111,6 +111,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             total: [null],
         });
 
+        this.addFuelItems({ check: true, action: null });
+
         this.formService.checkFormChange(this.fuelForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
