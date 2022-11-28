@@ -23,7 +23,6 @@ export class RoadsideActiveResolver implements Resolve<RoadsideActiveState> {
                 return of('No roadside active data...');
             }),
             tap((roadsidePagination: RoadsideInspectionListResponse) => {
-                console.log(roadsidePagination);
                 localStorage.setItem(
                     'roadsideTableCount',
                     JSON.stringify({

@@ -439,7 +439,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // On Body Actions
     onTableBodyActions(event: any) {
-        console.log('actions: ', event);
         if (event.type === 'edit') {
             this.modalService.openModal(
                 UserModalComponent,

@@ -158,7 +158,7 @@
                         'width.px': option.width,
                         'height.px': option.height
                     }"
-                    [src]="option.svgPath"
+                    [src]="option.svgPath" 
                 ></svg-icon>
             </div>
 
@@ -181,9 +181,9 @@
         <!-- COLUMNS LIST  -->
         <div class="columns-options" *ngIf="optionsPopupContent[4].active">
             <div
-                (click)="onToaggleColumn(column, i)"
+                (click)="onToaggleColumn(column, i)" 
                 class="column"
-                *ngFor="let column of columnsOptions; let i = index"
+                *ngFor="let column of columnsOptions; let i = index" 
             >
                 <div class="checkbox" *ngIf="!column.isPined">
                     <input

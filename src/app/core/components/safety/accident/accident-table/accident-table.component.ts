@@ -420,6 +420,7 @@ export class AccidentTableComponent
                 : '',
             tabelTime: data?.time ? data?.time : '',
             tableState: data?.state ? data?.state : '',
+            tableAttachments: []
         };
     }
 

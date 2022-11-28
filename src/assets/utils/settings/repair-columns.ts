@@ -191,7 +191,7 @@ export function getRepairTruckColumnDefinition() {
         {
             ngTemplate: 'attachments',
             title: 'Attachments',
-            field: 'additionalData.files',
+            field: 'tableAttachments',
             name: '',
             moveRight: true,
             headIconStyle: {
@@ -460,7 +460,7 @@ export function getRepairTrailerColumnDefinition() {
         {
             ngTemplate: 'attachments',
             title: 'Attachments',
-            field: 'additionalData.files',
+            field: 'tableAttachments',
             name: '',
             moveRight: true,
             headIconStyle: {
@@ -759,7 +759,7 @@ export function getRepairsShopColumnDefinition() {
         {
             ngTemplate: 'attachments',
             title: 'Attachments',
-            field: 'files',
+            field: 'tableAttachments',
             name: '',
             moveRight: true,
             headIconStyle: {
