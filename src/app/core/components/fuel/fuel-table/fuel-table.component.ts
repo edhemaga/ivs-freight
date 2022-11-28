@@ -394,8 +394,6 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
 
-        console.log(this.tableData);
-
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setFuelData(td);

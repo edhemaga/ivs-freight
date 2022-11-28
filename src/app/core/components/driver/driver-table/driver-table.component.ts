@@ -87,7 +87,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        console.log('Driver test');
         this.sendDriverData();
 
         // Confirmation Subscribe
@@ -552,9 +551,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
-
-            console.log('Driver Data');
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
