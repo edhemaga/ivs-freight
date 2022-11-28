@@ -847,111 +847,70 @@
 //---------------- Load FTL Page ----------------
 .load-ftl-first-row {
     display: grid;
-    grid-template-columns: 140px repeat(2, 220px) 226px;
+    grid-template-columns: 94px 26px repeat(2, 230px);
+    align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
-    align-items: center;
+
     margin-top: 26px;
     margin-bottom: 32px;
-}
 
-.load-ftl-second-row {
-    display: grid;
-    grid-template-columns: 397px 114px 178px 117px;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
-    margin-bottom: 32px;
+    .load-template-switcher {
+        width: 26px;
+        aspect-ratio: 1;
+        border-radius: 2px;
+        background-color: #eeeeee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
 
 .load-ftl-third-row {
     display: grid;
-    grid-template-columns: 439px 391px;
+    grid-template-columns: 260px 344px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
     margin-bottom: 22px;
 }
 
-.load-requirements-load {
+.load-ftl-fourth-row {
     display: grid;
-    grid-template-columns: repeat(2, 164px) 107px 117px 88px 66px 1fr;
+    grid-template-columns: 190px 230px 172px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
+    margin-bottom: 22px;
 }
 
-.stop-load-first-row {
+.load-requirements-load-second-row {
     display: grid;
-    grid-template-columns: 134px 696px;
+    grid-template-columns: 100px 120px 150px 90px 1fr;
+    grid-template-rows: 26;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
     margin-bottom: 32px;
 }
 
-.stop-load-second-row {
+.stop-load-date-time {
     display: grid;
-    grid-template-columns: 202px 106px repeat(2, 172px);
+    grid-template-columns: 184px 26px repeat(2, 185px);
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
     margin-bottom: 22px;
 
-    .date-range {
-        display: grid;
-        grid-template-columns: 172px 26px;
-        align-items: center;
-        -moz-column-gap: 4px;
-        column-gap: 4px;
-
-        .billing-plus {
-            width: 26px;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f3f3f3;
-            transition: all 0.3s ease-in-out;
-            cursor: pointer;
-            border-radius: 2px;
-
-            &.billing-date-range {
-                .billing-date-range-plus {
-                    svg {
-                        #plus {
-                            fill: #b7b7b7;
-                        }
-                    }
-                }
-
-                &:hover {
-                    background-color: #b7b7b7;
-
-                    .billing-date-range-plus {
-                        svg {
-                            #plus {
-                                fill: #ffffff;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     &.date-range-active {
-        grid-template-columns: 356px 106px repeat(2, 172px);
+        grid-template-columns: repeat(4, 1fr);
         align-items: center;
         -moz-column-gap: 12px;
         column-gap: 12px;
-
-        .date-range {
-            grid-template-columns: repeat(2, 172px);
-            align-items: center;
-            -moz-column-gap: 12px;
-            column-gap: 12px;
-        }
     }
 }
 
@@ -960,87 +919,29 @@
     grid-template-columns: repeat(6, max-content);
     column-gap: 12px;
     row-gap: 26px;
+}
 
-    .billing-plus {
-        width: 26px;
-        height: 26px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f3f3f3;
-        transition: all 0.3s ease-in-out;
-        cursor: pointer;
-        border-radius: 2px;
+.load-plus-button {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eeeeee;
 
-        svg-icon {
-            width: 16px;
-            height: 18px;
-            line-height: 16px;
-        }
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
 
-        &.billing-adjusted {
-            .billing-adjusted-plus {
-                svg {
-                    #plus {
-                        fill: #ffa726;
-                    }
-                }
-            }
-
-            &:hover {
-                background-color: #ffa726;
-
-                .billing-adjusted-plus {
-                    svg {
-                        #plus {
-                            fill: #ffffff;
-                        }
-                    }
-                }
-            }
-        }
-
-        &.billing-additional {
-            .billing-additional-plus {
-                svg {
-                    #plus {
-                        fill: #536bc2;
-                    }
-                }
-            }
-
-            &:hover {
-                background-color: #536bc2;
-
-                .billing-additional-plus {
-                    svg {
-                        #plus {
-                            fill: #ffffff;
-                        }
-                    }
-                }
-            }
-        }
-
-        &.billing-advance {
-            .billing-advance-plus {
-                svg {
-                    #plus {
-                        fill: #26a690;
-                    }
-                }
-            }
-
-            &:hover {
-                background-color: #26a690;
-
-                .billing-advance-plus {
-                    svg {
-                        #plus {
-                            fill: #ffffff;
-                        }
-                    }
-                }
+    svg-icon {
+        width: 14px;
+        height: 14px;
+        line-height: 12px;
+        svg {
+            width: 14px;
+            height: 14px;
+            path {
+                fill: #919191;
             }
         }
     }

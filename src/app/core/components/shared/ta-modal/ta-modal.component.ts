@@ -49,17 +49,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() modalTitle: string;
     @Input() editName: string;
-    @Input() loadModalTitle: string;
-    @Input() loadModalBill: {
-        baseRate: number;
-        adjusted: number;
-        advance: number;
-        layover: number;
-        lumper: number;
-        fuelSurcharge: number;
-        escort: number;
-        detention: number;
-    } = null;
     @Input() loadModalTemplate: boolean;
     @Input() hazardousLogo?: boolean;
     @Input() editData: any;

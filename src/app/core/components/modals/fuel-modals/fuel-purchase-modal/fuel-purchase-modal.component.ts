@@ -440,7 +440,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                                 this.createFuelItems({
                                     id: res.fuelItems[i]?.id,
                                     reorderingNumber: ++this.fuelItemsCounter,
-                                    itemId: res.fuelItems[i]?.category,
+                                    itemId: res.fuelItems[i]?.itemFuel.name,
                                     qty: res.fuelItems[i]?.qty.toString(),
                                     price: res.fuelItems[i]?.price
                                         ? convertNumberInThousandSep(
@@ -622,10 +622,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         if (crud === 'update') {
             return this.fuelItems.controls.map((item, index) => {
                 return {
-                    id: 1,
-                    // this.selectedFuelItemsFormArray[index]
-                    //     ? this.selectedFuelItemsFormArray[index].id
-                    //     : null,
+                    id: this.selectedFuelItemsFormArray[index]
+                        ? this.selectedFuelItemsFormArray[index].id
+                        : null,
                     itemfuel: item.get('itemId').value,
                     price: item.get('price').value
                         ? convertThousanSepInNumber(item.get('price').value)

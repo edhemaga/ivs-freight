@@ -12,15 +12,7 @@ import {
     Validators,
     AbstractControl,
 } from '@angular/forms';
-import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    Input,
-    OnDestroy,
-    OnInit,
-    ViewChild,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -35,7 +27,6 @@ import { ITaInput } from '../../shared/ta-input/ta-input.config';
 import { Subject, takeUntil } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
-import { ILoadStatus } from './load-modal-statuses/load-modal-statuses.component';
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
@@ -49,15 +40,14 @@ import { convertTimeFromBackend } from '../../../utils/methods.calculations';
     styleUrls: ['./load-modal.component.scss'],
     providers: [ModalService, FormService],
 })
-export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
-    @ViewChild('originTab') originRef: ElementRef;
+export class LoadModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
     public loadForm: FormGroup;
     public isFormDirty: boolean;
 
     public selectedTab: number = 1;
-    public headerTabs = [
+    public tabs = [
         {
             id: 1,
             name: 'FTL',
@@ -66,20 +56,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         {
             id: 2,
             name: 'LTL',
-            checked: false,
-        },
-    ];
-
-    public selectedStopTab: number = 3;
-    public stopTabs = [
-        {
-            id: 3,
-            name: 'Pickup',
-            checked: true,
-        },
-        {
-            id: 4,
-            name: 'Delivery',
             checked: false,
         },
     ];
@@ -129,6 +105,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
     public labelsBroker: any[] = [];
     public labelsBrokerContacts: any[] = [];
     public originBrokerContacts: any[] = [];
+    public labelsShipperContacts: any[] = [];
     public labelsTruckReq: any[] = [];
     public labelsTrailerReq: any[] = [];
     public labelsDoorType: any[] = [];
@@ -144,6 +121,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
     public selectedGeneralCommodity: any = null;
     public selectedBroker: any = null;
     public selectedBrokerContact: any = null;
+    public selectedShipperContact: any = null;
     public selectedTruckReq: any = null;
     public selectedTrailerReq: any = null;
     public selectedDoorType: any = null;
@@ -176,7 +154,8 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         textTransform: 'uppercase',
         isDropdown: true,
-        dropdownWidthClass: 'w-col-391',
+        isDisabled: true,
+        dropdownWidthClass: 'w-col-344',
     };
 
     public loadDispatchesTTDInputConfig: ITaInput = {
@@ -188,7 +167,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         textTransform: 'capitalize',
         isDropdown: true,
-        dropdownWidthClass: 'w-col-397',
+        dropdownWidthClass: 'w-col-616',
     };
 
     public loadShipperInputConfig: ITaInput = {
@@ -202,6 +181,19 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         isDropdown: true,
         isRequired: true,
         dropdownWidthClass: 'w-col-696',
+    };
+
+    public loadShipperContactsInputConfig: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        multipleLabel: {
+            labels: ['Contact', 'Phone', 'Ext'],
+            customClass: 'load-broker-contact',
+        },
+        textTransform: 'uppercase',
+        isDropdown: true,
+        isDisabled: true,
+        dropdownWidthClass: 'w-col-344',
     };
 
     public additionalBillingTypes: any[] = [];
@@ -220,31 +212,9 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         stops: {
             lat: number;
             long: number;
-            stopColor: string;
             empty: boolean;
         }[];
     }[] = [];
-
-    public loadCreateStatuses: ILoadStatus[] = [
-        {
-            id: 1,
-            name: 'BOOKED',
-            active: true,
-            color: '#C1C1C1',
-        },
-        {
-            id: 2,
-            name: 'UNASSIGNED',
-            active: false,
-            color: '#C1C1C1',
-        },
-        {
-            id: 3,
-            name: 'ASSIGNED',
-            active: false,
-            color: '#9F9F9F',
-        },
-    ];
 
     public companyUser: SignInResponse = null;
 
@@ -277,14 +247,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         this.trackStopInformation();
     }
 
-    ngAfterViewInit(): void {
-        const timeout = setTimeout(() => {
-            this.additionalPartHeight =
-                this.originRef?.nativeElement?.clientHeight + 118 + 'px';
-            clearTimeout(timeout);
-        }, 150);
-    }
-
     private createForm() {
         this.loadForm = this.formBuilder.group({
             loadTemplateId: [null],
@@ -304,8 +266,10 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
             trailerLengthId: [null],
             year: [null],
             liftgate: [null],
+            driverMessage: [null],
             // ----------------
             shipper: [null, Validators.required],
+            shipperContactId: [null],
             dateFrom: [null, Validators.required],
             dateTo: [null],
             timeFrom: [null, Validators.required],
@@ -332,14 +296,10 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onModalHeaderTabChange(event: any): void {
-        this.selectedTab = event.id;
-    }
-
     public onTabChange(event: any, action: string) {
         switch (action) {
-            case 'stop-tab': {
-                this.selectedStopTab = event.id;
+            case 'ftl-ltl': {
+                this.selectedTab = event.id;
                 break;
             }
             case 'stop-time': {
@@ -416,22 +376,10 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public onSelectDropdown(event: any, action: string, index?: number) {
         switch (action) {
-            case 'template': {
-                this.selectedTemplate = event;
-                break;
-            }
             case 'dispatcher': {
                 this.selectedDispatcher = event;
 
                 if (this.selectedDispatcher) {
-                    this.loadCreateStatuses = this.loadCreateStatuses.map(
-                        (item) => {
-                            return {
-                                ...item,
-                                active: item.name === 'UNASSIGNED',
-                            };
-                        }
-                    );
                     this.labelsDispatches = this.originLabelsDispatches.filter(
                         (item) =>
                             item.dispatcherId === this.selectedDispatcher.id
@@ -440,16 +388,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.loadForm.get('dispatchId').patchValue(null);
                 } else {
                     this.labelsDispatches = this.originLabelsDispatches;
-                    this.loadCreateStatuses = this.loadCreateStatuses.map(
-                        (item) => {
-                            return {
-                                ...item,
-                                active:
-                                    item.name === 'BOOKED' &&
-                                    !this.selectedDispatches,
-                            };
-                        }
-                    );
                 }
                 break;
             }
@@ -559,10 +497,56 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                             customClass: 'load-broker-contact',
                         },
                         blackInput: true,
+                        isDisabled: false,
                     };
                 } else {
                     this.loadBrokerContactsInputConfig.multipleInputValues =
                         null;
+                    this.loadBrokerContactsInputConfig = {
+                        ...this.loadBrokerContactsInputConfig,
+                        isDisabled: true,
+                    };
+                }
+                break;
+            }
+            case 'shipper-contact': {
+                if (event) {
+                    this.selectedShipperContact = {
+                        ...event,
+                        name: event?.name
+                            ?.concat(' ', event?.phone)
+                            .concat(' ', event?.extensionPhone),
+                    };
+
+                    this.loadShipperContactsInputConfig = {
+                        ...this.loadShipperContactsInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: event.name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: event.phone,
+                                    logoName: null,
+                                },
+                                {
+                                    value: event.extensionPhone,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass: 'load-broker-contact',
+                        },
+                        blackInput: true,
+                        isDisabled: false,
+                    };
+                } else {
+                    this.loadShipperContactsInputConfig.multipleInputValues =
+                        null;
+                    this.loadShipperContactsInputConfig = {
+                        ...this.loadShipperContactsInputConfig,
+                        isDisabled: true,
+                    };
                 }
                 break;
             }
@@ -574,17 +558,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                             ?.concat(' ', event?.trailer?.name)
                             .concat(' ', event?.driver?.name),
                     };
-
-                    this.loadCreateStatuses = this.loadCreateStatuses.map(
-                        (item) => {
-                            return {
-                                ...item,
-                                active:
-                                    item.name === 'ASSIGNED' &&
-                                    this.selectedDispatcher,
-                            };
-                        }
-                    );
 
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
@@ -612,14 +585,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                 } else {
                     this.loadDispatchesTTDInputConfig.multipleInputValues =
                         null;
-                    this.loadCreateStatuses = this.loadCreateStatuses.map(
-                        (item) => {
-                            return {
-                                ...item,
-                                active: item.name === 'UNASSIGNED',
-                            };
-                        }
-                    );
                 }
                 break;
             }
@@ -650,16 +615,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
             case 'shipper': {
                 if (event) {
                     // If Load Stops Doesn't exist, but 'delivery' is first picked just return
-
-                    if (
-                        !this.loadStops().length &&
-                        this.selectedStopTab === 4
-                    ) {
-                        return;
-                    } else {
-                        this.selectedShipper = event;
-                        this.createNewStop();
-                    }
+                    this.selectedShipper = event;
                 } else {
                     this.loadShipperInputConfig.multipleInputValues = null;
                 }
@@ -1153,11 +1109,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                                     return {
                                         lat: item.get('latitude').value,
                                         long: item.get('longitude').value,
-                                        stopColor:
-                                            item.get('stopType').value ===
-                                            'Pickup'
-                                                ? '#4db6a2'
-                                                : '#ef5350',
                                         empty: index === 0,
                                     };
                                 }),
@@ -1302,7 +1253,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
     public newLoadStop(): FormGroup {
         return this.formBuilder.group({
             id: [null],
-            stopType: [this.selectedStopTab === 3 ? 'Pickup' : 'Delivery'],
+
             stopOrder: [this.loadStops().length + 1],
             shipperId: [this.selectedShipper.id],
             dateFrom: [null], // convert for backend
@@ -1351,10 +1302,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                     return {
                         lat: item.get('latitude').value,
                         long: item.get('longitude').value,
-                        stopColor:
-                            item.get('stopType').value === 'Pickup'
-                                ? '#4db6a2'
-                                : '#ef5350',
                         empty: true,
                     };
                 }),
@@ -1460,17 +1407,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
                         .get('dispatcherId')
                         .patchValue(initialDispatcher.name);
                     this.selectedDispatcher = initialDispatcher;
-
-                    if (this.selectedDispatcher) {
-                        this.loadCreateStatuses = this.loadCreateStatuses.map(
-                            (item) => {
-                                return {
-                                    ...item,
-                                    active: item.name === 'UNASSIGNED',
-                                };
-                            }
-                        );
-                    }
 
                     // Division Companies
                     this.labelsCompanies = res.companies.map((item) => {
@@ -1642,7 +1578,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         let newData: any = {
-            type: this.headerTabs.find((item) => item.id === this.selectedTab)
+            type: this.tabs.find((item) => item.id === this.selectedTab)
                 .name as any,
             loadNumber: this.loadNumber,
             loadTemplateId: this.selectedTemplate
@@ -1725,7 +1661,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         const { ...form } = this.loadForm.value;
         const newData: CreateLoadTemplateCommand = {
             name: '',
-            type: this.headerTabs.find((item) => item.id === this.selectedTab)
+            type: this.tabs.find((item) => item.id === this.selectedTab)
                 .name as any,
             dispatcherId: this.selectedDispatcher
                 ? this.selectedDispatcher.id
@@ -1845,7 +1781,6 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.loadStops().controls.map((item, index) => {
             return {
                 id: null,
-                stopType: item.get('stopType').value,
                 stopOrder: item.get('stopOrder').value,
                 shipperId: item.get('shipperId').value,
                 dateFrom: convertDateToBackend(item.get('dateFrom').value),

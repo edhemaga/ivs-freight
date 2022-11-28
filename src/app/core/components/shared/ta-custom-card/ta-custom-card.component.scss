@@ -21,7 +21,7 @@
             }
 
             .header-text {
-                color: #919191;
+                color: #424242;
                 font-weight: 800;
                 font-size: 14px;
                 -webkit-user-select: none;
@@ -29,15 +29,6 @@
                 -ms-user-select: none;
                 user-select: none;
                 line-height: 18px;
-
-                &.no-counter {
-                    margin-left: 6px;
-                }
-
-                &.active {
-                    color: #6c6c6c;
-                    transition: all 0.3s ease-in-out;
-                }
             }
 
             // LEFT SIDE NEAR NAME SVG
@@ -306,7 +297,7 @@
                     transform: rotate(0deg);
                     transition: all 0.3s ease-in-out;
                     path {
-                        fill: #b7b7b7;
+                        fill: #919191;
                     }
                 }
 
@@ -314,6 +305,9 @@
                     svg {
                         transform: rotate(180deg);
                         transition: all 0.3s ease-in-out;
+                        path {
+                            fill: #aaaaaa;
+                        }
                     }
                 }
             }
@@ -334,11 +328,6 @@
 
         &:hover {
             transition: all 0.3s ease-in-out;
-            .header-content {
-                .header-text {
-                    color: #6c6c6c;
-                }
-            }
 
             .header-arrow {
                 svg {
@@ -347,42 +336,11 @@
                     }
                 }
             }
-
-            .ta-counter-number {
-                color: #6c6c6c !important;
-            }
-        }
-
-        &.active {
-            transition: all 0.3s ease-in;
-            .header-text {
-                color: #6c6c6c;
-            }
-            .ta-counter-number {
-                color: #6c6c6c !important;
-                // padding: 0 4px !important;
-            }
-
-            &:hover {
-                transition: all 0.3s ease-in;
-                .header-text {
-                    color: #3c3c3c !important;
-                }
-                .ta-counter-number {
-                    color: #3c3c3c !important;
-                }
-            }
         }
 
         &.no-data {
             cursor: auto !important;
             &:hover {
-                .header-content {
-                    .header-text {
-                        color: #919191 !important;
-                    }
-                }
-
                 .header-arrow {
                     svg {
                         path {
@@ -390,23 +348,12 @@
                         }
                     }
                 }
-
-                .ta-counter-number {
-                    color: #919191 !important;
-                }
             }
         }
 
         &.disabled {
-            .header-text {
-                color: #b7b7b7 !important;
-            }
             .header-arrow {
                 display: none !important;
-            }
-
-            .ta-counter-number {
-                color: #b7b7b7 !important;
             }
         }
 

@@ -169,6 +169,10 @@
         padding-left: 29px;
     }
 
+    &.dropdown-input-image-user {
+        padding-left: 30px;
+    }
+
     &.valid-focus-in-datepicker {
         background-color: $input-background-color-valid-focus !important;
 
@@ -176,10 +180,6 @@
         span .border-picker {
             color: $input-text-color-normal-focus !important;
         }
-    }
-
-    &.dropdown-input-image-user {
-        padding-left: 30px;
     }
 
     &.valid-focus-in,

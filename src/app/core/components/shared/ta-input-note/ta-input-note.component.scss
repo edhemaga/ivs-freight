@@ -14,7 +14,7 @@
         .note-label {
             font-weight: 800;
             font-size: 14px;
-            color: #919191;
+            color: #424242;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -47,25 +47,6 @@
 
         &.hover_on {
             cursor: pointer;
-            &:hover {
-                .note-label {
-                    color: #6c6c6c;
-                    transition: all 0.3s ease-in-out;
-                }
-            }
-        }
-
-        &.active {
-            .note-label {
-                color: #6c6c6c;
-            }
-
-            &:hover {
-                .note-label {
-                    color: #3c3c3c;
-                    transition: all 0.3s ease-in-out;
-                }
-            }
         }
     }
 
@@ -199,11 +180,6 @@
     &.note-small {
         .note-header {
             padding: 0px;
-            .note-label {
-                font-size: 14px;
-                font-weight: 800;
-                color: #6c6c6c;
-            }
         }
         .note-body {
             padding: 0px;

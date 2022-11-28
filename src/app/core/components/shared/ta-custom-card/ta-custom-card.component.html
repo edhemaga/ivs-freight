@@ -6,7 +6,6 @@
     <div
         [ngClass]="{ 'has-counter': hasCounter }"
         class="ta-card-header"
-        [class.active]="_isCardOpen && _isCardOpen != 'null'"
         [class.no-data]="!hasBodyData"
         [class.disabled]="disabledCard"
         (mouseenter)="isHeaderHover = true"
@@ -23,21 +22,23 @@
             >
             </app-ta-checkbox>
 
+            <!-- Name -->
+            <span class="header-text">
+                {{ cardName }}
+            </span>
+
             <!-- Counter -->
             <app-ta-counter
                 *ngIf="hasCounter !== -1"
                 [count]="hasCounter"
-                [countBackground]="'#F3F3F3'"
-                [countColor]="'#919191'"
-                [countHeight]="'24px'"
-                [countWidth]="'24px'"
+                [countBackground]="'#424242'"
+                [countColor]="'#ffffff'"
+                [countHeight]="'22px'"
+                [countWidth]="'22px'"
+                [countBorderRadius]="'50%'"
+                [marginLeft]="'4px'"
                 [countTextBottomPosition]="textBottomPossiton"
             ></app-ta-counter>
-
-            <!-- Name -->
-            <span class="header-text" [ngClass]="{ 'no-counter': !hasCounter }">
-                {{ cardName }}
-            </span>
 
             <!-- Svg near name -->
             <div
