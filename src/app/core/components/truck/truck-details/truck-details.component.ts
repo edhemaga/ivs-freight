@@ -361,7 +361,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 length: data?.registrations?.length
                     ? data.registrations.length
                     : 0,
-                data: data,
+                data: data.registrations,
                 status: data?.status == 0 ? true : false,
             },
             {
@@ -369,7 +369,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 name: 'FHWA Inspection',
                 template: 'fhwa-insepction',
                 length: data?.inspections?.length ? data.inspections.length : 0,
-                data: data,
+                data: data.inspections,
                 status: data?.status == 0 ? true : false,
             },
             {
@@ -377,7 +377,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 name: 'Title',
                 template: 'title',
                 length: data?.titles?.length ? data.titles.length : 0,
-                data: data,
+                data: data.titles,
                 status: data?.status == 0 ? true : false,
             },
             {

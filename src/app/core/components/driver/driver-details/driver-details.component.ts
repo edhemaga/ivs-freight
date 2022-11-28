@@ -207,7 +207,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 status: this.statusDriver,
                 hasDanger: false,
                 length: dataDriver?.tests?.length ? dataDriver.tests.length : 0,
-                data: dataDriver,
+                data: dataDriver.tests,
             },
             {
                 id: 3,
@@ -219,7 +219,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 length: dataDriver?.medicals?.length
                     ? dataDriver.medicals.length
                     : 0,
-                data: dataDriver,
+                data: dataDriver.medicals,
             },
             {
                 id: 4,
@@ -229,10 +229,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 status: this.statusDriver,
                 hasDanger: this.hasDangerMvr,
                 length: dataDriver?.mvrs?.length ? dataDriver.mvrs.length : 0,
-                data: dataDriver,
+                data: dataDriver.mvrs,
             },
         ];
         this.driverId = dataDriver?.id ? dataDriver.id : null;
+        console.log('--driverDetailsConfig---', this.driverDetailsConfig);
     }
     checkExpiration(data: DriverResponse) {
         this.hasDangerCDL = false;
@@ -401,6 +402,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
 
     public getCdlById(id: number) {
+        console.log('--getCdlById--')
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))

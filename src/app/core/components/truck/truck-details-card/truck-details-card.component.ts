@@ -389,16 +389,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.initTableOptions();
 
         let array1 = [...this.truck.ownerHistories];
-        console.log('--here-1-', this.truck);
+        
         array1.sort((a, b) => {
             return b.id - a.id;
         });
         //this.truck.ownerHistories = array1;
-        this.ownersData = array1;
-        console.log('--here--2', this.truck);
-        console.log('--ownersData2', this.ownersData);
-          
-        
+        this.ownersData = array1;    
     }
 
     public sortKeys = (a, b) => {
