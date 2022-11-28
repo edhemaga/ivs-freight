@@ -29,7 +29,6 @@ import { EnumValue } from '../../../../../../../appcoretruckassist/model/enumVal
 
 import {
     convertDateFromBackend,
-    convertDateFromBackendToTime,
     convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
 import {
