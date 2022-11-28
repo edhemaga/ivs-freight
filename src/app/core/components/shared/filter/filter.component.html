@@ -1471,47 +1471,111 @@
         </div>
         <div *ngIf="locationDefType" class="filter-holder location-filter">
             <div class="filter-header">
-                <div class="user-title-text">{{ filterTitle }}</div>
+                <div class="user-title-text" *ngIf="!areaFilter">{{ filterTitle }}</div>
+                <div class="user-title-text" *ngIf="areaFilter">Area Filter</div>
             </div>
             <div class="border-filter top-border-margin"></div>
-            <div
-                class="filter-middle-holder location-middle-padding"
-                [formGroup]="locationForm"
-                *ngIf="type == 'locationFilter'"
-                [@showAnimation]="activeFilter ? 'true' : 'false'"
-            >
-                <app-input-address-dropdown
-                    formControlName="address"
-                    [inputConfig]="{
-                        name: 'Address',
-                        type: 'text',
-                        label: 'Location',
-                        placeholderIcon: 'address',
-                        placeholder: 'Location',
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-288',
-                        minLength: 6,
-                        maxLength: 256,
-                        placeholderInsteadOfLabel: true,
-                        customClass: 'line-input-26'
-                    }"
-                    [placeholderType]="'shortAddress'"
-                    (incorrectEvent)="incorrectInput($event, 0, 18)"
-                    [activeAddress]="selectedAddress"
-                    (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-                ></app-input-address-dropdown>
+            <div class="areaFilterHolder" 
+                *ngIf="areaFilter" 
+                [@showAnimation]="activeFilter ? 'true' : 'false'">
+                <app-ta-tab-switch
+                    [tabs]="areBoxTab"
+                    (switchClicked)="onTabChange($event, 'REQUESTS-BOX')"
+                    [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
             </div>
-            <div
-                class="filter-middle-holder location-slider-middle-padding"
-                *ngIf="type == 'locationFilter'"
-                [@showAnimation]="activeFilter ? 'true' : 'false'"
-            >
-                <app-ta-ngx-slider
-                    [sliderOptions]="locationSliderData"
-                    [startedValue]="locationRange"
-                    [customClass]="'custom-slider-filter'"
-                    (onUserValueChange)="setRangeValue($event)"
-                ></app-ta-ngx-slider>
+            <div class="main-part-holder" *ngIf="areaFilter && areaFilterSelected != 'Location' ">
+                <div class="area-forms-holder" 
+                    [formGroup]="areaForm"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
+                    <div class="area-single-form-holder">
+                        <app-input-address-dropdown
+                            formControlName="origin"
+                            [inputConfig]="{
+                                name: 'Address',
+                                type: 'text',
+                                label: 'Origin',
+                                placeholderIcon: 'address',
+                                placeholder: 'Origin',
+                                textTransform: 'capitalize',
+                                dropdownWidthClass: 'w-col-288',
+                                minLength: 6,
+                                maxLength: 256,
+                                placeholderInsteadOfLabel: true,
+                                customClass: 'line-input-26'
+                            }"
+                            [placeholderType]="'shortAddress'"
+                            (incorrectEvent)="incorrectInput($event, 0, 18)"
+                            [activeAddress]="selectedAddress"
+                            (selectedAddress)="handleOriginSelect($event, 'ADDRESS')"
+                        ></app-input-address-dropdown>
+                    </div>
+                    <div class="area-single-form-holder">
+                        <app-input-address-dropdown
+                            formControlName="destination"
+                            [inputConfig]="{
+                                name: 'Address',
+                                type: 'text',
+                                label: 'Destination',
+                                placeholderIcon: 'address',
+                                placeholder: 'Destination',
+                                textTransform: 'capitalize',
+                                dropdownWidthClass: 'w-col-288',
+                                minLength: 6,
+                                maxLength: 256,
+                                placeholderInsteadOfLabel: true,
+                                customClass: 'line-input-26'
+                            }"
+                            [placeholderType]="'shortAddress'"
+                            (incorrectEvent)="incorrectInput($event, 0, 18)"
+                            [activeAddress]="selectedAddress"
+                            (selectedAddress)="handleDestinationSelect($event, 'ADDRESS')"
+                        ></app-input-address-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="main-part-holder" *ngIf="type == 'locationFilter' && areaFilterSelected == 'Location'" >   
+                <div
+                    class="filter-middle-holder location-middle-padding"
+                    [formGroup]="locationForm"
+                    *ngIf="type == 'locationFilter'"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
+                >
+                    <app-input-address-dropdown
+                        formControlName="address"
+                        [inputConfig]="{
+                            name: 'Address',
+                            type: 'text',
+                            label: 'Location',
+                            placeholderIcon: 'address',
+                            placeholder: 'Location',
+                            textTransform: 'capitalize',
+                            dropdownWidthClass: 'w-col-288',
+                            minLength: 6,
+                            maxLength: 256,
+                            placeholderInsteadOfLabel: true,
+                            customClass: 'line-input-26'
+                        }"
+                        [placeholderType]="'shortAddress'"
+                        (incorrectEvent)="incorrectInput($event, 0, 18)"
+                        [activeAddress]="selectedAddress"
+                        (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+                    ></app-input-address-dropdown>
+                </div>
+                <div
+                    class="filter-middle-holder location-slider-middle-padding"
+                    *ngIf="type == 'locationFilter'"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
+                >
+                    <app-ta-ngx-slider
+                        [sliderOptions]="locationSliderData"
+                        [startedValue]="locationRange"
+                        [customClass]="'custom-slider-filter'"
+                        (onUserValueChange)="setRangeValue($event)"
+                    ></app-ta-ngx-slider>
+                </div>
             </div>
             <div
                 class="mainMilesHolder"
@@ -1613,7 +1677,7 @@
                     Set
                 </div>
             </div>
-            <div class="buttons-holder" *ngIf="type == 'locationFilter'">
+            <div class="buttons-holder" *ngIf="type == 'locationFilter' && areaFilterSelected == 'Location'">
                 <div
                     (click)="clearAll($event)"
                     class="button-clear"
@@ -1632,6 +1696,27 @@
                         (locationRange != locationRangeSet &&
                             longVal != 0 &&
                             latVal != 0)
+                    "
+                >
+                    Set
+                </div>
+            </div>
+            <div class="buttons-holder" *ngIf="type == 'locationFilter' && areaFilterSelected != 'Location'">
+                <div
+                    (click)="clearAll($event)"
+                    class="button-clear"
+                    [class.active]="
+                         originLatVal != 0 || originLongVal != 0 || destLongVal != 0 || destLatVal != 0 
+                    "
+                >
+                    Clear All
+                </div>
+                <div
+                    (click)="setFilterValue($event)"
+                    class="button-set"
+                    [class.active]="
+                         ( originLatValSet != originLatVal || originLongValSet != originLongVal ) &&
+                        ( destLongValSet != destLongVal || destLatValSet != destLatVal )
                     "
                 >
                     Set

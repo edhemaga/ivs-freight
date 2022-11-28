@@ -1448,6 +1448,23 @@
 
     .button-set {
         width: 141px !important;
+    }   
+
+    .areaFilterHolder{
+        padding: 6px 0px;
+        width: 100%;
+    }
+
+    .main-part-holder{
+        width: 100%;
+
+        .area-forms-holder{
+            width: 100%;
+
+            .area-single-form-holder{
+                padding: 16px 0px 10px 0px;
+            }
+        }
     }
 
     .filter-middle-holder {
@@ -1568,6 +1585,10 @@
                     box-shadow: 0.3px -0.49px 4.4px rgb(0 0 0 / 30%) !important;
                 }
             }
+        }
+
+        &.areaFilterPadding{
+            padding-bottom: 10px;
         }
     }
 
