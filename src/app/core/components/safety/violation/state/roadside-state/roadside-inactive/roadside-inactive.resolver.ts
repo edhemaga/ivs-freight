@@ -25,14 +25,6 @@ export class RoadsideInactiveResolver
                 return of('No roadside inactive data...');
             }),
             tap((roadsidePagination: RoadsideInspectionListResponse) => {
-                localStorage.setItem(
-                    'roadsideTableCount',
-                    JSON.stringify({
-                        active: roadsidePagination.active,
-                        inactive: roadsidePagination.inactive,
-                    })
-                );
-
                 this.roadsideStore.set(roadsidePagination.pagination.data);
             })
         );
