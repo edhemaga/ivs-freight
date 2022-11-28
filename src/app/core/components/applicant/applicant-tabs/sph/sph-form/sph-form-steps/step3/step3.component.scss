@@ -138,6 +138,21 @@
                         }
                     }
                 }
+
+                .required {
+                    font-size: 11px;
+                    color: $ta-red-2;
+
+                    &::-moz-selection {
+                        color: $ta-red-2;
+                        background: rgb(239, 83, 80, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-red-2;
+                        background: rgb(239, 83, 80, 0.2);
+                    }
+                }
             }
 
             .title-box2 {
@@ -213,6 +228,21 @@
                         color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);
                     }
+                }
+            }
+
+            .required {
+                font-size: 11px;
+                color: $ta-red-2;
+
+                &::-moz-selection {
+                    color: $ta-red-2;
+                    background: rgb(239, 83, 80, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-red-2;
+                    background: rgb(239, 83, 80, 0.2);
                 }
             }
         }

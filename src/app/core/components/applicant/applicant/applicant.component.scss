@@ -138,6 +138,16 @@
 
                 .step-text {
                     color: $ta-blue-9 !important;
+
+                    &::-moz-selection {
+                        color: $ta-blue-9;
+                        background: rgb(37, 91, 185, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-blue-9;
+                        background: rgb(37, 91, 185, 0.2);
+                    }
                 }
             }
 

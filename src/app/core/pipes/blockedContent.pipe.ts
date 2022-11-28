@@ -42,6 +42,7 @@ export class BlockedContentPipe implements PipeTransform {
                 'cdl card',
                 'end screen',
                 'pdf',
+                'owner info',
             ].includes(value?.toLowerCase())
         ) {
             return true;

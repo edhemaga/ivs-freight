@@ -45,9 +45,10 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChild('documentsBox')
     documentsBox: ElementRef;
 
-    @Input() mode: string;
+    @Input() mode?: string;
     @Input() companyInfoSph: ApplicantCompanyInfoResponse;
     @Input() dateOfApplicationSph: string;
+    @Input() isWelcomeOrEndPage?: boolean = false;
 
     private destroy$ = new Subject<void>();
 
@@ -172,7 +173,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy, OnChanges {
         return this.sphTabForm.get('requests') as FormArray;
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm() {
         this.sphTabForm = this.formBuilder.group({
