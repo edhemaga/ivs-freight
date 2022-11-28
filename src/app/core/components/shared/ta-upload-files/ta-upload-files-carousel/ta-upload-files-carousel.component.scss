@@ -113,7 +113,18 @@
         .ta-upload-files-carousel {
             grid-template-rows: 303px;
         }
+    }
 
+    &.landscape-details-view {
+        grid-template-columns: 312px 1fr;
+        
+        .ta-upload-files-carousel {
+            overflow: visible;
+            grid-template-rows: 200px;
+        }
+    }
+
+    &.driver-details-pdf, &.landscape-details-view {
         .ta-upload-carousel-control-bg {
 
             &.next {

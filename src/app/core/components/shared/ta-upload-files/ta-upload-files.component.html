@@ -51,7 +51,7 @@
     </app-ta-upload-files-carousel>
     <app-ta-upload-dropzone
         *ngIf="
-            customClassName !== 'driver-details-pdf' &&
+            customClassName !== 'driver-details-pdf' && customClassName !== 'landscape-details-view' &&
             reviewMode !== 'REVIEW_MODE'
         "
         (onFileEvent)="onUploadFiles($event)"

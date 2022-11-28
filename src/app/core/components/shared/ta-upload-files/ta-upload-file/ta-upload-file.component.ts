@@ -159,13 +159,19 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }
 
     public onEditFile() {
-        if (this.customClassName !== 'driver-details-pdf') {
+        if (this.customClassName !== 'driver-details-pdf' && this.customClassName !== 'landscape-details-view') {
             this.editFile = true;
             this.fileNewName.patchValue(this.file.fileName);
             const timeout = setTimeout(() => {
-                this.inputRef.setInputCursorAtTheEnd(
-                    this.inputRef.input.nativeElement
-                );
+                const input = this.inputRef.input.nativeElement;
+                const selectionEnd = input.selection;
+                if (input.setSelectionRange) {
+                    input.setSelectionRange(selectionEnd, selectionEnd);
+                }
+                const focusTimeout = setTimeout(() => {
+                    input.focus();
+                    clearTimeout(focusTimeout);
+                }, 120);
                 clearTimeout(timeout);
             }, 300);
         }
