@@ -1,4 +1,3 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
     Component,
     Input,
@@ -19,7 +18,7 @@ import { FuelStopFranchiseResponse } from '../../../../../../../appcoretruckassi
 import {
     combineDateAndTimeToBackend,
     convertDateToBackend,
-    convertThousanSepInNumber
+    convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
 import { TruckTService } from '../../../truck/state/truck.service';
@@ -65,8 +64,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public quantity: any[] = [];
 
     public bluringFuelItemsPrice: any[] = [];
-
-    public hoverRowTable: boolean[] = [];
 
     public documents: any[] = [];
 
@@ -191,7 +188,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 ...this.subtotal,
                 { reorderingNumber: this.fuelItemsCounter, value: 0 },
             ];
-            this.hoverRowTable.push(false);
+
             this.bluringFuelItemsPrice.push(false);
         }
     }
@@ -200,7 +197,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.fuelItems.removeAt(id);
         this.selectedFuelItemsFormArray.splice(id, 1);
         this.bluringFuelItemsPrice.splice(id, 1);
-        this.hoverRowTable.splice(id, 1);
         const afterDeleting = this.subtotal.splice(id, 1);
 
         this.subtotal = this.subtotal.filter(
@@ -211,7 +207,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         if (!this.subtotal.length) {
             this.selectedFuelItemsFormArray = [];
             this.bluringFuelItemsPrice = [];
-            this.hoverRowTable = [];
             this.subtotal = [];
             this.fuelItemsCounter = 0;
             this.quantity = [];
@@ -299,16 +294,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.documents = event.files;
     }
 
-    public drop(event: CdkDragDrop<any[]>) {
-        moveItemInArray(
-            this.fuelItems.controls,
-            event.previousIndex,
-            event.currentIndex
-        );
-
-        moveItemInArray(this.subtotal, event.previousIndex, event.currentIndex);
-    }
-
     private updateFuel(id: number) {
         const { ...form } = this.fuelForm.value;
 
@@ -327,6 +312,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             ),
             total: this.sumArrays.transform(this.subtotal),
             fuelItems: this.premmapedItems('update') as any,
+            files: [],
+            filesForDeleteIds: [],
         };
 
         this.fuelService
@@ -365,6 +352,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             ),
             total: this.sumArrays.transform(this.subtotal),
             fuelItems: this.premmapedItems('create') as any,
+            files: [],
+            filesForDeleteIds: [],
         };
         this.fuelService
             .addFuelTransaction(newData)
@@ -412,7 +401,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         fuelItems: [],
                         total: res.total,
                     });
-                    
+
                     this.selectedTruckType = res.truck;
                     this.selectedDispatchHistory = {
                         ...this.selectedDispatchHistory,
@@ -464,7 +453,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                                 },
                             ];
 
-                            this.hoverRowTable.push(false);
                             this.bluringFuelItemsPrice.push(false);
                         }
                     }

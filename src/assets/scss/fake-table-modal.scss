@@ -442,13 +442,6 @@
                     user-select: none;
                 }
 
-                &-transfer-svg {
-                    padding-left: 6px;
-                    svg {
-                        width: 18px;
-                        height: 18px;
-                    }
-                }
                 &:hover {
                     cursor: -webkit-grab;
                     cursor: grab;
