@@ -5,7 +5,7 @@
             : 'Edit Fuel Transaction'
     "
     [editData]="editData"
-    [editName]="editData?.id"
+    [editName]="fuelTransactionName"
     [isModalValid]="fuelForm.valid && isFormDirty"
     [disableDelete]="true"
     (action)="onModalAction($event)"
@@ -15,7 +15,13 @@
         [formGroup]="fuelForm"
         class="form-container form-container-without-mb"
     >
-        <div *ngIf="editData?.type === 'edit'" class="row">
+        <div
+            *ngIf="
+                editData?.type === 'edit' &&
+                fuelTransactionType?.name !== 'Manual'
+            "
+            class="row"
+        >
             <div class="col-6">
                 <app-ta-input
                     formControlName="efsAccount"
@@ -132,7 +138,9 @@
                         placeholderIcon: 'date',
                         isRequired: true,
                         isDropdown: true,
-                        isDisabled: editData?.type === 'edit',
+                        isDisabled:
+                            editData?.type === 'edit' &&
+                            fuelTransactionType?.name !== 'Manual',
                         customClass: 'datetimeclass'
                     }"
                 ></app-ta-input>
@@ -147,7 +155,9 @@
                         label: 'Time',
                         placeholderIcon: 'time',
                         isDropdown: true,
-                        isDisabled: editData?.type === 'edit',
+                        isDisabled:
+                            editData?.type === 'edit' &&
+                            fuelTransactionType?.name !== 'Manual',
                         customClass: 'datetimeclass'
                     }"
                 ></app-ta-input>
@@ -158,7 +168,11 @@
                 <div
                     *ngIf="selectedFuelStop"
                     class="selected-item-container"
-                    [ngClass]="{ 'non-editable': editData?.type === 'edit' }"
+                    [ngClass]="{
+                        'non-editable':
+                            editData?.type === 'edit' &&
+                            fuelTransactionType?.name !== 'Manual'
+                    }"
                 >
                     <div class="selected-item-label">
                         Fuel Stop <span>*</span>
@@ -181,7 +195,10 @@
                         </div>
                     </div>
                     <div
-                        *ngIf="editData?.type !== 'edit'"
+                        *ngIf="
+                            editData?.type !== 'edit' ||
+                            fuelTransactionType?.name === 'Manual'
+                        "
                         class="clear-selected-item"
                     >
                         <div
@@ -226,7 +243,8 @@
             [cardName]="'Item'"
             [headerSvgEnabled]="true"
             [hasActionSvg]="
-                editData?.type !== 'edit'
+                editData?.type !== 'edit' ||
+                fuelTransactionType?.name === 'Manual'
                     ? 'assets/svg/common/ic_plus.svg'
                     : null
             "
@@ -283,7 +301,9 @@
                                     hideErrorMessage: true,
                                     blackInput: true,
                                     hideRequiredCheck: true,
-                                    isDisabled: editData?.type === 'edit'
+                                    isDisabled:
+                                        editData?.type === 'edit' &&
+                                        fuelTransactionType?.name !== 'Manual'
                                 }"
                                 [options]="fuelItemsDropdown"
                                 [activeItem]="selectedFuelItemsFormArray[ind]"
@@ -300,7 +320,9 @@
                                     hideErrorMessage: true,
                                     blackInput: true,
                                     hideRequiredCheck: true,
-                                    isDisabled: editData?.type === 'edit'
+                                    isDisabled:
+                                        editData?.type === 'edit' &&
+                                        fuelTransactionType?.name !== 'Manual'
                                 }"
                                 (change)="onChange('qty', ind)"
                             ></app-ta-input>
@@ -328,7 +350,10 @@
                                         hideErrorMessage: true,
                                         thousandSeparator: true,
                                         hideRequiredCheck: true,
-                                        isDisabled: editData?.type === 'edit'
+                                        isDisabled:
+                                            editData?.type === 'edit' &&
+                                            fuelTransactionType?.name !==
+                                                'Manual'
                                     }"
                                     (blurInput)="
                                         bluringFuelItemsPrice[index] = true
@@ -341,10 +366,13 @@
                             </div>
 
                             <p class="fuel-subtotal">
-                                {{ subtotal[ind].value | currency }}
+                                {{ subtotal[ind]?.value | currency }}
                             </p>
                             <div
-                                *ngIf="editData?.type !== 'edit'"
+                                *ngIf="
+                                    editData?.type !== 'edit' ||
+                                    fuelTransactionType?.name === 'Manual'
+                                "
                                 ngbTooltip
                                 mainTooltip="Delete"
                                 position="top"
