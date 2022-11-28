@@ -3729,7 +3729,11 @@
                                 <div class="attacment-container">
                                     <app-ta-upload-files
                                         [customClassName]="'todo-details'"
-                                        [files]="row?.tableAttachments ? row.tableAttachments : []"
+                                        [files]="
+                                            row?.tableAttachments
+                                                ? row.tableAttachments
+                                                : []
+                                        "
                                         [size]="'extraLarge'"
                                         [reviewMode]="'REVIEW_MODE'"
                                         [type]="'todo'"
@@ -3770,7 +3774,7 @@
                                             'height.px': '18'
                                         }"
                                     ></svg-icon>
-                                </div> 
+                                </div>
 
                                 <!-- Media Content -->
                                 <div class="media-container"></div>
@@ -3840,7 +3844,7 @@
                         class="show-more"
                         (click)="onShowMore()"
                         *ngIf="viewData.length < activeTableData.length"
-                    > 
+                    >
                         SHOW MORE
                     </div>
                 </div>

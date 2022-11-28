@@ -385,7 +385,7 @@ export class ViolationTableComponent
                 expirationDays: 20,
                 percentage: 20,
             },
-            tableAttachments: data?.files ? data.files : []
+            tableAttachments: data?.files ? data.files : [],
         };
     }
 

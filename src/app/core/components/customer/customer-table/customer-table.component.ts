@@ -843,7 +843,7 @@ export class CustomerTableComponent
         var newMapList = mapListResponse.pagination.data;
         var listChanged = false;
 
-        for ( var i = 0; i < this.mapListData.length; i++ ) {
+        for (var i = 0; i < this.mapListData.length; i++) {
             let item = this.mapListData[i];
 
             let itemIndex = newMapList.findIndex(
@@ -857,7 +857,7 @@ export class CustomerTableComponent
             }
         }
 
-        for ( var b = 0; b < newMapList.length; b++ ) {
+        for (var b = 0; b < newMapList.length; b++) {
             let item = newMapList[b];
 
             let itemIndex = this.mapListData.findIndex(
@@ -872,7 +872,8 @@ export class CustomerTableComponent
         }
 
         if (listChanged || mapListResponse.changedSort) {
-            if ( mapListResponse.changedSort ) this.mapListData = mapListResponse.pagination.data;
+            if (mapListResponse.changedSort)
+                this.mapListData = mapListResponse.pagination.data;
             this.tableData[1].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }

@@ -117,16 +117,16 @@
 
     &.landscape-details-view {
         grid-template-columns: 312px 1fr;
-        
+
         .ta-upload-files-carousel {
             overflow: visible;
             grid-template-rows: 200px;
         }
     }
 
-    &.driver-details-pdf, &.landscape-details-view {
+    &.driver-details-pdf,
+    &.landscape-details-view {
         .ta-upload-carousel-control-bg {
-
             &.next {
                 left: 94%;
                 padding-left: 1px;
@@ -146,7 +146,6 @@
         }
 
         .ta-upload-carousel-control-bg {
-
             &.prev {
                 left: 1.5%;
             }

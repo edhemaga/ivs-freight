@@ -33,6 +33,7 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() type: string; // modal | table | details | todo
     @Input() isRequired: boolean = false;
     @Input() showRequired: boolean = false;
+    @Input() hasLandscapeOption: boolean = false;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[] | UploadFile | any;
@@ -174,12 +175,12 @@ export class TaUploadFilesComponent implements OnInit {
     public onUploadFiles(data: { files: UploadFile[]; action: string }) {
         switch (data.action) {
             case 'add': {
-                data.files.map((file)=>{
+                data.files.map((file) => {
                     let setName = '';
                     const name = file.fileName.split('');
-                    name.map((item, i)=>{
-                        if(i < name.length - 4) {
-                            setName = setName+item;
+                    name.map((item, i) => {
+                        if (i < name.length - 4) {
+                            setName = setName + item;
                         }
                     });
                     file.fileName = setName;
@@ -219,6 +220,12 @@ export class TaUploadFilesComponent implements OnInit {
                 });
             });
         });
+    }
+
+    public onLandscapeCheck(landscape: boolean) {
+        if (landscape) {
+            this.customClassName = 'landscape-details-view';
+        }
     }
 
     ngOnDestroy(): void {

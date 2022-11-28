@@ -58,7 +58,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        console.log('test')
+        console.log('test');
         this.createForm();
         this.getModalDropdowns();
 

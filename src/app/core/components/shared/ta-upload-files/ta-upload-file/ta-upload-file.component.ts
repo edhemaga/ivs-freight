@@ -1,6 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnDestroy,
@@ -43,6 +44,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     @Input() activePage: number = 1;
     @Input() tags: any[] = [];
     @Input() type: string; // modal | table | details
+    @Input() hasLandscapeOption: boolean = false;
 
     @Output() fileAction: EventEmitter<{ file: UploadFile; action: string }> =
         new EventEmitter<{ file: UploadFile; action: string }>(null);
@@ -69,6 +71,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     public isIncorrectMarkHover: boolean = false;
     public fileExtension: string;
     @ViewChild('t2') t2: any;
+
+    @Output() landscapeCheck = new EventEmitter();
 
     constructor(
         private inputService: TaInputService,
@@ -104,6 +108,16 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
             pdf._pdfInfo.numPages === 1
                 ? pdf._pdfInfo.numPages.toString().concat(' ', 'PAGE')
                 : pdf._pdfInfo.numPages.toString().concat(' ', 'PAGES');
+    }
+
+    public pageRendered(pdf) {
+        if (
+            this.hasLandscapeOption &&
+            pdf.pageNumber == 1 &&
+            pdf.source.width > pdf.source.height
+        ) {
+            this.landscapeCheck.emit(true);
+        }
     }
 
     public onAction(action: string) {
@@ -159,7 +173,10 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }
 
     public onEditFile() {
-        if (this.customClassName !== 'driver-details-pdf' && this.customClassName !== 'landscape-details-view') {
+        if (
+            this.customClassName !== 'driver-details-pdf' &&
+            this.customClassName !== 'landscape-details-view'
+        ) {
             this.editFile = true;
             this.fileNewName.patchValue(this.file.fileName);
             const timeout = setTimeout(() => {
