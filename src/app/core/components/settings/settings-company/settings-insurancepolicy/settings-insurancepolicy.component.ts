@@ -86,16 +86,10 @@ export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Success deleted insurance',
-                        'Success'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Insurance with id: ${insurance.id}, couldn't be deleted'`,
-                        'Error'
-                    );
+                  
                 },
             });
     }

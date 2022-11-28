@@ -64,18 +64,12 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                     .subscribe({
                         next: (res: CompanyResponse) => {
                             this.getData(res);
-                            this.notificationService.success(
-                                'Company Division successfully changed',
-                                'Success:'
-                            );
+                            
                             this.cdRef.detectChanges();
                         },
                         error: () => {
                             this.getData(this.activated.snapshot.data.company);
-                            this.notificationService.success(
-                                'Company successfully changed',
-                                'Success:'
-                            );
+                           
                         },
                     });
             });

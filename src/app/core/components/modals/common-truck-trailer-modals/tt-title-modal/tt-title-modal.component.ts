@@ -170,16 +170,10 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly added new title!',
-                        'Success'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add new title!",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -209,16 +203,10 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Title successfully updated.',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Title can't be updated.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -247,10 +235,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Title can't be load.",
-                        'Error:'
-                    );
+                  
                 },
             });
     }
@@ -270,10 +255,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load title modal dropdowns!",
-                        'Error'
-                    );
+                   
                 },
             });
     }
