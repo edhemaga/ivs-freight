@@ -1,0 +1,219 @@
+@import 'src/theme/variables.scss';
+
+.owner-info-container {
+    min-height: 100vh;
+    background: $white;
+
+    br {
+        &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+
+    .title {
+        color: $ta-blue-5;
+        font-size: 32px;
+        height: 39px;
+        margin-top: 4px !important;
+        margin-bottom: 12px !important;
+
+        &::-moz-selection {
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
+        }
+
+        &::selection {
+            color: $ta-blue-5;
+            background: rgb(48, 116, 211, 0.2);
+        }
+    }
+
+    .subtitle {
+        color: $bw6-2;
+        font-size: 14px;
+        height: 36px;
+        margin-bottom: 12px !important;
+
+        &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+
+    .owner-info-tabs {
+        margin-bottom: 30px;
+        width: 616px;
+    }
+
+    .form-section {
+        .line-container {
+            position: relative;
+
+            .review-feedback-container {
+                position: absolute;
+                top: 0;
+                right: -435px;
+                width: 429px;
+            }
+        }
+
+        .group {
+            margin-bottom: 32px;
+            margin-right: 12px;
+
+            &:last-child {
+                margin-right: 0;
+                margin-bottom: 0;
+            }
+        }
+
+        .business-name-group {
+            width: 456px;
+        }
+
+        .ein-group {
+            width: 148px;
+            margin-right: 0;
+        }
+
+        .phone-group {
+            width: 229px;
+        }
+
+        .email-group {
+            width: 375px;
+            margin-right: 0;
+        }
+
+        .address-group {
+            width: 480px;
+        }
+
+        .address-unit-group {
+            width: 124px;
+            margin-right: 0;
+        }
+
+        .bank-group {
+            width: 202px;
+            margin-right: 22px;
+            margin-bottom: 22px;
+        }
+
+        .account-group {
+            width: 226px;
+            margin-bottom: 22px;
+        }
+
+        .routing-group {
+            width: 154px;
+            margin-right: 0;
+            margin-bottom: 22px;
+        }
+
+        .divider {
+            height: 1px;
+            width: 616px;
+            background: $bw-9;
+            border-radius: 1px;
+        }
+
+        .add-truck-container,
+        .add-trailer-container {
+            margin: 8px 0 28px 4px;
+
+            p {
+                font-size: 14px;
+                color: $ta-black;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+            }
+
+            &.add-trailer-container {
+                p {
+                    position: relative;
+                    top: 1px;
+                }
+            }
+        }
+
+        .type-group {
+            width: 364px;
+        }
+
+        .vin-group {
+            width: 240px;
+            margin-right: 0;
+        }
+
+        .make-group {
+            width: 210px;
+            margin-bottom: 22px;
+        }
+
+        .model-group {
+            width: 170px;
+            margin-bottom: 22px;
+        }
+
+        .year-group {
+            width: 84px;
+            margin-bottom: 22px;
+        }
+
+        .color-group {
+            width: 116px;
+            margin-bottom: 22px;
+            margin-right: 0;
+        }
+
+        .trailer-make-group {
+            width: 302px;
+        }
+
+        .trailer-model-group {
+            width: 302px;
+            margin-right: 0;
+        }
+
+        .trailer-year-group {
+            width: 160px;
+        }
+
+        .trailer-color-group {
+            width: 216px;
+        }
+
+        .trailer-length-group {
+            width: 216px;
+            margin-right: 0;
+        }
+    }
+}
+
+.next-btn-container {
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(0, -50%);
+    right: 42px;
+}

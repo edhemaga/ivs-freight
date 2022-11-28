@@ -158,7 +158,7 @@ export class Step3Component implements OnInit, OnDestroy {
         this.getDropdownLists();
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.licenseForm = this.formBuilder.group({
@@ -384,7 +384,7 @@ export class Step3Component implements OnInit, OnDestroy {
         };
     }
 
-    public cancelLicenseEditing(event: any): void {
+    public cancelLicenseEditing(_: any): void {
         this.isEditing = false;
         this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
 
@@ -472,7 +472,7 @@ export class Step3Component implements OnInit, OnDestroy {
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
-    public cancelLicenseReview(event: any): void {
+    public cancelLicenseReview(_: any): void {
         this.isReviewingCard = false;
 
         this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;

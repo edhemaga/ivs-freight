@@ -7,7 +7,8 @@
         .review-feedback-container {
             position: absolute;
             top: 0;
-            right: -435px;
+            right: 0;
+            transform: translateX(calc(100% + 5px));
             width: 429px;
         }
     }
@@ -55,127 +56,19 @@
         margin-right: 0 !important;
     }
 
-    .btn-container {
-        h4 {
-            margin-top: 22px !important;
+    .add-license-title {
+        color: $bw6-2;
+        font-size: 14px;
+        margin-right: 12px !important;
+
+        &::-moz-selection {
             color: $bw6-2;
-            font-size: 14px;
-            margin-right: 12px !important;
-
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
+            background: rgb(108, 108, 108, 0.2);
         }
 
-        .add-btn {
-            line-height: 18px;
-            margin-top: 22px;
-            height: 32px;
-            padding: 4px 22px;
-            border: none;
-            outline: none;
-            font-size: 14px;
-            border-radius: 2px;
-            color: $ta-blue-5;
-            background: $bw2;
-            transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-            -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
-            user-select: none !important;
-
-            &:hover {
-                color: $white;
-                background: $ta-blue-5;
-            }
-
-            &.disabled {
-                cursor: auto;
-                background: $bw2;
-                color: $bw5;
-
-                &:hover {
-                    background: $bw2 !important;
-                    color: $bw5 !important;
-                }
-            }
-
-            p {
-                position: relative;
-                top: 0.5px;
-            }
-        }
-
-        .btn-container-inside {
-            margin-bottom: 32px;
-            margin-top: 22px;
-
-            .add-btn {
-                margin-top: 0;
-                height: 32px;
-                padding: 4px 22px;
-                border: none;
-                outline: none;
-                font-size: 14px;
-                border-radius: 2px;
-                color: $ta-blue-5;
-                background: $bw2;
-                transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-                -webkit-user-select: none !important;
-                -moz-user-select: none !important;
-                -ms-user-select: none !important;
-                user-select: none !important;
-
-                &:hover {
-                    color: $white;
-                    background: $ta-blue-5;
-                }
-
-                &.disabled {
-                    cursor: auto;
-                    background: $bw2;
-                    color: $bw5;
-
-                    &:hover {
-                        background: $bw2 !important;
-                        color: $bw5 !important;
-                    }
-                }
-            }
-
-            .cancel-btn {
-                width: 150px;
-                height: 32px;
-                margin-right: 22px;
-                color: $bw5;
-                background: $ta-light-grey-4;
-                transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
-
-                &:hover {
-                    background: $bw6-2;
-                    color: $white;
-                }
-            }
-
-            .save-btn {
-                width: 150px;
-                height: 32px;
-                color: $ta-blue-5;
-                background: $bw2;
-
-                &:hover {
-                    color: $white;
-                    background: $ta-blue-5;
-                }
-            }
+        &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
         }
     }
 }
