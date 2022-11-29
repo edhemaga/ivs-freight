@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-import { GpsLastPositionsDataModel } from '../../model/gpslastpositionsdatamodel.model';
-import { environment } from '../../../../environments/environment';
 import { NotificationService } from '../notification/notification.service';
 import { MapService } from './../../../../../appcoretruckassist/api/map.service';
 import { CreateMapCommand } from './../../../../../appcoretruckassist/model/createMapCommand';
