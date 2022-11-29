@@ -88,7 +88,6 @@ export class CommonTruckTrailerService {
                 }
                 // Trailer Add Registration
                 else if (data.trailerId) {
-                    console.log('--here--')
                     const subTrailer = this.trailerService
                         .getTrailerById(data.trailerId)
                         .subscribe({
@@ -206,7 +205,6 @@ export class CommonTruckTrailerService {
                             },
                         });
                 } else if (data.trailerId) {
-                    console.log('--here--')
                     const subTrailer = this.trailerService
                         .getTrailerById(data.trailerId)
                         .subscribe({
@@ -303,7 +301,6 @@ export class CommonTruckTrailerService {
                             },
                         });
                 } else if (data.trailerId) {
-                    console.log('--here--')
                     const subTrailer = this.trailerService
                         .getTrailerById(data.trailerId)
                         .subscribe({
@@ -395,7 +392,6 @@ export class CommonTruckTrailerService {
             });
         }
         if (trailerId) {
-            console.log('--here--')
             const subTrailer = this.trailerService
                 .getTrailerById(trailerId)
                 .subscribe({
