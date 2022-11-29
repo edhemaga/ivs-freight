@@ -19,7 +19,7 @@ import { FuelStopFranchiseResponse } from '../../../../../../../appcoretruckassi
 import {
     combineDateAndTimeToBackend,
     convertDateToBackend,
-    convertThousanSepInNumber
+    convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
 import { TruckTService } from '../../../truck/state/truck.service';
@@ -412,7 +412,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         fuelItems: [],
                         total: res.total,
                     });
-                    
+
                     this.selectedTruckType = res.truck;
                     this.selectedDispatchHistory = {
                         ...this.selectedDispatchHistory,

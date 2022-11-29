@@ -23,6 +23,7 @@ import { ConfirmationService } from '../../modals/confirmation-modal/confirmatio
 import { NotificationService } from '../../../services/notification/notification.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 @Component({
     selector: 'app-to-do-list-card',
@@ -172,7 +173,8 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         private todoQuery: TodoQuery,
         private notificationService: NotificationService,
         private confirmationService: ConfirmationService,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private imageBase64Service: ImageBase64Service
     ) {}
 
     ngOnInit(): void {

@@ -1,5 +1,6 @@
 <div
     class="ta-upload-file-container {{ customClassName }}"
+    [class.modal]="!customClassName || customClassName == ''"
     [class.keep_open]="t2?.isOpen()"
 >
     <!-- File Header Actions -->
@@ -173,6 +174,7 @@
             [autoresize]="true"
             [show-borders]="false"
             (after-load-complete)="afterLoadComplete($event)"
+            (page-rendered)="pageRendered($event)"
         ></pdf-viewer>
 
         <!-- Image Content -->
@@ -300,7 +302,6 @@
                 type: 'text',
                 label: null,
                 placeholder: 'Type File Name',
-                textTransform: 'capitalize',
                 blackInput: true,
                 hideClear: true
             }"
