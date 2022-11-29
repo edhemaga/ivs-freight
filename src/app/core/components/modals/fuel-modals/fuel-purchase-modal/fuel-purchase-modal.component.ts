@@ -440,7 +440,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                                 this.createFuelItems({
                                     id: res.fuelItems[i]?.id,
                                     reorderingNumber: ++this.fuelItemsCounter,
-                                    itemId: res.fuelItems[i]?.category,
+                                    itemId: null /*res.fuelItems[i]?.category*/,
                                     qty: res.fuelItems[i]?.qty.toString(),
                                     price: res.fuelItems[i]?.price
                                         ? convertNumberInThousandSep(

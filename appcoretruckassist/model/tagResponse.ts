@@ -9,17 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 
 
-export interface FuelItemResponse { 
-    id?: number;
-    fuelTransactionId?: number;
-    itemFuel?: EnumValue;
-    price?: number;
-    qty?: number;
-    subtotal?: number;
-    createdAt?: string;
-    updatedAt?: string;
+export interface TagResponse { 
+    tagId?: number;
+    tagName?: string | null;
 }
 

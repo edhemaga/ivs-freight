@@ -467,6 +467,7 @@ export * from './switchDispatchCommand';
 export * from './switchDispatchesCommand';
 export * from './tableConfigResponse';
 export * from './tableType';
+export * from './tagResponse';
 export * from './terminalListResponse';
 export * from './terminalResponse';
 export * from './terminalResponsePagination';

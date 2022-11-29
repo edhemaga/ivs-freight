@@ -86,7 +86,7 @@
         <!-- Left Side -->
         <div
             class="ta-upload-file-action-leftside"
-            [ngClass]="{ 'no-action-tag': !hasTag, active: t2?.isOpen() }"
+            [ngClass]="{ 'no-action-tag': !hasTagsDropdown, active: t2?.isOpen() }"
             #t2="ngbPopover"
             [ngbPopover]="tagsPopover"
             [popoverClass]="'tags_popover'"
@@ -196,14 +196,14 @@
 
         <!-- Tag Content -->
         <div
-            *ngIf="hasTag || categoryTag"
+            *ngIf="hasTagsDropdown || categoryTag"
             class="ta-upload-file-tag"
             [ngClass]="{
-                'no-tag': (!categoryTag && !file?.tag) || file?.tag == 'No Tag'
+                'no-tag': (!categoryTag && !file?.tags) || file?.tags == 'No Tag'
             }"
         >
             <span>{{
-                file?.tag ? file?.tag : categoryTag ? categoryTag : 'No Tag'
+                file?.tags ? file?.tags : categoryTag ? categoryTag : 'No Tag'
             }}</span>
         </div>
     </div>
@@ -241,7 +241,7 @@
                         ? file?.extension
                         : (fileExtension | lowercase)
                 }}"
-                [ngClass]="{ 'no-tag': !file?.tag }"
+                [ngClass]="{ 'no-tag': !file?.tags }"
             >
                 <div *ngIf="file?.extension">
                     {{ file?.extension | uppercase }}
@@ -313,14 +313,14 @@
     <div class="tags_main_holder">
         <div
             class="tags_inner_holder"
-            *ngFor="let tag of tags; index as i"
+            *ngFor="let tag of tagsOptions; index as i"
             [class.firstRow]="i == 0"
-            [class.lastRow]="i == tags?.length - 1"
-            (click)="selectTag(tag?.name)"
+            [class.lastRow]="i == tagsOptions?.length - 1"
+            (click)="selectTag(tag?.tagName)"
         >
             <div class="tag_options_holder">
                 <div class="tag_name" [class.checked]="tag.checked">
-                    {{ tag.name }}
+                    {{ tag.tagName }}
                 </div>
                 <div class="checked_icon" [class.shown]="tag.checked">
                     <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>

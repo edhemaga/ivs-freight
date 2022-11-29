@@ -25,7 +25,7 @@ export class TaUploadFilesComponent implements OnInit {
 
     @Input() customClassName: string;
     @Input() files: UploadFile[] = [];
-    @Input() hasTag: boolean = false;
+    @Input() hasTagsDropdown: boolean = false;
     @Input() hasNumberOfPages: boolean = false;
     @Input() size: string = 'small'; // small | medium | large
     @Input() hasCarouselBottomTabs: boolean;

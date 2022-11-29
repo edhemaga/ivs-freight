@@ -526,6 +526,7 @@ model/switchDispatchCommand.ts
 model/switchDispatchesCommand.ts
 model/tableConfigResponse.ts
 model/tableType.ts
+model/tagResponse.ts
 model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts

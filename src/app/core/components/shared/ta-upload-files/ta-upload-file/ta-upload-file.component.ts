@@ -1,6 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnDestroy,
@@ -22,8 +23,9 @@ export interface UploadFile {
     extension?: string;
     guid?: string;
     size?: number | string;
-    tag?: string;
+    tags?: any;
     realFile?: File;
+    tagId?: any;
 }
 @Component({
     selector: 'app-ta-upload-file',
@@ -38,12 +40,13 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     @ViewChild(TaInputComponent) inputRef: TaInputComponent;
     @Input() customClassName: string;
     @Input() file: UploadFile;
-    @Input() hasTag: boolean = false;
+    @Input() hasTagsDropdown: boolean = false;
     @Input() hasNumberOfPages: boolean = false;
     @Input() activePage: number = 1;
     @Input() tags: any[] = [];
     @Input() type: string; // modal | table | details
     @Input() hasLandscapeOption: boolean = false;
+    @Input() tagsOptions: any[] = [];
 
     @Output() fileAction: EventEmitter<{ file: UploadFile; action: string }> =
         new EventEmitter<{ file: UploadFile; action: string }>(null);
@@ -102,6 +105,13 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
         }
     }
 
+    ngAfterViewInit(): void {
+        this.setTags();
+        if(this.file.tags?.length) {
+            this.categoryTag = this.file.tags[0];
+        }
+    }
+
     public afterLoadComplete(pdf: PDFDocumentProxy) {
         this.numberOfFilePages =
             pdf._pdfInfo.numPages === 1
@@ -109,12 +119,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
                 : pdf._pdfInfo.numPages.toString().concat(' ', 'PAGES');
     }
 
-    public pageRendered(pdf) {
-        if (
-            this.hasLandscapeOption &&
-            pdf.pageNumber == 1 &&
-            pdf.source.width > pdf.source.height
-        ) {
+    public pageRendered(pdf){
+        if(this.hasLandscapeOption && pdf.pageNumber == 1 && pdf.source.width > pdf.source.height) {
             this.landscapeCheck.emit(true);
         }
     }
@@ -122,8 +128,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     public onAction(action: string) {
         switch (action) {
             case 'tag': {
-                if (this.file.tag) {
-                    this.selectTag(this.file.tag);
+                if (this.file.tags) {
+                    this.selectTag(this.file.tags);
                 } else {
                     this.selectTag('No Tag');
                 }
@@ -172,10 +178,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }
 
     public onEditFile() {
-        if (
-            this.customClassName !== 'driver-details-pdf' &&
-            this.customClassName !== 'landscape-details-view'
-        ) {
+        if (this.customClassName !== 'driver-details-pdf' && this.customClassName !== 'landscape-details-view') {
             this.editFile = true;
             this.fileNewName.patchValue(this.file.fileName);
             const timeout = setTimeout(() => {
@@ -208,14 +211,35 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
         this.documentReviewInputVisible = event.type === 'open';
     }
 
+    public setTags() {
+        if (this.hasTagsDropdown && this.tags?.length) {
+            this.tagsOptions = [{
+                tagName: 'No Tag',
+                checked: true,
+                tagId: []
+            }];
+
+            this.tags.map((item, i)=>{
+                item = {
+                    ...item,
+                    checked: false
+                };
+
+                this.tagsOptions.push(item);
+            });
+        }
+    }
+
     public selectTag(tag: string) {
-        this.tags.map((item) => {
-            if (item.name == tag) {
+        this.tagsOptions.map((item) => {
+            if (item.tagName == tag) {
                 item.checked = true;
-                if (item.name == 'No Tag') {
-                    this.file.tag = null;
+                if (item.tagName == 'No Tag') {
+                    this.file.tags = null;
+                    this.file.tagId = [];
                 } else {
-                    this.file.tag = item.name;
+                    this.file.tags = item.tagName;
+                    this.file.tagId = [item.tagId];
                 }
             } else {
                 item.checked = false;
