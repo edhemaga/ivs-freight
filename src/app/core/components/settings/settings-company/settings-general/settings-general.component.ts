@@ -90,6 +90,10 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
+    public timeZoneFormat(mod){
+        return mod.substring(0,7); 
+    }
+
     public onAction(modal: { modalName: string; type: string; company?: any }) {
         this.settingsCompanyService.onModalAction(modal);
     }

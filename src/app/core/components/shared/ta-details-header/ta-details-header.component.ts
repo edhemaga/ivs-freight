@@ -38,6 +38,14 @@ export class TaCommonHeaderComponent implements OnInit {
     @Input() countViolation: number;
     @Input() hideCounter: boolean;
     @Input() mainData: any;
+    @Input() timeFilter: boolean = false;
+    @Input() unitFilter: boolean = false;
+    @Input() repairOrderFilter: boolean = false;
+    @Input() pmFilter: boolean = false;
+    @Input() categoryFilter: boolean = false;
+    @Input() moneyFilter: boolean = false;
+
+
     public up: boolean = false;
     public down: boolean = false;
     constructor(private routes: ActivatedRoute) {}

@@ -133,7 +133,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 id: 1,
                 name: 'Registration',
                 template: 'registration',
-                data: data,
+                data: data.registrations,
                 length: data?.registrations?.length
                     ? data.registrations.length
                     : 0,
@@ -143,7 +143,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 id: 2,
                 name: 'FHWA Inspection',
                 template: 'fhwa-insepction',
-                data: data,
+                data: data.inspections,
                 length: data?.inspections?.length ? data.inspections.length : 0,
                 status: data?.status == 0 ? true : false,
             },
@@ -151,7 +151,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 id: 3,
                 name: 'Title',
                 template: 'title',
-                data: data,
+                data: data.titles,
                 length: data?.titles?.length ? data.titles.length : 0,
                 status: data?.status == 0 ? true : false,
             },
@@ -264,9 +264,17 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         };
     }
     public getTrailerById(id: number) {
+        console.log('--here---', id)
+        
         this.trailerService
             .getTrailerById(id, true)
             .subscribe((item) => (this.trailerObject = item));
+
+
+        setTimeout(()=>{
+            console.log("tttt", this.trailerObject);
+        }, 1000)
+        
     }
     public deleteTrailerById(id: number) {
         let status = this.trailerObject.status == 0 ? 'inactive' : 'active';

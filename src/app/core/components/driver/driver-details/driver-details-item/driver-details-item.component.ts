@@ -94,7 +94,6 @@ export class DriverDetailsItemComponent
         this.activeCdl = this.drivers[0].data.cdls.filter(
             (item) => item.status === 1
         );
-
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -122,7 +121,7 @@ export class DriverDetailsItemComponent
                                             DriverCdlModalComponent,
                                             { size: 'small' },
                                             {
-                                                id: res.data.driver.id,
+                                                id: res.data.driver?.id,
                                                 file_id:
                                                     res.data.driver.file_id,
                                                 type: 'renew-licence',
@@ -150,6 +149,7 @@ export class DriverDetailsItemComponent
     }
     public getExpireDate() {
         this.dataCDl = this.drivers[1]?.data?.cdls?.map((ele) => {
+          
             let endDate = moment(ele.expDate);
             if (
                 moment(ele.expDate).isBefore(moment()) ||
@@ -379,6 +379,7 @@ export class DriverDetailsItemComponent
     }
 
     public getCdlById(id: number) {
+        console.log('--here--getCdlById', id);
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
@@ -386,6 +387,7 @@ export class DriverDetailsItemComponent
     }
 
     public getMedicalById(id: number) {
+        console.log('--here--getMedicalById')
         this.medicalService
             .getMedicalById(id)
             .pipe(takeUntil(this.destroy$))
@@ -393,6 +395,7 @@ export class DriverDetailsItemComponent
     }
 
     public getMvrById(id: number) {
+        console.log('--here--getMvrById')
         this.mvrService
             .getMvrById(id)
             .pipe(takeUntil(this.destroy$))
@@ -400,6 +403,7 @@ export class DriverDetailsItemComponent
     }
 
     public getTestById(id: number) {
+        console.log('--here--getTestById')
         this.testService
             .getTestById(id)
             .pipe(takeUntil(this.destroy$))

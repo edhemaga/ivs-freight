@@ -15,7 +15,7 @@ import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
     selector: 'app-ta-custom-card',
     templateUrl: './ta-custom-card.component.html',
     styleUrls: ['./ta-custom-card.component.scss'],
-    animations: [card_modal_animation('showHideCardBody')],
+    animations: [card_modal_animation('showHideCardBody')], 
     encapsulation: ViewEncapsulation.None,
 })
 export class TaCustomCardComponent implements OnChanges {
