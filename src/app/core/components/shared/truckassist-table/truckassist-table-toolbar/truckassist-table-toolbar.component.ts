@@ -319,10 +319,6 @@ export class TruckassistTableToolbarComponent
         .deleteTableConfig(this.tableConfigurationType)
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          console.log(
-            'Brise se konfiguracija tabele: ' + this.tableConfigurationType
-          );
-
           localStorage.removeItem(
             `table-${this.tableConfigurationType}-Configuration`
           );

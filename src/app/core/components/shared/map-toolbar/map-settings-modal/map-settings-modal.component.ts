@@ -164,16 +164,10 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly updated map',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update map.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -189,7 +183,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error("Can't load map.", 'Error');
+                    
                 },
             });
     }

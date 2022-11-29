@@ -97,7 +97,7 @@ export class Step5Component implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     public createForm(): void {
         this.trafficViolationsForm = this.formBuilder.group({
@@ -456,7 +456,7 @@ export class Step5Component implements OnInit, OnDestroy {
         this.formValuesToPatch = this.previousFormValuesOnEdit;
     }
 
-    public cancelViolationEditing(event: any): void {
+    public cancelViolationEditing(_: any): void {
         this.isEditing = false;
         this.violationsArray[this.selectedViolationIndex].isEditingViolation =
             false;
@@ -540,7 +540,7 @@ export class Step5Component implements OnInit, OnDestroy {
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
-    public cancelViolationReview(event: any): void {
+    public cancelViolationReview(_: any): void {
         this.isReviewingCard = false;
 
         this.violationsArray[this.selectedViolationIndex].isEditingViolation =

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     Component,
     OnDestroy,
@@ -328,7 +330,7 @@ export class Step6Component implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.educationForm = this.formBuilder.group({
@@ -827,7 +829,7 @@ export class Step6Component implements OnInit, OnDestroy {
         };
     }
 
-    public cancelContactEditing(event: any): void {
+    public cancelContactEditing(_: any): void {
         this.isEditing = false;
         this.contactsArray[this.selectedContactIndex].isEditingContact = false;
 
@@ -924,7 +926,7 @@ export class Step6Component implements OnInit, OnDestroy {
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
-    public cancelContactReview(event: any): void {
+    public cancelContactReview(_: any): void {
         this.isReviewingCard = false;
 
         this.contactsArray[this.selectedContactIndex].isEditingContact = false;

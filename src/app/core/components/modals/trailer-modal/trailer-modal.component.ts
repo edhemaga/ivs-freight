@@ -240,17 +240,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                     status: this.trailerStatus,
                                 });
 
-                                this.notificationService.success(
-                                    successMessage,
-                                    'Success'
-                                );
+                               
                             }
                         },
                         error: () => {
-                            this.notificationService.error(
-                                errorMessage,
-                                'Error'
-                            );
+                         
                         },
                     });
             } else {
@@ -333,10 +327,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     this.trailerForm.get('fhwaExp').patchValue(res.fhwaExp);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Cant't get trailer dropdown items.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -402,10 +393,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Trailer "${trailerUnit} added"`,
-                        'Success'
-                    );
+                   
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -428,11 +416,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () =>
-                    this.notificationService.error(
-                        `Failed to add Trailer "${trailerUnit}"`,
-                        'Error'
-                    ),
+                error: () => {}
             });
     }
 
@@ -443,16 +427,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Trailer "${trailerUnit}" deleted`,
-                        'Success'
-                    );
+                    
                 },
-                error: () =>
-                    this.notificationService.error(
-                        `Failed to delete Trailer "${trailerUnit}"`,
-                        'Error'
-                    ),
+                error: () => {}
             });
     }
 
@@ -531,20 +508,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Changes saved for Trailer "${trailerUnit}"`,
-                        'Success'
-                    );
+                    
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
                     });
                 },
-                error: () =>
-                    this.notificationService.error(
-                        `Failed to save changes for Trailer "${trailerUnit}"`,
-                        'Error'
-                    ),
+                error: () => {}
             });
     }
 
@@ -682,10 +652,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Cant't get trailer.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -794,10 +761,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                 this.selectedTrailerMake = res.trailerMake;
                             },
                             error: () => {
-                                this.notificationService.error(
-                                    `Can't get data for that ${value} VIN.`,
-                                    'Error:'
-                                );
+                             
                             },
                         });
                 }

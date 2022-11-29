@@ -130,16 +130,10 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully resend email to applicant.',
-                        'Success'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't resend email to applicant.",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -153,16 +147,10 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully update applicant.',
-                        'Success'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update applicant.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -182,20 +170,14 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                         this.formService.resetForm(this.applicantForm);
                     }
 
-                    this.notificationService.success(
-                        'Successfully add applicant.',
-                        'Success'
-                    );
+                    
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
                         action: 'save and add new',
                         status: false,
                     });
-                    this.notificationService.error(
-                        "Can't add applicant.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -220,10 +202,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     );
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load applicant.",
-                        'Error'
-                    );
+                    
                 },
             });
     }
