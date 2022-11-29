@@ -1455,17 +1455,25 @@
         width: 100%;
     }
 
-    .main-part-holder{
+    .area-all-holder{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
         width: 100%;
+        overflow: hidden;
 
-        .area-forms-holder{
+        .main-part-holder{
+            position: relative;
             width: 100%;
-
-            .area-single-form-holder{
-                padding: 16px 0px 10px 0px;
+            overflow: hidden;
+            .area-forms-holder{
+                .area-single-form-holder{
+                    padding: 16px 0px 10px 0px;
+                }
             }
         }
     }
+    
 
     .filter-middle-holder {
         padding-top: 10px;

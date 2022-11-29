@@ -193,6 +193,48 @@ import {
             ]),
             transition('true <=> false', [animate('100ms ease')]),
         ]),
+        trigger('areaRightSideAnimation', [
+            state('in', style({ width: '100%', 'position' : 'relative' })),
+            transition(':enter', [
+                animate(
+                    200,
+                    keyframes([
+                        style({ width: '0%', right: '0px', overflow: 'hidden', }),
+                        style({ width: '100%', right: '0px', overflow: 'hidden' }),
+                    ])
+                ),
+            ]),
+            transition(':leave', [
+                animate(
+                    200,
+                    keyframes([
+                        style({ width: '100%', right: '0px', overflow: 'hidden' }),
+                        style({ width: '0%', right: '0px', overflow: 'hidden',}),
+                    ])
+                ),
+            ]),
+        ]),
+        trigger('areaLeftSideAnimation', [
+            state('in', style({ width: '100%', 'position' : 'relative' })),
+            transition(':enter', [
+                animate(
+                    200,
+                    keyframes([
+                        style({ width: '0%', 'position' : 'relative', left: '0px', overflow: 'hidden', }),
+                        style({ width: '100%', left: '0px', overflow: 'hidden' }),
+                    ])
+                ),
+            ]),
+            transition(':leave', [
+                animate(
+                    200,
+                    keyframes([
+                        style({ width: '100%', left: '0px', overflow: 'hidden' }),
+                        style({ width: '0%', left: '0px', overflow: 'hidden', }),
+                    ])
+                ),
+            ]),
+        ]),
     ],
 })
 export class FilterComponent implements OnInit, AfterViewInit {
@@ -1255,7 +1297,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     last2Years: any = '';
     totalFiltersNum: any = 0;
     singleFormActive: any = false;
-
+    sideAnimation: any = false;
 
     areBoxTab: any[] = [
         {
@@ -2895,6 +2937,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     public onTabChange(event: any, type: string): void {
        //console.log('event', event.name);
+       this.sideAnimation = true;
        this.areaFilterSelected = event.name;
     }
 }
