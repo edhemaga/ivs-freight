@@ -933,6 +933,34 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+        this.tableService.sendActionAnimation({});
+        this.tableService.sendCurrentSwitchOptionSelected(null);
+        this.resizeObserver.unobserve(
+            document.querySelector('.table-container')
+        );
+        this.resizeObserver.disconnect();
+    }
+
+    // MAP
+    selectItem(data: any) {
+        if ( !data[1] ) {
+            this.mapsComponent.clickedMarker(data[0]);
+        }
+
+        this.mapListData.map((item) => {
+            if ( item.id == data[0] ) {
+                let itemIndex = this.mapsComponent.viewData.findIndex(
+                    (item2) => item2.id === item.id
+                );
+
+                item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+            }
+        });
+    }
+
     updateMapList(mapListResponse) {
         var newMapList = mapListResponse.pagination.data;
         var listChanged = false;
@@ -970,21 +998,5 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             this.tableData[2].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-        this.tableService.sendActionAnimation({});
-        this.tableService.sendCurrentSwitchOptionSelected(null);
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
-        this.resizeObserver.disconnect();
-    }
-
-    // MAP
-    selectItem(id: any) {
-        this.mapsComponent.clickedMarker(id);
     }
 }

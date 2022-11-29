@@ -63,6 +63,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Input() dropdownActions: any[] = [];
     @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
     @Output() updateMapList: EventEmitter<any> = new EventEmitter();
+    @Output() selectMarker: EventEmitter<any> = new EventEmitter();
 
     public agmMap: any;
     public styles = AppConst.GOOGLE_MAP_STYLES;
@@ -79,7 +80,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     public markerSelected: boolean = false;
     public mapLatitude: number = 41.860119;
     public mapLongitude: number = -87.660156;
-    public sortBy: string = 'nameAsc';
+    public sortBy: string = 'nameDesc';
     public searchValue: string = '';
     public mapMarkers: any[] = [];
     public mapCircle: any = {
@@ -185,6 +186,7 @@ export class MapsComponent implements OnInit, OnDestroy {
 
             if (data.isSelected && data.id != id) {
                 data.isSelected = false;
+                this.selectMarker.emit([data.id, true]);
             } else if (data.id == id) {
                 var selectShop = !data.isSelected;
 
@@ -202,6 +204,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                     } else {
                         data.isSelected = true;
                     }
+
+                    this.selectMarker.emit([data.id, true]);
 
                     if (
                         this.mapLatitude == data.latitude &&
@@ -245,6 +249,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         this.viewData.map((data: any) => {
             if (data.isSelected) {
                 data.isSelected = false;
+                this.selectMarker.emit([data.id, true]);
                 data.isExpanded = false;
             }
         });
@@ -810,6 +815,7 @@ export class MapsComponent implements OnInit, OnDestroy {
 
                     setTimeout(() => {
                         this.viewData[index].isSelected = true;
+                        this.selectMarker.emit([id, true]);
                         this.ref.detectChanges();
                     }, 200);
                 },
@@ -839,6 +845,7 @@ export class MapsComponent implements OnInit, OnDestroy {
 
                     setTimeout(() => {
                         this.viewData[index].isSelected = true;
+                        this.selectMarker.emit([id, true]);
                         this.ref.detectChanges();
                     }, 200);
                 },
@@ -861,6 +868,7 @@ export class MapsComponent implements OnInit, OnDestroy {
 
                     setTimeout(() => {
                         this.viewData[index].isSelected = true;
+                        this.selectMarker.emit([id, true]);
                         this.ref.detectChanges();
                     }, 200);
                 },

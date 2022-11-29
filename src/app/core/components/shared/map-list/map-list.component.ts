@@ -43,7 +43,7 @@ export class MapListComponent
     @ContentChildren('listCard') listCards!: QueryList<any>;
     public mapListExpanded: boolean = true;
     public searchForm!: FormGroup;
-    public sortDirection: string = 'asc';
+    public sortDirection: string = 'desc';
     visibleColumns: any[] = [];
     pinedColumns: any[] = [];
     notPinedColumns: any[] = [];
@@ -386,11 +386,14 @@ export class MapListComponent
             )
             .forEach((title: HTMLElement) => {
                 var text = title.textContent;
+                var addressElement = title.classList.contains('address-text');
 
                 const regex = new RegExp(this.searchText, 'gi');
                 const newText = text.replace(regex, (match: string) => {
                     if (match.length >= 3) {
-                        return `<mark class='highlighted-text'>${match}</mark>`;
+                        var addressClass = addressElement ? 'regular-weight' : '';
+
+                        return `<mark class='highlighted-text ${addressClass}'>${match}</mark>`;
                     } else {
                         return match;
                     }

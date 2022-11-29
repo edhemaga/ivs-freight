@@ -570,8 +570,20 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    selectItem(id) {
-        this.mapsComponent.clickedMarker(id);
+    selectItem(data: any) {
+        if ( !data[1] ) {
+            this.mapsComponent.clickedMarker(data[0]);
+        }
+
+        this.mapListData.map((item) => {
+            if ( item.id == data[0] ) {
+                let itemIndex = this.mapsComponent.viewData.findIndex(
+                    (item2) => item2.id === item.id
+                );
+
+                item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+            }
+        });
     }
 
     updateMapList(mapListResponse) {

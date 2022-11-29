@@ -26,7 +26,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     @Input() index: any = {};
     @Input() type: string = '';
     @Input() dropdownActions: any[] = [];
-    @Output() clickedMarker: EventEmitter<string> = new EventEmitter<string>();
+    @Output() clickedMarker: EventEmitter<any> = new EventEmitter<any>();
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     public locationFilterOn: boolean = false;
     sortCategory: any = {};
@@ -44,7 +44,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     }
 
     selectCard() {
-        this.clickedMarker.emit(this.index);
+        this.clickedMarker.emit([this.item.id, false]);
     }
 
     showMoreOptions(event) {

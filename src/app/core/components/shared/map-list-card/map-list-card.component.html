@@ -402,8 +402,8 @@
                 >{{ item.distanceBetween }} mi -
             </span>
             <span class="address-text">
-                {{ address.city }},
-                {{ address.state }}
+                {{ address.city ? address.city : address.county }},
+                {{ address.stateShortName }}
                 {{ address.zipCode }},
                 {{ address.country }}
             </span>

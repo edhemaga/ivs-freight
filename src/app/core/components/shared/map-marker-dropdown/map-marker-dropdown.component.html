@@ -375,7 +375,7 @@
                         }}
                     </div>
                     <div class="title-text">
-                        {{ item?.address.city }}, {{ item?.address.state
+                        {{ item?.address.city ? item.address.city : item.address.county }}, {{ item?.address.stateShortName
                         }}<span
                             class="title-text"
                             *ngIf="item?.address.zipCode"

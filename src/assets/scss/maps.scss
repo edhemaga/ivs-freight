@@ -940,7 +940,13 @@
 
 .highlighted-text {
     font-weight: 900;
-    background: none;
     padding: 0;
-    color: inherit;
+    color: rgb(48, 116, 211);
+    background: rgb(48, 116, 211, 0.2);
+    //background: none;
+    //color: inherit;
+
+    &.regular-weight {
+        font-weight: 400;
+    }
 }
