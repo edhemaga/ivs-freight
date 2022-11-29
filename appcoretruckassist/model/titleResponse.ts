@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { StateResponse } from './stateResponse';
 
 
@@ -19,5 +20,6 @@ export interface TitleResponse {
     state?: StateResponse;
     purchaseDate?: string;
     issueDate?: string;
+    files?: Array<FileResponse> | null;
 }
 

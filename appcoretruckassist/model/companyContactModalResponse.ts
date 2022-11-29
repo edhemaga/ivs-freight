@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 import { CompanyContactLabelResponse } from './companyContactLabelResponse';
 import { DepartmentResponse } from './departmentResponse';
 
@@ -16,5 +17,7 @@ import { DepartmentResponse } from './departmentResponse';
 export interface CompanyContactModalResponse { 
     labels?: Array<CompanyContactLabelResponse> | null;
     departments?: Array<DepartmentResponse> | null;
+    contactPhoneType?: Array<EnumValue> | null;
+    contactEmailType?: Array<EnumValue> | null;
 }
 

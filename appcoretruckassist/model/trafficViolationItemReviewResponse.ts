@@ -14,13 +14,11 @@
 export interface TrafficViolationItemReviewResponse { 
     id?: number;
     isDateValid?: boolean;
-    isVehicleTypeValid?: boolean;
     isLocationValid?: boolean;
-    vehicleTypeLocationMessage?: string | null;
+    locationMessage?: string | null;
     isDescriptionValid?: boolean;
     descriptionMessage?: string | null;
     isPrimary?: boolean;
     commonMessage?: string | null;
-    trafficViolationItemId?: number;
 }
 

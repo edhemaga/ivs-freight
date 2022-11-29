@@ -1,19 +1,27 @@
-<div class="ta-input-radiobutons">
-  <label
-    *ngFor="let button of buttons; trackBy: identity"
-    class="radio-button-label"
-    [ngClass]="{ checked: button.checked, 'no-checked': !button.checked }"
-    for="{{ button.id }}"
-  >
-    <input
-      [id]="button.id"
-      [name]="button.name"
-      [value]="button.value"
-      [checked]="button.checked"
-      type="radio"
-      class="radio-button"
-      (change)="onChange(button)"
-    />
-    <span class="radio-button-text">{{ button.label }}</span>
-  </label>
+<div
+    class="ta-input-radiobutons"
+    [ngClass]="{ disabled, required: displayRequiredNote }"
+>
+    <label
+        *ngFor="let button of buttons; trackBy: identity"
+        class="radio-button-label"
+        [ngClass]="{
+            checked: button.checked,
+            'no-checked': !button.checked,
+            disabled,
+            required: displayRequiredNote
+        }"
+        for="{{ button.id }}"
+    >
+        <input
+            [id]="button.id"
+            [name]="button.name"
+            [value]="button.value"
+            [checked]="button.checked"
+            type="radio"
+            class="radio-button"
+            (change)="onChange(button)"
+        />
+        <span class="radio-button-text">{{ button.label }}</span>
+    </label>
 </div>

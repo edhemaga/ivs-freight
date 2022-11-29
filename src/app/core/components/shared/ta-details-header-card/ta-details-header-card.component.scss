@@ -17,267 +17,267 @@ $border-radius: 3px;
 
 // GENERAL SWITCHER DRIVER
 .details-header-wrapper {
-  background-color: $color-white;
-  border-radius: $border-radius;
-  margin-bottom: 8px;
-  max-width: 440px;
-  min-width: 352px;
-  p {
-    margin: 0px;
-  }
-  .details-header-wrapper-switcher {
-    padding-left: 6px;
-    padding-top: 6px;
-    padding-right: 13px;
-    display: grid;
-    grid-template-columns: 366px 53px;
-    .arrows {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      justify-content: flex-end;
-      margin-left: 9px;
-      margin-top: 2px;
-      span {
-        height: 100%;
-        width: 100%;
-        &:hover {
-          background: #f3f3f3;
-          border-radius: 2px;
-          cursor: pointer;
-        }
-      }
-      .arrow-left {
-        cursor: pointer;
-        padding: 0 5px;
-        svg {
-          position: relative;
-          top: 2px;
-        }
-      }
-      .arrow-right {
-        cursor: pointer;
-        padding: 0 5px;
-        svg {
-          position: relative;
-          top: 2px;
-          transform: rotate(180deg);
-        }
-      }
+    background-color: $color-white;
+    border-radius: $border-radius;
+    margin-bottom: 8px;
+    max-width: 440px;
+    min-width: 352px;
+    p {
+        margin: 0px;
     }
-  }
-  .details-header-wrapper-switcher-name {
-    font-size: $font-size20;
-    font-weight: $font-bold;
-    color: $color-gray-dark;
-    position: relative;
-    margin-left: 12px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
+    .details-header-wrapper-switcher {
+        padding-left: 6px;
+        padding-top: 6px;
+        padding-right: 13px;
+        display: grid;
+        grid-template-columns: 366px 53px;
+        .arrows {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: flex-end;
+            margin-left: 9px;
+            margin-top: 2px;
+            span {
+                height: 100%;
+                width: 100%;
+                &:hover {
+                    background: #f3f3f3;
+                    border-radius: 2px;
+                    cursor: pointer;
+                }
+            }
+            .arrow-left {
+                cursor: pointer;
+                padding: 0 5px;
+                svg {
+                    position: relative;
+                    top: 2px;
+                }
+            }
+            .arrow-right {
+                cursor: pointer;
+                padding: 0 5px;
+                svg {
+                    position: relative;
+                    top: 2px;
+                    transform: rotate(-180deg);
+                }
+            }
+        }
+    }
+    .details-header-wrapper-switcher-name {
+        font-size: $font-size20;
+        font-weight: $font-bold;
+        color: $color-gray-dark;
+        position: relative;
+        margin-left: 12px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 }
 // DRIVER GENERAL PERSONAL DATA
 .details-header-wrapper-container {
-  .details-header-wrapper-data {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-left: 16px;
-    // .date-terminated {
-    //     margin-left: 130px;
-    // }
-    .details-header-wrapper-data-item {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      align-content: center;
-      height: 18px;
-      .vin-text {
-        margin-left: 6px !important;
-        font-size: $font-size14;
-        font-weight: 400;
-        position: relative;
-        bottom: -1px;
-        P {
-          color: #aaaaaa;
-          &:hover {
-            color: #3c3c3c !important;
-          }
+    .details-header-wrapper-data {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-left: 16px;
+        // .date-terminated {
+        //     margin-left: 130px;
+        // }
+        .details-header-wrapper-data-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            height: 18px;
+            .vin-text {
+                margin-left: 6px !important;
+                font-size: $font-size14;
+                font-weight: 400;
+                position: relative;
+                bottom: -1px;
+                P {
+                    color: #aaaaaa;
+                    &:hover {
+                        color: #3c3c3c !important;
+                    }
+                }
+            }
         }
-      }
+        .second {
+            margin-top: 14px;
+            margin-bottom: 12px;
+        }
+        .bottom {
+            margin-top: 12px;
+            margin-bottom: 12px;
+            height: 18px;
+            align-items: end;
+            p {
+                font-size: $font-size14;
+                font-weight: 400;
+                color: #6c6c6c;
+            }
+        }
+        svg {
+            width: 18px;
+            height: 18px;
+        }
     }
-    .second {
-      margin-top: 14px;
-      margin-bottom: 12px;
+    .details-header-wrapper-data-item_bottom {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        margin-bottom: 14px;
+        .vin-text {
+            margin-left: 6px;
+        }
     }
-    .bottom {
-      margin-top: 12px;
-      margin-bottom: 12px;
-      height: 18px;
-      align-items: end;
-      p {
-        font-size: $font-size14;
-        font-weight: 400;
-        color: #6c6c6c;
-      }
-    }
-    svg {
-      width: 18px;
-      height: 18px;
-    }
-  }
-  .details-header-wrapper-data-item_bottom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    margin-bottom: 14px;
-    .vin-text {
-      margin-left: 6px;
-    }
-  }
 }
 
 .border-line {
-  margin: 0;
-  height: 2px;
-  width: 428px;
-  border-radius: 1px;
-  margin-left: 6px;
-  margin-right: 6px;
-  background-color: $color-white-light;
+    margin: 0;
+    height: 2px;
+    width: 428px;
+    border-radius: 1px;
+    margin-left: 6px;
+    margin-right: 6px;
+    background-color: $color-white-light;
 }
 .dropInput {
-  width: 366px;
+    width: 366px;
 }
 .date-add {
-  svg {
-    &:hover {
-      cursor: pointer;
-      path {
-        fill: #919191;
-      }
+    svg {
+        &:hover {
+            cursor: pointer;
+            path {
+                fill: #919191;
+            }
+        }
     }
-  }
 }
 .date-terminated {
-  svg {
-    &:hover {
-      cursor: pointer;
-      path {
-        fill: #919191;
-      }
+    svg {
+        &:hover {
+            cursor: pointer;
+            path {
+                fill: #919191;
+            }
+        }
     }
-  }
 }
 .inactive-status {
-  cursor: pointer;
-  padding-left: 6px;
-  padding-right: 6px;
-  svg {
-    height: 22px;
-    width: 22px;
-    path {
-      fill: #aaaaaa;
+    cursor: pointer;
+    padding-left: 6px;
+    padding-right: 6px;
+    svg {
+        height: 22px;
+        width: 22px;
+        path {
+            fill: #aaaaaa;
+        }
+        &:hover {
+            path {
+                fill: #6c6c6c;
+            }
+        }
     }
-    &:hover {
-      path {
-        fill: #6c6c6c;
-      }
-    }
-  }
 }
 .current-active-item {
-  width: 362px;
-  max-width: 362px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-radius: 2px;
-  padding: 4px 5px;
-  cursor: pointer;
-
-  .current-active-name {
-    font-size: 20px;
-    font-weight: 700;
-    // font-style: italic;
-    white-space: nowrap;
-    line-height: 24px;
-    color: #6c6c6c;
+    width: 362px;
+    max-width: 362px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 2px;
+    padding: 4px 5px;
     cursor: pointer;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    &::-moz-selection {
-      color: #6c6c6c;
-      background: rgb(183, 183, 183, 0.2);
-    }
-    &::selection {
-      color: #6c6c6c;
-      background: rgb(183, 183, 183, 0.2);
-    }
-  }
-
-  .current-active-owner {
-    width: 22px;
-    height: 22px;
-    line-height: 20px;
-    z-index: 50;
-    svg {
-      display: flex;
-    }
-    cursor: pointer;
-  }
-
-  &:hover {
-    background-color: #f3f3f3;
-    transition: all 0.3s ease-in-out;
 
     .current-active-name {
-      color: #3c3c3c;
+        font-size: 20px;
+        font-weight: 700;
+        // font-style: italic;
+        white-space: nowrap;
+        line-height: 24px;
+        color: #6c6c6c;
+        cursor: pointer;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        &::-moz-selection {
+            color: #6c6c6c;
+            background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+            color: #6c6c6c;
+            background: rgb(183, 183, 183, 0.2);
+        }
     }
 
     .current-active-owner {
-      svg {
-        path {
-          fill: #536bc2;
+        width: 22px;
+        height: 22px;
+        line-height: 20px;
+        z-index: 50;
+        svg {
+            display: flex;
         }
-      }
+        cursor: pointer;
     }
-  }
+
+    &:hover {
+        background-color: #f3f3f3;
+        transition: all 0.3s ease-in-out;
+
+        .current-active-name {
+            color: #3c3c3c;
+        }
+
+        .current-active-owner {
+            svg {
+                path {
+                    fill: #536bc2;
+                }
+            }
+        }
+    }
 }
 .inactive-icon-input {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 .vertical-dots-header {
-  margin-top: 7px;
-  display: flex;
-  justify-content: flex-end;
+    margin-top: 7px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .single-data {
-  color: #6c6c6c;
-  background-color: transparent;
-  cursor: default;
-  .current-active-name {
-    color: #6c6c6c !important;
-    &:hover {
-      color: #6c6c6c !important;
-      cursor: default;
+    color: #6c6c6c;
+    background-color: transparent;
+    cursor: default;
+    .current-active-name {
+        color: #6c6c6c !important;
+        &:hover {
+            color: #6c6c6c !important;
+            cursor: default;
+        }
     }
-  }
-  &:hover {
-    background-color: transparent !important;
-  }
+    &:hover {
+        background-color: transparent !important;
+    }
 }
 .vin-text {
-  &::-moz-selection {
-    color: #6c6c6c;
-    background: rgb(108, 108, 108, 0.2);
-  }
-  &::selection {
-    color: #6c6c6c;
-    background: rgb(108, 108, 108, 0.2);
-  }
+    &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+    }
 }

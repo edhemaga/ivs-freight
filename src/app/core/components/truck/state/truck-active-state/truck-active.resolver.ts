@@ -7,29 +7,46 @@ import { TruckTService } from '../truck.service';
 import { TruckActiveState, TruckActiveStore } from './truck-active.store';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class TruckActiveResolver implements Resolve<TruckActiveState> {
-  constructor(
-    private truckService: TruckTService,
-    private truckStore: TruckActiveStore
-  ) {}
-  resolve(): Observable<TruckActiveState | boolean> {
-    return this.truckService.getTruckList(1, 1, 25).pipe(
-      catchError(() => {
-        return of('No inactive trucks...');
-      }),
-      tap((truckPagination: TruckListResponse) => {
-        localStorage.setItem(
-          'truckTableCount',
-          JSON.stringify({
-            active: truckPagination.activeCount,
-            inactive: truckPagination.inactiveCount,
-          })
-        );
+    constructor(
+        private truckService: TruckTService,
+        private truckStore: TruckActiveStore
+    ) {}
+    resolve(): Observable<TruckActiveState | boolean> {
+        // Get Table Configuration
+        // const sub = this.tableService.getTableConfig(8).subscribe((res) => {
+        //     if (res?.config) {
+        //         const tableConfig = JSON.parse(res.config);
 
-        this.truckStore.set(truckPagination.pagination?.data);
-      })
-    );
-  }
+        //         if (tableConfig) {
+        //             localStorage.setItem(
+        //                 `table-${res.tableType}-Configuration`,
+        //                 JSON.stringify(tableConfig)
+        //             );
+        //         }
+        //     }
+
+        //     sub.unsubscribe();
+        // });
+
+        // Get Table List
+        return this.truckService.getTruckList(1, 1, 25).pipe(
+            catchError(() => {
+                return of('No inactive trucks...');
+            }),
+            tap((truckPagination: TruckListResponse) => {
+                localStorage.setItem(
+                    'truckTableCount',
+                    JSON.stringify({
+                        active: truckPagination.activeCount,
+                        inactive: truckPagination.inactiveCount,
+                    })
+                );
+
+                this.truckStore.set(truckPagination.pagination?.data);
+            })
+        );
+    }
 }

@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CreatePreviousAddressCommand } from './createPreviousAddressCommand';
 import { AddressEntity } from './addressEntity';
 
 
@@ -24,8 +25,8 @@ export interface UpdatePersonalInfoCommand {
     bankId?: number | null;
     accountNumber?: string | null;
     routingNumber?: string | null;
+    usCitizen?: boolean;
     legalWork?: boolean;
-    legalWorkDescription?: string | null;
     anotherName?: boolean | null;
     anotherNameDescription?: string | null;
     inMilitary?: boolean | null;
@@ -36,6 +37,6 @@ export interface UpdatePersonalInfoCommand {
     misdemeanorDescription?: string | null;
     drunkDriving?: boolean | null;
     drunkDrivingDescription?: string | null;
-    previousAddresses?: Array<AddressEntity> | null;
+    previousAddresses?: Array<CreatePreviousAddressCommand> | null;
 }
 

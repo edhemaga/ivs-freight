@@ -29,6 +29,7 @@ export interface CompanyUserResponse {
     isAdmin?: boolean;
     isUser?: boolean;
     phone?: string | null;
+    extensionPhone?: string | null;
     email?: string | null;
     includeInPayroll?: boolean;
     salary?: number | null;
@@ -38,6 +39,7 @@ export interface CompanyUserResponse {
     bank?: BankResponse;
     routingNumber?: string | null;
     accountNumber?: string | null;
+    paymentType?: EnumValue;
     status?: number | null;
     avatar?: string | null;
     base?: number | null;

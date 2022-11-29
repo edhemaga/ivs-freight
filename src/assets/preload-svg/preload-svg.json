@@ -2,67 +2,79 @@
   "iconImageFiles": [
     {
       "iconName": "ic_bank_bbt.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_bbt.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_bbt.svg"
     },
     {
       "iconName": "ic_bank_bmo_harris.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_bmo_harris.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_bmo_harris.svg"
     },
     {
       "iconName": "ic_bank_capital_one.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_capital_one.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_capital_one.svg"
     },
     {
       "iconName": "ic_bank_chase.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_chase.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_chase.svg"
     },
     {
       "iconName": "ic_bank_chime.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_chime.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_chime.svg"
     },
     {
       "iconName": "ic_bank_citi.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_citi.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_citi.svg"
     },
     {
       "iconName": "ic_bank_fifth_third.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_fifth_third.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_fifth_third.svg"
     },
     {
       "iconName": "ic_bank_mb_financial.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_mb_financial.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_mb_financial.svg"
     },
     {
       "iconName": "ic_bank_meta.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_meta.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_meta.svg"
     },
     {
       "iconName": "ic_bank_navi_federal.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_navi_federal.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_navi_federal.svg"
     },
     {
       "iconName": "ic_bank_of_america.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_of_america.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_of_america.svg"
     },
     {
       "iconName": "ic_bank_pnc.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_pnc.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_pnc.svg"
     },
     {
       "iconName": "ic_bank_regions.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_regions.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_regions.svg"
     },
     {
       "iconName": "ic_bank_tcf.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_tcf.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_tcf.svg"
     },
     {
       "iconName": "ic_bank_us.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_us.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_us.svg"
     },
     {
       "iconName": "ic_bank_wells_fargo.svg",
-      "iconPath": "/assets/svg/common/banks/ic_bank_wells_fargo.svg"
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_wells_fargo.svg"
+    },
+    {
+      "iconName": "ic_bank_truist.svg",
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_truist.svg"
+    },
+    {
+      "iconName": "ic_bank_renasant.svg",
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_renasant.svg"
+    },
+    {
+      "iconName": "ic_bank_green_dot.svg",
+      "iconPath": "/assets/svg/common/banks-dark/ic_bank_green_dot.svg"
     },
     {
       "iconName": "ic_color.svg",
@@ -229,6 +241,10 @@
       "iconPath": "/assets/svg/common/trailermake/ic_trailer_wilson.svg"
     },
     {
+      "iconName": "ic_trailer_atro.svg",
+      "iconPath": "/assets/svg/common/trailermake/ic_trailer_atro.svg"
+    },
+    {
       "iconName": "ic_trailer_carhauler.svg",
       "iconPath": "/assets/svg/common/trailers/ic_trailer_carhauler.svg"
     },
@@ -273,12 +289,12 @@
       "iconPath": "/assets/svg/common/trailers/ic_trailer_step-deck.svg"
     },
     {
-      "iconName": "ic_trailer_tanker-liquid.svg",
-      "iconPath": "/assets/svg/common/trailers/ic_trailer_tanker-liquid.svg"
+      "iconName": "ic_trailer_tanker.svg",
+      "iconPath": "/assets/svg/common/trailers/ic_trailer_tanker.svg"
     },
     {
-      "iconName": "ic_trailer-tanker-dryBulk.svg",
-      "iconPath": "/assets/svg/common/trailers/ic_trailer-tanker-dryBulk.svg"
+      "iconName": "ic_trailer-tanker_pneumatic.svg",
+      "iconPath": "/assets/svg/common/trailers/ic_trailer-tanker_pneumatic.svg"
     },
     {
       "iconName": "ic_truck_box-truck.svg",

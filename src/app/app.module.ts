@@ -3,8 +3,8 @@ import { NavigationModalsComponent } from './core/components/navigation/navigati
 import { NavigationFooterComponent } from './core/components/navigation/navigation-footer/navigation-footer.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {
-  BrowserModule,
-  BrowserTransferStateModule,
+    BrowserModule,
+    BrowserTransferStateModule,
 } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,7 +13,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
-import { ToastNoAnimationModule, ToastrModule } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
@@ -35,57 +35,61 @@ import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.inter
 import { configFactory } from './app.config';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavigationComponent,
-    NavigationRouteComponent,
-    NavigationHeaderComponent,
-    NavigationFooterComponent,
-    ChangeLogoPipe,
-    NavigationSubrouteComponent,
-    NavigationSubrouteCardComponent,
-    NavigationModalsComponent,
-    NavigationUserProfileComponent,
-    NavigationUserCompanyComponent,
-  ],
-  imports: [
-    BrowserModule,
-    CommonModule,
-    BrowserTransferStateModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    SharedModule,
-    ToastrModule.forRoot({
-      preventDuplicates: true,
-      enableHtml: true,
-      timeOut: 5000,
-      toastComponent: CustomToastMessagesComponent, // added custom toast!
-    }),
-    NgIdleModule.forRoot(),
-    ApiModule,
-  ],
-  providers: [
-    {
-      provide: Configuration,
-      useFactory: (userLoggedService: UserLoggedService) =>
-        configFactory(userLoggedService),
-      deps: [UserLoggedService],
-      multi: false,
-    },
-    [
-      { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true },
-      {
-        provide: HTTP_INTERCEPTORS,
-        useClass: RefreshTokenInterceptor,
-        multi: true,
-      }
+    declarations: [
+        AppComponent,
+        NavigationComponent,
+        NavigationRouteComponent,
+        NavigationHeaderComponent,
+        NavigationFooterComponent,
+        ChangeLogoPipe,
+        NavigationSubrouteComponent,
+        NavigationSubrouteCardComponent,
+        NavigationModalsComponent,
+        NavigationUserProfileComponent,
+        NavigationUserCompanyComponent,
     ],
-    EncryptionDecryptionService,
-    GoogleMapsAPIWrapper,
-  ],
-  exports: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        CommonModule,
+        BrowserTransferStateModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        SharedModule,
+        ToastrModule.forRoot({
+            preventDuplicates: true,
+            enableHtml: true,
+            timeOut: 5000,
+            toastComponent: CustomToastMessagesComponent, // added custom toast!
+        }),
+        NgIdleModule.forRoot(),
+        ApiModule,
+    ],
+    providers: [
+        {
+            provide: Configuration,
+            useFactory: (userLoggedService: UserLoggedService) =>
+                configFactory(userLoggedService),
+            deps: [UserLoggedService],
+            multi: false,
+        },
+        [
+            {
+                provide: HTTP_INTERCEPTORS,
+                useClass: AppInterceptor,
+                multi: true,
+            },
+            {
+                provide: HTTP_INTERCEPTORS,
+                useClass: RefreshTokenInterceptor,
+                multi: true,
+            },
+        ],
+        EncryptionDecryptionService,
+        GoogleMapsAPIWrapper,
+    ],
+    exports: [],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

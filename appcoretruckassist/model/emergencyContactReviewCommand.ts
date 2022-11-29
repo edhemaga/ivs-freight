@@ -12,10 +12,13 @@
 
 
 export interface EmergencyContactReviewCommand { 
+    id?: number | null;
     isNameValid?: boolean;
     isPhoneValid?: boolean;
     isRelationshipValid?: boolean;
     emergencyContactMessage?: string | null;
-    emergencyContactId?: number;
+    isPrimary?: boolean;
+    commonMessage?: string | null;
+    itemId?: number;
 }
 

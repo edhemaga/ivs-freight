@@ -1,129 +1,134 @@
 <div class="container-fluid">
-  <div class="row">
-    <div
-      class="container-fluid d-flex flex-column justify-content-between end-container"
-    >
-      <div class="d-flex flex-column align-items-center">
-        <!--TOP HEADER-->
-
+    <div class="row">
         <div
-          class="d-flex justify-content-center align-items-center w-100 top-header"
+            class="container-fluid d-flex flex-column justify-content-between end-container"
         >
-          <h3 class="m-0 top-header-title ta-font-semi-bold">
-            Date of Invitation:<span>{{ currentDate }}</span>
-          </h3>
+            <div class="d-flex flex-column align-items-center">
+                <!--TOP HEADER-->
+
+                <div
+                    class="d-flex justify-content-center align-items-center w-100 top-header"
+                >
+                    <h3 class="m-0 top-header-title ta-font-semi-bold">
+                        Date of Invitation:<span>{{ currentDate }}</span>
+                    </h3>
+                </div>
+
+                <!-- MID HEADER -->
+
+                <div
+                    class="d-flex justify-content-center flex-column align-items-center w-100 mid-header"
+                >
+                    <div
+                        class="d-flex align-items-center justify-content-center company-container"
+                    >
+                        <div class="d-flex align-items-center company-name">
+                            <span class="ta-font-black">{{
+                                company?.name
+                            }}</span>
+                        </div>
+
+                        <div class="d-flex align-items-center company-usdot">
+                            <span class="ta-font-regular"
+                                >USDOT # {{ company?.usdot }}</span
+                            >
+                        </div>
+
+                        <div class="d-flex align-items-center company-phone">
+                            <svg-icon
+                                class="phone-icon"
+                                src="assets/svg/common/ic_phone.svg"
+                                [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
+                            ></svg-icon>
+
+                            <span class="ta-font-regular">{{
+                                company?.phoneContact
+                            }}</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="d-flex justify-content-center company-address-container"
+                    >
+                        <div class="d-flex align-items-center company-street">
+                            <svg-icon
+                                class="location-icon"
+                                src="assets/svg/truckassist-table/location-icon.svg"
+                                [svgStyle]="{
+                                    'width.px': '16.39',
+                                    'height.px': 20
+                                }"
+                            ></svg-icon>
+                            <span class="ta-font-regular"
+                                >{{ company?.location?.street }},</span
+                            >
+                        </div>
+
+                        <div class="d-flex align-items-center company-city">
+                            <span class="ta-font-regular"
+                                >{{ company?.location?.city }},</span
+                            >
+                        </div>
+
+                        <div
+                            class="d-flex align-items-center company-postalcode"
+                        >
+                            <span class="ta-font-regular"
+                                >{{ company?.location?.postalCode }},</span
+                            >
+                        </div>
+
+                        <div class="d-flex align-items-center company-country">
+                            <span class="ta-font-regular">{{
+                                company?.location?.country
+                            }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ICON -->
+
+                <svg-icon
+                    class="welcome-icon"
+                    src="assets/svg/applicant/end.svg"
+                    [svgStyle]="{ 'width.px': '437.6', 'height.px': '402.34' }"
+                ></svg-icon>
+
+                <!-- FINISHED -->
+
+                <div
+                    class="d-flex flex-column justify-content-center align-items-center"
+                >
+                    <h2 class="m-0 ta-font-bold end-title">
+                        Application has been successfully finished
+                    </h2>
+
+                    <p class="m-0 ta-font-regular end-text">
+                        You have been successfully completed your application
+                        process.<br />Your account will be automatically created
+                        at
+                        <a class="ta-font-bold" href="#">www.hireassist.io</a>
+                    </p>
+
+                    <button
+                        type="button"
+                        class="d-flex justify-content-center align-items-center ta-font-bold end-btn"
+                    >
+                        Enter HireAssist
+                    </button>
+
+                    <p class="m-0 ta-font-regular welcome-info">
+                        Please click the button above, to start application
+                        process.
+                    </p>
+                </div>
+            </div>
+
+            <!-- COPYRIGHT -->
+
+            <app-applicant-footer
+                [isWelcomeOrEndPage]="true"
+            ></app-applicant-footer>
         </div>
-
-        <!-- MID HEADER -->
-
-        <div
-          class="d-flex justify-content-center flex-column align-items-center w-100 mid-header"
-        >
-          <div
-            class="d-flex align-items-center justify-content-center company-container"
-          >
-            <div class="d-flex align-items-center company-name">
-              <span class="ta-font-black">{{ company?.name }}</span>
-            </div>
-
-            <div class="d-flex align-items-center company-usdot">
-              <span class="ta-font-regular">USDOT # {{ company?.usdot }}</span>
-            </div>
-
-            <div class="d-flex align-items-center company-phone">
-              <svg-icon
-                class="phone-icon"
-                src="assets/svg/common/ic_phone.svg"
-                [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
-              ></svg-icon>
-
-              <span class="ta-font-regular">{{ company?.phoneContact }}</span>
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-center company-address-container">
-            <div class="d-flex align-items-center company-street">
-              <svg-icon
-                class="location-icon"
-                src="assets/svg/truckassist-table/location-icon.svg"
-                [svgStyle]="{ 'width.px': '16.39', 'height.px': 20 }"
-              ></svg-icon>
-              <span class="ta-font-regular"
-                >{{ company?.location?.street }},</span
-              >
-            </div>
-
-            <div class="d-flex align-items-center company-city">
-              <span class="ta-font-regular"
-                >{{ company?.location?.city }},</span
-              >
-            </div>
-
-            <div class="d-flex align-items-center company-postalcode">
-              <span class="ta-font-regular"
-                >{{ company?.location?.postalCode }},</span
-              >
-            </div>
-
-            <div class="d-flex align-items-center company-country">
-              <span class="ta-font-regular">{{
-                company?.location?.country
-              }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- ICON -->
-
-        <svg-icon
-          class="welcome-icon"
-          src="assets/svg/applicant/end.svg"
-          [svgStyle]="{ 'width.px': '437.6', 'height.px': '402.34' }"
-        ></svg-icon>
-
-        <!-- FINISHED -->
-
-        <div
-          class="d-flex flex-column justify-content-center align-items-center"
-        >
-          <h2 class="m-0 ta-font-bold end-title">
-            Application has been successfully finished
-          </h2>
-
-          <p class="m-0 ta-font-regular end-text">
-            You have been successfully completed your application process.<br />Your
-            account will be automatically created at
-            <a class="ta-font-bold" href="#">www.hireassist.io</a>
-          </p>
-
-          <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-bold end-btn"
-          >
-            Enter HireAssist
-          </button>
-
-          <p class="m-0 ta-font-regular welcome-info">
-            Please click the button above, to start application process.
-          </p>
-        </div>
-      </div>
-
-      <!-- COPYRIGHT -->
-
-      <div class="d-flex justify-content-end align-items-center logo-container">
-        <svg-icon
-          class="logo-icon"
-          src="assets/svg/applicant/logo.svg"
-          [svgStyle]="{ 'width.px': 52, 'height.px': '53.2' }"
-        ></svg-icon>
-      </div>
-
-      <div class="row">
-        <div class="d-flex justify-content-center align-items-center copyright">
-          <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
-        </div>
-      </div>
     </div>
-  </div>
 </div>

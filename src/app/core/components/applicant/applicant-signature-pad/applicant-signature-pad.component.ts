@@ -1,74 +1,121 @@
 import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-  ViewEncapsulation,
+    AfterViewInit,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+    ViewChild,
+    ViewEncapsulation,
 } from '@angular/core';
 
 import {
-  NgSignaturePadOptions,
-  SignaturePadComponent,
+    NgSignaturePadOptions,
+    SignaturePadComponent,
 } from '@almothafar/angular-signature-pad';
 
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+
+import { SelectedMode } from '../state/enum/selected-mode.enum';
+
 @Component({
-  selector: 'app-applicant-signature-pad',
-  templateUrl: './applicant-signature-pad.component.html',
-  styleUrls: ['./applicant-signature-pad.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-applicant-signature-pad',
+    templateUrl: './applicant-signature-pad.component.html',
+    styleUrls: ['./applicant-signature-pad.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
-export class ApplicantSignaturePadComponent implements AfterViewInit {
-  @ViewChild('signature')
-  public signaturePad: SignaturePadComponent;
+export class ApplicantSignaturePadComponent
+    implements AfterViewInit, OnChanges
+{
+    @ViewChild('signature')
+    public signaturePad: SignaturePadComponent;
 
-  public signaturePadOptions: NgSignaturePadOptions = {
-    minWidth: 5,
-    canvasWidth: 616,
-    canvasHeight: 187,
-    backgroundColor: '#AAAAAA',
-    penColor: '#FFFFFF',
-  };
+    public signaturePadOptions: NgSignaturePadOptions = {
+        minWidth: 5,
+        canvasWidth: 616,
+        canvasHeight: 187,
+        penColor: '#6c6c6c',
+    };
 
-  @Input() signature: any;
+    public signature: string;
 
-  @Output() signatureEmitter: EventEmitter<any> = new EventEmitter();
+    public displayActionButtons: boolean = false;
 
-  constructor() {}
+    @Input() mode: string;
+    @Input() signatureImgSrc: any = null;
+    @Input() displayRequiredNote: boolean = false;
 
-  ngAfterViewInit(): void {
-    this.signaturePad.set('minWidth', 5);
-    this.signaturePad.clear();
-  }
+    @Output() signatureEmitter: EventEmitter<any> = new EventEmitter();
+    @Output() removeRequiredNoteEmitter: EventEmitter<any> = new EventEmitter();
 
-  public drawStart(event: MouseEvent | Touch): void {
-    console.log('Start drawing', event);
-  }
+    constructor(public imageBase64Service: ImageBase64Service) {}
 
-  public onClearDrawing(): void {
-    this.signaturePad.clear();
-
-    this.signatureEmitter.emit(null);
-  }
-
-  public onUndoDrawing(): void {
-    const data = this.signaturePad.toData();
-
-    if (data) {
-      data.pop();
-
-      this.signaturePad.fromData(data);
-
-      this.signature = this.signaturePad.toDataURL();
-
-      this.signatureEmitter.emit(this.signature);
+    ngAfterViewInit(): void {
+        if (this.mode === SelectedMode.APPLICANT && this.signaturePad) {
+            this.signaturePad.set('minWidth', 5);
+            this.signaturePad.clear();
+        }
     }
-  }
 
-  public onConfirmDrawing(): void {
-    this.signature = this.signaturePad.toDataURL();
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            changes.signatureImgSrc?.previousValue !==
+            changes.signatureImgSrc?.currentValue
+        ) {
+            this.signatureImgSrc = this.imageBase64Service.sanitizer(
+                changes.signatureImgSrc?.currentValue
+            );
+        }
 
-    this.signatureEmitter.emit(this.signature);
-  }
+        if (
+            changes.displayRequiredNote?.previousValue !==
+            changes.displayRequiredNote?.currentValue
+        ) {
+            this.displayRequiredNote =
+                changes.displayRequiredNote?.currentValue;
+        }
+    }
+
+    public onDrawStart(event: MouseEvent | Touch): void {
+        this.displayActionButtons = true;
+
+        this.removeRequiredNoteEmitter.emit(true);
+    }
+
+    public onClearDrawing(): void {
+        this.signaturePad.clear();
+
+        this.signatureEmitter.emit(null);
+    }
+
+    public onUndoDrawing(): void {
+        const data = this.signaturePad.toData();
+
+        if (data) {
+            data.pop();
+
+            this.signaturePad.fromData(data);
+
+            this.signature = this.signaturePad.toDataURL();
+        }
+    }
+
+    public onConfirmDrawing(): void {
+        this.signature = this.signaturePad.toDataURL();
+
+        this.signatureImgSrc = this.signature;
+
+        this.displayActionButtons = false;
+
+        this.signatureEmitter.emit(this.signature);
+    }
+
+    public onDeleteImageSrc(): void {
+        this.signature = null;
+
+        this.signatureImgSrc = null;
+
+        this.signatureEmitter.emit(null);
+    }
 }

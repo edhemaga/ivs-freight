@@ -9,8 +9,6 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
-import * as $ from 'jquery';
-
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ThankYouComponent } from './thank-you-page/thank-you.component';
@@ -27,30 +25,30 @@ import { HelperSignupUserComponent } from './helper-signup-user/helper-signup-us
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    LoginComponent,
-    ForgotPasswordComponent,
-    ThankYouComponent,
-    SelectCompanyComponent,
-    AccountActivatedPageComponent,
-    PleaseCheckEmailPageComponent,
-    CreateNewPasswordPageComponent,
-    PasswordChangedPageComponent,
-    RegisterComponent,
-    HelperComponent,
-    RegisterUserComponent,
-    HelperSignupUserComponent,
-    HelperForgotPasswordComponent,
-  ],
-  imports: [
-    CommonModule,
-    AuthRoutingModule,
-    ReactiveFormsModule,
-    SharedModule,
-    GooglePlaceModule,
-    AngularSvgIconModule,
-    NgbTooltipModule,
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [
+        LoginComponent,
+        ForgotPasswordComponent,
+        ThankYouComponent,
+        SelectCompanyComponent,
+        AccountActivatedPageComponent,
+        PleaseCheckEmailPageComponent,
+        CreateNewPasswordPageComponent,
+        PasswordChangedPageComponent,
+        RegisterComponent,
+        HelperComponent,
+        RegisterUserComponent,
+        HelperSignupUserComponent,
+        HelperForgotPasswordComponent,
+    ],
+    imports: [
+        CommonModule,
+        AuthRoutingModule,
+        ReactiveFormsModule,
+        SharedModule,
+        GooglePlaceModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AuthModule {}

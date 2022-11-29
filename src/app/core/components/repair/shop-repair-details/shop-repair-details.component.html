@@ -1,30 +1,31 @@
 <div class="repair-details-container">
-  <div *ngFor="let item of shopRepairConfig; trackBy: identity">
-    <app-ta-details-header
-      [route]="'/repair'"
-      [tooltipHeaderName]="'Back to Repair List'"
-      [headerText]="item.nameDefault"
-      [counterData]="item.length"
-      [hasIcon]="item.icon"
-      [hidePlus]="item.hide"
-      [options]="repairDrop"
-      [customText]="item.customText"
-      [statusInactive]="item.hide"
-      [arrayIcons]="item.icons"
-      [hasDateArrow]="true"
-      [showRepairHeaderOpen]="true"
-      [repairIsOpen]="togglerWorkTime"
-      [totalCost]="item.total"
-      [optionsId]="repairShopId"
-      (dropActions)="dropActionRepair($event)"
-    >
-    </app-ta-details-header>
-  </div>
-  <div class="repair-details-cmp">
-    <app-shop-repair-details-item
-      *ngFor="let item of shopRepairConfig; trackBy: identity"
-      [repairShopItem]="item"
-    >
-    </app-shop-repair-details-item>
-  </div>
+    <div *ngFor="let item of shopRepairConfig; trackBy: identity">
+        <app-ta-details-header
+            [route]="'/repair'"
+            [tooltipHeaderName]="'Back to Repair List'"
+            [headerText]="item.nameDefault"
+            [counterData]="item.length"
+            [hasIcon]="item.icon"
+            [hidePlus]="item.hide"
+            [options]="repairDrop"
+            [customText]="item.customText"
+            [statusInactive]="item.hide"
+            [arrayIcons]="item.icons"
+            [hasDateArrow]="true"
+            [showRepairHeaderOpen]="true"
+            [repairIsOpen]="togglerWorkTime"
+            [totalCost]="item.total"
+            [optionsId]="repairShopId"
+            [mainData]="item"
+            (dropActions)="dropActionRepair($event)"
+        >
+        </app-ta-details-header>
+    </div>
+    <div class="repair-details-cmp">
+        <app-shop-repair-details-item
+            *ngFor="let item of shopRepairConfig; trackBy: identity"
+            [repairShopItem]="item"
+        >
+        </app-shop-repair-details-item>
+    </div>
 </div>

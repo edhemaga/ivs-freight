@@ -1,57 +1,68 @@
 <app-ta-modal
-  [modalTitle]="
-    editData?.type !== 'edit-inspection'
-      ? 'Add New FHWA Inspection'
-      : 'Edit FHWA Inspection'
-  "
-  [editData]="editData"
-  [editName]="
-    editData?.modal === 'trailer'
-      ? 'Trailer ' + editData?.payload?.trailerNumber
-      : 'Truck ' + editData?.payload?.truckNumber
-  "
-  [specificCaseModalName]="true"
-  [isModalValid]="fhwaInspectionForm.valid && isFormDirty"
-  (action)="onModalAction($event)"
+    [modalTitle]="
+        editData?.type !== 'edit-inspection'
+            ? 'Add New FHWA Inspection'
+            : 'Edit FHWA Inspection'
+    "
+    [editData]="editData"
+    [editName]="
+        editData?.modal === 'trailer'
+            ? 'Trailer ' + editData?.payload?.trailerNumber
+            : 'Truck ' + editData?.payload?.truckNumber
+    "
+    [specificCaseModalName]="true"
+    [isModalValid]="fhwaInspectionForm.valid && isFormDirty"
+    (action)="onModalAction($event)"
 >
-  <form
-    origin
-    [formGroup]="fhwaInspectionForm"
-    class="form-container form-container-without-mb"
-  >
-    <div class="row last-row">
-      <div class="col-12">
-        <app-ta-input
-          formControlName="issueDate"
-          [inputConfig]="{
-            name: 'datepicker',
-            type: 'text',
-            label: 'Issue Date',
-            placeholderIcon: 'date',
-            isRequired: true,
-            isDropdown: true,
-            customClass: 'datetimeclass',
-            autoFocus: editData?.type !== 'edit-inspection'
-          }"
-        ></app-ta-input>
-      </div>
-    </div>
-    <div class="ta-card-body-overflow-none">
-      <app-ta-custom-card
-        [hasCounter]="documents.length ? documents.length : 0"
-        [cardName]="'Documents'"
-        [isCardOpen]="documents.length > 0"
-      >
-        <app-ta-upload-files
-          [files]="documents"
-          (onFileEvent)="onFilesEvent($event)"
-        ></app-ta-upload-files>
-      </app-ta-custom-card>
-    </div>
+    <form
+        origin
+        [formGroup]="fhwaInspectionForm"
+        class="form-container form-container-without-mb"
+    >
+        <div class="row last-row">
+            <div class="col-12">
+                <app-ta-input
+                    formControlName="issueDate"
+                    [inputConfig]="{
+                        name: 'datepicker',
+                        type: 'text',
+                        label: 'Issue Date',
+                        placeholderIcon: 'date',
+                        isRequired: true,
+                        isDropdown: true,
+                        customClass: 'datetimeclass',
+                        autoFocus: editData?.type !== 'edit-inspection'
+                    }"
+                ></app-ta-input>
+            </div>
+        </div>
+        <div class="ta-card-body-overflow-none">
+            <app-ta-custom-card
+                [hasCounter]="documents.length ? documents.length : 0"
+                [cardName]="'Documents'"
+                [isCardOpen]="documents.length > 0"
+            >
+                <app-ta-upload-files
+                    [files]="documents"
+                    (onFileEvent)="onFilesEvent($event)"
+                ></app-ta-upload-files>
+            </app-ta-custom-card>
+        </div>
 
-    <app-ta-input-note
-      formControlName="note"
-      [isVisibleNote]="fhwaInspectionForm.get('note').value"
-    ></app-ta-input-note>
-  </form>
+        <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="
+                fhwaInspectionForm.get('note').value &&
+                fhwaInspectionForm.get('note').value != 'null'
+                    ? fhwaInspectionForm.get('note').value
+                    : false
+            "
+            [note]="
+                fhwaInspectionForm.get('note').value &&
+                fhwaInspectionForm.get('note').value != 'null'
+                    ? fhwaInspectionForm.get('note').value
+                    : ''
+            "
+        ></app-ta-input-note>
+    </form>
 </app-ta-modal>

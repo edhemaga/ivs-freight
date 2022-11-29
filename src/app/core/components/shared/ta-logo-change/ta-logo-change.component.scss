@@ -1,265 +1,266 @@
 .ta-logo-container {
-  width: 100%;
-  max-height: 228px;
-  transition: all 0.3s ease-in-out;
-
-  &.expanded {
-    max-height: 254px;
-  }
-
-  &.image-zone-flex {
-    display: grid;
-    grid-template-columns: 162px 1fr;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-    align-items: center;
-  }
-
-  //---------------------- DROP ZONE --------------------------
-  .dropzone-logo-container {
     width: 100%;
-    height: 194px;
+    max-height: 228px;
+    transition: all 0.3s ease-in-out;
 
-    &.modal-container-M {
-      width: 100%;
-      height: 194px;
-    }
-  }
-
-  //---------------------- Logo Image --------------------------
-  .required-message {
-    margin: 0;
-    padding: 0;
-    color: #ef5350;
-    font-size: 11px;
-    font-weight: 600;
-    margin-left: 12px;
-    position: relative;
-    top: 7px;
-
-    &::-moz-selection {
-      background-color: #ffe1e4;
-      color: #ef5350;
+    &.expanded {
+        max-height: 254px;
     }
 
-    &::selection {
-      background-color: #ffe1e4;
-      color: #ef5350;
-    }
-  }
-
-  .ta-logo-saved-image {
-    width: 100%;
-    border-radius: 2px;
-    position: relative;
-
-    .ta-logo-image {
-      -o-object-fit: fill;
-      object-fit: fill;
-      height: 194px;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
-      @-webkit-keyframes slideInImage {
-        from {
-          transform: translateX(200px);
-        }
-        to {
-          transform: translateX(0);
-        }
-      }
-
-      @keyframes slideInImage {
-        from {
-          transform: translateX(200px);
-        }
-        to {
-          transform: translateX(0);
-        }
-      }
-
-      &-circle {
-        width: 162px;
-        height: 162px;
-      }
-    }
-
-    .ta-logo-image-delete {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      border-radius: 2px;
-      background-color: #6c6c6c;
-      width: 23px;
-      height: 23px;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-
-      .ta-delete-logo-svg {
-        svg {
-          width: 18px;
-          height: 18px;
-
-          path {
-            fill: #dadada;
-          }
-        }
-      }
-
-      &:hover {
-        transition: all 0.3s ease-in-out;
-
-        .delete-logo-svg {
-          svg {
-            path {
-              fill: #ef5350;
-            }
-          }
-        }
-      }
-    }
-
-    &:hover {
-      .ta-logo-image-delete {
-        display: flex;
-      }
-    }
-  }
-
-  .ta-logo-saved-image-circle {
-    .ta-logo-image-delete {
-      top: -12px;
-      right: 4px;
-    }
-  }
-
-  //--------------------- CROPPIE -----------------------------
-  ::ng-deep.croppie-container {
-    * {
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-    }
-
-    .cr-boundary {
-      border-radius: 3px !important;
-      width: 100% !important;
-    }
-
-    .cr-viewport {
-      border: 4px dashed #fff !important;
-      border-spacing: 8px !important;
-
-      &.cr-vp-square {
-        border-radius: 2px;
-      }
-
-      &:focus {
-        outline: none !important;
-      }
-    }
-
-    .cr-slider-wrap {
-      display: none !important;
-    }
-  }
-
-  &-rectangle {
-    ::ng-deep.croppie-container {
-      .cr-viewport {
-        border: 4px dashed #e5e5e5 !important;
-      }
-    }
-  }
-  .crop-accepted-container {
-    display: flex;
-    flex-direction: column;
-
-    .crop-message {
-      font-size: 11px;
-      font-weight: 600;
-      color: #ef5350;
-      padding-left: 10px;
-      position: relative;
-      top: 2px;
-
-      &::-moz-selection {
-        background-color: rgb(239, 83, 80, 0.2);
-        color: #ef5350;
-      }
-
-      &::selection {
-        background-color: rgb(239, 83, 80, 0.2);
-        color: #ef5350;
-      }
-    }
-
-    .slider-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      .buttons-container {
-        margin-top: 12px;
-        display: flex;
+    &.image-zone-flex {
+        display: grid;
+        grid-template-columns: 162px 1fr;
+        -moz-column-gap: 12px;
+        column-gap: 12px;
         align-items: center;
-        gap: 12px;
-        cursor: pointer;
-
-        p {
-          margin: 0;
-          padding: 0;
-          font-size: 11px;
-          font-weight: 700;
-        }
-
-        .save-check {
-          background-color: #3074d3;
-          width: 84px;
-          height: 26px;
-          border-radius: 2px;
-          text-align: center;
-          padding: 5px 0px;
-          transition: all 0.3s ease-in-out;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-          p {
-            color: #ffffff;
-          }
-
-          &:hover {
-            background-color: #255bb9;
-          }
-        }
-
-        .cancel-check {
-          background-color: #eeeeee;
-          width: 84px;
-          height: 26px;
-          border-radius: 2px;
-          text-align: center;
-          padding: 5px 0px;
-          transition: all 0.3s ease-in-out;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-          p {
-            color: #2f2f2f;
-          }
-
-          &:hover {
-            background-color: #e5e5e5;
-          }
-        }
-      }
     }
-  }
+
+    //---------------------- DROP ZONE --------------------------
+    .dropzone-logo-container {
+        width: 100%;
+        height: 194px;
+
+        &.modal-container-M {
+            width: 100%;
+            height: 194px;
+        }
+    }
+
+    //---------------------- Logo Image --------------------------
+    .required-message {
+        margin: 0;
+        padding: 0;
+        color: #ef5350;
+        font-size: 11px;
+        font-weight: 600;
+        margin-left: 12px;
+        position: relative;
+        top: 7px;
+
+        &::-moz-selection {
+            background-color: #ffe1e4;
+            color: #ef5350;
+        }
+
+        &::selection {
+            background-color: #ffe1e4;
+            color: #ef5350;
+        }
+    }
+
+    .ta-logo-saved-image {
+        width: 100%;
+        border-radius: 2px;
+        position: relative;
+
+        .ta-logo-image {
+            -o-object-fit: fill;
+            object-fit: fill;
+            height: 194px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            @-webkit-keyframes slideInImage {
+                from {
+                    transform: translateX(200px);
+                }
+                to {
+                    transform: translateX(0);
+                }
+            }
+
+            @keyframes slideInImage {
+                from {
+                    transform: translateX(200px);
+                }
+                to {
+                    transform: translateX(0);
+                }
+            }
+
+            &-circle {
+                width: 162px;
+                height: 162px;
+            }
+        }
+
+        .ta-logo-image-delete {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            border-radius: 2px;
+            background-color: #6c6c6c;
+            width: 23px;
+            height: 23px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+
+            .ta-delete-logo-svg {
+                svg {
+                    width: 18px;
+                    height: 18px;
+
+                    path {
+                        fill: #dadada;
+                    }
+                }
+            }
+
+            &:hover {
+                transition: all 0.3s ease-in-out;
+
+                .delete-logo-svg {
+                    svg {
+                        path {
+                            fill: #ef5350;
+                        }
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            .ta-logo-image-delete {
+                display: flex;
+                padding-left: 1px;
+            }
+        }
+    }
+
+    .ta-logo-saved-image-circle {
+        .ta-logo-image-delete {
+            top: -12px;
+            right: 4px;
+        }
+    }
+
+    //--------------------- CROPPIE -----------------------------
+    ::ng-deep.croppie-container {
+        * {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+
+        .cr-boundary {
+            border-radius: 3px !important;
+            width: 100% !important;
+        }
+
+        .cr-viewport {
+            border: 4px dashed #fff !important;
+            border-spacing: 8px !important;
+
+            &.cr-vp-square {
+                border-radius: 2px;
+            }
+
+            &:focus {
+                outline: none !important;
+            }
+        }
+
+        .cr-slider-wrap {
+            display: none !important;
+        }
+    }
+
+    &-rectangle {
+        ::ng-deep.croppie-container {
+            .cr-viewport {
+                border: 4px dashed #e5e5e5 !important;
+            }
+        }
+    }
+    .crop-accepted-container {
+        display: flex;
+        flex-direction: column;
+
+        .crop-message {
+            font-size: 11px;
+            font-weight: 600;
+            color: #ef5350;
+            padding-left: 10px;
+            position: relative;
+            top: 2px;
+
+            &::-moz-selection {
+                background-color: rgb(239, 83, 80, 0.2);
+                color: #ef5350;
+            }
+
+            &::selection {
+                background-color: rgb(239, 83, 80, 0.2);
+                color: #ef5350;
+            }
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            .buttons-container {
+                margin-top: 12px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                cursor: pointer;
+
+                p {
+                    margin: 0;
+                    padding: 0;
+                    font-size: 11px;
+                    font-weight: 700;
+                }
+
+                .save-check {
+                    background-color: #3074d3;
+                    width: 84px;
+                    height: 26px;
+                    border-radius: 2px;
+                    text-align: center;
+                    padding: 5px 0px;
+                    transition: all 0.3s ease-in-out;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                    p {
+                        color: #ffffff;
+                    }
+
+                    &:hover {
+                        background-color: #255bb9;
+                    }
+                }
+
+                .cancel-check {
+                    background-color: #eeeeee;
+                    width: 84px;
+                    height: 26px;
+                    border-radius: 2px;
+                    text-align: center;
+                    padding: 5px 0px;
+                    transition: all 0.3s ease-in-out;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                    p {
+                        color: #2f2f2f;
+                    }
+
+                    &:hover {
+                        background-color: #e5e5e5;
+                    }
+                }
+            }
+        }
+    }
 }

@@ -9,16 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AddressEntity } from './addressEntity';
 
 
 export interface StopResponse { 
     id?: number;
-    city?: string | null;
-    stateShortName?: string | null;
-    zipCode?: string | null;
+    address?: AddressEntity;
     leg?: number | null;
     total?: number | null;
     longitude?: number;
     latitude?: number;
+    orderNumber?: number;
 }
 

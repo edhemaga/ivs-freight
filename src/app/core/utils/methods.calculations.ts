@@ -3,99 +3,129 @@ import moment from 'moment';
 
 //------------------------------- Calculating Parking Slots -------------------------------
 export const calculateParkingSlot = (
-  value: string,
-  formControl: AbstractControl
+    value: string,
+    formControl: AbstractControl
 ) => {
-  // First check if value exist
-  if (!value) {
-    return 0;
-  }
-  let arrayStops: any[] = value.split(',');
-  // Second check if arrayStops has ',' or ''
-  if (arrayStops.includes(',') || arrayStops.includes('')) {
-    arrayStops.pop();
-    formControl.patchValue(value.substring(0, value.lastIndexOf(',')));
-    return;
-  }
-  return arrayStops
-    .map((item: string, index: number) => {
-      // Third check if value has '-'
-      if (item.includes('-')) {
-        const doubleValues: string[] = item.split('-');
-        // Fourth check lentgh of doubleValues after splitting by -, must be 2
-        if (doubleValues.length > 2) {
-          arrayStops.pop();
-          formControl.patchValue(value.substring(0, value.lastIndexOf(',')));
-          return;
-        }
-        const foundSameElements: boolean = arrayStops.some((array1) =>
-          doubleValues.includes(array1)
-        );
-        // Fifth check if values exist, denided, delete, return
-        if (foundSameElements) {
-          arrayStops.pop();
-          formControl.patchValue(value.substring(0, value.lastIndexOf(',')));
-          return;
-        }
-        // Sixth check if second value > first value
-        if (!doubleValues.includes('')) {
-          if (parseInt(doubleValues[1]) > parseInt(doubleValues[0])) {
-            // Seventh check if value in range
-            arrayStops.forEach((item) => {
-              if (
-                parseInt(item) > parseInt(doubleValues[0]) &&
-                parseInt(item) < parseInt(doubleValues[1])
-              ) {
-                arrayStops.pop();
-                formControl.patchValue(
-                  value.substring(0, value.lastIndexOf(','))
+    // First check if value exist
+    if (!value) {
+        return 0;
+    }
+    let arrayStops: any[] = value.split(',');
+    // Second check if arrayStops has ',' or ''
+    if (arrayStops.includes(',') || arrayStops.includes('')) {
+        arrayStops.pop();
+        formControl.patchValue(value.substring(0, value.lastIndexOf(',')));
+        return;
+    }
+    return arrayStops
+        .map((item: string, index: number) => {
+            // Third check if value has '-'
+            if (item.includes('-')) {
+                const doubleValues: string[] = item.split('-');
+                // Fourth check lentgh of doubleValues after splitting by -, must be 2
+                if (doubleValues.length > 2) {
+                    arrayStops.pop();
+                    formControl.patchValue(
+                        value.substring(0, value.lastIndexOf(','))
+                    );
+                    return;
+                }
+                const foundSameElements: boolean = arrayStops.some((array1) =>
+                    doubleValues.includes(array1)
                 );
-                return;
-              }
-            });
-            return parseInt(doubleValues[1]) - parseInt(doubleValues[0]);
-          } else {
-            arrayStops.pop();
-            formControl.patchValue(value.substring(0, value.lastIndexOf(',')));
-            return;
-          }
-        } else {
-          arrayStops.pop();
-          formControl.patchValue(value.substring(0, value.lastIndexOf(',')));
-          return;
-        }
-      } else {
-        // Eight chech has array duplicate items
-        if (arrayStops.length !== new Set(arrayStops).size) {
-          arrayStops = [...new Set(arrayStops)];
-          formControl.patchValue(arrayStops.join(','));
-          return;
-        } else {
-          return 1;
-        }
-      }
-    })
-    .reduce((accumulator, item) => {
-      return (accumulator += item);
-    }, 0);
+                // Fifth check if values exist, denided, delete, return
+                if (foundSameElements) {
+                    arrayStops.pop();
+                    formControl.patchValue(
+                        value.substring(0, value.lastIndexOf(','))
+                    );
+                    return;
+                }
+                // Sixth check if second value > first value
+                if (!doubleValues.includes('')) {
+                    if (parseInt(doubleValues[1]) > parseInt(doubleValues[0])) {
+                        // Seventh check if value in range
+                        arrayStops.forEach((item) => {
+                            if (
+                                parseInt(item) > parseInt(doubleValues[0]) &&
+                                parseInt(item) < parseInt(doubleValues[1])
+                            ) {
+                                arrayStops.pop();
+                                formControl.patchValue(
+                                    value.substring(0, value.lastIndexOf(','))
+                                );
+                                return;
+                            }
+                        });
+                        return (
+                            parseInt(doubleValues[1]) -
+                            parseInt(doubleValues[0])
+                        );
+                    } else {
+                        arrayStops.pop();
+                        formControl.patchValue(
+                            value.substring(0, value.lastIndexOf(','))
+                        );
+                        return;
+                    }
+                } else {
+                    arrayStops.pop();
+                    formControl.patchValue(
+                        value.substring(0, value.lastIndexOf(','))
+                    );
+                    return;
+                }
+            } else {
+                // Eight chech has array duplicate items
+                if (arrayStops.length !== new Set(arrayStops).size) {
+                    arrayStops = [...new Set(arrayStops)];
+                    formControl.patchValue(arrayStops.join(','));
+                    return;
+                } else {
+                    return 1;
+                }
+            }
+        })
+        .reduce((accumulator, item) => {
+            return (accumulator += item);
+        }, 0);
 };
 
 //------------------------------- DATE TO BACKEND -------------------------------
 export const convertDateToBackend = (date: string) => {
-  return moment(new Date(date)).toISOString(true);
+    return moment(new Date(date)).toISOString(true);
 };
 
 //------------------------------- DATE FROM BACKEND -------------------------------
 export const convertDateFromBackend = (date: string) => {
-  return moment(new Date(date)).format('MM/DD/YY');
+    return moment(new Date(date)).format('MM/DD/YY');
+};
+
+//------------------------------- TIME FROM BACKEND -------------------------------
+export const convertTimeFromBackend = (time: string) => {
+    return moment(time, 'HH:mm:SS A').toDate();
+};
+
+//------------------------------- DATE FROM BACKEND TO TIME -------------------------------
+export const convertDateFromBackendToTime = (date: string) => {
+    return moment(new Date(date)).format('LT');
+};
+
+export const combineDateAndTimeToBackend = (date: string, time: string) => {
+    console.log('date & time: ', date, time);
+    console.log(
+        'after: ',
+        moment(new Date(date + ' ' + time)).toISOString(true)
+    );
+    return moment(new Date(date + ' ' + time)).toISOString(true);
 };
 
 //------------------------------- Convert thousand separator in number -------------------------------
 export const convertThousanSepInNumber = (value: string) => {
-  if (value) return parseFloat(value.toString().replace(/,/g, ''));
+    if (value) return parseFloat(value.toString().replace(/,/g, ''));
 };
 //------------------------------- Convert number in thousand separator -------------------------------
 export const convertNumberInThousandSep = (value: number) => {
-  if (value)
-    return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+    if (value)
+        return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 };

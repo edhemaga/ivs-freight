@@ -1,0 +1,58 @@
+<app-ta-modal
+    [modalTitle]="'Map Setings'"
+    [isModalValid]="mapSettingsForm.valid && isFormDirty"
+    [mapSettingsModal]="true"
+    [resetMapVisibility]="isFormDirty ? true : false"
+    [customClass]="'modal-container-S'"
+    [editName]="editData?.title ? editData.title : editData?.name"
+    [editData]="editData"
+    (action)="onModalAction($event)"
+>
+    <form origin [formGroup]="mapSettingsForm" class="form-container">
+        <div class="row">
+            <div class="col-12">
+                <app-ta-input
+                    formControlName="mapName"
+                    [inputConfig]="{
+                        name: 'Map Name',
+                        type: 'text',
+                        label: 'Map Name',
+                        isRequired: true,
+                        blackInput: true,
+                        maxLength: 16
+                    }"
+                ></app-ta-input>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <app-ta-tab-switch
+                    [tabs]="distanceTabs"
+                    (switchClicked)="onTabChange($event, 'Distance-tab')"
+                    [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <app-ta-tab-switch
+                    [tabs]="addressTabs"
+                    (switchClicked)="onTabChange($event, 'Address-tab')"
+                    [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <app-ta-tab-switch
+                    [tabs]="borderTabs"
+                    (switchClicked)="onTabChange($event, 'Border-tab')"
+                    [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
+            </div>
+        </div>
+    </form>
+</app-ta-modal>

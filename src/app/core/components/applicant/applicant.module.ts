@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { ApplicantRoutingModule } from './applicant-routing.module';
 
-import { ReviewFeedbackService } from './state/services/review-feedback.service';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 import { ApplicantComponent } from './applicant/applicant.component';
 import { ApplicantHeaderComponent } from './applicant-header/applicant-header.component';
@@ -15,6 +15,7 @@ import { ApplicantSignaturePadComponent } from './applicant-signature-pad/applic
 import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/applicant-welcome-screen.component';
 import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-end-screen.component';
 import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn/applicant-next-back-btn.component';
+import { ApplicantAddSaveBtnComponent } from './applicant-add-save-btn/applicant-add-save-btn.component';
 
 import { Step1Component } from './applicant-steps/step1/step1.component';
 import { Step2Component } from './applicant-steps/step2/step2.component';
@@ -35,52 +36,52 @@ import { Step3FormComponent } from './applicant-forms/step3-form/step3-form.comp
 import { Step2FormComponent } from './applicant-forms/step2-form/step2-form.component';
 
 import { SharedModule } from '../shared/shared.module';
-import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 @NgModule({
-  declarations: [
-    ApplicantComponent,
-    ApplicantHeaderComponent,
-    ApplicantFooterComponent,
-    ApplicantSignaturePadComponent,
-    ApplicantNextBackBtnComponent,
-    ApplicantWelcomeScreenComponent,
-    Step1Component,
-    Step2Component,
-    Step3Component,
-    Step4Component,
-    Step5Component,
-    Step6Component,
-    Step7Component,
-    Step8Component,
-    Step9Component,
-    Step10Component,
-    Step11Component,
+    declarations: [
+        ApplicantComponent,
+        ApplicantHeaderComponent,
+        ApplicantFooterComponent,
+        ApplicantSignaturePadComponent,
+        ApplicantNextBackBtnComponent,
+        ApplicantAddSaveBtnComponent,
+        ApplicantWelcomeScreenComponent,
+        ApplicantEndScreenComponent,
 
-    Step6FormComponent,
-    Step5FormComponent,
-    Step4FormComponent,
-    Step3FormComponent,
-    Step2FormComponent,
-    ApplicantEndScreenComponent,
-  ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    ApplicantRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AngularSvgIconModule,
+        Step1Component,
+        Step2Component,
+        Step3Component,
+        Step4Component,
+        Step5Component,
+        Step6Component,
+        Step7Component,
+        Step8Component,
+        Step9Component,
+        Step10Component,
+        Step11Component,
 
-    SharedModule,
-    AngularSignaturePadModule,
-  ],
-  exports: [
-    ApplicantNextBackBtnComponent,
-    ApplicantHeaderComponent,
-    ApplicantFooterComponent,
-    ApplicantSignaturePadComponent,
-  ],
-  providers: [ReviewFeedbackService],
+        Step6FormComponent,
+        Step5FormComponent,
+        Step4FormComponent,
+        Step3FormComponent,
+        Step2FormComponent,
+    ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        ApplicantRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        SharedModule,
+        AngularSignaturePadModule,
+    ],
+    exports: [
+        ApplicantNextBackBtnComponent,
+        ApplicantAddSaveBtnComponent,
+        ApplicantHeaderComponent,
+        ApplicantFooterComponent,
+        ApplicantSignaturePadComponent,
+    ],
 })
 export class ApplicantModule {}

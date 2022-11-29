@@ -12,6 +12,7 @@
 
 
 export interface CreateDrugAndAlcoholReviewCommand { 
+    id?: number | null;
     isCarrierValid?: boolean;
     isPhoneValid?: boolean;
     carrierPhoneMessage?: string | null;
@@ -22,8 +23,8 @@ export interface CreateDrugAndAlcoholReviewCommand {
     isSapPhoneValid?: boolean;
     sapPhoneMessage?: string | null;
     isSapAddressValid?: boolean;
+    isSapAddressUnitValid?: boolean;
     sapAddressMessage?: string | null;
-    drugAndAlcoholId?: number;
     applicantId?: number;
 }
 

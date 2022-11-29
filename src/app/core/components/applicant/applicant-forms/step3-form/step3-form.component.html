@@ -1,299 +1,246 @@
 <div class="d-flex flex-column step-form" [formGroup]="licenseForm">
-  <div class="d-flex line-container">
-    <div class="group license-group">
-      <app-ta-input
-        formControlName="licenseNumber"
-        [inputConfig]="{
-          name: 'License',
-          type: 'text',
-          label: 'License #',
-          isRequired: true,
-          textTransform: 'capitalize',
-          autoFocus: true,
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 10)"
-      ></app-ta-input>
-    </div>
-    <div class="group country-group">
-      <app-ta-input-dropdown
-        formControlName="country"
-        [inputConfig]="{
-          name: 'Input Dropdown',
-          type: 'text',
-          label: 'Country',
-          isRequired: true,
-          isDropdown: true,
-          dropdownWidthClass: 'w-col-234',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [activeItem]="selectedCountryType"
-        [options]="countryTypes"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 10)"
-        (selectedItem)="handleInputSelect($event, 'COUNTRY-TYPE')"
-      ></app-ta-input-dropdown>
-    </div>
+    <div class="d-flex line-container">
+        <div class="group license-group">
+            <app-ta-input
+                formControlName="licenseNumber"
+                [inputConfig]="{
+                    name: 'License',
+                    type: 'text',
+                    label: 'License #',
+                    isRequired: true,
+                    textTransform: 'capitalize',
+                    autoFocus: selectedMode === 'APPLICANT_MODE',
+                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    incorrectInput: selectedMode === 'REVIEW_MODE'
+                }"
+                [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
+                (incorrectEvent)="incorrectInput($event, 0, 10)"
+            ></app-ta-input>
+        </div>
+        <div class="group country-group">
+            <app-ta-input-dropdown
+                formControlName="country"
+                [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Country',
+                    isRequired: true,
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-234',
+                    isDisabled: selectedMode === 'REVIEW_MODE'
+                }"
+                [activeItem]="selectedCountryType"
+                [options]="countryTypes"
+                (selectedItem)="handleInputSelect($event, 'COUNTRY-TYPE')"
+            ></app-ta-input-dropdown>
+        </div>
 
-    <!-- REVIEW AND FEEDBACK -->
+        <!-- REVIEW AND FEEDBACK -->
 
-    <div
-      class="review-feedback-container"
-      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
-    >
-      <app-applicant-review-feedback
-        formControlName="firstRowReview"
-        [displayAnnotationButton]="
-          openAnnotationArray[10].displayAnnotationButton
-        "
-        [displayAnnotationTextArea]="
-          openAnnotationArray[10].displayAnnotationTextArea
-        "
-        [lineIndex]="10"
-        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-        [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
-        "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-      ></app-applicant-review-feedback>
-    </div>
-  </div>
-
-  <!-- STATE, CLASS, EXP. DATE -->
-
-  <div class="d-flex line-container">
-    <div class="group state-group">
-      <app-ta-input-dropdown
-        formControlName="state"
-        [inputConfig]="{
-          name: 'Input Dropdown',
-          type: 'text',
-          label: 'State',
-          isRequired: true,
-          isDisabled: !licenseForm.get('country').value,
-          isDropdown: true,
-          dropdownWidthClass: 'w-col-246',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [activeItem]="selectedStateType"
-        [options]="stateTypes"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 11)"
-        (selectedItem)="handleInputSelect($event, 'STATE-TYPE')"
-      ></app-ta-input-dropdown>
-    </div>
-    <div class="group class-group">
-      <app-ta-input-dropdown
-        formControlName="classType"
-        [inputConfig]="{
-          name: 'Input Dropdown',
-          type: 'text',
-          label: 'Class',
-          isRequired: true,
-          isDropdown: true,
-          dropdownWidthClass: 'w-col-174',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [activeItem]="selectedClassType"
-        [options]="classTypes"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 11)"
-        (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
-      ></app-ta-input-dropdown>
-    </div>
-    <div class="group exp-date-group">
-      <app-ta-input
-        formControlName="expDate"
-        [inputConfig]="{
-          name: 'datepicker',
-          type: 'text',
-          label: 'Exp. Date',
-          placeholderIcon: 'date',
-          isRequired: true,
-          customClass: 'datetimeclass',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 2, 11)"
-      ></app-ta-input>
+        <div
+            class="review-feedback-container"
+            *ngIf="
+                selectedMode === 'REVIEW_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+            "
+        >
+            <app-applicant-review-feedback
+                formControlName="firstRowReview"
+                [displayAnnotationButton]="
+                    openAnnotationArray[10].displayAnnotationButton
+                "
+                [displayAnnotationTextArea]="
+                    openAnnotationArray[10].displayAnnotationTextArea
+                "
+                [lineIndex]="10"
+                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                [feedbackText]="
+                    'Check the routing number one more time (one number missing)!!!'
+                "
+                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            ></app-applicant-review-feedback>
+        </div>
     </div>
 
-    <!-- REVIEW AND FEEDBACK -->
+    <!-- STATE, CLASS, EXP. DATE -->
 
-    <div
-      class="review-feedback-container"
-      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
-    >
-      <app-applicant-review-feedback
-        formControlName="secondRowReview"
-        [displayAnnotationButton]="
-          openAnnotationArray[11].displayAnnotationButton
-        "
-        [displayAnnotationTextArea]="
-          openAnnotationArray[11].displayAnnotationTextArea
-        "
-        [lineIndex]="11"
-        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-        [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
-        "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-      ></app-applicant-review-feedback>
-    </div>
-  </div>
+    <div class="d-flex line-container">
+        <div class="group state-group">
+            <app-ta-input-dropdown
+                formControlName="state"
+                [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'State',
+                    isRequired: true,
+                    isDisabled:
+                        (selectedMode === 'APPLICANT_MODE' &&
+                            !licenseForm.get('country').value) ||
+                        selectedMode === 'REVIEW_MODE',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-246'
+                }"
+                [activeItem]="selectedStateType"
+                [options]="stateTypes"
+                (selectedItem)="handleInputSelect($event, 'STATE-TYPE')"
+            ></app-ta-input-dropdown>
+        </div>
+        <div class="group class-group">
+            <app-ta-input-dropdown
+                formControlName="classType"
+                [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Class',
+                    isRequired: true,
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-174',
+                    isDisabled: selectedMode === 'REVIEW_MODE'
+                }"
+                [activeItem]="selectedClassType"
+                [options]="classTypes"
+                (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
+            ></app-ta-input-dropdown>
+        </div>
+        <div class="group exp-date-group">
+            <app-ta-input
+                formControlName="expDate"
+                [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'Exp. Date',
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass',
+                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    incorrectInput: selectedMode === 'REVIEW_MODE'
+                }"
+                [incorrectValue]="openAnnotationArray[11].lineInputs[2]"
+                (incorrectEvent)="incorrectInput($event, 2, 11)"
+            ></app-ta-input>
+        </div>
 
-  <!-- RESTRICTIONS -->
+        <!-- REVIEW AND FEEDBACK -->
 
-  <div class="d-flex line-container">
-    <div class="restrictions-group">
-      <app-ta-input-dropdown
-        formControlName="restrictions"
-        [template]="'multiselect'"
-        [multiselectTemplate]="'multiselect-3-columns'"
-        [inputConfig]="{
-          name: 'Input Dropdown',
-          type: 'text',
-          label: 'Restrictions',
-          isDropdown: true,
-          multiselectDropdown: true,
-          dropdownWidthClass: 'w-col-616',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [options]="restrictionsList"
-        [preloadMultiselectItems]="selectedRestrictions"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 12)"
-        (selectedItems)="handleInputSelect($event, 'RESTRICTIONS')"
-      ></app-ta-input-dropdown>
-    </div>
-
-    <!-- REVIEW AND FEEDBACK -->
-
-    <div
-      class="review-feedback-container"
-      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
-    >
-      <app-applicant-review-feedback
-        formControlName="thirdRowReview"
-        [displayAnnotationButton]="
-          openAnnotationArray[12].displayAnnotationButton
-        "
-        [displayAnnotationTextArea]="
-          openAnnotationArray[12].displayAnnotationTextArea
-        "
-        [lineIndex]="12"
-        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-        [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
-        "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-      ></app-applicant-review-feedback>
-    </div>
-  </div>
-
-  <!-- ENDORSMENTS -->
-
-  <div class="d-flex line-container">
-    <div class="endorsments-group">
-      <app-ta-input-dropdown
-        formControlName="endorsments"
-        [template]="'multiselect'"
-        [multiselectTemplate]="'multiselect-3-columns'"
-        [inputConfig]="{
-          name: 'Input Dropdown',
-          type: 'text',
-          label: 'Endorsments',
-          isDropdown: true,
-          multiselectDropdown: true,
-          dropdownWidthClass: 'w-col-616',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [options]="endorsmentsList"
-        [preloadMultiselectItems]="selectedEndorsments"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 13)"
-        (selectedItems)="handleInputSelect($event, 'ENDORSMENTS')"
-      ></app-ta-input-dropdown>
+        <div
+            class="review-feedback-container"
+            *ngIf="
+                selectedMode === 'REVIEW_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+            "
+        >
+            <app-applicant-review-feedback
+                formControlName="secondRowReview"
+                [displayAnnotationButton]="
+                    openAnnotationArray[11].displayAnnotationButton
+                "
+                [displayAnnotationTextArea]="
+                    openAnnotationArray[11].displayAnnotationTextArea
+                "
+                [lineIndex]="11"
+                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                [feedbackText]="
+                    'Check the routing number one more time (one number missing)!!!'
+                "
+                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            ></app-applicant-review-feedback>
+        </div>
     </div>
 
-    <!-- REVIEW AND FEEDBACK -->
+    <!-- RESTRICTIONS -->
 
-    <div
-      class="review-feedback-container"
-      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
-    >
-      <app-applicant-review-feedback
-        formControlName="fourthRowReview"
-        [displayAnnotationButton]="
-          openAnnotationArray[13].displayAnnotationButton
-        "
-        [displayAnnotationTextArea]="
-          openAnnotationArray[13].displayAnnotationTextArea
-        "
-        [lineIndex]="13"
-        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-        [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
-        "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-      ></app-applicant-review-feedback>
+    <div class="d-flex line-container">
+        <div class="restrictions-group">
+            <app-ta-input-dropdown
+                formControlName="restrictions"
+                [template]="'multiselect'"
+                [multiselectTemplate]="'multiselect-3-columns'"
+                [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Restrictions',
+                    isDropdown: true,
+                    multiselectDropdown: true,
+                    dropdownWidthClass: 'w-col-616',
+                    isDisabled: selectedMode === 'REVIEW_MODE'
+                }"
+                [options]="restrictionsList"
+                [preloadMultiselectItems]="selectedRestrictions"
+                (selectedItems)="handleInputSelect($event, 'RESTRICTIONS')"
+            ></app-ta-input-dropdown>
+        </div>
     </div>
-  </div>
 
-  <!-- ADD MORE LICENSES -->
+    <!-- ENDORSMENTS -->
 
-  <div class="d-flex align-items-center btn-container">
-    <h4
-      class="text-center m-0 ta-font-bold"
-      *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
-    >
-      List any additional license(s) held in past 3 years
-    </h4>
-
-    <button
-      type="button"
-      class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-      (click)="onAddLicense()"
-      [ngClass]="{
-        disabled: licenseForm.invalid
-      }"
-      *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
-    >
-      <svg-icon
-        class="plus-icon"
-        src="assets/svg/common/ic_plus.svg
-        "
-        [svgStyle]="{
-          'width.px': 18,
-          'height.px': 18
-        }"
-      ></svg-icon>
-
-      Add License
-    </button>
-
-    <div
-      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
-      *ngIf="isEditing"
-    >
-      <button
-        type="button"
-        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-        (click)="onCancelEditLicense()"
-      >
-        Cancel
-      </button>
-      <button
-        type="button"
-        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-        (click)="onSaveEditedLicense()"
-        [ngClass]="{
-          disabled: !isLicenseEdited
-        }"
-      >
-        Save Changes
-      </button>
+    <div class="d-flex line-container">
+        <div class="endorsments-group">
+            <app-ta-input-dropdown
+                formControlName="endorsments"
+                [template]="'multiselect'"
+                [multiselectTemplate]="'multiselect-3-columns'"
+                [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Endorsments',
+                    isDropdown: true,
+                    multiselectDropdown: true,
+                    dropdownWidthClass: 'w-col-616',
+                    isDisabled: selectedMode === 'REVIEW_MODE'
+                }"
+                [options]="endorsmentsList"
+                [preloadMultiselectItems]="selectedEndorsments"
+                (selectedItems)="handleInputSelect($event, 'ENDORSMENTS')"
+            ></app-ta-input-dropdown>
+        </div>
     </div>
-  </div>
+
+    <!-- BTN -->
+
+    <ng-container *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing">
+        <div class="d-flex align-items-center">
+            <h4 class="m-0 text-center ta-font-bold add-license-title">
+                List any additional license(s) held in past 3 years
+            </h4>
+
+            <app-applicant-add-save-btn
+                [addBtn]="true"
+                [btnText]="'Add License'"
+                [disabledValue]="licenseForm.invalid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="isEditing">
+        <div class="d-flex align-items-center justify-content-center">
+            <app-applicant-add-save-btn
+                [cancelBtn]="true"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+
+            <app-applicant-add-save-btn
+                [saveBtn]="true"
+                [disabledValue]="!isLicenseEdited || !licenseForm.valid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="isReviewingCard">
+        <div class="d-flex align-items-center justify-content-center">
+            <app-applicant-add-save-btn
+                [cancelBtn]="true"
+                [reviewBtn]="true"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+
+            <app-applicant-add-save-btn
+                [saveBtn]="true"
+                [reviewBtn]="true"
+                [disabledValue]="!isCardReviewedIncorrect"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </div>
+    </ng-container>
 </div>

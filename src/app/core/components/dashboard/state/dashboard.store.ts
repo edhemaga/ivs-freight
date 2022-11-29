@@ -10,14 +10,14 @@ export function createInitialState(): DashboardState {
         statistic: {
             todayObject: null,
             mtdObject: [],
-            ytdObject: [], 
-            allTimeObject: []
-        }
+            ytdObject: [],
+            allTimeObject: [],
+        },
     };
-  }
+}
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 @StoreConfig({ name: 'dashboard' })
 export class DashboardStore extends EntityStore<DashboardState> {

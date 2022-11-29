@@ -1,197 +1,221 @@
 <div class="settings-terminal">
-  <div class="settings-header">
-    <div class="settings-name d-flex align-items-center">
-      <app-ta-counter
-        [count]="terminalData?.count"
-        [countColor]="'#919191'"
-        [countBackground]="'#F3F3F3'"
-        [countHeight]="'24px'"
-        [countWidth]="'24px'"
-      ></app-ta-counter>
-      <p>Terminal</p>
+    <div class="settings-header">
+        <div class="settings-name d-flex align-items-center">
+            <app-ta-counter
+                [count]="terminalData?.count"
+                [countColor]="'#919191'"
+                [countBackground]="'#F3F3F3'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+            ></app-ta-counter>
+            <p>Terminal</p>
+        </div>
+
+        <div class="settings-header-button">
+            <div class="border-left"></div>
+            <svg-icon
+                src="assets/svg/common/ic_plus.svg"
+                class="settings-plus-button"
+                (click)="onAction({ modalName: 'terminal' })"
+            ></svg-icon>
+        </div>
     </div>
+    <div class="settings-body">
+        <app-ta-re-card
+            *ngFor="
+                let item of terminalData?.data;
+                let i = index;
+                trackBy: identityTerminalData
+            "
+            [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
+            [cardNameCommon]="item.name"
+            [hasFooter]="false"
+            [optionsId]="item.id"
+            [options]="terminalActions"
+            (dropActions)="optionsEvent($event, 'terminal')"
+            [paddingDots]="'11px 0px 0px 12px'"
+            [haveHeaderText]="true"
+            [setPositionDrop]="true"
+        >
+            <div class="settings-body-items">
+                <div *ngIf="item.phone" class="single-item">
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/common/ic_phone.svg"
+                    ></svg-icon>
+                    <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
+                </div>
+                <div *ngIf="item.email" class="single-item">
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/common/ic_email.svg"
+                    ></svg-icon>
+                    <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
+                </div>
+                <div *ngIf="item.address.address" class="single-item">
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/truckassist-table/location-icon.svg"
+                    ></svg-icon>
+                    <span>{{ item?.address?.address }}</span>
+                </div>
+            </div>
+            <app-ta-custom-card
+                *ngIf="item.officeChecked"
+                [cardName]="'Office'"
+                [isCardOpen]="true"
+                [bodyTemplate]="'card'"
+                [textBottomPossiton]="'-2px'"
+            >
+                <div class="parking-template-data">
+                    <div *ngIf="item.officePhone" class="parking-template-item">
+                        <svg-icon
+                            class="company-icons"
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="item.officePhone">
+                        </app-ta-copy>
+                    </div>
 
-    <div class="settings-header-button">
-      <div class="border-left"></div>
-      <svg-icon
-        src="assets/svg/common/ic_plus.svg"
-        class="settings-plus-button"
-        (click)="onAction({ modalName: 'terminal' })"
-      ></svg-icon>
+                    <div
+                        *ngIf="item.officeExtPhone"
+                        class="parking-template-item"
+                    >
+                        <svg-icon
+                            class="company-icons"
+                            src="assets/svg/common/ic_phone-extension.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="item.officeExtPhone">
+                        </app-ta-copy>
+                    </div>
+                    <div class="parking-template-item">
+                        <svg-icon
+                            *ngIf="item.officeEmail"
+                            class="company-icons"
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="item.officeEmail">
+                        </app-ta-copy>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+            <app-ta-custom-card
+                *ngIf="item.warehouseChecked"
+                [cardName]="'Warehouse'"
+                [isCardOpen]="true"
+                [bodyTemplate]="'card'"
+                [textBottomPossiton]="'-2px'"
+            >
+                <div class="parking-template-data">
+                    <div
+                        *ngIf="item.warehousePhone"
+                        class="parking-template-item"
+                    >
+                        <svg-icon
+                            class="company-icons"
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="item.warehousePhone">
+                        </app-ta-copy>
+                    </div>
+
+                    <div
+                        *ngIf="item.warehouseExtPhone"
+                        class="parking-template-item"
+                    >
+                        <svg-icon
+                            class="company-icons"
+                            src="assets/svg/common/ic_phone-extension.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="item.warehouseExtPhone">
+                        </app-ta-copy>
+                    </div>
+                    <div class="parking-template-item">
+                        <svg-icon
+                            *ngIf="item.warehouseEmail"
+                            class="company-icons"
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="item.warehouseEmail">
+                        </app-ta-copy>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+            <app-ta-custom-card
+                *ngIf="item.parkingChecked"
+                [cardName]="'Parking'"
+                [isCardOpen]="true"
+                [bodyTemplate]="'card'"
+                [textBottomPossiton]="'-2px'"
+            >
+                <div class="parking-template-data">
+                    <div
+                        *ngIf="item.parkingPhone"
+                        class="parking-template-item"
+                    >
+                        <svg-icon
+                            class="company-icons"
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="item.parkingPhone">
+                        </app-ta-copy>
+                    </div>
+
+                    <div class="parking-template-item">
+                        <svg-icon
+                            *ngIf="item.parkingEmail"
+                            class="company-icons"
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                        <app-ta-copy [copyValue]="item.parkingEmail">
+                        </app-ta-copy>
+                    </div>
+                    <div
+                        *ngIf="item.terminalParkingSlot"
+                        class="parking-template-item"
+                    >
+                        <p class="parking-template-number">
+                            {{ item.terminalParkingSlot }}
+                        </p>
+                        <p class="parking-template-text">Parking Slot</p>
+                    </div>
+                    <div
+                        *ngIf="item.terminalFullParkingSlot"
+                        class="parking-template-item"
+                    >
+                        <p class="parking-template-number">
+                            {{ item.terminalFullParkingSlot }}
+                        </p>
+                        <p class="parking-template-text">Full Parking Slot</p>
+                    </div>
+                    <div class="parking-template-item">
+                        <svg-icon
+                            class="parking-template-svg"
+                            [ngClass]="{ disabled: !item.securityCamera }"
+                            src="assets/svg/common/ic_security-camera.svg"
+                        ></svg-icon>
+                        <p
+                            class="parking-template-text"
+                            [ngClass]="{ 'cross-out': !item.securityCamera }"
+                        >
+                            Security Camera
+                        </p>
+                    </div>
+                    <div class="parking-template-item">
+                        <svg-icon
+                            class="parking-template-svg"
+                            [ngClass]="{ disabled: !item.gate }"
+                            src="assets/svg/common/ic_security-gate.svg"
+                        ></svg-icon>
+                        <p
+                            [ngClass]="{ 'cross-out': !item.gate }"
+                            class="parking-template-text"
+                        >
+                            Gate
+                        </p>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+        </app-ta-re-card>
     </div>
-  </div>
-  <div class="settings-body">
-    <app-ta-re-card
-      *ngFor="
-        let item of terminalData?.data;
-        let i = index;
-        trackBy: identityTerminalData
-      "
-      [settingsIcon]="item.isOwner ? 'ic_company.svg' : ''"
-      [cardNameCommon]="item.name"
-      [hasFooter]="false"
-      [optionsId]="item.id"
-      [options]="terminalActions"
-      (dropActions)="optionsEvent($event, 'terminal')"
-      [paddingDots]="'11px 0px 0px 12px'"
-      [haveHeaderText]="true"
-    >
-      <div class="settings-body-items">
-        <div *ngIf="item.phone" class="single-item">
-          <svg-icon
-            class="company-icons"
-            src="assets/svg/common/ic_phone.svg"
-          ></svg-icon>
-          <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
-        </div>
-        <div *ngIf="item.email" class="single-item">
-          <svg-icon
-            class="company-icons"
-            src="assets/svg/common/ic_email.svg"
-          ></svg-icon>
-          <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
-        </div>
-        <div *ngIf="item.address.address" class="single-item">
-          <svg-icon
-            class="company-icons"
-            src="assets/svg/truckassist-table/location-icon.svg"
-          ></svg-icon>
-          <span>{{ item?.address?.address }}</span>
-        </div>
-      </div>
-      <app-ta-custom-card
-        *ngIf="item.officeChecked"
-        [cardName]="'Office'"
-        [isCardOpen]="true"
-        [bodyTemplate]="'card'"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="parking-template-data">
-          <div *ngIf="item.officePhone" class="parking-template-item">
-            <svg-icon
-              class="company-icons"
-              src="assets/svg/common/ic_phone.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="item.officePhone"> </app-ta-copy>
-          </div>
-
-          <div *ngIf="item.officeExtPhone" class="parking-template-item">
-            <svg-icon
-              class="company-icons"
-              src="assets/svg/common/ic_phone-extension.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="item.officeExtPhone"> </app-ta-copy>
-          </div>
-          <div class="parking-template-item">
-            <svg-icon
-              *ngIf="item.officeEmail"
-              class="company-icons"
-              src="assets/svg/common/ic_email.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="item.officeEmail"> </app-ta-copy>
-          </div>
-        </div>
-      </app-ta-custom-card>
-      <app-ta-custom-card
-        *ngIf="item.warehouseChecked"
-        [cardName]="'Warehouse'"
-        [isCardOpen]="true"
-        [bodyTemplate]="'card'"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="parking-template-data">
-          <div *ngIf="item.warehousePhone" class="parking-template-item">
-            <svg-icon
-              class="company-icons"
-              src="assets/svg/common/ic_phone.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="item.warehousePhone"> </app-ta-copy>
-          </div>
-
-          <div *ngIf="item.warehouseExtPhone" class="parking-template-item">
-            <svg-icon
-              class="company-icons"
-              src="assets/svg/common/ic_phone-extension.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="item.warehouseExtPhone"> </app-ta-copy>
-          </div>
-          <div class="parking-template-item">
-            <svg-icon
-              *ngIf="item.warehouseEmail"
-              class="company-icons"
-              src="assets/svg/common/ic_email.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="item.warehouseEmail"> </app-ta-copy>
-          </div>
-        </div>
-      </app-ta-custom-card>
-      <app-ta-custom-card
-        *ngIf="item.parkingChecked"
-        [cardName]="'Parking'"
-        [isCardOpen]="true"
-        [bodyTemplate]="'card'"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="parking-template-data">
-          <div *ngIf="item.parkingPhone" class="parking-template-item">
-            <svg-icon
-              class="company-icons"
-              src="assets/svg/common/ic_phone.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="item.parkingPhone"> </app-ta-copy>
-          </div>
-
-          <div class="parking-template-item">
-            <svg-icon
-              *ngIf="item.parkingEmail"
-              class="company-icons"
-              src="assets/svg/common/ic_email.svg"
-            ></svg-icon>
-            <app-ta-copy [copyValue]="item.parkingEmail"> </app-ta-copy>
-          </div>
-          <div *ngIf="item.terminalParkingSlot" class="parking-template-item">
-            <p class="parking-template-number">
-              {{ item.terminalParkingSlot }}
-            </p>
-            <p class="parking-template-text">Parking Slot</p>
-          </div>
-          <div
-            *ngIf="item.terminalFullParkingSlot"
-            class="parking-template-item"
-          >
-            <p class="parking-template-number">
-              {{ item.terminalFullParkingSlot }}
-            </p>
-            <p class="parking-template-text">Full Parking Slot</p>
-          </div>
-          <div class="parking-template-item">
-            <svg-icon
-              class="parking-template-svg"
-              [ngClass]="{ disabled: !item.securityCamera }"
-              src="assets/svg/common/ic_security-camera.svg"
-            ></svg-icon>
-            <p
-              class="parking-template-text"
-              [ngClass]="{ 'cross-out': !item.securityCamera }"
-            >
-              Security Camera
-            </p>
-          </div>
-          <div class="parking-template-item">
-            <svg-icon
-              class="parking-template-svg"
-              [ngClass]="{ disabled: !item.gate }"
-              src="assets/svg/common/ic_security-gate.svg"
-            ></svg-icon>
-            <p
-              [ngClass]="{ 'cross-out': !item.gate }"
-              class="parking-template-text"
-            >
-              Gate
-            </p>
-          </div>
-        </div>
-      </app-ta-custom-card>
-    </app-ta-re-card>
-  </div>
 </div>

@@ -5,18 +5,18 @@ $input-black-color-1: #1d1d1d; // was #3c3c3c :: hover mode
 $input-gray-color-1: #2f2f2f; // was #6c6c6c :: normal, focus, focus hover
 $input-gray-color-2: #919191;
 $input-gray-color-3: #aaaaaa;
-$input-gray-color-4: #919191; // was #b7b7b7
+$input-gray-color-4: #b7b7b7;
 $input-gray-color-5: #cccccc;
 $input-gray-color-6: #dadada;
 
 $input-white-color-1: #ffffff;
-$input-white-color-2: #eeeeee; // was #f3f3f3
+$input-white-color-2: #f3f3f3;
 $input-white-color-3: #f5fafc;
-$input-white-color-4: #f7f7f7; // was #fffafa
-$input-white-color-5: #e5e5e5; // was #eeeeee
+$input-white-color-4: #fffafa;
+$input-white-color-5: #eeeeee;
 $input-white-color-6: #f7f7f7;
-$input-white-color-7: #cccccc; // was #e5e5e5
-$input-white-color-8: #f7f7f7; // was #fbfbfb
+$input-white-color-7: #e5e5e5;
+$input-white-color-8: #fbfbfb;
 
 $input-blue-color-1: #255bb9; // was #536bc2 :: input
 $input-blue-color-2: #6d82c7;
@@ -25,10 +25,10 @@ $input-blue-color-4: #bdcaeb;
 $input-blue-color-5: #d4dff4;
 $input-blue-color-6: #6f9ee0; // required-check (valid)
 $input-blue-color-7: rgb(
-  111,
-  158,
-  224,
-  0.2
+    111,
+    158,
+    224,
+    0.2
 ); // state when input valid and focus out
 $input-blue-color-8: rgb(111, 158, 224, 0.4); // placeholder-icon divider
 $input-blue-color-9: rgb(111, 158, 224, 0);
@@ -41,10 +41,10 @@ $input-red-color-5: #ef9a9a; // :: component empty-focus-required
 $input-red-color-6: #ffcdd2; // :: placeholder-icon, clear, dropdown
 $input-red-color-7: #ffe1e4; // :: input-error-selection
 $input-red-color-8: rgb(
-  229,
-  115,
-  115,
-  0.2
+    229,
+    115,
+    115,
+    0.2
 ); // state when input invalid and focus out
 $input-red-color-9: rgb(239, 83, 80, 0.4); // placeholder-icon divider
 
@@ -58,29 +58,30 @@ $input-transparent-color: transparent;
 
 //----------------------- DROPDOWN INPUT IMAGE --------------
 // Trucks
-$input-semitruck-path-fill: #97d568;
-$input-semisleepertruck-path-fill: #ffb74d;
-$input-boxtruck-path-fill: #fb6f6f;
-$input-cargovantruck-path-fill: #68c3ff;
-$input-towtruck-path-fill: #ba68c8;
-$input-carhaulertruck-path-fill: #59a5a5;
-$input-spottertruck-path-fill: #415fc1;
+$input-semitruck-path-fill: #26a690;
+$input-semisleepertruck-path-fill: #ffa726;
+$input-boxtruck-path-fill: #ef5350;
+$input-cargovantruck-path-fill: #38bdeb;
+$input-towtruck-path-fill: #ab47bc;
+$input-carhaulertruck-path-fill: #f276ef;
+$input-spottertruck-path-fill: #8d6e63;
 $input-bus-path-fill: #ff7043;
 
 // Trailers
-$input-reefertrailer-path-fill: #ef6e6e;
-$input-dryvantrailer-path-fill: #5673aa;
-$input-sidekittrailer-path-fill: #76a77d;
-$input-conestogatrailer-path-fill: #484848;
-$input-dumpertrailer-path-fill: #8fdee1;
-$input-containertrailer-path-fill: #ffbe7d;
-$input-tankerliquidtrailer-path-fill: #81ccff;
-$input-carhaulertrailer-path-fill: #668888;
-$input-flatbedtrailer-path-fill: #af88ea;
-$input-lowboyrgntrailer-path-fill: #955fa2;
-$input-chassistrailer-path-fill: #547556;
-$input-stepdecktrailer-path-fill: #f2dd75;
-$input-tankerdrybulktrailer-path-fill: #8ee0d2;
+$input-reefertrailer-path-fill: #3074d3;
+$input-dryvantrailer-path-fill: #38bdeb;
+$input-sidekittrailer-path-fill: #ab47bc;
+$input-conestogatrailer-path-fill: #008496;
+$input-dumpertrailer-path-fill: #8d6e63;
+$input-containertrailer-path-fill: #ffa726;
+$input-tankertrailer-path-fill: #26a690;
+$input-pneumatictankertrailer-path-fill: #56ab62;
+$input-carhaulerstingertrailer-path-fill: #f276ef;
+$input-carhaulertrailer-path-fill: #fd4d96;
+$input-flatbedtrailer-path-fill: #ff9800;
+$input-lowboyrgntrailer-path-fill: #f76629;
+$input-chassistrailer-path-fill: #ef5350;
+$input-stepdecktrailer-path-fill: #d80300;
 
 //----------------------- INPUT ADDRESS FLAG ----------------
 $input-address-flag-background-color: $input-gray-color-2;

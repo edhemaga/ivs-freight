@@ -1,2961 +1,2981 @@
 /* Table Body */
 table {
-  width: 100%;
-  height: fit-content;
+    width: 100%;
+    height: fit-content;
 
-  tbody {
-    display: flex;
-
-    tr {
-      width: fit-content;
-      height: fit-content;
-      min-height: 32px;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      border-radius: 3px;
-      padding: 2px;
-      transition: margin-bottom 0.25s;
-
-      // Hover
-      &:hover {
-        .columns-container {
-          background: #f7f7f7 !important;
-
-          .table-text,
-          .table-name-link,
-          .color-name,
-          .table-progress-text {
-            color: #3c3c3c !important;
-          }
-
-          .table-state {
-            background: #ffffff !important;
-          }
-
-          .table-checkbox-label {
-            background-color: #aaaaaa !important;
-          }
-
-          .contact-container {
-            .contact-count {
-              background: #ffffff !important;
-            }
-
-            .contact-avatar {
-              background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-hover-row.svg");
-            }
-          }
-
-          .raiting-container {
-            .raiting-counter-container {
-              &:hover {
-                .raiting-counter {
-                  color: #6c6c6c !important;
-                }
-              }
-              .raiting-counter {
-                background: #ffffff !important;
-              }
-            }
-
-            .like-icon {
-              background-image: url("../../../../../../assets/svg/truckassist-table/like-row-hover.svg") !important;
-
-              &:hover {
-                background-image: url("../../../../../../assets/svg/truckassist-table/like-icon-hover.svg") !important;
-              }
-            }
-
-            .dislike-icon {
-              background-image: url("../../../../../../assets/svg/truckassist-table/dislike-row-hover.svg") !important;
-
-              &:hover {
-                background-image: url("../../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg") !important;
-              }
-            }
-          }
-
-          .pickup-delivery-location-container {
-            .date-time-container {
-              .time {
-                visibility: visible !important;
-              }
-            }
-          }
-        }
-      }
-
-      // Columns
-      .columns-container {
-        width: 100%;
-        height: 100%;
+    tbody {
         display: flex;
 
-        .pined-columns,
-        .not-pined-columns,
-        .actions-columns {
-          display: flex;
-        }
-
-        .not-pined-columns {
-          width: fit-content;
-          overflow: hidden;
-        }
-
-        td {
-          width: fit-content;
-          padding: 0;
-
-          .td-content {
+        tr {
+            width: fit-content;
+            height: fit-content;
+            min-height: 32px;
+            background: white;
             display: flex;
-            height: 100%;
-            align-items: center;
-
-            // NO TEMPLATE
-            .no-template {
-              color: red;
-              font-size: 14px;
-              font-weight: bold;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              width: 100%;
-            }
-
-            // CHECKBOX TEMPLATE
-            .table-checkbox {
-              display: none;
-            }
-
-            .table-checkbox-label {
-              width: 14px;
-              height: 14px;
-              background-color: #dadada;
-              margin-bottom: 0;
-              border-radius: 1px;
-              cursor: pointer;
-
-              &:hover {
-                background-color: #b7b7b7;
-              }
-            }
-
-            .table-checkbox:checked + .table-checkbox-label {
-              background-color: #91a4c7;
-              background-image: url("../../../../../../assets/svg/truckassist-table/check-new.svg");
-              background-repeat: no-repeat;
-              background-position: center;
-              transition: background-color 0.25s;
-
-              &:hover {
-                background-color: #5673aa;
-              }
-            }
-
-            // OOS COLUMN
-            .oos-container {
-              width: 92px;
-              height: 28px;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              div {
-                width: 28px;
-                height: 28px;
-                border-radius: 2px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 16px;
-                font-weight: 900;
-                color: #dadada;
-
-                &::selection {
-                  color: #dadada;
-                  background: #dadada20;
-                }
-              }
-
-              .oos-active {
-                background: #5673aa !important;
-                color: white !important;
-
-                &::selection {
-                  color: #ffffff;
-                  background: #ffffff20;
-                }
-              }
-            }
-
-            // COMPACT TEXT
-            .compact-text-container {
-              width: 100%;
-              height: 28px;
-              padding-top: 1px;
-              display: flex;
-              overflow: hidden;
-
-              .title-values-container {
-                width: fit-content;
-                height: fit-content;
-
-                .title-compact-text,
-                .values-compact-text {
-                  width: fit-content;
-                  align-self: center;
-                  overflow: hidden;
-                  white-space: nowrap;
-                  text-overflow: ellipsis;
-                }
-
-                .title-compact-text {
-                  height: 10px;
-                  color: #919191;
-                  font-size: 10px;
-                  font-weight: bold;
-                  line-height: 7px;
-                  margin-bottom: 2px;
-                }
-
-                .values-compact-text {
-                  height: 14px;
-                  line-height: 14px;
-                  font-size: 14px;
-                  font-weight: 400;
-                  color: #6c6c6c;
-                  max-width: 60px;
-                }
-              }
-
-              .title-values-margin {
-                margin-right: 12px;
-              }
-            }
-
-            // CITATION COLUMN
-            .citation-table {
-              width: 36px;
-              height: 24px;
-              background-repeat: no-repeat;
-              background-position: center;
-              background-image: url("../../../../../../assets/svg/truckassist-table/citation-icon.svg");
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              font-size: 16px;
-              font-weight: 400;
-              color: white;
-
-              &::selection {
-                color: #ffffff;
-                background: #ffffff20;
-              }
-            }
-
-            .citation-table-active {
-              font-weight: 800;
-            }
-
-            // LVL COLUMN
-            .lvl-container {
-              width: fit-content;
-              height: 19px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              color: #6c6c6c;
-              font-size: 16px;
-              font-weight: 400;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // VIOLATION STATE COLUMN
-            .violation-state-container {
-              width: fit-content;
-              height: 28px;
-              font-size: 16px;
-              font-weight: bold;
-              color: #6c6c6c;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // INV. AGEING COLUMN
-            .inv-ageing-container {
-              width: fit-content;
-              height: 18px;
-              display: flex;
-              .bfb-container,
-              .dnu-container {
-                cursor: pointer;
-                min-width: 18px;
-                width: fit-content;
-                height: 18px;
-                padding: 2px;
-                color: #ffffff;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 11px;
-                font-weight: bold;
-
-                &::selection {
-                  color: #ffffff;
-                  background: #ffffff20;
-                }
-              }
-
-              .bfb-container {
-                margin-right: 2px;
-                border-radius: 2px 0 0 2px;
-                background: #6d82c7;
-
-                &:hover {
-                  background: #536bc2;
-                  transition: 0.25s;
-                }
-              }
-
-              .dnu-container {
-                margin-right: 4px;
-                border-radius: 0 2px 2px 0;
-                background: #e57373;
-
-                &:hover {
-                  background: #ef5350;
-                  transition: 0.25s;
-                }
-              }
-
-              .inv-ageing-text {
-                font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
-                height: 18px;
-                line-height: 18px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-            }
-
-            // CONTACT COLUMN
-            .contact-container {
-              width: fit-content;
-              height: 18px;
-              display: flex;
-
-              .contact-count {
-                width: fit-content;
-                min-width: 18px;
-                height: 18px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: #f3f3f3;
-                color: #919191;
-                margin-right: 2px;
-                font-size: 11px;
-                font-weight: bold;
-
-                &::selection {
-                  color: #919191;
-                  background: #91919120;
-                }
-              }
-
-              .contact-avatar {
-                width: 18px;
-                height: 18px;
-                background-repeat: no-repeat;
-                background-position: center;
-                background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar.svg");
-              }
-            }
-
-            // WORK HOUR COLUMN
-            .work-hour-container {
-              width: fit-content;
-              height: 18px;
-              display: flex;
-
-              .work-hour-icon {
-                margin-right: 4px;
-                width: 18px;
-                height: 18px;
-                background-repeat: no-repeat;
-                background-position: center;
-                background-image: url("../../../../../../assets/svg/truckassist-table/customer/calendar.svg");
-              }
-
-              .work-hour-time {
-                color: #6c6c6c;
-                height: 18px;
-                line-height: 18px;
-                font-size: 14px;
-                font-weight: 400;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-            }
-
-            // DESCRIPTION COLUMN
-            .description-container {
-              cursor: pointer;
-              color: #6c6c6c;
-              font-size: 14px;
-              font-weight: 400;
-              height: 18px;
-              line-height: 18px;
-              display: flex;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // VL COLUMN
-            .active-vl-count,
-            .zero-vl-count {
-              color: #6c6c6c;
-              font-size: 16px;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            .active-vl-count {
-              font-weight: bold;
-            }
-
-            .zero-vl-count {
-              font-weight: 400;
-            }
-
-            // AVATAR COLUMN
-            .avatar-container {
-              width: fit-content;
-              height: fit-content;
-              margin-right: 6px;
-              display: flex;
-              cursor: pointer;
-              transition: transform 0.2s;
-
-              &:hover {
-                transform: scale(1.8);
-                transition: 0.2s;
-              }
-
-              .round-avatar {
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
-                overflow: hidden;
-              }
-
-              .regular-avatar {
-                border-radius: 2px;
-                width: 18px;
-                height: 20px;
-                overflow: hidden;
-
-                img {
-                  border-radius: 2px;
-                }
-              }
-
-              .avatar-img {
-                img {
-                  display: flex;
-                  width: 100%;
-                  height: 100%;
-                }
-              }
-
-              .avatar-no-img {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 7px;
-                font-weight: 800;
-              }
-
-              .avatar-owner {
-                user-select: none;
-                display: flex;
-                width: 10px;
-                height: 10px;
-                margin-left: -6px;
-                margin-top: 12px;
-              }
-            }
-
-            .table-avatar-name {
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              color: #6c6c6c;
-              font-size: 14px;
-              font-weight: bold;
-              align-items: center;
-              cursor: pointer;
-
-              &:hover {
-                color: #5673aa;
-                transition: 0.25s;
-              }
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // USER AVATAR COLUMN
-            .user-avatar-container {
-              cursor: pointer;
-              width: 20px;
-              height: 20px;
-              margin-right: 6px;
-              display: flex;
-              align-items: center;
-
-              &:hover {
-                transform: scale(1.8);
-                transition: 0.2s;
-              }
-
-              .avatar {
-                user-select: none;
-                width: 20px;
-                height: 20px;
-                border-radius: 50px;
-              }
-
-              .user-avatar-no-img {
-                width: 18px;
-                height: 18px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 7px;
-                font-weight: 800;
-              }
-            }
-
-            // USER STATUS COLUMN
-            .user-status-container {
-              width: 64px;
-              height: 20px;
-              border-radius: 2px;
-              background: #6c6c6c20;
-              color: #6c6c6c;
-              font-size: 12px;
-              font-weight: bold;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c;
-              }
-            }
-
-            .user-invited {
-              background: #ffa72610 !important;
-              color: #ffa726 !important;
-            }
-
-            // NAME LINK
-            .table-name-link {
-              font-size: 14px;
-              font-weight: bold;
-              color: #6c6c6c;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              align-items: center;
-              cursor: pointer;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-
-              &:hover {
-                color: #5673aa;
-                transition: 0.25s;
-              }
-            }
-
-            // CUSTOMER NAME COLUMN
-            .customer-name-container {
-              display: flex;
-
-              svg-icon {
-                margin-right: 6px;
-                width: 18px;
-                height: 18px;
-              }
-
-              .customer-name {
-                font-size: 16px;
-                font-weight: 400;
-                color: #6c6c6c;
-                white-space: nowrap;
-              }
-            }
-
-            // REGURAL TEXT
-            .table-text {
-              font-size: 14px;
-              font-weight: 400;
-              color: #6c6c6c;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              width: 100%;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // STATE COLUMN
-            .table-state {
-              width: fit-content;
-              padding: 0 2px;
-              min-width: 28px;
-              height: 18px;
-              border-radius: 2px;
-              background: #f3f3f3;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              font-size: 11px;
-              font-weight: 800;
-              color: #6c6c6c;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // SEMI BOLD TEXT COLUMN
-            .semi-bold-table-text {
-              font-size: 14px;
-              font-weight: 600;
-              color: #6c6c6c;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              width: 100%;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // PICKUP COLUMN
-            .pickup-and-delivery-container {
-              display: flex;
-
-              .picup-count,
-              .delivery-count {
-                width: 22px;
-                height: 22px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 2px;
-                font-size: 14px;
-                font-weight: bold;
-                margin-right: 6px;
-              }
-
-              .picup-count {
-                background: #e1f7f3;
-                color: #3bcbae;
-                &::selection {
-                  color: #3bcbae;
-                  background: #3bcbae20;
-                }
-              }
-
-              .delivery-count {
-                background: #ffe4e4;
-                color: #ff8080;
-                &::selection {
-                  color: #ff8080;
-                  background: #ff808020;
-                }
-              }
-
-              .loaction {
-                height: 100%;
-                width: fit-content;
-                display: flex;
-                align-self: center;
-                color: #6c6c6c;
-                font-size: 14px;
-                font-weight: 400;
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-            }
-            // ATTACHMENTS, MEDIA AND INSURANCE COLUMN
-            .attachments-icon-container,
-            .media-icon-container,
-            .inspection-icon-container {
-              cursor: pointer;
-              width: 24px;
-              height: 24px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border-radius: 2px;
-
-              svg-icon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              }
-            }
-
-            .action-active {
-              background: #f3f3f3;
-
-              svg-icon {
-                svg {
-                  path {
-                    fill: #6d82c7;
-                  }
-                }
-              }
-            }
-
-            // HIRE COLUMN
-            .hire-icon {
-              cursor: pointer;
-              width: 18px;
-              height: 18px;
-              background-repeat: no-repeat;
-              background-position: center;
-              background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant.svg");
-
-              &:hover {
-                background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg");
-              }
-            }
-
-            // FAVORITE COLUMN
-            .not-favorite-icon,
-            .is-favorite-icon {
-              cursor: pointer;
-              width: 18px;
-              height: 18px;
-              background-repeat: no-repeat;
-              background-position: center;
-            }
-
-            .not-favorite-icon {
-              background-image: url("../../../../../../assets/svg/truckassist-table/favorite.svg");
-
-              &:hover {
-                background-image: url("../../../../../../assets/svg/truckassist-table/favorite-selected-row.svg");
-              }
-            }
-
-            .is-favorite-icon {
-              background-image: url("../../../../../../assets/svg/truckassist-table/is-favorite.svg");
-
-              &:hover {
-                background-image: url("../../../../../../assets/svg/truckassist-table/is-favorite-icon-hover.svg");
-              }
-            }
-
-            // COLOR COLUMN
-            .color-icon {
-              display: flex;
-            }
-
-            .color-name {
-              width: fit-content;
-              color: #6c6c6c;
-              margin-left: 4px;
-              font-size: 14px;
-              font-weight: 400;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // SVG COLUMN
-            .truckassist-icon {
-              svg-icon {
-                display: flex;
-                svg {
-                  path {
-                    fill: #aaaaaa;
-                  }
-                }
-              }
-
-              &:hover {
-                // TRUCKS
-                .ic_truck_semi-truck {
-                  svg {
-                    path {
-                      fill: #97d568;
-                    }
-                  }
-                }
-
-                .ic_truck_semi-wSleeper {
-                  svg {
-                    path {
-                      fill: #ffb74d;
-                    }
-                  }
-                }
-
-                .ic_truck_box-truck {
-                  svg {
-                    path {
-                      fill: #e57373;
-                    }
-                  }
-                }
-
-                .ic_truck_cargo-van {
-                  svg {
-                    path {
-                      fill: #68c3ff;
-                    }
-                  }
-                }
-
-                .ic_truck_tow-truck {
-                  svg {
-                    path {
-                      fill: #ba68c8;
-                    }
-                  }
-                }
-
-                .ic_truck_car-hauler {
-                  svg {
-                    path {
-                      fill: #59a5a5;
-                    }
-                  }
-                }
-
-                .ic_truck_spotter {
-                  svg {
-                    path {
-                      fill: #415fc1;
-                    }
-                  }
-                }
-
-                // TRAILERS
-                .ic_trailer_reefer {
-                  svg {
-                    path {
-                      fill: #ff5454;
-                    }
-                  }
-                }
-
-                .ic_trailer_dryvan {
-                  svg {
-                    path {
-                      fill: #6d82c7;
-                    }
-                  }
-                }
-
-                .ic_trailer_side-kit {
-                  svg {
-                    path {
-                      fill: #56ab62;
-                    }
-                  }
-                }
-
-                .ic_trailer_conestoga {
-                  svg {
-                    path {
-                      fill: #3c3c3c;
-                    }
-                  }
-                }
-
-                .ic_trailer_dumper {
-                  svg {
-                    path {
-                      fill: #6fdfe4;
-                    }
-                  }
-                }
-
-                .ic_trailer_container {
-                  svg {
-                    path {
-                      fill: #f89a3d;
-                    }
-                  }
-                }
-
-                .ic_trailer_tanker-liquid {
-                  svg {
-                    path {
-                      fill: #1e9df3;
-                    }
-                  }
-                }
-
-                .ic_trailer_carhauler {
-                  svg {
-                    path {
-                      fill: #59a5a5;
-                    }
-                  }
-                }
-
-                .ic_trailer_flatbed {
-                  svg {
-                    path {
-                      fill: #a468ff;
-                    }
-                  }
-                }
-
-                .ic_trailer_low-boy {
-                  svg {
-                    path {
-                      fill: #a34cb8;
-                    }
-                  }
-                }
-
-                .ic_trailer_chassis {
-                  svg {
-                    path {
-                      fill: #4a9a4f;
-                    }
-                  }
-                }
-
-                .ic_trailer_step-deck {
-                  svg {
-                    path {
-                      fill: #f3d542;
-                    }
-                  }
-                }
-
-                .ic_trailer-tanker-dryBulk {
-                  svg {
-                    path {
-                      fill: #f3f3f3;
-                    }
-                  }
-                }
-              }
-            }
-
-            // TOTAL TEXT COLUMN
-            .table-total {
-              font-size: 14px;
-              font-weight: 600;
-              color: #6c6c6c;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // COMMENT COLUMN
-            .comment-container {
-              cursor: pointer;
-
-              &:hover {
-                svg {
-                  .comment-notification {
-                    fill: #919191;
-                  }
-                }
-              }
-            }
-
-            // INVOICE COLUMN
-            .invoice-text {
-              cursor: pointer;
-              font-size: 14px;
-              font-weight: bold;
-              color: #6c6c6c;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              height: 18px;
-              line-height: 18px;
-              margin-right: 7px;
-
-              &:hover {
-                color: #536bc2;
-              }
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // DISPECHER AVATAR COLUMN
-            .dispecher-img {
-              user-select: none;
-              width: 18px;
-              height: 18px;
-              border-radius: 50%;
-              margin-right: 4px;
-
-              &:hover {
-                transform: scale(1.8);
-                transition: 0.25s;
-              }
-            }
-
-            .dispatcher-name {
-              height: 18px;
-              line-height: 18px;
-              color: #6c6c6c;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              font-size: 14px;
-              font-weight: 400;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // LOAD TOTAL COLUMN
-            .load-totla-container {
-              .main-total,
-              .sub-total {
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-              }
-
-              .main-total {
-                height: 15px;
-                line-height: 15px;
-                font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-
-              .sub-total {
-                font-size: 10px;
-                font-weight: bold;
-                color: #ffa726;
-                height: 11px;
-                line-height: 11px;
-
-                &::selection {
-                  color: #ffa726;
-                  background: #ffa72620;
-                }
-              }
-            }
-
-            // CUSTOMER NAME COLUMN
-            .customer-icon {
-              margin-right: 4px;
-              display: flex;
-            }
-
-            .customer-name {
-              height: 18px;
-              line-height: 18px;
-              font-size: 14px;
-              font-weight: 400;
-              color: #6c6c6c;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            .customer-name-ban {
-              color: #aaaaaa !important;
-
-              &::selection {
-                color: #aaaaaa !important;
-                background: #aaaaaa20 !important;
-              }
-            }
-
-            // TEXT COLOR COLUMN
-            .text-color {
-              cursor: pointer;
-              font-size: 14px;
-              font-weight: 400;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              user-select: none;
-              width: 100%;
-              height: 100%;
-              display: flex;
-              align-items: center;
-              border-radius: 2px;
-
-              &:hover {
-                color: white;
-                background: red;
-                transition: 0.25s;
-              }
-            }
-
-            // PICKUP AND DELIVERY COLUMN
-            .pickup-delivery-counter {
-              user-select: none;
-              width: 22px;
-              height: 22px;
-              line-height: 22px;
-              border-radius: 2px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              margin-right: 6px;
-              color: white;
-              font-size: 14px;
-              font-weight: bold;
-            }
-
-            .special-count {
-              font-size: 17px !important;
-              font-weight: bold !important;
-              background: #efc725;
-            }
-
-            .pickup-count {
-              background: #4db6a2;
-            }
-
-            .delivery-count {
-              background: #e57373;
-            }
-
-            .pickup-delivery-location-container {
-              .location {
-                font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
-                height: 15px;
-                line-height: 15px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-
-              .date-time-container {
-                display: flex;
-                align-items: center;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-
-                .date,
-                .time {
-                  font-size: 10px;
-                  font-weight: bold;
-                  color: #919191;
-                  height: 11px;
-                  line-height: 11px;
-
-                  &::selection {
-                    color: #919191;
-                    background: #91919120;
-                  }
-                }
-
-                .time {
-                  visibility: hidden;
-                  margin-left: auto;
-                }
-              }
-            }
-
-            // STATUS COLUMN
-            .status-container {
-              cursor: pointer;
-
-              .status,
-              .status-time {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
+            flex-direction: column;
+            border-radius: 3px;
+            padding: 2px;
+            transition: margin-bottom 0.25s;
+
+            // Columns
+            .columns-container {
                 width: 100%;
-              }
-
-              .status {
-                user-select: none;
-                height: 14px;
-                line-height: 14px;
-                font-size: 11px;
-                font-weight: 900;
-                color: #508f91;
-              }
-
-              .status-time {
-                font-size: 10px;
-                font-weight: bold;
-                color: #919191;
-                height: 12px;
-                line-height: 12px;
-
-                &::selection {
-                  color: #919191;
-                  background: #91919120;
-                }
-              }
-            }
-
-            // FINISH ORDER COLUMN
-            .finish-order-action {
-              width: 98px;
-              height: 24px;
-              display: flex;
-              border-radius: 2px;
-              background: #6d82c7;
-              color: #ffffff;
-              font-size: 11px;
-              font-weight: 800;
-              align-items: center;
-              justify-content: center;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              cursor: pointer;
-            }
-
-            // SERVICE COLUMN
-            .service-container {
-              width: 100%;
-              display: flex;
-
-              .img-style {
-                width: 18px;
-                height: 18px;
-              }
-
-              .img-margin {
-                margin-right: 6px;
-              }
-
-              /* Regular Type Icon */
-              .truck {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_truck_table-inactive.svg");
-              }
-
-              .trailer {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_trailer_table-inactive.svg");
-              }
-
-              .mobile {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_mobile_table-inactive.svg");
-              }
-
-              .shop {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_shop_table-inactive.svg");
-              }
-
-              .towing {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_towing_table-inactive.svg");
-              }
-
-              .parts {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_parts_table-inactive.svg");
-              }
-
-              .tire {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_tire_table-inactive.svg");
-              }
-
-              .dealer {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_dealer_table-inactive.svg");
-              }
-
-              /* Active Type Icon */
-              .truck-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_truck_table.svg");
-              }
-
-              .trailer-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_trailer_table.svg");
-              }
-
-              .mobile-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_mobile_table.svg");
-              }
-
-              .shop-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_shop_table.svg");
-              }
-
-              .towing-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_towing_table.svg");
-              }
-
-              .parts-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_parts_table.svg");
-              }
-
-              .tire-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_tire_table.svg");
-              }
-
-              .dealer-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_dealer_table.svg");
-              }
-            }
-
-            // SHARED  COLUMN
-            .shared-container {
-              display: flex;
-              height: 18px;
-              width: fit-content;
-
-              .shared-icon {
-                width: 18px;
-                height: 18px;
-                background-repeat: no-repeat;
-                background-position: center;
-                margin-right: 6px;
-              }
-
-              .lock-icon {
-                background-image: url("../../../../../../assets/svg/truckassist-table/shared-lock.svg");
-              }
-
-              .shared-active-icon {
-                background-image: url("../../../../../../assets/svg/truckassist-table/shared.svg");
-              }
-
-              .shared-text {
-                font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
-                height: fit-content;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-            }
-
-            // LABLE COLUMN
-            .lable-container {
-              cursor: pointer;
-              display: flex;
-              align-self: center;
-
-              svg {
-                margin-right: 4px;
-                height: 21px;
-              }
-
-              .lable-name {
-                font-size: 14px;
-                font-weight: 400;
-                height: fit-content;
-                color: #6c6c6c;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-            }
-
-            //URL
-            .table-url {
-              cursor: pointer;
-              text-decoration: none;
-              font-size: 14px;
-              font-weight: 400;
-              color: #6c6c6c;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              width: 100%;
-              margin-top: 1px;
-
-              &:hover {
-                color: #5673aa;
-                transition: 0.25s;
-              }
-
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // PASSWORD
-            .password-icon {
-              cursor: pointer;
-              width: 18px;
-              height: 18px;
-              background-repeat: no-repeat;
-              background-position: center;
-              margin-right: 4px;
-            }
-
-            .password-hidden {
-              background-image: url("../../../../../../assets/svg/truckassist-table/password-locked.svg");
-
-              &:hover {
-                background-image: url("../../../../../../assets/svg/truckassist-table/show-password.svg");
-              }
-            }
-
-            .password-showing {
-              background-image: url("../../../../../../assets/svg/truckassist-table/showing-password.svg");
-
-              &:hover {
-                background-image: url("../../../../../../assets/svg/truckassist-table/hide-password.svg");
-              }
-            }
-
-            .password-spiner {
-              width: 24px;
-              height: 24px;
-              svg {
-                width: 24px;
-                height: 24px;
-              }
-            }
-
-            .password-text-showing {
-              font-size: 14px;
-              font-weight: 400;
-              color: #6c6c6c;
-            }
-
-            // RAITING
-            .raiting-container {
-              display: flex;
-              width: fit-content;
-              height: 18px;
-              justify-self: center;
-
-              .raiting-icon {
-                cursor: pointer;
-                width: 18px;
-                height: 18px;
-                background-repeat: no-repeat;
-                background-position: center;
-              }
-
-              .like-icon {
-                background-image: url("../../../../../../assets/svg/truckassist-table/like.svg");
-                margin-right: 2px;
-              }
-
-              .did-like-icon {
-                background-image: url("../../../../../../assets/svg/truckassist-table/has-like.svg");
-                margin-right: 2px;
-
-                &:hover {
-                  background-image: url("../../../../../../assets/svg/truckassist-table/has-like-icon-hover.svg");
-                }
-              }
-
-              .dislike-icon {
-                background-image: url("../../../../../../assets/svg/truckassist-table/dislike.svg");
-              }
-
-              .did-dislike-icon {
-                background-image: url("../../../../../../assets/svg/truckassist-table/has-dislike.svg");
-
-                &:hover {
-                  background-image: url("../../../../../../assets/svg/truckassist-table/has-dislike-icon-hover.svg");
-                }
-              }
-
-              .raiting-counter-container {
+                height: 100%;
                 display: flex;
-                cursor: pointer;
 
-                .raiting-counter {
-                  min-width: 18px;
-                  height: 18px;
-                  background: #f3f3f3;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  color: #919191;
-                  font-size: 11px;
-                  font-weight: bold;
-                  margin-right: 2px;
-                  padding: 0px 3px;
-
-                  &::selection {
-                    color: #919191;
-                    background: #91919120;
-                  }
-                }
-
-                .like-counter {
-                  border-radius: 2px 0px 0px 2px;
-                }
-
-                .dislike-counter {
-                  border-radius: 0px 2px 2px 0px;
-                }
-              }
-            }
-
-            // LABLE
-            .table-lable {
-              width: 22px !important;
-              height: 22px;
-              border-radius: 3px;
-              margin-right: 9px;
-            }
-
-            .table-lable-text {
-              color: #6c6c6c;
-              margin-top: 1px;
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            // DROPDOWN
-            .table-dropdown-container {
-              width: 30px;
-              height: 28px;
-              background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg");
-              background-repeat: no-repeat;
-              background-position: center;
-              cursor: pointer;
-
-              &:hover {
-                background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-hover.svg");
-              }
-            }
-
-            // SW TW TOTAL COLUMN
-            .sw-tw-total-container {
-              display: flex;
-              align-items: center;
-              height: 18px;
-
-              .border {
-                width: 1px;
-                height: 14px;
-                border-radius: 1px;
-                background: #dadada;
-              }
-
-              .regular-count,
-              .bold-count {
-                width: 30px;
-                font-size: 14px;
-                color: #6c6c6c;
-                margin: 0 14px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-
-              .regular-count {
-                font-weight: 500;
-              }
-
-              .bold-count {
-                font-weight: bold;
-              }
-            }
-
-            // CITATION COLUMN
-            .citation-container {
-              width: 140px;
-              height: 24px;
-              border-radius: 2px;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              padding: 3px;
-
-              .citation-item {
-                width: 30px;
-                height: 18px;
-                border-radius: 2px;
-                font-size: 14px;
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #ffffff;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                &::selection {
-                  color: #ffffff;
-                  background: #ffffff20;
-                }
-              }
-
-              .cop-item {
-                background: #6d82c7;
-              }
-
-              .oss-item {
-                background: #ffb74d;
-              }
-
-              .money-item {
-                background: #e57373;
-              }
-            }
-
-            // ACCIDENT CITATION TYPE
-            .accident-citation-container {
-              width: fit-content;
-              height: 24px;
-              border-radius: 2px;
-              padding: 3px;
-              display: flex;
-              align-items: center;
-
-              .accident-citation-item {
-                width: 30px;
-                height: 18px;
-                border-radius: 2px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                color: #ffffff;
-                font-size: 14px;
-                font-weight: 600;
-
-                &::selection {
-                  color: #ffffff;
-                  background: #ffffff20;
-                }
-              }
-
-              .item-has-margin {
-                margin-right: 22px;
-              }
-
-              .grey-item {
-                background: #aaaaaa;
-              }
-
-              .yellow-item {
-                background: #ffb74d;
-              }
-
-              .red-item {
-                background: #e57373;
-              }
-
-              .blue-item {
-                background: #6d82c7;
-              }
-            }
-
-            // PROGRESS COLUMN
-            .applicant-status-container {
-              width: fit-content;
-              height: fit-content;
-
-              .status-icon {
-                width: 16px;
-                height: 16px;
-                background-repeat: no-repeat;
-                background-position: center;
-              }
-
-              .done-icon {
-                background-image: url("../../../../../../assets/svg/truckassist-table/applicant-done-icon.svg");
-              }
-
-              .wrong-icon {
-                background-image: url("../../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg");
-              }
-
-              .complete-icon {
-                background-image: url("../../../../../../assets/svg/truckassist-table/applicant-complete-icon.svg");
-              }
-            }
-
-            .table-progress-cotnainer {
-              display: flex;
-              align-items: center;
-
-              .table-progress-bar-container {
-                border-radius: 3px;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                user-select: none;
-                height: 20px;
-                width: 24px;
-                display: flex;
-                overflow: hidden;
-                line-height: 0;
-                font-size: 14px;
-
-                .table-progress-bar {
-                  text-align: left;
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  white-space: nowrap;
-                }
-              }
-
-              .table-progress-text {
-                font-size: 14px;
-                font-weight: 400;
-                margin-left: 4px;
-                color: #6c6c6c;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-            }
-
-            // APPLICANT PROGRESS COLUMN
-            .applicant-progress-container {
-              height: 100%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              margin-right: 20px;
-            }
-
-            // APPLICANT REVIEW COLUMN
-            .applicant-review-container {
-              display: flex;
-              align-items: center;
-
-              .review-icon {
-                width: 22px;
-                height: 22px;
-                border-radius: 2px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-right: 4px;
-
-                svg-icon {
-                  display: flex;
-                }
-              }
-
-              // Wrong
-              .review-icon {
-                background: #e57373;
-
-                svg-icon {
-                  svg {
-                    path {
-                      fill: #ffffff;
-                    }
-                  }
-                }
-              }
-
-              // Done
-              .finished {
-                background: #26a690;
-
-                svg-icon {
-                  svg {
-                    path {
-                      fill: #ffffff;
-                    }
-                  }
-                }
-              }
-
-              // Incomplete
-              .incomplete {
-                background: #f3f3f3;
-
-                svg-icon {
-                  svg {
-                    path {
-                      fill: #aaaaaa;
-                    }
-                  }
-                }
-              }
-              // Ready
-              .ready {
-                background: #f3f3f3;
-
-                svg-icon {
-                  svg {
-                    path {
-                      fill: #aaaaaa;
-                    }
-                  }
-                }
-              }
-
-              .review-title {
-                font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
-                height: 18px;
-                line-height: 18px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-              }
-            }
-          }
-        }
-      }
-
-      // Attachment, Media And Insurance Dropdown
-      .attachemnt-dropdown,
-      .media-dropdown,
-      .insurance-dropdown {
-        /*  width: 100%; */
-        width: 0px;
-        /* height: fit-content; */
-        max-height: 0px;
-        overflow: hidden;
-        transition: max-height 0.2s ease-in-out;
-
-        .attachemnt-dropdown-content,
-        .media-dropdown-content,
-        .insurance-dropdown-content {
-          width: 100%;
-          height: fit-content;
-          padding: 0 6px 6px 6px;
-          transition: height 0.25s ease-in-out;
-
-          .dropdown-border-container {
-            height: 2px;
-            width: 100%;
-            padding: 0 10px;
-            margin-top: 2px;
-
-            .dropdown-border {
-              width: 100%;
-              height: 100%;
-              border-radius: 1px;
-              background: #f3f3f3;
-            }
-          }
-
-          .violation-inspection-container,
-          .citation-inspection-container {
-            .inspection-title {
-              width: 100%;
-              height: 36px;
-              display: flex;
-              align-items: center;
-
-              .title {
-                font-size: 14px;
-                font-weight: bold;
-                color: #919191;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-
-                &::selection {
-                  color: #919191;
-                  background: #91919120;
-                }
-              }
-
-              .violation-title,
-              .citation-title {
-                width: 186px;
-                padding-left: 8px;
-              }
-
-              .description-title {
-                flex-grow: 1;
-              }
-            }
-
-            .violations-items,
-            .citation-items {
-              cursor: pointer;
-              width: 100%;
-              height: 32px;
-              border-radius: 2px;
-              padding: 0 8px;
-              display: flex;
-              align-items: center;
-            }
-          }
-
-          // VIOALTION
-          .violation-inspection-container {
-            width: 100%;
-            height: fit-content;
-
-            .inspection-title {
-              .sw-title {
-                width: 93px;
-              }
-            }
-
-            .violations-items {
-              background: #97a8dc10;
-
-              &:hover {
-                background: #97a8dc30;
-                transition: 0.25s;
-              }
-
-              svg-icon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              }
-
-              .violation-icon {
-                margin-right: 4px;
-              }
-
-              .violation-code {
-                font-size: 14px;
-                font-weight: bold;
-                color: #6c6c6c;
-                width: 156px;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-
-              .oss-icon {
-                margin-right: 6px;
-              }
-
-              .inspection-decription {
-                flex-grow: 1;
-                font-weight: 400;
-              }
-
-              .edit-description {
-                flex-grow: 1;
-                height: 26px;
-                background: #6c6c6c;
-                border-radius: 2px;
-
-                input {
-                  width: 100%;
-                  height: 100%;
-                  border: none;
-                  background: transparent;
-                  padding: 4px 6px;
-                  outline: none;
-                  color: #ffffff;
-                  font-size: 14px;
-                  font-weight: 400;
-
-                  &::selection {
-                    color: #ffffff;
-                    background: #ffffff20;
-                  }
-                }
-              }
-
-              .inspection-decription,
-              .sw-count {
-                font-size: 14px;
-                color: #6c6c6c;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-
-              .sw-count {
-                width: 48px;
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-right: 30px;
-
-                .oss-count {
-                  font-size: 14px;
-                  font-weight: 600;
-                  color: #ffa726;
-
-                  &::selection {
-                    color: #ffa726;
-                    background: #ffa72620;
-                  }
-                }
-              }
-            }
-          }
-
-          // CITATION
-          .citation-inspection-container {
-            .inspection-title {
-              .due-date-title {
-                width: 172px;
-              }
-
-              .paid-title {
-                width: 76px;
-              }
-
-              .cost-title {
-                width: 90px;
-                display: flex;
-                justify-content: flex-end;
-              }
-
-              .actions-title {
-                width: 100px;
-              }
-            }
-
-            .citation-items {
-              background: #ef9a9a10;
-
-              &:hover {
-                background: #ef9a9a30;
-                transition: 0.25s;
-              }
-
-              .citation-code {
-                width: 178px;
-                font-size: 14px;
-                font-weight: bold;
-                color: #6c6c6c;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-
-              .citation-description {
-                flex-grow: 1;
-                font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-
-              .due-date {
-                width: 172px;
-
-                .table-progress-cotnainer {
-                  display: flex;
-                  align-items: center;
-
-                  .table-progress-bar-container {
-                    border-radius: 3px;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    user-select: none;
-                    height: 20px;
-                    width: 24px;
+                .pined-columns,
+                .not-pined-columns,
+                .actions-columns {
                     display: flex;
+                }
+
+                .not-pined-columns {
+                    width: fit-content;
                     overflow: hidden;
-                    line-height: 0;
-                    font-size: 14px;
+                }
 
-                    .table-progress-bar {
-                      text-align: left;
-                      display: flex;
-                      flex-direction: column;
-                      justify-content: center;
-                      white-space: nowrap;
+                td {
+                    width: fit-content;
+                    padding: 0;
+
+                    // TEMPLATES
+                    .td-content {
+                        display: flex;
+                        height: 100%;
+                        align-items: center;
+
+                        // NO TEMPLATE
+                        .no-template {
+                            color: red;
+                            font-size: 14px;
+                            font-weight: bold;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            width: 100%;
+                        }
+
+                        // CHECKBOX TEMPLATE
+                        .table-checkbox {
+                            display: none;
+                        }
+
+                        .table-checkbox-label {
+                            width: 14px;
+                            height: 14px;
+                            background-color: #dadada;
+                            margin-bottom: 0;
+                            border-radius: 1px;
+                            cursor: pointer;
+
+                            &:hover {
+                                background-color: #b7b7b7;
+                            }
+                        }
+
+                        .table-checkbox:checked + .table-checkbox-label {
+                            background-color: #91a4c7;
+                            background-image: url('../../../../../../assets/svg/truckassist-table/check-new.svg');
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            transition: background-color 0.25s;
+
+                            &:hover {
+                                background-color: #5673aa;
+                            }
+                        }
+
+                        // OOS COLUMN
+                        .oos-container {
+                            width: 92px;
+                            height: 28px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            div {
+                                width: 28px;
+                                height: 28px;
+                                border-radius: 2px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 16px;
+                                font-weight: 900;
+                                color: #dadada;
+
+                                &::selection {
+                                    color: #dadada;
+                                    background: #dadada20;
+                                }
+                            }
+
+                            .oos-active {
+                                background: #5673aa !important;
+                                color: white !important;
+
+                                &::selection {
+                                    color: #ffffff;
+                                    background: #ffffff20;
+                                }
+                            }
+                        }
+
+                        // COMPACT TEXT
+                        .compact-text-container {
+                            width: 100%;
+                            height: 28px;
+                            padding-top: 1px;
+                            display: flex;
+                            overflow: hidden;
+
+                            .title-values-container {
+                                width: fit-content;
+                                height: fit-content;
+
+                                .title-compact-text,
+                                .values-compact-text {
+                                    width: fit-content;
+                                    align-self: center;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+                                }
+
+                                .title-compact-text {
+                                    height: 10px;
+                                    color: #919191;
+                                    font-size: 10px;
+                                    font-weight: bold;
+                                    line-height: 7px;
+                                    margin-bottom: 2px;
+                                }
+
+                                .values-compact-text {
+                                    height: 14px;
+                                    line-height: 14px;
+                                    font-size: 14px;
+                                    font-weight: 400;
+                                    color: #6c6c6c;
+                                    max-width: 60px;
+                                }
+                            }
+
+                            .title-values-margin {
+                                margin-right: 12px;
+                            }
+                        }
+
+                        // CITATION COLUMN
+                        .citation-table {
+                            width: 36px;
+                            height: 24px;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            background-image: url('../../../../../../assets/svg/truckassist-table/citation-icon.svg');
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-size: 16px;
+                            font-weight: 400;
+                            color: white;
+
+                            &::selection {
+                                color: #ffffff;
+                                background: #ffffff20;
+                            }
+                        }
+
+                        .citation-table-active {
+                            font-weight: 800;
+                        }
+
+                        // LVL COLUMN
+                        .lvl-container {
+                            width: fit-content;
+                            height: 19px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            color: #6c6c6c;
+                            font-size: 16px;
+                            font-weight: 400;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // VIOLATION STATE COLUMN
+                        .violation-state-container {
+                            width: fit-content;
+                            height: 28px;
+                            font-size: 16px;
+                            font-weight: bold;
+                            color: #6c6c6c;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // INV. AGEING COLUMN
+                        .inv-ageing-container {
+                            width: fit-content;
+                            height: 18px;
+                            display: flex;
+                            .bfb-container,
+                            .dnu-container {
+                                cursor: pointer;
+                                min-width: 18px;
+                                width: fit-content;
+                                height: 18px;
+                                padding: 2px;
+                                color: #ffffff;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 11px;
+                                font-weight: bold;
+
+                                &::selection {
+                                    color: #ffffff;
+                                    background: #ffffff20;
+                                }
+                            }
+
+                            .bfb-container {
+                                margin-right: 2px;
+                                border-radius: 2px 0 0 2px;
+                                background: #6d82c7;
+
+                                &:hover {
+                                    background: #536bc2;
+                                    transition: 0.25s;
+                                }
+                            }
+
+                            .dnu-container {
+                                margin-right: 4px;
+                                border-radius: 0 2px 2px 0;
+                                background: #e57373;
+
+                                &:hover {
+                                    background: #ef5350;
+                                    transition: 0.25s;
+                                }
+                            }
+
+                            .inv-ageing-text {
+                                font-size: 14px;
+                                font-weight: 400;
+                                color: #6c6c6c;
+                                height: 18px;
+                                line-height: 18px;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+                        }
+
+                        // CONTACT COLUMN
+                        .contact-container {
+                            width: fit-content;
+                            height: 18px;
+                            display: flex;
+
+                            .contact-count {
+                                width: fit-content;
+                                min-width: 18px;
+                                height: 18px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                background: #f3f3f3;
+                                color: #919191;
+                                margin-right: 2px;
+                                font-size: 11px;
+                                font-weight: bold;
+
+                                &::selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
+                            }
+
+                            .contact-avatar {
+                                width: 18px;
+                                height: 18px;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                background-image: url('../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar.svg');
+                            }
+                        }
+
+                        // WORK HOUR COLUMN
+                        .work-hour-container {
+                            width: fit-content;
+                            height: 18px;
+                            display: flex;
+
+                            .work-hour-icon {
+                                margin-right: 4px;
+                                width: 18px;
+                                height: 18px;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                background-image: url('../../../../../../assets/svg/truckassist-table/customer/calendar.svg');
+                            }
+
+                            .work-hour-time {
+                                color: #6c6c6c;
+                                height: 18px;
+                                line-height: 18px;
+                                font-size: 14px;
+                                font-weight: 400;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+                        }
+
+                        // DESCRIPTION COLUMN
+                        .description-container {
+                            cursor: pointer;
+                            color: #6c6c6c;
+                            font-size: 14px;
+                            font-weight: 400;
+                            height: 18px;
+                            line-height: 18px;
+                            display: flex;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // VL COLUMN
+                        .active-vl-count,
+                        .zero-vl-count {
+                            color: #6c6c6c;
+                            font-size: 16px;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        .active-vl-count {
+                            font-weight: bold;
+                        }
+
+                        .zero-vl-count {
+                            font-weight: 400;
+                        }
+
+                        // AVATAR COLUMN
+                        .avatar-container {
+                            width: fit-content;
+                            height: fit-content;
+                            margin-right: 6px;
+                            display: flex;
+                            cursor: pointer;
+                            transition: transform 0.2s;
+
+                            &:hover {
+                                transform: scale(1.8);
+                                transition: 0.2s;
+                            }
+
+                            .round-avatar {
+                                border-radius: 50%;
+                                width: 20px;
+                                height: 20px;
+                                overflow: hidden;
+                            }
+
+                            .regular-avatar {
+                                border-radius: 2px;
+                                width: 18px;
+                                height: 20px;
+                                overflow: hidden;
+
+                                img {
+                                    border-radius: 2px;
+                                }
+                            }
+
+                            .avatar-img {
+                                img {
+                                    display: flex;
+                                    width: 100%;
+                                    height: 100%;
+                                }
+                            }
+
+                            .avatar-no-img {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                font-size: 7px;
+                                font-weight: 800;
+                                user-select: none;
+                            }
+
+                            .avatar-owner {
+                                user-select: none;
+                                width: 10px;
+                                height: 10px;
+                            }
+                        }
+
+                        .table-avatar-name {
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            color: #6c6c6c;
+                            font-size: 14px;
+                            font-weight: bold;
+                            align-items: center;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: #5673aa;
+                                transition: 0.25s;
+                            }
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // USER AVATAR COLUMN
+                        .user-avatar-container {
+                            cursor: pointer;
+                            width: 20px;
+                            height: 20px;
+                            margin-right: 6px;
+                            display: flex;
+                            align-items: center;
+
+                            &:hover {
+                                transform: scale(1.8);
+                                transition: 0.2s;
+                            }
+
+                            .avatar {
+                                user-select: none;
+                                width: 20px;
+                                height: 20px;
+                                border-radius: 50px;
+                            }
+
+                            .user-avatar-no-img {
+                                width: 18px;
+                                height: 18px;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 7px;
+                                font-weight: 800;
+                                user-select: none;
+                            }
+                        }
+
+                        // USER STATUS COLUMN
+                        .user-status-container {
+                            width: 64px;
+                            height: 20px;
+                            border-radius: 2px;
+                            background: #6c6c6c20;
+                            color: #6c6c6c;
+                            font-size: 12px;
+                            font-weight: bold;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c;
+                            }
+                        }
+
+                        .user-invited {
+                            background: #ffa72610 !important;
+                            color: #ffa726 !important;
+                        }
+
+                        // NAME LINK
+                        .table-name-link {
+                            font-size: 14px;
+                            font-weight: bold;
+                            color: #6c6c6c;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            align-items: center;
+                            cursor: pointer;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+
+                            &:hover {
+                                color: #5673aa;
+                                transition: 0.25s;
+                            }
+                        }
+
+                        // CUSTOMER NAME COLUMN
+                        .customer-name-container {
+                            display: flex;
+
+                            svg-icon {
+                                margin-right: 6px;
+                                width: 18px;
+                                height: 18px;
+                            }
+
+                            .customer-name {
+                                font-size: 16px;
+                                font-weight: 400;
+                                color: #6c6c6c;
+                                white-space: nowrap;
+                            }
+                        }
+
+                        // REGURAL TEXT
+                        .table-text {
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #6c6c6c;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            width: 100%;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // STATE COLUMN
+                        .table-state {
+                            width: fit-content;
+                            padding: 0 2px;
+                            min-width: 28px;
+                            height: 18px;
+                            border-radius: 2px;
+                            background: #f3f3f3;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-size: 11px;
+                            font-weight: 800;
+                            color: #6c6c6c;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // SEMI BOLD TEXT COLUMN
+                        .semi-bold-table-text {
+                            font-size: 14px;
+                            font-weight: 600;
+                            color: #6c6c6c;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            width: 100%;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // PICKUP COLUMN
+                        .pickup-and-delivery-container {
+                            display: flex;
+
+                            .picup-count,
+                            .delivery-count {
+                                width: 22px;
+                                height: 22px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border-radius: 2px;
+                                font-size: 14px;
+                                font-weight: bold;
+                                margin-right: 6px;
+                            }
+
+                            .picup-count {
+                                background: #e1f7f3;
+                                color: #3bcbae;
+                                &::selection {
+                                    color: #3bcbae;
+                                    background: #3bcbae20;
+                                }
+                            }
+
+                            .delivery-count {
+                                background: #ffe4e4;
+                                color: #ff8080;
+                                &::selection {
+                                    color: #ff8080;
+                                    background: #ff808020;
+                                }
+                            }
+
+                            .loaction {
+                                height: 100%;
+                                width: fit-content;
+                                display: flex;
+                                align-self: center;
+                                color: #6c6c6c;
+                                font-size: 14px;
+                                font-weight: 400;
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+                        }
+                        // ATTACHMENTS, MEDIA AND INSURANCE COLUMN
+                        .attachments-icon-container,
+                        .media-icon-container,
+                        .inspection-icon-container {
+                            cursor: pointer;
+                            width: 24px;
+                            height: 24px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 2px;
+
+                            svg-icon {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
+                        }
+
+                        .action-active {
+                            background: #f3f3f3;
+
+                            svg-icon {
+                                svg {
+                                    path {
+                                        fill: #6d82c7;
+                                    }
+                                }
+                            }
+                        }
+
+                        // HIRE COLUMN
+                        .hire-icon {
+                            cursor: pointer;
+                            width: 18px;
+                            height: 18px;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            background-image: url('../../../../../../assets/svg/truckassist-table/hire-applicant.svg');
+
+                            &:hover {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg');
+                            }
+                        }
+
+                        // FAVORITE COLUMN
+                        .not-favorite-icon,
+                        .is-favorite-icon {
+                            cursor: pointer;
+                            width: 18px;
+                            height: 18px;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                        }
+
+                        .not-favorite-icon {
+                            background-image: url('../../../../../../assets/svg/truckassist-table/favorite.svg');
+
+                            &:hover {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/favorite-selected-row.svg');
+                            }
+                        }
+
+                        .is-favorite-icon {
+                            background-image: url('../../../../../../assets/svg/truckassist-table/is-favorite.svg');
+
+                            &:hover {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/is-favorite-icon-hover.svg');
+                            }
+                        }
+
+                        // COLOR COLUMN
+                        .color-icon {
+                            display: flex;
+                        }
+
+                        .color-name {
+                            width: fit-content;
+                            color: #6c6c6c;
+                            margin-left: 4px;
+                            font-size: 14px;
+                            font-weight: 400;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // SVG COLUMN
+                        .truckassist-icon {
+                            svg-icon {
+                                display: flex;
+                                svg {
+                                    path {
+                                        fill: #aaaaaa;
+                                    }
+                                }
+                            }
+
+                            &:hover {
+                                // TRUCKS
+                                .ic_truck_semi-truck {
+                                    svg {
+                                        path {
+                                            fill: #97d568;
+                                        }
+                                    }
+                                }
+
+                                .ic_truck_semi-wSleeper {
+                                    svg {
+                                        path {
+                                            fill: #ffb74d;
+                                        }
+                                    }
+                                }
+
+                                .ic_truck_box-truck {
+                                    svg {
+                                        path {
+                                            fill: #e57373;
+                                        }
+                                    }
+                                }
+
+                                .ic_truck_cargo-van {
+                                    svg {
+                                        path {
+                                            fill: #68c3ff;
+                                        }
+                                    }
+                                }
+
+                                .ic_truck_tow-truck {
+                                    svg {
+                                        path {
+                                            fill: #ba68c8;
+                                        }
+                                    }
+                                }
+
+                                .ic_truck_car-hauler {
+                                    svg {
+                                        path {
+                                            fill: #59a5a5;
+                                        }
+                                    }
+                                }
+
+                                .ic_truck_spotter {
+                                    svg {
+                                        path {
+                                            fill: #415fc1;
+                                        }
+                                    }
+                                }
+
+                                // TRAILERS
+                                .ic_trailer_reefer {
+                                    svg {
+                                        path {
+                                            fill: #ff5454;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_dryvan {
+                                    svg {
+                                        path {
+                                            fill: #6d82c7;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_side-kit {
+                                    svg {
+                                        path {
+                                            fill: #56ab62;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_conestoga {
+                                    svg {
+                                        path {
+                                            fill: #3c3c3c;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_dumper {
+                                    svg {
+                                        path {
+                                            fill: #6fdfe4;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_container {
+                                    svg {
+                                        path {
+                                            fill: #f89a3d;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_tanker-liquid {
+                                    svg {
+                                        path {
+                                            fill: #1e9df3;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_carhauler {
+                                    svg {
+                                        path {
+                                            fill: #59a5a5;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_flatbed {
+                                    svg {
+                                        path {
+                                            fill: #a468ff;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_low-boy {
+                                    svg {
+                                        path {
+                                            fill: #a34cb8;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_chassis {
+                                    svg {
+                                        path {
+                                            fill: #4a9a4f;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer_step-deck {
+                                    svg {
+                                        path {
+                                            fill: #f3d542;
+                                        }
+                                    }
+                                }
+
+                                .ic_trailer-tanker-dryBulk {
+                                    svg {
+                                        path {
+                                            fill: #f3f3f3;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // TOTAL TEXT COLUMN
+                        .table-total {
+                            font-size: 14px;
+                            font-weight: 600;
+                            color: #6c6c6c;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // COMMENT COLUMN
+                        .comment-container {
+                            cursor: pointer;
+
+                            &:hover {
+                                svg {
+                                    .comment-notification {
+                                        fill: #919191;
+                                    }
+                                }
+                            }
+                        }
+
+                        // INVOICE COLUMN
+                        .invoice-text {
+                            cursor: pointer;
+                            font-size: 14px;
+                            font-weight: bold;
+                            color: #6c6c6c;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            height: 18px;
+                            line-height: 18px;
+                            margin-right: 7px;
+
+                            &:hover {
+                                color: #536bc2;
+                            }
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // DISPECHER AVATAR COLUMN
+                        .dispecher-img {
+                            user-select: none;
+                            width: 18px;
+                            height: 18px;
+                            border-radius: 50%;
+                            margin-right: 4px;
+
+                            &:hover {
+                                transform: scale(1.8);
+                                transition: 0.25s;
+                            }
+                        }
+
+                        .dispatcher-name {
+                            height: 18px;
+                            line-height: 18px;
+                            color: #6c6c6c;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            font-size: 14px;
+                            font-weight: 400;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // LOAD TOTAL COLUMN
+                        .load-totla-container {
+                            .main-total,
+                            .sub-total {
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                            }
+
+                            .main-total {
+                                height: 15px;
+                                line-height: 15px;
+                                font-size: 14px;
+                                font-weight: 400;
+                                color: #6c6c6c;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+
+                            .sub-total {
+                                font-size: 10px;
+                                font-weight: bold;
+                                color: #ffa726;
+                                height: 11px;
+                                line-height: 11px;
+
+                                &::selection {
+                                    color: #ffa726;
+                                    background: #ffa72620;
+                                }
+                            }
+                        }
+
+                        // CUSTOMER NAME COLUMN
+                        .customer-icon {
+                            margin-right: 4px;
+                            display: flex;
+                        }
+
+                        .customer-name {
+                            height: 18px;
+                            line-height: 18px;
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #6c6c6c;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        .customer-name-ban {
+                            color: #aaaaaa !important;
+
+                            &::selection {
+                                color: #aaaaaa !important;
+                                background: #aaaaaa20 !important;
+                            }
+                        }
+
+                        // TEXT COLOR COLUMN
+                        .text-color {
+                            cursor: pointer;
+                            font-size: 14px;
+                            font-weight: 400;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            user-select: none;
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            align-items: center;
+                            border-radius: 2px;
+
+                            &:hover {
+                                color: white;
+                                background: red;
+                                transition: 0.25s;
+                            }
+                        }
+
+                        // PICKUP AND DELIVERY COLUMN
+                        .pickup-delivery-counter {
+                            user-select: none;
+                            width: 22px;
+                            height: 22px;
+                            line-height: 22px;
+                            border-radius: 2px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-right: 6px;
+                            color: white;
+                            font-size: 14px;
+                            font-weight: bold;
+                        }
+
+                        .special-count {
+                            font-size: 17px !important;
+                            font-weight: bold !important;
+                            background: #efc725;
+                        }
+
+                        .pickup-count {
+                            background: #4db6a2;
+                        }
+
+                        .delivery-count {
+                            background: #e57373;
+                        }
+
+                        .pickup-delivery-location-container {
+                            .location {
+                                font-size: 14px;
+                                font-weight: 400;
+                                color: #6c6c6c;
+                                height: 15px;
+                                line-height: 15px;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+
+                            .date-time-container {
+                                display: flex;
+                                align-items: center;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+
+                                .date,
+                                .time {
+                                    font-size: 10px;
+                                    font-weight: bold;
+                                    color: #919191;
+                                    height: 11px;
+                                    line-height: 11px;
+
+                                    &::selection {
+                                        color: #919191;
+                                        background: #91919120;
+                                    }
+                                }
+
+                                .time {
+                                    visibility: hidden;
+                                    margin-left: auto;
+                                }
+                            }
+                        }
+
+                        // STATUS COLUMN
+                        .status-container {
+                            cursor: pointer;
+
+                            .status,
+                            .status-time {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                width: 100%;
+                            }
+
+                            .status {
+                                user-select: none;
+                                height: 14px;
+                                line-height: 14px;
+                                font-size: 11px;
+                                font-weight: 900;
+                                color: #508f91;
+                            }
+
+                            .status-time {
+                                font-size: 10px;
+                                font-weight: bold;
+                                color: #919191;
+                                height: 12px;
+                                line-height: 12px;
+
+                                &::selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
+                            }
+                        }
+
+                        // FINISH ORDER COLUMN
+                        .finish-order-action {
+                            width: 98px;
+                            height: 24px;
+                            display: flex;
+                            border-radius: 2px;
+                            background: #6d82c7;
+                            color: #ffffff;
+                            font-size: 11px;
+                            font-weight: 800;
+                            align-items: center;
+                            justify-content: center;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            cursor: pointer;
+                        }
+
+                        // SERVICE COLUMN
+                        .service-container {
+                            width: 100%;
+                            display: flex;
+
+                            .img-style {
+                                width: 18px;
+                                height: 18px;
+                            }
+
+                            .img-margin {
+                                margin-right: 6px;
+                            }
+
+                            /* Regular Type Icon */
+                            .truck {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_truck_table-inactive.svg');
+                            }
+
+                            .trailer {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_trailer_table-inactive.svg');
+                            }
+
+                            .mobile {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_mobile_table-inactive.svg');
+                            }
+
+                            .shop {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_shop_table-inactive.svg');
+                            }
+
+                            .towing {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_towing_table-inactive.svg');
+                            }
+
+                            .parts {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_parts_table-inactive.svg');
+                            }
+
+                            .tire {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_tire_table-inactive.svg');
+                            }
+
+                            .dealer {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_dealer_table-inactive.svg');
+                            }
+
+                            /* Active Type Icon */
+                            .truck-active {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_truck_table.svg');
+                            }
+
+                            .trailer-active {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_trailer_table.svg');
+                            }
+
+                            .mobile-active {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_mobile_table.svg');
+                            }
+
+                            .shop-active {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_shop_table.svg');
+                            }
+
+                            .towing-active {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_towing_table.svg');
+                            }
+
+                            .parts-active {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_parts_table.svg');
+                            }
+
+                            .tire-active {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_tire_table.svg');
+                            }
+
+                            .dealer-active {
+                                background: url('../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_dealer_table.svg');
+                            }
+                        }
+
+                        // SHARED  COLUMN
+                        .shared-container {
+                            display: flex;
+                            height: 18px;
+                            width: fit-content;
+
+                            .shared-icon {
+                                width: 18px;
+                                height: 18px;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                margin-right: 6px;
+                            }
+
+                            .lock-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/shared-lock.svg');
+                            }
+
+                            .shared-active-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/shared.svg');
+                            }
+
+                            .shared-text {
+                                font-size: 14px;
+                                font-weight: 400;
+                                color: #6c6c6c;
+                                height: fit-content;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+                        }
+
+                        // LABLE COLUMN
+                        .lable-container {
+                            cursor: pointer;
+                            display: flex;
+                            align-self: center;
+
+                            svg {
+                                margin-right: 4px;
+                                height: 21px;
+                            }
+
+                            .lable-name {
+                                font-size: 14px;
+                                font-weight: 400;
+                                height: fit-content;
+                                color: #6c6c6c;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+                        }
+
+                        //URL
+                        .table-url {
+                            cursor: pointer;
+                            text-decoration: none;
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #6c6c6c;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            width: 100%;
+                            margin-top: 1px;
+
+                            &:hover {
+                                color: #5673aa;
+                                transition: 0.25s;
+                            }
+
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // PASSWORD
+                        .password-icon {
+                            cursor: pointer;
+                            width: 18px;
+                            height: 18px;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            margin-right: 4px;
+                        }
+
+                        .password-hidden {
+                            background-image: url('../../../../../../assets/svg/truckassist-table/password-locked.svg');
+
+                            &:hover {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/show-password.svg');
+                            }
+                        }
+
+                        .password-showing {
+                            background-image: url('../../../../../../assets/svg/truckassist-table/showing-password.svg');
+
+                            &:hover {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/hide-password.svg');
+                            }
+                        }
+
+                        .password-spiner {
+                            width: 24px;
+                            height: 24px;
+                            svg {
+                                width: 24px;
+                                height: 24px;
+                            }
+                        }
+
+                        .password-text-showing {
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #6c6c6c;
+                        }
+
+                        // RAITING
+                        .raiting-container {
+                            display: flex;
+                            width: fit-content;
+                            height: 18px;
+                            justify-self: center;
+
+                            .raiting-icon {
+                                cursor: pointer;
+                                width: 18px;
+                                height: 18px;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                            }
+
+                            .like-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/like.svg');
+                                margin-right: 2px;
+                            }
+
+                            .did-like-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/has-like.svg');
+                                margin-right: 2px;
+
+                                &:hover {
+                                    background-image: url('../../../../../../assets/svg/truckassist-table/has-like-icon-hover.svg');
+                                }
+                            }
+
+                            .dislike-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/dislike.svg');
+                            }
+
+                            .did-dislike-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/has-dislike.svg');
+
+                                &:hover {
+                                    background-image: url('../../../../../../assets/svg/truckassist-table/has-dislike-icon-hover.svg');
+                                }
+                            }
+
+                            .raiting-counter-container {
+                                display: flex;
+                                cursor: pointer;
+
+                                .raiting-counter {
+                                    min-width: 18px;
+                                    height: 18px;
+                                    background: #f3f3f3;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    color: #919191;
+                                    font-size: 11px;
+                                    font-weight: bold;
+                                    margin-right: 2px;
+                                    padding: 0px 3px;
+
+                                    &::selection {
+                                        color: #919191;
+                                        background: #91919120;
+                                    }
+                                }
+
+                                .like-counter {
+                                    border-radius: 2px 0px 0px 2px;
+                                }
+
+                                .dislike-counter {
+                                    border-radius: 0px 2px 2px 0px;
+                                }
+                            }
+                        }
+
+                        // LABLE
+                        .table-lable {
+                            width: 22px !important;
+                            height: 22px;
+                            border-radius: 3px;
+                            margin-right: 9px;
+                        }
+
+                        .table-lable-text {
+                            color: #6c6c6c;
+                            margin-top: 1px;
+                            &::selection {
+                                color: #6c6c6c;
+                                background: #6c6c6c20;
+                            }
+                        }
+
+                        // DROPDOWN
+                        .table-dropdown-container {
+                            width: 30px;
+                            height: 28px;
+                            background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg');
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            cursor: pointer;
+
+                            &:hover {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown-hover.svg');
+                            }
+                        }
+
+                        // SW TW TOTAL COLUMN
+                        .sw-tw-total-container {
+                            display: flex;
+                            align-items: center;
+                            height: 18px;
+
+                            .border {
+                                width: 1px;
+                                height: 14px;
+                                border-radius: 1px;
+                                background: #dadada;
+                            }
+
+                            .regular-count,
+                            .bold-count {
+                                width: 30px;
+                                font-size: 14px;
+                                color: #6c6c6c;
+                                margin: 0 14px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+
+                            .regular-count {
+                                font-weight: 500;
+                            }
+
+                            .bold-count {
+                                font-weight: bold;
+                            }
+                        }
+
+                        // CITATION COLUMN
+                        .citation-container {
+                            width: 140px;
+                            height: 24px;
+                            border-radius: 2px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            padding: 3px;
+
+                            .citation-item {
+                                width: 30px;
+                                height: 18px;
+                                border-radius: 2px;
+                                font-size: 14px;
+                                font-weight: 600;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: #ffffff;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                &::selection {
+                                    color: #ffffff;
+                                    background: #ffffff20;
+                                }
+                            }
+
+                            .cop-item {
+                                background: #6d82c7;
+                            }
+
+                            .oss-item {
+                                background: #ffb74d;
+                            }
+
+                            .money-item {
+                                background: #e57373;
+                            }
+                        }
+
+                        // ACCIDENT CITATION TYPE
+                        .accident-citation-container {
+                            width: fit-content;
+                            height: 24px;
+                            border-radius: 2px;
+                            padding: 3px;
+                            display: flex;
+                            align-items: center;
+
+                            .accident-citation-item {
+                                width: 30px;
+                                height: 18px;
+                                border-radius: 2px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                color: #ffffff;
+                                font-size: 14px;
+                                font-weight: 600;
+
+                                &::selection {
+                                    color: #ffffff;
+                                    background: #ffffff20;
+                                }
+                            }
+
+                            .item-has-margin {
+                                margin-right: 22px;
+                            }
+
+                            .grey-item {
+                                background: #aaaaaa;
+                            }
+
+                            .yellow-item {
+                                background: #ffb74d;
+                            }
+
+                            .red-item {
+                                background: #e57373;
+                            }
+
+                            .blue-item {
+                                background: #6d82c7;
+                            }
+                        }
+
+                        // PROGRESS COLUMN
+                        .applicant-status-container {
+                            width: fit-content;
+                            height: fit-content;
+
+                            .status-icon {
+                                width: 16px;
+                                height: 16px;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                            }
+
+                            .done-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/applicant-done-icon.svg');
+                            }
+
+                            .wrong-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg');
+                            }
+
+                            .complete-icon {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/applicant-complete-icon.svg');
+                            }
+                        }
+
+                        .table-progress-cotnainer {
+                            display: flex;
+                            align-items: center;
+
+                            .table-progress-bar-container {
+                                border-radius: 3px;
+                                -webkit-user-select: none;
+                                -moz-user-select: none;
+                                user-select: none;
+                                height: 20px;
+                                width: 24px;
+                                display: flex;
+                                overflow: hidden;
+                                line-height: 0;
+                                font-size: 14px;
+
+                                .table-progress-bar {
+                                    text-align: left;
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: center;
+                                    white-space: nowrap;
+                                }
+                            }
+
+                            .table-progress-text {
+                                font-size: 14px;
+                                font-weight: 400;
+                                margin-left: 4px;
+                                color: #6c6c6c;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+                        }
+
+                        // APPLICANT PROGRESS COLUMN
+                        .applicant-progress-container {
+                            height: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-right: 20px;
+                        }
+
+                        // APPLICANT REVIEW COLUMN
+                        .applicant-review-container {
+                            display: flex;
+                            align-items: center;
+
+                            .review-icon {
+                                width: 22px;
+                                height: 22px;
+                                border-radius: 2px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin-right: 4px;
+
+                                svg-icon {
+                                    display: flex;
+                                }
+                            }
+
+                            // Wrong
+                            .review-icon {
+                                background: #e57373;
+
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #ffffff;
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Done
+                            .finished {
+                                background: #26a690;
+
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #ffffff;
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Incomplete
+                            .incomplete {
+                                background: #f3f3f3;
+
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #aaaaaa;
+                                        }
+                                    }
+                                }
+                            }
+                            // Ready
+                            .ready {
+                                background: #f3f3f3;
+
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #aaaaaa;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .review-title {
+                                font-size: 14px;
+                                font-weight: 400;
+                                color: #6c6c6c;
+                                height: 18px;
+                                line-height: 18px;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                            }
+                        }
                     }
-                  }
 
-                  .table-progress-text {
-                    font-size: 14px;
-                    font-weight: 400;
-                    margin-left: 4px;
-                    color: #6c6c6c;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-
-                    &::selection {
-                      color: #6c6c6c;
-                      background: #6c6c6c20;
+                    // GENERAl
+                    .td-content {
+                        img {
+                            user-select: none;
+                        }
                     }
-                  }
                 }
-              }
-
-              svg-icon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              }
-
-              .paid-item {
-                width: 76px;
-                display: flex;
-
-                .paid-icon {
-                  svg {
-                    path {
-                      fill: #aaaaaa;
-                    }
-                  }
-                }
-              }
-
-              .cost-item {
-                width: 90px;
-                display: flex;
-                justify-content: flex-end;
-                font-size: 14px;
-                font-weight: 600;
-                color: #6c6c6c;
-
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
-                }
-              }
-
-              .actions {
-                width: 92px;
-                display: flex;
-                align-items: center;
-                justify-content: flex-end;
-
-                .attachment-icon,
-                .note-container {
-                  margin-right: 12px;
-                }
-              }
-            }
-          }
-
-          // DOCUMENT
-          .document-container {
-            width: 100%;
-            height: fit-content;
-            position: relative;
-
-            // TITLE
-            .document-title {
-              width: 100%;
-              height: 26px;
-              display: flex;
-              align-items: center;
-              position: absolute;
-              top: 2px;
-              z-index: 100;
-
-              .document-count-title {
-                font-size: 14px;
-                font-weight: bold;
-                color: #919191;
-                margin-left: 4px;
-
-                &::selection {
-                  color: #919191;
-                  background: #91919120;
-                }
-              }
-
-              .download-document-btn {
-                cursor: pointer;
-                user-select: none;
-                width: 138px;
-                height: 26px;
-                background: #f3f3f3;
-                border-radius: 2px;
-                padding: 4px 8px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin: 0 4px 0 auto;
-
-                svg-icon {
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                }
-
-                .title {
-                  font-size: 14px;
-                  font-weight: bold;
-                  color: #6c6c6c;
-                }
-              }
             }
 
-            // ATTACHMENTS
-            .attacment-container {
-              width: 100%;
-              height: 200px;
-              padding: 0 4px;
-              border: 1px solid red;
-            }
-          }
-
-          // MEDIA
-          .media-wrapper {
-            width: 100%;
-            height: fit-content;
-            position: relative;
-
-            .media-title {
-              width: 100%;
-              height: 26px;
-              display: flex;
-              align-items: center;
-              position: absolute;
-              top: 2px;
-              z-index: 100;
-
-              .media-count-title {
-                font-size: 14px;
-                font-weight: bold;
-                color: #919191;
-                margin: 0 6px 0 4px;
-
-                &::selection {
-                  color: #919191;
-                  background: #91919120;
-                }
-              }
-
-              svg-icon {
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              }
-            }
-
-            .media-container {
-              width: 100%;
-              height: 200px;
-              padding: 0 4px;
-              border: 1px solid red;
-            }
-          }
-
-          // INSURANCE
-          .insurance-container {
-            width: 100%;
-            height: fit-content;
-
-            .insurance-title {
-              width: 100%;
-              height: 26px;
-              display: flex;
-              align-items: center;
-              padding: 0 8px;
-
-              .title-item {
-                font-size: 14px;
-                font-weight: bold;
-                color: #919191;
-
-                &::selection {
-                  color: #919191;
-                  background: #91919120;
-                }
-              }
-
-              .insurance-type {
-                width: 402px;
-              }
-
-              .claim {
-                width: 200px;
-              }
-
-              .insurance-adjuster {
-                width: 272px;
-              }
-
-              .phone {
-                width: 200px;
-              }
-
-              .email {
-                width: 251px;
-              }
-            }
-
-            .insurance-item-container {
-              width: 100%;
-              height: 32px;
-              border-radius: 2px;
-              background: #97a8dc10;
-              padding: 0 8px;
-              display: flex;
-              align-items: center;
-
-              div {
-                font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
+            // Attachment, Media And Insurance Dropdown
+            .attachemnt-dropdown,
+            .media-dropdown,
+            .insurance-dropdown {
+                /*  width: 100%; */
+                width: 0px;
+                /* height: fit-content; */
+                max-height: 0px;
                 overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
+                transition: max-height 0.2s ease-in-out;
 
-                &::selection {
-                  color: #6c6c6c;
-                  background: #6c6c6c20;
+                .attachemnt-dropdown-content,
+                .media-dropdown-content,
+                .insurance-dropdown-content {
+                    width: 100%;
+                    height: fit-content;
+                    padding: 0 6px 6px 6px;
+                    transition: height 0.25s ease-in-out;
+
+                    .dropdown-border-container {
+                        height: 2px;
+                        width: 100%;
+                        padding: 0 10px;
+                        margin-top: 2px;
+
+                        .dropdown-border {
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 1px;
+                            background: #f3f3f3;
+                        }
+                    }
+
+                    .violation-inspection-container,
+                    .citation-inspection-container {
+                        .inspection-title {
+                            width: 100%;
+                            height: 36px;
+                            display: flex;
+                            align-items: center;
+
+                            .title {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: #919191;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+
+                                &::selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
+                            }
+
+                            .violation-title,
+                            .citation-title {
+                                width: 186px;
+                                padding-left: 8px;
+                            }
+
+                            .description-title {
+                                flex-grow: 1;
+                            }
+                        }
+
+                        .violations-items,
+                        .citation-items {
+                            cursor: pointer;
+                            width: 100%;
+                            height: 32px;
+                            border-radius: 2px;
+                            padding: 0 8px;
+                            display: flex;
+                            align-items: center;
+                        }
+                    }
+
+                    // VIOALTION
+                    .violation-inspection-container {
+                        width: 100%;
+                        height: fit-content;
+
+                        .inspection-title {
+                            .sw-title {
+                                width: 93px;
+                            }
+                        }
+
+                        .violations-items {
+                            background: #97a8dc10;
+
+                            &:hover {
+                                background: #97a8dc30;
+                                transition: 0.25s;
+                            }
+
+                            svg-icon {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
+
+                            .violation-icon {
+                                margin-right: 4px;
+                            }
+
+                            .violation-code {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: #6c6c6c;
+                                width: 156px;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+
+                            .oss-icon {
+                                margin-right: 6px;
+                            }
+
+                            .inspection-decription {
+                                flex-grow: 1;
+                                font-weight: 400;
+                            }
+
+                            .edit-description {
+                                flex-grow: 1;
+                                height: 26px;
+                                background: #6c6c6c;
+                                border-radius: 2px;
+
+                                input {
+                                    width: 100%;
+                                    height: 100%;
+                                    border: none;
+                                    background: transparent;
+                                    padding: 4px 6px;
+                                    outline: none;
+                                    color: #ffffff;
+                                    font-size: 14px;
+                                    font-weight: 400;
+
+                                    &::selection {
+                                        color: #ffffff;
+                                        background: #ffffff20;
+                                    }
+                                }
+                            }
+
+                            .inspection-decription,
+                            .sw-count {
+                                font-size: 14px;
+                                color: #6c6c6c;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+
+                            .sw-count {
+                                width: 48px;
+                                font-weight: 600;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin-right: 30px;
+
+                                .oss-count {
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                    color: #ffa726;
+
+                                    &::selection {
+                                        color: #ffa726;
+                                        background: #ffa72620;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // CITATION
+                    .citation-inspection-container {
+                        .inspection-title {
+                            .due-date-title {
+                                width: 172px;
+                            }
+
+                            .paid-title {
+                                width: 76px;
+                            }
+
+                            .cost-title {
+                                width: 90px;
+                                display: flex;
+                                justify-content: flex-end;
+                            }
+
+                            .actions-title {
+                                width: 100px;
+                            }
+                        }
+
+                        .citation-items {
+                            background: #ef9a9a10;
+
+                            &:hover {
+                                background: #ef9a9a30;
+                                transition: 0.25s;
+                            }
+
+                            .citation-code {
+                                width: 178px;
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: #6c6c6c;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+
+                            .citation-description {
+                                flex-grow: 1;
+                                font-size: 14px;
+                                font-weight: 400;
+                                color: #6c6c6c;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+
+                            .due-date {
+                                width: 172px;
+
+                                .table-progress-cotnainer {
+                                    display: flex;
+                                    align-items: center;
+
+                                    .table-progress-bar-container {
+                                        border-radius: 3px;
+                                        -webkit-user-select: none;
+                                        -moz-user-select: none;
+                                        user-select: none;
+                                        height: 20px;
+                                        width: 24px;
+                                        display: flex;
+                                        overflow: hidden;
+                                        line-height: 0;
+                                        font-size: 14px;
+
+                                        .table-progress-bar {
+                                            text-align: left;
+                                            display: flex;
+                                            flex-direction: column;
+                                            justify-content: center;
+                                            white-space: nowrap;
+                                        }
+                                    }
+
+                                    .table-progress-text {
+                                        font-size: 14px;
+                                        font-weight: 400;
+                                        margin-left: 4px;
+                                        color: #6c6c6c;
+                                        overflow: hidden;
+                                        white-space: nowrap;
+                                        text-overflow: ellipsis;
+
+                                        &::selection {
+                                            color: #6c6c6c;
+                                            background: #6c6c6c20;
+                                        }
+                                    }
+                                }
+                            }
+
+                            svg-icon {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
+
+                            .paid-item {
+                                width: 76px;
+                                display: flex;
+
+                                .paid-icon {
+                                    svg {
+                                        path {
+                                            fill: #aaaaaa;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .cost-item {
+                                width: 90px;
+                                display: flex;
+                                justify-content: flex-end;
+                                font-size: 14px;
+                                font-weight: 600;
+                                color: #6c6c6c;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+
+                            .actions {
+                                width: 92px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: flex-end;
+
+                                .attachment-icon,
+                                .note-container {
+                                    margin-right: 12px;
+                                }
+                            }
+                        }
+                    }
+
+                    // DOCUMENT
+                    .document-container {
+                        width: 100%;
+                        height: fit-content;
+                        position: relative;
+
+                        // TITLE
+                        .document-title {
+                            width: 100%;
+                            height: 26px;
+                            display: flex;
+                            align-items: center;
+                            position: absolute;
+                            top: 2px;
+                            z-index: 100;
+
+                            .document-count-title {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: #919191;
+                                margin-left: 4px;
+
+                                &::selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
+                            }
+
+                            .download-document-btn {
+                                cursor: pointer;
+                                user-select: none;
+                                width: 138px;
+                                height: 26px;
+                                background: #f3f3f3;
+                                border-radius: 2px;
+                                padding: 4px 8px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                margin: 0 4px 0 auto;
+
+                                svg-icon {
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+
+                                .title {
+                                    font-size: 14px;
+                                    font-weight: bold;
+                                    color: #6c6c6c;
+                                }
+                            }
+                        }
+
+                        // ATTACHMENTS
+                        .attacment-container {
+                            width: 100%;
+                            height: 200px;
+                            padding: 0 4px;
+                            border: 1px solid red;
+                        }
+                    }
+
+                    // MEDIA
+                    .media-wrapper {
+                        width: 100%;
+                        height: fit-content;
+                        position: relative;
+
+                        .media-title {
+                            width: 100%;
+                            height: 26px;
+                            display: flex;
+                            align-items: center;
+                            position: absolute;
+                            top: 2px;
+                            z-index: 100;
+
+                            .media-count-title {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: #919191;
+                                margin: 0 6px 0 4px;
+
+                                &::selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
+                            }
+
+                            svg-icon {
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
+                        }
+
+                        .media-container {
+                            width: 100%;
+                            height: 200px;
+                            padding: 0 4px;
+                            border: 1px solid red;
+                        }
+                    }
+
+                    // INSURANCE
+                    .insurance-container {
+                        width: 100%;
+                        height: fit-content;
+
+                        .insurance-title {
+                            width: 100%;
+                            height: 26px;
+                            display: flex;
+                            align-items: center;
+                            padding: 0 8px;
+
+                            .title-item {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: #919191;
+
+                                &::selection {
+                                    color: #919191;
+                                    background: #91919120;
+                                }
+                            }
+
+                            .insurance-type {
+                                width: 402px;
+                            }
+
+                            .claim {
+                                width: 200px;
+                            }
+
+                            .insurance-adjuster {
+                                width: 272px;
+                            }
+
+                            .phone {
+                                width: 200px;
+                            }
+
+                            .email {
+                                width: 251px;
+                            }
+                        }
+
+                        .insurance-item-container {
+                            width: 100%;
+                            height: 32px;
+                            border-radius: 2px;
+                            background: #97a8dc10;
+                            padding: 0 8px;
+                            display: flex;
+                            align-items: center;
+
+                            div {
+                                font-size: 14px;
+                                font-weight: 400;
+                                color: #6c6c6c;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+
+                                &::selection {
+                                    color: #6c6c6c;
+                                    background: #6c6c6c20;
+                                }
+                            }
+
+                            .insurance-type {
+                                width: 402px;
+                                font-weight: bold;
+                            }
+
+                            .claim {
+                                width: 200px;
+                            }
+
+                            .insurance-adjuster {
+                                width: 272px;
+                            }
+
+                            .phone {
+                                width: 200px;
+                            }
+
+                            .email {
+                                width: 251px;
+                            }
+                        }
+                    }
                 }
-              }
-
-              .insurance-type {
-                width: 402px;
-                font-weight: bold;
-              }
-
-              .claim {
-                width: 200px;
-              }
-
-              .insurance-adjuster {
-                width: 272px;
-              }
-
-              .phone {
-                width: 200px;
-              }
-
-              .email {
-                width: 251px;
-              }
             }
-          }
-        }
-      }
 
-      .attachemnt-dropdown-active,
-      .media-dropdown-active,
-      .insurance-dropdown-active {
-        width: 100% !important;
-        max-height: 1000px;
-        transition: max-height 0.2s ease-in-out;
-      }
-    }
-
-    // Selected Row
-    .selected-row {
-      .columns-container {
-        background: #e5e5e5;
-
-        // CONTACT COLUMN
-        .contact-container {
-          .contact-count {
-            background: #f3f3f3 !important;
-            color: #6c6c6c !important;
-
-            &::selection {
-              color: #6c6c6c !important;
-              background: #6c6c6c20 !important;
+            .attachemnt-dropdown-active,
+            .media-dropdown-active,
+            .insurance-dropdown-active {
+                width: 100% !important;
+                max-height: 1000px;
+                transition: max-height 0.2s ease-in-out;
             }
-          }
-
-          .contact-avatar {
-            background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg") !important;
-          }
         }
 
-        // SHARED COLUMN
-        .shared-container {
-          .lock-icon {
-            background-image: url("../../../../../../assets/svg/truckassist-table/shared-lock-select.svg") !important;
-          }
-
-          .shared-active-icon {
-            background-image: url("../../../../../../assets/svg/truckassist-table/shared-select.svg") !important;
-          }
-
-          .shared-text {
-            color: #3c3c3c !important;
-
-            &::selection {
-              color: #3c3c3c !important;
-              background: #3c3c3c20 !important;
-            }
-          }
-        }
-
-        // RAITING
-        .raiting-container {
-          .raiting-counter-container {
+        // Regular Row
+        .regular-row {
+            // Hover
             &:hover {
-              .raiting-counter {
-                color: #3c3c3c !important;
-              }
+                .columns-container {
+                    background: #f7f7f7 !important;
+
+                    .table-text,
+                    .table-name-link,
+                    .color-name,
+                    .table-progress-text {
+                        color: #3c3c3c !important;
+                    }
+
+                    .table-state {
+                        background: #ffffff !important;
+                    }
+
+                    .table-checkbox-label {
+                        background-color: #aaaaaa !important;
+                    }
+
+                    .contact-container {
+                        .contact-count {
+                            background: #ffffff !important;
+                        }
+
+                        .contact-avatar {
+                            background-image: url('../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-hover-row.svg');
+                        }
+                    }
+
+                    .raiting-container {
+                        .raiting-counter-container {
+                            &:hover {
+                                .raiting-counter {
+                                    color: #6c6c6c !important;
+                                }
+                            }
+                            .raiting-counter {
+                                background: #ffffff !important;
+                            }
+                        }
+
+                        .like-icon {
+                            background-image: url('../../../../../../assets/svg/truckassist-table/like-row-hover.svg') !important;
+
+                            &:hover {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/like-icon-hover.svg') !important;
+                            }
+                        }
+
+                        .dislike-icon {
+                            background-image: url('../../../../../../assets/svg/truckassist-table/dislike-row-hover.svg') !important;
+
+                            &:hover {
+                                background-image: url('../../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg') !important;
+                            }
+                        }
+                    }
+
+                    .pickup-delivery-location-container {
+                        .date-time-container {
+                            .time {
+                                visibility: visible !important;
+                            }
+                        }
+                    }
+                }
             }
-
-            .raiting-counter {
-              background: #f3f3f3 !important;
-              color: #6c6c6c !important;
-            }
-          }
-
-          .like-icon {
-            background-image: url("../../../../../../assets/svg/truckassist-table/like-row-hover.svg") !important;
-
-            &:hover {
-              background-image: url("../../../../../../assets/svg/truckassist-table/like-icon-hover.svg") !important;
-            }
-          }
-
-          .dislike-icon {
-            background-image: url("../../../../../../assets/svg/truckassist-table/dislike-row-hover.svg") !important;
-
-            &:hover {
-              background-image: url("../../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg") !important;
-            }
-          }
         }
 
-        // HIRE
-        .hire-icon {
-          background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg") !important;
+        // Selected Row
+        .selected-row {
+            .columns-container {
+                background: #e5e5e5;
 
-          &:hover {
-            background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant-icon-hover.svg") !important;
-          }
+                // CONTACT COLUMN
+                .contact-container {
+                    .contact-count {
+                        background: #f3f3f3 !important;
+                        color: #6c6c6c !important;
+
+                        &::selection {
+                            color: #6c6c6c !important;
+                            background: #6c6c6c20 !important;
+                        }
+                    }
+
+                    .contact-avatar {
+                        background-image: url('../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg') !important;
+                    }
+                }
+
+                // SHARED COLUMN
+                .shared-container {
+                    .lock-icon {
+                        background-image: url('../../../../../../assets/svg/truckassist-table/shared-lock-select.svg') !important;
+                    }
+
+                    .shared-active-icon {
+                        background-image: url('../../../../../../assets/svg/truckassist-table/shared-select.svg') !important;
+                    }
+
+                    .shared-text {
+                        color: #3c3c3c !important;
+
+                        &::selection {
+                            color: #3c3c3c !important;
+                            background: #3c3c3c20 !important;
+                        }
+                    }
+                }
+
+                // RAITING
+                .raiting-container {
+                    .raiting-counter-container {
+                        &:hover {
+                            .raiting-counter {
+                                color: #3c3c3c !important;
+                            }
+                        }
+
+                        .raiting-counter {
+                            background: #f3f3f3 !important;
+                            color: #6c6c6c !important;
+                        }
+                    }
+
+                    .like-icon {
+                        background-image: url('../../../../../../assets/svg/truckassist-table/like-row-hover.svg') !important;
+
+                        &:hover {
+                            background-image: url('../../../../../../assets/svg/truckassist-table/like-icon-hover.svg') !important;
+                        }
+                    }
+
+                    .dislike-icon {
+                        background-image: url('../../../../../../assets/svg/truckassist-table/dislike-row-hover.svg') !important;
+
+                        &:hover {
+                            background-image: url('../../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg') !important;
+                        }
+                    }
+                }
+
+                // HIRE
+                .hire-icon {
+                    background-image: url('../../../../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg') !important;
+
+                    &:hover {
+                        background-image: url('../../../../../../assets/svg/truckassist-table/hire-applicant-icon-hover.svg') !important;
+                    }
+                }
+
+                // FAVORITE
+                .not-favorite-icon {
+                    background-image: url('../../../../../../assets/svg/truckassist-table/favorite-selected-row.svg') !important;
+
+                    &:hover {
+                        background-image: url('../../../../../../assets/svg/truckassist-table/favorite-icon-hover.svg') !important;
+                    }
+                }
+
+                // PROGRESS
+                .applicant-status-container {
+                    .done-icon {
+                        background-image: url('../../../../../../assets/svg/truckassist-table/applicant-done-icon-select-row.svg') !important;
+                    }
+
+                    .wrong-icon {
+                        background-image: url('../../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg') !important;
+                    }
+
+                    .complete-icon {
+                        background-image: url('../../../../../../assets/svg/truckassist-table/applicant-complete-icon-select-row.svg') !important;
+                    }
+                }
+            }
         }
 
-        // FAVORITE
-        .not-favorite-icon {
-          background-image: url("../../../../../../assets/svg/truckassist-table/favorite-selected-row.svg") !important;
-
-          &:hover {
-            background-image: url("../../../../../../assets/svg/truckassist-table/favorite-icon-hover.svg") !important;
-          }
+        // Repair Order Row
+        .row-repair-order {
+            background: #fff3e0;
         }
 
-        // PROGRESS
-        .applicant-status-container {
-          .done-icon {
-            background-image: url("../../../../../../assets/svg/truckassist-table/applicant-done-icon-select-row.svg") !important;
-          }
-
-          .wrong-icon {
-            background-image: url("../../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg") !important;
-          }
-
-          .complete-icon {
-            background-image: url("../../../../../../assets/svg/truckassist-table/applicant-complete-icon-select-row.svg") !important;
-          }
+        // Border Scroll Section
+        .border-scroll-section {
+            width: 4px;
         }
-      }
-    }
 
-    // Repair Order Row
-    .row-repair-order {
-      background: #fff3e0;
-    }
+        .border-left {
+            background-image: linear-gradient(to right, #eeeeee, #f7f7f700);
+        }
 
-    // Border Scroll Section
-    .border-scroll-section {
-      width: 4px;
+        .border-right {
+            background-image: linear-gradient(to right, #f7f7f700, #eeeeee);
+        }
     }
-
-    .border-left {
-      background-image: linear-gradient(to right, #eeeeee, #f7f7f700);
-    }
-
-    .border-right {
-      background-image: linear-gradient(to right, #f7f7f700, #eeeeee);
-    }
-  }
 }
 
 // SHOW MORE
 .show-more-container {
-  height: 18px;
-  width: fit-content;
-  margin-top: 3px;
-  display: flex;
-  align-items: center;
-
-  .showing,
-  .show-more {
+    height: 18px;
     width: fit-content;
-    height: 100%;
+    margin-top: 3px;
     display: flex;
-    justify-content: center;
     align-items: center;
-  }
 
-  .showing {
-    justify-self: flex-start;
-    font-size: 12px;
-    font-weight: 500;
-    color: #919191;
-
-    &::selection {
-      color: #919191;
-      background: #91919120;
+    .showing,
+    .show-more {
+        width: fit-content;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-  }
 
-  .show-more {
-    cursor: pointer;
-    justify-self: flex-end;
-    margin-left: auto;
-    font-size: 14px;
-    font-weight: bold;
-    color: #6c6c6c;
+    .showing {
+        justify-self: flex-start;
+        font-size: 12px;
+        font-weight: 500;
+        color: #919191;
 
-    &::selection {
-      color: #6c6c6c;
-      background: #6c6c6c20;
+        &::selection {
+            color: #919191;
+            background: #91919120;
+        }
     }
-  }
+
+    .show-more {
+        cursor: pointer;
+        justify-self: flex-end;
+        margin-left: auto;
+        font-size: 14px;
+        font-weight: bold;
+        color: #6c6c6c;
+
+        &::selection {
+            color: #6c6c6c;
+            background: #6c6c6c20;
+        }
+    }
 }
 
 // GLOBAL STYLE
 .set-center {
-  justify-content: center;
+    justify-content: center;
 }
 
 // PROGRESS COLOR CLASSES
 
 // Progress Container
 .bg-sliver-container {
-  background: #dadada;
+    background: #dadada;
 }
 
 .bg-expired-container {
-  background: #e57373;
+    background: #e57373;
 }
 
 .bg-inactive-container {
-  background: #e5e5e5;
+    background: #e5e5e5;
 }
 
 .bg-orange-container {
-  background: #ffecd1;
+    background: #ffecd1;
 }
 
 .bg-danger-container {
-  background: #ffe1e4;
+    background: #ffe1e4;
 }
 
 // Progress Bar
 .bg-progress-sliver {
-  background: #aaaaaa;
+    background: #aaaaaa;
 }
 
 .bg-progress-orange {
-  background: #ffb74d;
+    background: #ffb74d;
 }
 
 .bg-progress-danger {
-  background: #e57373;
+    background: #e57373;
 }
 
 // ACTION ANIMATION
 
 // Add Animation
 .add-animation {
-  position: relative !important;
-  z-index: -1;
-  animation: drop-new-row 0.3s ease-out, show-new-row 0.25s ease-out;
+    position: relative !important;
+    z-index: -1;
+    animation: drop-new-row 0.3s ease-out, show-new-row 0.25s ease-out;
 
-  .columns-container {
-    animation: hide-new-row-background 2s ease-in 0.3s;
-  }
+    .columns-container {
+        animation: hide-new-row-background 2s ease-in 0.3s;
+    }
 }
 
 // 1
 @keyframes drop-new-row {
-  0% {
-    top: -34px;
-  }
-  100% {
-    top: 0px;
-  }
+    0% {
+        top: -34px;
+    }
+    100% {
+        top: 0px;
+    }
 }
 
 @keyframes show-new-row {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 // 2
 @keyframes hide-new-row-background {
-  0% {
-    background: #e0eaf8;
-  }
-  100% {
-    background: #ffffff;
-  }
+    0% {
+        background: #e0eaf8;
+    }
+    100% {
+        background: #ffffff;
+    }
 }
 
 // Update Animation
 .update-animation {
-  background: orange !important;
-  transition: 0.4s;
+    background: orange !important;
+    transition: 0.4s;
 }
 
 // Deactivate Animation
 .deactivate-animation {
-  position: relative;
+    position: relative;
 
-  animation: deactivate-row-move-right 0.3s ease-in 0.3s,
-    deactivate-row-visibility 0.25s ease-in 0.3s,
-    deactivate-row-decrease-height 0.3s ease-in 0.6s;
+    animation: deactivate-row-move-right 0.3s ease-in 0.3s,
+        deactivate-row-visibility 0.25s ease-in 0.3s,
+        deactivate-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container {
-    animation: deactivate-row-add-color 0.3s ease-in;
-  }
+    .columns-container {
+        animation: deactivate-row-add-color 0.3s ease-in;
+    }
 }
 
 .multiple-deactivate-animation {
-  position: relative;
+    position: relative;
 
-  animation: deactivate-row-move-right 0.3s ease-in 0.3s,
-    deactivate-row-visibility 0.25s ease-in 0.3s,
-    deactivate-row-decrease-height 0.3s ease-in 0.6s;
+    animation: deactivate-row-move-right 0.3s ease-in 0.3s,
+        deactivate-row-visibility 0.25s ease-in 0.3s,
+        deactivate-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container {
-    animation: multiple-deactivate-row-add-color 0.3s ease-in;
-  }
+    .columns-container {
+        animation: multiple-deactivate-row-add-color 0.3s ease-in;
+    }
 }
 
 // 1
 @keyframes deactivate-row-add-color {
-  0% {
-    background: #ffffff;
-  }
-  100% {
-    background: #fff3e0;
-  }
+    0% {
+        background: #ffffff;
+    }
+    100% {
+        background: #fff3e0;
+    }
 }
 
 @keyframes multiple-deactivate-row-add-color {
-  0% {
-    background: #e5e5e5;
-  }
-  100% {
-    background: #fff3e0;
-  }
+    0% {
+        background: #e5e5e5;
+    }
+    100% {
+        background: #fff3e0;
+    }
 }
 
 // 2
 @keyframes deactivate-row-move-right {
-  0% {
-    background: #fff3e0;
-    right: 0;
-    opacity: 1;
-  }
-  100% {
-    background: #fff3e0;
-    right: -40px;
-    opacity: 0;
-  }
+    0% {
+        background: #fff3e0;
+        right: 0;
+        opacity: 1;
+    }
+    100% {
+        background: #fff3e0;
+        right: -40px;
+        opacity: 0;
+    }
 }
 
 @keyframes deactivate-row-visibility {
-  0% {
-    background: #fff3e0;
-    opacity: 1;
-  }
-  100% {
-    background: #fff3e0;
-    opacity: 0;
-  }
+    0% {
+        background: #fff3e0;
+        opacity: 1;
+    }
+    100% {
+        background: #fff3e0;
+        opacity: 0;
+    }
 }
 
 // 3
 @keyframes deactivate-row-decrease-height {
-  0% {
-    opacity: 0;
-    min-height: 32px;
-    height: 32px;
-  }
-  100% {
-    opacity: 0;
-    min-height: 0px;
-    height: 0px;
-  }
+    0% {
+        opacity: 0;
+        min-height: 32px;
+        height: 32px;
+    }
+    100% {
+        opacity: 0;
+        min-height: 0px;
+        height: 0px;
+    }
 }
 
 // Activate Animation
 .activate-animation {
-  position: relative;
+    position: relative;
 
-  animation: activate-row-move-right 0.3s ease-in 0.3s,
-    activate-row-visibility 0.25s cubic-bezier(0.5, 1, 0.89, 1), 0.3s,
-    activate-row-decrease-height 0.3s ease-in 0.6s;
+    animation: activate-row-move-right 0.3s ease-in 0.3s,
+        activate-row-visibility 0.25s cubic-bezier(0.5, 1, 0.89, 1), 0.3s,
+        activate-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container {
-    animation: activate-row-add-color 0.3s ease-in;
-  }
+    .columns-container {
+        animation: activate-row-add-color 0.3s ease-in;
+    }
 }
 
 .multiple-activate-animation {
-  position: relative;
+    position: relative;
 
-  animation: activate-row-move-right 0.3s ease-in 0.3s,
-    activate-row-visibility 0.25s ease-in 0.3s,
-    activate-row-decrease-height 0.3s ease-in 0.6s;
+    animation: activate-row-move-right 0.3s ease-in 0.3s,
+        activate-row-visibility 0.25s ease-in 0.3s,
+        activate-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container {
-    animation: multiple-activate-row-add-color 0.3s ease-in;
-  }
+    .columns-container {
+        animation: multiple-activate-row-add-color 0.3s ease-in;
+    }
 }
 
 // 1
 @keyframes activate-row-add-color {
-  0% {
-    background: #ffffff;
-  }
-  100% {
-    background: #e0eaf8;
-  }
+    0% {
+        background: #ffffff;
+    }
+    100% {
+        background: #e0eaf8;
+    }
 }
 
 @keyframes multiple-activate-row-add-color {
-  0% {
-    background: #e5e5e5;
-  }
-  100% {
-    background: #e0eaf8;
-  }
+    0% {
+        background: #e5e5e5;
+    }
+    100% {
+        background: #e0eaf8;
+    }
 }
 
 // 2
 @keyframes activate-row-move-right {
-  0% {
-    background: #e0eaf8;
-    right: 0;
-    opacity: 1;
-  }
-  100% {
-    background: #e0eaf8;
-    right: 40px;
-    opacity: 0;
-  }
+    0% {
+        background: #e0eaf8;
+        right: 0;
+        opacity: 1;
+    }
+    100% {
+        background: #e0eaf8;
+        right: 40px;
+        opacity: 0;
+    }
 }
 
 @keyframes activate-row-visibility {
-  0% {
-    background: #e0eaf8;
-    opacity: 1;
-  }
-  100% {
-    background: #e0eaf8;
-    opacity: 0;
-  }
+    0% {
+        background: #e0eaf8;
+        opacity: 1;
+    }
+    100% {
+        background: #e0eaf8;
+        opacity: 0;
+    }
 }
 
 // 3
 @keyframes activate-row-decrease-height {
-  0% {
-    opacity: 0;
-    min-height: 32px;
-    height: 32px;
-  }
-  100% {
-    opacity: 0;
-    min-height: 0px;
-    height: 0px;
-  }
+    0% {
+        opacity: 0;
+        min-height: 32px;
+        height: 32px;
+    }
+    100% {
+        opacity: 0;
+        min-height: 0px;
+        height: 0px;
+    }
 }
 
 // Delete Animation
 .delete-animation {
-  overflow: hidden !important;
-  min-height: unset !important;
+    overflow: hidden !important;
+    min-height: unset !important;
 
-  animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
-    deleting-row-visibility 0.3s ease-in 0.3s,
-    deleting-row-decrease-height 0.3s ease-in 0.6s;
+    animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
+        deleting-row-visibility 0.3s ease-in 0.3s,
+        deleting-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container {
-    animation: deleting-row-add-color 0.3s ease-in;
-  }
+    .columns-container {
+        animation: deleting-row-add-color 0.3s ease-in;
+    }
 }
 
 .multiple-delete-animation {
-  overflow: hidden !important;
-  min-height: unset !important;
+    overflow: hidden !important;
+    min-height: unset !important;
 
-  animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
-    deleting-row-visibility 0.3s ease-in 0.3s,
-    deleting-row-decrease-height 0.3s ease-in 0.6s;
+    animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
+        deleting-row-visibility 0.3s ease-in 0.3s,
+        deleting-row-decrease-height 0.3s ease-in 0.6s;
 
-  .columns-container {
-    animation: multiple-deleting-row-add-color 0.3s ease-in;
-  }
+    .columns-container {
+        animation: multiple-deleting-row-add-color 0.3s ease-in;
+    }
 }
 
 // 1
 @keyframes multiple-deleting-row-add-color {
-  0% {
-    background: #e5e5e5;
-  }
-  100% {
-    background: #ffebee;
-  }
+    0% {
+        background: #e5e5e5;
+    }
+    100% {
+        background: #ffebee;
+    }
 }
 
 @keyframes deleting-row-add-color {
-  0% {
-    background: #ffffff;
-  }
-  100% {
-    background: #ffebee;
-  }
+    0% {
+        background: #ffffff;
+    }
+    100% {
+        background: #ffebee;
+    }
 }
 
 // 2
 @keyframes deleting-row-decrease-size {
-  0% {
-    background: #ffebee;
-    transform: scaleX(1);
-  }
-  100% {
-    background: #ffebee;
-    transform: scaleX(0.7);
-  }
+    0% {
+        background: #ffebee;
+        transform: scaleX(1);
+    }
+    100% {
+        background: #ffebee;
+        transform: scaleX(0.7);
+    }
 }
 
 @keyframes deleting-row-visibility {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 // 3
 @keyframes deleting-row-decrease-height {
-  0% {
-    opacity: 0;
-    min-height: 32px;
-    height: 32px;
-  }
-  100% {
-    opacity: 0;
-    min-height: 0px;
-    height: 0px;
-  }
+    0% {
+        opacity: 0;
+        min-height: 32px;
+        height: 32px;
+    }
+    100% {
+        opacity: 0;
+        min-height: 0px;
+        height: 0px;
+    }
 }
 
 // NG CLASS
 .active-drop {
-  background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select.svg") !important;
+    background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select.svg') !important;
 
-  &:hover {
-    background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select-hover.svg") !important;
-  }
+    &:hover {
+        background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select-hover.svg') !important;
+    }
+}
+
+.avatar-is-owner {
+    position: relative;
+
+    .avatar-owner {
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+    }
 }

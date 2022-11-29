@@ -1,42 +1,49 @@
 <div class="container-fluid">
-  <div class="row">
-    <div
-      class="container-fluid d-flex flex-column justify-content-between sph-form-container"
-    >
-      <div class="d-flex flex-column justify-content-center">
-        <div class="d-flex justify-content-center step-progress-bar">
-          <div
-            *ngFor="
-              let menuItem of menuItems;
-              index as i;
-              trackBy: trackByIdentity
-            "
-            class="text-center step"
-            routerLinkActive="step-active"
-            [ngClass]="{ 'completed-step': storeArr[i].isCompleted }"
-          >
-            <div
-              class="d-inline-flex justify-content-center align-items-center bullet"
-              [class]="menuItem.class"
-              [routerLink]="menuItem.route"
-            >
-              <p class="m-0 ta-font-semi-bold">
-                {{ menuItem.route }}
-              </p>
+    <div class="row">
+        <div
+            class="container-fluid d-flex flex-column justify-content-between sph-form-container"
+        >
+            <div class="d-flex flex-column justify-content-center">
+                <div class="d-flex justify-content-center step-progress-bar">
+                    <div
+                        *ngFor="
+                            let menuItem of menuItems;
+                            index as i;
+                            trackBy: trackByIdentity
+                        "
+                        class="text-center step"
+                        routerLinkActive="step-active"
+                        [ngClass]="{
+                            disabled: !isStepCompletedArray[i].isCompleted,
+                            'completed-step':
+                                isStepCompletedArray[i].isCompleted
+                        }"
+                    >
+                        <div
+                            class="d-inline-flex justify-content-center align-items-center bullet"
+                            [class]="menuItem.class"
+                            [routerLink]="menuItem.route"
+                        >
+                            <p class="m-0 ta-font-semi-bold">
+                                {{ menuItem.route }}
+                            </p>
+                        </div>
+                        <p
+                            class="m-0 step-text ta-font-regular"
+                            [routerLink]="menuItem.route"
+                        >
+                            {{ menuItem.title }}
+                        </p>
+                    </div>
+                </div>
+
+                <router-outlet></router-outlet>
             </div>
-            <p
-              class="m-0 step-text ta-font-regular"
-              [routerLink]="menuItem.route"
-            >
-              {{ menuItem.title }}
-            </p>
-          </div>
+
+            <app-applicant-footer
+                [companyInfoSph]="companyInfo"
+                [dateOfApplicationSph]="dateOfApplication"
+            ></app-applicant-footer>
         </div>
-
-        <router-outlet></router-outlet>
-      </div>
-
-      <app-applicant-footer></app-applicant-footer>
     </div>
-  </div>
 </div>

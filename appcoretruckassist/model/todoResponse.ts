@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { CommentResponse } from './commentResponse';
 import { EnumValue } from './enumValue';
 import { TodoUserResponse } from './todoUserResponse';
@@ -29,5 +30,6 @@ export interface TodoResponse {
     updatedAt?: string;
     todoUsers?: Array<TodoUserResponse> | null;
     comments?: Array<CommentResponse> | null;
+    files?: Array<FileResponse> | null;
 }
 

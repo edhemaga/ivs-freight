@@ -1,74 +1,85 @@
 .date_time_holder {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  padding: 0px 6px;
-  opacity: 0;
-  padding-left: 35px;
-  z-index: 20;
-  cursor: text;
-
-  &:focus{
-    span:nth-child(2){
-      z-index: 12;
-      pointer-events: none;
-    }
-    span:nth-child(3){
-      z-index: 13;
-    }
-
-    span:nth-child(4){
-      z-index: 14;
-      pointer-events: none;
-    }
-
-    span:nth-child(5){
-      z-index: 15;
-    }
-  }
-
-
-  &.active {
-    opacity: 1;
-    padding-left: 35px;
-  }
-
-  span {
-    position: relative;
-    line-height: 14px;
     display: flex;
-    height: 100%;
     align-items: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0px 6px;
+    opacity: 0;
+    padding-left: 35px;
+    z-index: 20;
+    cursor: text;
 
-    z-index: 10;
-    .border-picker{
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      height: 100%;
-      display: flex;
-      align-items: center;
-      z-index: -1;
+    &:focus {
+        span:nth-child(2) {
+            z-index: 12;
+            pointer-events: none;
+        }
+        span:nth-child(3) {
+            z-index: 13;
+        }
+
+        span:nth-child(4) {
+            z-index: 14;
+            pointer-events: none;
+        }
+
+        span:nth-child(5) {
+            z-index: 15;
+        }
     }
-    &::selection, & div::selection{
-      background-color: #6d82c7 !important;
-      color: #ffffff !important;
+
+    &.active {
+        opacity: 1;
+        padding-left: 35px;
     }
-  }
 
-  span.main {
-    padding: 0 4px;
-    outline: none;
-    font-size: 14px;
+    span {
+        position: relative;
+        line-height: 14px;
+        display: flex;
+        height: 100%;
+        align-items: center;
 
-    z-index: 11;
+        z-index: 10;
+        .border-picker {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            z-index: -1;
+        }
 
-    &::selection {
-      z-index: 10;
+        &::selection,
+        & div::selection {
+            background-color: #808080 !important;
+            color: #ffffff !important;
+        }
     }
-  }
+
+    span.main {
+        padding: 0 4px;
+        outline: none;
+        font-size: 14px;
+
+        z-index: 11;
+
+        &::selection {
+            z-index: 10;
+        }
+    }
+
+    &.valid-focus-in-datepicker.focused {
+        span {
+            &::selection,
+            & div::selection {
+                background-color: #6d82c7 !important;
+                color: #ffffff !important;
+            }
+        }
+    }
 }

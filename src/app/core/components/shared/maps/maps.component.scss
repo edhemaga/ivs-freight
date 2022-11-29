@@ -1,3 +1,65 @@
+.cluster-list {
+    padding: 6px;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0px 0px 4px #00000026;
+    //pointer-events: all;
+
+    .cluster-list-header {
+        padding: 2px;
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            padding: 1px 1px 5px 1px;
+
+            .cluster-count {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                width: 24px;
+                height: 24px;
+                background: #f3f3f3;
+                border-radius: 2px;
+            }
+
+            .header-text {
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 800;
+                color: #6c6c6c;
+            }
+        }
+
+        .divider {
+            width: 100%;
+            height: 2px;
+
+            background: #f3f3f3;
+            border-radius: 1px;
+        }
+    }
+
+    .cluster-list-content {
+        padding-top: 8px;
+
+        .cluster-list-item {
+            width: 100%;
+            padding: 4px 6px;
+            border-radius: 2px;
+
+            font-weight: 400;
+            text-transform: uppercase;
+
+            &:hover {
+                background: #f7f7f7;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
 .map-container {
     width: 100%;
     height: 100%;
@@ -6,30 +68,30 @@
         agm-map {
             width: 100%;
             height: 100%;
-        
+
             .si-shadow-frame {
                 box-shadow: none;
             }
-            
+
             .si-float-wrapper {
                 z-index: 998;
-                
+
                 pointer-events: none;
-        
+
                 &:has(.show-marker-dropdown) {
                     z-index: 999;
                 }
             }
-        
+
             .si-content-wrapper {
                 position: relative;
                 width: 360px;
-                border: none!important;
-        
+                border: none !important;
+
                 padding: 0px;
                 overflow: visible;
-                background: none!important;
-        
+                background: none !important;
+
                 .si-content {
                     max-width: none !important;
                     max-height: none !important;
@@ -38,10 +100,73 @@
                     overflow: visible;
                 }
             }
-        
-            .si-pointer-bottom, .si-close-button {
-                display: none!important;
+
+            .si-pointer-bottom,
+            .si-close-button {
+                display: none !important;
             }
         }
+    }
+}
+
+.hideMarker {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
+.marker-icon {
+    #Path_33654-2 {
+        transition: 0.2s ease-in-out;
+    }
+
+    &.cluster-marker,
+    &.hide-cluster-marker {
+        top: -46px;
+        transform: translateX(-50%);
+        transition: 0.2s ease-in-out;
+
+        &.hide-marker-at-start {
+            opacity: 0;
+        }
+    }
+}
+
+.get-clusters-button {
+    position: absolute;
+    top: 60px;
+    right: 18px;
+    padding: 6px 8px;
+
+    background: #fff;
+    border-radius: 2px;
+    cursor: pointer;
+    z-index: 999;
+}
+
+.marker-fade-in-animation {
+    animation: marker-fade-in-animation 0.2s ease-in 0.2s;
+}
+
+.marker-fade-out-animation {
+    animation: marker-fade-out-animation 0.2s;
+}
+
+@keyframes marker-fade-in-animation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes marker-fade-out-animation {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
     }
 }

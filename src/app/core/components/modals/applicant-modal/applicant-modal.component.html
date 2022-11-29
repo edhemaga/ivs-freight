@@ -1,79 +1,94 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add Applicant' : 'Edit Applicant'"
-  [editData]="editData"
-  [editName]="applicantFullName"
-  [saveAndAddNew]="editData?.type !== 'edit'"
-  [resendEmail]="editData?.type === 'edit'"
-  [isModalValid]="applicantForm.valid && isFormDirty"
-  (action)="onModalAction($event)"
+    [modalTitle]="
+        editData?.type !== 'edit' ? 'Invite Applicant' : 'Edit Applicant'
+    "
+    [editData]="editData"
+    [editName]="applicantFullName"
+    [saveAndAddNew]="editData?.type !== 'edit'"
+    [customTextSaveAndAddNew]="'Send & Invite New'"
+    [applicantText]="true"
+    [resendEmail]="editData?.type === 'edit'"
+    [isModalValid]="applicantForm.valid && isFormDirty"
+    (action)="onModalAction($event)"
 >
-  <form origin [formGroup]="applicantForm" class="form-container">
-    <div class="row">
-      <div class="col-6">
-        <app-ta-input
-          formControlName="firstName"
-          [inputConfig]="{
-            name: 'First Name',
-            type: 'text',
-            label: 'First Name',
-            isRequired: true,
-            minLength: 2,
-            maxLength: 26,
-            textTransform: 'capitalize',
-            autoFocus: editData?.type !== 'edit'
-          }"
-        ></app-ta-input>
-      </div>
-      <div class="col-6">
-        <app-ta-input
-          formControlName="lastName"
-          [inputConfig]="{
-            name: 'Last name',
-            type: 'text',
-            label: 'Last Name',
-            isRequired: true,
-            minLength: 2,
-            maxLength: 26,
-            textTransform: 'capitalize'
-          }"
-        ></app-ta-input>
-      </div>
-    </div>
-    <div class="row last-row">
-      <div class="col-6">
-        <app-ta-input
-          formControlName="phone"
-          [inputConfig]="{
-            name: 'Phone',
-            type: 'text',
-            label: 'Phone',
-            isRequired: true,
-            placeholderIcon: 'phone',
-            mask: '(000) 000-0000',
-            maxLength: 14
-          }"
-        ></app-ta-input>
-      </div>
-      <div class="col-6">
-        <app-ta-input
-          formControlName="email"
-          [inputConfig]="{
-            name: 'Email',
-            type: 'text',
-            label: 'Email',
-            isRequired: true,
-            placeholderIcon: 'email',
-            minLength: 5,
-            maxLength: 64,
-            textTransform: 'lowercase'
-          }"
-        ></app-ta-input>
-      </div>
-    </div>
-    <!-- Note -->
-    <app-ta-input-note
-      formControlName="note"
-      [isVisibleNote]="applicantForm.get('note').value"
-    ></app-ta-input-note>
-  </form>
+    <form origin [formGroup]="applicantForm" class="form-container">
+        <div class="row">
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="firstName"
+                    [inputConfig]="{
+                        name: 'First Name',
+                        type: 'text',
+                        label: 'First Name',
+                        isRequired: true,
+                        minLength: 2,
+                        maxLength: 26,
+                        textTransform: 'capitalize',
+                        autoFocus: editData?.type !== 'edit'
+                    }"
+                ></app-ta-input>
+            </div>
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="lastName"
+                    [inputConfig]="{
+                        name: 'Last name',
+                        type: 'text',
+                        label: 'Last Name',
+                        isRequired: true,
+                        minLength: 2,
+                        maxLength: 26,
+                        textTransform: 'capitalize'
+                    }"
+                ></app-ta-input>
+            </div>
+        </div>
+        <div class="row last-row">
+            <div class="col-5">
+                <app-ta-input
+                    formControlName="phone"
+                    [inputConfig]="{
+                        name: 'Phone',
+                        type: 'text',
+                        label: 'Phone',
+                        isRequired: true,
+                        placeholderIcon: 'phone',
+                        mask: '(000) 000-0000',
+                        maxLength: 14
+                    }"
+                ></app-ta-input>
+            </div>
+            <div class="col-7">
+                <app-ta-input
+                    formControlName="email"
+                    [inputConfig]="{
+                        name: 'Email',
+                        type: 'text',
+                        label: 'Email',
+                        isRequired: true,
+                        placeholderIcon: 'email',
+                        minLength: 5,
+                        maxLength: 64,
+                        textTransform: 'lowercase'
+                    }"
+                ></app-ta-input>
+            </div>
+        </div>
+        <!-- Note -->
+        <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="
+                applicantForm.get('note').value &&
+                applicantForm.get('note').value != 'null'
+                    ? applicantForm.get('note').value
+                    : false
+            "
+            [note]="
+                applicantForm.get('note').value &&
+                applicantForm.get('note').value != 'null'
+                    ? applicantForm.get('note').value
+                    : ''
+            "
+        ></app-ta-input-note>
+    </form>
 </app-ta-modal>

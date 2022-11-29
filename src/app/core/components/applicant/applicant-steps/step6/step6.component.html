@@ -1,624 +1,909 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="m-0 step-title text-center ta-font-bold">Education</h1>
+    <h1 class="m-0 step-title text-center ta-font-bold">Education</h1>
 
-  <h3
-    class="m-0 step-subtitle text-center ta-font-bold"
-    [ngStyle]="{
-      color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-    }"
-  >
-    Please select the highest grade completed:
-  </h3>
-
-  <!-- SELECT GRADE -->
-
-  <div class="d-flex justify-content-center align-items-center grade-container">
-    <div
-      class="d-flex justify-content-center align-items-center grade"
-      (mouseover)="highlightGrade = i"
-      (mouseleave)="highlightGrade = -1"
-      (click)="onSchoolGradeClick(i)"
-      [ngClass]="{
-        'grade-hovered':
-          selectedMode === 'APPLICANT_MODE' && i <= highlightGrade,
-        'grade-selected':
-          selectedMode === 'APPLICANT_MODE' && selectedGrade === i,
-        'all-before-selected':
-          (selectedMode === 'APPLICANT_MODE' && i < selectedGrade) ||
-          (selectedMode === 'APPLICANT_MODE' && selectedCollegeGrade > -1),
-        'grade-review':
-          (selectedMode === 'REVIEW_MODE' && i <= selectedGrade) ||
-          (selectedMode === 'REVIEW_MODE' && selectedCollegeGrade > -1),
-        'feedback-review':
-          (selectedMode === 'FEEDBACK_MODE' && i <= selectedGrade) ||
-          (selectedMode === 'FEEDBACK_MODE' && selectedCollegeGrade > -1)
-      }"
-      [ngStyle]="{
-        cursor: selectedMode === 'APPLICANT_MODE' ? 'pointer' : 'auto'
-      }"
-      *ngFor="
-        let grade of schoolGrades;
-        let i = index;
-        trackBy: trackByIdentity
-      "
-    >
-      <p class="m-0">{{ grade }}</p>
-    </div>
-  </div>
-
-  <p
-    class="m-0 college-title"
-    [ngStyle]="{
-      color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-    }"
-  >
-    COLLEGE:
-  </p>
-
-  <!-- SELECT COLLAGE GRADE -->
-
-  <div
-    class="d-flex justify-content-center align-items-center collage-grade-container"
-  >
-    <div
-      class="d-flex justify-content-center align-items-center grade"
-      (mouseover)="highlightCollegeGrade = i"
-      (mouseleave)="highlightCollegeGrade = -1"
-      (click)="onCollegeGradeClick(i)"
-      [ngClass]="{
-        'grade-hovered':
-          selectedMode === 'APPLICANT_MODE' && i <= highlightCollegeGrade,
-        'grade-selected':
-          selectedMode === 'APPLICANT_MODE' && selectedCollegeGrade === i,
-        'all-before-selected':
-          selectedMode === 'APPLICANT_MODE' && i < selectedCollegeGrade,
-        'grade-review':
-          selectedMode === 'REVIEW_MODE' && i <= selectedCollegeGrade,
-        'feedback-review':
-          selectedMode === 'FEEDBACK_MODE' && i <= selectedCollegeGrade
-      }"
-      [ngStyle]="{
-        cursor: selectedMode === 'APPLICANT_MODE' ? 'pointer' : 'auto'
-      }"
-      *ngFor="
-        let grade of collegeGrades;
-        let i = index;
-        trackBy: trackByIdentity
-      "
-    >
-      <p class="m-0">{{ grade }}</p>
-    </div>
-  </div>
-
-  <!-- FORM SECTION -->
-
-  <div class="d-flex flex-column form-section">
-    <form [formGroup]="educationForm">
-      <!-- TOP QUESTIONS -->
-
-      <div class="d-flex flex-column top-questions-container">
-        <div
-          class="d-flex flex-column question-container"
-          *ngFor="
-            let question of questions | slice: 0:3;
-            let i = index;
-            trackBy: trackByIdentity
-          "
-        >
-          <div class="d-flex align-items-center justify-content-between">
-            <div [ngClass]="['title-box' + i, 'title-box']">
-              <p
-                class="m-0 ta-font-regular"
-                [ngClass]="
-                  selectedMode === 'FEEDBACK_MODE'
-                    ? 'question-title question-title-feedback'
-                    : 'question-title'
-                "
-              >
-                {{ question.title }}
-                <span class="required-star">*</span>
-              </p>
-            </div>
-
-            <div class="radios-box">
-              <app-ta-input-radiobuttons
-                [buttons]="question.answerChoices"
-                (changedValue)="handleInputSelect($event)"
-              ></app-ta-input-radiobuttons>
-            </div>
-          </div>
-
-          <!-- EXPLAIN -->
-
-          <div *ngIf="i === 0 || i === 1">
-            <div
-              class="d-flex explain-container line-container"
-              *ngIf="educationForm.get(question.formControlName)?.value"
-              [ngStyle]="{
-                'margin-bottom': educationForm.get(question.formControlName)
-                  ?.value
-                  ? '20px'
-                  : '0'
-              }"
-            >
-              <div class="w-100">
-                <app-ta-input
-                  [formControlName]="question.formControlNameExplain"
-                  [inputConfig]="{
-                    name: 'Explain',
-                    type: 'text',
-                    label: 'Please explain',
-                    isRequired: true,
-                    textTransform: 'capitalize',
-                    placeholder: 'Please explain',
-                    placeholderInsteadOfLabel: true,
-                    incorrectInput: selectedMode === 'REVIEW_MODE'
-                  }"
-                  [incorrectValue]="false"
-                  (incorrectEvent)="incorrectInput($event, 0, i)"
-                ></app-ta-input>
-              </div>
-
-              <!-- REVIEW AND FEEDBACK -->
-
-              <div
-                class="review-feedback-container"
-                *ngIf="
-                  selectedMode === 'REVIEW_MODE' ||
-                  selectedMode === 'FEEDBACK_MODE'
-                "
-              >
-                <app-applicant-review-feedback
-                  [formControlName]="'questionReview' + (i + 1)"
-                  [displayAnnotationButton]="
-                    openAnnotationArray[i].displayAnnotationButton
-                  "
-                  [displayAnnotationTextArea]="
-                    openAnnotationArray[i].displayAnnotationTextArea
-                  "
-                  [lineIndex]="i"
-                  [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                  [feedbackText]="
-                    'Check the routing number one more time (one number missing)!!!'
-                  "
-                  (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-                ></app-applicant-review-feedback>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- GENERAL -->
-
-      <h3 class="m-0 text-center ta-font-bold step-title general-title">
-        General
-      </h3>
-
-      <!-- BOTTOM QUESTIONS -->
-
-      <div class="d-flex flex-column bottom-questions-container">
-        <div
-          class="d-flex align-items-center question-container"
-          *ngFor="
-            let question of questions | slice: 3;
-            let i = index;
-            trackBy: trackByIdentity
-          "
-          [ngStyle]="{
-            margin: educationForm.get('driverForCompany').value
-              ? '0 auto'
-              : '0 auto 12px auto'
-          }"
-        >
-          <div class="d-flex flex-column align-items-center w-100">
-            <div
-              class="d-flex align-items-center justify-content-between w-100"
-            >
-              <div [ngClass]="['title-box' + i, 'title-box']">
-                <p
-                  class="m-0 ta-font-regular"
-                  [ngClass]="
-                    selectedMode === 'FEEDBACK_MODE'
-                      ? 'question-title question-title-feedback'
-                      : 'question-title'
-                  "
-                >
-                  {{ question.title }}
-                  <span class="required-star">*</span>
-                </p>
-              </div>
-
-              <div class="radios-box">
-                <app-ta-input-radiobuttons
-                  [buttons]="question.answerChoices"
-                  (changedValue)="handleInputSelect($event)"
-                ></app-ta-input-radiobuttons>
-              </div>
-            </div>
-
-            <!-- DATE EXPLAIN  -->
-
-            <div
-              class="d-flex"
-              *ngIf="i === 0"
-              [ngStyle]="{
-                margin: educationForm.get('driverForCompany').value
-                  ? '22px auto 32px auto'
-                  : '0 auto'
-              }"
-            >
-              <div
-                class="d-flex line-container"
-                *ngIf="educationForm.get('driverForCompany').value"
-              >
-                <div class="date-group">
-                  <app-ta-input
-                    formControlName="driverForCompanyBeforeExplain"
-                    [inputConfig]="{
-                      name: 'datepicker',
-                      type: 'text',
-                      label: 'From',
-                      placeholderIcon: 'date',
-                      isRequired: true,
-                      customClass: 'datetimeclass',
-                      incorrectInput: selectedMode === 'REVIEW_MODE'
-                    }"
-                    [incorrectValue]="false"
-                    (incorrectEvent)="incorrectInput($event, 0, 3)"
-                  ></app-ta-input>
-                </div>
-                <div class="date-group date-to-group">
-                  <app-ta-input
-                    formControlName="driverForCompanyToExplain"
-                    [inputConfig]="{
-                      name: 'datepicker',
-                      type: 'text',
-                      label: 'To',
-                      placeholderIcon: 'date',
-                      isRequired: true,
-                      customClass: 'datetimeclass',
-                      incorrectInput: selectedMode === 'REVIEW_MODE'
-                    }"
-                    [incorrectValue]="false"
-                    (incorrectEvent)="incorrectInput($event, 1, 3)"
-                  ></app-ta-input>
-                </div>
-
-                <!-- REVIEW AND FEEDBACK -->
-
-                <div
-                  class="review-feedback-container"
-                  *ngIf="
-                    selectedMode === 'REVIEW_MODE' ||
-                    selectedMode === 'FEEDBACK_MODE'
-                  "
-                >
-                  <app-applicant-review-feedback
-                    [formControlName]="'questionReview' + (i + 4)"
-                    [displayAnnotationButton]="
-                      openAnnotationArray[i + 3].displayAnnotationButton
-                    "
-                    [displayAnnotationTextArea]="
-                      openAnnotationArray[i + 3].displayAnnotationTextArea
-                    "
-                    [lineIndex]="i + 3"
-                    [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                    [feedbackText]="
-                      'Check the routing number one more time (one number missing)!!!'
-                    "
-                    (annotationBtnClickEvent)="
-                      getAnnotationBtnClickValue($event)
-                    "
-                  ></app-applicant-review-feedback>
-                </div>
-              </div>
-            </div>
-
-            <!-- EXPLAIN -->
-
-            <div class="d-flex" *ngIf="i === 1">
-              <div
-                class="d-flex"
-                *ngIf="educationForm.get(question.formControlName).value"
-              >
-                <div
-                  class="explain-container line-container"
-                  [ngStyle]="{
-                    'margin-bottom': educationForm.get(question.formControlName)
-                      ?.value
-                      ? '20px'
-                      : '0'
-                  }"
-                >
-                  <app-ta-input
-                    [formControlName]="question.formControlNameExplain"
-                    [inputConfig]="{
-                      name: 'Explain',
-                      type: 'text',
-                      label: 'Please explain',
-                      isRequired: true,
-                      textTransform: 'capitalize',
-                      placeholder: 'Please explain',
-                      placeholderInsteadOfLabel: true,
-                      incorrectInput: selectedMode === 'REVIEW_MODE'
-                    }"
-                    [incorrectValue]="false"
-                    (incorrectEvent)="incorrectInput($event, 0, 4)"
-                  ></app-ta-input>
-
-                  <!-- REVIEW AND FEEDBACK -->
-
-                  <div
-                    class="review-feedback-container"
-                    *ngIf="
-                      selectedMode === 'REVIEW_MODE' ||
-                      selectedMode === 'FEEDBACK_MODE'
-                    "
-                  >
-                    <app-applicant-review-feedback
-                      [formControlName]="'questionReview' + (i + 4)"
-                      [displayAnnotationButton]="
-                        openAnnotationArray[i + 3].displayAnnotationButton
-                      "
-                      [displayAnnotationTextArea]="
-                        openAnnotationArray[i + 3].displayAnnotationTextArea
-                      "
-                      [lineIndex]="i + 3"
-                      [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                      [feedbackText]="
-                        'Check the routing number one more time (one number missing)!!!'
-                      "
-                      (annotationBtnClickEvent)="
-                        getAnnotationBtnClickValue($event)
-                      "
-                    ></app-applicant-review-feedback>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-
-    <!-- CONTACT -->
-
-    <form class="contact-form">
-      <h3
-        class="contact-title text-center ta-font-bold"
+    <h3
+        class="m-0 step-subtitle text-center ta-font-bold"
         [ngStyle]="{
-          'margin-bottom': contactsArray.length ? '22px' : '32px',
-          color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
         }"
-      >
-        In case of emergency, contact:
-      </h3>
+    >
+        Please select the highest grade completed:
+    </h3>
 
-      <!-- CREATED CONTACT DATA -->
+    <!-- SELECT GRADE -->
 
-      <div
-        class="d-flex flex-column justify-content-center contacts-view-container"
-        *ngIf="contactsArray?.length"
-        [formGroup]="contactForm"
-      >
+    <div
+        class="d-flex justify-content-center align-items-center grade-container"
+    >
         <div
-          class="d-flex flex-column"
-          *ngFor="
-            let contact of contactsArray;
-            let i = index;
-            trackBy: trackByIdentity
-          "
-        >
-          <div
-            class="d-flex align-items-center title-container"
-            *ngIf="
-              (contactsArray.length > 0 && helperIndex !== 0 && i === 0) ||
-              (helperIndex === 0 && i === 1) ||
-              (i === helperIndex + 1 && selectedContactIndex > -1)
+            class="d-flex justify-content-center align-items-center grade"
+            (mouseover)="highlightGrade = i"
+            (mouseleave)="highlightGrade = -1"
+            (click)="onSchoolGradeClick(i)"
+            [ngClass]="{
+                'grade-required':
+                    selectedMode === 'APPLICANT_MODE' &&
+                    displayGradeRequiredNote,
+                'grade-hovered-required':
+                    selectedMode === 'APPLICANT_MODE' &&
+                    i <= highlightGrade &&
+                    displayGradeRequiredNote,
+                'grade-hovered':
+                    selectedMode === 'APPLICANT_MODE' && i <= highlightGrade,
+                'grade-selected':
+                    (selectedMode === 'APPLICANT_MODE' &&
+                        selectedGrade === i) ||
+                    (selectedMode === 'APPLICANT_MODE' && i === selectedGrade),
+                'all-before-selected':
+                    (selectedMode === 'APPLICANT_MODE' && i < selectedGrade) ||
+                    (selectedMode === 'APPLICANT_MODE' &&
+                        selectedCollegeGrade > -1),
+                'grade-review':
+                    (selectedMode === 'REVIEW_MODE' && i <= selectedGrade) ||
+                    (selectedMode === 'REVIEW_MODE' &&
+                        selectedCollegeGrade > -1),
+                'feedback-review':
+                    (selectedMode === 'FEEDBACK_MODE' && i <= selectedGrade) ||
+                    (selectedMode === 'FEEDBACK_MODE' &&
+                        selectedCollegeGrade > -1)
+            }"
+            [ngStyle]="{
+                cursor: selectedMode === 'APPLICANT_MODE' ? 'pointer' : 'auto'
+            }"
+            *ngFor="
+                let grade of schoolGrades;
+                let i = index;
+                trackBy: trackByIdentity
             "
-          >
-            <div class="d-flex align-items-center name-title-box">
-              <p class="m-0 ta-font-bold">NAME <span>*</span></p>
-            </div>
-            <div class="d-flex align-items-center phone-title-box">
-              <p class="m-0 ta-font-bold">PHONE <span>*</span></p>
-            </div>
-            <div class="d-flex align-items-center relationship-title-box">
-              <p class="m-0 ta-font-bold">RELATIONSHIP <span>*</span></p>
-            </div>
-          </div>
+        >
+            <p class="m-0">{{ grade }}</p>
+        </div>
+    </div>
 
-          <div
-            class="d-flex align-items-center contact-info-container line-container"
-            *ngIf="!contact.isEditingContact"
-          >
-            <div class="d-flex align-items-center info-btn-container">
-              <div class="d-flex align-items-center name-box">
-                <p class="m-0 ta-font-regular">
-                  {{ contact.name }}
-                </p>
-              </div>
-              <div class="d-flex align-items-center phone-box">
-                <p class="m-0 ta-font-regular">
-                  {{ contact.phone }}
-                </p>
-              </div>
-              <div
-                class="d-flex align-items-center relationship-box"
-                [ngStyle]="{
-                  'margin-right': selectedMode === 'APPLICANT_MODE' ? '20px' : 0
-                }"
-              >
-                <p class="m-0 ta-font-regular">
-                  {{ contact.relationship }}
-                </p>
-              </div>
+    <p
+        class="m-0 college-title"
+        [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+        }"
+    >
+        COLLEGE:
+    </p>
 
-              <div
-                class="d-flex align-items-center btn-container"
+    <!-- SELECT COLLAGE GRADE -->
+
+    <div
+        class="d-flex flex-column justify-content-center align-items-center collage-grade-container"
+    >
+        <div class="d-flex align-items-center justify-content-center">
+            <div
+                class="d-flex justify-content-center align-items-center grade"
+                (mouseover)="highlightCollegeGrade = i"
+                (mouseleave)="highlightCollegeGrade = -1"
+                (click)="onCollegeGradeClick(i)"
                 [ngClass]="{
-                  active: selectedMode === 'REVIEW_MODE'
+                    'grade-required':
+                        selectedMode === 'APPLICANT_MODE' &&
+                        displayGradeRequiredNote,
+                    'grade-hovered-required':
+                        selectedMode === 'APPLICANT_MODE' &&
+                        i <= highlightCollegeGrade &&
+                        displayGradeRequiredNote,
+                    'grade-hovered':
+                        selectedMode === 'APPLICANT_MODE' &&
+                        i <= highlightCollegeGrade,
+                    'grade-selected':
+                        selectedMode === 'APPLICANT_MODE' &&
+                        selectedCollegeGrade === i,
+                    'all-before-selected':
+                        selectedMode === 'APPLICANT_MODE' &&
+                        i < selectedCollegeGrade,
+                    'grade-review':
+                        selectedMode === 'REVIEW_MODE' &&
+                        i <= selectedCollegeGrade,
+                    'feedback-review':
+                        selectedMode === 'FEEDBACK_MODE' &&
+                        i <= selectedCollegeGrade
                 }"
-              >
+                [ngStyle]="{
+                    cursor:
+                        selectedMode === 'APPLICANT_MODE' ? 'pointer' : 'auto'
+                }"
+                *ngFor="
+                    let grade of collegeGrades;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <p class="m-0">{{ grade }}</p>
+            </div>
+        </div>
+
+        <!-- REQUIRED -->
+
+        <ng-container *ngIf="displayGradeRequiredNote">
+            <div
+                class="d-flex justify-content-center align-items-center required-container"
+            >
+                <p class="m-0 ta-font-semi-bold">Required</p>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- FORM SECTION -->
+
+    <div class="d-flex flex-column form-section">
+        <form [formGroup]="educationForm">
+            <!-- TOP QUESTIONS -->
+
+            <div class="d-flex flex-column top-questions-container">
                 <div
-                  ngbTooltip
-                  mainTooltip="Edit"
-                  tooltipBackground="#6C6C6C"
-                  position="top"
+                    class="d-flex flex-column question-container"
+                    *ngFor="
+                        let question of questions | slice: 0:3;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
                 >
-                  <svg-icon
-                    class="edit-icon"
-                    src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                    [svgStyle]="{
-                      'width.px': 18,
-                      'height.px': 18
-                    }"
-                    (click)="onEditContact(i)"
-                  ></svg-icon>
-                </div>
+                    <div
+                        class="d-flex align-items-center justify-content-between"
+                    >
+                        <div
+                            class="d-flex flex-column"
+                            [ngClass]="['title-box' + i, 'title-box']"
+                        >
+                            <p
+                                class="m-0 ta-font-regular"
+                                [ngClass]="
+                                    selectedMode === 'FEEDBACK_MODE'
+                                        ? 'question-title question-title-feedback'
+                                        : 'question-title'
+                                "
+                            >
+                                {{ question.title }}
+                                <span class="required-star">*</span>
+                            </p>
 
-                <div
-                  ngbTooltip
-                  mainTooltip="Delete"
-                  tooltipBackground="#EF5350"
-                  position="top"
-                >
-                  <svg-icon
-                    class="delete-icon"
-                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                    [svgStyle]="{
-                      'width.px': 18,
-                      'height.px': 18
-                    }"
-                    (click)="onDeleteContact(i)"
-                  ></svg-icon>
-                </div>
+                            <ng-container
+                                *ngIf="
+                                    displayRadioRequiredNoteArray[i]
+                                        .displayRadioRequiredNote
+                                "
+                            >
+                                <p class="m-0 ta-font-semi-bold required">
+                                    Required
+                                </p>
+                            </ng-container>
+                        </div>
 
-                <div *ngIf="selectedMode === 'REVIEW_MODE'">
-                  <div
-                    class="review-icon-box"
-                    ngbTooltip
-                    mainTooltip="Mark Incorrect"
-                    tooltipBackground="#F44336"
-                    position="top"
-                  >
-                    <svg-icon
-                      class="review-icon"
-                      [ngClass]="{
-                        active:
-                          openAnnotationArray[i + 5].displayAnnotationButton ||
-                          openAnnotationArray[i + 5].displayAnnotationTextArea
-                      }"
-                      src="assets/svg/ic_x.svg"
-                      [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                      }"
-                      (click)="incorrectInput($event, 0, i + 5, 'card')"
-                    ></svg-icon>
-                  </div>
-                </div>
+                        <div class="radios-box">
+                            <app-ta-input-radiobuttons
+                                #cmp
+                                [buttons]="question.answerChoices"
+                                [disabled]="
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    selectedMode === 'FEEDBACK_MODE'
+                                "
+                                [displayRequiredNote]="
+                                    displayRadioRequiredNoteArray[i]
+                                        .displayRadioRequiredNote
+                                "
+                                (changedValue)="handleInputSelect($event)"
+                            ></app-ta-input-radiobuttons>
+                        </div>
+                    </div>
 
-                <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
-                  <div
-                    class="feedback-icon-box"
-                    ngbTooltip
-                    mainTooltip="Marked Incorrect"
-                    tooltipBackground="#F44336"
-                    position="top"
-                  >
-                    <svg-icon
-                      class="feedback-icon"
-                      src="assets/svg/common/ic_danger.svg"
-                      [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                      }"
-                    ></svg-icon>
-                  </div>
+                    <!-- EXPLAIN -->
+
+                    <div *ngIf="i === 0 || i === 1">
+                        <div
+                            class="d-flex explain-container line-container"
+                            *ngIf="
+                                educationForm.get(question.formControlName)
+                                    ?.value
+                            "
+                            [ngStyle]="{
+                                'margin-bottom': educationForm.get(
+                                    question.formControlName
+                                )?.value
+                                    ? '20px'
+                                    : '0'
+                            }"
+                        >
+                            <div class="w-100">
+                                <app-ta-input
+                                    [formControlName]="
+                                        question.formControlNameExplain
+                                    "
+                                    [inputConfig]="{
+                                        name: 'Explain',
+                                        type: 'text',
+                                        label: 'Please explain',
+                                        isRequired: true,
+                                        textTransform: 'capitalize',
+                                        placeholder: 'Please explain',
+                                        placeholderInsteadOfLabel: true,
+                                        isDisabled:
+                                            selectedMode === 'REVIEW_MODE' ||
+                                            (selectedMode === 'FEEDBACK_MODE' &&
+                                                i === 0 &&
+                                                stepFeedbackValues?.isSpecialTrainingDescriptionValid) ||
+                                            (i === 1 &&
+                                                stepFeedbackValues?.isOtherTrainingDescriptionValid),
+                                        incorrectInput:
+                                            selectedMode === 'REVIEW_MODE'
+                                    }"
+                                    [incorrectValue]="
+                                        openAnnotationArray[i].lineInputs[0]
+                                    "
+                                    (incorrectEvent)="
+                                        incorrectInput($event, 0, i)
+                                    "
+                                ></app-ta-input>
+                            </div>
+
+                            <!-- REVIEW AND FEEDBACK -->
+
+                            <div
+                                class="review-feedback-container"
+                                *ngIf="
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    selectedMode === 'FEEDBACK_MODE'
+                                "
+                            >
+                                <app-applicant-review-feedback
+                                    [formControlName]="
+                                        'questionReview' + (i + 1)
+                                    "
+                                    [displayAnnotationButton]="
+                                        selectedMode === 'REVIEW_MODE' &&
+                                        openAnnotationArray[i]
+                                            .displayAnnotationButton
+                                    "
+                                    [displayAnnotationTextArea]="
+                                        selectedMode === 'REVIEW_MODE' &&
+                                        openAnnotationArray[i]
+                                            .displayAnnotationTextArea
+                                    "
+                                    [lineIndex]="i"
+                                    [isFeedback]="
+                                        selectedMode === 'FEEDBACK_MODE'
+                                    "
+                                    [feedbackText]="
+                                        selectedMode === 'FEEDBACK_MODE' &&
+                                        ((i === 0 &&
+                                            stepFeedbackValues?.specialTrainingDescriptionMessage) ||
+                                            (i === 1 &&
+                                                stepFeedbackValues?.otherTrainingDescriptionMessage))
+                                    "
+                                    (annotationBtnClickEvent)="
+                                        selectedMode === 'REVIEW_MODE' &&
+                                            getAnnotationBtnClickValue($event)
+                                    "
+                                ></app-applicant-review-feedback>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
 
-            <!-- REVIEW AND FEEDBACK -->
+            <!-- GENERAL -->
+
+            <h3 class="m-0 text-center ta-font-bold step-title general-title">
+                General
+            </h3>
+
+            <!-- BOTTOM QUESTIONS -->
+
+            <div class="d-flex flex-column bottom-questions-container">
+                <div
+                    class="d-flex align-items-center question-container"
+                    *ngFor="
+                        let question of questions | slice: 3;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                    [ngStyle]="{
+                        margin: educationForm.get('driverForCompany').value
+                            ? '0 auto'
+                            : '0 auto 12px auto'
+                    }"
+                >
+                    <div class="d-flex flex-column align-items-center w-100">
+                        <div
+                            class="d-flex align-items-center justify-content-between w-100"
+                        >
+                            <div
+                                class="d-flex flex-column"
+                                [ngClass]="['title-box' + i, 'title-box']"
+                            >
+                                <p
+                                    class="m-0 ta-font-regular"
+                                    [ngClass]="
+                                        selectedMode === 'FEEDBACK_MODE'
+                                            ? 'question-title question-title-feedback'
+                                            : 'question-title'
+                                    "
+                                >
+                                    {{ question.title }}
+                                    <span class="required-star">*</span>
+                                </p>
+
+                                <ng-container
+                                    *ngIf="
+                                        displayRadioRequiredNoteArray[i + 3]
+                                            .displayRadioRequiredNote
+                                    "
+                                >
+                                    <p class="m-0 ta-font-semi-bold required">
+                                        Required
+                                    </p>
+                                </ng-container>
+                            </div>
+
+                            <div class="radios-box">
+                                <app-ta-input-radiobuttons
+                                    #cmp
+                                    [buttons]="question.answerChoices"
+                                    [disabled]="
+                                        selectedMode === 'REVIEW_MODE' ||
+                                        selectedMode === 'FEEDBACK_MODE'
+                                    "
+                                    [displayRequiredNote]="
+                                        displayRadioRequiredNoteArray[i + 3]
+                                            .displayRadioRequiredNote
+                                    "
+                                    (changedValue)="handleInputSelect($event)"
+                                ></app-ta-input-radiobuttons>
+                            </div>
+                        </div>
+
+                        <!-- DATE EXPLAIN  -->
+
+                        <div
+                            class="d-flex"
+                            *ngIf="i === 0"
+                            [ngStyle]="{
+                                margin: educationForm.get('driverForCompany')
+                                    .value
+                                    ? '22px auto 32px auto'
+                                    : '0 auto'
+                            }"
+                        >
+                            <div
+                                class="d-flex line-container"
+                                *ngIf="
+                                    educationForm.get('driverForCompany').value
+                                "
+                            >
+                                <div class="date-group">
+                                    <app-ta-input
+                                        formControlName="driverForCompanyBeforeExplain"
+                                        [inputConfig]="{
+                                            name: 'datepicker',
+                                            type: 'text',
+                                            label: 'From',
+                                            placeholderIcon: 'date',
+                                            isRequired: true,
+                                            customClass: 'datetimeclass',
+                                            isDisabled:
+                                                selectedMode ===
+                                                    'REVIEW_MODE' ||
+                                                (selectedMode ===
+                                                    'FEEDBACK_MODE' &&
+                                                    stepFeedbackValues?.isFromValid),
+                                            incorrectInput:
+                                                selectedMode === 'REVIEW_MODE'
+                                        }"
+                                        [incorrectValue]="
+                                            openAnnotationArray[2].lineInputs[0]
+                                        "
+                                        (incorrectEvent)="
+                                            incorrectInput($event, 0, 2)
+                                        "
+                                    ></app-ta-input>
+                                </div>
+                                <div class="date-group date-to-group">
+                                    <app-ta-input
+                                        formControlName="driverForCompanyToExplain"
+                                        [inputConfig]="{
+                                            name: 'datepicker',
+                                            type: 'text',
+                                            label: 'To',
+                                            placeholderIcon: 'date',
+                                            isRequired: true,
+                                            customClass: 'datetimeclass',
+                                            isDisabled:
+                                                selectedMode ===
+                                                    'REVIEW_MODE' ||
+                                                (selectedMode ===
+                                                    'FEEDBACK_MODE' &&
+                                                    stepFeedbackValues?.isToValid),
+                                            incorrectInput:
+                                                selectedMode === 'REVIEW_MODE'
+                                        }"
+                                        [incorrectValue]="
+                                            openAnnotationArray[2].lineInputs[1]
+                                        "
+                                        (incorrectEvent)="
+                                            incorrectInput($event, 1, 2)
+                                        "
+                                    ></app-ta-input>
+                                </div>
+
+                                <!-- REVIEW AND FEEDBACK -->
+
+                                <div
+                                    class="review-feedback-container"
+                                    *ngIf="
+                                        selectedMode === 'REVIEW_MODE' ||
+                                        selectedMode === 'FEEDBACK_MODE'
+                                    "
+                                >
+                                    <app-applicant-review-feedback
+                                        [formControlName]="
+                                            'questionReview' + (i + 4)
+                                        "
+                                        [displayAnnotationButton]="
+                                            selectedMode === 'REVIEW_MODE' &&
+                                            openAnnotationArray[i + 2]
+                                                .displayAnnotationButton
+                                        "
+                                        [displayAnnotationTextArea]="
+                                            selectedMode === 'REVIEW_MODE' &&
+                                            openAnnotationArray[i + 2]
+                                                .displayAnnotationTextArea
+                                        "
+                                        [lineIndex]="i + 2"
+                                        [isFeedback]="
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                        [feedbackText]="
+                                            selectedMode === 'FEEDBACK_MODE' &&
+                                            stepFeedbackValues?.datesMessage
+                                        "
+                                        (annotationBtnClickEvent)="
+                                            selectedMode === 'REVIEW_MODE' &&
+                                                getAnnotationBtnClickValue(
+                                                    $event
+                                                )
+                                        "
+                                    ></app-applicant-review-feedback>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- EXPLAIN -->
+
+                        <div class="d-flex" *ngIf="i === 1">
+                            <div
+                                class="d-flex"
+                                *ngIf="
+                                    educationForm.get(question.formControlName)
+                                        .value
+                                "
+                            >
+                                <div
+                                    class="explain-container line-container"
+                                    [ngStyle]="{
+                                        'margin-bottom': educationForm.get(
+                                            question.formControlName
+                                        )?.value
+                                            ? '20px'
+                                            : '0'
+                                    }"
+                                >
+                                    <app-ta-input
+                                        [formControlName]="
+                                            question.formControlNameExplain
+                                        "
+                                        [inputConfig]="{
+                                            name: 'Explain',
+                                            type: 'text',
+                                            label: 'Please explain',
+                                            isRequired: true,
+                                            textTransform: 'capitalize',
+                                            placeholder: 'Please explain',
+                                            placeholderInsteadOfLabel: true,
+                                            isDisabled:
+                                                selectedMode ===
+                                                    'REVIEW_MODE' ||
+                                                (selectedMode ===
+                                                    'FEEDBACK_MODE' &&
+                                                    stepFeedbackValues?.isUnableToPreformJobDescriptionValid),
+                                            incorrectInput:
+                                                selectedMode === 'REVIEW_MODE'
+                                        }"
+                                        [incorrectValue]="
+                                            openAnnotationArray[3].lineInputs[0]
+                                        "
+                                        (incorrectEvent)="
+                                            incorrectInput($event, 0, 3)
+                                        "
+                                    ></app-ta-input>
+
+                                    <!-- REVIEW AND FEEDBACK -->
+
+                                    <div
+                                        class="review-feedback-container"
+                                        *ngIf="
+                                            selectedMode === 'REVIEW_MODE' ||
+                                            selectedMode === 'FEEDBACK_MODE'
+                                        "
+                                    >
+                                        <app-applicant-review-feedback
+                                            [formControlName]="
+                                                'questionReview' + (i + 4)
+                                            "
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[3]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[3]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="3"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' &&
+                                                stepFeedbackValues?.unableToPreformJobDescriptionMessage
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- CONTACT -->
+
+        <form class="contact-form">
+            <h3
+                class="contact-title text-center ta-font-bold"
+                [ngStyle]="{
+                    'margin-bottom': contactsArray.length ? '22px' : '32px',
+                    color:
+                        selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+                }"
+            >
+                In case of emergency, contact:
+            </h3>
+
+            <!-- CREATED CONTACT DATA -->
 
             <div
-              class="review-feedback-container"
-              *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-              "
+                class="d-flex flex-column justify-content-center contacts-view-container"
+                *ngIf="contactsArray?.length"
+                [formGroup]="contactForm"
             >
-              <app-applicant-review-feedback
-                [formControlName]="'cardReview' + (i + 1)"
-                [displayAnnotationButton]="
-                  openAnnotationArray[i + 5].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                  openAnnotationArray[i + 5].displayAnnotationTextArea
-                "
-                [lineIndex]="i + 5"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="'Check the number'"
-                [cardsLength]="contactsArray.length"
-                [cardsType]="'educationContacts'"
-                [cardIndex]="i"
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-              ></app-applicant-review-feedback>
+                <div
+                    class="d-flex flex-column"
+                    *ngFor="
+                        let contact of contactsArray;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="d-flex align-items-center title-container"
+                        *ngIf="
+                            (contactsArray.length > 0 &&
+                                helperIndex !== 0 &&
+                                i === 0) ||
+                            (helperIndex === 0 && i === 1) ||
+                            (i === helperIndex + 1 && selectedContactIndex > -1)
+                        "
+                    >
+                        <div class="d-flex align-items-center name-title-box">
+                            <p class="m-0 ta-font-bold">NAME <span>*</span></p>
+                        </div>
+                        <div class="d-flex align-items-center phone-title-box">
+                            <p class="m-0 ta-font-bold">PHONE <span>*</span></p>
+                        </div>
+                        <div
+                            class="d-flex align-items-center relationship-title-box"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                RELATIONSHIP <span>*</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="d-flex align-items-center contact-info-container line-container"
+                        *ngIf="!contact.isEditingContact"
+                    >
+                        <div
+                            class="d-flex align-items-center info-btn-container"
+                        >
+                            <div
+                                class="d-flex align-items-center"
+                                [ngStyle]="{
+                                    cursor:
+                                        selectedMode === 'REVIEW_MODE'
+                                            ? 'pointer'
+                                            : 'auto'
+                                }"
+                                (click)="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                        onCardReview(i)
+                                "
+                            >
+                                <div class="d-flex align-items-center name-box">
+                                    <p class="m-0 ta-font-regular">
+                                        {{ contact.name }}
+                                    </p>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center phone-box"
+                                >
+                                    <p class="m-0 ta-font-regular">
+                                        {{ contact.phone }}
+                                    </p>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center relationship-box"
+                                    [ngStyle]="{
+                                        'margin-right':
+                                            selectedMode === 'APPLICANT_MODE'
+                                                ? '20px'
+                                                : 0
+                                    }"
+                                >
+                                    <p class="m-0 ta-font-regular">
+                                        {{ contact.relationship }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center btn-container"
+                                [ngClass]="{
+                                    active: selectedMode === 'REVIEW_MODE'
+                                }"
+                            >
+                                <div
+                                    ngbTooltip
+                                    mainTooltip="Edit"
+                                    tooltipBackground="#6C6C6C"
+                                    position="top"
+                                >
+                                    <svg-icon
+                                        class="edit-icon"
+                                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                        (click)="onEditContact(i)"
+                                    ></svg-icon>
+                                </div>
+
+                                <div
+                                    ngbTooltip
+                                    mainTooltip="Delete"
+                                    tooltipBackground="#EF5350"
+                                    position="top"
+                                >
+                                    <svg-icon
+                                        class="delete-icon"
+                                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                        (click)="onDeleteContact(i)"
+                                    ></svg-icon>
+                                </div>
+
+                                <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                                    <div
+                                        class="review-icon-box"
+                                        ngbTooltip
+                                        mainTooltip="Mark Incorrect"
+                                        tooltipBackground="#F44336"
+                                        position="top"
+                                    >
+                                        <svg-icon
+                                            class="review-icon"
+                                            [ngClass]="{
+                                                active:
+                                                    openAnnotationArray[i + 4]
+                                                        .displayAnnotationButton ||
+                                                    openAnnotationArray[i + 4]
+                                                        .displayAnnotationTextArea
+                                            }"
+                                            src="assets/svg/ic_x.svg"
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                            (click)="
+                                                openAnnotationArray[i + 4]
+                                                    .lineInputs[0]
+                                                    ? incorrectInput(
+                                                          $event,
+                                                          0,
+                                                          i + 4,
+                                                          'card'
+                                                      )
+                                                    : onCardReview(i)
+                                            "
+                                        ></svg-icon>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
+                                    <div
+                                        class="feedback-icon-box"
+                                        ngbTooltip
+                                        mainTooltip="Marked Incorrect"
+                                        tooltipBackground="#F44336"
+                                        position="top"
+                                    >
+                                        <svg-icon
+                                            class="feedback-icon"
+                                            src="assets/svg/common/ic_danger.svg"
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                        ></svg-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- REVIEW AND FEEDBACK -->
+
+                        <div
+                            class="review-feedback-container"
+                            *ngIf="
+                                selectedMode === 'REVIEW_MODE' ||
+                                selectedMode === 'FEEDBACK_MODE'
+                            "
+                        >
+                            <app-applicant-review-feedback
+                                [formControlName]="'cardReview' + (i + 1)"
+                                [displayAnnotationButton]="
+                                    openAnnotationArray[i + 4]
+                                        .displayAnnotationButton
+                                "
+                                [displayAnnotationTextArea]="
+                                    openAnnotationArray[i + 4]
+                                        .displayAnnotationTextArea
+                                "
+                                [lineIndex]="i + 4"
+                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                                [feedbackText]="'Check the number'"
+                                [cardsLength]="contactsArray.length"
+                                [cardsType]="'educationContacts'"
+                                [cardIndex]="i"
+                                (annotationBtnClickEvent)="
+                                    getAnnotationBtnClickValue($event)
+                                "
+                            ></app-applicant-review-feedback>
+                        </div>
+                    </div>
+
+                    <div
+                        *ngIf="contact.isEditingContact"
+                        class="d-flex flex-column contacts-view-form"
+                        [ngStyle]="{
+                            margin:
+                                i !== 0
+                                    ? '32px auto 0 auto'
+                                    : '10px auto 0 auto'
+                        }"
+                    >
+                        <app-step6-form
+                            [mode]="selectedMode"
+                            [isEditing]="isEditing"
+                            [formValuesToPatch]="formValuesToPatch"
+                            [isReviewingCard]="isReviewingCard"
+                            [stepFeedbackValues]="
+                                stepFeedbackValues?.lastContactsItemReview
+                            "
+                            (formValuesEmitter)="getContactFormValues($event)"
+                            (cancelFormEditingEmitter)="
+                                cancelContactEditing($event)
+                            "
+                            (saveFormEditingEmitter)="saveEditedContact($event)"
+                            (cancelFormReviewingEmitter)="
+                                cancelContactReview($event)
+                            "
+                            (cardOpenAnnotationArrayValuesEmitter)="
+                                onGetCardOpenAnnotationArrayValues($event)
+                            "
+                        ></app-step6-form>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <div
-            class="d-flex flex-column contacts-view-form"
-            *ngIf="contact.isEditingContact"
-          >
-            <app-step6-form
-              [isEditing]="isEditing"
-              [formValuesToPatch]="formValuesToPatch"
-              (formValuesEmitter)="getContactFormValues($event)"
-              (cancelFormEditingEmitter)="cancelContactEditing($event)"
-              (saveFormEditingEmitter)="saveEditedContact($event)"
-            ></app-step6-form>
-          </div>
-        </div>
-      </div>
-
-      <div class="d-flex" *ngIf="!isEditing">
-        <app-step6-form
-          [isEditing]="isEditing"
-          [markFormInvalid]="markFormInvalid"
-          (formValuesEmitter)="getContactFormValues($event)"
-          (formStatusEmitter)="onGetFormStatus($event)"
-          (markInvalidEmitter)="onMarkInvalidEmit($event)"
-          (lastFormValuesEmitter)="onGetLastFormValues($event)"
-        ></app-step6-form>
-      </div>
-    </form>
-  </div>
+            <div
+                class="d-flex"
+                *ngIf="
+                    ((selectedMode === 'APPLICANT_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE') &&
+                        !isEditing) ||
+                    (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
+                "
+            >
+                <app-step6-form
+                    [mode]="selectedMode"
+                    [isEditing]="isEditing"
+                    [markFormInvalid]="markFormInvalid"
+                    [formValuesToPatch]="formValuesToPatch"
+                    [isReviewingCard]="isReviewingCard"
+                    [stepFeedbackValues]="
+                        stepFeedbackValues?.lastContactsItemReview
+                    "
+                    (formValuesEmitter)="getContactFormValues($event)"
+                    (formStatusEmitter)="onGetFormStatus($event)"
+                    (markInvalidEmitter)="onMarkInvalidEmit($event)"
+                    (lastFormValuesEmitter)="onGetLastFormValues($event)"
+                    (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
+                    (openAnnotationArrayValuesEmitter)="
+                        onGetOpenAnnotationArrayValues($event)
+                    "
+                ></app-step6-form>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center next-btn-container"
+    class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn
-    [nextStep]="true"
-    [filledCorrectly]="
-      educationForm.valid && selectedGrade > -1 && formStatus === 'VALID'
-    "
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [nextStep]="true"
+        [filledCorrectly]="
+            educationForm.valid &&
+            selectedGrade > -1 &&
+            formStatus === 'VALID' &&
+            !isEditing &&
+            (selectedMode === 'APPLICANT_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                    isUpperFormFeedbackValueUpdated &&
+                    isBottomFormFeedbackValueUpdated))
+        "
+        [hasIncorrectFields]="
+            selectedMode === 'REVIEW_MODE' &&
+            (questionsHaveIncorrectFields ||
+                hasIncorrectFields ||
+                cardsWithIncorrectFields)
+        "
+        [mode]="selectedMode"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center back-btn-container"
+    class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn
-    [backStep]="true"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [backStep]="true"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>

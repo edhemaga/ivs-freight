@@ -38,6 +38,8 @@ export interface DriverShortResponse {
     team?: PerMileEntity;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
+    soloFlatRate?: number | null;
+    teamFlatRate?: number | null;
     twic?: boolean;
     twicExpDate?: string | null;
     fuelCard?: string | null;

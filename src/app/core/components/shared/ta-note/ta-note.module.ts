@@ -6,16 +6,18 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AppTooltipeModule } from '../../shared/app-tooltip/app-tooltip.module';
 import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
 import { PipesModule } from '../../../pipes/pipes.module';
+import { TaSpinnerModule } from '../ta-spinner/ta-spinner.module';
 
 @NgModule({
-  declarations: [TaNoteComponent, TaNoteContainerComponent],
-  imports: [
-    CommonModule,
-    NgbModule,
-    PipesModule,
-    AngularSvgIconModule,
-    AppTooltipeModule,
-  ],
-  exports: [TaNoteComponent, TaNoteContainerComponent],
+    declarations: [TaNoteComponent, TaNoteContainerComponent],
+    imports: [
+        CommonModule,
+        NgbModule,
+        PipesModule,
+        AngularSvgIconModule,
+        AppTooltipeModule,
+        TaSpinnerModule,
+    ],
+    exports: [TaNoteComponent, TaNoteContainerComponent],
 })
 export class TaNoteModule {}

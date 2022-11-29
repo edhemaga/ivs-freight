@@ -9,14 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { FuelTransactionResponse } from './fuelTransactionResponse';
 import { FuelStopExtensionResponse } from './fuelStopExtensionResponse';
 import { AddressEntity } from './addressEntity';
+import { FuelStopFranchiseMinimalResponse } from './fuelStopFranchiseMinimalResponse';
 
 
 export interface FuelStopResponse { 
     id?: number;
-    name?: string | null;
+    companyId?: number | null;
+    fuelStopFranchise?: FuelStopFranchiseMinimalResponse;
     businessName?: string | null;
     store?: string | null;
     phone?: string | null;
@@ -29,6 +32,7 @@ export interface FuelStopResponse {
     latitude?: number | null;
     fuelTransactions?: Array<FuelTransactionResponse> | null;
     fuelStopExtensions?: Array<FuelStopExtensionResponse> | null;
+    files?: Array<FileResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }

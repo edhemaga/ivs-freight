@@ -1,214 +1,203 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="m-0 step-title text-center noselect ta-font-bold">
-    Authorization
-  </h1>
+    <h1 class="m-0 step-title text-center noselect ta-font-bold">
+        Authorization
+    </h1>
 
-  <!-- FORM SECTION -->
+    <!-- FORM SECTION -->
 
-  <div class="d-flex flex-column form-section">
-    <form [formGroup]="authorizationForm">
-      <div
-        class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-      >
-        <app-ta-checkbox
-          formControlName="isFirstAuthorization"
-          [name]="'isFirstAuthorization'"
-          [label]="
-            'I hereby authorize this company to release all records of employment, including assessments of my job previous '
-          "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE'
-              ? 'applicant-disclosure-release-feedback'
-              : 'disclosure-release'
-          "
-        >
-        </app-ta-checkbox>
-        <p
-          class="m-0 text-center ta-font-regular"
-          [ngStyle]="{
-            color:
-              selectedMode !== 'FEEDBACK_MODE' &&
-              authorizationForm.get('isFirstAuthorization').value
-                ? '#3c3c3c'
-                : selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
-          }"
-          (click)="handleCheckboxParagraphClick('isFirstAuthorization')"
-        >
-          ability, and fitness (including dates of any and all alcohol or drug
-          tests, those confirmed results and/or my refusing to any alcohol or
-          drug tests and any rehabilitation completion under direction of
-          SAP/MRO) to each and every company (their authorized agents) which may
-          request such information in connection with my application for
-          employment company. I hereby release this company, and its employees,
-          officers, directors, and agents from any and all liable type as a
-          result of providing the following information to the below mentioned
-          person and/or company.
-        </p>
-      </div>
+    <div class="d-flex flex-column form-section">
+        <form [formGroup]="authorizationForm">
+            <div class="d-flex checkbox-container">
+                <app-ta-checkbox
+                    formControlName="isFirstAuthorization"
+                    [name]="'isFirstAuthorization'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="
+                        handleCheckboxParagraphClick('isFirstAuthorization')
+                    "
+                >
+                    I hereby authorize this company to release all records of
+                    employment, including assessments of my job previous
+                    ability, and fitness (including dates of any and all alcohol
+                    or drug tests, those confirmed results and/or my refusing to
+                    any alcohol or drug tests and any rehabilitation completion
+                    under direction of SAP/MRO) to each and every company (their
+                    authorized agents) which may request such information in
+                    connection with my application for employment company. I
+                    hereby release this company, and its employees, officers,
+                    directors, and agents from any and all liable type as a
+                    result of providing the following information to the below
+                    mentioned person and/or company.
+                </p>
+            </div>
 
-      <!-- MUST READ -->
+            <!-- MUST READ -->
 
-      <h3
-        class="m-0 step-subtitle noselect text-center ta-font-bold"
-        [ngStyle]="{
-          color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-        }"
-      >
-        Must be read and signed by the applicant
-      </h3>
+            <h3
+                class="m-0 step-subtitle noselect text-center ta-font-bold"
+                [ngStyle]="{
+                    color:
+                        selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#424242'
+                }"
+            >
+                Must be read and signed by the applicant
+            </h3>
 
-      <div
-        class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-      >
-        <app-ta-checkbox
-          formControlName="isSecondAuthorization"
-          [name]="'isSecondAuthorization'"
-          [label]="
-            'I authorize the carrier to make such inquiries and investigations of my personal, employment, driving, '
-          "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE'
-              ? 'applicant-disclosure-release-feedback'
-              : 'disclosure-release'
-          "
-        >
-        </app-ta-checkbox>
-        <p
-          class="m-0 text-center ta-font-regular"
-          [ngStyle]="{
-            color:
-              selectedMode !== 'FEEDBACK_MODE' &&
-              authorizationForm.get('isSecondAuthorization').value
-                ? '#3c3c3c'
-                : selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
-          }"
-          (click)="handleCheckboxParagraphClick('isSecondAuthorization')"
-        >
-          financial or medical history and other related matters as may be
-          necessary in arriving at an employment decision. (Generally, inquiries
-          regarding medical history will be made only if and after a conditional
-          offer of employment has been extended.) I hereby release employer,
-          schools health care providers and other persons from all liability in
-          responding to inquiries and releasing information in connection with
-          my application.
-        </p>
-      </div>
+            <div class="d-flex checkbox-container">
+                <app-ta-checkbox
+                    formControlName="isSecondAuthorization"
+                    [name]="'isSecondAuthorization'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="
+                        handleCheckboxParagraphClick('isSecondAuthorization')
+                    "
+                >
+                    I authorize the carrier to make such inquiries and
+                    investigations of my personal, employment, driving,
+                    financial or medical history and other related matters as
+                    may be necessary in arriving at an employment decision.
+                    (Generally, inquiries regarding medical history will be made
+                    only if and after a conditional offer of employment has been
+                    extended.) I hereby release employer, schools health care
+                    providers and other persons from all liability in responding
+                    to inquiries and releasing information in connection with my
+                    application.
+                </p>
+            </div>
 
-      <div
-        class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-      >
-        <app-ta-checkbox
-          formControlName="isThirdAuthorization"
-          [name]="'isThirdAuthorization'"
-          [label]="
-            'In the event of employment, I understand that false or misleading information given in my application or '
-          "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE'
-              ? 'applicant-disclosure-release-feedback'
-              : 'disclosure-release'
-          "
-        >
-        </app-ta-checkbox>
-        <p
-          class="m-0 text-center ta-font-regular"
-          [ngStyle]="{
-            color:
-              selectedMode !== 'FEEDBACK_MODE' &&
-              authorizationForm.get('isThirdAuthorization').value
-                ? '#3c3c3c'
-                : selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
-          }"
-          (click)="handleCheckboxParagraphClick('isThirdAuthorization')"
-        >
-          interview(s) may result in discharge. I agree to abide by the rules
-          and regulations of the carrier as well as the Federal Motor Carrier
-          Safety Regulations. I also agree and understand that if I am selected
-          to drive for the carrier that I will be on a probationary period
-          during which time I may be discharge without recourse.
-        </p>
-      </div>
+            <div class="d-flex checkbox-container">
+                <app-ta-checkbox
+                    formControlName="isThirdAuthorization"
+                    [name]="'isThirdAuthorization'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="
+                        handleCheckboxParagraphClick('isThirdAuthorization')
+                    "
+                >
+                    In the event of employment, I understand that false or
+                    misleading information given in my application or
+                    interview(s) may result in discharge. I agree to abide by
+                    the rules and regulations of the carrier as well as the
+                    Federal Motor Carrier Safety Regulations. I also agree and
+                    understand that if I am selected to drive for the carrier
+                    that I will be on a probationary period during which time I
+                    may be discharge without recourse.
+                </p>
+            </div>
 
-      <div
-        class="d-flex flex-column align-items-center justify-content-center checkbox-container"
-      >
-        <app-ta-checkbox
-          formControlName="isFourthAuthorization"
-          [name]="'isFourthAuthorization'"
-          [label]="
-            'This certifies that I completed this application, and that all entries on it and information in it are true and '
-          "
-          [customClass]="
-            selectedMode === 'FEEDBACK_MODE'
-              ? 'applicant-disclosure-release-feedback'
-              : 'disclosure-release'
-          "
-        >
-        </app-ta-checkbox>
-        <p
-          class="m-0 text-center ta-font-regular"
-          [ngStyle]="{
-            color:
-              selectedMode !== 'FEEDBACK_MODE' &&
-              authorizationForm.get('isFourthAuthorization').value
-                ? '#3c3c3c'
-                : selectedMode === 'FEEDBACK_MODE'
-                ? '#919191'
-                : '#6c6c6c'
-          }"
-          (click)="handleCheckboxParagraphClick('isFourthAuthorization')"
-        >
-          completed to the best of my knowledge.
-        </p>
-      </div>
+            <div class="d-flex checkbox-container">
+                <app-ta-checkbox
+                    formControlName="isFourthAuthorization"
+                    [name]="'isFourthAuthorization'"
+                    [disabledStillCheckMark]="
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
+                    "
+                >
+                </app-ta-checkbox>
+                <p
+                    class="m-0 text-center ta-font-regular"
+                    [ngStyle]="{
+                        cursor:
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'auto'
+                                : 'pointer'
+                    }"
+                    (click)="
+                        handleCheckboxParagraphClick('isFourthAuthorization')
+                    "
+                >
+                    This certifies that I completed this application, and that
+                    all entries on it and information in it are true and
+                    completed to the best of my knowledge.
+                </p>
+            </div>
 
-      <!-- SIGNATURE PAD -->
+            <!-- SIGNATURE PAD -->
 
-      <div
-        class="d-flex signature-pad-container"
-        *ngIf="selectedMode === 'APPLICANT_MODE'"
-      >
-        <app-applicant-signature-pad
-          (signatureEmitter)="onSignatureAction($event)"
-        ></app-applicant-signature-pad>
-      </div>
-
-      <div
-        class="d-flex justify-content-center align-items-center signature-image-container"
-        *ngIf="selectedMode !== 'APPLICANT_MODE'"
-      >
-        <img src="" alt="signature" />
-      </div>
-    </form>
-  </div>
+            <div class="d-flex signature-pad-container">
+                <app-applicant-signature-pad
+                    [mode]="selectedMode"
+                    [signatureImgSrc]="signatureImgSrc"
+                    [displayRequiredNote]="displaySignatureRequiredNote"
+                    (signatureEmitter)="onSignatureAction($event)"
+                    (removeRequiredNoteEmitter)="
+                        onRemoveSignatureRequiredNoteAction($event)
+                    "
+                ></app-applicant-signature-pad>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center next-btn-container"
+    class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn
-    [nextStep]="true"
-    [lastStep]="true"
-    [filledCorrectly]="authorizationForm.valid && signature"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [nextStep]="true"
+        [lastStep]="true"
+        [filledCorrectly]="
+            authorizationForm.valid &&
+            ((selectedMode === 'APPLICANT_MODE' && signature) ||
+                (selectedMode === 'FEEDBACK_MODE' && signatureImgSrc))
+        "
+        [mode]="selectedMode"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center back-btn-container"
+    class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn
-    [backStep]="true"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [backStep]="true"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>

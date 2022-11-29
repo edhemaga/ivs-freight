@@ -1,0 +1,100 @@
+<div class="container acounting_table">
+    <div class="row accounting_list_row">
+        <!-- Toolbar -->
+        <div class="container toolbar-container dispatcher-search-wrap p-0">
+            <div [class.active]="listExpanded" class="expand_row header_hold">
+                <div class="custom_search">
+                    <!-- <app-custom-search [gridNameTitle]="listTitle" [stateName]="'state_' + listTitle"></app-custom-search> -->
+                </div>
+                <div (click)="listExpanded = !listExpanded" class="columnName">
+                    {{ listTitle }}
+                </div>
+            </div>
+        </div>
+        <div *ngIf="listExpanded" @pickupAnimation class="accounting-table">
+            <table width="100%">
+                <thead>
+                    <tr>
+                        <th width="35%">Name</th>
+                        <th width="35%">Pay Period</th>
+                        <th class="text-right" width="17%">Pay</th>
+                        <th class="text-center" width="13%">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        (click)="selectFromLists(row, i)"
+                        *ngFor="let row of accountListTemp; let i = index"
+                        [class.active]="selectedUserIndex == row.id"
+                    >
+                        <td width="35%">
+                            <div class="name_column">
+                                <span class="profile-icon">
+                                    <svg-icon
+                                        [src]="
+                                            'assets/img/svgs/table/profile.svg'
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': '20',
+                                            'height.px': '24',
+                                            'borderRadius.px': '2'
+                                        }"
+                                        class="cursor-pointer"
+                                    ></svg-icon>
+                                </span>
+                                <span class="userName"
+                                    >{{ row.firstName }}
+                                    {{ row.lastName }}</span
+                                >
+                            </div>
+                        </td>
+                        <td width="35%">
+                            <div class="pay_column">{{ row.pay_time }}</div>
+                        </td>
+                        <td width="17%">
+                            <div class="salary_column">
+                                {{ row.pay_value | currency }}
+                            </div>
+                        </td>
+                        <td class="text-center" width="13%">
+                            <div
+                                [class.pending_r]="row.p_status == 'R'"
+                                class="status_column"
+                            >
+                                {{ row.p_status }}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="bottom_pagination">
+                <div class="pag_btns">
+                    <span
+                        >{{ accountListTemp.length }} of
+                        {{ accountList.length }} Showing</span
+                    >
+                </div>
+                <div class="pagination_buttons">
+                    <div
+                        (click)="showMoreItems()"
+                        *ngIf="
+                            showListCount * showListNumber < accountList.length
+                        "
+                        class="pag_show_all"
+                    >
+                        Show More
+                    </div>
+                    <div
+                        (click)="showAllItems()"
+                        *ngIf="
+                            showListCount * showListNumber < accountList.length
+                        "
+                        class="pag_show_all"
+                    >
+                        Show All
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

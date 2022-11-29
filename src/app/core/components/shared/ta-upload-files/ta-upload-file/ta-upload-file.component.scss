@@ -1,499 +1,913 @@
 .ta-upload-file-container {
-  width: 168px;
-  height: 194px;
-  background-color: #f3f3f3;
-  border-radius: 2px;
-  display: grid;
-  grid-template-rows: 160px 1fr;
-  row-gap: 7px;
-  align-items: center;
-  position: relative;
-
-  // ----------------- File Header Actions Review ----------
-  .ta-upload-file-header-review {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 160px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 10;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-
-    // Review Actions
-    .ta-upload-action-download-review,
-    .ta-upload-action-mark-incorrect,
-    .ta-upload-action-mark-correct {
-      width: 30px;
-      height: 30px;
-      line-height: 15px;
-      background-color: rgb(108, 108, 108, 0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 2px;
-      position: absolute;
-      top: 4px;
-      right: 38px;
-      transition: all 0.3s ease-in-out;
-      cursor: pointer;
-
-      svg {
-        height: 18px;
-        width: 18px;
-        path {
-          fill: #dadada;
-        }
-      }
-
-      &:hover {
-        background-color: #6c6c6c;
-        svg {
-          path {
-            fill: #ffffff;
-          }
-        }
-      }
-    }
-
-    .ta-upload-action-mark-incorrect {
-      right: 4px;
-
-      svg {
-        height: 24px;
-        width: 24px;
-
-        rect {
-          fill: transparent !important;
-        }
-      }
-
-      &.incorrect {
-        background-color: #ef5350;
-        svg {
-          path {
-            fill: #ffffff;
-          }
-        }
-      }
-    }
-
-    .ta-upload-action-mark-correct {
-      right: 4px;
-    }
-
-    .review-feedback-container {
-      position: absolute;
-      left: 170px;
-      top: 8px;
-    }
-  }
-
-  //------------------ File Header Actions ------------------
-  .ta-upload-file-header {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 160px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 10;
-    display: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-
-    // No Review Actions
-    .ta-upload-file-action-leftside {
-      width: 30px;
-      height: 30px;
-      border-radius: 1px;
-      background-color: rgb(108, 108, 108, 0.9);
-      text-align: center;
-      padding-top: 2px;
-      cursor: pointer;
-
-      .ta-upload-action-tag {
-        width: 18px;
-        height: 18px;
-        svg {
-          height: 18px;
-          width: 18px;
-          path {
-            fill: #dadada;
-          }
-        }
-
-        &:hover {
-          transition: all 0.3s ease-in-out;
-          svg {
-            path {
-              fill: #ffffff;
-            }
-          }
-        }
-      }
-
-      &.no-action-tag {
-        opacity: 0;
-        visibility: none;
-        pointer-events: none !important;
-      }
-    }
-
-    .ta-upload-file-action-rightside {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      width: 60px;
-      height: 30px;
-      text-align: center;
-      padding-top: 2px;
-      border-radius: 1px;
-      background-color: rgb(108, 108, 108, 0.9);
-      cursor: pointer;
-
-      .ta-upload-action-download,
-      .ta-upload-action-delete {
-        width: 18px;
-        height: 18px;
-        line-height: 15px;
-        svg {
-          height: 18px;
-          width: 18px;
-          path {
-            fill: #dadada;
-          }
-        }
-
-        &:hover {
-          transition: all 0.3s ease-in-out;
-          svg {
-            path {
-              fill: #ffffff;
-            }
-          }
-        }
-      }
-
-      &.feedback-mode {
-        position: relative;
-        left: 15px;
-      }
-    }
-
-    .ta-upload-action-feedback-incorrect-mark {
-      width: 30px;
-      height: 30px;
-      border-radius: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 2px;
-      background-color: rgb(239, 83, 80, 0.9);
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-
-      svg-icon {
-        width: 18px;
-        height: 24px;
-      }
-
-      &:hover {
-        background-color: #ef5350;
-      }
-    }
-  }
-  //------------------ File Content ------------------
-  .ta-upload-file-content {
-    width: 160px;
-    height: 160px;
-    margin: 4px;
-    position: relative;
-
-    .ng2-pdf-viewer-container {
-      overflow: hidden !important;
-      background-color: transparent !important;
-      width: 160px !important;
-      height: 160px !important;
-      border-radius: 2px !important;
-      box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
-      top: 4px !important;
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-
-      .canvasWrapper,
-      .pdfViewer,
-      .pdfViewer .page,
-      canvas {
-        width: 160px !important;
-        height: 160px !important;
-        margin: 0 !important;
-      }
-    }
-
-    .ta-upload-file-image {
-      max-width: 160px;
-      max-height: 160px;
-      -o-object-fit: fill;
-      object-fit: fill;
-      border-radius: 2px;
-      vertical-align: middle;
-      margin-top: 6px;
-      top: 50%;
-      left: 50%;
-      position: relative;
-      transform: translate(-50%, -50%);
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-      box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
-    }
-
-    .ta-upload-file-number-of-pages {
-      position: absolute;
-      bottom: -4px;
-      left: 0px;
-      font-size: 11px;
-      font-weight: 600;
-      height: 18px;
-      text-align: center;
-      padding: 2px 6px;
-      border-radius: 2px;
-      background-color: rgba(108, 108, 108, 0.9);
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 600;
-      line-height: 15px;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    .ta-upload-file-tag {
-      max-width: 101px;
-      height: 18px;
-      border-radius: 2px;
-      background-color: rgb(83, 107, 194);
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 600;
-      position: absolute;
-      bottom: -4px;
-      left: 0px;
-      padding: 1px 4px;
-      opacity: 0.9;
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-
-      span {
-        line-height: 14px;
-      }
-
-      &.no-tag {
-        background-color: rgb(145, 145, 145) !important;
-      }
-
-      &:hover {
-        transition: all 0.3s ease-in-out;
-        cursor: auto !important;
-        opacity: 1;
-      }
-    }
-
-    //-------------- Driver Details Single PDF
-    &.driver-details-pdf {
-      width: 303px;
-      height: 343px;
-      position: relative;
-
-      .ng2-pdf-viewer-container {
-        overflow: hidden !important;
-        background-color: transparent !important;
-        width: 295px !important;
-        height: 312px !important;
-        border-radius: 3px !important;
-
-        .canvasWrapper,
-        .pdfViewer,
-        .pdfViewer .page,
-        canvas {
-          width: 295px !important;
-          height: 335px !important;
-          margin: 0 !important;
-        }
-      }
-    }
-  }
-
-  .ta-upload-file-delete-template {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 20;
     width: 168px;
-    height: 167px;
-    background-color: rgb(243, 243, 243, 0.9);
-    display: flex;
-    flex-direction: column;
+    height: 194px;
+    border-radius: 2px;
+    display: grid;
+    grid-template-rows: 160px 1fr;
+    row-gap: 7px;
     align-items: center;
-    justify-content: center;
-
-    .ta-upload-file-delete-text {
-      margin: 0;
-      font-size: 14px;
-      font-weight: 500;
-      color: #3c3c3c;
-      width: 136px;
-      word-wrap: break-word;
-      text-align: center;
-      margin-bottom: 26px;
-    }
-
-    .ta-upload-file-btn {
-      width: 152px;
-      height: 32px;
-      border-radius: 2px;
-      background-color: #ffffff;
-      color: #6c6c6c;
-      font-size: 14px;
-      font-weight: 700;
-      text-align: center;
-      cursor: pointer;
-      padding: 6px 0px;
-
-      &-delete {
-        color: #ef5350;
-        margin-bottom: 4px;
-
-        &:hover {
-          background-color: #ef5350;
-          color: #ffffff;
-          transition: all 0.3s ease-in-out;
-        }
-      }
-
-      &-cancel {
-        &:hover {
-          background-color: #6c6c6c;
-          color: #ffffff;
-          transition: all 0.3s ease-in-out;
-        }
-      }
-    }
-  }
-
-  //------------------ File Footer Actions ------------------
-  .ta-upload-file-footer {
-    display: flex;
-    align-items: center;
-    height: 26px;
-    padding: 4px;
-    align-self: flex-end;
     position: relative;
-
-    p {
-      margin: 0;
-    }
-
-    &.edit-mode {
-      padding: 0px !important;
-    }
-
-    .ta-upload-file-ext {
-      width: 32px;
-      height: 18px;
-      text-align: center;
-      border-radius: 2px;
-      margin-right: 4px;
-      font-size: 11px;
-      font-weight: 900;
-      color: #ffffff;
-      line-height: 18px;
-      opacity: 0.9;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
-      &-jpg,
-      &-jpeg,
-      &-png {
-        background: rgb(255, 191, 107);
-      }
-
-      &-pdf {
-        background-color: rgb(255, 107, 107);
-      }
-
-      &:hover {
-        transition: all 0.3s ease-in-out;
-        opacity: 1;
-        cursor: auto !important;
-      }
-    }
-
-    .ta-upload-file-name {
-      flex: 1;
-      font-size: 14px;
-      font-weight: 400;
-      color: #6c6c6c;
-      max-width: 124px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-
-      &::-moz-selection {
-        background-color: rgb(108, 108, 108, 0.2) !important;
-        color: #6c6c6c !important;
-      }
-
-      &::selection {
-        background-color: rgb(108, 108, 108, 0.2) !important;
-        color: #6c6c6c !important;
-      }
-    }
-  }
-
-  &:hover {
     transition: all 0.3s ease-in-out;
+    overflow: hidden;
 
+    &.modal {
+        background-color: #f3f3f3;
+    }
+
+    &:hover {
+        transition: all 0.3s ease-in-out;
+        background-color: #f3f3f3;
+    }
+
+    // ----------------- File Header Actions Review ----------
+    .ta-upload-file-header-review {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 160px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 10;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        // Review Actions
+        .ta-upload-action-download-review,
+        .ta-upload-action-mark-incorrect,
+        .ta-upload-action-mark-correct {
+            width: 30px;
+            height: 30px;
+            line-height: 15px;
+            background-color: rgb(108, 108, 108, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+            position: absolute;
+            top: 4px;
+            right: 38px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+
+            svg {
+                height: 18px;
+                width: 18px;
+                path {
+                    fill: #dadada;
+                }
+            }
+
+            &:hover {
+                background-color: #6c6c6c;
+                svg {
+                    path {
+                        fill: #ffffff;
+                    }
+                }
+            }
+        }
+
+        .ta-upload-action-mark-incorrect {
+            right: 4px;
+
+            svg {
+                height: 24px;
+                width: 24px;
+
+                rect {
+                    fill: transparent !important;
+                }
+            }
+
+            &.incorrect {
+                background-color: #ef5350;
+                svg {
+                    path {
+                        fill: #ffffff;
+                    }
+                }
+            }
+        }
+
+        .ta-upload-action-mark-correct {
+            right: 4px;
+        }
+
+        .review-feedback-container {
+            position: absolute;
+            left: 170px;
+            top: 8px;
+        }
+    }
+
+    //------------------ File Header Actions ------------------
     .ta-upload-file-header {
-      display: flex;
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 160px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 10;
+        display: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        // No Review Actions
+        .ta-upload-file-action-leftside {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 1px;
+            background-color: rgb(108, 108, 108, 0.9);
+            text-align: center;
+            padding-top: 2px;
+            cursor: pointer;
+
+            .ta-upload-action-tag {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                width: 100%;
+                height: 100%;
+                svg {
+                    display: flex;
+                    height: 18px;
+                    width: 18px;
+                    path {
+                        fill: #dadada;
+                    }
+                }
+
+                &:hover {
+                    transition: all 0.3s ease-in-out;
+                    svg {
+                        path {
+                            fill: #ffffff;
+                        }
+                    }
+                }
+            }
+
+            &.active {
+                background-color: #536bc2e6;
+
+                .ta-upload-action-tag {
+                    svg {
+                        path {
+                            fill: #ffffff;
+                        }
+                    }
+                }
+            }
+
+            &.no-action-tag {
+                opacity: 0;
+                visibility: none;
+                pointer-events: none !important;
+            }
+        }
+
+        .ta-upload-file-action-rightside {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 60px;
+            height: 30px;
+            text-align: center;
+            padding-top: 2px;
+            border-radius: 1px;
+            background-color: rgb(108, 108, 108, 0.9);
+            cursor: pointer;
+
+            .ta-upload-action-download,
+            .ta-upload-action-delete {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                width: 100%;
+                height: 100%;
+                line-height: 15px;
+
+                svg {
+                    height: 18px;
+                    width: 18px;
+                    path {
+                        fill: #dadada;
+                    }
+                }
+
+                &:hover {
+                    transition: all 0.3s ease-in-out;
+                    svg {
+                        path {
+                            fill: #ffffff;
+                        }
+                    }
+                }
+            }
+
+            &.feedback-mode {
+                position: relative;
+                left: 15px;
+            }
+
+            &.small {
+                width: 30px;
+            }
+        }
+
+        .ta-upload-action-feedback-incorrect-mark {
+            width: 30px;
+            height: 30px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+            background-color: rgb(239, 83, 80, 0.9);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+
+            svg-icon {
+                width: 18px;
+                height: 24px;
+            }
+
+            &:hover {
+                background-color: #ef5350;
+            }
+        }
     }
+    //------------------ File Content ------------------
+    .ta-upload-file-content {
+        width: 160px;
+        height: 160px;
+        margin: 4px;
+        position: relative;
 
-    .ta-upload-file-footer {
-      background-color: #eeeeee;
-    }
-  }
+        .ng2-pdf-viewer-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible !important;
+            background-color: transparent !important;
+            width: 160px !important;
+            height: 160px !important;
+            border-radius: 1px !important;
+            top: 4px !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
 
-  // --------------------- Custom Classes ---------------------
-  &.driver-details-pdf {
-    width: 303px;
-    height: 343px;
-    grid-template-rows: 343px;
+            .canvasWrapper {
+                box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+            }
 
-    .ta-upload-file-footer {
-      bottom: 33px;
+            .canvasWrapper,
+            .pdfViewer,
+            .pdfViewer .page,
+            canvas {
+                width: 160px !important;
+                max-height: 160px !important;
+                margin: 0 !important;
+                border-radius: 1px !important;
+
+                &:not(:first-child) {
+                    opacity: 0;
+                    height: 0 !important;
+                }
+            }
+        }
+
+        .ta-upload-file-image {
+            max-width: 160px;
+            max-height: 160px;
+            -o-object-fit: fill;
+            object-fit: fill;
+            border-radius: 1px;
+            vertical-align: middle;
+            margin-top: 6px;
+            top: 50%;
+            left: 50%;
+            position: relative;
+            transform: translate(-50%, -50%);
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+
+            &.details_image {
+                left: 49%;
+
+                max-width: 276px;
+                max-height: 276px;
+            }
+        }
+
+        .ta-upload-file-number-of-pages {
+            position: absolute;
+            bottom: -4px;
+            left: 0px;
+            font-size: 11px;
+            font-weight: 600;
+            height: 18px;
+            text-align: center;
+            padding: 2px 6px;
+            border-radius: 2px;
+            background-color: rgba(108, 108, 108, 0.9);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 15px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .ta-upload-file-tag {
+            max-width: 101px;
+            height: 18px;
+            border-radius: 1px;
+            background-color: rgb(83, 107, 194);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
+            position: absolute;
+            bottom: 18px;
+            left: 0px;
+            padding: 1px 4px;
+            opacity: 0.9;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+
+            span {
+                line-height: 14px;
+            }
+
+            &.no-tag {
+                background-color: rgb(145, 145, 145) !important;
+            }
+
+            &:hover {
+                transition: all 0.3s ease-in-out;
+                cursor: auto !important;
+                opacity: 1;
+            }
+        }
+
+        //-------------- Driver Details Single PDF
+        &.driver-details-pdf {
+            width: 303px;
+            height: 303px;
+            position: relative;
+
+            .ng2-pdf-viewer-container {
+                overflow: visible !important;
+                background-color: transparent !important;
+                width: 295px !important;
+                height: 295px !important;
+                border-radius: 1px !important;
+
+                .canvasWrapper,
+                .pdfViewer,
+                .pdfViewer .page,
+                canvas {
+                    max-width: 295px !important;
+                    max-height: 295px !important;
+                    margin: 0 !important;
+                    border-radius: 1px !important;
+                    width: auto !important;
+                    min-width: 229px;
+
+                    &:not(:first-child) {
+                        opacity: 0;
+                        height: 0 !important;
+                    }
+                }
+            }
+        }
+
+        &.landscape-details-view {
+            width: 312px;
+            max-height: 200px;
+            position: relative;
+            bottom: 4px;
+
+            .ng2-pdf-viewer-container {
+                overflow: visible !important;
+                background-color: transparent !important;
+                width: 304px !important;
+                max-height: 192px !important;
+                border-radius: 1px !important;
+
+                .canvasWrapper,
+                .pdfViewer,
+                .pdfViewer .page,
+                canvas {
+                    max-width: 304px !important;
+                    max-height: 192px !important;
+                    margin: 0 !important;
+                    border-radius: 1px !important;
+                    width: auto !important;
+                    min-width: 304px;
+
+                    &:not(:first-child) {
+                        opacity: 0;
+                        height: 0 !important;
+                    }
+                }
+            }
+        }
+
+        &.todo-details {
+            width: 200px;
+            height: 200px;
+            position: relative;
+
+            .ng2-pdf-viewer-container {
+                overflow: visible !important;
+                background-color: transparent !important;
+                width: 178px !important;
+                height: 192px !important;
+                border-radius: 1px !important;
+                margin-left: 7px;
+
+                .canvasWrapper,
+                .pdfViewer,
+                .pdfViewer .page,
+                canvas {
+                    max-width: 192px !important;
+                    max-height: 192px !important;
+                    margin: 0 !important;
+                    border-radius: 1px !important;
+                    width: auto !important;
+                    min-width: 150px;
+
+                    &:not(:first-child) {
+                        opacity: 0;
+                        height: 0 !important;
+                    }
+                }
+            }
+        }
     }
 
     .ta-upload-file-delete-template {
-      width: 304px;
-      height: 320px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        width: 168px;
+        height: 167px;
+        background-color: rgb(243, 243, 243, 0.9);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .ta-upload-file-delete-text {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #3c3c3c;
+            width: 136px;
+            word-wrap: break-word;
+            text-align: center;
+            margin-bottom: 26px;
+
+            &::-moz-selection {
+                background-color: rgb(108, 108, 108, 0.2) !important;
+                color: #6c6c6c !important;
+            }
+
+            &::selection {
+                background-color: rgb(108, 108, 108, 0.2) !important;
+                color: #6c6c6c !important;
+            }
+        }
+
+        .ta-upload-file-btn {
+            width: 152px;
+            height: 32px;
+            border-radius: 2px;
+            background-color: #ffffff;
+            color: #6c6c6c;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            padding: 6px 0px;
+            user-select: none;
+
+            &-delete {
+                color: #ef5350;
+                margin-bottom: 4px;
+
+                &:hover {
+                    background-color: #ef5350;
+                    color: #ffffff;
+                    transition: all 0.3s ease-in-out;
+                }
+            }
+
+            &-cancel {
+                &:hover {
+                    background-color: #6c6c6c;
+                    color: #ffffff;
+                    transition: all 0.3s ease-in-out;
+                }
+            }
+        }
     }
-  }
+
+    //------------------ File Footer Actions ------------------
+    .ta-upload-file-footer {
+        display: flex;
+        position: relative;
+        align-items: center;
+        height: 26px;
+        padding: 4px;
+        align-self: flex-end;
+        position: relative;
+
+        &:hover {
+            background-color: #eeeeee;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        &.edit-mode {
+            padding: 0px !important;
+        }
+
+        .footer_info {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            left: 4px;
+            bottom: 30px;
+
+            .ta-upload-file-ext {
+                width: 32px;
+                height: 18px;
+                text-align: center;
+                border-radius: 1px;
+                margin-right: 4px;
+                font-size: 11px;
+                font-weight: 900;
+                color: #ffffff;
+                line-height: 18px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                text-transform: uppercase;
+
+                &-jpg,
+                &-jpeg,
+                &-png {
+                    background: #ffb74d;
+                }
+
+                &-pdf {
+                    background-color: #e57373;
+
+                    &:hover {
+                        background-color: #ef5350;
+                    }
+                }
+
+                &:hover {
+                    transition: all 0.3s ease-in-out;
+                    cursor: auto !important;
+                }
+            }
+        }
+
+        .document_info_hold {
+            display: flex;
+            padding: 2px 6px;
+            background-color: #919191;
+            color: #ffffff;
+            border-radius: 2px;
+
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 14px;
+
+            user-select: none;
+
+            .file_size {
+                font-weight: 500;
+
+                &.has_pages {
+                    margin-left: 3px;
+                }
+            }
+        }
+
+        .ta-upload-file-name {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 400;
+            color: #6c6c6c;
+            max-width: 161px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            &::-moz-selection {
+                background-color: rgb(108, 108, 108, 0.2) !important;
+                color: #6c6c6c !important;
+            }
+
+            &::selection {
+                background-color: rgb(108, 108, 108, 0.2) !important;
+                color: #6c6c6c !important;
+            }
+
+            &.details_title {
+                max-width: 259px;
+            }
+
+            &.todo_title {
+                max-width: 127px;
+            }
+        }
+    }
+
+    &:hover,
+    &.keep_open {
+        transition: all 0.3s ease-in-out;
+
+        .ta-upload-file-header {
+            display: flex;
+        }
+    }
+
+    // --------------------- Custom Classes ---------------------
+    &.driver-details-pdf {
+        width: 303px;
+        height: 303px;
+        grid-template-rows: 303px;
+
+        .ta-upload-file-footer {
+            opacity: 0;
+            bottom: 37px;
+            right: -4px;
+
+            width: 295px;
+            border-radius: 1px;
+            cursor: default;
+            transition: 0.3s all ease-in-out;
+
+            .footer_info {
+                left: 0 !important;
+            }
+
+            .ta-upload-file-name {
+                font-weight: 600 !important;
+            }
+        }
+
+        .ta-upload-file-tag {
+            opacity: 0;
+            bottom: 56px;
+            transition: 0.3s all ease-in-out;
+        }
+
+        &:hover {
+            .ta-upload-file-footer {
+                opacity: 1;
+                background-color: rgba(255, 255, 255, 0.9) !important;
+                transition: 0.3s all ease-in-out;
+            }
+
+            .ta-upload-file-tag {
+                opacity: 0.9;
+                transition: 0.3s all ease-in-out;
+            }
+        }
+
+        .ta-upload-file-delete-template {
+            width: 295px;
+            height: 295px;
+        }
+    }
+
+    &.landscape-details-view {
+        width: 312px;
+        max-height: 200px;
+        min-height: 200px;
+        grid-template-rows: 200px;
+        overflow: visible;
+
+        .ta-upload-file-footer {
+            opacity: 0;
+            bottom: 37px;
+            right: -4px;
+
+            width: 304px;
+            border-radius: 1px;
+            cursor: default;
+            transition: 0.3s all ease-in-out;
+
+            .footer_info {
+                left: 0 !important;
+            }
+
+            .ta-upload-file-name {
+                font-weight: 600 !important;
+            }
+        }
+
+        .ta-upload-file-tag {
+            opacity: 0;
+            bottom: 56px;
+            transition: 0.3s all ease-in-out;
+        }
+
+        &:hover {
+            .ta-upload-file-footer {
+                opacity: 1;
+                background-color: rgba(255, 255, 255, 0.9) !important;
+                transition: 0.3s all ease-in-out;
+            }
+
+            .ta-upload-file-tag {
+                opacity: 0.9;
+                transition: 0.3s all ease-in-out;
+            }
+        }
+
+        .ta-upload-file-delete-template {
+            width: 295px;
+            min-height: 192px;
+        }
+    }
+
+    &.todo-details {
+        width: 200px;
+        height: 200px;
+        grid-template-rows: 200px;
+
+        .ta-upload-file-footer {
+            opacity: 0;
+            bottom: 37px;
+            right: -4px;
+
+            width: 192px;
+            border-radius: 1px;
+            cursor: default;
+            transition: 0.3s all ease-in-out;
+
+            .footer_info {
+                left: 0 !important;
+            }
+
+            .ta-upload-file-name {
+                font-weight: 600 !important;
+            }
+        }
+
+        .ta-upload-file-tag {
+            opacity: 0;
+            bottom: 56px;
+            transition: 0.3s all ease-in-out;
+        }
+
+        &:hover {
+            .ta-upload-file-footer {
+                opacity: 1;
+                background-color: rgba(255, 255, 255, 0.9) !important;
+                transition: 0.3s all ease-in-out;
+            }
+
+            .ta-upload-file-tag {
+                opacity: 0.9;
+                transition: 0.3s all ease-in-out;
+            }
+        }
+
+        .ta-upload-file-delete-template {
+            width: 192px;
+            height: 192px;
+        }
+    }
+}
+
+.tags_main_holder {
+    min-width: 172px;
+    padding: 2px;
+
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+
+    cursor: pointer;
+
+    .tags_inner_holder {
+        display: flex;
+        align-items: center;
+
+        height: 26px;
+        margin: 1px 0px;
+        padding-left: 4px;
+
+        border-radius: 1px;
+
+        &.firstRow {
+            margin-top: 0;
+        }
+
+        &.lastRow {
+            margin-bottom: 0;
+        }
+
+        .tag_options_holder {
+            display: flex;
+            align-items: center;
+            padding-right: 4px;
+
+            width: 100%;
+            height: 100%;
+            .tag_name {
+                flex: 1;
+                font-size: 14px;
+                line-height: 18px;
+                color: #6c6c6c;
+
+                &.checked {
+                    color: #536bc2;
+                }
+            }
+
+            .checked_icon {
+                opacity: 0;
+                margin-left: 4px;
+
+                &.shown {
+                    opacity: 1;
+                }
+
+                svg-icon {
+                    svg {
+                        display: flex;
+
+                        path {
+                            fill: #6d82c7;
+                        }
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            background-color: #f3f3f3;
+
+            .tag_options_holder {
+                .tag_name {
+                    color: #3c3c3c;
+
+                    &.checked {
+                        color: #3551b7;
+                    }
+                }
+
+                .checked_icon {
+                    svg-icon {
+                        svg {
+                            path {
+                                fill: #536bc2;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

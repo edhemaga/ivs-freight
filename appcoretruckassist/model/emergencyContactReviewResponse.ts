@@ -17,6 +17,5 @@ export interface EmergencyContactReviewResponse {
     isPhoneValid?: boolean;
     isRelationshipValid?: boolean;
     emergencyContactMessage?: string | null;
-    emergencyContactId?: number;
 }
 

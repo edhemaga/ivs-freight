@@ -1,152 +1,164 @@
 import { Injectable } from '@angular/core';
-import { CreateTableConfigCommand, TableConfigResponse, TableConfigService, TableType } from 'appcoretruckassist';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {
+    // CreateTableConfigCommand,
+    TableConfigResponse,
+    TableConfigService,
+    TableType,
+} from 'appcoretruckassist';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class TruckassistTableService {
-  /* Columns Order */
-  private columnsOrder = new BehaviorSubject<string>('');
-  public currentColumnsOrder = this.columnsOrder.asObservable();
+    /* Columns Order */
+    private columnsOrder = new BehaviorSubject<string>('');
+    public currentColumnsOrder = this.columnsOrder.asObservable();
 
-  /* Unlock Table */
-  private unlockTable = new BehaviorSubject<any>({});
-  public currentUnlockTable = this.unlockTable.asObservable();
+    /* Unlock Table */
+    private unlockTable = new BehaviorSubject<any>({});
+    public currentUnlockTable = this.unlockTable.asObservable();
 
-  /* Toaggle Table Column */
-  private toaggleColumn = new BehaviorSubject<any>(null);
-  public currentToaggleColumn = this.toaggleColumn.asObservable();
+    /* Toaggle Table Column */
+    private toaggleColumn = new BehaviorSubject<any>(null);
+    public currentToaggleColumn = this.toaggleColumn.asObservable();
 
-  /* Set Column Table Width */
-  private columnWidth = new BehaviorSubject<any>([]);
-  public currentColumnWidth = this.columnWidth.asObservable();
-  
-  /* Set Table Selection */
-  public rowsSelected = new BehaviorSubject<any>([]);
-  public currentRowsSelected = this.rowsSelected.asObservable();
+    /* Set Column Table Width */
+    private columnWidth = new BehaviorSubject<any>([]);
+    public currentColumnWidth = this.columnWidth.asObservable();
 
-  /* Selected Or Deselected All Rows */
-  private selectOrDeselect = new BehaviorSubject<string>('');
-  public currentSelectOrDeselect = this.selectOrDeselect.asObservable();
+    /* Set Table Selection */
+    public rowsSelected = new BehaviorSubject<any>([]);
+    public currentRowsSelected = this.rowsSelected.asObservable();
 
-  /* Reset Columns */
-  private resetColumns = new BehaviorSubject<boolean>(false);
-  public currentResetColumns = this.resetColumns.asObservable();
+    /* Selected Or Deselected All Rows */
+    private selectOrDeselect = new BehaviorSubject<string>('');
+    public currentSelectOrDeselect = this.selectOrDeselect.asObservable();
 
-  /* Scroll */
-  private scroll = new BehaviorSubject<number>(0);
-  public currentScroll = this.scroll.asObservable();
+    /* Reset Columns */
+    private resetColumns = new BehaviorSubject<boolean>(false);
+    public currentResetColumns = this.resetColumns.asObservable();
 
-  /* Showing Scroll */
-  private showingScroll = new BehaviorSubject<boolean>(null);
-  public currentShowingScroll = this.showingScroll.asObservable();
+    /* Scroll */
+    private scroll = new BehaviorSubject<number>(0);
+    public currentScroll = this.scroll.asObservable();
 
-  /* Delete Selected Rows */
-  private deleteSelectedRows = new BehaviorSubject<any>([]);
-  public currentDeleteSelectedRows = this.deleteSelectedRows.asObservable();
+    /* Showing Scroll */
+    private showingScroll = new BehaviorSubject<boolean>(null);
+    public currentShowingScroll = this.showingScroll.asObservable();
 
-  /* Table Action Animation */
-  private actionAnimation = new BehaviorSubject<any>({});
-  public currentActionAnimation = this.actionAnimation.asObservable();
+    /* Delete Selected Rows */
+    private deleteSelectedRows = new BehaviorSubject<any>([]);
+    public currentDeleteSelectedRows = this.deleteSelectedRows.asObservable();
 
-  /* Reset Selected Columns  */
-  private resetSelectedColumns = new BehaviorSubject<boolean>(false);
-  public currentResetSelectedColumns = this.resetSelectedColumns.asObservable();
+    /* Table Action Animation */
+    private actionAnimation = new BehaviorSubject<any>({});
+    public currentActionAnimation = this.actionAnimation.asObservable();
 
-  /* Switch Select  */
-  private toolBarSwitchActive = new BehaviorSubject<any>(null);
-  public currentSwitchOptionSelected = this.toolBarSwitchActive.asObservable();
+    /* Reset Selected Columns  */
+    private resetSelectedColumns = new BehaviorSubject<boolean>(false);
+    public currentResetSelectedColumns =
+        this.resetSelectedColumns.asObservable();
 
-  /* Search  */
-  private searchTableData = new BehaviorSubject<any>(null);
-  public currentSearchTableData = this.searchTableData.asObservable();
+    /* Switch Select  */
+    private toolBarSwitchActive = new BehaviorSubject<any>(null);
+    public currentSwitchOptionSelected =
+        this.toolBarSwitchActive.asObservable();
 
-  constructor(private tableColumnsConfigService: TableConfigService) {}
-  
-  // ------------------------------ Table Back Service Methods --------------------------------
+    /* Search  */
+    private searchTableData = new BehaviorSubject<any>(null);
+    public currentSearchTableData = this.searchTableData.asObservable();
 
-  sendTableConfig(tableConfig: CreateTableConfigCommand): Observable<object>{
-    return this.tableColumnsConfigService.apiTableconfigPost(tableConfig);
-  }
+    constructor(private tableColumnsConfigService: TableConfigService) {}
 
-  getTableConfig(tableType: TableType): Observable<TableConfigResponse>{
-    return this.tableColumnsConfigService.apiTableconfigTableTypeGet(tableType);
-  }
+    // ------------------------------ Table Back Service Methods --------------------------------
 
-  deleteTableConfig(tableType: TableType): Observable<TableConfigResponse>{
-    return this.tableColumnsConfigService.apiTableconfigTableTypeDelete(tableType);
-  }
+    sendTableConfig(
+        tableConfig: any /*CreateTableConfigCommand*/
+    ): Observable<object> {
+        // return this.tableColumnsConfigService.apiTableconfigPost(tableConfig);
+        return of();
+    }
 
-  // ------------------------------ Table Custom Service Methods --------------------------------
+    getTableConfig(tableType: TableType): Observable<TableConfigResponse> {
+        // return this.tableColumnsConfigService.apiTableconfigTableTypeGet(tableType);
+        return of();
+    }
 
-  /*  Search  */
-  public sendCurrentSearchTableData(search: any) {
-    this.searchTableData.next(search);
-  }
+    deleteTableConfig(tableType: TableType): Observable<TableConfigResponse> {
+        // return this.tableColumnsConfigService.apiTableconfigTableTypeDelete(tableType);
+        return of();
+    }
 
-  /*  Switch Select  */
-  public sendCurrentSwitchOptionSelected(option: any) {
-    this.toolBarSwitchActive.next(option);
-  }
+    // ------------------------------ Table Custom Service Methods --------------------------------
 
-  /* Reset Selected Columns  */
-  public sendResetSelectedColumns(reset: boolean) {
-    this.resetSelectedColumns.next(reset);
-  }
+    /*  Search  */
+    public sendCurrentSearchTableData(search: any) {
+        this.searchTableData.next(search);
+    }
 
-  /* Delete Selected Rows */
-  public sendActionAnimation(actionAnimation: any) {
-    this.actionAnimation.next(actionAnimation);
-  }
+    /*  Switch Select  */
+    public sendCurrentSwitchOptionSelected(option: any) {
+        this.toolBarSwitchActive.next(option);
+    }
 
-  /* Delete Selected Rows */
-  public sendDeleteSelectedRows(deleteSelectedRows: any[]) {
-    this.deleteSelectedRows.next(deleteSelectedRows);
-  }
+    /* Reset Selected Columns  */
+    public sendResetSelectedColumns(reset: boolean) {
+        this.resetSelectedColumns.next(reset);
+    }
 
-  /* Showing Scroll */
-  public sendShowingScroll(showingScroll: boolean) {
-    this.showingScroll.next(showingScroll);
-  }
+    /* Delete Selected Rows */
+    public sendActionAnimation(actionAnimation: any) {
+        this.actionAnimation.next(actionAnimation);
+    }
 
-  /* Scroll */
-  public sendScroll(scroll: number) {
-    this.scroll.next(scroll);
-  }
+    /* Delete Selected Rows */
+    public sendDeleteSelectedRows(deleteSelectedRows: any[]) {
+        this.deleteSelectedRows.next(deleteSelectedRows);
+    }
 
-  /* Reset Columns */
-  public sendResetColumns(resetColumns: boolean) {
-    this.resetColumns.next(resetColumns);
-  }
+    /* Showing Scroll */
+    public sendShowingScroll(showingScroll: boolean) {
+        this.showingScroll.next(showingScroll);
+    }
 
-  /* Set Table Selection */
-  public sendSelectOrDeselect(selectOrDeselect: string) {
-    this.selectOrDeselect.next(selectOrDeselect);
-  }
+    /* Scroll */
+    public sendScroll(scroll: number) {
+        this.scroll.next(scroll);
+    }
 
-  /* Set Table Selection */
-  public sendRowsSelected(rowsSelected: any) {
-    this.rowsSelected.next(rowsSelected);
-  }
+    /* Reset Columns */
+    public sendResetColumns(resetColumns: boolean) {
+        this.resetColumns.next(resetColumns);
+    }
 
-  /* Set Column Table Width */
-  public sendColumnWidth(columnWidth: any) {
-    this.columnWidth.next(columnWidth);
-  }
+    /* Set Table Selection */
+    public sendSelectOrDeselect(selectOrDeselect: string) {
+        this.selectOrDeselect.next(selectOrDeselect);
+    }
 
-  /* Columns Order */
-  public sendColumnsOrder(columnsOrder: any) {
-    this.columnsOrder.next(columnsOrder);
-  }
+    /* Set Table Selection */
+    public sendRowsSelected(rowsSelected: any) {
+        this.rowsSelected.next(rowsSelected);
+    }
 
-  /* Unlock Table */
-  public sendUnlockTable(unlockTable: any) {
-    this.unlockTable.next(unlockTable);
-  }
+    /* Set Column Table Width */
+    public sendColumnWidth(columnWidth: any) {
+        this.columnWidth.next(columnWidth);
+    }
 
-  /* Toaggle Table Column */
-  public sendToaggleColumn(toaggleColumn: any) {
-    this.toaggleColumn.next(toaggleColumn);
-  }
+    /* Columns Order */
+    public sendColumnsOrder(columnsOrder: any) {
+        this.columnsOrder.next(columnsOrder);
+    }
+
+    /* Unlock Table */
+    public sendUnlockTable(unlockTable: any) {
+        this.unlockTable.next(unlockTable);
+    }
+
+    /* Toaggle Table Column */
+    public sendToaggleColumn(toaggleColumn: any) {
+        this.toaggleColumn.next(toaggleColumn);
+    }
 }

@@ -26,12 +26,9 @@ export interface WorkExperienceItemReviewResponse {
     isAddressValid?: boolean;
     isAddressUnitValid?: boolean;
     addressMessage?: string | null;
-    isReasonForLeavingValid?: boolean | null;
-    reasonForLeavingMessage?: string | null;
     isAccountForPeriodBetweenValid?: boolean | null;
     accountForPeriodBetweenMessage?: string | null;
     isPrimary?: boolean;
     commonMessage?: string | null;
-    workExperienceId?: number;
 }
 

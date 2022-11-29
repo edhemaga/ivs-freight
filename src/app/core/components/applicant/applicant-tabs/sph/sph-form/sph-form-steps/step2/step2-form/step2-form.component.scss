@@ -1,163 +1,87 @@
 @import 'src/theme/variables.scss';
 
 .step-form {
-  .group {
-    margin-bottom: 22px;
-    margin-right: 12px;
+    .group {
+        margin-bottom: 22px;
+        margin-right: 12px;
 
-    &:last-child {
-      margin-right: 0;
-      margin-bottom: 0;
-    }
-  }
-
-  .date-group {
-    width: 159px;
-    margin-bottom: 32px;
-  }
-
-  .location-group {
-    width: 445px;
-    margin-bottom: 32px;
-  }
-
-  .description-group {
-    width: 616px;
-    margin-bottom: 22px !important;
-  }
-
-  .hazmat-spill-group {
-    width: 187px;
-    height: 26px;
-    margin-bottom: 22px !important;
-    margin-right: 91px !important;
-
-    .title-box {
-      p {
-        font-size: 14px;
-        color: $bw6-2;
-        user-select: none !important;
-
-        .required-star {
-          color: $progress-danger;
+        &:last-child {
+            margin-right: 0;
+            margin-bottom: 0;
         }
-      }
     }
 
-    .radios-box {
-      width: 86px;
-
-      .ta-input-radiobutons {
-        width: 100%;
-
-        .radio-button {
-          padding-left: 0;
-        }
-      }
-    }
-  }
-
-  .fatalities-injuries-group {
-    margin-bottom: 22px;
-
-    .injuries-group {
-      width: 159px;
-      margin-right: 12px;
+    .date-group {
+        width: 159px;
+        margin-bottom: 32px;
     }
 
-    .fatalities-group {
-      width: 178px;
+    .location-group {
+        width: 445px;
+        margin-bottom: 32px;
     }
-  }
 
-  .btn-container {
-    .add-btn {
-      line-height: 18px;
-      height: 26px;
-      padding: 4px 8px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-      border-radius: 2px;
-      color: $ta-blue;
-      background: $ta-gray-01;
-      transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-      user-select: none;
+    .description-group {
+        width: 616px;
+        margin-bottom: 22px !important;
+    }
 
-      &:hover {
-        color: $white;
-        background: $ta-blue;
-      }
+    .hazmat-spill-group {
+        width: 187px;
+        height: 26px;
+        margin-bottom: 22px !important;
+        margin-right: 91px !important;
 
-      &:hover .plus-icon {
-        svg {
-          path {
-            fill: $white;
-          }
-        }
-      }
+        .title-box {
+            p {
+                font-size: 14px;
+                color: $bw6-2;
+                user-select: none !important;
 
-      &.disabled {
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-
-        cursor: auto;
-        background: $ta-light-grey-4;
-        color: $bw4;
-
-        .plus-icon {
-          svg {
-            path {
-              fill: $ta-light-grey-6;
+                .required-star {
+                    color: $progress-danger;
+                }
             }
-          }
+
+            .required {
+                font-size: 11px;
+                color: $ta-red-2;
+
+                &::-moz-selection {
+                    color: $ta-red-2;
+                    background: rgb(239, 83, 80, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-red-2;
+                    background: rgb(239, 83, 80, 0.2);
+                }
+            }
         }
 
-        &:hover {
-          background: $ta-light-grey-4 !important;
-          color: $bw4 !important;
+        .radios-box {
+            width: 86px;
+
+            .ta-input-radiobutons {
+                width: 100%;
+
+                .radio-button {
+                    padding-left: 0;
+                }
+            }
         }
-      }
+    }
 
-      .plus-icon {
-        margin-right: 6px;
+    .fatalities-injuries-group {
+        margin-bottom: 22px;
 
-        svg {
-          path {
-            transition: fill 0.2s ease-in-out;
-            fill: $ta-light-blue;
-          }
+        .injuries-group {
+            width: 159px;
+            margin-right: 12px;
         }
-      }
+
+        .fatalities-group {
+            width: 178px;
+        }
     }
-
-    .cancel-btn {
-      margin-bottom: 32px;
-      width: 150px;
-      height: 32px;
-      margin-right: 22px;
-      color: $bw5;
-      background: $ta-light-grey-4;
-      transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
-
-      &:hover {
-        background: $bw6-2;
-        color: $white;
-      }
-    }
-
-    .save-btn {
-      margin-bottom: 32px;
-      width: 150px;
-      height: 32px;
-      color: $white;
-      background: $ta-light-blue;
-
-      &:hover {
-        background-color: $ta-blue;
-      }
-    }
-  }
 }

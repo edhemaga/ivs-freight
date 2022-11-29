@@ -4,7 +4,7 @@ import { ContactState, ContactStore } from './contact.store';
 
 @Injectable({ providedIn: 'root' })
 export class ContactQuery extends QueryEntity<ContactState> {
-  constructor(protected contactStore: ContactStore) {
-    super(contactStore);
-  }
+    constructor(protected contactStore: ContactStore) {
+        super(contactStore);
+    }
 }

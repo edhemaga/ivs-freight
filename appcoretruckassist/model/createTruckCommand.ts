@@ -12,6 +12,7 @@
 import { WheelsType } from './wheelsType';
 import { Brakes } from './brakes';
 import { ApUnit } from './apUnit';
+import { FuelType } from './fuelType';
 
 
 export interface CreateTruckCommand { 
@@ -20,6 +21,7 @@ export interface CreateTruckCommand {
     truckTypeId?: number;
     vin?: string | null;
     truckMakeId?: number;
+    truckLengthId?: number | null;
     model?: string | null;
     year?: number;
     colorId?: number | null;
@@ -37,6 +39,7 @@ export interface CreateTruckCommand {
     frontWheels?: WheelsType;
     rearWheels?: WheelsType;
     transmissionModel?: string | null;
+    fuelType?: FuelType;
     shifter?: number | null;
     axles?: number | null;
     fhwaExp?: number;

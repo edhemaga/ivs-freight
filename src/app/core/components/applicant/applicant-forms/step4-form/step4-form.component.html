@@ -1,265 +1,280 @@
 <div class="d-flex flex-column step-form" [formGroup]="accidentForm">
-  <div class="d-flex line-container">
-    <div class="group location-group">
-      <app-input-address-dropdown
-        formControlName="location"
-        [inputConfig]="{
-          name: 'Address',
-          type: 'text',
-          label: 'Location',
-          isRequired: true,
-          placeholderIcon: 'address',
-          textTransform: 'capitalize',
-          dropdownWidthClass: 'w-col-445',
-          minLength: 6,
-          maxLength: 256,
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [placeholderType]="'shortAddress'"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 10)"
-        [activeAddress]="selectedAddress"
-        (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-      ></app-input-address-dropdown>
-    </div>
-    <div class="group date-group">
-      <app-ta-input
-        formControlName="date"
-        [inputConfig]="{
-          name: 'datepicker',
-          type: 'text',
-          label: 'Date',
-          placeholderIcon: 'date',
-          isRequired: true,
-          customClass: 'datetimeclass',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 10)"
-      ></app-ta-input>
-    </div>
+    <div class="d-flex line-container">
+        <div class="group location-group">
+            <app-input-address-dropdown
+                formControlName="location"
+                [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Location',
+                    isRequired: true,
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-445',
+                    minLength: 6,
+                    maxLength: 256,
+                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    incorrectInput: selectedMode === 'REVIEW_MODE'
+                }"
+                [placeholderType]="'shortAddress'"
+                [activeAddress]="selectedAddress"
+                [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
+                (incorrectEvent)="incorrectInput($event, 0, 10)"
+                (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+            ></app-input-address-dropdown>
+        </div>
+        <div class="group date-group">
+            <app-ta-input
+                formControlName="date"
+                [inputConfig]="{
+                    name: 'datepicker',
+                    type: 'text',
+                    label: 'Date',
+                    placeholderIcon: 'date',
+                    isRequired: true,
+                    customClass: 'datetimeclass',
+                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    incorrectInput: selectedMode === 'REVIEW_MODE'
+                }"
+                [incorrectValue]="openAnnotationArray[10].lineInputs[1]"
+                (incorrectEvent)="incorrectInput($event, 1, 10)"
+            ></app-ta-input>
+        </div>
 
-    <!-- REVIEW AND FEEDBACK -->
+        <!-- REVIEW AND FEEDBACK -->
 
-    <div
-      class="review-feedback-container"
-      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
-    >
-      <app-applicant-review-feedback
-        formControlName="firstRowReview"
-        [displayAnnotationButton]="
-          openAnnotationArray[10].displayAnnotationButton
-        "
-        [displayAnnotationTextArea]="
-          openAnnotationArray[10].displayAnnotationTextArea
-        "
-        [lineIndex]="10"
-        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-        [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
-        "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-      ></app-applicant-review-feedback>
-    </div>
-  </div>
-
-  <!-- FATALITIES, INJURIES, HAZMAT SPILL -->
-
-  <div class="d-flex justify-content-between">
-    <div class="d-flex align-items-center fatalities-injuries-group">
-      <div class="d-flex align-items-center fatalities-group">
-        <app-ta-input-arrows
-          formControlName="fatalities"
-          [inputConfig]="{
-            name: 'FatalInjuries',
-            type: 'text',
-            blackInput: true,
-            hideRequiredCheck: true,
-            hideClear: true,
-            hideErrorMessage: true,
-            textAlign: 'center'
-          }"
-          [name]="'Fatalities #'"
-          [elementOrder]="1"
-          [minimum]="0"
-          [type]="'applicant'"
-          [selectedMode]="selectedMode"
-        ></app-ta-input-arrows>
-      </div>
-
-      <div class="d-flex align-items-center injuries-group">
-        <app-ta-input-arrows
-          formControlName="injuries"
-          [inputConfig]="{
-            name: 'FatalInjuries',
-            type: 'text',
-            blackInput: true,
-            hideRequiredCheck: true,
-            hideClear: true,
-            hideErrorMessage: true,
-            textAlign: 'center'
-          }"
-          [name]="'Injuries #'"
-          [elementOrder]="2"
-          [minimum]="0"
-          [type]="'applicant'"
-          [selectedMode]="selectedMode"
-        ></app-ta-input-arrows>
-      </div>
-    </div>
-
-    <div
-      class="d-flex align-items-center justify-content-between group hazmat-spill-group"
-    >
-      <div class="title-box">
-        <p
-          class="m-0 ta-font-regular"
-          [ngStyle]="{
-            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-          }"
+        <div
+            class="review-feedback-container"
+            *ngIf="
+                selectedMode === 'REVIEW_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+            "
         >
-          Hazmat spill
-          <span
-            class="required-star"
-            [ngStyle]="{
-              color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#ff5d5d'
-            }"
-            >*</span
-          >
-        </p>
-      </div>
-      <div class="radios-box">
-        <app-ta-input-radiobuttons
-          [buttons]="answerChoices"
-          (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
-        ></app-ta-input-radiobuttons>
-      </div>
-    </div>
-  </div>
-
-  <!-- TRUCK TYPE, DESCRIPTION -->
-
-  <div class="d-flex line-container">
-    <div class="group truck-type-group">
-      <app-ta-input-dropdown
-        formControlName="vehicleType"
-        [template]="'svgtext-template'"
-        [inputConfig]="{
-          name: 'Input Dropdown',
-          type: 'text',
-          label: 'Vehicle type',
-          isRequired: true,
-          isDropdown: true,
-          dropdownWidthClass: 'w-col-applicant-t-type',
-          dropdownImageInput: {
-            withText: true,
-            svg: true,
-            image: false,
-            url: selectedVehicleType?.logoName,
-            template: 'truck',
-            class: selectedVehicleType?.name
-              ?.trim()
-              .replace(' ', '')
-              .toLowerCase()
-          },
-          customClass: 'truck-trailer-dropdown',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [activeItem]="selectedVehicleType"
-        [options]="vehicleType"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 11)"
-        (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
-      ></app-ta-input-dropdown>
-    </div>
-    <div class="group description-group">
-      <app-ta-input
-        formControlName="description"
-        [inputConfig]="{
-          name: 'Description',
-          type: 'text',
-          label: 'Description',
-          minLength: 2,
-          maxLength: 160,
-          textTransform: 'capitalize',
-          isRequired: true,
-          incorrectInput: selectedMode === 'REVIEW_MODE'
-        }"
-        [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 11)"
-      ></app-ta-input>
+            <app-applicant-review-feedback
+                formControlName="firstRowReview"
+                [displayAnnotationButton]="
+                    openAnnotationArray[10].displayAnnotationButton
+                "
+                [displayAnnotationTextArea]="
+                    openAnnotationArray[10].displayAnnotationTextArea
+                "
+                [lineIndex]="10"
+                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                [feedbackText]="
+                    'Check the routing number one more time (one number missing)!!!'
+                "
+                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            ></app-applicant-review-feedback>
+        </div>
     </div>
 
-    <!-- REVIEW AND FEEDBACK -->
+    <!-- FATALITIES, INJURIES, HAZMAT SPILL -->
 
-    <div
-      class="review-feedback-container"
-      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
-    >
-      <app-applicant-review-feedback
-        formControlName="secondRowReview"
-        [displayAnnotationButton]="
-          openAnnotationArray[11].displayAnnotationButton
-        "
-        [displayAnnotationTextArea]="
-          openAnnotationArray[11].displayAnnotationTextArea
-        "
-        [lineIndex]="11"
-        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-        [feedbackText]="
-          'Check the routing number one more time (one number missing)!!!'
-        "
-        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-      ></app-applicant-review-feedback>
+    <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center fatalities-injuries-group">
+            <div class="d-flex align-items-center fatalities-group">
+                <app-ta-input-arrows
+                    formControlName="fatalities"
+                    [inputConfig]="{
+                        name: 'FatalInjuries',
+                        type: 'text',
+                        blackInput: true,
+                        hideRequiredCheck: true,
+                        hideClear: true,
+                        hideErrorMessage: true,
+                        textAlign: 'center',
+                        isDisabled: selectedMode === 'REVIEW_MODE'
+                    }"
+                    [name]="'Fatalities #'"
+                    [elementOrder]="1"
+                    [minimum]="0"
+                    [type]="'applicant'"
+                    [selectedMode]="selectedMode"
+                    [disabledArrow]="selectedMode === 'REVIEW_MODE'"
+                ></app-ta-input-arrows>
+            </div>
+
+            <div class="d-flex align-items-center injuries-group">
+                <app-ta-input-arrows
+                    formControlName="injuries"
+                    [inputConfig]="{
+                        name: 'FatalInjuries',
+                        type: 'text',
+                        blackInput: true,
+                        hideRequiredCheck: true,
+                        hideClear: true,
+                        hideErrorMessage: true,
+                        textAlign: 'center',
+                        isDisabled: selectedMode === 'REVIEW_MODE'
+                    }"
+                    [name]="'Injuries #'"
+                    [elementOrder]="2"
+                    [minimum]="0"
+                    [type]="'applicant'"
+                    [selectedMode]="selectedMode"
+                    [disabledArrow]="selectedMode === 'REVIEW_MODE'"
+                ></app-ta-input-arrows>
+            </div>
+        </div>
+
+        <div
+            class="d-flex align-items-center justify-content-between group hazmat-spill-group"
+        >
+            <div class="d-flex flex-column title-box">
+                <p
+                    class="m-0 ta-font-regular"
+                    [ngStyle]="{
+                        color:
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? '#919191'
+                                : '#6C6C6C'
+                    }"
+                >
+                    Hazmat spill
+                    <span
+                        class="required-star"
+                        [ngStyle]="{
+                            color:
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? '#919191'
+                                    : '#ff5d5d'
+                        }"
+                        >*</span
+                    >
+                </p>
+
+                <ng-container *ngIf="displayRadioRequiredNote">
+                    <p class="m-0 ta-font-semi-bold required">Required</p>
+                </ng-container>
+            </div>
+            <div class="radios-box">
+                <app-ta-input-radiobuttons
+                    [buttons]="answerChoices"
+                    [disabled]="selectedMode === 'REVIEW_MODE'"
+                    [displayRequiredNote]="displayRadioRequiredNote"
+                    (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
+                ></app-ta-input-radiobuttons>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- ADD ANOTHER ACCIDENT -->
+    <!-- TRUCK TYPE, DESCRIPTION -->
 
-  <div class="d-flex justify-content-center align-items-center btn-container">
-    <button
-      type="button"
-      class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-      (click)="onAddAccident()"
-      [ngClass]="{
-        disabled: accidentForm.invalid
-      }"
-      *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
-    >
-      <svg-icon
-        class="plus-icon"
-        src="assets/svg/common/ic_plus.svg
-  "
-        [svgStyle]="{
-          'width.px': 18,
-          'height.px': 18
-        }"
-      ></svg-icon>
+    <div class="d-flex line-container">
+        <div class="group truck-type-group">
+            <app-ta-input-dropdown
+                formControlName="vehicleType"
+                [template]="'svgtext-template'"
+                [inputConfig]="{
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Vehicle type',
+                    isRequired: true,
+                    isDropdown: true,
+                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    dropdownWidthClass: 'w-col-231',
+                    dropdownImageInput: {
+                        withText: true,
+                        svg: true,
+                        image: false,
+                        url: selectedVehicleType?.logoName,
+                        template: 'truck',
+                        class: selectedVehicleType?.name
+                            ?.trim()
+                            .replace(' ', '')
+                            .toLowerCase()
+                    },
+                    customClass: 'truck-trailer-dropdown'
+                }"
+                [activeItem]="selectedVehicleType"
+                [options]="vehicleType"
+                (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
+            ></app-ta-input-dropdown>
+        </div>
+        <div class="group description-group">
+            <app-ta-input
+                formControlName="description"
+                [inputConfig]="{
+                    name: 'Description',
+                    type: 'text',
+                    label: 'Description',
+                    minLength: 2,
+                    maxLength: 160,
+                    textTransform: 'capitalize',
+                    isRequired: true,
+                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    incorrectInput: selectedMode === 'REVIEW_MODE'
+                }"
+                [incorrectValue]="openAnnotationArray[11].lineInputs[1]"
+                (incorrectEvent)="incorrectInput($event, 1, 11)"
+            ></app-ta-input>
+        </div>
 
-      Add Another Accident
-    </button>
+        <!-- REVIEW AND FEEDBACK -->
 
-    <div
-      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
-      *ngIf="isEditing"
-    >
-      <button
-        type="button"
-        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-        (click)="onCancelEditAccident()"
-      >
-        Cancel
-      </button>
-      <button
-        type="button"
-        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-        [ngClass]="{
-          disabled: !isAccidentEdited
-        }"
-        (click)="onSaveEditedAccident()"
-      >
-        Save Changes
-      </button>
+        <div
+            class="review-feedback-container"
+            *ngIf="
+                selectedMode === 'REVIEW_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+            "
+        >
+            <app-applicant-review-feedback
+                formControlName="secondRowReview"
+                [displayAnnotationButton]="
+                    openAnnotationArray[11].displayAnnotationButton
+                "
+                [displayAnnotationTextArea]="
+                    openAnnotationArray[11].displayAnnotationTextArea
+                "
+                [lineIndex]="11"
+                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                [feedbackText]="
+                    'Check the routing number one more time (one number missing)!!!'
+                "
+                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            ></app-applicant-review-feedback>
+        </div>
     </div>
-  </div>
+
+    <!-- BTN -->
+
+    <div class="d-flex justify-content-center align-items-center">
+        <ng-container *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing">
+            <app-applicant-add-save-btn
+                [addBtn]="true"
+                [btnText]="'Add Another Accident'"
+                [disabledValue]="accidentForm.invalid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </ng-container>
+
+        <ng-container *ngIf="isEditing">
+            <app-applicant-add-save-btn
+                [cancelBtn]="true"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+
+            <app-applicant-add-save-btn
+                [saveBtn]="true"
+                [disabledValue]="!isAccidentEdited || !accidentForm.valid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </ng-container>
+
+        <ng-container *ngIf="isReviewingCard">
+            <app-applicant-add-save-btn
+                [cancelBtn]="true"
+                [reviewBtn]="true"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+
+            <app-applicant-add-save-btn
+                [saveBtn]="true"
+                [reviewBtn]="true"
+                [disabledValue]="!isCardReviewedIncorrect"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </ng-container>
+    </div>
 </div>

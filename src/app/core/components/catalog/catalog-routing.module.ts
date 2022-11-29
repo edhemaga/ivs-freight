@@ -3,15 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { CatalogComponent } from './catalog/catalog.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: CatalogComponent,
-    data: { title: 'Catalog' },
-  },
+    {
+        path: '',
+        component: CatalogComponent,
+        data: { title: 'Catalog' },
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
-export class CatalogRoutingModule { }
+export class CatalogRoutingModule {}

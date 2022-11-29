@@ -20,13 +20,13 @@ $truckassist-fe-warn: mat.define-palette(mat.$red-palette);
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
 $truckassist-fe-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: $truckassist-fe-primary,
-      accent: $truckassist-fe-accent,
-      warn: $truckassist-fe-warn,
-    ),
-  )
+    (
+        color: (
+            primary: $truckassist-fe-primary,
+            accent: $truckassist-fe-accent,
+            warn: $truckassist-fe-warn,
+        ),
+    )
 );
 
 // Include theme styles for core and each component used in your app.
@@ -44,13 +44,12 @@ $truckassist-fe-theme: mat.define-light-theme(
 
 // html, body { height: 100%; }
 body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
-
-html{
-  scroll-behavior: auto !important;
+html {
+    scroll-behavior: auto !important;
 }
 
 /* Importing Bootstrap SCSS file. */
@@ -69,10 +68,12 @@ html{
 @import './assets/scss/ta-input-multiselect-dropdown.scss';
 @import './assets/scss/detail-cards.scss';
 @import './assets/scss/ngxslider.scss';
-@import './assets/scss/fake-table-modal.scss';
 @import './assets/scss/fonts.scss';
 @import './assets/scss/ta-input-dropdown-label.scss';
-@import './assets/scss/toast-messages.scss'; 
+@import './assets/scss/toast-messages.scss';
 @import './assets/scss/table';
-
-@import "~overlayscrollbars/css/OverlayScrollbars.css";
+@import './assets/scss/dispatcher.scss';
+@import './assets/scss/accounting.scss';
+@import './assets/scss/payroll.scss';
+@import './assets/scss/fake-table-modal.scss';
+@import '~overlayscrollbars/css/OverlayScrollbars.css';

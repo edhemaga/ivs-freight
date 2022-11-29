@@ -9,14 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CdlLicenseReviewCommand } from './cdlLicenseReviewCommand';
 
 
 export interface CreateApplicantCdlReviewCommand { 
-    isCdlDeniedExplanationValid?: boolean;
-    cdlDeniedExplanationMessage?: string | null;
-    cdlInformationId?: number;
-    applicantId?: number;
-    licenceReviews?: Array<CdlLicenseReviewCommand> | null;
+    isLicenseValid?: boolean;
+    licenseMessage?: string | null;
+    isExpDateValid?: boolean;
+    expDateMessage?: string | null;
+    isPrimary?: boolean;
+    commonMessage?: string | null;
+    applicantCdlId?: number;
 }
 

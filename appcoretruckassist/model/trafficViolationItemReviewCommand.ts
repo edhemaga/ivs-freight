@@ -12,14 +12,14 @@
 
 
 export interface TrafficViolationItemReviewCommand { 
+    id?: number | null;
     isDateValid?: boolean;
-    isVehicleTypeValid?: boolean;
     isLocationValid?: boolean;
-    vehicleTypeLocationMessage?: string | null;
+    locationMessage?: string | null;
     isDescriptionValid?: boolean;
     descriptionMessage?: string | null;
     isPrimary?: boolean;
     commonMessage?: string | null;
-    trafficViolationId?: number;
+    itemId?: number;
 }
 

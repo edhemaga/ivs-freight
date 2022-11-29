@@ -13,12 +13,12 @@ import { AddressEntity } from './addressEntity';
 
 
 export interface PreviousEmployerAccidentHistoryItemCommand { 
+    id?: number | null;
     location?: AddressEntity;
-    date?: string;
+    date?: string | null;
     fatalities?: number | null;
     injuries?: number | null;
     hazmatSpill?: boolean;
     description?: string | null;
-    sphAccidentHistoryId?: number;
 }
 

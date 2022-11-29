@@ -1,371 +1,476 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="m-0 step-title text-center noselect ta-font-bold">
-    Drug & alcohol statement
-  </h1>
+    <h1 class="m-0 step-title text-center noselect ta-font-bold">
+        Drug & alcohol statement
+    </h1>
 
-  <!-- INFO -->
+    <!-- INFO -->
 
-  <div class="d-flex justify-content-center align-items-center info-container">
-    <p
-      class="m-0 text-center ta-font-regular"
-      [ngStyle]="{
-        color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-      }"
+    <div
+        class="d-flex justify-content-center align-items-center info-container"
     >
-      Section 40.25(j) of the Federal Motor Carrier Safety Regulations, requires
-      each motor carrier to inquire to prospective drivers and prospective
-      drivers are required to respond to the information in the question below.
-    </p>
-  </div>
-
-  <!-- QUESTION -->
-
-  <div
-    class="d-flex flex-column align-items-center question-container"
-    [formGroup]="drugTestForm"
-  >
-    <p
-      class="m-0 text-center ta-font-regular"
-      [ngClass]="
-        selectedMode === 'FEEDBACK_MODE'
-          ? 'question-title question-title-feedback'
-          : 'question-title'
-      "
-    >
-      {{ question.title }} <span>*</span>
-    </p>
-
-    <div class="radios-box">
-      <app-ta-input-radiobuttons
-        [buttons]="question.answerChoices"
-        (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
-      ></app-ta-input-radiobuttons>
-    </div>
-  </div>
-
-  <!-- FORM SECTION -->
-
-  <div class="d-flex form-section" *ngIf="drugTestForm.get('drugTest').value">
-    <form [formGroup]="drugAlcoholStatementForm">
-      <!-- MOTOR CARRIER, PHONE -->
-
-      <div class="d-flex flex-column align-items-center">
-        <div class="d-flex line-container">
-          <div class="group motor-carrier-group">
-            <app-ta-input
-              formControlName="motorCarrier"
-              [inputConfig]="{
-                name: 'Motor Carrier',
-                type: 'text',
-                label: 'Motor Carrier',
-                isRequired: true,
-                textTransform: 'capitalize',
-                incorrectInput: selectedMode === 'REVIEW_MODE'
-              }"
-              [incorrectValue]="false"
-              (incorrectEvent)="incorrectInput($event, 0, 0)"
-            ></app-ta-input>
-          </div>
-          <div class="group phone-group">
-            <app-ta-input
-              formControlName="phone"
-              [inputConfig]="{
-                name: 'Phone',
-                type: 'text',
-                label: 'Phone',
-                isRequired: true,
-                placeholderIcon: 'phone',
-                mask: '(000) 000-0000',
-                maxLength: 14,
-                incorrectInput: selectedMode === 'REVIEW_MODE'
-              }"
-              [incorrectValue]="false"
-              (incorrectEvent)="incorrectInput($event, 1, 0)"
-            ></app-ta-input>
-          </div>
-
-          <!-- REVIEW AND FEEDBACK -->
-
-          <div
-            class="review-feedback-container"
-            *ngIf="
-              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-            "
-          >
-            <app-applicant-review-feedback
-              formControlName="firstRowReview"
-              [displayAnnotationButton]="
-                openAnnotationArray[0].displayAnnotationButton
-              "
-              [displayAnnotationTextArea]="
-                openAnnotationArray[0].displayAnnotationTextArea
-              "
-              [lineIndex]="0"
-              [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-              [feedbackText]="
-                'Check the routing number one more time (one number missing)!!!'
-              "
-              (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-            ></app-applicant-review-feedback>
-          </div>
-        </div>
-
-        <!-- ADDRESS -->
-
-        <div class="d-flex line-container">
-          <div class="group address-group">
-            <app-input-address-dropdown
-              formControlName="address"
-              [inputConfig]="{
-                name: 'Address',
-                type: 'text',
-                label: 'Address, City, State Zip',
-                isRequired: true,
-                placeholderIcon: 'address',
-                textTransform: 'capitalize',
-                dropdownWidthClass: 'w-col-481',
-                minLength: 6,
-                maxLength: 256,
-                incorrectInput: selectedMode === 'REVIEW_MODE'
-              }"
-              [placeholderType]="'longAddress'"
-              [incorrectValue]="false"
-              (incorrectEvent)="incorrectInput($event, 0, 1)"
-              [activeAddress]="selectedAddress"
-              (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-            ></app-input-address-dropdown>
-          </div>
-          <div class="group unit-group">
-            <app-ta-input
-              formControlName="addressUnit"
-              [inputConfig]="{
-                name: 'address-unit',
-                type: 'text',
-                label: 'Unit No.',
-                minLength: 1,
-                maxLength: 10,
-                textTransform: 'uppercase',
-                incorrectInput: selectedMode === 'REVIEW_MODE'
-              }"
-              [incorrectValue]="false"
-              (incorrectEvent)="incorrectInput($event, 1, 1)"
-            ></app-ta-input>
-          </div>
-
-          <!-- REVIEW AND FEEDBACK -->
-
-          <div
-            class="review-feedback-container"
-            *ngIf="
-              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-            "
-          >
-            <app-applicant-review-feedback
-              formControlName="secondRowReview"
-              [displayAnnotationButton]="
-                openAnnotationArray[1].displayAnnotationButton
-              "
-              [displayAnnotationTextArea]="
-                openAnnotationArray[1].displayAnnotationTextArea
-              "
-              [lineIndex]="1"
-              [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-              [feedbackText]="
-                'Check the routing number one more time (one number missing)!!!'
-              "
-              (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-            ></app-applicant-review-feedback>
-          </div>
-        </div>
-
-        <!-- INFO -->
-
-        <div
-          class="d-flex justify-content-center align-items-center sap-info-container"
-        >
-          <p
-            class="m-0 ta-font-regular"
+        <p
+            class="m-0 text-center ta-font-regular"
             [ngStyle]="{
-              color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
             }"
-          >
-            In addition, if the answer to the above question is YES, please list
-            the name and contact information for the Substance Abuse
-            Professional (SAP) who completes you evaluation:
-          </p>
-        </div>
+        >
+            Section 40.25(j) of the Federal Motor Carrier Safety Regulations,
+            requires each motor carrier to inquire to prospective drivers and
+            prospective drivers are required to respond to the information in
+            the question below.
+        </p>
+    </div>
 
-        <!-- SAP NAME, PHONE -->
+    <!-- QUESTION -->
 
-        <div class="d-flex line-container">
-          <div class="group sap-name-group">
-            <app-ta-input
-              formControlName="sapName"
-              [inputConfig]="{
-                name: 'Name of SAP',
-                type: 'text',
-                label: 'Name of SAP',
-                isRequired: true,
-                textTransform: 'capitalize',
-                incorrectInput: selectedMode === 'REVIEW_MODE'
-              }"
-              [incorrectValue]="false"
-              (incorrectEvent)="incorrectInput($event, 0, 2)"
-            ></app-ta-input>
-          </div>
-          <div class="group phone-group">
-            <app-ta-input
-              formControlName="sapPhone"
-              [inputConfig]="{
-                name: 'Phone',
-                type: 'text',
-                label: 'Phone',
-                isRequired: true,
-                placeholderIcon: 'phone',
-                mask: '(000) 000-0000',
-                maxLength: 14,
-                incorrectInput: selectedMode === 'REVIEW_MODE'
-              }"
-              [incorrectValue]="false"
-              (incorrectEvent)="incorrectInput($event, 1, 2)"
-            ></app-ta-input>
-          </div>
-
-          <!-- REVIEW AND FEEDBACK -->
-
-          <div
-            class="review-feedback-container"
-            *ngIf="
-              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+    <div
+        class="d-flex flex-column align-items-center question-container"
+        [formGroup]="drugTestForm"
+    >
+        <p
+            class="m-0 text-center ta-font-regular"
+            [ngClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                    ? 'question-title question-title-feedback'
+                    : 'question-title'
             "
-          >
-            <app-applicant-review-feedback
-              formControlName="thirdRowReview"
-              [displayAnnotationButton]="
-                openAnnotationArray[2].displayAnnotationButton
-              "
-              [displayAnnotationTextArea]="
-                openAnnotationArray[2].displayAnnotationTextArea
-              "
-              [lineIndex]="2"
-              [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-              [feedbackText]="
-                'Check the routing number one more time (one number missing)!!!'
-              "
-              (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-            ></app-applicant-review-feedback>
-          </div>
+        >
+            {{ question.title }} <span>*</span>
+        </p>
+
+        <div class="radios-box">
+            <app-ta-input-radiobuttons
+                #cmp
+                [buttons]="question.answerChoices"
+                (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+                [disabled]="
+                    selectedMode === 'REVIEW_MODE' ||
+                    selectedMode === 'FEEDBACK_MODE'
+                "
+            ></app-ta-input-radiobuttons>
         </div>
+    </div>
 
-        <!-- SAP ADDRESS -->
+    <!-- FORM SECTION -->
 
-        <div class="d-flex line-container">
-          <div class="group sap-address-group">
-            <app-input-address-dropdown
-              formControlName="sapAddress"
-              [inputConfig]="{
-                name: 'Address',
-                type: 'text',
-                label: 'Address, City, State Zip',
-                isRequired: true,
-                placeholderIcon: 'address',
-                textTransform: 'capitalize',
-                dropdownWidthClass: 'w-col-481',
-                minLength: 6,
-                maxLength: 256,
-                incorrectInput: selectedMode === 'REVIEW_MODE'
-              }"
-              [placeholderType]="'longAddress'"
-              [incorrectValue]="false"
-              (incorrectEvent)="incorrectInput($event, 0, 3)"
-              [activeAddress]="selectedSapAddress"
-              (selectedAddress)="handleInputSelect($event, 'ADDRESS', 'SAP')"
-            ></app-input-address-dropdown>
-          </div>
-          <div class="group sap-unit-group">
-            <app-ta-input
-              formControlName="sapAddressUnit"
-              [inputConfig]="{
-                name: 'address-unit',
-                type: 'text',
-                label: 'Unit No.',
-                minLength: 1,
-                maxLength: 10,
-                textTransform: 'uppercase',
-                incorrectInput: selectedMode === 'REVIEW_MODE'
-              }"
-              [incorrectValue]="false"
-              (incorrectEvent)="incorrectInput($event, 1, 3)"
-            ></app-ta-input>
-          </div>
+    <div class="d-flex form-section" *ngIf="drugTestForm.get('drugTest').value">
+        <form [formGroup]="drugAlcoholStatementForm">
+            <!-- MOTOR CARRIER, PHONE -->
 
-          <!-- REVIEW AND FEEDBACK -->
+            <div class="d-flex flex-column align-items-center">
+                <div class="d-flex line-container">
+                    <div class="group motor-carrier-group">
+                        <app-ta-input
+                            formControlName="motorCarrier"
+                            [inputConfig]="{
+                                name: 'Motor Carrier',
+                                type: 'text',
+                                label: 'Motor Carrier',
+                                isRequired: true,
+                                textTransform: 'capitalize',
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isCarrierValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[0].lineInputs[0]
+                            "
+                            (incorrectEvent)="incorrectInput($event, 0, 0)"
+                        ></app-ta-input>
+                    </div>
+                    <div class="group phone-group">
+                        <app-ta-input
+                            formControlName="phone"
+                            [inputConfig]="{
+                                name: 'Phone',
+                                type: 'text',
+                                label: 'Phone',
+                                isRequired: true,
+                                placeholderIcon: 'phone',
+                                mask: '(000) 000-0000',
+                                maxLength: 14,
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isPhoneValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[0].lineInputs[1]
+                            "
+                            (incorrectEvent)="incorrectInput($event, 1, 0)"
+                        ></app-ta-input>
+                    </div>
 
-          <div
-            class="review-feedback-container"
-            *ngIf="
-              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
-            "
-          >
-            <app-applicant-review-feedback
-              formControlName="fourthRowReview"
-              [displayAnnotationButton]="
-                openAnnotationArray[3].displayAnnotationButton
-              "
-              [displayAnnotationTextArea]="
-                openAnnotationArray[3].displayAnnotationTextArea
-              "
-              [lineIndex]="3"
-              [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-              [feedbackText]="
-                'Check the routing number one more time (one number missing)!!!'
-              "
-              (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-            ></app-applicant-review-feedback>
-          </div>
-        </div>
+                    <!-- REVIEW AND FEEDBACK -->
 
-        <!-- AGREEMENT -->
+                    <div
+                        class="review-feedback-container"
+                        *ngIf="
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                        "
+                    >
+                        <app-applicant-review-feedback
+                            formControlName="firstRowReview"
+                            [displayAnnotationButton]="
+                                selectedMode === 'REVIEW_MODE' &&
+                                openAnnotationArray[0].displayAnnotationButton
+                            "
+                            [displayAnnotationTextArea]="
+                                selectedMode === 'REVIEW_MODE' &&
+                                openAnnotationArray[0].displayAnnotationTextArea
+                            "
+                            [lineIndex]="0"
+                            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                            [feedbackText]="
+                                selectedMode === 'FEEDBACK_MODE' &&
+                                stepFeedbackValues?.carrierPhoneMessage
+                            "
+                            (annotationBtnClickEvent)="
+                                selectedMode === 'REVIEW_MODE' &&
+                                    getAnnotationBtnClickValue($event)
+                            "
+                        ></app-applicant-review-feedback>
+                    </div>
+                </div>
 
-        <div class="d-flex justify-content-center agreement-container">
-          <app-ta-checkbox
-            formControlName="isAgreement"
-            [name]="'isAgreement'"
-            [label]="
-              'I certify that the information provided on this document is true and correct.'
-            "
-            [customClass]="
-              selectedMode === 'FEEDBACK_MODE'
-                ? 'applicant-feedback'
-                : 'bold-12'
-            "
-          >
-          </app-ta-checkbox>
-        </div>
-      </div>
-    </form>
-  </div>
+                <!-- ADDRESS -->
+
+                <div class="d-flex line-container">
+                    <div class="group address-group">
+                        <app-input-address-dropdown
+                            formControlName="address"
+                            [inputConfig]="{
+                                name: 'Address',
+                                type: 'text',
+                                label: 'Address, City, State Zip',
+                                isRequired: true,
+                                placeholderIcon: 'address',
+                                textTransform: 'capitalize',
+                                dropdownWidthClass: 'w-col-481',
+                                minLength: 6,
+                                maxLength: 256,
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isAddressValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [placeholderType]="'longAddress'"
+                            [activeAddress]="selectedAddress"
+                            [incorrectValue]="
+                                openAnnotationArray[1].lineInputs[0]
+                            "
+                            (incorrectEvent)="incorrectInput($event, 0, 1)"
+                            (selectedAddress)="
+                                handleInputSelect($event, 'ADDRESS')
+                            "
+                        ></app-input-address-dropdown>
+                    </div>
+                    <div class="group unit-group">
+                        <app-ta-input
+                            formControlName="addressUnit"
+                            [inputConfig]="{
+                                name: 'address-unit',
+                                type: 'text',
+                                label: 'Unit #',
+                                minLength: 1,
+                                maxLength: 10,
+                                textTransform: 'uppercase',
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isAddressUnitValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[1].lineInputs[1]
+                            "
+                            (incorrectEvent)="incorrectInput($event, 1, 1)"
+                        ></app-ta-input>
+                    </div>
+
+                    <!-- REVIEW AND FEEDBACK -->
+
+                    <div
+                        class="review-feedback-container"
+                        *ngIf="
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                        "
+                    >
+                        <app-applicant-review-feedback
+                            formControlName="secondRowReview"
+                            [displayAnnotationButton]="
+                                selectedMode === 'REVIEW_MODE' &&
+                                openAnnotationArray[1].displayAnnotationButton
+                            "
+                            [displayAnnotationTextArea]="
+                                selectedMode === 'REVIEW_MODE' &&
+                                openAnnotationArray[1].displayAnnotationTextArea
+                            "
+                            [lineIndex]="1"
+                            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                            [feedbackText]="
+                                selectedMode === 'FEEDBACK_MODE' &&
+                                stepFeedbackValues?.addressMessage
+                            "
+                            (annotationBtnClickEvent)="
+                                selectedMode === 'REVIEW_MODE' &&
+                                    getAnnotationBtnClickValue($event)
+                            "
+                        ></app-applicant-review-feedback>
+                    </div>
+                </div>
+
+                <!-- INFO -->
+
+                <div
+                    class="d-flex justify-content-center align-items-center sap-info-container"
+                >
+                    <p
+                        class="m-0 ta-font-regular"
+                        [ngStyle]="{
+                            color:
+                                selectedMode === 'FEEDBACK_MODE'
+                                    ? '#919191'
+                                    : '#6C6C6C'
+                        }"
+                    >
+                        In addition, if the answer to the above question is YES,
+                        please list the name and contact information for the
+                        Substance Abuse Professional (SAP) who completes you
+                        evaluation:
+                    </p>
+                </div>
+
+                <!-- SAP NAME, PHONE -->
+
+                <div class="d-flex line-container">
+                    <div class="group sap-name-group">
+                        <app-ta-input
+                            formControlName="sapName"
+                            [inputConfig]="{
+                                name: 'Name of SAP',
+                                type: 'text',
+                                label: 'Name of SAP',
+                                isRequired: true,
+                                textTransform: 'capitalize',
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isSapValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[2].lineInputs[0]
+                            "
+                            (incorrectEvent)="incorrectInput($event, 0, 2)"
+                        ></app-ta-input>
+                    </div>
+                    <div class="group phone-group">
+                        <app-ta-input
+                            formControlName="sapPhone"
+                            [inputConfig]="{
+                                name: 'Phone',
+                                type: 'text',
+                                label: 'Phone',
+                                isRequired: true,
+                                placeholderIcon: 'phone',
+                                mask: '(000) 000-0000',
+                                maxLength: 14,
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isSapPhoneValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[2].lineInputs[1]
+                            "
+                            (incorrectEvent)="incorrectInput($event, 1, 2)"
+                        ></app-ta-input>
+                    </div>
+
+                    <!-- REVIEW AND FEEDBACK -->
+
+                    <div
+                        class="review-feedback-container"
+                        *ngIf="
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                        "
+                    >
+                        <app-applicant-review-feedback
+                            formControlName="thirdRowReview"
+                            [displayAnnotationButton]="
+                                selectedMode === 'REVIEW_MODE' &&
+                                openAnnotationArray[2].displayAnnotationButton
+                            "
+                            [displayAnnotationTextArea]="
+                                selectedMode === 'REVIEW_MODE' &&
+                                openAnnotationArray[2].displayAnnotationTextArea
+                            "
+                            [lineIndex]="2"
+                            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                            [feedbackText]="
+                                selectedMode === 'FEEDBACK_MODE' &&
+                                stepFeedbackValues?.sapPhoneMessage
+                            "
+                            (annotationBtnClickEvent)="
+                                selectedMode === 'REVIEW_MODE' &&
+                                    getAnnotationBtnClickValue($event)
+                            "
+                        ></app-applicant-review-feedback>
+                    </div>
+                </div>
+
+                <!-- SAP ADDRESS -->
+
+                <div class="d-flex line-container">
+                    <div class="group sap-address-group">
+                        <app-input-address-dropdown
+                            formControlName="sapAddress"
+                            [inputConfig]="{
+                                name: 'Address',
+                                type: 'text',
+                                label: 'Address, City, State Zip',
+                                isRequired: true,
+                                placeholderIcon: 'address',
+                                textTransform: 'capitalize',
+                                dropdownWidthClass: 'w-col-481',
+                                minLength: 6,
+                                maxLength: 256,
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isSapAddressValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [placeholderType]="'longAddress'"
+                            [activeAddress]="selectedSapAddress"
+                            [incorrectValue]="
+                                openAnnotationArray[3].lineInputs[0]
+                            "
+                            (incorrectEvent)="incorrectInput($event, 0, 3)"
+                            (selectedAddress)="
+                                handleInputSelect($event, 'ADDRESS', 'SAP')
+                            "
+                        ></app-input-address-dropdown>
+                    </div>
+                    <div class="group sap-unit-group">
+                        <app-ta-input
+                            formControlName="sapAddressUnit"
+                            [inputConfig]="{
+                                name: 'address-unit',
+                                type: 'text',
+                                label: 'Unit #',
+                                minLength: 1,
+                                maxLength: 10,
+                                textTransform: 'uppercase',
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isSapAddressUnitValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[3].lineInputs[1]
+                            "
+                            (incorrectEvent)="incorrectInput($event, 1, 3)"
+                        ></app-ta-input>
+                    </div>
+
+                    <!-- REVIEW AND FEEDBACK -->
+
+                    <div
+                        class="review-feedback-container"
+                        *ngIf="
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                        "
+                    >
+                        <app-applicant-review-feedback
+                            formControlName="fourthRowReview"
+                            [displayAnnotationButton]="
+                                selectedMode === 'REVIEW_MODE' &&
+                                openAnnotationArray[3].displayAnnotationButton
+                            "
+                            [displayAnnotationTextArea]="
+                                selectedMode === 'REVIEW_MODE' &&
+                                openAnnotationArray[3].displayAnnotationTextArea
+                            "
+                            [lineIndex]="3"
+                            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                            [feedbackText]="
+                                selectedMode === 'FEEDBACK_MODE' &&
+                                stepFeedbackValues?.sapAddressMessage
+                            "
+                            (annotationBtnClickEvent)="
+                                selectedMode === 'REVIEW_MODE' &&
+                                    getAnnotationBtnClickValue($event)
+                            "
+                        ></app-applicant-review-feedback>
+                    </div>
+                </div>
+
+                <!-- AGREEMENT -->
+
+                <div class="d-flex justify-content-center agreement-container">
+                    <app-ta-checkbox
+                        formControlName="isAgreement"
+                        [name]="'isAgreement'"
+                        [label]="
+                            'I certify that the information provided on this document is true and correct.'
+                        "
+                        [customClass]="
+                            selectedMode === 'FEEDBACK_MODE'
+                                ? 'applicant-feedback'
+                                : 'bold-12'
+                        "
+                        [disabledStillCheckMark]="
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                        "
+                    >
+                    </app-ta-checkbox>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- NEXT BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center next-btn-container"
+    class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn
-    [nextStep]="true"
-    [filledCorrectly]="drugTestForm.valid && drugAlcoholStatementForm.valid"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [nextStep]="true"
+        [filledCorrectly]="
+            drugTestForm.valid &&
+            drugAlcoholStatementForm.valid &&
+            (selectedMode === 'APPLICANT_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
+        "
+        [hasIncorrectFields]="
+            selectedMode === 'REVIEW_MODE' && hasIncorrectFields
+        "
+        [mode]="selectedMode"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
 
 <div
-  class="d-flex justify-content-center align-items-center back-btn-container"
+    class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn
-    [backStep]="true"
-    (stepEvent)="onStepAction($event)"
-  ></app-applicant-next-back-btn>
+    <app-applicant-next-back-btn
+        [backStep]="true"
+        (stepEvent)="onStepAction($event)"
+    ></app-applicant-next-back-btn>
 </div>
