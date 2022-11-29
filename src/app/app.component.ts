@@ -24,6 +24,11 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.gpsService.startConnection();
+
+        setTimeout(() => {
+            this.gpsService.closeConnection();
+        }, 30000);
         this.router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
