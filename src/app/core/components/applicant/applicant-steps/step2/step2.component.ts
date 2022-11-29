@@ -117,7 +117,7 @@ export class Step2Component implements OnInit, OnDestroy {
         this.hasNoWorkExperience();
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.workExperienceForm = this.formBuilder.group({
@@ -551,7 +551,7 @@ export class Step2Component implements OnInit, OnDestroy {
         };
     }
 
-    public cancelWorkExperienceEditing(event: any): void {
+    public cancelWorkExperienceEditing(_: any): void {
         this.isEditing = false;
         this.workExperienceArray[
             this.selectedWorkExperienceIndex
@@ -727,7 +727,7 @@ export class Step2Component implements OnInit, OnDestroy {
         }
     }
 
-    public cancelWorkExperienceReview(event: any): void {
+    public cancelWorkExperienceReview(_: any): void {
         this.isReviewingCard = false;
 
         this.workExperienceArray[

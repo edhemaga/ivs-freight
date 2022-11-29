@@ -23,7 +23,7 @@ export class BrokerResolver implements Resolve<BrokerState> {
                 localStorage.setItem(
                     'brokerShipperTableCount',
                     JSON.stringify({
-                        // broker: brokerPagination.count,
+                        broker: brokerPagination.brokerCount,
                         shipper: brokerPagination.shipperCount,
                     })
                 );

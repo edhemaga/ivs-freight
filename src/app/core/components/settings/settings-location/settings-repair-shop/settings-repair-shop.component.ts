@@ -92,16 +92,10 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Repair shop successfully deleted',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Repair shop with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }

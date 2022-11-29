@@ -13,7 +13,7 @@
     /* Required Text Checkbox */
     .required-text-checkbox {
         position: absolute;
-        left: -80px;
+        left: -72px;
         font-size: 14px;
         font-weight: 600;
         color: #f44336;
@@ -68,6 +68,10 @@
 
     &:hover .ta-checkbox ~ .ta-mark {
         background-color: #919191;
+    }
+
+    &:hover .ta-checkbox ~ .ta-mark:after {
+        display: block;
     }
 
     .ta-checkbox:checked ~ .ta-checkbox-label {

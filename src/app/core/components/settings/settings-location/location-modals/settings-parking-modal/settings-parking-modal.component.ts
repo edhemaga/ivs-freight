@@ -363,16 +363,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly updated company parking',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update company parking",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -428,16 +422,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly added company parking',
-                        'Success'
-                    );
+                
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add new company parking",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -448,16 +436,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly delete company parking',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't delete company parking",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -527,10 +509,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load company parking.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -546,10 +525,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     this.weeklyDays = res.dayOfWeek;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load modal dropdowns.",
-                        'Error'
-                    );
+                   
                 },
             });
     }

@@ -61,15 +61,20 @@
         <div
             class="d-flex align-items-center justify-content-between group hazmat-spill-group"
         >
-            <div class="title-box">
+            <div class="d-flex flex-column title-box">
                 <p class="m-0 ta-font-regular">
                     Hazmat spill <span class="required-star">*</span>
                 </p>
+
+                <ng-container *ngIf="displayRadioRequiredNote">
+                    <p class="m-0 ta-font-semi-bold required">Required</p>
+                </ng-container>
             </div>
             <div class="radios-box">
                 <app-ta-input-radiobuttons
                     #cmp
                     [buttons]="hazmatAnswerChoices"
+                    [displayRequiredNote]="displayRadioRequiredNote"
                     (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
                 ></app-ta-input-radiobuttons>
             </div>
@@ -115,40 +120,29 @@
         </div>
     </div>
 
-    <!-- BTN CONTAINER -->
+    <!-- BTN -->
 
-    <div class="d-flex justify-content-center align-items-center btn-container">
-        <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-            (click)="onAddAnotherAccident()"
-            [ngClass]="{
-                disabled: accidentForm.invalid
-            }"
-            *ngIf="!isEditing"
-        >
-            <p class="m-0 ta-font-bold">Add Another Accident</p>
-        </button>
+    <div class="d-flex align-items-center justify-content-center">
+        <ng-container *ngIf="!isEditing">
+            <app-applicant-add-save-btn
+                [addBtn]="true"
+                [btnText]="'Add Another Accident'"
+                [disabledValue]="accidentForm.invalid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </ng-container>
 
-        <div
-            class="d-flex align-items-center mx-auto justify-content-center btn-container"
-            *ngIf="isEditing"
-        >
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-                (click)="onCancelEditAccident()"
-            >
-                Cancel
-            </button>
-            <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-                (click)="onSaveEditedAccident()"
-                [ngClass]="{ disabled: !isAccidentEdited }"
-            >
-                Save Changes
-            </button>
-        </div>
+        <ng-container *ngIf="isEditing">
+            <app-applicant-add-save-btn
+                [cancelBtn]="true"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+
+            <app-applicant-add-save-btn
+                [saveBtn]="true"
+                [disabledValue]="!isAccidentEdited || !accidentForm.valid"
+                (clickValueEmitter)="onGetBtnClickValue($event)"
+            ></app-applicant-add-save-btn>
+        </ng-container>
     </div>
 </div>

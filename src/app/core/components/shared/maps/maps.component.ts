@@ -820,10 +820,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     }, 200);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Cant' get repair shop by ${id}`,
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -850,10 +847,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     }, 200);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Cant' get shipper by ${id}`,
-                        'Error'
-                    );
+                  
                 },
             });
     }
@@ -873,10 +867,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     }, 200);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Cant' get shipper by ${id}`,
-                        'Error'
-                    );
+                  
                 },
             });
     }
@@ -907,10 +898,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                         this.ref.detectChanges();
                     },
                     error: () => {
-                        this.notificationService.error(
-                            `Cant' get repair shop by ${item.id}`,
-                            'Error'
-                        );
+                      
                     },
                 });
         } else if (this.mapType == 'shipper') {
@@ -931,10 +919,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                         this.ref.detectChanges();
                     },
                     error: () => {
-                        this.notificationService.error(
-                            `Cant' get shipper by ${item.id}`,
-                            'Error'
-                        );
+                    
                     },
                 });
         } else if (this.mapType == 'fuelStop') {
@@ -948,10 +933,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                         this.ref.detectChanges();
                     },
                     error: () => {
-                        this.notificationService.error(
-                            `Cant' get shipper by ${item.id}`,
-                            'Error'
-                        );
+                      
                     },
                 });
         }

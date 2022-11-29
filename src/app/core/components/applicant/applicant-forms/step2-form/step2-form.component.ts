@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     AfterViewInit,
     Component,
@@ -443,7 +445,7 @@ export class Step2FormComponent
         }
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.workExperienceForm = this.formBuilder.group({
@@ -918,6 +920,14 @@ export class Step2FormComponent
             .get('isDrivingPosition')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
+                const classOfEquipmentInputsToValidate = [
+                    'vehicleType',
+                    'trailerType',
+                    'trailerLength',
+                ];
+
+                const workExperienceInputsToValidate = ['cfrPart', 'fmCSA'];
+
                 if (!value) {
                     const { cfrPart, fmCSA, classOfEquipmentSubscription } =
                         this.workExperienceForm.value;
@@ -952,26 +962,31 @@ export class Step2FormComponent
 
                     this.isWorkExperienceClassOfEquipmentEdited = true;
 
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('vehicleType'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerType'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerLength'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('cfrPart'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('fmCSA'),
-                        false
-                    );
+                    for (
+                        let i = 0;
+                        i < classOfEquipmentInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.classOfEquipmentForm.get(
+                                classOfEquipmentInputsToValidate[i]
+                            ),
+                            false
+                        );
+                    }
+
+                    for (
+                        let i = 0;
+                        i < workExperienceInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.workExperienceForm.get(
+                                workExperienceInputsToValidate[i]
+                            ),
+                            false
+                        );
+                    }
                 } else {
                     if (this.previousClassOfEquipmentFormValues) {
                         const {
@@ -1000,21 +1015,29 @@ export class Step2FormComponent
                         this.classOfEquipmentArray = classOfEquipmentArray;
                     }
 
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('vehicleType')
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerType')
-                    );
-                    this.inputService.changeValidators(
-                        this.classOfEquipmentForm.get('trailerLength')
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('cfrPart')
-                    );
-                    this.inputService.changeValidators(
-                        this.workExperienceForm.get('fmCSA')
-                    );
+                    for (
+                        let i = 0;
+                        i < classOfEquipmentInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.classOfEquipmentForm.get(
+                                classOfEquipmentInputsToValidate[i]
+                            )
+                        );
+                    }
+
+                    for (
+                        let i = 0;
+                        i < workExperienceInputsToValidate.length;
+                        i++
+                    ) {
+                        this.inputService.changeValidators(
+                            this.workExperienceForm.get(
+                                workExperienceInputsToValidate[i]
+                            )
+                        );
+                    }
                 }
             });
     }
@@ -1703,6 +1726,46 @@ export class Step2FormComponent
         }
 
         this.isEditingClassOfEquipmentEmitter.emit(false);
+    }
+
+    public onGetBtnClickValue(
+        event: any,
+        classOfEquipmentBtn?: boolean,
+        type?: number
+    ): void {
+        if (classOfEquipmentBtn) {
+            if (type === 1) {
+                this.onAddClassOfEquipment();
+            }
+
+            if (type === 2) {
+                this.onCancelEditClassOfEquipment();
+            }
+
+            if (type === 3) {
+                this.onSaveEditedClassOfEquipment();
+            }
+        } else {
+            if (event.notDisabledClick) {
+                this.onAddSecondOrLastEmployer();
+            }
+
+            if (event.cancelClick) {
+                this.onCancelEditWorkExperience();
+            }
+
+            if (event.saveClick) {
+                this.onSaveEditedWorkExperience();
+            }
+
+            if (event.reviewCancelClick) {
+                this.onCancelReviewWorkExperience();
+            }
+
+            if (event.reviewSaveClick) {
+                this.onAddAnnotation();
+            }
+        }
     }
 
     public getDropdownLists(): void {

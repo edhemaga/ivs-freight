@@ -106,16 +106,10 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Parking successfully deleted',
-                        'Success:'
-                    );
+                
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Parking with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                 
                 },
             });
     }

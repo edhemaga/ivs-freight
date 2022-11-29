@@ -458,10 +458,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                     };
                                 },
                                 error: () => {
-                                    this.notificationService.error(
-                                        `Cant' get repair shop by ${this.selectedRepairShop.id}`,
-                                        'Error'
-                                    );
+                                    
                                 },
                             });
                     }
@@ -578,9 +575,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.labelsRepairShop = [...res.repairShops];
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Repair Dropdowns can't be loaded"
-                    );
+                   
                 },
             });
     }
@@ -600,10 +595,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         }
         if (action.title === 'Add New') {
             if (!this.editData?.id && !this.selectedUnit?.id) {
-                this.notificationService.warning(
-                    'Please select first reapir unit!',
-                    'Warning'
-                );
+               
                 return;
             }
             this.ngbActiveModal.close();
@@ -709,16 +701,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Repair successfully created.',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Repair can't be created.",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -805,16 +791,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Repair successfully updated.',
-                        'Success'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Repair can't be updated.",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -828,16 +808,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Repair successfully deleted.',
-                        'Success'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Repair can't be deleted.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -982,10 +956,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                     };
                                 },
                                 error: () => {
-                                    this.notificationService.error(
-                                        `Cant' get repair shop by ${this.selectedRepairShop.id}`,
-                                        'Error'
-                                    );
+                                   
                                 },
                             });
                     }
@@ -1054,10 +1025,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Repair can't be loaded.",
-                        'Error'
-                    );
+                    
                 },
             });
     }

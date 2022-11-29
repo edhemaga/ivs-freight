@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     AfterViewInit,
     Component,
@@ -237,8 +239,12 @@ export class Step6FormComponent
         this.subscription = this.contactForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((updatedFormValues) => {
-                const { id, isEditingContact, ...previousFormValues } =
-                    this.formValuesToPatch;
+                const {
+                    id,
+                    isEditingContact,
+                    emergencyContactReview,
+                    ...previousFormValues
+                } = this.formValuesToPatch;
 
                 const { firstRowReview, ...newFormValues } = updatedFormValues;
 
@@ -316,6 +322,28 @@ export class Step6FormComponent
         this.formService.resetForm(this.contactForm);
 
         this.subscription.unsubscribe();
+    }
+
+    public onGetBtnClickValue(event: any): void {
+        if (event.notDisabledClick) {
+            this.onAddContact();
+        }
+
+        if (event.cancelClick) {
+            this.onCancelEditContact();
+        }
+
+        if (event.saveClick) {
+            this.onSaveEditedContact();
+        }
+
+        if (event.reviewCancelClick) {
+            this.onCancelReviewContact();
+        }
+
+        if (event.reviewSaveClick) {
+            this.onAddAnnotation();
+        }
     }
 
     public incorrectInput(

@@ -58,8 +58,8 @@ export class FuelResolver implements Resolve<FuelState> {
                     'fuelTableCount',
                     JSON.stringify({
                         fuelTransactions:
-                            data.fuelTransactions.pagination.count,
-                        fuelStops: data.fuelStops.pagination.count,
+                            data.fuelTransactions.fuelTransactionCount,
+                        fuelStops: data.fuelStops.fuelStopCount,
                     })
                 );
 

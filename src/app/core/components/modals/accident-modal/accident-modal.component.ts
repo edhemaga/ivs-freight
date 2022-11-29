@@ -337,7 +337,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     // ]
                 },
                 error: (err: any) => {
-                    this.notificationService.error('Error', err);
+                  
                 },
             });
     }
@@ -362,7 +362,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     this.labelsInsuranceType = res.insuranceType;
                 },
                 error: (err: any) => {
-                    this.notificationService.error('Error', err);
+               
                 },
             });
     }

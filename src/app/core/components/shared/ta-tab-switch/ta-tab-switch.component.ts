@@ -53,8 +53,8 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     ];
 
     hoverStyle: any = {
-        width: '54px',
-        x: '2px',
+        width: '0px',
+        x: '0px',
     };
 
     indexSwitch: number = 0;
@@ -93,17 +93,14 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
         if (changes.tabs) {
             setTimeout(() => {
                 this.setSwitchActive(changes.tabs.currentValue);
-            }, 0);
+            }, 450);
         }
     }
 
-    ngAfterViewInit() {
-        setTimeout(() => {
-            this.setSwitchActive(this.tabs);
-        }, 350);
-    }
+    ngAfterViewInit() {}
 
     public setSwitchActive(tabs) {
+        console.log('JHJJJJ');
         const selectedIndex = tabs.findIndex((item) => item.checked);
 
         this.indexSwitch = selectedIndex == -1 ? 0 : selectedIndex;

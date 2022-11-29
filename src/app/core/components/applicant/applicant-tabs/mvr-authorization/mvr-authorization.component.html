@@ -31,16 +31,10 @@
                 >
                     <!-- CHECKBOXES -->
 
-                    <div
-                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    >
+                    <div class="d-flex checkbox-container">
                         <app-ta-checkbox
                             formControlName="isConsentRelease"
                             [name]="'isConsentRelease'"
-                            [label]="
-                                '1. Certifies that the undersigned is an employee, or has applied to become an employee of the below named'
-                            "
-                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
                                 selectedMode === 'REVIEW_MODE' ||
                                 selectedMode === 'FEEDBACK_MODE'
@@ -51,11 +45,6 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color: mvrAuthorizationForm.get(
-                                    'isConsentRelease'
-                                ).value
-                                    ? '#3c3c3c'
-                                    : '#6c6c6c',
                                 cursor:
                                     selectedMode === 'REVIEW_MODE' ||
                                     selectedMode === 'FEEDBACK_MODE'
@@ -66,6 +55,8 @@
                                 handleCheckboxParagraphClick('isConsentRelease')
                             "
                         >
+                            1. Certifies that the undersigned is an employee, or
+                            has applied to become an employee of the below named
                             in a position which involves the operation of a
                             motor vehicle and the undersigned gives his or her
                             consent to the release of their driving record (MVR)
@@ -73,16 +64,10 @@
                         </p>
                     </div>
 
-                    <div
-                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    >
+                    <div class="d-flex checkbox-container">
                         <app-ta-checkbox
                             formControlName="isPeriodicallyObtained"
                             [name]="'isPeriodicallyObtained'"
-                            [label]="
-                                '2. That the undersigned authorizes his or her driving record to be periodically obtained and reviewed for the'
-                            "
-                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
                                 selectedMode === 'REVIEW_MODE' ||
                                 selectedMode === 'FEEDBACK_MODE'
@@ -93,11 +78,6 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color: mvrAuthorizationForm.get(
-                                    'isPeriodicallyObtained'
-                                ).value
-                                    ? '#3c3c3c'
-                                    : '#6c6c6c',
                                 cursor:
                                     selectedMode === 'REVIEW_MODE' ||
                                     selectedMode === 'FEEDBACK_MODE'
@@ -110,20 +90,17 @@
                                 )
                             "
                         >
-                            purpose of initial and continued employment.
+                            2. That the undersigned authorizes his or her
+                            driving record to be periodically obtained and
+                            reviewed for the purpose of initial and continued
+                            employment.
                         </p>
                     </div>
 
-                    <div
-                        class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
-                    >
+                    <div class="d-flex checkbox-container">
                         <app-ta-checkbox
                             formControlName="isInformationCorrect"
                             [name]="'isInformationCorrect'"
-                            [label]="
-                                '3. That all information presented in this form is true and correct. The undersigned makes this certification and'
-                            "
-                            [customClass]="'disclosure-release'"
                             [disabledStillCheckMark]="
                                 selectedMode === 'REVIEW_MODE' ||
                                 selectedMode === 'FEEDBACK_MODE'
@@ -134,11 +111,6 @@
                         <p
                             class="m-0 text-center ta-font-regular"
                             [ngStyle]="{
-                                color: mvrAuthorizationForm.get(
-                                    'isInformationCorrect'
-                                ).value
-                                    ? '#3c3c3c'
-                                    : '#6c6c6c',
                                 cursor:
                                     selectedMode === 'REVIEW_MODE' ||
                                     selectedMode === 'FEEDBACK_MODE'
@@ -151,9 +123,12 @@
                                 )
                             "
                         >
-                            affirmation under penalty of perjury and understands
-                            that knowingly making a false statement or
-                            representation on this form is a criminal violation.
+                            3. That all information presented in this form is
+                            true and correct. The undersigned makes this
+                            certification and affirmation under penalty of
+                            perjury and understands that knowingly making a
+                            false statement or representation on this form is a
+                            criminal violation.
                         </p>
                     </div>
 

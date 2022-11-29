@@ -286,10 +286,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    this.notificationService.success(
-                        'Successfuly add new bank',
-                        'Success'
-                    );
+                    
                     this.selectedBank = {
                         id: res.id,
                         name: this.selectedBank.name,
@@ -297,10 +294,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add new bank",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -367,10 +361,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Repair shop can't be loaded",
-                        'Error: '
-                    );
+                   
                 },
             });
     }
@@ -420,10 +411,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Repair shop added',
-                        'Success: '
-                    );
+                    
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -447,10 +435,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Repair shop can't be added",
-                        'Error: '
-                    );
+                    
                 },
             });
     }
@@ -502,16 +487,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Repair shop successfully updated',
-                        'Success: '
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Repair shop can't be updated",
-                        'Error: '
-                    );
+                    
                 },
             });
     }
@@ -522,16 +501,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Repair shop successfully deleted',
-                        'Success: '
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Repair shop can't be deleted",
-                        'Error: '
-                    );
+                    
                 },
             });
     }
@@ -554,10 +527,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Repair shop can't get dropdowns",
-                        'Error: '
-                    );
+                 
                 },
             });
     }

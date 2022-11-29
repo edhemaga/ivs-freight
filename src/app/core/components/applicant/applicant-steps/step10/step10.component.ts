@@ -33,6 +33,8 @@ export class Step10Component implements OnInit, OnDestroy {
 
     public applicantId: number;
 
+    public companyName: string;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -64,6 +66,8 @@ export class Step10Component implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
                 this.applicantId = res.id;
+
+                this.companyName = res.companyInfo.name;
 
                 if (res.disclosureRelease) {
                     this.patchStepValues(res.disclosureRelease);
