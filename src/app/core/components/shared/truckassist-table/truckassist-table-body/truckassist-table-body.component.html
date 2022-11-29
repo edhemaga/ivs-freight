@@ -3728,12 +3728,10 @@
                                 <!-- Attachments -->
                                 <div class="attacment-container">
                                     <app-ta-upload-files
-                                        [customClassName]="
-                                            'todo-details'
-                                        "
+                                        [customClassName]="'todo-details'"
                                         [files]="
-                                        row.files
-                                                ? row.files
+                                            row?.tableAttachments
+                                                ? row.tableAttachments
                                                 : []
                                         "
                                         [size]="'extraLarge'"

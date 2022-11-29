@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "truckassist-fe": {
+    "carrierassist-fe": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/truckassist-fe",
+            "outputPath": "dist/carrierassist-fe",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -91,10 +91,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "truckassist-fe:build:production"
+              "browserTarget": "carrierassist-fe:build:production"
             },
             "development": {
-              "browserTarget": "truckassist-fe:build:development"
+              "browserTarget": "carrierassist-fe:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -102,7 +102,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "truckassist-fe:build"
+            "browserTarget": "carrierassist-fe:build"
           }
         },
         "test": {
@@ -133,7 +133,7 @@
       }
     }
   },
-  "defaultProject": "truckassist-fe",
+  "defaultProject": "carrierassist-fe",
   "cli": {
     "analytics": false
   }

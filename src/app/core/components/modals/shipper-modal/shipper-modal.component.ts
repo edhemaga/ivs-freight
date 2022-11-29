@@ -183,21 +183,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                     name: 'dnu',
                                     status: this.shipperDnuStatus,
                                 });
-                                this.notificationService.success(
-                                    `Shipper ${
-                                        this.shipperDnuStatus
-                                            ? 'status changed to DNU'
-                                            : 'removed from DNU'
-                                    }.`,
-                                    'Success:'
-                                );
+                               
                             }
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Shipper status can't be changed.",
-                                'Success:'
-                            );
+                           
                         },
                     });
             }
@@ -215,21 +205,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                     name: 'bfb',
                                     status: this.shipperBanStatus,
                                 });
-                                this.notificationService.success(
-                                    `Shipper ${
-                                        this.shipperBanStatus
-                                            ? 'status changed to BAN'
-                                            : 'removed from BAN'
-                                    } .`,
-                                    'Success:'
-                                );
+                               
                             }
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Shipper status can't be changed.",
-                                'Success:'
-                            );
+                         
                         },
                     });
             }
@@ -421,16 +401,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     .subscribe({
                         next: () => {
                             this.editShipperById(this.editData.id);
-                            this.notificationService.success(
-                                'Rating successfully updated.',
-                                'Success:'
-                            );
+                         
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Rating can't be updated.",
-                                'Error:'
-                            );
+                         
                         },
                     });
             });
@@ -458,16 +432,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         return item;
                     });
                     this.disableOneMoreReview = true;
-                    this.notificationService.success(
-                        'Review successfully created.',
-                        'Success:'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Review can't be created.",
-                        'Error:'
-                    );
+                
                 },
             });
     }
@@ -480,16 +448,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Review successfully deleted.',
-                        'Success:'
-                    );
+                 
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Review can't be deleted.",
-                        'Error:'
-                    );
+            
                 },
             });
     }
@@ -506,16 +468,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Review successfully updated.',
-                        'Success:'
-                    );
+                 
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Review can't be updated.",
-                        'Error:'
-                    );
+                 
                 },
             });
     }
@@ -564,16 +520,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Shipper "${shipperBuisnisName}" added`,
-                        'Success'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Failed to add Shipper "${shipperBuisnisName}"`,
-                        'Error'
-                    );
+                  
                 },
             });
     }
@@ -624,16 +574,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Shipper successfully updated.',
-                        'Error:'
-                    );
+              
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Shipper can't be updated.",
-                        'Error:'
-                    );
+              
                 },
             });
     }
@@ -644,16 +588,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Shipper successfully deleted.',
-                        'Error:'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Shipper can't be deleted.",
-                        'Error:'
-                    );
+               
                 },
             });
     }
@@ -760,10 +698,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Shipper can't be loaded.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -777,10 +712,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     this.labelsDepartments = res.departments;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Shipper dropdowns can't be loaded.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }

@@ -109,17 +109,11 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                         this.trailerConf(res);
                         this.initTableOptions(res);
                         this.router.navigate([`/trailer/${res.id}/details`]);
-                        this.notificationService.success(
-                            'Trailer successfully changed',
-                            'Success:'
-                        );
+                       
                         this.cdRef.detectChanges();
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Trailer can't be loaded",
-                            'Error:'
-                        );
+                        
                     },
                 });
             });
@@ -300,10 +294,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                             }/details`,
                         ]);
                     }
-                    this.notificationService.success(
-                        'Trailer successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
                     this.router.navigate(['/trailer']);
@@ -317,16 +308,10 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Trailer successfully Change Status`,
-                        'Success:'
-                    );
+                 
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Trailer with id: ${id}, status couldn't be changed`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }

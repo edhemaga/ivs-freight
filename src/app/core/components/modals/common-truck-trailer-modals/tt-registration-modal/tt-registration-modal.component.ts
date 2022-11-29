@@ -174,16 +174,10 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Registration successfully updated.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Registartion can't be updated.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -217,16 +211,10 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Registration successfully added.',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Registration can't be added.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -252,10 +240,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     this.selectedStateType = res.state;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't get registration.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -275,10 +260,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't get registration dropdowns!",
-                        'Error'
-                    );
+                   
                 },
             });
     }

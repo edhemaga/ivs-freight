@@ -38,7 +38,7 @@ export class ShopResolver implements Resolve<ShopState> {
                     localStorage.setItem(
                         'repairShopTableCount',
                         JSON.stringify({
-                            repairShops: repairPagination.pagination.count,
+                            repairShops: repairPagination.repairShopCount,
                         })
                     );
 

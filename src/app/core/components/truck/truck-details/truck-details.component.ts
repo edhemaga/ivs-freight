@@ -111,17 +111,11 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             this.router.navigate([`/truck/${res.id}/details`]);
                         }
 
-                        this.notificationService.success(
-                            'Truck successfully changed',
-                            'Success:'
-                        );
+                      
                         this.cdRef.detectChanges();
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Truck can't be loaded",
-                            'Error:'
-                        );
+                       
                     },
                 });
             });
@@ -164,10 +158,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             }/details`,
                         ]);
                     }
-                    this.notificationService.success(
-                        'Truck successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
                     this.router.navigate(['/truck']);
@@ -181,16 +172,10 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Truck successfully Change Status`,
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Truck with id: ${id}, status couldn't be changed`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }
