@@ -95,6 +95,8 @@ export class TaReCardComponent implements OnInit {
     @Input() public shortName: string = '';
     @Input() public stateTooltipName: string = '';
     @Input() public cardSecondName: string = '';
+    @Input() public cardSecondResult: string = '';
+    @Input() public cardResult: boolean = false;
     @Output() public dropActions = new EventEmitter<any>();
     @Input() public weeklyWidth: string = '';
     @Input() public setPositionDrop: boolean;

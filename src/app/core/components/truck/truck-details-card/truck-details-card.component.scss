@@ -189,6 +189,16 @@ app-truck-details-card {
                 width: fit-content !important;
             }
         }
+
+        &.inactive-assignTo-item{
+            
+
+            .assignTo-value{
+                padding-left: 6px;
+                color: #B7B7B7;
+                cursor: auto ;
+            }
+        }
     }
     .details-header-model {
         svg {
