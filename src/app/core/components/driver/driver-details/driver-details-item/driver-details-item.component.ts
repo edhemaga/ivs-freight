@@ -499,16 +499,10 @@ export class DriverDetailsItemComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Cdl successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Cdl with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -519,16 +513,10 @@ export class DriverDetailsItemComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Medical successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Medical with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -539,16 +527,10 @@ export class DriverDetailsItemComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Mvr successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Mvr with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -559,16 +541,10 @@ export class DriverDetailsItemComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Test successfully deleted',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Test with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }

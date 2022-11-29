@@ -311,11 +311,6 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    this.notificationService.success(
-                        'Successfuly add new bank',
-                        'Success'
-                    );
-
                     this.selectedBank = {
                         id: res.id,
                         name: this.selectedBank.name,
@@ -325,13 +320,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                         ...this.banksDropdownList,
                         this.selectedBank,
                     ];
-                },
-                error: (err) => {
-                    this.notificationService.error(
-                        "Can't add new bank",
-                        'Error'
-                    );
-                },
+                }
             });
     }
 
@@ -377,13 +366,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                                 this.selectedTruckMake = res.truckMake;
                                 this.selectedtruckEngineModelId =
                                     res.engineModel;
-                            },
-                            error: () => {
-                                this.notificationService.error(
-                                    `Can't get data for that ${value} VIN.`,
-                                    'Error:'
-                                );
-                            },
+                            }
                         });
                 }
             });
@@ -424,13 +407,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                                 this.loadingTrailerVinDecoder = false;
 
                                 this.selectedTrailerMake = res.trailerMake;
-                            },
-                            error: () => {
-                                this.notificationService.error(
-                                    `Can't get data for that ${value} VIN.`,
-                                    'Error:'
-                                );
-                            },
+                            }
                         });
                 }
             });

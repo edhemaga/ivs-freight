@@ -90,17 +90,10 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                         this.router.navigate([
                             `/customer/${res.id}/shipper-details`,
                         ]);
-                        this.notificationService.success(
-                            'Shipper successfully changed',
-                            'Success:'
-                        );
                         this.cdRef.detectChanges();
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Shipper can't be loaded",
-                            'Error:'
-                        );
+
                     },
                 });
             });
@@ -204,10 +197,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                             }/shipper-details`,
                         ]);
                     }
-                    this.notificationService.success(
-                        'Shipper successfully deleted',
-                        'Success:'
-                    );
                 },
                 error: () => {
                     this.router.navigate(['/customer']);

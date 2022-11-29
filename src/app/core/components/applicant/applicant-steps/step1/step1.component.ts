@@ -1074,11 +1074,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    this.notificationService.success(
-                        'Successfuly add new bank',
-                        'Success'
-                    );
-
                     this.selectedBank = {
                         id: res.id,
                         name: this.selectedBank.name,
@@ -1088,13 +1083,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         ...this.banksDropdownList,
                         this.selectedBank,
                     ];
-                },
-                error: (err) => {
-                    this.notificationService.error(
-                        "Can't add new bank",
-                        'Error'
-                    );
-                },
+                }
             });
     }
 

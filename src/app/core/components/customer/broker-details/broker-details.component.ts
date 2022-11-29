@@ -104,17 +104,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                         this.router.navigate([
                             `/customer/${res.id}/broker-details`,
                         ]);
-                        this.notificationService.success(
-                            'Broker successfully changed',
-                            'Success:'
-                        );
-                    },
-                    error: () => {
-                        this.notificationService.error(
-                            "Broker can't be loaded",
-                            'Error:'
-                        );
-                    },
+                    }
                 });
             });
         this.brokerInitConfig(this.activated_route.snapshot.data.broker);
@@ -142,14 +132,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                             }/broker-details`,
                         ]);
                     }
-                    this.notificationService.success(
-                        'Broker successfully deleted',
-                        'Success:'
-                    );
-                },
-                error: () => {
-                    this.router.navigate(['/customer']);
-                },
+                }
             });
     }
 
@@ -388,16 +371,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Broker successfully change status`,
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `You can not move broker whit id: ${id}, to ban list`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -407,16 +384,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Broker successfully change status`,
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `You can not move broker whit id: ${id}, to ban list`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }

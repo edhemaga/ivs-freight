@@ -375,10 +375,7 @@ export class SettingsInsurancePolicyModalComponent
                     this.ratings = res.ratings;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load Insurance Policy dropdowns",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -583,16 +580,10 @@ export class SettingsInsurancePolicyModalComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully added insurance policy',
-                        'Success'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add insurance policy",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -802,16 +793,10 @@ export class SettingsInsurancePolicyModalComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully updated insurance policy',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update insurance policy",
-                        'Error'
-                    );
+                  
                 },
             });
     }
@@ -822,16 +807,10 @@ export class SettingsInsurancePolicyModalComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully deleted insurance policy',
-                        'Success'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't delete insurance policy",
-                        'Error'
-                    );
+                   
                 },
             });
     }

@@ -686,7 +686,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         : null,
                 },
             ],
-            tableAttachments: data?.files ? data.files : []
+            tableAttachments: data?.files ? data.files : [],
         };
     }
 
@@ -1069,16 +1069,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Driver successfully Change Status`,
-                        'Success:'
-                    );
+                 
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Driver with id: ${id}, status couldn't be changed`,
-                        'Error:'
-                    );
+                  
                 },
             });
     }
@@ -1089,11 +1083,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Driver successfully deleted',
-                        'Success:'
-                    );
-
                     this.viewData = this.viewData.map((driver: any) => {
                         if (driver.id === id) {
                             driver.actionAnimation = 'delete';
@@ -1114,10 +1103,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }, 900);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Driver with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                  
                 },
             });
     }

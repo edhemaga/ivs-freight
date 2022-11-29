@@ -219,10 +219,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Cdl's dropdowns can't be loaded.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -236,10 +233,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                     this.modalName = res.firstName.concat(' ', res.lastName);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Driver can't be loaded.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -337,7 +331,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                     this.selectedStateType = res.state;
                 },
                 error: () => {
-                    this.notificationService.error("Can't get CDL", 'Error:');
+                
                 },
             });
     }
@@ -371,16 +365,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'CDL successfully updated.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "CDL can't be updated.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -414,16 +402,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: () => {
-                        this.notificationService.success(
-                            'Succesfully.',
-                            'Success'
-                        );
+                        
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Can't execute this operation.",
-                            'Error'
-                        );
+                       
                     },
                 });
         } else {
@@ -432,16 +414,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: () => {
-                        this.notificationService.success(
-                            'CDL successfully added.',
-                            'Success:'
-                        );
+                       
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "CDL can't be added.",
-                            'Error:'
-                        );
+                      
                     },
                 });
         }

@@ -1017,16 +1017,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             .pipe(takeUntil(this.destroy$))
                             .subscribe({
                                 next: () => {
-                                    this.notificationService.success(
-                                        'Successfuly updated route.',
-                                        'Success'
-                                    );
+                                 
                                 },
                                 error: () => {
-                                    this.notificationService.error(
-                                        "Can't update route.",
-                                        'Error'
-                                    );
+                                  
                                 },
                             });
                     }
@@ -1275,16 +1269,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
-                            this.notificationService.success(
-                                'Successfuly updated route.',
-                                'Success'
-                            );
+                           
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Can't update route.",
-                                'Error'
-                            );
+                           
                         },
                     });
             } else {
@@ -1619,24 +1607,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             .pipe(takeUntil(this.destroy$))
                             .subscribe({
                                 next: () => {
-                                    this.notificationService.success(
-                                        'Successfuly updated route.',
-                                        'Success'
-                                    );
+                                    
                                 },
                                 error: () => {
-                                    this.notificationService.error(
-                                        "Can't update route.",
-                                        'Error'
-                                    );
+                                    
                                 },
                             });
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Can't add route.",
-                            'Error'
-                        );
+                       
                     },
                 });
 
@@ -1742,16 +1721,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: () => {
-                        this.notificationService.success(
-                            'Successfuly updated route.',
-                            'Success'
-                        );
+                        
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Can't update route.",
-                            'Error'
-                        );
+                        
                     },
                 });
 
@@ -3092,16 +3065,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
-                            this.notificationService.success(
-                                'Successfuly updated route.',
-                                'Success'
-                            );
+                          
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Can't update route.",
-                                'Error'
-                            );
+                        
                         },
                     });
             });
