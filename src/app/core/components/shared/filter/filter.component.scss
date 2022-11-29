@@ -1465,10 +1465,11 @@
         .main-part-holder{
             position: relative;
             width: 100%;
-            overflow: hidden;
+         
             .area-forms-holder{
                 .area-single-form-holder{
                     padding: 16px 0px 10px 0px;
+                    overflow: hidden;
                 }
             }
         }
@@ -1481,11 +1482,12 @@
 
         &.location-middle-padding {
             padding-top: 16px;
+            overflow: hidden !important;
         }
 
         &.location-slider-middle-padding {
             padding-top: 12px;
-
+            overflow: hidden !important;
             .ta-ngx-slider,
             .custom-slider-commission {
                 margin-bottom: 7px !important;
