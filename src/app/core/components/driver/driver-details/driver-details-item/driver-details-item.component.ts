@@ -225,7 +225,8 @@ export class DriverDetailsItemComponent
                 {
                     title: 'Edit',
                     name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',                  
+                    iconName: "edit",
                     show: true,
                 },
                 {
@@ -235,12 +236,14 @@ export class DriverDetailsItemComponent
                     title: 'View Details',
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: "view-details",
                     show: true,
                 },
                 {
                     title: 'Renew',
                     name: 'renew',
                     svg: 'assets/svg/common/ic_reload_renew.svg',
+                    iconName: "renew",
                     disabled: this.arrayOfRenewCdl[this.currentIndex],
                 },
                 {
@@ -250,12 +253,14 @@ export class DriverDetailsItemComponent
                     title: 'Share',
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
+                    iconName: 'share',
                     show: true,
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
+                    iconName: 'print',
                     show: true,
                 },
                 {
@@ -267,6 +272,10 @@ export class DriverDetailsItemComponent
                             ? 'Activate'
                             : 'Void',
                     name:
+                        this.activateShow[this.currentIndex] == true
+                            ? 'activate-item'
+                            : 'deactivate-item',
+                    iconName:
                         this.activateShow[this.currentIndex] == true
                             ? 'activate-item'
                             : 'deactivate-item',
@@ -294,6 +303,7 @@ export class DriverDetailsItemComponent
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
+                    iconName: 'delete',
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -319,6 +329,7 @@ export class DriverDetailsItemComponent
                     title: 'Edit',
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    iconName: 'edit',
                     show: true,
                 },
                 {
@@ -328,6 +339,7 @@ export class DriverDetailsItemComponent
                     title: 'View Details',
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: 'view-details',
                     show: true,
                 },
                 {
@@ -337,12 +349,14 @@ export class DriverDetailsItemComponent
                     title: 'Share',
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
+                    iconName: 'share',
                     show: true,
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
+                    iconName: 'print',
                     show: true,
                 },
                 {
@@ -354,6 +368,7 @@ export class DriverDetailsItemComponent
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
+                    iconName: 'delete',
                     danger: true,
                     show: true,
                     redIcon: true,

@@ -13,9 +13,14 @@ import {
     EventEmitter,
     Output,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+    FormBuilder,
+    FormGroup,
+} from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
-import { addressValidation } from '../ta-input/ta-input.regex-validations';
+import {
+    addressValidation,
+} from '../ta-input/ta-input.regex-validations';
 import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
 import {
@@ -155,6 +160,77 @@ import {
                     keyframes([
                         style({ opacity: 1, offset: 0 }),
                         style({ opacity: 0, offset: 1, height: '0px' }),
+                    ])
+                ),
+            ]),
+        ]),
+        trigger('showAnimation', [
+            state(
+                'true',
+                style({
+                    height: '*',
+                    overflow: 'auto',
+                    opacity: 1,
+                })
+            ),
+            state(
+                'false',
+                style({
+                    height: '10px',
+                    overflow: 'hidden',
+                    opacity: '0.5',
+                })
+            ),
+            state(
+                'null',
+                style({
+                    height: '0px',
+                    overflow: 'hidden',
+                })
+            ),
+            transition('false <=> true', [
+                animate('100ms cubic-bezier(0, 0, 0.60, 1.99)'),
+            ]),
+            transition('true <=> false', [animate('100ms ease')]),
+        ]),
+        trigger('areaRightSideAnimation', [
+            state('in', style({ width: '100%', 'position' : 'relative' })),
+            transition(':enter', [
+                animate(
+                    200,
+                    keyframes([
+                        style({ width: '0%', right: '0px', overflow: 'hidden', }),
+                        style({ width: '100%', right: '0px', overflow: 'hidden' }),
+                    ])
+                ),
+            ]),
+            transition(':leave', [
+                animate(
+                    200,
+                    keyframes([
+                        style({ width: '100%', right: '0px', overflow: 'hidden' }),
+                        style({ width: '0%', right: '0px', overflow: 'hidden',}),
+                    ])
+                ),
+            ]),
+        ]),
+        trigger('areaLeftSideAnimation', [
+            state('in', style({ width: '100%', 'position' : 'relative' })),
+            transition(':enter', [
+                animate(
+                    200,
+                    keyframes([
+                        style({ width: '0%', 'position' : 'relative', left: '0px', overflow: 'hidden', }),
+                        style({ width: '100%', left: '0px', overflow: 'hidden' }),
+                    ])
+                ),
+            ]),
+            transition(':leave', [
+                animate(
+                    200,
+                    keyframes([
+                        style({ width: '100%', left: '0px', overflow: 'hidden' }),
+                        style({ width: '0%', left: '0px', overflow: 'hidden', }),
                     ])
                 ),
             ]),
@@ -1114,11 +1190,14 @@ export class FilterComponent implements OnInit, AfterViewInit {
     public payForm!: FormGroup;
     public sliderForm!: FormGroup;
     public rangeForm!: FormGroup;
+    public areaForm!: FormGroup; 
 
     rangeValue: any = 0;
     usaSelectedStates: any[] = [];
     canadaSelectedStates: any[] = [];
     locationState: any = '';
+    originState: any = '';
+    destinationState: any = '';
     singleFormError: any = '';
     multiFormFirstError: any = '';
     multiFormSecondError: any = '';
@@ -1140,6 +1219,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     multiFormThirdToActive: any = 0;
     locationRange: any = 50;
     hoverClose: any = false;
+    areaFilterSelected: any = 'Location';
 
     public sliderData: Options = {
         floor: 0,
@@ -1194,8 +1274,21 @@ export class FilterComponent implements OnInit, AfterViewInit {
     longVal: any = 0;
     latVal: any = 0;
 
+    originLongVal: any = 0;
+    originLatVal: any = 0;
+
+    destLongVal: any = 0;
+    destLatVal: any = 0;
+
     longValueSet: any = 0;
     latValSet: any = 0;
+
+    originLongValSet: any = 0;    
+    originLatValSet: any = 0; 
+    
+    destLongValSet: any = 0;
+    destLatValSet: any = 0;
+
     locationRangeSet: any = 50;
     loactionNameSet: any = '';
 
@@ -1204,6 +1297,18 @@ export class FilterComponent implements OnInit, AfterViewInit {
     last2Years: any = '';
     totalFiltersNum: any = 0;
     singleFormActive: any = false;
+    sideAnimation: any = false;
+
+    areBoxTab: any[] = [
+        {
+            id: 1,
+            name: 'Location',
+        },
+        {
+            id: 2,
+            name: 'Route',
+        }
+    ];
 
     @Input() type: string = 'userFilter';
     @Input() icon: string = 'user';
@@ -1221,10 +1326,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
     @Input() legendView: boolean = false;
     @Input() toDoSubType: string = '';
     @Input() dataArray: any;
+    @Input() areaFilter: boolean = false;
 
     @Output() setFilter = new EventEmitter<any>();
 
     resizeObserver: ResizeObserver;
+
+    isAnimated: any = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -1276,6 +1384,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
             address: [null, [...addressValidation]],
         });
 
+        this.areaForm = this.formBuilder.group({
+            origin: [null, [...addressValidation]],
+            destination: [null, [...addressValidation]],
+        });
+
         this.payForm = this.formBuilder.group({
             payFrom: '',
             payTo: '',
@@ -1288,6 +1401,19 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     this.locationState = '';
                 }
             });
+
+        this.areaForm.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((changes) => {
+              
+                if (changes.origin == null) {
+                    this.originState = '';
+                }
+
+                if ( changes.destination == null ) {
+                    this.destinationState = '';
+                }
+            });    
 
         this.rangeForm.valueChanges
             .pipe(takeUntil(this.destroy$))
@@ -2002,14 +2128,26 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     this.locationForm.setValue({
                         address: '',
                     });
+                    this.areaForm.setValue({
+                        origin: '',
+                       destination: '',
+                    });
                     this.locationRange = 50;
                     this.locationState = '';
                     this.longVal = 0;
                     this.latVal = 0;
+                    this.originLongVal = 0;
+                    this.originLatVal = 0;
+                    this.destLongVal = 0;
+                    this.destLatVal = 0;
                     this.loactionNameSet = '';
 
                     this.longValueSet = this.longVal;
                     this.latValSet = this.latVal;
+                    this.originLongValSet = this.originLongVal;
+                    this.originLatValSet = this.originLatVal;
+                    this.destLatValSet = this.destLongVal;
+                    this.destLongValSet = this.destLongVal;
                     this.locationRangeSet = this.locationRange;
                     break;
                 case 'moneyFilter':
@@ -2129,6 +2267,31 @@ export class FilterComponent implements OnInit, AfterViewInit {
         if (e?.longLat) {
             this.longVal = e?.longLat?.longitude;
             this.latVal = e?.longLat?.latitude;
+        }
+    }
+
+    handleOriginSelect(e) {
+        if (e?.address?.address) {
+            this.originState = e.address.address;
+        }
+       
+        if (e?.longLat && e?.longLat?.latitude ) {
+            this.originLongVal = e?.longLat?.longitude;
+            this.originLatVal = e?.longLat?.latitude;
+        }
+       
+     
+    }
+
+    handleDestinationSelect(e){
+        if (e?.address?.address) {
+            this.destinationState = e.address.address;
+        }
+
+        
+        if (e?.longLat && e?.longLat?.latitude ) {
+            this.destLongVal = e?.longLat?.longitude;
+            this.destLatVal = e?.longLat?.latitude;
         }
     }
 
@@ -2296,16 +2459,34 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
                 this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
             } else if (this.type == 'locationFilter') {
-                queryParams = {
-                    longValue: this.longVal,
-                    latValue: this.latVal,
-                    rangeValue: this.locationRange,
-                };
+                
+                if ( this.areaFilterSelected != 'Location' ){
+                    queryParams = {
+                        originLatValue: this.originLatVal,
+                        originLongValue: this.originLongVal,
+                        destinationLatValue: this.destLatVal,
+                        destinationLongValue: this.destLongVal,
+                    }
 
-                this.longValueSet = this.longVal;
-                this.latValSet = this.latVal;
-                this.locationRangeSet = this.locationRange;
-                this.loactionNameSet = this.locationForm.get('address')?.value;
+                    this.originLatValSet = this.originLatVal;
+                    this.originLongValSet = this.originLongVal;
+                    this.destLongValSet = this.destLongVal;
+                    this.destLatValSet = this.destLatVal;
+
+                } else {
+                    queryParams = {
+                        longValue: this.longVal,
+                        latValue: this.latVal,
+                        rangeValue: this.locationRange,
+                    };
+    
+                    this.longValueSet = this.longVal;
+                    this.latValSet = this.latVal;
+                    this.locationRangeSet = this.locationRange;
+                    this.loactionNameSet = this.locationForm.get('address')?.value;
+                }
+                
+                
             } else {
                 this.filterActiveArray = [...this.selectedUser];
                 let selectedUsersIdArray: any = [];
@@ -2382,6 +2563,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 queryParams: queryParams,
                 subType: subType,
             };
+
+            console.log('--data--', data)
 
             if (this.setFilter) {
                 this.setFilter.emit(data);
@@ -2579,7 +2762,34 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     onFilterClose() {
+        if (!this.activeFilter) {
+            return false;
+        }
+
+        if (this.isAnimated) {
+            this.isAnimated = true;
+            this.cdRef.detectChanges();
+            this.autoClose.tooltip.open();
+        }
+
         this.activeFilter = false;
+
+        let mainElementHolder;
+
+        if (this.type == 'timeFilter') {
+            mainElementHolder = document.querySelector('.time-filter-holder');
+        } else {
+            mainElementHolder = document.querySelector('.filter-holder');
+        }
+
+        mainElementHolder?.classList.add('closeFilterAnimation');
+
+        setTimeout(() => {
+            this.isAnimated = false;
+            this.autoClose.tooltip.close();
+            mainElementHolder?.classList.remove('closeFilterAnimation');
+        }, 190);
+
         if (this.defFilterHolder && this.type != 'stateFilter') {
             let mainArray: any[] = [];
             switch (this.type) {
@@ -2715,6 +2925,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     onFilterShown() {
         this.activeFilter = true;
+        this.isAnimated = true;
         let filterSearchHead = document.querySelector('.search-input-header');
         let filterTextHead = document.querySelector('.filter-text-part');
         filterSearchHead?.classList.remove('activeSearch');
@@ -2722,5 +2933,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
         filterTextHead?.classList.remove('activeHeader');
         filterTextHead?.classList.remove('inactiveHeader');
+    }
+
+    public onTabChange(event: any, type: string): void {
+       //console.log('event', event.name);
+       this.sideAnimation = true;
+       this.areaFilterSelected = event.name;
     }
 }
