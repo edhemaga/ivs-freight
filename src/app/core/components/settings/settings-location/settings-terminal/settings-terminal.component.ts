@@ -94,16 +94,10 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Terminal successfully deleted',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Terminal with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }

@@ -163,10 +163,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     this.colors = res;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't get account color labels.",
-                        'Error:'
-                    );
+                
                 },
             });
     }
@@ -190,10 +187,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     this.selectedAccountLabel = res.companyAccountLabel;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't get account.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -212,16 +206,12 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Company Account successfully created.',
-                        'Success:'
-                    );
+                   
                 },
-                error: () =>
-                    this.notificationService.error(
-                        "Company Account can't be created.",
-                        'Error:'
-                    ),
+                error: () =>{
+
+                }
+                   
             });
     }
 
@@ -240,16 +230,12 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Company Account successfully edit..',
-                        'Success:'
-                    );
+                   
                 },
-                error: () =>
-                    this.notificationService.error(
-                        "Company Account can't be edit.",
-                        'Error:'
-                    ),
+                error: () =>{
+
+                }
+                    
             });
     }
 
@@ -259,16 +245,12 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Company Account successfully deleted.',
-                        'Success:'
-                    );
+                    
                 },
-                error: () =>
-                    this.notificationService.error(
-                        "Company Account can't be deleted.",
-                        'Error:'
-                    ),
+                error: () => {
+                    
+                }
+                    
             });
     }
 
@@ -300,10 +282,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
-                            this.notificationService.success(
-                                'Successfuly updated label',
-                                'Success'
-                            );
+                           
 
                             this.accountService
                                 .companyAccountModal()
@@ -315,18 +294,12 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                                         this.accountLabels = res.labels;
                                     },
                                     error: () => {
-                                        this.notificationService.error(
-                                            "Can't get account label list.",
-                                            'Error'
-                                        );
+                                       
                                     },
                                 });
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Can't update exist label",
-                                'Error'
-                            );
+                           
                         },
                     });
                 break;
@@ -360,10 +333,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (res: CreateResponse) => {
-                            this.notificationService.success(
-                                'Successfully add account label.',
-                                'Success:'
-                            );
+                           
 
                             this.selectedAccountLabel = {
                                 ...this.selectedAccountLabel,
@@ -380,18 +350,12 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                                         this.accountLabels = res.labels;
                                     },
                                     error: () => {
-                                        this.notificationService.error(
-                                            "Can't get account label list.",
-                                            'Error'
-                                        );
+                                        
                                     },
                                 });
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Can't add account label.",
-                                'Error:'
-                            );
+                           
                         },
                     });
                 break;

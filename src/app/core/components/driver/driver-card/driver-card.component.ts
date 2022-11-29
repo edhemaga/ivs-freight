@@ -49,17 +49,11 @@ export class DriverCardComponent implements OnInit, OnDestroy {
                                     `/driver/${res.id}/details`,
                                 ]);
                             }
-                            this.notificationService.success(
-                                'Driver successfully changed',
-                                'Success:'
-                            );
+        
                             this.cdRef.detectChanges();
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Driver can't be loaded",
-                                'Error:'
-                            );
+                        
                         },
                     });
             });

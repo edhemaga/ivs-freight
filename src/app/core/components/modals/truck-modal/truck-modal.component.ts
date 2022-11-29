@@ -269,21 +269,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                     name: 'deactivate',
                                     status: this.truckStatus,
                                 });
-                                this.notificationService.success(
-                                    `Truck status changed to ${
-                                        this.truckStatus
-                                            ? 'deactivate'
-                                            : 'activate'
-                                    }.`,
-                                    'Success:'
-                                );
+                              
                             }
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Truck status can't be changed.",
-                                'Error:'
-                            );
+                            
                         },
                     });
             } else {
@@ -513,10 +503,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                 );
                             },
                             error: () => {
-                                this.notificationService.error(
-                                    `Can't get data for that ${value} VIN.`,
-                                    'Error:'
-                                );
+                               
                             },
                         });
                 }
@@ -566,10 +553,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Cant't get truck dropdown items.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -689,10 +673,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Cant't get truck.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -861,10 +842,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Truck successfully created.',
-                        'Success:'
-                    );
+                   
 
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
@@ -888,11 +866,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () =>
-                    this.notificationService.error(
-                        "Truck can't be created.",
-                        'Error:'
-                    ),
+                error: () => {}
             });
     }
 
@@ -986,16 +960,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Truck successfully updated.',
-                        'Success:'
-                    );
+                  
                 },
-                error: () =>
-                    this.notificationService.error(
-                        "Truck can't be updated.",
-                        'Error:'
-                    ),
+                error: () => {}
+                   
             });
     }
 
@@ -1005,16 +973,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Truck successfully deleted.',
-                        'Success:'
-                    );
+                   
                 },
-                error: () =>
-                    this.notificationService.error(
-                        "Truck can't be deleted.",
-                        'Error:'
-                    ),
+                error: () => {}
+                  
             });
     }
 

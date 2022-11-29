@@ -46,11 +46,6 @@ export class TaInputService {
                 }
             });
 
-            this.notificationService.warning(
-                'Warning:',
-                'Please fill all required fields.'
-            );
-
             return false;
         }
     }

@@ -259,16 +259,10 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Registration successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Registration with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -279,16 +273,10 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Inspection successfully deleted',
-                        'Success:'
-                    );
+                
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Inspection with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -298,16 +286,10 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Title successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Title with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }

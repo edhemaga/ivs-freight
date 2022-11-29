@@ -243,16 +243,10 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly updated company repair shop.',
-                        'Success'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update company repair shop.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -292,16 +286,10 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly added company repair shop.',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add company repair shop.",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -312,16 +300,10 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly deleted company repair shop.',
-                        'Success'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't delete company repair shop.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -373,10 +355,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load company repair shop.",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -400,10 +379,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load modal dropdowns.",
-                        'Error'
-                    );
+                   
                 },
             });
     }

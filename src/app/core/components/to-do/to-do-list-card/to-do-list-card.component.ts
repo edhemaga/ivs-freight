@@ -703,16 +703,10 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     this.scene.children[this.currentHoldIndex].children[
                         this.currentChildIndex
                     ].comments.unshift(this.comments[0]);
-                    this.notificationService.success(
-                        'Comment successfully created.',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Comment can't be created.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }

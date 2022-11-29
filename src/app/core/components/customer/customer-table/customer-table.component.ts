@@ -195,11 +195,6 @@ export class CustomerTableComponent
                                     });
                                 });
 
-                                this.notificationService.success(
-                                    `${brokerText} "${brokerName}" deleted`,
-                                    'Success'
-                                );
-
                                 this.multipleDeleteData(response);
                             });
                     }
@@ -227,11 +222,6 @@ export class CustomerTableComponent
                             .deleteShipperList(response)
                             .pipe(takeUntil(this.destroy$))
                             .subscribe(() => {
-                                this.notificationService.success(
-                                    `${shipText} "${shipperName}" deleted `,
-                                    'Success'
-                                );
-
                                 this.multipleDeleteData(response);
                             });
                     }
@@ -669,18 +659,9 @@ export class CustomerTableComponent
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
-                            this.notificationService.success(
-                                `Broker "${businessName}" deleted`,
-                                'Success'
-                            );
-
                             this.deleteDataById(event.id);
                         },
                         error: () => {
-                            this.notificationService.error(
-                                `Failed to delete Broker "${businessName}" `,
-                                'Error'
-                            );
                         },
                     });
             }
@@ -693,18 +674,9 @@ export class CustomerTableComponent
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
-                            this.notificationService.success(
-                                `Shipper "${businessName}" deleted`,
-                                'Success'
-                            );
-
                             this.deleteDataById(event.id);
                         },
                         error: () => {
-                            this.notificationService.error(
-                                `Failed to delete Shipper "${businessName}" `,
-                                'Error'
-                            );
                         },
                     });
             }

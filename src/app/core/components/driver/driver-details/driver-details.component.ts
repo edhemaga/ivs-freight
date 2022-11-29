@@ -151,17 +151,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         if (this.router.url.includes('details')) {
                             this.router.navigate([`/driver/${res.id}/details`]);
                         }
-                        this.notificationService.success(
-                            'Driver successfully changed',
-                            'Success:'
-                        );
+         
                         this.cdRef.detectChanges();
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Driver can't be loaded",
-                            'Error:'
-                        );
+                     
                     },
                 });
             });
@@ -421,16 +415,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Driver successfully Change Status`,
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Driver with id: ${id}, status couldn't be changed`,
-                        'Error:'
-                    );
+                  
                 },
             });
     }
@@ -460,10 +448,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             }/details`,
                         ]);
                     }
-                    this.notificationService.success(
-                        'Driver successfully deleted',
-                        'Success:'
-                    );
+                  
                 },
                 error: () => {
                     this.router.navigate(['/driver']);
@@ -476,16 +461,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `CDL successfully voided`,
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `CDL with id: ${id},  couldn't be voided`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -496,16 +475,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `CDL successfully activated`,
-                        'Success:'
-                    );
+               
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `CDL with id: ${id},  couldn't be activated`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }
