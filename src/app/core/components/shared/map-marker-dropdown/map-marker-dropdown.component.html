@@ -574,18 +574,7 @@
         </div>
         <div class="marker-info-container-all">
             <div class="marker-title">
-                <div class="marker-dual-info-container p-0">
-                    <span class="data-count">{{
-                        type == 'shipper'
-                            ? '769'
-                            : type == 'repairShop'
-                            ? item.order
-                            : type == 'accident' || type == 'inspection'
-                            ? '9'
-                            : type == 'fuelStop'
-                            ? '769'
-                            : ''
-                    }}</span>
+                <div class="marker-dual-info-container align-center p-0">
                     <span class="load-text">{{
                         type == 'shipper'
                             ? 'Load'
@@ -595,6 +584,17 @@
                             ? 'Total Weight'
                             : type == 'fuelStop'
                             ? 'Order'
+                            : ''
+                    }}</span>
+                    <span class="data-count align-center">{{
+                        type == 'shipper'
+                            ? '769'
+                            : type == 'repairShop'
+                            ? item.order
+                            : type == 'accident' || type == 'inspection'
+                            ? '9'
+                            : type == 'fuelStop'
+                            ? '769'
                             : ''
                     }}</span>
                 </div>
@@ -608,7 +608,7 @@
                 </div>
             </div>
             <div
-                class="marker-expanded-info-container"
+                class="marker-expanded-info-container mg-top-10"
                 *ngIf="type == 'shipper'"
             >
                 <div class="marker-dual-info-container">
@@ -621,7 +621,7 @@
                     </div>
                 </div>
                 <div class="marker-dual-info-container">
-                    <div class="marker-info-text mg-bottom-4">
+                    <div class="marker-info-text">
                         <span class="marker-bold-text">127</span> Delivered
                     </div>
                 </div>

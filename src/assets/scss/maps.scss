@@ -17,13 +17,13 @@
     z-index: 1;
 
     .marker-divider {
-        height: 2px;
+        height: 1px;
         width: 100%;
-        margin-top: 8px;
+        margin-top: 12px;
 
-        background: $ta-light-grey-4;
+        background: #DADADA;
 
-        border-radius: 1px;
+        border-radius: 0.5px;
     }
 
     agm-map {
@@ -104,18 +104,21 @@
 
         .marker-business-name {
             font-size: 16px;
-            font-weight: 700;
-            color: $bw6-2;
+            //font-weight: 700;
+            font-weight: 900;
+            //color: $bw6-2;
+            color: #2F2F2F;
             text-transform: uppercase;
-            line-height: 22px;
+            //line-height: 22px;
+            line-height: 19px;
 
             &::-moz-selection {
-                color: $bw6-2;
-                background: #6c6c6c33;
+                color: #2F2F2F;
+                background: #2F2F2F33;
             }
             &::selection {
-                color: $bw6-2;
-                background: #6c6c6c33;
+                color: #2F2F2F;
+                background: #2F2F2F33;
             }
         }
 
@@ -132,10 +135,19 @@
 
         .marker-title {
             font-size: 14px;
-            font-weight: 800;
+            font-weight: 900;
             line-height: 18px;
-            color: $bw6-2;
+            color: #424242;
             margin-top: 6px;
+
+            &::-moz-selection {
+                color: #424242;
+                background: #42424233;
+            }
+            &::selection {
+                color: #424242;
+                background: #42424233;
+            }
         }
 
         .marker-container-expand {
@@ -182,16 +194,15 @@
         }
 
         .data-count {
-            height: 24px;
-            min-width: 24px;
-            border-radius: 2px;
-            background: $ta-light-grey-4;
-            padding: 3px 4px;
-            margin-right: 4px;
+            height: 22px;
+            min-width: 22px;
+            border-radius: 11px;
+            background: #424242;
+            padding: 0px 6px;
+            margin-left: 4px;
             font-size: 14px;
             font-weight: 800;
-            color: $bw6-2;
-            line-height: 18px;
+            color: #ffffff;
             user-select: none;
         }
 
@@ -372,25 +383,25 @@
 .marker-info-text {
     font-size: 14px;
     line-height: 18px;
-    color: $bw6-2;
+    color: #2F2F2F;
 
     &::-moz-selection {
-        color: $bw6-2;
-        background: #6c6c6c33;
+        color: #2F2F2F;
+        background: #2F2F2F33;
     }
     &::selection {
-        color: $bw6-2;
-        background: #6c6c6c33;
+        color: #2F2F2F;
+        background: #2F2F2F33;
     }
 
     .title-text {
         &::-moz-selection {
-            color: $bw6-2;
-            background: #6c6c6c33;
+            color: #2F2F2F;
+            background: #2F2F2F33;
         }
         &::selection {
-            color: $bw6-2;
-            background: #6c6c6c33;
+            color: #2F2F2F;
+            background: #2F2F2F33;
         }
     }
 }
@@ -419,15 +430,15 @@
 .marker-like-text {
     font-size: 11px;
     line-height: 14px;
-    color: $bw6-2;
+    color: #2F2F2F;
 
     &::-moz-selection {
-        color: $bw6-2;
-        background: #6c6c6c33;
+        color: #2F2F2F;
+        background: #2F2F2F33;
     }
     &::selection {
-        color: $bw6-2;
-        background: #6c6c6c33;
+        color: #2F2F2F;
+        background: #2F2F2F33;
     }
 }
 
@@ -554,6 +565,10 @@
 
 .mg-top-6 {
     margin-top: 6px !important;
+}
+
+.mg-top-10 {
+    margin-top: 10px !important;
 }
 
 .mg-left-4 {
