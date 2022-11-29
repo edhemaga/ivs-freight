@@ -310,6 +310,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     disabled: data.status == 0 ? true : false,
+                    iconName: 'edit'
                 },
                 {
                     title: 'border',
@@ -320,10 +321,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_dm.svg',
                     show: data.status == 1 ? true : false,
                     disabled: data.status == 0 ? true : false,
+                    iconName: 'dm',
                 },
                 {
                     title: 'Add New',
                     svg: 'assets/svg/common/dropdown-arrow.svg',
+                    iconName: 'add-new',
                     disabled: data.status == 0 ? true : false,
                     subType: [
                         { subName: 'CDL', actionName: 'CDL' },
@@ -338,6 +341,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 {
                     title: 'Request',
                     svg: 'assets/svg/common/dropdown-arrow.svg',
+                    iconName: 'add-new',
                     disabled: data.status == 0 ? true : false,
                     subType: [
                         {
@@ -359,12 +363,14 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     title: 'Share',
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
+                    iconName: 'share',
                     show: true,
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
+                    iconName: 'print',
                     show: data.status == 1 || data.status == 0 ? true : false,
                 },
                 {
@@ -373,6 +379,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 {
                     title: data.status == 0 ? 'Activate' : 'Deactivate',
                     name: data.status == 0 ? 'activate' : 'deactivate',
+                    iconName: 'activate-item',
                     svg: 'assets/svg/common/ic_deactivate.svg',
                     activate: data.status == 0 ? true : false,
                     deactivate: data.status == 1 ? true : false,
@@ -386,6 +393,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
+                    iconName: 'delete',
                     danger: true,
                     show: data.status == 1 || data.status == 0 ? true : false,
                     redIcon: true,

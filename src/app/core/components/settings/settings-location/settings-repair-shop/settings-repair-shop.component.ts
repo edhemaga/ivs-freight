@@ -133,6 +133,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
+                    iconName: 'edit'
                 },
                 {
                     title: 'border',
@@ -142,6 +143,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     show: true,
+                    iconName: 'view-details'
                 },
                 {
                     title: 'Add Bill',
@@ -149,6 +151,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_plus.svg',
                     show: true,
                     blueIcon: true,
+                    iconName: 'assets/svg/common/ic_plus.svg'
                 },
                 {
                     title: 'border',
@@ -158,12 +161,14 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
+                    iconName: 'share'
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
+                    iconName: 'print'
                 },
                 {
                     title: 'border',
@@ -174,6 +179,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: true,
                     show: true,
+                    iconName: 'close-business'
                 },
                 {
                     title: 'Delete',
@@ -184,6 +190,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
+                    iconName: 'delete'
                 },
             ],
             export: true,

@@ -173,6 +173,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
+                    iconName: 'edit'
                 },
                 {
                     title: 'border',
@@ -183,6 +184,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_plus.svg',
                     show: true,
                     blueIcon: true,
+                    iconName: 'ic_plus'
                 },
                 {
                     title: 'Move to Favourite',
@@ -190,12 +192,14 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_star.svg',
                     activate: true,
                     show: true,
+                    iconName: 'ic_star'
                 },
                 {
                     title: 'Write Review',
                     name: 'write-review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
+                    iconName: 'write-review'
                 },
                 {
                     title: 'border',
@@ -205,12 +209,14 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
+                    iconName: 'share'
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
+                    iconName: 'print'
                 },
                 {
                     title: 'border',
@@ -221,6 +227,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: true,
                     show: true,
+                    iconName: 'close-business'
                 },
                 {
                     title: 'Delete',
@@ -231,6 +238,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
+                    iconName: 'delete'
                 },
             ],
             export: true,

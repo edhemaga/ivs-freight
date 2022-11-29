@@ -100,6 +100,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
+                    iconName: 'edit'
                 },
                 {
                     title: 'border',
@@ -109,18 +110,21 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     show: true,
+                    iconName: 'view-details'
                 },
                 {
                     title: 'Renew',
                     name: 'renew',
                     svg: 'assets/svg/common/ic_retry_white.svg',
                     show: true,
+                    iconName: 'renew'
                 },
                 {
                     title: 'Transfer',
                     name: 'transfer',
                     svg: 'assets/svg/common/dropdown-transfer-icon.svg',
                     show: true,
+                    iconName: 'transfer'
                 },
                 {
                     title: 'border',
@@ -130,12 +134,14 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
+                    iconName: 'share'
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
+                    iconName: 'print'
                 },
                 {
                     title: 'border',
@@ -145,6 +151,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
                     name: 'activate-item',
                     svg: 'assets/svg/common/ic_cancel_violation.svg',
                     redIcon: true,
+                    iconName: 'deactivate-item'
                 },
                 {
                     title: 'Delete',
@@ -155,6 +162,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
+                    iconName: 'delete'
                 },
             ],
             export: true,
@@ -177,6 +185,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
+                    iconName: 'edit'
                 },
                 {
                     title: 'border',
@@ -186,6 +195,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     show: true,
+                    iconName: 'view-details'
                 },
                 {
                     title: 'border',
@@ -195,12 +205,14 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
+                    iconName: 'share'
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
+                    iconName: 'print'
                 },
                 {
                     title: 'border',
@@ -214,6 +226,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
+                    iconName: 'delete'
                 },
             ],
             export: true,
