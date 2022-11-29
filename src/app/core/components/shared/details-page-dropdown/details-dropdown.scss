@@ -38,7 +38,7 @@
     }
 
     &.active-drop {
-        background-color: #42424220;
+        background-color: #424242;
 
         &.rightRotation {
             .dropdown-dots {
@@ -46,7 +46,7 @@
                 svg {
                     transform: rotate(-90deg);
                     path {
-                        fill: #424242;
+                        fill: #dadada;
                     }
                 }
             }
@@ -58,7 +58,7 @@
                 svg {
                     transform: rotate(90deg);
                     path {
-                        fill: #424242;
+                        fill: #dadada;
                     }
                 }
             }
@@ -68,7 +68,7 @@
             background-color: #424242;
             svg {
                 path {
-                    fill: #dadada !important;
+                    fill: #ebebeb !important;
                 }
             }
         }
