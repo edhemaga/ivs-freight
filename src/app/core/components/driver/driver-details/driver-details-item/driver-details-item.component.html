@@ -33,7 +33,7 @@
                     (clickedCard)="getNameForDrop($event, cdl.id)"
                     [cardNameCurrent]="'cdl'"
                     [noteIcons]="
-                        cdl.note
+                        cdl.note && cdl.note != null && cdl.note != 'null' || cdlNote?.value
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
@@ -275,7 +275,7 @@
             <div>
                 <app-ta-re-card
                     *ngFor="
-                        let test of driverItem?.data?.tests;
+                        let test of driverItem?.data;
                         let i = index;
                         trackBy: identity
                     "
@@ -293,7 +293,7 @@
                     [weeklyWidth]="'18'"
                     [cardNameCurrent]="'test'"
                     [noteIcons]="
-                        test.note
+                        test.note && test.note != null && test.note != 'null'
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
@@ -411,7 +411,7 @@
             <div>
                 <app-ta-re-card
                     *ngFor="
-                        let med of driverItem?.data?.medicals;
+                        let med of driverItem?.data;
                         let i = index;
                         trackBy: identity
                     "
@@ -426,7 +426,7 @@
                     (clickedCard)="getNameForDrop($event)"
                     [cardNameCurrent]="'medical'"
                     [noteIcons]="
-                        med.note
+                        med.note && med.note != null && med.note != 'null'
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
@@ -540,7 +540,7 @@
             <div>
                 <app-ta-re-card
                     *ngFor="
-                        let mvr of driverItem?.data?.mvrs;
+                        let mvr of driverItem?.data;
                         let i = index;
                         trackBy: identity
                     "
@@ -552,7 +552,7 @@
                         mvr?.files?.length ? mvr.files.length : 0
                     "
                     [noteIcons]="
-                        mvr.note
+                        mvr.note && mvr.note != null && mvr.note != 'null'
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "

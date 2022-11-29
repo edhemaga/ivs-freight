@@ -489,7 +489,104 @@
     {
       "iconName": "ic_load-broker-credit.svg",
       "iconPath": "assets/svg/common/load/ic_load-broker-credit.svg"
+    },
+    {
+      "iconName": "edit",
+      "iconPath": "assets/svg/truckassist-table/dropdown/content/edit.svg"
+    },
+    {
+      "iconName": "view-details",
+      "iconPath": "assets/svg/common/ic_hazardous-info.svg"
+    },
+    {
+      "iconName": "renew",
+      "iconPath": "assets/svg/common/ic_reload_renew.svg"
+    },
+    {
+      "iconName": "share",
+      "iconPath": "assets/svg/common/share-icon.svg"
+    },
+    {
+      "iconName": "print",
+      "iconPath": "assets/svg/common/ic_fax.svg"
+    },
+    {
+      "iconName": "delete",
+      "iconPath": "assets/svg/common/ic_trash_updated.svg"
+    },
+    {
+      "iconName": "activate-item",
+      "iconPath": "assets/svg/common/ic_deactivate.svg"
+    },
+    {
+      "iconName": "deactivate-item",
+      "iconPath": "assets/svg/common/ic_cancel_violation.svg"
+    },
+    {
+      "iconName": "dm",
+      "iconPath": "assets/svg/common/ic_dm.svg"
+    },
+    {
+      "iconName": "add-new",
+      "iconPath": "assets/svg/common/dropdown-arrow.svg"
+    },
+    {
+      "iconName": "transfer",
+      "iconPath": "assets/svg/common/dropdown-transfer-icon.svg"
+    },
+    {
+      "iconName": "ic_plus",
+      "iconPath": "assets/svg/common/ic_plus.svg"
+    },
+    {
+      "iconName": "add-contact",
+      "iconPath": "assets/svg/truckassist-table/customer/contact-column-avatar.svg"
+    },
+    {
+      "iconName": "write-review",
+      "iconPath": "assets/svg/common/review-pen.svg"
+    },
+    {
+      "iconName": "change-status",
+      "iconPath": "assets/svg/common/ic_disable-status.svg"
+    },
+    {
+      "iconName": "close-business",
+      "iconPath": "assets/svg/common/close-business-icon.svg"
+    },
+    {
+      "iconName": "ic_star",
+      "iconPath": "assets/svg/common/ic_star.svg"
+    },
+    {
+      "iconName": "ic_route_duplicate",
+      "iconPath": "assets/svg/common/routing/ic_route_duplicate.svg"
+    },
+    {
+      "iconName": "ic_route_reverse",
+      "iconPath": "assets/svg/common/routing/ic_route_reverse.svg"
+    },
+    {
+      "iconName": "ic_route_clear",
+      "iconPath": "assets/svg/common/routing/ic_route_clear.svg"
+    },
+    {
+      "iconName": "ic_web",
+      "iconPath": "assets/svg/common/ic_web.svg"
+    },
+    {
+      "iconName": "mark-as-ongoing",
+      "iconPath": "assets/svg/detail-cards/refresh.svg"
+    },
+    {
+      "iconName": "mark-as-done",
+      "iconPath": "assets/svg/common/dropdown-done-icon.svg"
+    },
+    {
+      "iconName": "mark-as-to-do",
+      "iconPath": "assets/svg/common/ic_time.svg"
     }
+    
   ],
   "customIcons": []
 }

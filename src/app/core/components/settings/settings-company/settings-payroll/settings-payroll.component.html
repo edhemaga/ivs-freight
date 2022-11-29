@@ -31,12 +31,24 @@
                     let i = index;
                     trackBy: identity
                 "
-                [cardName]="payroll?.department?.name"
+                [cardName]="setNameFormat(payroll?.department?.name)"
                 [bodyTemplate]="'card'"
                 [isCardOpen]="false"
                 [hasDivider]="i > 0 ? true : false"
                 [textBottomPossiton]="'-2px'"
                 [hasWeeklyStatus]="payroll?.payPeriod?.name"
+                [disabledCard]="payroll?.defaultBase || 
+                                payroll?.solo.emptyMile || 
+                                payroll?.solo.loadedMile || 
+                                payroll?.solo.perStop ||
+                                payroll?.team.emptyMile ||
+                                payroll?.team.loadedMile ||
+                                payroll?.team.teamPerStop ||
+                                payroll.defaultSoloDriverCommission ||
+                                payroll?.defaultTeamDriverCommission ||
+                                payroll?.defaultOwnerCommission ||
+                                payroll?.defaultCommission 
+                                ? false : true"
             >
                 <!-- Driver & Owner -->
                 <div

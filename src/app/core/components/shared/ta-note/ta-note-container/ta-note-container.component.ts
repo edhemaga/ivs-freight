@@ -26,6 +26,7 @@ export class TaNoteContainerComponent implements OnInit {
     @Input() isExpanded: boolean;
     @Input() parking: boolean = false;
     @Input() popoverNote: boolean = false;
+    @Input() isVisibleArrow: boolean = true;
     selectedPaternColor = '#6c6c6c';
     showCollorPattern: boolean;
     activeOptions: any = {

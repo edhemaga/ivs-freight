@@ -161,7 +161,7 @@
             </div>
 
             <!-- Weekly status -->
-            <div *ngIf="hasWeeklyStatus" class="weekly-status">
+            <div *ngIf="hasWeeklyStatus" class="weekly-status" [class.disabledWeeklyStatus]="disabledCard">
                 <div class="weekly-status-value">
                     {{ hasWeeklyStatus }}
                 </div>
