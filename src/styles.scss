@@ -11,20 +11,20 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$truckassist-fe-primary: mat.define-palette(mat.$indigo-palette);
-$truckassist-fe-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$carrierassist-fe-primary: mat.define-palette(mat.$indigo-palette);
+$carrierassist-fe-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$truckassist-fe-warn: mat.define-palette(mat.$red-palette);
+$carrierassist-fe-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$truckassist-fe-theme: mat.define-light-theme(
+$carrierassist-fe-theme: mat.define-light-theme(
     (
         color: (
-            primary: $truckassist-fe-primary,
-            accent: $truckassist-fe-accent,
-            warn: $truckassist-fe-warn,
+            primary: $carrierassist-fe-primary,
+            accent: $carrierassist-fe-accent,
+            warn: $carrierassist-fe-warn,
         ),
     )
 );
@@ -32,7 +32,7 @@ $truckassist-fe-theme: mat.define-light-theme(
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($truckassist-fe-theme);
+@include mat.all-component-themes($carrierassist-fe-theme);
 
 /* You can add global styles to this file, and also import other style files */
 @import './theme/variables';
