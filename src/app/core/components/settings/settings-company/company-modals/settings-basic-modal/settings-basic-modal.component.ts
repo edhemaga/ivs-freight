@@ -601,10 +601,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    this.notificationService.success(
-                        'Successfuly add new bank',
-                        'Success'
-                    );
+                    
                     this.selectedBankAccountFormArray[index] = {
                         id: res.id,
                         name: bank.data.name,
@@ -615,10 +612,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     ];
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add new bank",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -1001,10 +995,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.selectedOtherEndingIn = res.endingIns[0];
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't Load Settings Basic Dropdowns",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -1125,16 +1116,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully added company division',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add company division",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -1353,16 +1338,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully updated company division',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't updated company division",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -1373,16 +1352,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully delete company division',
-                        'Success'
-                    );
+                 
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't delete company division",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -1660,16 +1633,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully update your main company',
-                        'Success'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update main company!",
-                        'Error'
-                    );
+                    
                 },
             });
     }

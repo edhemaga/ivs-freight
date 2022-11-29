@@ -343,7 +343,9 @@
                                                 fill:
                                                     cluster.isSelected ||
                                                     cluster.markerHover
-                                                        ? (mapType == 'fuelStop' ? '#3551B7' : '#FFA726')
+                                                        ? mapType == 'fuelStop'
+                                                            ? '#3551B7'
+                                                            : '#FFA726'
                                                         : '#fff'
                                             }"
                                             fill="#FFA726"
@@ -372,7 +374,10 @@
                                         transform="translate(1253 577)"
                                         fill="#ffa726"
                                         [ngStyle]="{
-                                            'fill': mapType == 'fuelStop' ? '#536BC2' : '#FFA726'
+                                            fill:
+                                                mapType == 'fuelStop'
+                                                    ? '#536BC2'
+                                                    : '#FFA726'
                                         }"
                                     />
                                     <text

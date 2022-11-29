@@ -75,16 +75,10 @@ export class SettingsOfficeComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Office successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Office with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                  
                 },
             });
     }

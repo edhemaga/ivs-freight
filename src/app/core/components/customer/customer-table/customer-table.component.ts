@@ -195,11 +195,6 @@ export class CustomerTableComponent
                                     });
                                 });
 
-                                this.notificationService.success(
-                                    `${brokerText} "${brokerName}" deleted`,
-                                    'Success'
-                                );
-
                                 this.multipleDeleteData(response);
                             });
                     }
@@ -227,11 +222,6 @@ export class CustomerTableComponent
                             .deleteShipperList(response)
                             .pipe(takeUntil(this.destroy$))
                             .subscribe(() => {
-                                this.notificationService.success(
-                                    `${shipText} "${shipperName}" deleted `,
-                                    'Success'
-                                );
-
                                 this.multipleDeleteData(response);
                             });
                     }
@@ -669,18 +659,9 @@ export class CustomerTableComponent
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
-                            this.notificationService.success(
-                                `Broker "${businessName}" deleted`,
-                                'Success'
-                            );
-
                             this.deleteDataById(event.id);
                         },
                         error: () => {
-                            this.notificationService.error(
-                                `Failed to delete Broker "${businessName}" `,
-                                'Error'
-                            );
                         },
                     });
             }
@@ -693,18 +674,9 @@ export class CustomerTableComponent
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
-                            this.notificationService.success(
-                                `Shipper "${businessName}" deleted`,
-                                'Success'
-                            );
-
                             this.deleteDataById(event.id);
                         },
                         error: () => {
-                            this.notificationService.error(
-                                `Failed to delete Shipper "${businessName}" `,
-                                'Error'
-                            );
                         },
                     });
             }
@@ -843,7 +815,7 @@ export class CustomerTableComponent
         var newMapList = mapListResponse.pagination.data;
         var listChanged = false;
 
-        for ( var i = 0; i < this.mapListData.length; i++ ) {
+        for (var i = 0; i < this.mapListData.length; i++) {
             let item = this.mapListData[i];
 
             let itemIndex = newMapList.findIndex(
@@ -857,7 +829,7 @@ export class CustomerTableComponent
             }
         }
 
-        for ( var b = 0; b < newMapList.length; b++ ) {
+        for (var b = 0; b < newMapList.length; b++) {
             let item = newMapList[b];
 
             let itemIndex = this.mapListData.findIndex(
@@ -872,7 +844,8 @@ export class CustomerTableComponent
         }
 
         if (listChanged || mapListResponse.changedSort) {
-            if ( mapListResponse.changedSort ) this.mapListData = mapListResponse.pagination.data;
+            if (mapListResponse.changedSort)
+                this.mapListData = mapListResponse.pagination.data;
             this.tableData[1].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }

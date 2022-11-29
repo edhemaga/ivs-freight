@@ -136,16 +136,10 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Inspection successfully updated.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Inspection can't be updated.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -176,16 +170,10 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Inspection successfully added.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Inspection can't be added.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }

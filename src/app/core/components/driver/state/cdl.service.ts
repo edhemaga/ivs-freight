@@ -49,10 +49,7 @@ export class CdlTService implements OnDestroy {
                                 .subscribe({
                                     next: (res: any) => {},
                                     error: () => {
-                                        this.notificationService.error(
-                                            'Cannot activate cdl, already have active.',
-                                            'Error:'
-                                        );
+                                        
                                     },
                                 });
                             driver = {

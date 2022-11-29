@@ -451,7 +451,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : null,
                 end: null,
             },
-            tableAttachments: data?.files ? data.files : []
+            tableAttachments: data?.files ? data.files : [],
         };
     }
 
@@ -650,16 +650,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Trailer successfully changed status',
-                        'Success:'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Trailer with id: ${id}, status couldn't be changed`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -670,10 +664,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Trailer successfully deleted',
-                        'Success:'
-                    );
+                   
 
                     this.viewData = this.viewData.map((trailer: any) => {
                         if (trailer.id === id) {
@@ -695,10 +686,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }, 900);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Trailer with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -732,11 +720,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
 
                 this.updateDataCount();
-
-                this.notificationService.success(
-                    `${trailersText} "${trailerNumber}" deleted`,
-                    'Success'
-                );
 
                 trailerNumber = '';
                 const inetval = setInterval(() => {

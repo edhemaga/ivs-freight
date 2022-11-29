@@ -185,13 +185,10 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly added route.',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error("Can't add route.", 'Error');
+                  
                 },
             });
     }
@@ -211,16 +208,10 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly updated route.',
-                        'Success'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update route.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -237,10 +228,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                     console.log(res);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load route.",
-                        'Error'
-                    );
+                    
                 },
             });
     }

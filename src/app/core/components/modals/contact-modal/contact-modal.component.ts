@@ -316,10 +316,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.labelsContactPhones = res.contactPhoneType;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't get contact labels and departments.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -385,10 +382,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     // TODO: shared departments label selected
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't get contact.",
-                        'Error:'
-                    );
+                  
                 },
             });
     }
@@ -418,16 +412,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Company Contact successfully created.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Company Contact can't be created.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -458,16 +446,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Company Contact successfully updated.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Company Contact can't be updated.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -478,20 +460,15 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Company Contact successfully deleted.',
-                        'Success:'
-                    );
+                    
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
                     });
                 },
-                error: () =>
-                    this.notificationService.error(
-                        "Company Contact can't be deleted.",
-                        'Error:'
-                    ),
+                error: () => {
+
+                }
             });
     }
 
@@ -547,10 +524,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.colors = res;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't get contact color labels.",
-                        'Error:'
-                    );
+                 
                 },
             });
     }
@@ -583,10 +557,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
-                            this.notificationService.success(
-                                'Successfuly updated label',
-                                'Success'
-                            );
+                            
 
                             this.contactService
                                 .getCompanyContactModal()
@@ -598,18 +569,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                                         this.contactLabels = res.labels;
                                     },
                                     error: () => {
-                                        this.notificationService.error(
-                                            "Can't get account label list.",
-                                            'Error'
-                                        );
+                                        
                                     },
                                 });
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Can't update exist label",
-                                'Error'
-                            );
+                           
                         },
                     });
                 break;
@@ -643,10 +608,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (res: CreateResponse) => {
-                            this.notificationService.success(
-                                'Successfully add contact label.',
-                                'Success:'
-                            );
+                            
 
                             this.selectedContactLabel = {
                                 ...this.selectedContactLabel,
@@ -663,18 +625,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                                         this.contactLabels = res.labels;
                                     },
                                     error: () => {
-                                        this.notificationService.error(
-                                            "Can't get contact label list.",
-                                            'Error'
-                                        );
+                                        
                                     },
                                 });
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Can't add account label.",
-                                'Error:'
-                            );
+                            
                         },
                     });
                 break;

@@ -15,37 +15,42 @@ import { ApplicantTableStore } from './applicant-state/applicant-table.store';
     providedIn: 'root',
 })
 export class ApplicantTService {
-    constructor(private applicantService: ApplicantService,  private tableService: TruckassistTableService, private applicantStore: ApplicantTableStore) {}
+    constructor(
+        private applicantService: ApplicantService,
+        private tableService: TruckassistTableService,
+        private applicantStore: ApplicantTableStore
+    ) {}
 
     public addApplicantAdmin(data: CreateApplicantCommand): Observable<object> {
         return this.applicantService.apiApplicantAdminPost(data).pipe(
             tap((res: any) => {
-                const subApplicant = this.getApplicantByIdAdmin(res.id)
-                    .subscribe({
-                        next: (applicant: ApplicantAdminResponse | any) => {
-                            this.applicantStore.add(applicant)
-                            const applicantCount = JSON.parse(
-                                localStorage.getItem('accountTableCount')
-                            );
+                const subApplicant = this.getApplicantByIdAdmin(
+                    res.id
+                ).subscribe({
+                    next: (applicant: ApplicantAdminResponse | any) => {
+                        this.applicantStore.add(applicant);
+                        const applicantCount = JSON.parse(
+                            localStorage.getItem('accountTableCount')
+                        );
 
-                            applicantCount.account++;
+                        applicantCount.account++;
 
-                            localStorage.setItem(
-                                'accountTableCount',
-                                JSON.stringify({
-                                    account: applicantCount.account,
-                                })
-                            );
+                        localStorage.setItem(
+                            'accountTableCount',
+                            JSON.stringify({
+                                account: applicantCount.account,
+                            })
+                        );
 
-                            this.tableService.sendActionAnimation({
-                                animation: 'add',
-                                data: applicant,
-                                id: applicant.id,
-                            });
+                        this.tableService.sendActionAnimation({
+                            animation: 'add',
+                            data: applicant,
+                            id: applicant.id,
+                        });
 
-                            subApplicant.unsubscribe();
-                        },
-                    });
+                        subApplicant.unsubscribe();
+                    },
+                });
             })
         );
     }

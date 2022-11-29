@@ -456,16 +456,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly updated company terminal',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update company terminal.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -512,16 +506,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly added company terminal',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add company terminal.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -532,16 +520,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly deleted company terminal.',
-                        'Success'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't delete company terminal.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -645,10 +627,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load company terminal.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -664,10 +643,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                     this.weeklyDays = res.dayOfWeek;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load modal dropdowns",
-                        'Error'
-                    );
+                  
                 },
             });
     }

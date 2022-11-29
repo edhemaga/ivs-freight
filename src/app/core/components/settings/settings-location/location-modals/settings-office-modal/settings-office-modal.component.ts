@@ -324,16 +324,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly updated company office',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update company office",
-                        'Error'
-                    );
+                  
                 },
             });
     }
@@ -378,10 +372,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly created company office',
-                        'Success'
-                    );
+                   
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'user-modal': {
@@ -405,10 +396,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't create company office",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -419,16 +407,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly delete company office',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't delete company office",
-                        'Error'
-                    );
+                  
                 },
             });
     }
@@ -500,10 +482,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load company office ",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -520,10 +499,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     this.weeklyDays = res.dayOfWeek;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load company office dropdowns",
-                        'Error'
-                    );
+                   
                 },
             });
     }
