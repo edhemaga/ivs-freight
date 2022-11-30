@@ -45,16 +45,10 @@ export class ViolationDetailsPageComponent implements OnInit {
                         this.router.navigate([
                             `/safety/violation/${res.id}/details`,
                         ]);
-                        this.notificationService.success(
-                            'Violation successfully changed',
-                            'Success:'
-                        );
+                       
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Violation can't be loaded",
-                            'Error:'
-                        );
+                    
                     },
                 });
             });

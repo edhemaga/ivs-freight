@@ -9,18 +9,39 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TrailerResponse } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
 import { TrailerTService } from '../state/trailer.service';
+import { animate, style, transition, trigger, state } from '@angular/animations';
 
 @Component({
     selector: 'app-trailer-details-card',
     templateUrl: './trailer-details-card.component.html',
     styleUrls: ['./trailer-details-card.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [card_component_animation('showHideCardBody'),
+    trigger('ownerDetailsAnimation', [
+      state(
+        'true',
+        style({
+          height: '*',
+          overflow: 'hidden',
+          opacity: 1,
+        })
+      ),
+      state(
+        'false',
+        style({
+          height: '0px',
+          overflow: 'hidden',
+          opacity: 0,
+        })
+      ),
+      transition('false <=> true', [animate('0.2s ease')]),
+      transition('true <=> false', [animate('0.2s ease')]), 
+    ]),],
 })
 export class TrailerDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy
@@ -58,10 +79,13 @@ export class TrailerDetailsCardComponent
     }
 
     public getTrailerById(id: number) {
+        console.log('--trailer details called api--')
+        /*
         this.trailerService
             .getTrailerById(id, true)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.trailer = item));
+            */
     }
     /**Function for toggle page in cards */
     /**Function for toggle page in cards */
@@ -178,6 +202,11 @@ export class TrailerDetailsCardComponent
             }
         }
     }
+
+    public sortKeys = (a, b) => {
+        return a.value.id > b.value.id ? -1 : 1;
+    };
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

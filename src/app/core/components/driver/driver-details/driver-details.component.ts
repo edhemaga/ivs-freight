@@ -151,17 +151,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         if (this.router.url.includes('details')) {
                             this.router.navigate([`/driver/${res.id}/details`]);
                         }
-                        this.notificationService.success(
-                            'Driver successfully changed',
-                            'Success:'
-                        );
+         
                         this.cdRef.detectChanges();
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Driver can't be loaded",
-                            'Error:'
-                        );
+                     
                     },
                 });
             });
@@ -207,7 +201,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 status: this.statusDriver,
                 hasDanger: false,
                 length: dataDriver?.tests?.length ? dataDriver.tests.length : 0,
-                data: dataDriver,
+                data: dataDriver.tests,
             },
             {
                 id: 3,
@@ -219,7 +213,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 length: dataDriver?.medicals?.length
                     ? dataDriver.medicals.length
                     : 0,
-                data: dataDriver,
+                data: dataDriver.medicals,
             },
             {
                 id: 4,
@@ -229,10 +223,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 status: this.statusDriver,
                 hasDanger: this.hasDangerMvr,
                 length: dataDriver?.mvrs?.length ? dataDriver.mvrs.length : 0,
-                data: dataDriver,
+                data: dataDriver.mvrs,
             },
         ];
         this.driverId = dataDriver?.id ? dataDriver.id : null;
+        console.log('--driverDetailsConfig---', this.driverDetailsConfig);
     }
     checkExpiration(data: DriverResponse) {
         this.hasDangerCDL = false;
@@ -315,6 +310,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     disabled: data.status == 0 ? true : false,
+                    iconName: 'edit'
                 },
                 {
                     title: 'border',
@@ -325,10 +321,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_dm.svg',
                     show: data.status == 1 ? true : false,
                     disabled: data.status == 0 ? true : false,
+                    iconName: 'dm',
                 },
                 {
                     title: 'Add New',
                     svg: 'assets/svg/common/dropdown-arrow.svg',
+                    iconName: 'add-new',
                     disabled: data.status == 0 ? true : false,
                     subType: [
                         { subName: 'CDL', actionName: 'CDL' },
@@ -343,6 +341,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 {
                     title: 'Request',
                     svg: 'assets/svg/common/dropdown-arrow.svg',
+                    iconName: 'add-new',
                     disabled: data.status == 0 ? true : false,
                     subType: [
                         {
@@ -364,12 +363,14 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     title: 'Share',
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
+                    iconName: 'share',
                     show: true,
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
+                    iconName: 'print',
                     show: data.status == 1 || data.status == 0 ? true : false,
                 },
                 {
@@ -378,6 +379,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 {
                     title: data.status == 0 ? 'Activate' : 'Deactivate',
                     name: data.status == 0 ? 'activate' : 'deactivate',
+                    iconName: 'activate-item',
                     svg: 'assets/svg/common/ic_deactivate.svg',
                     activate: data.status == 0 ? true : false,
                     deactivate: data.status == 1 ? true : false,
@@ -391,6 +393,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
+                    iconName: 'delete',
                     danger: true,
                     show: data.status == 1 || data.status == 0 ? true : false,
                     redIcon: true,
@@ -401,6 +404,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
 
     public getCdlById(id: number) {
+        console.log('--getCdlById--')
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
@@ -421,16 +425,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Driver successfully Change Status`,
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Driver with id: ${id}, status couldn't be changed`,
-                        'Error:'
-                    );
+                  
                 },
             });
     }
@@ -460,10 +458,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             }/details`,
                         ]);
                     }
-                    this.notificationService.success(
-                        'Driver successfully deleted',
-                        'Success:'
-                    );
+                  
                 },
                 error: () => {
                     this.router.navigate(['/driver']);
@@ -476,16 +471,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `CDL successfully voided`,
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `CDL with id: ${id},  couldn't be voided`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -496,16 +485,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `CDL successfully activated`,
-                        'Success:'
-                    );
+               
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `CDL with id: ${id},  couldn't be activated`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }

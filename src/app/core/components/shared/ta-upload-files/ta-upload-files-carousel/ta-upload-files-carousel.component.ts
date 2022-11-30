@@ -68,10 +68,11 @@ export class TaUploadFilesCarouselComponent {
                             : ['medium'].includes(
                                   this.customClass?.toLowerCase()
                               )
-                            ? 2 :
-                             ['extraLarge'].includes(
-                                this.customClass?.toLowerCase()
-                            ) ? 6
+                            ? 2
+                            : ['extraLarge'].includes(
+                                  this.customClass?.toLowerCase()
+                              )
+                            ? 6
                             : 1;
                         this.multipleCurrentSlide =
                             this.files.length - this.filesShown;
@@ -119,7 +120,11 @@ export class TaUploadFilesCarouselComponent {
                     )
                         ? 4
                         : ['medium'].includes(this.customClass?.toLowerCase())
-                        ? 3 : ['extraLarge'].includes(this.customClass?.toLowerCase()) ? 7
+                        ? 3
+                        : ['extraLarge'].includes(
+                              this.customClass?.toLowerCase()
+                          )
+                        ? 7
                         : 2;
                     if (
                         this.multipleCurrentSlide >

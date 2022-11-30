@@ -104,17 +104,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                         this.router.navigate([
                             `/customer/${res.id}/broker-details`,
                         ]);
-                        this.notificationService.success(
-                            'Broker successfully changed',
-                            'Success:'
-                        );
-                    },
-                    error: () => {
-                        this.notificationService.error(
-                            "Broker can't be loaded",
-                            'Error:'
-                        );
-                    },
+                    }
                 });
             });
         this.brokerInitConfig(this.activated_route.snapshot.data.broker);
@@ -142,14 +132,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                             }/broker-details`,
                         ]);
                     }
-                    this.notificationService.success(
-                        'Broker successfully deleted',
-                        'Success:'
-                    );
-                },
-                error: () => {
-                    this.router.navigate(['/customer']);
-                },
+                }
             });
     }
 
@@ -286,6 +269,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
+                    iconName: 'edit',
                 },
                 {
                     title: 'border',
@@ -296,18 +280,21 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_plus.svg',
                     show: true,
                     blueIcon: true,
+                    iconName: 'ic_plus'
                 },
                 {
                     title: 'Add Contact',
                     name: 'add-contact',
                     svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
+                    iconName: 'add-contact'
                 },
                 {
                     title: 'Write Review',
                     name: 'write-review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
+                    iconName: 'write-review'
                 },
                 {
                     title: data?.ban
@@ -316,6 +303,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     name: data?.ban ? 'remove-from-ban' : 'move-to-ban',
                     svg: 'assets/svg/common/ic_disable-status.svg',
                     show: true,
+                    iconName: 'change-status'
                 },
                 {
                     title: data?.dnu ? 'Remove from DNU' : 'Move to DNU List',
@@ -324,6 +312,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     deactivate: true,
                     show: true,
                     redIcon: true,
+                    iconName: 'change-status'
                 },
                 {
                     title: 'border',
@@ -333,12 +322,14 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
+                    iconName: 'share'
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
+                    iconName: 'print',
                 },
                 {
                     title: 'border',
@@ -349,6 +340,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: true,
                     show: true,
+                    iconName: 'close-business'
                 },
                 {
                     title: 'Delete',
@@ -359,6 +351,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
+                    iconName: 'delete'
                 },
                 /*
         {
@@ -378,16 +371,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Broker successfully change status`,
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `You can not move broker whit id: ${id}, to ban list`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -397,16 +384,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Broker successfully change status`,
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `You can not move broker whit id: ${id}, to ban list`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }

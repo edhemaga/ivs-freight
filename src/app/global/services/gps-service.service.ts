@@ -22,9 +22,6 @@ export class GpsServiceService {
     }
 
     public startConnection = () => {
-        // return new Promise((resolve, reject) => {
-        // Object.defineProperty(WebSocket, 'OPEN', { value: 1 }); // workaround za da se otvori socket jbg
-
         const user = JSON.parse(localStorage.getItem('user'));
         if (user) {
             this.hubConnection = new signalR.HubConnectionBuilder()
@@ -50,4 +47,8 @@ export class GpsServiceService {
                 );
         }
     };
+
+    public closeConnection = () => {
+        this.hubConnection?.stop();
+    }
 }

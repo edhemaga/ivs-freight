@@ -1,3 +1,4 @@
+import { OnDestroy } from '@angular/core';
 import {
     Directive,
     OnInit,
@@ -13,7 +14,7 @@ import {
 @Directive({
     selector: '[resizeColumn]',
 })
-export class ResizeColumnDirective implements OnInit, OnChanges {
+export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
     @Output() resizeing: EventEmitter<any> = new EventEmitter();
     @Input('resizeColumn') canDoResize: boolean;
     @Input() index: number;
@@ -27,6 +28,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
     private pressed: boolean;
     resizer: any;
     newColumnWidth: number;
+    listenerMouseDown: () => void;
 
     constructor(private renderer: Renderer2, private el: ElementRef) {
         this.column = this.el.nativeElement;
@@ -57,14 +59,18 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
         this.resizer = this.renderer.createElement('div');
         this.renderer.addClass(this.resizer, 'resise-btn');
         this.renderer.appendChild(this.column, this.resizer);
-        this.renderer.listen(this.resizer, 'mousedown', this.onMouseDown);
-        this.renderer.listen('document', 'mousemove', this.onMouseMove);
-        this.renderer.listen('document', 'mouseup', this.onMouseUp);
+
+        this.listenerMouseDown = this.renderer.listen(
+            this.resizer,
+            'mousedown',
+            this.onMouseDown
+        );
     }
 
     removeResizer() {
         this.renderer.removeClass(this.resizer, 'resise-btn');
         this.renderer.removeChild(this.column, this.resizer);
+        this.listenerMouseDown();
     }
 
     onMouseDown = (event: MouseEvent) => {
@@ -77,6 +83,9 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
             this.pressed = true;
             this.startX = event.pageX;
             this.startWidth = this.column.offsetWidth;
+
+            document.addEventListener('mouseup', this.onMouseUp);
+            document.addEventListener('mousemove', this.onMouseMove);
         }
     };
 
@@ -85,7 +94,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
             // Calculate width of column
             this.newColumnWidth = this.startWidth + (event.pageX - this.startX);
 
-            const maxWidth = this.tableColumn.minWidth * 2;
+            const maxWidth = this.tableColumn.minWidth * 3;
 
             if (!this.tableColumn.minWidth) {
                 this.resizeing.emit({
@@ -133,6 +142,12 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
             });
 
             window.getSelection().removeAllRanges();
+            document.removeEventListener('mousemove', this.onMouseMove);
+            document.removeEventListener('mouseup', this.onMouseUp);
         }
     };
+
+    ngOnDestroy(): void {
+        this.renderer.destroy();
+    }
 }

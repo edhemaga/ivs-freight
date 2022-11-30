@@ -10,7 +10,7 @@
             <div class="card-width" *ngSwitchCase="'registration'">
                 <app-ta-re-card
                     *ngFor="
-                        let reg of trailers?.data?.registrations;
+                        let reg of trailers?.data;
                         let i = index;
                         trackBy: identity
                     "
@@ -88,10 +88,14 @@
                                         class="counter-text-wrapper"
                                         [class.disabled]="!reg?.files?.length"
                                     >
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
                                         <app-ta-counter
-                                            [countBackgroud]="'#F3F3F3'"
-                                            [countHeight]="'24px'"
-                                            [countWidth]="'24px'"
+                                            [countBackground]="'#424242'"
+                                            [customClass]="'circle_counter'"
+                                            [countHeight]="'22px'"
+                                            [countWidth]="'22px'"
                                             [count]="
                                                 reg?.files?.length
                                                     ? reg.files.length
@@ -99,9 +103,6 @@
                                             "
                                         >
                                         </app-ta-counter>
-                                        <p class="details-document-name">
-                                            Document
-                                        </p>
                                     </div>
                                     <svg-icon
                                         *ngIf="reg?.files?.length"
@@ -151,7 +152,7 @@
             <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
                 <app-ta-re-card
                     *ngFor="
-                        let fhwa of trailers?.data?.inspections;
+                        let fhwa of trailers?.data;
                         let i = index;
                         trackBy: identity
                     "
@@ -213,10 +214,14 @@
                                         class="counter-text-wrapper"
                                         [class.disabled]="!fhwa?.files?.length"
                                     >
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
                                         <app-ta-counter
-                                            [countBackgroud]="'#F3F3F3'"
-                                            [countHeight]="'24px'"
-                                            [countWidth]="'24px'"
+                                            [countBackground]="'#424242'"
+                                            [customClass]="'circle_counter'"
+                                            [countHeight]="'22px'"
+                                            [countWidth]="'22px'"
                                             [count]="
                                                 fhwa?.files?.length
                                                     ? fhwa.files.length
@@ -224,9 +229,6 @@
                                             "
                                         >
                                         </app-ta-counter>
-                                        <p class="details-document-name">
-                                            Document
-                                        </p>
                                     </div>
                                     <svg-icon
                                         *ngIf="fhwa?.files?.length"
@@ -275,7 +277,7 @@
             <div class="card-width" *ngSwitchCase="'title'">
                 <app-ta-re-card
                     *ngFor="
-                        let title of trailers?.data?.titles;
+                        let title of trailers?.data;
                         let i = index;
                         trackBy: identity
                     "
@@ -348,10 +350,14 @@
                                         class="counter-text-wrapper"
                                         [class.disabled]="!title?.files?.length"
                                     >
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
                                         <app-ta-counter
-                                            [countBackgroud]="'#F3F3F3'"
-                                            [countHeight]="'24px'"
-                                            [countWidth]="'24px'"
+                                            [countBackground]="'#424242'"
+                                            [customClass]="'circle_counter'"
+                                            [countHeight]="'22px'"
+                                            [countWidth]="'22px'"
                                             [count]="
                                                 title?.files?.length
                                                     ? title.files.length
@@ -359,9 +365,6 @@
                                             "
                                         >
                                         </app-ta-counter>
-                                        <p class="details-document-name">
-                                            Document
-                                        </p>
                                     </div>
                                     <svg-icon
                                         *ngIf="title?.files?.length"

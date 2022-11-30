@@ -1,7 +1,6 @@
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { SharedService } from '../../../../services/shared/shared.service';
 import { noteColors } from '../../../../../const';
 
 @Component({
@@ -26,6 +25,7 @@ export class TaNoteContainerComponent implements OnInit {
     @Input() isExpanded: boolean;
     @Input() parking: boolean = false;
     @Input() popoverNote: boolean = false;
+    @Input() isVisibleArrow: boolean = true;
     selectedPaternColor = '#6c6c6c';
     showCollorPattern: boolean;
     activeOptions: any = {
@@ -34,7 +34,7 @@ export class TaNoteContainerComponent implements OnInit {
         foreColor: false,
         underline: false,
     };
-    containerColors: any[] = noteColors;
+    containerColors: any[] = [...noteColors];
     selectedColorName: any = {
         color: '#6C6C6C',
         name: 'Gray',
@@ -45,15 +45,9 @@ export class TaNoteContainerComponent implements OnInit {
     closedPattern: boolean = false;
     private destroy$ = new Subject<void>();
 
-    constructor(private sharedService: SharedService) {}
+    constructor() {}
 
-    ngOnInit(): void {
-        this.sharedService.emitUpdateNoteActiveList
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.checkActiveItems();
-            });
-    }
+    ngOnInit(): void {}
 
     filterContainersColor() {
         this.containerColors.sort((a, b) => {
@@ -67,8 +61,7 @@ export class TaNoteContainerComponent implements OnInit {
     executeEditor(
         action: string,
         color?: string,
-        indx?: number,
-        preventSelectionRemove?: boolean
+        indx?: number
     ) {
         if (indx || indx === 0) {
             this.selectedColorName = this.containerColors[indx];

@@ -94,16 +94,10 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Terminal successfully deleted',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Terminal with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -138,6 +132,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
+                    iconName: 'edit'
                 },
                 {
                     title: 'border',
@@ -147,13 +142,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     show: true,
-                },
-                {
-                    title: 'Add Bill',
-                    name: 'add-bill',
-                    svg: 'assets/svg/common/ic_plus.svg',
-                    show: true,
-                    blueIcon: true,
+                    iconName: 'view-details'
                 },
                 {
                     title: 'border',
@@ -163,22 +152,17 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
+                    iconName: 'share'
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
+                    iconName: 'print'
                 },
                 {
                     title: 'border',
-                },
-                {
-                    title: 'Close Business',
-                    name: 'close-business',
-                    svg: 'assets/svg/common/close-business-icon.svg',
-                    redIcon: true,
-                    show: true,
                 },
                 {
                     title: 'Delete',
@@ -189,6 +173,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
+                    iconName: 'delete'
                 },
             ],
             export: true,

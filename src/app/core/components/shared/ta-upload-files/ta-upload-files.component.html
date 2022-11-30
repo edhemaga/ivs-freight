@@ -39,12 +39,14 @@
                     [hasNumberOfPages]="hasNumberOfPages"
                     [customClassName]="customClassName"
                     (fileAction)="onFileAction($event)"
+                    (landscapeCheck)="onLandscapeCheck($event)"
                     (documentReviewInputEvent)="
                         documentReviewInputEventMethod($event)
                     "
                     [tags]="tags"
                     [type]="type"
                     [categoryTag]="categoryTag"
+                    [hasLandscapeOption]="hasLandscapeOption"
                 ></app-ta-upload-file>
             </div>
         </div>
@@ -52,6 +54,7 @@
     <app-ta-upload-dropzone
         *ngIf="
             customClassName !== 'driver-details-pdf' &&
+            customClassName !== 'landscape-details-view' &&
             reviewMode !== 'REVIEW_MODE'
         "
         (onFileEvent)="onUploadFiles($event)"

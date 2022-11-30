@@ -8,7 +8,7 @@
             <div *ngSwitchCase="'load'" class="load">
                 <div
                     class="repair-container"
-                    *ngIf="shipperData.data.loadStops.length"
+                    *ngIf="shipperData?.data?.loadStops?.length"
                 >
                     <div class="repair-header">
                         <span class="repaier-headers">LOAD</span>

@@ -42,6 +42,7 @@ export class DispatcherNoteComponent implements OnInit {
     @Output() saveNoteValue = new EventEmitter();
     openedAll: boolean;
     leaveThisOpened: boolean;
+    @ViewChild('noteContainer', { static: true }) noteContainer: any;
 
     constructor(private sharedService: SharedService) {}
 
@@ -67,7 +68,9 @@ export class DispatcherNoteComponent implements OnInit {
     }
 
     checkActiveItems() {
-        this.sharedService.emitUpdateNoteActiveList.next(null);
+        if(this.noteContainer && this.noteContainer?.checkActiveItems) {
+            this.noteContainer?.checkActiveItems();     
+        }
     }
 
     saveNote() {

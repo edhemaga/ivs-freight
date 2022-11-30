@@ -109,17 +109,11 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                         this.trailerConf(res);
                         this.initTableOptions(res);
                         this.router.navigate([`/trailer/${res.id}/details`]);
-                        this.notificationService.success(
-                            'Trailer successfully changed',
-                            'Success:'
-                        );
+                       
                         this.cdRef.detectChanges();
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Trailer can't be loaded",
-                            'Error:'
-                        );
+                        
                     },
                 });
             });
@@ -139,7 +133,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 id: 1,
                 name: 'Registration',
                 template: 'registration',
-                data: data,
+                data: data.registrations,
                 length: data?.registrations?.length
                     ? data.registrations.length
                     : 0,
@@ -149,7 +143,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 id: 2,
                 name: 'FHWA Inspection',
                 template: 'fhwa-insepction',
-                data: data,
+                data: data.inspections,
                 length: data?.inspections?.length ? data.inspections.length : 0,
                 status: data?.status == 0 ? true : false,
             },
@@ -157,7 +151,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 id: 3,
                 name: 'Title',
                 template: 'title',
-                data: data,
+                data: data.titles,
                 length: data?.titles?.length ? data.titles.length : 0,
                 status: data?.status == 0 ? true : false,
             },
@@ -197,6 +191,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                     disabled: data.status == 0 ? true : false,
+                    iconName: 'edit'
                 },
                 {
                     title: 'border',
@@ -206,6 +201,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     show: true,
+                    iconName: 'view-details'
                 },
                 {
                     title: 'Add New',
@@ -220,6 +216,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                         { subName: 'Title', actionName: 'Title' },
                         { subName: 'Lease / Rent', actionName: 'Lease / Rent' },
                     ],
+                    iconName: 'add-new'
                 },
                 {
                     title: 'border',
@@ -229,12 +226,14 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
+                    iconName: 'share'
                 },
                 {
                     title: 'Print',
                     name: 'print-truck',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
+                    iconName: 'print'
                 },
                 {
                     title: 'border',
@@ -248,6 +247,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     show: data.status == 1 || data.status == 0 ? true : false,
                     redIcon: data.status == 1 ? true : false,
                     blueIcon: data.status == 0 ? true : false,
+                    iconName: 'activate-item'
                 },
                 {
                     title: 'Delete',
@@ -257,15 +257,24 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
+                    iconName: 'delete'
                 },
             ],
             export: true,
         };
     }
     public getTrailerById(id: number) {
+        console.log('--here---', id)
+        
         this.trailerService
             .getTrailerById(id, true)
             .subscribe((item) => (this.trailerObject = item));
+
+
+        setTimeout(()=>{
+            console.log("tttt", this.trailerObject);
+        }, 1000)
+        
     }
     public deleteTrailerById(id: number) {
         let status = this.trailerObject.status == 0 ? 'inactive' : 'active';
@@ -292,10 +301,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                             }/details`,
                         ]);
                     }
-                    this.notificationService.success(
-                        'Trailer successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
                     this.router.navigate(['/trailer']);
@@ -309,16 +315,10 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Trailer successfully Change Status`,
-                        'Success:'
-                    );
+                 
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Trailer with id: ${id}, status couldn't be changed`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }

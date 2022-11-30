@@ -111,17 +111,11 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             this.router.navigate([`/truck/${res.id}/details`]);
                         }
 
-                        this.notificationService.success(
-                            'Truck successfully changed',
-                            'Success:'
-                        );
+                      
                         this.cdRef.detectChanges();
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Truck can't be loaded",
-                            'Error:'
-                        );
+                       
                     },
                 });
             });
@@ -164,10 +158,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             }/details`,
                         ]);
                     }
-                    this.notificationService.success(
-                        'Truck successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
                     this.router.navigate(['/truck']);
@@ -181,16 +172,10 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Truck successfully Change Status`,
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Truck with id: ${id}, status couldn't be changed`,
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -225,6 +210,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     title: 'Edit',
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    iconName: 'edit',
                     show: true,
                     disabled: data.status == 0 ? true : false,
                 },
@@ -235,11 +221,13 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     title: 'View Details',
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: 'view-details',
                     show: true,
                 },
                 {
                     title: 'Add New',
                     svg: 'assets/svg/common/dropdown-arrow.svg',
+                    iconName: 'add-new',
                     disabled: data.status == 0 ? true : false,
                     subType: [
                         { subName: 'Registration', actionName: 'Registration' },
@@ -261,12 +249,14 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     title: 'Share',
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
+                    iconName: 'share',
                     show: true,
                 },
                 {
                     title: 'Print',
                     name: 'print-truck',
                     svg: 'assets/svg/common/ic_fax.svg',
+                    iconName: 'print',
                     show: true,
                 },
                 {
@@ -276,6 +266,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     title: data.status == 0 ? 'Activate' : 'Deactivate',
                     name: data.status == 0 ? 'activate' : 'deactivate',
                     svg: 'assets/svg/common/ic_deactivate.svg',
+                    iconName: 'activate-item',
                     activate: data.status == 0 ? true : false,
                     deactivate: data.status == 1 ? true : false,
                     show: data.status == 1 || data.status == 0 ? true : false,
@@ -287,6 +278,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     name: 'delete-item',
                     type: 'truck',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
+                    iconName: 'delete',
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -361,7 +353,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 length: data?.registrations?.length
                     ? data.registrations.length
                     : 0,
-                data: data,
+                data: data.registrations,
                 status: data?.status == 0 ? true : false,
             },
             {
@@ -369,7 +361,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 name: 'FHWA Inspection',
                 template: 'fhwa-insepction',
                 length: data?.inspections?.length ? data.inspections.length : 0,
-                data: data,
+                data: data.inspections,
                 status: data?.status == 0 ? true : false,
             },
             {
@@ -377,7 +369,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 name: 'Title',
                 template: 'title',
                 length: data?.titles?.length ? data.titles.length : 0,
-                data: data,
+                data: data.titles,
                 status: data?.status == 0 ? true : false,
             },
             {

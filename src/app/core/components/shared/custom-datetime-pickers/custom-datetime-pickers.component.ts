@@ -205,4 +205,62 @@ export class CustomDatetimePickersComponent implements OnInit {
     ngOnDestroy() {
         this.listPreview = 'full_list';
     }
+
+    onScroll(e, type, index: number = null): void {
+        const scrolFromTop = Math.floor(e.target.scrollTop);
+        const scrollIndex =
+            index == null ? Math.floor(scrolFromTop / 22) : index;
+        const scrollRemaining = scrolFromTop % 22;
+        clearInterval(this.scrollTimer);
+        this.scrollTimer = setTimeout(() => {
+            if (scrollRemaining < 11 && index == null) {
+                e.target.scrollTop = scrollIndex * 22;
+                this.scrollTypes[type] = scrollIndex;
+            } else if (index != null) {
+                e.target.parentNode.scrollTop = scrollIndex * 22;
+                this.scrollTypes[type] = scrollIndex;
+            } else {
+                e.target.scrollTop = (scrollIndex + 1) * 22;
+                this.scrollTypes[type] = scrollIndex + 1;
+            }
+
+            this.checkForScrolledType(type);
+        }, 200);
+    }
+
+    public checkForScrolledType(type): void {
+        if (type == 'hourScroll') {
+            if (this.scrollTypes[type] >= 12) {
+                this.pmAmScroll.nativeElement.scrollTop = 22;
+                this.scrollTypes.pmAmScroll = 1;
+            } else {
+                this.pmAmScroll.nativeElement.scrollTop = 0;
+                this.scrollTypes.pmAmScroll = 0;
+            }
+        }
+
+        if (type == 'pmAmScroll') {
+            if (this.scrollTypes[type] == 0) {
+                if (this.scrollTypes.hourScroll >= 12) {
+                    this.hourScroll.nativeElement.scrollTop =
+                        (this.scrollTypes.hourScroll - 12) * 22;
+                    this.scrollTypes.hourScroll = Math.floor(
+                        this.scrollTypes.hourScroll - 12
+                    );
+                }
+            } else {
+                if (this.scrollTypes.hourScroll < 12) {
+                    this.hourScroll.nativeElement.scrollTop =
+                        (this.scrollTypes.hourScroll + 12) * 22;
+                    this.scrollTypes.hourScroll = Math.floor(
+                        this.scrollTypes.hourScroll + 12
+                    );
+                }
+            }
+        }
+
+        this.selectedTime = `${this.hourTimes[this.scrollTypes.hourScroll]}:${
+            this.timeMinutes[this.scrollTypes.minutesScroll]
+        } ${this.timeOfDay[this.scrollTypes.pmAmScroll]}`;
+    }
 }

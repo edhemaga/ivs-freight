@@ -18,17 +18,16 @@ import { FuelDispatchHistoryResponse } from '../../../../../../../appcoretruckas
 import { FuelStopFranchiseResponse } from '../../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import {
     combineDateAndTimeToBackend,
+    convertDateToBackend,
     convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
 import { TruckTService } from '../../../truck/state/truck.service';
 import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
-import { FuelTransactionResponse } from '../../../../../../../appcoretruckassist/model/fuelTransactionResponse';
 import { EnumValue } from '../../../../../../../appcoretruckassist/model/enumValue';
 
 import {
     convertDateFromBackend,
-    convertDateFromBackendToTime,
     convertNumberInThousandSep,
 } from '../../../../utils/methods.calculations';
 import {
@@ -334,13 +333,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully updated fuel transaction',
-                        'Success'
-                    );
+                    
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+                  
                 },
             });
     }
@@ -371,13 +367,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully created fuel transaction',
-                        'Success'
-                    );
+                  
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+                    
                 },
             });
     }
@@ -387,7 +380,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .getFuelTransactionById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: FuelTransactionResponse) => {
+                next: (res: any) => {
                     console.log('get by id: ', res);
                     this.fuelForm.patchValue({
                         efsAccount: null,
@@ -403,7 +396,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         transactionDate: convertDateFromBackend(
                             res.transactionDate
                         ),
-                        transactionTime: convertDateFromBackendToTime(
+                        transactionTime: convertDateToBackend(
                             res.transactionDate
                         ),
                         fuelStopStoreId: res.fuelStopStore
@@ -470,7 +463,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+                 
                 },
             });
     }
@@ -484,7 +477,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.fuelItemsDropdown = res.itemFuel;
                 },
                 error: (error: any) => {
-                    this.notificationService.error('Error', error);
+                    
                 },
             });
     }
@@ -550,7 +543,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     );
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+               
                 },
             });
     }
@@ -580,7 +573,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+             
                 },
             });
     }
@@ -609,7 +602,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     );
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+              
                 },
             });
     }

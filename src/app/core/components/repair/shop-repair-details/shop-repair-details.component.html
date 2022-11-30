@@ -13,10 +13,16 @@
             [arrayIcons]="item.icons"
             [hasDateArrow]="true"
             [showRepairHeaderOpen]="true"
-            [repairIsOpen]="togglerWorkTime"
+            [repairIsOpen]="businessOpen"
             [totalCost]="item.total"
             [optionsId]="repairShopId"
             [mainData]="item"
+            [timeFilter]="true"
+            [unitFilter]="true"
+            [repairOrderFilter]="true"
+            [pmFilter]="true"
+            [categoryFilter]="true"
+            [moneyFilter]="true"
             (dropActions)="dropActionRepair($event)"
         >
         </app-ta-details-header>

@@ -46,16 +46,10 @@ export class LoadDetailsComponent implements OnInit, OnChanges, OnDestroy {
                     next: (res: LoadResponse) => {
                         this.detailCongif(res);
                         this.router.navigate([`/load/${res.id}/details`]);
-                        this.notificationService.success(
-                            'Load successfully changed',
-                            'Success:'
-                        );
+                        
                     },
                     error: () => {
-                        this.notificationService.error(
-                            "Load can't be loaded",
-                            'Error:'
-                        );
+                       
                     },
                 });
             });
