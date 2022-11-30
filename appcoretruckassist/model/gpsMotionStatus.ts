@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
 
 
-export interface RoadsideInspectionListResponse { 
-    pagination?: RoadsideInspectionResponsePagination;
-    active?: number;
-    inactive?: number;
-    violationSummary?: number;
-}
+export type GpsMotionStatus = 'MOTION' | 'SHORT_STOP' | 'EXTENDED_STOP' | 'PARKING';
+
+export const GpsMotionStatus = {
+    Motion: 'MOTION' as GpsMotionStatus,
+    ShortStop: 'SHORT_STOP' as GpsMotionStatus,
+    ExtendedStop: 'EXTENDED_STOP' as GpsMotionStatus,
+    Parking: 'PARKING' as GpsMotionStatus
+};
 

@@ -9,13 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
 
 
-export interface RoadsideInspectionListResponse { 
-    pagination?: RoadsideInspectionResponsePagination;
-    active?: number;
-    inactive?: number;
-    violationSummary?: number;
+export interface LiveTrackingHistoryMotionTimeResponse { 
+    driveTime?: string | null;
+    driveTimePercent?: number;
+    shortStopTime?: string | null;
+    shortStopPercent?: number;
+    extendedStopTime?: string | null;
+    extendedStopPercent?: number;
+    parkingTime?: string | null;
+    parkingPercent?: number;
 }
 

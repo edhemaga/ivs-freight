@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
+import { GpsMotionStatus } from './gpsMotionStatus';
 
 
-export interface RoadsideInspectionListResponse { 
-    pagination?: RoadsideInspectionResponsePagination;
-    active?: number;
-    inactive?: number;
-    violationSummary?: number;
+export interface LiveTrackingHistoryStopItemResponse { 
+    location?: string | null;
+    stopTime?: string | null;
+    totalLegMiles?: number | null;
+    legMiles?: number | null;
+    stopType?: GpsMotionStatus;
 }
 

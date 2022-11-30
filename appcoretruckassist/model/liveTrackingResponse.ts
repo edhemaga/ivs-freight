@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
+import { LiveTrackingItemResponse } from './liveTrackingItemResponse';
 
 
-export interface RoadsideInspectionListResponse { 
-    pagination?: RoadsideInspectionResponsePagination;
-    active?: number;
-    inactive?: number;
-    violationSummary?: number;
+export interface LiveTrackingResponse { 
+    data?: Array<LiveTrackingItemResponse> | null;
 }
 

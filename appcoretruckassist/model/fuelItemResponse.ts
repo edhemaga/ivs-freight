@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
 export interface FuelItemResponse { 
     id?: number;
     fuelTransactionId?: number;
-    category?: string | null;
+    itemFuel?: EnumValue;
     price?: number;
     qty?: number;
     subtotal?: number;
