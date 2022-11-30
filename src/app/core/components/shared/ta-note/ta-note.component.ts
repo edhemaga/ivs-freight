@@ -77,6 +77,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     isFocused: boolean = false;
     preventClosing: boolean = false;
     savingNote: boolean = false;
+    @ViewChild('noteContainer', { static: true }) noteContainer: any;
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -191,7 +192,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     checkActiveItems() {
-        this.sharedService.emitUpdateNoteActiveList.next(null);
+        if(this.noteContainer && this.noteContainer?.checkActiveItems) {
+            this.noteContainer?.checkActiveItems();     
+        }
     }
 
     saveNote(autoSave?: boolean) {
