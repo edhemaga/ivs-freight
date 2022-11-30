@@ -1665,6 +1665,22 @@
                                     <div class="no-template">NO TEMPLATE</div>
                                 </div>
 
+                                <!-- MILES HALF PERCENT COLUMN -->
+                                <div
+                                    class="td-content"
+                                    *ngIf="column.ngTemplate === 'halfPercentage'"
+                                    [ngStyle]="{
+                                        width: column.width + 'px',
+                                        'min-width.px': column?.minWidth
+                                            ? column.minWidth
+                                            : 'unset'
+                                    }"
+                                >
+                                    <span class="table-text">{{
+                                        row[column.field]
+                                    }}</span>
+                                </div>
+
                                 <!-- DISPECHER AVATAR COLUMN -->
                                 <div
                                     class="td-content"

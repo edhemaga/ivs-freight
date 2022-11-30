@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { MilesByUnitListResponse } from 'appcoretruckassist';
+import { MilesByUnitResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { MilesStoreService } from './miles.service';
@@ -16,7 +16,8 @@ export class MilesResolverService implements Resolve<any> {
             catchError(() => {
                 return of('No miles data...');
             }),
-            tap((milesList: MilesByUnitListResponse) => {
+            tap((milesList: any) => {
+                console.log(milesList);
                 localStorage.setItem(
                     'milesTableCount',
                     JSON.stringify({
@@ -25,7 +26,7 @@ export class MilesResolverService implements Resolve<any> {
                     })
                 );
 
-                this.store.set(milesList.pagination.data);
+               this.store.set(milesList.pagination.data);
             })
         );
         //return of();

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { getMilesColumnsDefinition } from '../../../../../assets/utils/settings/miles-columns';
+import { MilesTableQuery } from '../state/miles.query';
 
 @Component({
     selector: 'app-miles',
     templateUrl: './miles.component.html',
     styleUrls: ['./miles.component.scss'],
 })
-export class MilesComponent implements OnInit {
+export class MilesComponent implements OnInit, AfterViewInit {
     tableOptions: any = {};
     tableData: any[] = [];
     viewData: any[] = [];
@@ -14,18 +15,17 @@ export class MilesComponent implements OnInit {
     activeViewMode: string = 'List';
     columns: any[] = [];
     tableContainerWidth: number = 0;
-    constructor() {}
+    resizeObserver: ResizeObserver;
+    constructor(private milesTableQuery: MilesTableQuery) {}
 
     ngOnInit(): void {
-      this.sendMilesData();
+        this.sendMilesData();
     }
 
     sendMilesData() {
         this.initTableOptions();
 
-        const milesCount = JSON.parse(
-            localStorage.getItem('milesTableCount')
-        );
+        const milesCount = JSON.parse(localStorage.getItem('milesTableCount'));
         const milesActiveData =
             this.selectedTab === 'active' ? this.getTabData('active') : [];
 
@@ -64,16 +64,15 @@ export class MilesComponent implements OnInit {
         this.setMilesData(td);
     }
 
+    driversActive: any;
+
     getTabData(dataType: string) {
         if (dataType === 'active') {
-            // this.driversActive = this.driversActiveQuery.getAll();
-            // return this.driversActive?.length ? this.driversActive : [];
+            this.driversActive = this.milesTableQuery.getAll();
+            return this.driversActive?.length ? this.driversActive : [];
         } else if (dataType === 'inactive') {
             // this.driversInactive = this.driversInactiveQuery.getAll();
             // return this.driversInactive?.length ? this.driversInactive : [];
-        } else if ('applicants') {
-            // this.applicantData = this.applicantQuery.getAll();
-            // return this.applicantData?.length ? this.applicantData : [];
         }
     }
 
@@ -83,14 +82,41 @@ export class MilesComponent implements OnInit {
         if (td.data.length) {
             this.viewData = td.data;
 
-            // this.viewData = this.viewData.map((data: any) => {
-            //     return this.selectedTab === 'applicants'
-            //         ? this.mapApplicantsData(data)
-            //         : this.mapDriverData(data);
-            // });
+            this.viewData = this.viewData.map((data: any) => {
+                return this.mapMilesData(data);
+            });
+
+            console.log('WHAT IS DATA');
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
+    }
+
+    observTableContainer() {
+        this.resizeObserver = new ResizeObserver((entries) => {
+            entries.forEach((entry) => {
+                this.tableContainerWidth = entry.contentRect.width;
+            });
+        });
+
+        this.resizeObserver.observe(document.querySelector('.table-container'));
+    }
+
+    ngAfterViewInit(): void {
+      setTimeout(() => {
+          this.observTableContainer();
+      }, 10);
+  }
+
+    mapMilesData(data: any) {
+        return {
+            ...data,
+            isSelected: false,
+            unit: data.truck.truckNumber,
+            truckTypeIcon: data.truck.truckType.logoName,
+            truckTypeClass: data.truck.truckType.logoName.replace('.svg', ''),
+        };
     }
 
     getGridColumns(activeTab: string, configType: string) {
@@ -98,7 +124,9 @@ export class MilesComponent implements OnInit {
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        return tableColumnsConfig ? tableColumnsConfig : getMilesColumnsDefinition();
+        return tableColumnsConfig
+            ? tableColumnsConfig
+            : getMilesColumnsDefinition();
     }
 
     initTableOptions(): void {
@@ -206,5 +234,15 @@ export class MilesComponent implements OnInit {
 
     onTableBodyActions(event: any) {
         console.log(event);
+    }
+
+    ngOnDestroy(): void {
+        // this.destroy$.next();
+        // this.destroy$.complete();
+        // this.tableService.sendActionAnimation({});
+        this.resizeObserver.unobserve(
+            document.querySelector('.table-container')
+        );
+        this.resizeObserver.disconnect();
     }
 }
