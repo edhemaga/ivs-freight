@@ -17,7 +17,7 @@ export class SettingsPayrollComponent implements OnChanges {
             changes?.payrollData?.previousValue
         ) {
             this.payrollData = changes?.payrollData?.currentValue;
-        }
+        }        
     }
 
     public identity(index: number, item: any): number {
@@ -25,5 +25,16 @@ export class SettingsPayrollComponent implements OnChanges {
     }
     public onAction(modal: { modalName: string; type: string; company?: any }) {
         this.settingsCompanyService.onModalAction(modal);
+    }
+
+    public setNameFormat(mod){
+        
+        if ( mod == 'Driver&Owner' ) {
+            mod = 'Driver & Owner';
+            return mod;
+        } else {
+            return mod.match(/[A-Z][a-z]+|[0-9]+/g).join(" ");
+        }
+        
     }
 }

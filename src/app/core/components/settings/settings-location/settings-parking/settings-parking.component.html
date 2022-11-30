@@ -66,13 +66,13 @@
                 >
                     <div class="parking-template-item">
                         <p class="parking-template-number">
-                            {{ item.parkingSlot }}
+                            {{ item.parkingSlotCount ? item.parkingSlotCount : 0 }}
                         </p>
                         <p class="parking-template-text">Parking Slot</p>
                     </div>
                     <div class="parking-template-item">
                         <p class="parking-template-number">
-                            {{ item.fullParkingSlot }}
+                            {{ item.fullParkingSlotCount ? item.fullParkingSlotCount : 0 }}
                         </p>
                         <p class="parking-template-text">Full Parking Slot</p>
                     </div>

@@ -135,8 +135,9 @@
         class="card-body-cmp"
         [@.disabled]="animationsDisabled"
         [ngClass]="{ active: isCardOpen }"
+        
     >
-        <div [@showHideCardBody]="isCardOpen ? 'true' : 'false'">
+        <div [@cardOpenAnimation]="animationStarted ? 'true' : 'false'">
             <ng-content></ng-content>
         </div>
     </div>
@@ -144,6 +145,7 @@
         class="card-footer-cmp"
         [ngClass]="{ 'hide-padding': resPage }"
         *ngIf="isCardOpen && hasFooter"
+        [@footerOpenAnimation]="animationStarted ? 'true' : 'false'"
     >
         <div class="icon-counter">
             <svg-icon
@@ -168,7 +170,7 @@
             [ngClass]="{ 'rotate-common': resPage }"
             class="resize-icon"
         >
-            <span class="hide-text" *ngIf="resPage">HIDE DETAILS</span>
+            
             <svg-icon
                 class="resize-icon-svg"
                 src="assets/svg/common/resize-arrow.svg"
