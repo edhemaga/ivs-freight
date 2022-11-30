@@ -48,6 +48,8 @@ p {
     -moz-column-gap: 12px;
     column-gap: 12px;
     row-gap: 12px;
+
+    padding-bottom: 18px;
 }
 // Common Class
 .details-component {
@@ -125,7 +127,7 @@ p {
         overflow: hidden;
         width: 440px;
         background-color: $color-white;
-        padding: 9px 6px;
+        padding: 9px 6px 4px 6px;
     }
 }
 .assignTo {
@@ -259,7 +261,7 @@ p {
     .ta-card-header {
         padding-top: 6px !important;
         padding-bottom: 6px !important;
-        padding-right: 6px !important;
+        padding-right: 4px !important;
     }
 }
 .cards-container {
@@ -1066,4 +1068,28 @@ p {
 }
 .date-details-svg {
     margin-left: 29px;
+}
+
+.note-details-holder{
+    padding-right: 4px;
+    padding-left: 4px;
+
+    .note-container {
+        .note-header {
+            .note-label{
+                color: #919191 !important;
+
+                &:hover{
+                    color: #6c6c6c !important;
+                }
+            }
+
+            &.active{
+                .note-label{
+                    color: #6c6c6c !important;
+                }
+            }
+        }
+    }
+    
 }

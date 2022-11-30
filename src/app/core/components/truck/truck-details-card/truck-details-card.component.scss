@@ -44,7 +44,10 @@ app-truck-details-card {
         padding: 9px 6px;
     }
     .note-cards {
-        padding: 0 1px;
+        padding: 0 4px;
+        .note-header{
+            padding: 0px 0px !important;
+        }
         .note-body {
             padding: 0 6px !important;
             .note-textarea {
@@ -198,6 +201,7 @@ app-truck-details-card {
         .single-icon-wrapper {
             justify-content: center;
             margin-top: 10px !important;
+
             svg {
                 transform: rotate(180deg);
                 path {
@@ -211,10 +215,12 @@ app-truck-details-card {
     }
     .single-icon-wrapper {
         padding: 0 10px;
+
         cursor: pointer;
         .icon-rotate {
             cursor: pointer;
             svg {
+                transition: 0.2s ease all;
                 &:hover {
                     path {
                         fill: #6c6c6c;

@@ -1,3 +1,37 @@
+
+@keyframes itemAnimation {
+    0% {
+        max-height: 10px;
+        overflow: hidden;
+    }
+    100% {
+        max-height: 40px;
+        overflow: auto;
+    }
+}
+
+@keyframes itemFormAnimation {
+    0% {
+        max-height: 0px;
+        overflow: hidden;
+    }
+    100% {
+        max-height: 100px;
+        overflow: auto;
+    }
+}
+
+@keyframes bordersAnimation {
+    0% {
+        height: 0px;
+        overflow: hidden;
+    }
+    100% {
+        height: 2px;
+        overflow: auto;
+    }
+}
+
 .user-icon {
     position: relative;
     width: 26px;
@@ -161,9 +195,9 @@
         }
     }
 }
+
 .filter-holder {
     position: relative;
-    //left: -10px;
     width: 260px;
     padding: 7px 6px 6px 6px;
     border-radius: 3px;
@@ -721,6 +755,7 @@
             .user-main-holder {
                 width: 100%;
                 transition: all 0.2s linear;
+                //animation: itemAnimation 0.3s;
                 &:hover {
                     cursor: pointer;
                     background-color: #1d1d1d;
@@ -1413,7 +1448,33 @@
 
     .button-set {
         width: 141px !important;
+    }   
+
+    .areaFilterHolder{
+        padding: 6px 0px;
+        width: 100%;
     }
+
+    .area-all-holder{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        width: 100%;
+        overflow: hidden;
+
+        .main-part-holder{
+            position: relative;
+            width: 100%;
+         
+            .area-forms-holder{
+                .area-single-form-holder{
+                    padding: 16px 0px 10px 0px;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+    
 
     .filter-middle-holder {
         padding-top: 10px;
@@ -1421,11 +1482,12 @@
 
         &.location-middle-padding {
             padding-top: 16px;
+            overflow: hidden !important;
         }
 
         &.location-slider-middle-padding {
             padding-top: 12px;
-
+            overflow: hidden !important;
             .ta-ngx-slider,
             .custom-slider-commission {
                 margin-bottom: 7px !important;
@@ -1533,6 +1595,10 @@
                     box-shadow: 0.3px -0.49px 4.4px rgb(0 0 0 / 30%) !important;
                 }
             }
+        }
+
+        &.areaFilterPadding{
+            padding-bottom: 10px;
         }
     }
 
@@ -1668,6 +1734,8 @@
         margin: 8px 0px 6px 0px;
         background-color: #aaa;
         opacity: 0.2;
+
+        //animation: bordersAnimation 0.3s;
     }
 
     .time-data-border {
@@ -1698,7 +1766,7 @@
             color: #fff;
             line-height: 26px;
             margin-bottom: 4px;
-
+            //animation: itemAnimation 2.3s cubic-bezier(0.68, -0.6, 0.32, 1.6);
             &:hover {
                 cursor: pointer;
                 background-color: #1d1d1d;
@@ -2256,11 +2324,23 @@
     z-index: 1071;
 }
 
-.main-popover-body {
+.filter-main-popover-body {
     position: relative;
     left: -10px;
 }
 
 .popover {
     background-color: transparent;
+}
+
+.closeFilterAnimation {
+    @keyframes filterOpacityAnimation {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+    //animation: filterOpacityAnimation 0.1s !important;
 }

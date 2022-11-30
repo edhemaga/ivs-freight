@@ -34,6 +34,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     public repairList: any;
     public repairObject: any;
     public togglerWorkTime: boolean;
+    public businessOpen: boolean;
     public repairsDataLength: number = 0;
     public repairedDataLength: number = 0;
     public currentIndex: number = 0;
@@ -172,6 +173,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
+                    iconName: 'edit'
                 },
                 {
                     title: 'border',
@@ -182,6 +184,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_plus.svg',
                     show: true,
                     blueIcon: true,
+                    iconName: 'ic_plus'
                 },
                 {
                     title: 'Move to Favourite',
@@ -189,12 +192,14 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_star.svg',
                     activate: true,
                     show: true,
+                    iconName: 'ic_star'
                 },
                 {
                     title: 'Write Review',
                     name: 'write-review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
+                    iconName: 'write-review'
                 },
                 {
                     title: 'border',
@@ -204,12 +209,14 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
+                    iconName: 'share'
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
+                    iconName: 'print'
                 },
                 {
                     title: 'border',
@@ -220,6 +227,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: true,
                     show: true,
+                    iconName: 'close-business'
                 },
                 {
                     title: 'Delete',
@@ -230,6 +238,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
+                    iconName: 'delete'
                 },
             ],
             export: true,
@@ -284,11 +293,17 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     public shopConf(data?: RepairShopResponse) {
         this.repairObject = data;
         this.DetailsDataService.setNewData(data);
-
+        
         if (data?.openHoursToday === 'Closed') {
             this.togglerWorkTime = false;
         } else {
             this.togglerWorkTime = true;
+        }
+
+        if (data?.status){
+            this.businessOpen = true;
+        }else {
+            this.businessOpen = false; 
         }
 
         this.shopRepairConfig = [
