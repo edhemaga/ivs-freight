@@ -381,7 +381,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .getFuelTransactionById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: FuelTransactionResponse) => {
+                next: (res: any) => {
                     console.log('get by id: ', res);
                     this.fuelForm.patchValue({
                         efsAccount: null,

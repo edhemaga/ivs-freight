@@ -27,13 +27,13 @@ export class RoadsideService {
         return this.roadsideServis.apiViolationListGet(
             active,
             categoryReport,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
+            // pageIndex,
+            // pageSize,
+            // companyId,
+            // sort,
+            // search,
+            // search1,
+            // search2
         );
     }
 
