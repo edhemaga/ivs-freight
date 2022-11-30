@@ -49,7 +49,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() modalTitle: string;
     @Input() editName: string;
     @Input() loadModalTemplate: boolean;
-    @Input() hazardousLogo?: boolean;
+    @Input() isVisibleHazardous?: boolean;
+    @Input() isVisibleMap?: boolean;
     @Input() editData: any;
     @Input() confirmationData: any;
     @Input() headerSvg: string;

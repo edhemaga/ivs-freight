@@ -374,9 +374,7 @@ export class SettingsInsurancePolicyModalComponent
                 next: (res: InsurancePolicyModalResponse) => {
                     this.ratings = res.ratings;
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -432,7 +430,7 @@ export class SettingsInsurancePolicyModalComponent
         if (this.selectedAddress) {
             this.selectedAddress = {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit: addressUnit ? addressUnit : undefined,
             };
         }
 
@@ -573,19 +571,13 @@ export class SettingsInsurancePolicyModalComponent
         newData = {
             ...newData,
             insurancePolicyAddons,
+            files: [],
         };
 
         this.settingsCompanyService
             .addInsurancePolicy(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private updateInsurancePolicy(id: number) {
@@ -640,7 +632,7 @@ export class SettingsInsurancePolicyModalComponent
         if (this.selectedAddress) {
             this.selectedAddress = {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit: addressUnit ? addressUnit : undefined,
             };
         }
 
@@ -786,36 +778,24 @@ export class SettingsInsurancePolicyModalComponent
         newData = {
             ...newData,
             insurancePolicyAddons,
+            files: [],
         };
 
         this.settingsCompanyService
             .updateInsurancePolicy(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
-            });
+            .subscribe();
     }
 
     private deleteInsurancePolicyById(id: number) {
         this.settingsCompanyService
             .deleteInsurancePolicyById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private editInsurancePolicyById(insurance: any) {
+        console.log('insurance data: ', insurance);
         this.insurancePolicyForm.patchValue({
             producerName: insurance.producerName,
             issued: convertDateFromBackend(insurance.issued),

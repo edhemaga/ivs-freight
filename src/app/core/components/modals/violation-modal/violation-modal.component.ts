@@ -449,7 +449,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         status: false,
                     });
                 },
-                error: (err: any) => {},
+                error: () => {},
             });
     }
 
@@ -626,7 +626,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: (err: any) => {},
+                error: () => {},
             });
     }
 
@@ -643,7 +643,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: (err: any) => {},
+                error: () => {},
             });
     }
 

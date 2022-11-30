@@ -52,13 +52,14 @@
                 <div class="modal-header-rightside">
                     <!-- Hazardous Logo -->
                     <svg-icon
-                        *ngIf="hazardousLogo"
+                        *ngIf="isVisibleHazardous"
                         src="assets/svg/common/ic_hazardous_modal_logo.svg"
                         class="modal-hazardous-logo"
                         (click)="toggleAdditionalPart('hazardous')"
                     ></svg-icon>
                     <!-- Load Map Button -->
                     <div
+                        *ngIf="isVisibleMap"
                         class="modal-header-load-map-button"
                         [ngClass]="{ active: mapVisibility }"
                         (click)="toggleAdditionalPart('map')"
