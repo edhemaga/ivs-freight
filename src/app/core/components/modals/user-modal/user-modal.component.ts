@@ -311,10 +311,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    this.notificationService.success(
-                        'Successfuly add new bank',
-                        'Success'
-                    );
+                   
                     this.selectedBank = {
                         id: res.id,
                         name: this.selectedBank.name,
@@ -322,10 +319,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add new bank",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -477,13 +471,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully created user.',
-                        'Success'
-                    );
+                    
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+                 
                 },
             });
     }
@@ -541,13 +532,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully created user.',
-                        'Success'
-                    );
+                  
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+                
                 },
             });
     }
@@ -558,13 +546,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully deleted user.',
-                        'Success'
-                    );
+                   
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+                  
                 },
             });
     }
@@ -665,7 +650,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.isPhoneExtExist = !!res.extensionPhone;
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+                    
                 },
             });
     }
@@ -694,14 +679,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
                             status: this.userStatus,
                         });
 
-                        this.notificationService.success(
-                            successMessage,
-                            'Success'
-                        );
+                       
                     }
                 },
                 error: () => {
-                    this.notificationService.error(errorMessage, 'Error');
+              
                 },
             });
     }
@@ -720,7 +702,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.heleperForDispatchers = res.dispatcherResponses;
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+                
                 },
             });
     }

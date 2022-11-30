@@ -141,10 +141,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     this.modalName = res.firstName.concat(' ', res.lastName);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Driver can't be loaded.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -161,10 +158,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     this.testResults = res.testResults;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Drug's dropdowns can't be loaded.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -280,16 +274,10 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Test successfully added.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Test can't be added.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -319,16 +307,10 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Test successfully added.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Test can't be added.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -363,7 +345,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error("Can't get Test", 'Error:');
+                
                 },
             });
     }
@@ -383,10 +365,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load list of drivers",
-                        'Error'
-                    );
+                   
                 },
             });
     }

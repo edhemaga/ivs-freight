@@ -113,7 +113,7 @@
                         {{ companyData?.address?.address }}
                     </p>
                 </div>
-                <div class="basic-data">
+                <div class="basic-data" *ngIf="companyData?.phone">
                     <svg-icon
                         class="basic-data-svg"
                         src="assets/svg/common/ic_phone.svg"
@@ -122,7 +122,7 @@
                     </app-ta-copy>
                 </div>
 
-                <div class="basic-data">
+                <div class="basic-data" *ngIf="companyData?.email">
                     <svg-icon
                         class="basic-data-svg"
                         src="assets/svg/common/ic_email.svg"
@@ -131,14 +131,14 @@
                     </app-ta-copy>
                 </div>
 
-                <div class="basic-data">
+                <div class="basic-data" *ngIf="companyData?.fax">
                     <svg-icon
                         class="basic-data-svg"
                         src="assets/svg/common/ic_fax.svg"
                     ></svg-icon>
                     <app-ta-copy [copyValue]="companyData?.fax"> </app-ta-copy>
                 </div>
-                <div class="basic-data">
+                <div class="basic-data" *ngIf="companyData?.webUrl">
                     <svg-icon
                         class="basic-data-svg"
                         src="assets/svg/common/ic_web.svg"
@@ -168,43 +168,55 @@
             <app-ta-custom-card
                 [cardName]="'Additional Details'"
                 [bodyTemplate]="'card'"
-                [isCardOpen]="true"
+                [isCardOpen]="companyData?.ifta || 
+                            companyData?.irp || 
+                            companyData?.toll || 
+                            companyData?.scac || 
+                            companyData?.timeZone?.name || 
+                            companyData?.currency?.name ? true : false"
+                [disabledCard]=" companyData?.ifta || 
+                                companyData?.irp || 
+                                companyData?.toll || 
+                                companyData?.scac || 
+                                companyData?.timeZone?.name || 
+                                companyData?.currency?.name ? false : true"
             >
                 <div class="additional-template-data">
-                    <div class="additional-template-item">
+                    <div class="additional-template-item" *ngIf="companyData?.ifta">
                         <p class="additional-template-value-name">IFTA</p>
                         <p class="additional-template-value">
                             {{ companyData?.ifta }}
                         </p>
                     </div>
-                    <div class="additional-template-item">
+                    <div class="additional-template-item" *ngIf="companyData?.irp">
                         <p class="additional-template-value-name">IRP</p>
                         <p class="additional-template-value">
                             {{ companyData?.irp }}
                         </p>
                     </div>
-                    <div class="additional-template-item">
+                    <div class="additional-template-item" *ngIf="companyData?.toll">
                         <p class="additional-template-value-name">Toll</p>
                         <p class="additional-template-value">
                             {{ companyData?.toll }}
                         </p>
                     </div>
-                    <div class="additional-template-item">
+                    <div class="additional-template-item" *ngIf="companyData?.scac">
                         <p class="additional-template-value-name">SCAC</p>
                         <p class="additional-template-value">
                             {{ companyData?.scac }}
                         </p>
                     </div>
-                    <div class="additional-template-item">
+                    <div class="additional-template-item" *ngIf="companyData?.timeZone?.name">
                         <p class="additional-template-value-name">Time Zone</p>
                         <p
                             *ngIf="companyData?.timeZone?.name"
                             class="additional-template-value"
                         >
-                            {{ timeZoneName }}
+                            {{ timeZoneFormat(companyData?.timeZone?.name) }}
+                            
                         </p>
                     </div>
-                    <div class="additional-template-item">
+                    <div class="additional-template-item" *ngIf="companyData?.currency?.name">
                         <p class="additional-template-value-name">Currency</p>
                         <p
                             *ngIf="companyData?.currency?.name"

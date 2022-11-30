@@ -94,7 +94,6 @@ export class DriverDetailsItemComponent
         this.activeCdl = this.drivers[0].data.cdls.filter(
             (item) => item.status === 1
         );
-
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -122,7 +121,7 @@ export class DriverDetailsItemComponent
                                             DriverCdlModalComponent,
                                             { size: 'small' },
                                             {
-                                                id: res.data.driver.id,
+                                                id: res.data.driver?.id,
                                                 file_id:
                                                     res.data.driver.file_id,
                                                 type: 'renew-licence',
@@ -150,6 +149,7 @@ export class DriverDetailsItemComponent
     }
     public getExpireDate() {
         this.dataCDl = this.drivers[1]?.data?.cdls?.map((ele) => {
+          
             let endDate = moment(ele.expDate);
             if (
                 moment(ele.expDate).isBefore(moment()) ||
@@ -225,7 +225,8 @@ export class DriverDetailsItemComponent
                 {
                     title: 'Edit',
                     name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',                  
+                    iconName: "edit",
                     show: true,
                 },
                 {
@@ -235,12 +236,14 @@ export class DriverDetailsItemComponent
                     title: 'View Details',
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: "view-details",
                     show: true,
                 },
                 {
                     title: 'Renew',
                     name: 'renew',
                     svg: 'assets/svg/common/ic_reload_renew.svg',
+                    iconName: "renew",
                     disabled: this.arrayOfRenewCdl[this.currentIndex],
                 },
                 {
@@ -250,12 +253,14 @@ export class DriverDetailsItemComponent
                     title: 'Share',
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
+                    iconName: 'share',
                     show: true,
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
+                    iconName: 'print',
                     show: true,
                 },
                 {
@@ -267,6 +272,10 @@ export class DriverDetailsItemComponent
                             ? 'Activate'
                             : 'Void',
                     name:
+                        this.activateShow[this.currentIndex] == true
+                            ? 'activate-item'
+                            : 'deactivate-item',
+                    iconName:
                         this.activateShow[this.currentIndex] == true
                             ? 'activate-item'
                             : 'deactivate-item',
@@ -294,6 +303,7 @@ export class DriverDetailsItemComponent
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
+                    iconName: 'delete',
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -319,6 +329,7 @@ export class DriverDetailsItemComponent
                     title: 'Edit',
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    iconName: 'edit',
                     show: true,
                 },
                 {
@@ -328,6 +339,7 @@ export class DriverDetailsItemComponent
                     title: 'View Details',
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: 'view-details',
                     show: true,
                 },
                 {
@@ -337,12 +349,14 @@ export class DriverDetailsItemComponent
                     title: 'Share',
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
+                    iconName: 'share',
                     show: true,
                 },
                 {
                     title: 'Print',
                     name: 'print',
                     svg: 'assets/svg/common/ic_fax.svg',
+                    iconName: 'print',
                     show: true,
                 },
                 {
@@ -354,6 +368,7 @@ export class DriverDetailsItemComponent
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
+                    iconName: 'delete',
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -364,6 +379,7 @@ export class DriverDetailsItemComponent
     }
 
     public getCdlById(id: number) {
+        console.log('--here--getCdlById', id);
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
@@ -371,6 +387,7 @@ export class DriverDetailsItemComponent
     }
 
     public getMedicalById(id: number) {
+        console.log('--here--getMedicalById')
         this.medicalService
             .getMedicalById(id)
             .pipe(takeUntil(this.destroy$))
@@ -378,6 +395,7 @@ export class DriverDetailsItemComponent
     }
 
     public getMvrById(id: number) {
+        console.log('--here--getMvrById')
         this.mvrService
             .getMvrById(id)
             .pipe(takeUntil(this.destroy$))
@@ -385,6 +403,7 @@ export class DriverDetailsItemComponent
     }
 
     public getTestById(id: number) {
+        console.log('--here--getTestById')
         this.testService
             .getTestById(id)
             .pipe(takeUntil(this.destroy$))
@@ -484,16 +503,10 @@ export class DriverDetailsItemComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Cdl successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Cdl with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -504,16 +517,10 @@ export class DriverDetailsItemComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Medical successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Medical with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -524,16 +531,10 @@ export class DriverDetailsItemComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Mvr successfully deleted',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Mvr with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -544,16 +545,10 @@ export class DriverDetailsItemComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Test successfully deleted',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Test with id: ${id} couldn't be deleted`,
-                        'Error:'
-                    );
+                    
                 },
             });
     }

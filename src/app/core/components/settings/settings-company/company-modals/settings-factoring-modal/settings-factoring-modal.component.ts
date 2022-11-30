@@ -140,18 +140,10 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Successfully ${
-                            this.editData.type === 'new' ? 'created' : 'updated'
-                        } factoring company`,
-                        'Success'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update factoring company",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -162,16 +154,10 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully delete factoring company',
-                        'Success'
-                    );
+                
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't delete factoring company",
-                        'Error'
-                    );
+                    
                 },
             });
     }

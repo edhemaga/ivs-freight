@@ -397,10 +397,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    this.notificationService.success(
-                        'Successfuly add new bank',
-                        'Success'
-                    );
+                    
                     this.selectedBank = {
                         id: res.id,
                         name: this.selectedBank.name,
@@ -408,10 +405,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add new bank",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -767,10 +761,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 }
                             },
                             error: () => {
-                                this.notificationService.error(
-                                    "Owner can't be loaded.",
-                                    'Error:'
-                                );
+                               
                             },
                         });
                 } else {
@@ -1041,10 +1032,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.handlingPayrollFleetType(this.fleetType, true);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Driver's dropdowns can't be loaded.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -1335,10 +1323,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `${driverFullName}`,
-                        'CREATED DRIVER'
-                    );
+                    
 
                     // If clicked Save and Add New, reset form and fields
                     if (this.addNewAfterSave) {
@@ -1438,11 +1423,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.selectedAddress = null;
                     }
                 },
-                error: () =>
-                    this.notificationService.error(
-                        `${driverFullName}`,
-                        'FAILED TO CREATE DRIVER'
-                    ),
+                error: () => {}
             });
     }
 
@@ -1730,16 +1711,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Changes saved for "${driverFullName}" `,
-                        'Success'
-                    );
+                    
                 },
-                error: () =>
-                    this.notificationService.error(
-                        `Failed to save changes for "${driverFullName}" `,
-                        'Error'
-                    ),
+                error: () => {}
             });
     }
 
@@ -1982,10 +1956,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Driver can't be loaded.",
-                        'Error:'
-                    );
+            
                 },
             });
     }
@@ -1996,16 +1967,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Driver successfully deleted.',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Driver can't be deleted.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -2033,15 +1998,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             name: 'deactivate',
                             status: this.driverStatus,
                         });
-
-                        this.notificationService.success(
-                            successMessage,
-                            'Success'
-                        );
                     }
                 },
                 error: () => {
-                    this.notificationService.error(errorMessage, 'Error');
+                   
                 },
             });
     }

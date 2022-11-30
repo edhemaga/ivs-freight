@@ -209,7 +209,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: (err: any) => {
-                    this.notificationService.error('Error', err);
+                   
                 },
             });
     }
@@ -290,13 +290,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Success',
-                        'Successfully fuel stop updated.'
-                    );
+                    
                 },
                 error: (error: any) => {
-                    this.notificationService.error('Error', error);
+                    
                 },
             });
     }
@@ -326,13 +323,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Success',
-                        'Successfully fuel stop added.'
-                    );
+                   
                 },
                 error: (error: any) => {
-                    this.notificationService.error('Error', error);
+                   
                 },
             });
     }
@@ -386,7 +380,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: (error: any) => {
-                    this.notificationService.error('Error', error);
+                  
                 },
             });
     }
@@ -416,7 +410,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     );
                 },
                 error: (error: any) => {
-                    this.notificationService.error('Error', error);
+                   
                 },
             });
     }

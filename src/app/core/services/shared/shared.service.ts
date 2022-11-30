@@ -31,7 +31,6 @@ export class SharedService {
     public emitCustomerAdd: EventEmitter<boolean> = new EventEmitter();
 
     public emitAllNoteOpened: EventEmitter<boolean> = new EventEmitter();
-    public emitUpdateNoteActiveList: EventEmitter<any[]> = new EventEmitter();
 
     public emitViewChange: EventEmitter<boolean> = new EventEmitter();
     public emitRefreshAfterUpdate: EventEmitter<any[]> = new EventEmitter();

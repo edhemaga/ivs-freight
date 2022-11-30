@@ -203,10 +203,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                                 }
                             },
                             error: () => {
-                                this.notificationService.error(
-                                    'Something went wrong, please try again !',
-                                    'Error'
-                                );
+                               
                             },
                         });
                 }
@@ -293,7 +290,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                     this.selectedAddress = res.address;
                 },
                 error: () => {
-                    this.notificationService.error("Can't get user", 'Error');
+                   
                 },
             });
     }
@@ -327,10 +324,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfuly update profile',
-                        'Success'
-                    );
+                 
 
                     const newUser = {
                         ...this.user,
@@ -342,10 +336,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                     localStorage.setItem('user', JSON.stringify(newUser));
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't update your profile.",
-                        'Error'
-                    );
+                   
                 },
             });
     }

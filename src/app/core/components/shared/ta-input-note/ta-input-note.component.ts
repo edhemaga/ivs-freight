@@ -43,6 +43,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     savingNote: boolean = false;
     @Input() entityId: number = 0;
     @Input() entityType: string = '';
+    @Input() defArrow: boolean = true;
     noActive: string;
 
     @Input() set isVisibleNote(value: boolean) {
@@ -66,6 +67,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     @Input() isReadOnly: boolean = false;
     @Input() customClass: string = null;
     @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
+    @ViewChild('noteContainer', { static: true }) noteContainer: any;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -135,7 +137,9 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     }
 
     checkActiveItems() {
-        this.sharedService.emitUpdateNoteActiveList.next(null);
+        if(this.noteContainer && this.noteContainer?.checkActiveItems) {
+            this.noteContainer?.checkActiveItems();     
+        }
     }
 
     saveNote(allowSave?: boolean) {

@@ -337,10 +337,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't get trailer PM list.",
-                        'Error'
-                    );
+                  
                 },
             });
     }
@@ -369,10 +366,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Can't load Truck Unit By ${id}`,
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -400,10 +394,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't get trailer PM list.",
-                        'Error'
-                    );
+                 
                 },
             });
     }
@@ -431,10 +422,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Can't load Trailer Unit By ${id}`,
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -477,10 +465,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully added PM Item in PM List',
-                        'Success'
-                    );
+                    
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -504,10 +489,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add PM Item in PM List",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -550,10 +532,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully added PM Item in PM List',
-                        'Success'
-                    );
+                    
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -577,10 +556,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add PM Item in PM List",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -622,10 +598,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully added PM Item in PM Unit List',
-                        'Success'
-                    );
+                   
 
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
@@ -650,10 +623,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add PM Item in PM Unit List",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -695,10 +665,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully added PM Item in PM List',
-                        'Success'
-                    );
+                    
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -722,10 +689,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add PM Item in PM List",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -798,16 +762,10 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Successfully delete Truck PM By ${id}`,
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Can't delete Truck PM By ${id}`,
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -818,16 +776,10 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Successfully delete Trailer PM By ${id}`,
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Can't delete Trailer Unit By ${id}`,
-                        'Error'
-                    );
+                    
                 },
             });
     }

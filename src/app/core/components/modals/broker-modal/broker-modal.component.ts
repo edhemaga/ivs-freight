@@ -330,21 +330,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                     name: 'bfb',
                                     status: this.brokerBanStatus,
                                 });
-                                this.notificationService.success(
-                                    `Broker ${
-                                        this.brokerBanStatus
-                                            ? 'status changed to BAN'
-                                            : 'removed from BAN'
-                                    } .`,
-                                    'Success:'
-                                );
+                               
                             }
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Broker status can't be changed.",
-                                'Success:'
-                            );
+                           
                         },
                     });
             }
@@ -610,16 +600,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     .subscribe({
                         next: () => {
                             this.editBrokerById(this.editData.id);
-                            this.notificationService.success(
-                                'Rating successfully updated.',
-                                'Success:'
-                            );
+                            
                         },
                         error: () => {
-                            this.notificationService.error(
-                                "Rating can't be updated.",
-                                'Error:'
-                            );
+                            
                         },
                     });
             });
@@ -648,16 +632,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     });
 
                     this.disableOneMoreReview = true;
-                    this.notificationService.success(
-                        'Review successfully created.',
-                        'Success:'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Review can't be created.",
-                        'Error:'
-                    );
+                  
                 },
             });
     }
@@ -670,16 +648,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Review successfully deleted.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Review can't be deleted.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -696,16 +668,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Review successfully updated.',
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Review can't be updated.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -736,10 +702,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     this.labelsPayTerms = reasponse.payTerms;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Broker's dropdowns can't be loaded.",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -803,16 +766,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Broker "${businessName}" added`,
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Failed to add Broker "${businessName}"`,
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -876,16 +833,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Broker successfully updated.',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Broker can't be updated.",
-                        'Error:'
-                    );
+                  
                 },
             });
     }
@@ -896,16 +847,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Broker successfully deleted.',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Broker can't be deleted.",
-                        'Error:'
-                    );
+                  
                 },
             });
     }
@@ -1085,10 +1030,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     );
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Broker can't be loaded.",
-                        'Error:'
-                    );
+                 
                 },
             });
     }

@@ -75,16 +75,10 @@ export class SettingsFactoringComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully delete factoring company',
-                        'Success'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't delete factoring company",
-                        'Error'
-                    );
+                
                 },
             });
     }

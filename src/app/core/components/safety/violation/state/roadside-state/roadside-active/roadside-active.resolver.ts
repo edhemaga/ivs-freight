@@ -28,7 +28,7 @@ export class RoadsideActiveResolver implements Resolve<RoadsideActiveState> {
                     JSON.stringify({
                         active: roadsidePagination.active,
                         inactive: roadsidePagination.inactive,
-                        categoryReport: roadsidePagination.categoryReport,
+                        //categoryReport: roadsidePagination.categoryReport,
                     })
                 );
 

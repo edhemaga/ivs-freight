@@ -27,6 +27,8 @@ import { CreateCompanyAccountCommand } from '../model/createCompanyAccountComman
 // @ts-ignore
 import { CreateResponse } from '../model/createResponse';
 // @ts-ignore
+import { GetCompanyAccountListResponse } from '../model/getCompanyAccountListResponse';
+// @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
 import { UpdateCompanyAccountCommand } from '../model/updateCompanyAccountCommand';
@@ -416,9 +418,9 @@ export class CompanyAccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyaccountListGet(labelId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CompanyAccountResponse>;
-    public apiCompanyaccountListGet(labelId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CompanyAccountResponse>>;
-    public apiCompanyaccountListGet(labelId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanyAccountResponse>>;
+    public apiCompanyaccountListGet(labelId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetCompanyAccountListResponse>;
+    public apiCompanyaccountListGet(labelId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetCompanyAccountListResponse>>;
+    public apiCompanyaccountListGet(labelId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetCompanyAccountListResponse>>;
     public apiCompanyaccountListGet(labelId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -496,7 +498,7 @@ export class CompanyAccountService {
         }
 
         let localVarPath = `/api/companyaccount/list`;
-        return this.httpClient.request<CompanyAccountResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<GetCompanyAccountListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
