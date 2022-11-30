@@ -60,6 +60,21 @@ table {
                             display: none;
                         }
 
+                        .halfPercentage{
+                            display: flex;
+                            align-items: center;
+
+                            .table-text{
+                                border-right: 1px solid #DADADA;
+                            }
+
+                            .perc-span{
+                                color: #B7B7B7;
+                                font-size: 11px;
+                                font-weight: 700;
+                            }
+                        }
+
                         .table-checkbox-label {
                             width: 14px;
                             height: 14px;
