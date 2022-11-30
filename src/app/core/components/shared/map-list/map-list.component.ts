@@ -370,7 +370,7 @@ export class MapListComponent
             this.highlightSearchedText();
 
             this.mapsService.searchTextChanged(this.searchText);
-        } else if (this.searchIsActive && this.searchText.length < 3) {
+        } else if (this.searchIsActive && this.searchText?.length < 3) {
             this.searchIsActive = false;
 
             this.highlightSearchedText();
@@ -391,7 +391,9 @@ export class MapListComponent
                 const regex = new RegExp(this.searchText, 'gi');
                 const newText = text.replace(regex, (match: string) => {
                     if (match.length >= 3) {
-                        var addressClass = addressElement ? 'regular-weight' : '';
+                        var addressClass = addressElement
+                            ? 'regular-weight'
+                            : '';
 
                         return `<mark class='highlighted-text ${addressClass}'>${match}</mark>`;
                     } else {
@@ -405,6 +407,12 @@ export class MapListComponent
 
                 title.innerHTML = sanitzed;
             });
+    }
+
+    clearSearchInput() {
+        this.searchForm.get('search').patchValue('');
+        this.searchText = '';
+        this.mapsService.searchTextChanged('');
     }
 
     deleteAnimation(id) {

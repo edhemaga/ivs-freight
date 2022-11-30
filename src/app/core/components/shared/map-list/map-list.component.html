@@ -2,7 +2,7 @@
     <div class="map-list">
         <div class="map-list-header" [formGroup]="searchForm">
             <div class="map-list-search">
-                <app-ta-input
+                <!-- <app-ta-input
                     formControlName="search"
                     [inputConfig]="{
                         name: 'search',
@@ -10,8 +10,20 @@
                         label: 'Search',
                         placeholderIcon: 'ic_search',
                         placeholderInsteadOfLabel: true,
-                        blackInput: true
+                        blackInput: true,
+                        customClass: 'line-input-26'
                     }"
+                ></app-ta-input> -->
+                <app-ta-input
+                    formControlName="search"
+                    [inputConfig]="{
+                        name: 'search',
+                        type: 'text',
+                        label: 'Search',
+                        placeholderIcon: 'ic_search',
+                        placeholderInsteadOfLabel: true
+                    }"
+                    (clear)="clearSearchInput()"
                 ></app-ta-input>
             </div>
 
