@@ -53,13 +53,11 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                 if (res.animation) {
                     this.dataCompany = res.data.divisions;
                     this.data = res.data;
-                    console.log('---this.data-- ng on Init', this.data);
                     this.getCompanyDivision();
                     this.cdRef.detectChanges();
                 }
             });
         this.getData(this.activated.snapshot.data.company);
-        console.log('---get data called here--')
 
         this.detailsPageSer.pageDetailChangeId$
             .pipe(takeUntil(this.destroy$))
