@@ -6,10 +6,11 @@
     [editName]="loadNumber"
     [specificCaseModalName]="true"
     [isModalValid]="loadForm.valid && isFormDirty"
-    [customClass]="'modal-container-load'"
+    [customClass]="loadModalSize"
     [hazardousLogo]="isHazardousPicked"
     [loadModalTemplate]="true"
     [modalAdditionalPart]="true"
+    (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
 >
     <!-- Origin Tab -->
@@ -165,13 +166,13 @@
                         isDropdown: true,
                         dropdownWidthClass: 'w-col-230',
                         placeholderIcon: isHazardousPicked
-                            ? 'hazardous-info'
+                            ? 'hazardous_modal_logo'
                             : null,
-                        blackInput: true
+                        blackInput: true,
+                        customClass: 'hazardous-dropdown'
                     }"
                     [options]="labelsGeneralCommodity"
                     [activeItem]="selectedGeneralCommodity"
-                    (placeholderIconEvent)="commandEvent()"
                     (selectedItem)="
                         onSelectDropdown($event, 'general-commodity')
                     "
@@ -218,7 +219,7 @@
                                         .replace(' ', '')
                                         .toLowerCase()
                                 },
-                                dropdownWidthClass: 'w-col-164',
+                                dropdownWidthClass: 'w-col-296',
                                 customClass: 'truck-trailer-dropdown'
                             }"
                             [options]="labelsTruckReq"
@@ -260,7 +261,7 @@
                                               .replace(' ', '')
                                               .toLowerCase()
                                 },
-                                dropdownWidthClass: 'w-col-164',
+                                dropdownWidthClass: 'w-col-308',
                                 customClass: 'truck-trailer-dropdown'
                             }"
                             [options]="labelsTrailerReq"
@@ -271,6 +272,7 @@
                         ></app-ta-input-dropdown>
                     </div>
                 </div>
+
                 <div class="load-requirements-load-second-row">
                     <app-ta-input-dropdown
                         formControlName="trailerLengthId"
@@ -279,7 +281,7 @@
                             type: 'text',
                             label: 'Length',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-88'
+                            dropdownWidthClass: 'w-col-100'
                         }"
                         [options]="labelsTrailerLength"
                         [activeItem]="selectedTrailerLength"
@@ -293,7 +295,7 @@
                             type: 'text',
                             label: 'Door Type',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-107'
+                            dropdownWidthClass: 'w-col-120'
                         }"
                         [options]="labelsDoorType"
                         [activeItem]="selectedDoorType"
@@ -307,7 +309,7 @@
                             type: 'text',
                             label: 'Suspension',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-177'
+                            dropdownWidthClass: 'w-col-150'
                         }"
                         [options]="labelsSuspension"
                         [activeItem]="selectedSuspension"
@@ -321,7 +323,7 @@
                             type: 'text',
                             label: 'Year',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-66'
+                            dropdownWidthClass: 'w-col-90'
                         }"
                         [options]="labelsYear"
                         [activeItem]="selectedYear"
@@ -359,6 +361,15 @@
                     marginBottom: '22px'
                 }"
             >
+                <div class="row">
+                    <div class="col-12">
+                        <app-ta-tab-switch
+                            [tabs]="stopTabs"
+                            (switchClicked)="onTabChange($event, 'stop-tab')"
+                            [type]="'type2-modal-popup load-type2-modal-popup'"
+                        ></app-ta-tab-switch>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12">
                         <app-ta-input-dropdown
@@ -589,8 +600,8 @@
     <!-------------------------------- Additional Tab Part -------------------------------->
     <div
         additional
+        class="load-map-container"
         [ngClass]="{
-            'load-map-container': !isHazardousVisible,
             'load-hazardous-container': isHazardousVisible
         }"
         [ngStyle]="{
@@ -602,7 +613,6 @@
         <!-- Hazardous -->
         <app-load-modal-hazardous
             *ngIf="isHazardousVisible"
-            (close)="isHazardousVisible = false"
         ></app-load-modal-hazardous>
 
         <!-- Map -->

@@ -19,7 +19,11 @@
     }
 
     &.load-broker {
-        bottom: 2px;
+        height: 26px;
+
+        svg {
+            height: 18px;
+        }
 
         &.medium {
             svg {

@@ -1,12 +1,23 @@
+export interface IMultipleInput {
+    value: string;
+    logoName?: string;
+    isImg?: boolean;
+    isSvg?: boolean;
+    folder?: string;
+    subFolder?: string;
+    logoType?: string;
+    isOwner?: boolean;
+}
+
 export interface ITaInput {
     id?: any; // only for form array to indefier element
     name: string;
-    multipleInputValues?: {
-        options: any[]; // { value: string; logoName?: string; }
-        customClass: string;
-    };
     type: string;
     label?: string;
+    multipleInputValues?: {
+        options: IMultipleInput[];
+        customClass: string;
+    };
     multipleLabel?: {
         labels: string[]; // ['Driver', 'Truck #', 'Trailer #']
         customClass: string;

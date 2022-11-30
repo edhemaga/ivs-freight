@@ -35,12 +35,6 @@
                         }}.svg"
                         class="modal-header-svg"
                     ></svg-icon>
-                    <!-- Hazardous Logo -->
-                    <svg-icon
-                        *ngIf="hazardousLogo"
-                        src="assets/svg/common/load/ic_hazardous_modal_logo.svg"
-                        class="modal-hazardous-logo"
-                    ></svg-icon>
                     <!-- Header title -->
                     <h5 class="modal-title">{{ modalTitle }}</h5>
                     <!-- Header name -->
@@ -55,12 +49,31 @@
                         {{ editName }}
                     </h5>
                 </div>
-                <!-- Header close -->
-                <svg-icon
-                    class="modal-close"
-                    src="assets/svg/ic_x.svg"
-                    (click)="onAction('close')"
-                ></svg-icon>
+                <div class="modal-header-rightside">
+                    <!-- Hazardous Logo -->
+                    <svg-icon
+                        *ngIf="hazardousLogo"
+                        src="assets/svg/common/ic_hazardous_modal_logo.svg"
+                        class="modal-hazardous-logo"
+                        (click)="toggleAdditionalPart('hazardous')"
+                    ></svg-icon>
+                    <!-- Load Map Button -->
+                    <div
+                        class="modal-header-load-map-button"
+                        [ngClass]="{ active: mapVisibility }"
+                        (click)="toggleAdditionalPart('map')"
+                    >
+                        <svg-icon
+                            src="../../../../../assets/svg/common/load/ic_load_map.svg"
+                        ></svg-icon>
+                    </div>
+                    <!-- Header close -->
+                    <svg-icon
+                        class="modal-close"
+                        src="assets/svg/ic_x.svg"
+                        (click)="onAction('close')"
+                    ></svg-icon>
+                </div>
             </div>
             <!-- Divider top -->
             <div *ngIf="topDivider" class="divider"></div>
@@ -153,8 +166,7 @@
                         {{
                             resendEmailSpinnerVisibility
                                 ? 'Sending'
-                                : 'Resend Application
-            Email'
+                                : 'Resend Application Email'
                         }}
                         <div
                             *ngIf="resendEmailSpinnerVisibility"
@@ -471,7 +483,12 @@
             </div>
         </div>
         <!-- Modal Additional Part -->
-        <div *ngIf="modalAdditionalPart" class="modal-additional-part">
+        <div
+            *ngIf="
+                modalAdditionalPart && (mapVisibility || hazardousVisibility)
+            "
+            class="modal-additional-part"
+        >
             <ng-content select="[additional]"></ng-content>
         </div>
     </div>

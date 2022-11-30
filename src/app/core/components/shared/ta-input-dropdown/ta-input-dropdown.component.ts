@@ -529,7 +529,7 @@ export class TaInputDropdownComponent
                         return {
                             ...element,
                             contacts: element?.contacts?.filter((subElement) =>
-                                subElement.name
+                                subElement?.fullName
                                     .toLowerCase()
                                     .includes(searchText.toLowerCase())
                             ),

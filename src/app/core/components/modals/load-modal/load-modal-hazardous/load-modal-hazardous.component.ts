@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-load-modal-hazardous',
@@ -175,13 +175,6 @@ export class LoadModalHazardousComponent {
             title: 'When Division 1.5 materials, compatibility group D, are transported in the same freight container as Division 1.2 (explosive)  materials, compatibility group D, the shipment must be transported as Division 1.1 (explosive) materials, compatibility group D.',
         },
     ];
-
-    @Output('close') closeHazardousEvent: EventEmitter<boolean> =
-        new EventEmitter<boolean>();
-
-    public closeHazardous() {
-        this.closeHazardousEvent.emit(false);
-    }
 
     public trackByIdentity = (index: number, item: any): number => item?.id;
 }

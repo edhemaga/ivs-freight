@@ -55,6 +55,14 @@
                         }
                     }
                 }
+
+                .load-dispatches-container {
+                    svg:not(:hover) {
+                        path {
+                            fill: #aaaaaa;
+                        }
+                    }
+                }
             }
 
             //------------------------ Default Template ------------------------
@@ -239,6 +247,20 @@
                     .colors {
                         height: 18px;
                         width: 18px;
+                    }
+
+                    &.hazardous-dropdown {
+                        .svgtext-template-logo {
+                            order: 2;
+                            margin-right: 0px;
+                            position: relative;
+                            bottom: 1px;
+                        }
+
+                        .svgtext-template-text {
+                            order: 1;
+                            margin-right: 6px;
+                        }
                     }
                 }
 
@@ -600,10 +622,10 @@
             //------------------------ Load Dispatches TTD Template ------------------------
             .load-dispatches-ttd-template {
                 display: grid;
-                grid-template-columns: repeat(3, 128px);
+                grid-template-columns: repeat(3, 156px) 100px;
                 align-items: center;
 
-                .load-dispatches-driver {
+                .load-dispatches-container {
                     display: flex;
                     align-items: center;
                     gap: 6px;
@@ -614,8 +636,22 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
-                        width: 100px;
+                        max-width: 100px;
+                        line-height: 17px;
                     }
+
+                    svg-icon {
+                        position: relative;
+                        bottom: 2px;
+                    }
+                }
+
+                .load-dispatch-driver-rate {
+                    text-align: right;
+                    font-size: 11px;
+                    font-weight: 400;
+                    color: #919191;
+                    padding-bottom: 1px;
                 }
             }
 
@@ -627,7 +663,7 @@
 
                 .load-broker-status {
                     position: relative;
-                    bottom: 1px;
+                    line-height: 17px;
 
                     &.dnu-status {
                         svg {
@@ -970,6 +1006,10 @@
                 width: 156px;
             }
 
+            &.w-col-150 {
+                width: 150px;
+            }
+
             &.w-col-148 {
                 width: 148px;
             }
@@ -1036,6 +1076,10 @@
 
             &.w-col-92 {
                 width: 92px;
+            }
+
+            &.w-col-90 {
+                width: 90px;
             }
 
             &.w-col-88 {
@@ -1165,38 +1209,8 @@
                             .dropdown-subgroup-text {
                                 font-size: 14px;
                                 font-weight: 400;
-                                color: #3c3c3c;
+                                color: #ffffff;
                                 transition: all 0.3s ease-in-out;
-
-                                &::-moz-selection {
-                                    background-color: rgb(
-                                        60,
-                                        60,
-                                        60,
-                                        0.2
-                                    ) !important;
-                                    color: #3c3c3c !important;
-                                }
-
-                                &::selection {
-                                    background-color: rgb(
-                                        60,
-                                        60,
-                                        60,
-                                        0.2
-                                    ) !important;
-                                    color: #3c3c3c !important;
-                                }
-
-                                &::-moz-selection {
-                                    background-color: rgb(
-                                        60,
-                                        60,
-                                        60,
-                                        0.2
-                                    ) !important;
-                                    color: #3c3c3c !important;
-                                }
 
                                 &.active {
                                     // Higlight text
@@ -1223,7 +1237,7 @@
                         .dropdown-subgroup-text {
                             font-size: 14px;
                             font-weight: 400;
-                            color: #cccccc;
+                            color: #ffffff;
                             display: block;
                             width: 100%;
 
@@ -1290,7 +1304,9 @@
 
                     .dropdown-subgroup-options {
                         display: grid;
-                        grid-template-columns: repeat(3, 118px);
+                        grid-template-columns: 160px 135px;
+                        grid-column-gap: 10px;
+                        column-gap: 10px;
                         align-items: center;
                         padding: 0px;
                         padding-left: 4px;
@@ -1305,17 +1321,35 @@
 
                                 &:hover {
                                     color: #ffffff;
-                                    transition: all 0.3s ease-in-out;
                                 }
+                            }
 
-                                // Higlight text
-                                .highlight-text-45632 {
-                                    font-weight: 700;
-                                    transition: all 0.3s ease-in-out;
-                                    &:hover {
-                                        color: #ffffff !important;
-                                    }
+                            // Higlight text
+                            .highlight-text-45632 {
+                                font-weight: 700;
+                                transition: all 0.3s ease-in-out;
+                                &:hover {
+                                    color: #ffffff !important;
                                 }
+                            }
+                        }
+
+                        .dropdown-subgroup-additional-text {
+                            color: #919191;
+                            font-size: 11px !important;
+                            font-weight: 400;
+                            position: relative;
+                            text-align: right;
+
+                            // Higlight text
+                            .highlight-text-45632 {
+                                color: #ffffff !important;
+                                font-weight: 500 !important;
+                                transition: all 0.3s ease-in-out;
+                            }
+
+                            &.active::after {
+                                right: -23px !important;
                             }
                         }
                     }
