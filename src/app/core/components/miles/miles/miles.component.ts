@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getMilesColumnsDefinition } from '../../../../../assets/utils/settings/miles-columns';
 import { MilesTableQuery } from '../state/miles.query';
 
@@ -8,6 +10,8 @@ import { MilesTableQuery } from '../state/miles.query';
     styleUrls: ['./miles.component.scss'],
 })
 export class MilesComponent implements OnInit, AfterViewInit {
+    private destroy$ = new Subject<void>();
+
     tableOptions: any = {};
     tableData: any[] = [];
     viewData: any[] = [];
@@ -16,10 +20,57 @@ export class MilesComponent implements OnInit, AfterViewInit {
     columns: any[] = [];
     tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
-    constructor(private milesTableQuery: MilesTableQuery) {}
+    driversActive: any;
+
+    constructor(
+        private milesTableQuery: MilesTableQuery,
+        private tableService: TruckassistTableService
+    ) {}
 
     ngOnInit(): void {
         this.sendMilesData();
+
+        // Reset Columns
+        this.tableService.currentResetColumns
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: boolean) => {
+                if (response) {
+                    this.sendMilesData();
+                }
+            });
+
+        // Resize
+        this.tableService.currentColumnWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: any) => {
+                if (response?.event?.width) {
+                    this.columns = this.columns.map((c) => {
+                        if (
+                            c.title ===
+                            response.columns[response.event.index].title
+                        ) {
+                            c.width = response.event.width;
+                        }
+
+                        return c;
+                    });
+                }
+            });
+
+        // Toaggle Columns
+        this.tableService.currentToaggleColumn
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: any) => {
+                if (response?.column) {
+                    this.columns = this.columns.map((c) => {
+                        if (c.field === response.column.field) {
+                            c.hidden = response.column.hidden;
+                        }
+
+                        return c;
+                    });
+                }
+            });
     }
 
     sendMilesData() {
@@ -64,8 +115,6 @@ export class MilesComponent implements OnInit, AfterViewInit {
         this.setMilesData(td);
     }
 
-    driversActive: any;
-
     getTabData(dataType: string) {
         if (dataType === 'active') {
             this.driversActive = this.milesTableQuery.getAll();
@@ -104,10 +153,10 @@ export class MilesComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-      setTimeout(() => {
-          this.observTableContainer();
-      }, 10);
-  }
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
 
     mapMilesData(data: any) {
         return {
@@ -139,89 +188,8 @@ export class MilesComponent implements OnInit, AfterViewInit {
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: this.getTableActions(),
+            actions: [],
         };
-    }
-
-    getTableActions() {
-        return this.selectedTab === 'applicants'
-            ? [
-                  {
-                      title: 'Hire Applicant',
-                      name: 'hire-applicant',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Resend Invitation',
-                      name: 'resend-invitation',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Add to Favourites',
-                      name: 'add-to-favourites',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Delete',
-                      name: 'delete-applicant',
-                      type: 'driver',
-                      text: 'Are you sure you want to delete applicant(s)?',
-                      class: 'delete-text',
-                      contentType: 'delete',
-                  },
-              ]
-            : [
-                  {
-                      title: 'Edit Driver',
-                      name: 'edit',
-                      class: 'regular-text',
-                      contentType: 'edit',
-                  },
-                  {
-                      title: 'Add CDL',
-                      name: 'new-licence',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add Medical',
-                      name: 'new-medical',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add MVR',
-                      name: 'new-mvr',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add Test',
-                      name: 'new-drug',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title:
-                          this.selectedTab === 'inactive'
-                              ? 'Activate'
-                              : 'Deactivate',
-                      name: 'activate-item',
-                      class: 'regular-text',
-                      contentType: 'activate',
-                  },
-                  {
-                      title: 'Delete',
-                      name: 'delete-item',
-                      type: 'driver',
-                      text: 'Are you sure you want to delete driver(s)?',
-                      class: 'delete-text',
-                      contentType: 'delete',
-                  },
-              ];
     }
 
     onToolBarAction(event: any) {
@@ -237,9 +205,9 @@ export class MilesComponent implements OnInit, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        // this.destroy$.next();
-        // this.destroy$.complete();
-        // this.tableService.sendActionAnimation({});
+        this.destroy$.next();
+        this.destroy$.complete();
+        this.tableService.sendActionAnimation({});
         this.resizeObserver.unobserve(
             document.querySelector('.table-container')
         );
