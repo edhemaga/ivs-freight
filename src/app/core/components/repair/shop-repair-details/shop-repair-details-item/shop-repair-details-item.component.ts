@@ -170,6 +170,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
+                    iconName: 'edit'
                 },
 
                 {
@@ -180,6 +181,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
                     svg: 'assets/svg/common/ic_trash.svg',
                     danger: true,
                     show: true,
+                    iconName: 'delete'
                 },
             ],
             export: true,

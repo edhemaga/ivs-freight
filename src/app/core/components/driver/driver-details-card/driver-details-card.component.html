@@ -189,6 +189,10 @@
                 [isCardOpen]="false"
                 *ngIf="driver.offDutyLocations.length"
                 [bodyTemplate]="'card'"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '0px'
+                }"
                 class="item-cards"
             >
                 <div
@@ -222,7 +226,7 @@
                             >
                                 <svg-icon
                                     class="address-icon"
-                                    src="assets/svg/common/ic_address.svg"
+                                    src="assets/svg/common/off-duty-location-icon.svg"
                                 >
                                 </svg-icon>
                             </span>
@@ -246,10 +250,8 @@
                                 Years of Service
                             </div>
                             <div class="service-year-value">
-                                {{ yearsService }}
-                                {{ yearsService > 1 ? 'years' : 'year' }}
-                                {{ daysService }}
-                                {{ daysService > 1 ? 'days' : 'day' }}
+                                <span *ngIf="yearsService">{{ yearsService }} {{ yearsService > 1 ? 'years' : 'year' }}</span>
+                                <span>{{ daysService }} {{ daysService > 1 ? 'days' : 'day' }}</span>
                             </div>
                         </div>
                     </div>
@@ -682,7 +684,7 @@
                 </div>
             </app-ta-custom-card>
             <div class="divider"></div>
-            <div class="details-page-row-5">
+            <div class="note-details-holder">
                 <div class="note-item">
                     <app-ta-input-note
                         [formControl]="note"

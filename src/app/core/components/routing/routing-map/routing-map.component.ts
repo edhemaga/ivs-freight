@@ -285,6 +285,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'settings',
             show: true,
             svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+            iconName: 'edit'
         },
         {
             title: 'border',
@@ -308,6 +309,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 { subName: 'State / Country', actionName: 'State / Country' },
                 { subName: 'Toll Calculator', actionName: 'Toll Calculator' },
             ],
+            iconName: 'add-new'
         },
         {
             title: 'Duplicate',
@@ -316,6 +318,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'duplicate',
             show: true,
             svg: 'assets/svg/common/routing/ic_route_duplicate.svg',
+            iconName: 'ic_route_duplicate'
         },
         {
             title: 'Reverse',
@@ -324,6 +327,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'reverse',
             show: true,
             svg: 'assets/svg/common/routing/ic_route_reverse.svg',
+            iconName: 'ic_route_reverse'
         },
         {
             title: 'Clear Stops',
@@ -333,6 +337,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             show: true,
             svg: 'assets/svg/common/routing/ic_route_clear.svg',
             redIcon: true,
+            iconName: 'ic_route_clear'
         },
         {
             title: 'border',
@@ -342,6 +347,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             name: 'share',
             svg: 'assets/svg/common/share-icon.svg',
             show: true,
+            iconName: 'share'
         },
         {
             title: 'Print',
@@ -350,6 +356,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'print',
             show: true,
             svg: 'assets/svg/common/ic_print.svg',
+            iconName: 'print'
         },
         {
             title: 'border',
@@ -365,6 +372,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             danger: true,
             svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
             redIcon: true,
+            iconName: 'delete'
         },
     ];
 
