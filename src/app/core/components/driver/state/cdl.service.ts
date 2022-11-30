@@ -48,9 +48,7 @@ export class CdlTService implements OnDestroy {
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
                                     next: (res: any) => {},
-                                    error: () => {
-                                        
-                                    },
+                                    error: () => {},
                                 });
                             driver = {
                                 ...driver,

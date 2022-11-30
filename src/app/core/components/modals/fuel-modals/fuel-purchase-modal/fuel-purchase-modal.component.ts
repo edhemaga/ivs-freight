@@ -23,7 +23,6 @@ import {
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
 import { TruckTService } from '../../../truck/state/truck.service';
 import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
-import { FuelTransactionResponse } from '../../../../../../../appcoretruckassist/model/fuelTransactionResponse';
 import { EnumValue } from '../../../../../../../appcoretruckassist/model/enumValue';
 
 import {
@@ -402,7 +401,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .getFuelTransactionById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: FuelTransactionResponse) => {
+                next: (res: any) => {
                     console.log('get by id: ', res);
                     this.fuelForm.patchValue({
                         efsAccount: null,

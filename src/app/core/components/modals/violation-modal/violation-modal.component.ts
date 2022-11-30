@@ -16,7 +16,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { RoadsideService } from '../../safety/violation/state/roadside.service';
 import { NotificationService } from '../../../services/notification/notification.service';
-import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
 import { convertDateFromBackend } from '../../../utils/methods.calculations';
 import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
@@ -445,15 +444,12 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    
                     this.modalService.setModalSpinner({
                         action: null,
                         status: false,
                     });
                 },
-                error: (err: any) => {
-              
-                },
+                error: (err: any) => {},
             });
     }
 
@@ -462,8 +458,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .getRoadsideById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: RoadsideInspectionResponse) => {
-                    console.log('violation by idL ', res);
+                next: (res: any) => {
                     this.violationForm.patchValue({
                         report: res.report,
                         categoryReport: res.categoryReport
@@ -631,9 +626,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: (err: any) => {
-                    
-                },
+                error: (err: any) => {},
             });
     }
 
@@ -650,9 +643,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: (err: any) => {
-                 
-                },
+                error: (err: any) => {},
             });
     }
 
