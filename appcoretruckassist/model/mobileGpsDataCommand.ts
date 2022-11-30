@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
 
 
-export interface RoadsideInspectionListResponse { 
-    pagination?: RoadsideInspectionResponsePagination;
-    active?: number;
-    inactive?: number;
-    violationSummary?: number;
+export interface MobileGpsDataCommand { 
+    deviceId?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    altitude?: number | null;
+    speed?: number | null;
+    heading?: number | null;
 }
 
