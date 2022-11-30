@@ -111,16 +111,10 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Comment successfully deleted.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Comment cant't be deleted.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -138,16 +132,10 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Comment successfully updated.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Comment cant't be updated.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }

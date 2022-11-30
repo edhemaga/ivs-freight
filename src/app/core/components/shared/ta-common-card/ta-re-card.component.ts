@@ -3,11 +3,76 @@ import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import {
+    animate,
+    style,
+    transition,
+    trigger,
+    state,
+} from '@angular/animations';
 @Component({
     selector: 'app-ta-re-card',
     templateUrl: './ta-re-card.component.html',
     styleUrls: ['./ta-re-card.component.scss'],
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [card_component_animation('showHideCardBody'),
+    trigger('cardOpenAnimation', [
+        state(
+            'true',
+            style({
+                height: '*',
+                overflow: 'hidden',
+                opacity: 1,
+            })
+        ),
+        state(
+            'false',
+            style({
+                height: '0px',
+                overflow: 'hidden',
+                opacity: 0,
+            })
+        ),
+        transition('false <=> true', [animate('200ms ease-in-out')]),
+        transition('true <=> false', [animate('200ms ease-in-out')]),
+    ]),
+    trigger('footerOpenAnimation', [
+        state(
+            'true',
+            style({
+                height: '*',
+                overflow: 'hidden',
+                opacity: 1,
+                'margin-left': '16px',
+                'margin-right': '10px',
+                'padding-bottom': '11px',
+                'padding-top': '11px',
+            })
+        ),
+        state(
+            'false',
+            style({
+                height: '0px',
+                overflow: 'hidden',
+                opacity: 0,
+                'margin-left': '0px',
+                'margin-right': '0px',
+                'padding-bottom': '0px',
+                'padding-top': '0px',
+            })
+        ),
+        transition('false <=> true', [animate('200ms ease-in-out')]),
+        transition('true <=> false', [animate('200ms ease-in-out')]),
+    ]),
+    trigger('cardAppearanceAnimation', [
+        transition(':enter', [
+            style({ 'max-height': '0px', overflow: 'hidden' }),
+            animate(
+                '3100ms ease',
+                style({ 'max-height': '170px', overflow: 'hidden' })
+            ),
+        ]),
+        transition(':leave', [animate('3100ms ease', style({ 'max-height': 0 }))]),
+    ]),],
 })
 export class TaReCardComponent implements OnInit {
     @Input() public cardNameCommon: string;
@@ -46,6 +111,7 @@ export class TaReCardComponent implements OnInit {
     public data: any;
     public resPage: boolean = false;
     public copiedCommon: boolean = false;
+    animationStarted: boolean = true;
     constructor(
         private clipboard: Clipboard,
         private DetailsDataService: DetailsDataService
@@ -62,13 +128,16 @@ export class TaReCardComponent implements OnInit {
             this.isDeactivated
         ) {
             this.isCardOpen = false;
+            this.animationStarted = false;
         }
     }
 
     public sendData(data: any) {
+        console.log('--sendData function---');
         this.data = data;
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
-        this.dataDropDopwn.emit(data);
+        // api start after every click
+        //this.dataDropDopwn.emit(data);
     }
     public toggleCard(event: any) {
         event.preventDefault();
@@ -80,7 +149,21 @@ export class TaReCardComponent implements OnInit {
             this.statusActive == 0 ||
             this.hasToggler
         ) {
-            this.isCardOpen = !this.isCardOpen;
+            
+            if ( this.isCardOpen ) {
+                this.animationStarted = false;
+            } else {
+                this.animationStarted = true;
+            }
+            
+            let timeOut = 0;
+            if ( this.isCardOpen ) {
+                timeOut = 200;
+            }
+            setTimeout(()=>{
+                this.isCardOpen = !this.isCardOpen;
+            }, timeOut)
+            
         }
     }
 

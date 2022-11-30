@@ -23,16 +23,17 @@
                 [value]="value"
                 [popoverNote]="false"
                 [selectedEditor]="noteRef?.nativeElement"
+                [isVisibleArrow]="isVisibleArrow"
             ></app-ta-note-container>
+            
         </div>
-        <div class="note_upper_hold">
+        <div class="note_upper_hold" *ngIf="isVisibleArrow">
             <svg-icon
-                *ngIf="isVisibleArrow"
                 class="note-arrow"
                 [ngClass]="{
                     rotate: _isVisibleNote && _isVisibleNote != 'null'
                 }"
-                src="assets/svg/common/ic_arrow_down_updated.svg"
+                src="{{ defArrow ? 'assets/svg/common/ic_arrow_down_updated.svg' : 'assets/svg/common/calendar/arrow-right.svg' }}" 
                 (click)="openNote()"
             ></svg-icon>
         </div>

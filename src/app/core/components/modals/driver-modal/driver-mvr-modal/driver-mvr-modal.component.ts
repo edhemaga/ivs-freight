@@ -97,10 +97,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                     this.modalName = res.firstName.concat(' ', res.lastName);
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Driver can't be loaded.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -211,16 +208,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'MVR successfully updated.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "MVR can't be updated.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -248,16 +239,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'MVR successfully added.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "MVR can't be added.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -284,7 +269,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files ? (res.files as any) : [];
                 },
                 error: () => {
-                    this.notificationService.error("Can't get Test", 'Error:');
+                  
                 },
             });
     }
@@ -310,10 +295,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load mvr's modal dropdowns",
-                        'Error'
-                    );
+                   
                 },
             });
     }
@@ -332,10 +314,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't load list of drivers",
-                        'Error'
-                    );
+                   
                 },
             });
     }

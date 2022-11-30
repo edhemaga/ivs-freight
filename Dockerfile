@@ -7,4 +7,4 @@ RUN npm install
 RUN npm run build
 
 FROM nginx:alpine
-COPY --from=build-env /app/dist/truckassist-fe /usr/share/nginx/html
+COPY --from=build-env /app/dist/carrierassist-fe /usr/share/nginx/html

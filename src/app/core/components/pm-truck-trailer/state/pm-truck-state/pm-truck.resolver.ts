@@ -22,14 +22,12 @@ export class pmTruckResolver implements Resolve<PmTruckState> {
                     return of('No pm trucks data...');
                 }),
                 tap((pmTruckPagination: PMTruckUnitListResponse) => {
-                    /*  localStorage.setItem(
-          'pmTruckTableCount',
-          JSON.stringify({
-            pmTruck: pmTruckPagination.pagination.count,
-          })
-        );
-        
-        this.pmTruckStore.set(pmTruckPagination.pagination.data); */
+                    localStorage.setItem(
+                        'pmTruckTableCount',
+                        JSON.stringify({
+                            pmTruck: pmTruckPagination.pmTruckCount,
+                        })
+                    );
                 })
             );
     }

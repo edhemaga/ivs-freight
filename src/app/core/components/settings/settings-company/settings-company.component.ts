@@ -13,6 +13,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
     selector: 'app-settings-company',
@@ -37,7 +38,8 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
         private notificationService: NotificationService,
         private cdRef: ChangeDetectorRef,
         private tableService: TruckassistTableService,
-        private settingCompanyQuery: CompanyQuery
+        private settingCompanyQuery: CompanyQuery,
+        private DetailsDataService: DetailsDataService
     ) {}
 
     ngOnInit(): void {
@@ -64,21 +66,17 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                     .subscribe({
                         next: (res: CompanyResponse) => {
                             this.getData(res);
-                            this.notificationService.success(
-                                'Company Division successfully changed',
-                                'Success:'
-                            );
+                            
                             this.cdRef.detectChanges();
                         },
                         error: () => {
                             this.getData(this.activated.snapshot.data.company);
-                            this.notificationService.success(
-                                'Company successfully changed',
-                                'Success:'
-                            );
+                           
                         },
                     });
             });
+
+        this.DetailsDataService.setNewData(this.data);
     }
 
     public getData(data: CompanyResponse) {

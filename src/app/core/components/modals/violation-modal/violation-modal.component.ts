@@ -445,17 +445,14 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Success',
-                        'Successfully update roadside.'
-                    );
+                    
                     this.modalService.setModalSpinner({
                         action: null,
                         status: false,
                     });
                 },
                 error: (err: any) => {
-                    this.notificationService.error('Error', err);
+              
                 },
             });
     }
@@ -635,7 +632,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: (err: any) => {
-                    this.notificationService.error('Error', err);
+                    
                 },
             });
     }
@@ -654,7 +651,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: (err: any) => {
-                    this.notificationService.error('Error', err);
+                 
                 },
             });
     }

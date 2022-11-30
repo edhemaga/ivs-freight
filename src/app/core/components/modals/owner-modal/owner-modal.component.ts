@@ -300,10 +300,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    this.notificationService.success(
-                        'Successfuly add new bank',
-                        'Success'
-                    );
+                    
                     this.selectedBank = {
                         id: res.id,
                         name: this.selectedBank.name,
@@ -311,10 +308,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't add new bank",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -371,16 +365,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `Changes saved for "${bussinesName}"`,
-                        'Success'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Failed to save changes for "${bussinesName}"`,
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -392,16 +380,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `"${bussinesName}" deleted`,
-                        'Success'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Failed to delete "${bussinesName}"`,
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -442,10 +424,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        `"${bussinesName}" added`,
-                        'Success'
-                    );
+                    
 
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
@@ -482,10 +461,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.notificationService.error(
-                        `Failed to add "${bussinesName}"`,
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -522,10 +498,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     );
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Owner can't be loaded",
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -539,10 +512,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                     this.labelsBank = res.banks;
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Owner's dropdowns can't be loaded",
-                        'Error'
-                    );
+                    
                 },
             });
     }

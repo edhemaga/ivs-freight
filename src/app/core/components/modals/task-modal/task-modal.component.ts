@@ -223,16 +223,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                         }
                         return item;
                     });
-                    this.notificationService.success(
-                        'Comment successfully created.',
-                        'Success:'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Comment can't be created.",
-                        'Error:'
-                    );
+                  
                 },
             });
     }
@@ -250,16 +244,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Comment successfully updated.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Comment cant't be updated.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -271,16 +259,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Comment successfully deleted.',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Comment cant't be deleted.",
-                        'Error:'
-                    );
+                  
                 },
             });
     }
@@ -371,16 +353,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Task successfully deleted.',
-                        'Success:'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Task can't be deleted.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -428,7 +404,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files ? (res.files as any) : [];
                 },
                 error: () => {
-                    this.notificationService.error("Can't get task.", 'Error:');
+                 
                 },
             });
     }
@@ -450,10 +426,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     this.resCompanyUsers = [...this.showCompanyUsers];
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Can't get task dropdowns.",
-                        'Error:'
-                    );
+                 
                 },
             });
     }

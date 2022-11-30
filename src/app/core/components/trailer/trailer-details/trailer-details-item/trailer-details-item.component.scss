@@ -47,6 +47,7 @@ app-trailer-details-item {
             cursor: pointer;
             .arrow-down-employment {
                 svg {
+                    transition: all 0.2s ease;
                     path {
                         fill: #aaaaaa;
                         &:hover {
@@ -60,7 +61,7 @@ app-trailer-details-item {
             bottom: 0 !important;
             svg {
                 transform: rotate(180deg);
-                transition: all 0.3s ease-in-out;
+                transition: all 0.2s ease;
                 path {
                     fill: #536bc2 !important;
                 }
@@ -125,7 +126,7 @@ app-trailer-details-item {
             .details-document-name {
                 font-size: 14px;
                 font-weight: 800;
-                color: #6c6c6c;
+                color: #000000;
                 margin-left: 4px;
                 &::-moz-selection {
                     color: $color-gray-dark;

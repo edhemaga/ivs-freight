@@ -25,6 +25,8 @@
         .note_upper_hold {
             display: flex;
             align-items: center;
+            justify-content: center;
+            width: 18px;
 
             .note_tools_container {
                 margin-right: 7px;
@@ -38,7 +40,6 @@
             -ms-user-select: none;
             user-select: none;
             position: relative;
-            left: 2px;
         }
         .rotate {
             transform: rotate(180deg);

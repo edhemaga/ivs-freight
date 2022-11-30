@@ -22,14 +22,16 @@ export class pmTrailerResolver implements Resolve<PmTrailerState> {
                     return of('No pm trailers data...');
                 }),
                 tap((pmTrailerPagination: PMTrailerUnitListResponse) => {
-                    /* localStorage.setItem(
-          'pmTrailerTableCount',
-          JSON.stringify({
-            pmTrailer: pmTrailerPagination.pagination.count,
-          })
-        );
-        
-        this.pmTrailerStore.set(pmTrailerPagination.pagination.data); */
+                    localStorage.setItem(
+                        'pmTrailerTableCount',
+                        JSON.stringify({
+                            pmTrailer: pmTrailerPagination.pmTrailerCount,
+                        })
+                    );
+
+                    this.pmTrailerStore.set(
+                        pmTrailerPagination.pagination.data
+                    );
                 })
             );
     }

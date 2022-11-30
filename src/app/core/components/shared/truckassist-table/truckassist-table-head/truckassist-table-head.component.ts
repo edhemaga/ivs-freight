@@ -50,6 +50,7 @@ export class TruckassistTableHeadComponent
     resizeHitLimit: number = -1;
     resizeIsPined: boolean;
     notPinedMaxWidth: number = 0;
+    sortDirection: string = '';
     tableConfigurationType: string = '';
 
     constructor(
@@ -206,7 +207,6 @@ export class TruckassistTableHeadComponent
         }
     }
 
-    sortDirection: string = '';
     // Sort
     sortHeaderClick(column: any): void {
         if (
@@ -268,7 +268,14 @@ export class TruckassistTableHeadComponent
 
         this.columns.splice(currentIndex, 0, column[0]);
 
-        this.updateTableColumns();
+        localStorage.setItem(
+            `table-${this.tableConfigurationType}-Configuration`,
+            JSON.stringify(this.columns)
+        );
+
+        this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+
+        this.setVisibleColumns();
     }
 
     // Rezaize
@@ -328,20 +335,20 @@ export class TruckassistTableHeadComponent
             }
         });
 
-        this.updateTableColumns();
+        localStorage.setItem(
+            `table-${this.tableConfigurationType}-Configuration`,
+            JSON.stringify(this.columns)
+        );
+
+        this.setVisibleColumns();
+
+        this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
     }
 
     // Pin Column
     onPinColumn(column: any) {
         column.isPined = !column.isPined;
 
-        this.updateTableColumns();
-
-        this.changeDetectorRef.detectChanges();
-    }
-
-    // Update Table Columns
-    updateTableColumns() {
         localStorage.setItem(
             `table-${this.tableConfigurationType}-Configuration`,
             JSON.stringify(this.columns)
@@ -350,6 +357,8 @@ export class TruckassistTableHeadComponent
         this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
 
         this.setVisibleColumns();
+
+        this.changeDetectorRef.detectChanges();
     }
 
     // --------------------------------ON DESTROY---------------------------------

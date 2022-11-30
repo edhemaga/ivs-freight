@@ -814,16 +814,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         }
                         return item;
                     });
-                    this.notificationService.success(
-                        'Comment successfully created.',
-                        'Success:'
-                    );
+                  
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Comment can't be created.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -835,16 +829,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Comment successfully deleted.',
-                        'Success:'
-                    );
+                    
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Comment cant't be deleted.",
-                        'Error:'
-                    );
+                   
                 },
             });
     }
@@ -862,16 +850,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Comment successfully updated.',
-                        'Success:'
-                    );
+                   
                 },
                 error: () => {
-                    this.notificationService.error(
-                        "Comment cant't be updated.",
-                        'Error:'
-                    );
+                    
                 },
             });
     }
@@ -1658,7 +1640,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         });
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+                  
                 },
             });
     }
@@ -1738,16 +1720,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully created load',
-                        'Success'
-                    );
+                    
                 },
                 error: (error: any) => {
-                    this.notificationService.success(
-                        `Error: ${error}`,
-                        'Error'
-                    );
+                    
                 },
             });
     }
@@ -1816,17 +1792,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success(
-                        'Successfully create load template.',
-                        'Success'
-                    );
+                   
                     this.modalService.setModalSpinner({
                         action: 'load-template',
                         status: false,
                     });
                 },
                 error: (error: any) => {
-                    this.notificationService.error(error, 'Error');
+                    
                 },
             });
     }

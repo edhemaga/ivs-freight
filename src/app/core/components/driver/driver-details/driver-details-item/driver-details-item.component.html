@@ -33,7 +33,7 @@
                     (clickedCard)="getNameForDrop($event, cdl.id)"
                     [cardNameCurrent]="'cdl'"
                     [noteIcons]="
-                        cdl.note
+                        cdl.note && cdl.note != null && cdl.note != 'null' || cdlNote?.value
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
@@ -208,10 +208,14 @@
                                         class="counter-text-wrapper"
                                         [class.disabled]="!cdl?.files?.length"
                                     >
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
                                         <app-ta-counter
-                                            [countBackgroud]="'#F3F3F3'"
-                                            [countHeight]="'24px'"
-                                            [countWidth]="'24px'"
+                                            [countBackground]="'#424242'"
+                                            [customClass]="'circle_counter'"
+                                            [countHeight]="'22px'"
+                                            [countWidth]="'22px'"
                                             [count]="
                                                 cdl?.files?.length
                                                     ? cdl.files.length
@@ -219,9 +223,6 @@
                                             "
                                         >
                                         </app-ta-counter>
-                                        <p class="details-document-name">
-                                            Document
-                                        </p>
                                     </div>
                                     <svg-icon
                                         *ngIf="cdl?.files?.length"
@@ -241,6 +242,7 @@
                                     [hasCarouselBottomTabs]="true"
                                     [type]="'details'"
                                     [slideWidth]="315"
+                                    [hasLandscapeOption]="true"
                                 ></app-ta-upload-files>
                             </div>
                             <div class="divider"></div>
@@ -273,7 +275,7 @@
             <div>
                 <app-ta-re-card
                     *ngFor="
-                        let test of driverItem?.data?.tests;
+                        let test of driverItem?.data;
                         let i = index;
                         trackBy: identity
                     "
@@ -291,7 +293,7 @@
                     [weeklyWidth]="'18'"
                     [cardNameCurrent]="'test'"
                     [noteIcons]="
-                        test.note
+                        test.note && test.note != null && test.note != 'null'
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
@@ -343,10 +345,14 @@
                                         class="counter-text-wrapper"
                                         [class.disabled]="!test?.files?.length"
                                     >
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
                                         <app-ta-counter
-                                            [countBackgroud]="'#F3F3F3'"
-                                            [countHeight]="'24px'"
-                                            [countWidth]="'24px'"
+                                            [countBackground]="'#424242'"
+                                            [customClass]="'circle_counter'"
+                                            [countHeight]="'22px'"
+                                            [countWidth]="'22px'"
                                             [count]="
                                                 test?.files?.length
                                                     ? test.files.length
@@ -354,9 +360,6 @@
                                             "
                                         >
                                         </app-ta-counter>
-                                        <p class="details-document-name">
-                                            Document
-                                        </p>
                                     </div>
                                     <svg-icon
                                         *ngIf="test?.files?.length"
@@ -408,7 +411,7 @@
             <div>
                 <app-ta-re-card
                     *ngFor="
-                        let med of driverItem?.data?.medicals;
+                        let med of driverItem?.data;
                         let i = index;
                         trackBy: identity
                     "
@@ -423,7 +426,7 @@
                     (clickedCard)="getNameForDrop($event)"
                     [cardNameCurrent]="'medical'"
                     [noteIcons]="
-                        med.note
+                        med.note && med.note != null && med.note != 'null'
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
@@ -471,10 +474,14 @@
                                         class="counter-text-wrapper"
                                         [class.disabled]="!med?.files?.length"
                                     >
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
                                         <app-ta-counter
-                                            [countBackgroud]="'#F3F3F3'"
-                                            [countHeight]="'24px'"
-                                            [countWidth]="'24px'"
+                                            [countBackground]="'#424242'"
+                                            [customClass]="'circle_counter'"
+                                            [countHeight]="'22px'"
+                                            [countWidth]="'22px'"
                                             [count]="
                                                 med?.files?.length
                                                     ? med.files.length
@@ -482,9 +489,6 @@
                                             "
                                         >
                                         </app-ta-counter>
-                                        <p class="details-document-name">
-                                            Document
-                                        </p>
                                     </div>
                                     <svg-icon
                                         *ngIf="med?.files?.length"
@@ -536,7 +540,7 @@
             <div>
                 <app-ta-re-card
                     *ngFor="
-                        let mvr of driverItem?.data?.mvrs;
+                        let mvr of driverItem?.data;
                         let i = index;
                         trackBy: identity
                     "
@@ -548,7 +552,7 @@
                         mvr?.files?.length ? mvr.files.length : 0
                     "
                     [noteIcons]="
-                        mvr.note
+                        mvr.note && mvr.note != null && mvr.note != 'null'
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
@@ -601,10 +605,14 @@
                                     [class.disabled]="!mvr?.files?.length"
                                 >
                                     <div class="counter-text-wrapper">
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
                                         <app-ta-counter
-                                            [countBackgroud]="'#F3F3F3'"
-                                            [countHeight]="'24px'"
-                                            [countWidth]="'24px'"
+                                            [countBackground]="'#424242'"
+                                            [customClass]="'circle_counter'"
+                                            [countHeight]="'22px'"
+                                            [countWidth]="'22px'"
                                             [count]="
                                                 mvr?.files?.length
                                                     ? mvr.files.length
@@ -612,9 +620,6 @@
                                             "
                                         >
                                         </app-ta-counter>
-                                        <p class="details-document-name">
-                                            Document
-                                        </p>
                                     </div>
                                     <svg-icon
                                         *ngIf="mvr?.files?.length"
