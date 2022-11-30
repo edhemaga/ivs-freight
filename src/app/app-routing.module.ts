@@ -44,6 +44,7 @@ import { ApplicantResolver } from './core/components/applicant/state/resolver/ap
 import { FuelResolver } from './core/components/fuel/state/fule-state/fuel-state.resolver';
 import { ApplicantTableResolver } from './core/components/driver/state/applicant-state/applicant-table.resolver';
 import { ApplicantSphFormResolver } from './core/components/applicant/state/resolver/applicant-sph-form.resolver';
+import { MilesResolverService } from './core/components/miles/state/miles-resolver.service';
 
 const routes: Routes = [
     // Auth Routes
@@ -259,6 +260,15 @@ const routes: Routes = [
                 (m) => m.CalendarModule
             ),
         canActivate: [AuthGuard],
+    },
+    {
+        path: 'tools/miles',
+        loadChildren: () =>
+            import(
+                './core/components/miles/miles.module'
+            ).then((m) => m.MilesModule),
+        canActivate: [AuthGuard],
+        resolve: { miles: MilesResolverService }
     },
     {
         path: 'safety/violation',
