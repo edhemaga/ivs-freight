@@ -36,10 +36,13 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public medicalCertificateForm: FormGroup;
 
     public applicantId: number;
+    public medicalCertificateId: number | null = null;
 
     public stepHasValues: boolean = false;
 
     public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -106,16 +109,23 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         stepValues: MedicalCertificateFeedbackResponse
     ): void {
         console.log('stepValues', stepValues);
-        const { issueDate, expireDate } = stepValues;
+        const { issueDate, expireDate, files, id } = stepValues;
+
+        this.medicalCertificateId = id;
 
         this.medicalCertificateForm.patchValue({
             fromDate: convertDateFromBackend(issueDate),
             toDate: convertDateFromBackend(expireDate),
+            files: JSON.stringify(files),
         });
+
+        this.documents = files;
     }
 
     public onFilesAction(event: any): void {
         this.documents = event.files;
+
+        this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
             case 'add':
@@ -130,6 +140,11 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
+
+                this.documentsForDeleteIds = [
+                    ...this.documentsForDeleteIds,
+                    event.deleteId,
+                ];
 
                 break;
 
@@ -237,7 +252,14 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
     public onSubmit(): void {
         if (this.medicalCertificateForm.invalid) {
-            this.inputService.markInvalid(this.medicalCertificateForm);
+            if (this.medicalCertificateForm.invalid) {
+                this.inputService.markInvalid(this.medicalCertificateForm);
+            }
+
+            if (!this.documents.length) {
+                this.displayDocumentsRequiredNote = true;
+            }
+
             return;
         }
 
@@ -247,6 +269,8 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
+            } else {
+                documents.push(item);
             }
         });
 
@@ -255,7 +279,14 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             issueDate: convertDateToBackend(fromDate),
             expireDate: convertDateToBackend(toDate),
             files: documents,
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                applicantMedicalId: this.medicalCertificateId,
+                filesForDeleteIds: this.documentsForDeleteIds,
+            }),
         };
+
+        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (
@@ -295,6 +326,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                                     ...store.applicant.medicalCertificate,
                                     issueDate: saveData.issueDate,
                                     expireDate: saveData.expireDate,
+                                    files: saveData.files,
                                 },
                             },
                         };

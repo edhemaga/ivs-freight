@@ -34,6 +34,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     public dontHaveMvrForm: FormGroup;
 
     public applicantId: number;
+    public mvrAuthId: number | null = null;
 
     public stepHasValues: boolean = false;
 
@@ -42,6 +43,8 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     public previousStepValues: any;
 
     public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
 
     public signature: string;
     public signatureImgSrc: string;
@@ -136,19 +139,26 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
             dontHaveMvr,
             onlyLicense,
             signature,
+            files,
+            id,
         } = stepValues;
+
+        this.mvrAuthId = id;
 
         this.mvrAuthorizationForm.patchValue({
             isConsentRelease: isEmployee,
             isPeriodicallyObtained,
             isInformationCorrect,
             licenseCheck: onlyLicense,
+            files: JSON.stringify(files),
         });
 
         this.dontHaveMvrForm.get('dontHaveMvr').patchValue(dontHaveMvr);
 
         this.signatureImgSrc = signature;
         this.signature = signature;
+
+        this.documents = files;
     }
 
     public requestDrivingRecordFromEmployer(): void {
@@ -238,6 +248,8 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
     public onFilesAction(event: any): void {
         this.documents = event.files;
 
+        this.displayDocumentsRequiredNote = false;
+
         switch (event.action) {
             case 'add':
                 this.mvrAuthorizationForm
@@ -251,6 +263,11 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
+
+                this.documentsForDeleteIds = [
+                    ...this.documentsForDeleteIds,
+                    event.deleteId,
+                ];
 
                 break;
 
@@ -338,6 +355,10 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
         if (this.mvrAuthorizationForm.invalid || !this.signature) {
             if (this.mvrAuthorizationForm.invalid) {
                 this.inputService.markInvalid(this.mvrAuthorizationForm);
+
+                if (!this.documents.length) {
+                    this.displayDocumentsRequiredNote = true;
+                }
             }
 
             if (!this.signature) {
@@ -360,6 +381,8 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
         this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
+            } else {
+                documents.push(item);
             }
         });
 
@@ -375,7 +398,14 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                     ? this.signature
                     : this.signatureImgSrc,
             files: dontHaveMvr ? [] : documents,
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                applicantMvrAuthId: this.mvrAuthId,
+                filesForDeleteIds: this.documentsForDeleteIds,
+            }),
         };
+
+        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (
@@ -421,6 +451,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
                                     dontHaveMvr: saveData.dontHaveMvr,
                                     onlyLicense: saveData.onlyLicense,
                                     signature: saveData.signature,
+                                    files: saveData.files,
                                 },
                             },
                         };

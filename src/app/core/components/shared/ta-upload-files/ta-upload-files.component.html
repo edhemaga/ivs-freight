@@ -1,23 +1,23 @@
 <div
     class="ta-upload {{ customClassName }}"
     [ngClass]="{
-        'ta-upload-small': files.length && size === 'small',
+        'ta-upload-small': files?.length && size === 'small',
         'ta-upload-medium-file':
-            files.length && files.length < 2 && size === 'medium',
+            files?.length && files?.length < 2 && size === 'medium',
         'ta-upload-medium-files':
-            files.length && files.length > 1 && size === 'medium',
+            files?.length && files?.length > 1 && size === 'medium',
         'ta-upload-large-file':
-            files.length && files.length < 2 && size === 'large',
+            files?.length && files?.length < 2 && size === 'large',
         'ta-upload-large-twofiles':
-            files.length && files.length >= 2 && size === 'large',
+            files?.length && files?.length >= 2 && size === 'large',
         'ta-upload-large-threefiles':
-            files.length && files.length >= 3 && size === 'large',
+            files?.length && files?.length >= 3 && size === 'large',
         'ta-upload-review-mode': isReview
     }"
 >
     <!-- Carousel Files -->
     <app-ta-upload-files-carousel
-        *ngIf="files.length"
+        *ngIf="files?.length"
         [files]="files"
         [hasCarouselBottomTabs]="hasCarouselBottomTabs"
         [customClass]="size"

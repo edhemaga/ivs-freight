@@ -37,6 +37,8 @@ export class CdlCardComponent implements OnInit, OnDestroy {
     public stepHasValues: boolean = false;
 
     public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -91,6 +93,8 @@ export class CdlCardComponent implements OnInit, OnDestroy {
             .subscribe((res: ApplicantResponse) => {
                 this.applicantId = res.id;
 
+                console.log('res', res);
+
                 if (res.cdlCard) {
                     this.patchStepValues(res.cdlCard);
 
@@ -111,6 +115,8 @@ export class CdlCardComponent implements OnInit, OnDestroy {
 
     public onFilesAction(event: any): void {
         this.documents = event.files;
+
+        this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
             case 'add':
@@ -231,6 +237,11 @@ export class CdlCardComponent implements OnInit, OnDestroy {
     public onSubmit(): void {
         if (this.cdlCardForm.invalid) {
             this.inputService.markInvalid(this.cdlCardForm);
+
+            if (!this.documents.length) {
+                this.displayDocumentsRequiredNote = true;
+            }
+
             return;
         }
 
@@ -282,6 +293,7 @@ export class CdlCardComponent implements OnInit, OnDestroy {
                                     ...store.applicant.medicalCertificate,
                                     issueDate: saveData.issueDate,
                                     expireDate: saveData.expireDate,
+                                    files: saveData.files,
                                 },
                             },
                         };

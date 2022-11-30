@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     Component,
     OnInit,
@@ -87,6 +89,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     public subscription: Subscription;
 
     public stepValues: any;
+    public stepHasReviewValues: boolean = false;
 
     public companyName: string;
 
@@ -394,7 +397,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         return this.personalInfoForm.get('previousAddresses') as FormArray;
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
         this.personalInfoForm = this.formBuilder.group({
@@ -460,7 +463,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     public patchStepValues(stepValues: PersonalInfoFeedbackResponse): void {
         console.log('stepValues', stepValues);
         const {
-            id,
             isAgreed,
             firstName,
             lastName,
@@ -613,7 +615,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         }, 150);
 
         this.stepValues = stepValues;
-        this.personalInfoId = id;
         this.previousAddressesId = previousAddresses.map(
             (item: any) => item.id
         );
@@ -774,6 +775,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (personalInfoReview) {
                 const {
+                    id,
                     isFirstNameValid,
                     isLastNameValid,
                     isDoBValid,
@@ -783,10 +785,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     isSsnValid,
                     ssnMessage,
                     isAccountNumberValid,
-                    // isRoutingNumberValid,
-                    // accountRoutingMessage,
-                    // isLegalWorkValid,
-                    // legalWorkMessage,
+                    accountNumberMessage,
                     isAnotherNameValid,
                     anotherNameMessage,
                     isInMilitaryValid,
@@ -798,6 +797,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     isDrunkDrivingValid,
                     drunkDrivingMessage,
                 } = personalInfoReview;
+
+                this.stepHasReviewValues = true;
+
+                this.personalInfoId = id;
 
                 this.openAnnotationArray[0] = {
                     ...this.openAnnotationArray[0],
@@ -831,27 +834,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         !isSsnValid && !ssnMessage ? true : false,
                     displayAnnotationTextArea: ssnMessage ? true : false,
                 };
-                // this.openAnnotationArray[8] = {
-                //     ...this.openAnnotationArray[8],
-                //     lineInputs: [!isAccountNumberValid, !isRoutingNumberValid],
-                //     displayAnnotationButton:
-                //         (!isAccountNumberValid || !isRoutingNumberValid) &&
-                //         !accountRoutingMessage
-                //             ? true
-                //             : false,
-                //     displayAnnotationTextArea: accountRoutingMessage
-                //         ? true
-                //         : false,
-                // };
-                // this.openAnnotationArray[9] = {
-                //     ...this.openAnnotationArray[9],
-                //     lineInputs: [!isLegalWorkValid],
-                //     displayAnnotationButton:
-                //         !isLegalWorkValid && !legalWorkMessage ? true : false,
-                //     displayAnnotationTextArea: legalWorkMessage ? true : false,
-                // };
-                this.openAnnotationArray[10] = {
-                    ...this.openAnnotationArray[10],
+                this.openAnnotationArray[8] = {
+                    ...this.openAnnotationArray[8],
+                    lineInputs: [!isAccountNumberValid],
+                    displayAnnotationButton:
+                        !isAccountNumberValid && !accountNumberMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: accountNumberMessage
+                        ? true
+                        : false,
+                };
+                this.openAnnotationArray[11] = {
+                    ...this.openAnnotationArray[11],
                     lineInputs: [!isAnotherNameValid],
                     displayAnnotationButton:
                         !isAnotherNameValid && !anotherNameMessage
@@ -861,22 +856,22 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         ? true
                         : false,
                 };
-                this.openAnnotationArray[11] = {
-                    ...this.openAnnotationArray[11],
+                this.openAnnotationArray[12] = {
+                    ...this.openAnnotationArray[12],
                     lineInputs: [!isInMilitaryValid],
                     displayAnnotationButton:
                         !isInMilitaryValid && !inMilitaryMessage ? true : false,
                     displayAnnotationTextArea: inMilitaryMessage ? true : false,
                 };
-                this.openAnnotationArray[12] = {
-                    ...this.openAnnotationArray[12],
+                this.openAnnotationArray[13] = {
+                    ...this.openAnnotationArray[13],
                     lineInputs: [!isFelonyValid],
                     displayAnnotationButton:
                         !isFelonyValid && !felonyMessage ? true : false,
                     displayAnnotationTextArea: felonyMessage ? true : false,
                 };
-                this.openAnnotationArray[13] = {
-                    ...this.openAnnotationArray[13],
+                this.openAnnotationArray[14] = {
+                    ...this.openAnnotationArray[14],
                     lineInputs: [!isMisdemeanorValid],
                     displayAnnotationButton:
                         !isMisdemeanorValid && !misdemeanorMessage
@@ -886,8 +881,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         ? true
                         : false,
                 };
-                this.openAnnotationArray[14] = {
-                    ...this.openAnnotationArray[14],
+                this.openAnnotationArray[15] = {
+                    ...this.openAnnotationArray[15],
                     lineInputs: [!isDrunkDrivingValid],
                     displayAnnotationButton:
                         !isDrunkDrivingValid && !drunkDrivingMessage
@@ -914,14 +909,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     firstRowReview: personalInfoMessage,
                     secondRowReview: phoneMessage,
                     thirdRowReview: ssnMessage,
-                    // fourthRowReview: accountRoutingMessage,
+                    fourthRowReview: accountNumberMessage,
 
-                    // questionReview1: legalWorkMessage,
-                    questionReview2: anotherNameMessage,
-                    questionReview3: inMilitaryMessage,
-                    questionReview4: felonyMessage,
-                    questionReview5: misdemeanorMessage,
-                    questionReview6: drunkDrivingMessage,
+                    questionReview3: anotherNameMessage,
+                    questionReview4: inMilitaryMessage,
+                    questionReview5: felonyMessage,
+                    questionReview6: misdemeanorMessage,
+                    questionReview7: drunkDrivingMessage,
                 });
             }
         }
@@ -1029,17 +1023,15 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             case InputSwitchActions.PREVIOUS_ADDRESS:
                 const address: AddressEntity = event.address;
 
-                this.selectedAddresses = [...this.selectedAddresses, address];
-
                 this.isLastAddedPreviousAddressValid = event.valid;
 
-                if (!event.valid) {
+                if (!this.isLastAddedPreviousAddressValid) {
                     this.previousAddresses
                         .at(index)
                         .setErrors({ invalid: true });
-
-                    this.isLastAddedPreviousAddressValid = false;
                 } else {
+                    this.selectedAddresses[index] = address;
+
                     this.previousAddresses.at(index).patchValue({
                         address: address.address,
                     });
@@ -1089,7 +1081,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.selectedBank,
                     ];
                 },
-                error: (err) => {
+                error: (_) => {
                     this.notificationService.error(
                         "Can't add new bank",
                         'Error'
@@ -1785,6 +1777,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             };
         });
 
+        console.log('selected', this.selectedAddresses);
+
         const saveData: UpdatePersonalInfoCommand = {
             ...personalInfoForm,
             applicantId: this.applicantId,
@@ -1816,9 +1810,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         const stepPreviousAddresses = this.stepValues?.previousAddresses;
 
         const storePreviousAddresses = this.selectedAddresses
-            .filter(
-                (item, index) => index !== this.selectedAddresses.length - 1
-            )
+            .filter((_, index) => index !== this.selectedAddresses.length - 1)
             .map((item, index) => {
                 return {
                     id: stepPreviousAddresses[index]?.id,
@@ -1827,6 +1819,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         stepPreviousAddresses[index]?.previousAddressReview,
                 };
             });
+
+        console.log('saveData', saveData);
 
         this.applicantActionsService
             .updatePersonalInfo(saveData)
@@ -1944,7 +1938,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
         const saveData: any = {
             applicantId: this.applicantId,
-            id: this.personalInfoId,
+            ...(this.stepHasReviewValues && {
+                id: this.personalInfoId,
+            }),
             isFirstNameValid: !this.openAnnotationArray[0].lineInputs[0],
             isLastNameValid: !this.openAnnotationArray[0].lineInputs[1],
             isDoBValid: !this.openAnnotationArray[0].lineInputs[2],
@@ -1970,10 +1966,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             isSsnValid: !this.openAnnotationArray[7].lineInputs[0],
             ssnMessage: thirdRowReview,
             isAccountNumberValid: !this.openAnnotationArray[8].lineInputs[0],
-            isRoutingNumberValid: !this.openAnnotationArray[8].lineInputs[1],
-            accountRoutingMessage: fourthRowReview,
-            isLegalWorkValid: true,
-            legalWorkMessage: null,
+            accountNumberMessage: fourthRowReview,
             isAnotherNameValid: !this.openAnnotationArray[11].lineInputs[0],
             anotherNameMessage: questionReview3,
             isInMilitaryValid: !this.openAnnotationArray[12].lineInputs[0],
@@ -1989,8 +1982,30 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
         console.log('saveData', saveData);
 
-        this.applicantActionsService
-            .createPersonalInfoReview(saveData)
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                console.log('POST');
+
+                return this.applicantActionsService.createPersonalInfoReview(
+                    saveData
+                );
+            }
+
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                console.log('PUT');
+                return this.applicantActionsService.updatePersonalInfoReview(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {

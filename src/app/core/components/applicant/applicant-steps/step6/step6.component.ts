@@ -87,7 +87,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
     public applicantId: number;
     public educationId: number;
-    public emergencyContactReviewIds: any[];
+    public emergencyContactReviewIds: number[];
 
     public stepValues: any;
     public lastItemStepValues: any;
@@ -328,6 +328,8 @@ export class Step6Component implements OnInit, OnDestroy {
         this.createForm();
 
         this.getStepValuesFromStore();
+
+        this.updateStoreWithIds();
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
@@ -378,6 +380,65 @@ export class Step6Component implements OnInit, OnDestroy {
 
                     this.stepHasValues = true;
                 }
+            });
+    }
+
+    public updateStoreWithIds(): void {
+        this.applicantActionsService
+            .getApplicantById(this.applicantId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: ApplicantResponse) => {
+                if (this.selectedMode === SelectedMode.APPLICANT) {
+                    if (res?.education?.emergencyContacts) {
+                        const ids = res?.education?.emergencyContacts.map(
+                            (item) => item.id
+                        );
+
+                        this.applicantStore.update((store) => {
+                            return {
+                                ...store,
+                                applicant: {
+                                    ...store.applicant,
+                                    education: {
+                                        ...store.applicant.education,
+                                        emergencyContacts:
+                                            store.applicant.education.emergencyContacts.map(
+                                                (item, index) => {
+                                                    return {
+                                                        ...item,
+                                                        id: ids[index],
+                                                    };
+                                                }
+                                            ),
+                                    },
+                                },
+                            };
+                        });
+                    }
+                }
+
+                /*    if (this.selectedMode === SelectedMode.REVIEW) {
+                    if (res?.sevenDaysHos?.sevenDaysHosReview) {
+                        const id = res?.sevenDaysHos?.sevenDaysHosReview?.id;
+
+                        this.applicantStore.update((store) => {
+                            return {
+                                ...store,
+                                applicant: {
+                                    ...store.applicant,
+                                    sevenDaysHos: {
+                                        ...store.applicant.sevenDaysHos,
+                                        sevenDaysHosReview: {
+                                            ...store.applicant.sevenDaysHos
+                                                .sevenDaysHosReview,
+                                            id,
+                                        },
+                                    },
+                                },
+                            };
+                        });
+                    }
+                } */
             });
     }
 
@@ -461,6 +522,7 @@ export class Step6Component implements OnInit, OnDestroy {
         };
 
         this.lastContactCard = {
+            id: filteredLastItemInContactsArray.id,
             name: filteredLastItemInContactsArray.name,
             phone: filteredLastItemInContactsArray.phone,
             relationship: filteredLastItemInContactsArray.relationship,
@@ -862,7 +924,10 @@ export class Step6Component implements OnInit, OnDestroy {
     }
 
     public onGetLastFormValues(event: any): void {
-        this.lastContactCard = event;
+        this.lastContactCard = {
+            ...this.lastContactCard,
+            ...event,
+        };
 
         if (this.selectedMode === SelectedMode.FEEDBACK) {
             if (event) {
@@ -1345,6 +1410,10 @@ export class Step6Component implements OnInit, OnDestroy {
                 name: item.name,
                 phone: item.phone,
                 relationship: item.relationship,
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: item.id ? item.id : null,
+                }),
             };
         });
 
@@ -1352,6 +1421,10 @@ export class Step6Component implements OnInit, OnDestroy {
             name: this.lastContactCard.name,
             phone: this.lastContactCard.phone,
             relationship: this.lastContactCard.relationship,
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                id: this.lastContactCard.id,
+            }),
         };
 
         const saveData: CreateEducationCommand = {
@@ -1380,6 +1453,8 @@ export class Step6Component implements OnInit, OnDestroy {
                 filteredLastContactCard,
             ],
         };
+
+        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

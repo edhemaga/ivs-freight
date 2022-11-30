@@ -132,7 +132,7 @@ export class ApplicantComponent implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$

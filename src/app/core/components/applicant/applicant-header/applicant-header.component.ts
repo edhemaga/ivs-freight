@@ -124,7 +124,7 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         }
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$

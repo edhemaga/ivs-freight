@@ -65,17 +65,21 @@ export class Step7Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public subscription: Subscription;
 
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
     public stepValues: any;
 
     public sevenDaysHosForm: FormGroup;
 
-    public applicantId: number;
     public applicantInviteDate: string;
+
+    public applicantId: number;
+    public sevenDaysHosId: number | null = null;
+    public hosIds: number[] = [];
 
     public selectedAddress: AddressEntity = null;
 
@@ -197,13 +201,15 @@ export class Step7Component implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
 
         this.getLastSevenDaysFromDateOfInvitation();
+
+        this.updateStoreWithIds();
     }
 
     public get hosArray(): FormArray {
         return this.sevenDaysHosForm.get('hosArray') as FormArray;
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     public createForm(): void {
         this.sevenDaysHosForm = this.formBuilder.group({
@@ -235,6 +241,64 @@ export class Step7Component implements OnInit, OnDestroy {
             });
     }
 
+    public updateStoreWithIds(): void {
+        this.applicantActionsService
+            .getApplicantById(this.applicantId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: ApplicantResponse) => {
+                if (this.selectedMode === SelectedMode.APPLICANT) {
+                    if (res?.sevenDaysHos?.hos) {
+                        const ids = res?.sevenDaysHos?.hos.map(
+                            (item) => item.id
+                        );
+
+                        this.applicantStore.update((store) => {
+                            return {
+                                ...store,
+                                applicant: {
+                                    ...store.applicant,
+                                    sevenDaysHos: {
+                                        ...store.applicant.sevenDaysHos,
+                                        hos: store.applicant.sevenDaysHos.hos.map(
+                                            (item, index) => {
+                                                return {
+                                                    ...item,
+                                                    id: ids[index],
+                                                };
+                                            }
+                                        ),
+                                    },
+                                },
+                            };
+                        });
+                    }
+                }
+
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    if (res?.sevenDaysHos?.sevenDaysHosReview) {
+                        const id = res?.sevenDaysHos?.sevenDaysHosReview?.id;
+
+                        this.applicantStore.update((store) => {
+                            return {
+                                ...store,
+                                applicant: {
+                                    ...store.applicant,
+                                    sevenDaysHos: {
+                                        ...store.applicant.sevenDaysHos,
+                                        sevenDaysHosReview: {
+                                            ...store.applicant.sevenDaysHos
+                                                .sevenDaysHosReview,
+                                            id,
+                                        },
+                                    },
+                                },
+                            };
+                        });
+                    }
+                }
+            });
+    }
+
     public patchStepValues(stepValues: SevenDaysHosFeedbackResponse): void {
         const {
             hos,
@@ -244,7 +308,6 @@ export class Step7Component implements OnInit, OnDestroy {
             workingForAnotherEmployer,
             intendToWorkForAnotherEmployer,
             certifyInfomation,
-            id,
             sevenDaysHosReview,
         } = stepValues;
 
@@ -254,7 +317,13 @@ export class Step7Component implements OnInit, OnDestroy {
                     isReleaseDateValid,
                     isLocationValid,
                     releaseDateLocationMessage,
+                    id,
                 } = stepValues.sevenDaysHosReview;
+
+                this.stepHasReviewValues = true;
+
+                this.sevenDaysHosId = id;
+
                 this.openAnnotationArray[0] = {
                     ...this.openAnnotationArray[0],
                     lineInputs: [!isReleaseDateValid, !isLocationValid],
@@ -310,6 +379,9 @@ export class Step7Component implements OnInit, OnDestroy {
                 hos[i].date
             );
         }
+
+        this.hosIds = hos.map((item) => item.id);
+
         this.sevenDaysHosForm.patchValue({
             isValidHos: releasedFromWork,
             startDate: convertDateFromBackend(releasedDate),
@@ -637,8 +709,6 @@ export class Step7Component implements OnInit, OnDestroy {
             anotherEmployer,
             intendToWorkAnotherEmployer,
             isValidAnotherEmployer,
-            firstRowReview,
-            ...sevenDaysHosForm
         } = this.sevenDaysHosForm.value;
 
         const radioButtons = [
@@ -679,6 +749,10 @@ export class Step7Component implements OnInit, OnDestroy {
         const filteredHosArray: { hours: number; date: string }[] =
             hosArray.map((item: { hos: string | number }, index: number) => {
                 return {
+                    ...((this.stepHasValues ||
+                        this.selectedMode === SelectedMode.FEEDBACK) && {
+                        id: this.hosIds[index],
+                    }),
                     hours: +item.hos,
                     date: convertDateToBackend(
                         this.sevenDaysHosDateData[index + 1]
@@ -693,7 +767,6 @@ export class Step7Component implements OnInit, OnDestroy {
         };
 
         const saveData: CreateSevenDaysHosCommand = {
-            ...sevenDaysHosForm,
             applicantId: this.applicantId,
             hos: [...filteredHosArray],
             releasedFromWork: isValidHos,
@@ -703,6 +776,8 @@ export class Step7Component implements OnInit, OnDestroy {
             intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer,
             certifyInfomation: isValidAnotherEmployer,
         };
+
+        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (
@@ -770,14 +845,36 @@ export class Step7Component implements OnInit, OnDestroy {
     public onSubmitReview(): void {
         const saveData: CreateSevenDaysHosReviewCommand = {
             applicantId: this.applicantId,
+            ...(this.stepHasReviewValues && {
+                id: this.sevenDaysHosId,
+            }),
             isReleaseDateValid: !this.openAnnotationArray[0].lineInputs[0],
             isLocationValid: !this.openAnnotationArray[0].lineInputs[1],
             releaseDateLocationMessage:
                 this.sevenDaysHosForm.get('firstRowReview').value,
         };
 
-        this.applicantActionsService
-            .createSevenDaysHosReview(saveData)
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createSevenDaysHosReview(
+                    saveData
+                );
+            }
+
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateSevenDaysHosReview(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {

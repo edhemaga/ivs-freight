@@ -32,6 +32,8 @@ export class SsnCardComponent implements OnInit, OnDestroy {
     public stepHasValues: boolean = false;
 
     public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -82,6 +84,8 @@ export class SsnCardComponent implements OnInit, OnDestroy {
 
     public onFilesAction(event: any): void {
         this.documents = event.files;
+
+        this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
             case 'add':
@@ -182,6 +186,11 @@ export class SsnCardComponent implements OnInit, OnDestroy {
     public onSubmit(): void {
         if (this.ssnCardForm.invalid) {
             this.inputService.markInvalid(this.ssnCardForm);
+
+            if (!this.documents.length) {
+                this.displayDocumentsRequiredNote = true;
+            }
+
             return;
         }
 
@@ -189,6 +198,8 @@ export class SsnCardComponent implements OnInit, OnDestroy {
         this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
+            } else {
+                documents.push(item);
             }
         });
 
@@ -196,6 +207,8 @@ export class SsnCardComponent implements OnInit, OnDestroy {
             applicantId: this.applicantId,
             files: documents,
         };
+
+        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

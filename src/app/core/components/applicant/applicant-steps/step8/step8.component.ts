@@ -57,13 +57,14 @@ export class Step8Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public drugTestRadios: any;
 
     public subscription: Subscription;
 
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
     public stepValues: any;
     public previousStepValues: any;
 
@@ -71,6 +72,7 @@ export class Step8Component implements OnInit, OnDestroy {
     public drugAlcoholStatementForm: FormGroup;
 
     public applicantId: number;
+    public drugAndAlcoholId: number | null = null;
 
     public selectedAddress: AddressEntity = null;
     public selectedSapAddress: AddressEntity = null;
@@ -147,6 +149,10 @@ export class Step8Component implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
 
         this.isTestedNegative();
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            this.updateStoreWithIds();
+        }
     }
 
     public createForm(): void {
@@ -192,6 +198,34 @@ export class Step8Component implements OnInit, OnDestroy {
             });
     }
 
+    public updateStoreWithIds(): void {
+        this.applicantActionsService
+            .getApplicantById(this.applicantId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: ApplicantResponse) => {
+                if (res?.drugAndAlcohol?.drugAndAlcoholReview) {
+                    const id = res?.drugAndAlcohol?.drugAndAlcoholReview?.id;
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                drugAndAlcohol: {
+                                    ...store.applicant.drugAndAlcohol,
+                                    drugAndAlcoholReview: {
+                                        ...store.applicant.drugAndAlcohol
+                                            .drugAndAlcoholReview,
+                                        id,
+                                    },
+                                },
+                            },
+                        };
+                    });
+                }
+            });
+    }
+
     public patchStepValues(stepValues: DrugAndAlcoholFeedbackResponse): void {
         const {
             positiveTest,
@@ -220,7 +254,12 @@ export class Step8Component implements OnInit, OnDestroy {
                     isSapAddressValid,
                     isSapAddressUnitValid,
                     sapAddressMessage,
+                    id,
                 } = stepValues.drugAndAlcoholReview;
+
+                this.stepHasReviewValues = true;
+
+                this.drugAndAlcoholId = id;
 
                 this.openAnnotationArray[0] = {
                     ...this.openAnnotationArray[0],
@@ -324,10 +363,17 @@ export class Step8Component implements OnInit, OnDestroy {
             ];
 
             for (let i = 0; i < inputsToValidate.length; i++) {
-                this.inputService.changeValidators(
-                    this.drugAlcoholStatementForm.get(inputsToValidate[i]),
-                    false
-                );
+                if (i === inputsToValidate.length - 1) {
+                    this.inputService.changeValidatorsCheck(
+                        this.drugAlcoholStatementForm.get(inputsToValidate[i]),
+                        false
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.drugAlcoholStatementForm.get(inputsToValidate[i]),
+                        false
+                    );
+                }
             }
         }
 
@@ -429,12 +475,21 @@ export class Step8Component implements OnInit, OnDestroy {
                     };
 
                     for (let i = 0; i < inputsToValidate.length; i++) {
-                        this.inputService.changeValidators(
-                            this.drugAlcoholStatementForm.get(
-                                inputsToValidate[i]
-                            ),
-                            false
-                        );
+                        if (i === inputsToValidate.length - 1) {
+                            this.inputService.changeValidatorsCheck(
+                                this.drugAlcoholStatementForm.get(
+                                    inputsToValidate[i]
+                                ),
+                                false
+                            );
+                        } else {
+                            this.inputService.changeValidators(
+                                this.drugAlcoholStatementForm.get(
+                                    inputsToValidate[i]
+                                ),
+                                false
+                            );
+                        }
                     }
                 } else {
                     if (this.previousStepValues) {
@@ -462,11 +517,19 @@ export class Step8Component implements OnInit, OnDestroy {
                     }
 
                     for (let i = 0; i < inputsToValidate.length; i++) {
-                        this.inputService.changeValidators(
-                            this.drugAlcoholStatementForm.get(
-                                inputsToValidate[i]
-                            )
-                        );
+                        if (i === inputsToValidate.length - 1) {
+                            this.inputService.changeValidatorsCheck(
+                                this.drugAlcoholStatementForm.get(
+                                    inputsToValidate[i]
+                                )
+                            );
+                        } else {
+                            this.inputService.changeValidators(
+                                this.drugAlcoholStatementForm.get(
+                                    inputsToValidate[i]
+                                )
+                            );
+                        }
                     }
                 }
             });
@@ -848,6 +911,9 @@ export class Step8Component implements OnInit, OnDestroy {
 
         const saveData: CreateDrugAndAlcoholReviewCommand = {
             applicantId: this.applicantId,
+            ...(this.stepHasReviewValues && {
+                id: this.drugAndAlcoholId,
+            }),
             isCarrierValid: !this.openAnnotationArray[0].lineInputs[0],
             isPhoneValid: !this.openAnnotationArray[0].lineInputs[1],
             carrierPhoneMessage: firstRowReview,
@@ -862,8 +928,29 @@ export class Step8Component implements OnInit, OnDestroy {
             sapAddressMessage: fourthRowReview,
         };
 
-        this.applicantActionsService
-            .createDrugAndAcoholReview(saveData)
+        console.log('saveData', saveData);
+
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createDrugAndAcoholReview(
+                    saveData
+                );
+            }
+
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateDrugAndAcoholReview(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
