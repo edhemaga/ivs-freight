@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
 
 
-export interface RoadsideInspectionListResponse { 
-    pagination?: RoadsideInspectionResponsePagination;
-    active?: number;
-    inactive?: number;
-    violationSummary?: number;
-}
+export type LoadStopType = 'Pickup' | 'Delivery' | 'Split';
+
+export const LoadStopType = {
+    Pickup: 'Pickup' as LoadStopType,
+    Delivery: 'Delivery' as LoadStopType,
+    Split: 'Split' as LoadStopType
+};
 

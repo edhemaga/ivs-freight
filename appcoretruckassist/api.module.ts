@@ -42,6 +42,7 @@ import { RoutingService } from './api/routing.service';
 import { ShipperService } from './api/shipper.service';
 import { StopService } from './api/stop.service';
 import { TableConfigService } from './api/tableConfig.service';
+import { TelematicsService } from './api/telematics.service';
 import { TerminalService } from './api/terminal.service';
 import { TestService } from './api/test.service';
 import { TitleService } from './api/title.service';
