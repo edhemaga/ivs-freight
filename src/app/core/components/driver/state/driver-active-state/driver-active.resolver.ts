@@ -34,7 +34,7 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
                     this.store.set(driverPagination.pagination.data);
                 })
             );
-
+            
         // const drivers$ = this.driverService.getDrivers(
         //   1,
         //   undefined,

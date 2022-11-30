@@ -264,6 +264,17 @@ export class InputAddressDropdownComponent
         this.incorrectEvent.emit(event);
     }
 
+    onClearInputEvent(e: any) {
+        if(e) {
+            const addressData = {
+                address: {},
+                valid: false,
+                longLat: [],
+            };
+            this.selectedAddress.emit(addressData);
+        }
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

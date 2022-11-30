@@ -17,6 +17,7 @@ export interface TruckAccidentResponse {
     id?: number;
     truckType?: TruckTypeResponse;
     truckMake?: TruckMakeResponse;
+    stateShortName?: string | null;
     truckNumber?: string | null;
     licensePlate?: string | null;
     vin?: string | null;
