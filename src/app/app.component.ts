@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.gpsService.startConnection();
+        //this.gpsService.startConnection();
 
         setTimeout(() => {
             this.gpsService.closeConnection();
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
             )
             .subscribe((event: any) => {
                 this.currentPage = event?.title?.toLowerCase();
-                this.titleService.setTitle('TruckAssist' + ' | ' + event.title);
+                this.titleService.setTitle('CarrierAssist' + ' | ' + event.title);
             });
     }
 

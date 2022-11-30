@@ -364,6 +364,7 @@ export class DriverDetailsItemComponent
     }
 
     public getCdlById(id: number) {
+        console.log("SEND ITD");
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
