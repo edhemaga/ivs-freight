@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getMilesColumnsDefinition } from '../../../../../assets/utils/settings/miles-columns';
+import { MilesTableQuery } from '../state/miles.query';
 
 @Component({
     selector: 'app-miles',
     templateUrl: './miles.component.html',
     styleUrls: ['./miles.component.scss'],
 })
-export class MilesComponent implements OnInit {
+export class MilesComponent implements OnInit, AfterViewInit {
+    private destroy$ = new Subject<void>();
+
     tableOptions: any = {};
     tableData: any[] = [];
     viewData: any[] = [];
@@ -14,18 +19,65 @@ export class MilesComponent implements OnInit {
     activeViewMode: string = 'List';
     columns: any[] = [];
     tableContainerWidth: number = 0;
-    constructor() {}
+    resizeObserver: ResizeObserver;
+    milesActive: any;
+    milesInactive: any;
+
+    constructor(
+        private milesTableQuery: MilesTableQuery,
+        private tableService: TruckassistTableService
+    ) {}
 
     ngOnInit(): void {
-      this.sendMilesData();
+        this.sendMilesData();
+
+        // Reset Columns
+        this.tableService.currentResetColumns
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: boolean) => {
+                if (response) {
+                    this.sendMilesData();
+                }
+            });
+
+        // Resize
+        this.tableService.currentColumnWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: any) => {
+                if (response?.event?.width) {
+                    this.columns = this.columns.map((c) => {
+                        if (
+                            c.title ===
+                            response.columns[response.event.index].title
+                        ) {
+                            c.width = response.event.width;
+                        }
+
+                        return c;
+                    });
+                }
+            });
+
+        // Toaggle Columns
+        this.tableService.currentToaggleColumn
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: any) => {
+                if (response?.column) {
+                    this.columns = this.columns.map((c) => {
+                        if (c.field === response.column.field) {
+                            c.hidden = response.column.hidden;
+                        }
+
+                        return c;
+                    });
+                }
+            });
     }
 
     sendMilesData() {
         this.initTableOptions();
 
-        const milesCount = JSON.parse(
-            localStorage.getItem('milesTableCount')
-        );
+        const milesCount = JSON.parse(localStorage.getItem('milesTableCount'));
         const milesActiveData =
             this.selectedTab === 'active' ? this.getTabData('active') : [];
 
@@ -66,14 +118,11 @@ export class MilesComponent implements OnInit {
 
     getTabData(dataType: string) {
         if (dataType === 'active') {
-            // this.driversActive = this.driversActiveQuery.getAll();
-            // return this.driversActive?.length ? this.driversActive : [];
+            this.milesActive = this.milesTableQuery.getAll()[0];
+            return this.milesActive?.length ? this.milesActive : [];
         } else if (dataType === 'inactive') {
-            // this.driversInactive = this.driversInactiveQuery.getAll();
-            // return this.driversInactive?.length ? this.driversInactive : [];
-        } else if ('applicants') {
-            // this.applicantData = this.applicantQuery.getAll();
-            // return this.applicantData?.length ? this.applicantData : [];
+            this.milesInactive = this.milesTableQuery.getAll()[1];
+            return this.milesInactive?.length ? this.milesInactive : [];
         }
     }
 
@@ -83,14 +132,58 @@ export class MilesComponent implements OnInit {
         if (td.data.length) {
             this.viewData = td.data;
 
-            // this.viewData = this.viewData.map((data: any) => {
-            //     return this.selectedTab === 'applicants'
-            //         ? this.mapApplicantsData(data)
-            //         : this.mapDriverData(data);
-            // });
+            this.viewData = this.viewData.map((data: any) => {
+                return this.mapMilesData(data);
+            });
+
+            console.log('WHAT IS DATA');
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
+    }
+
+    observTableContainer() {
+        this.resizeObserver = new ResizeObserver((entries) => {
+            entries.forEach((entry) => {
+                this.tableContainerWidth = entry.contentRect.width;
+            });
+        });
+
+        this.resizeObserver.observe(document.querySelector('.table-container'));
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    mapMilesData(data: any) {
+        return {
+            ...data,
+            isSelected: false,
+            stopsCount: data.stopsCount.toFixed(0),
+            loadedMiles: data.loadedMiles.toFixed(0) + ' mi',
+            loadCount: data.loadCount.toFixed(0),
+            emptyMiles: data.emptyMiles.toFixed(0) + ' mi',
+            totalMiles: data.totalMiles.toFixed(0) + ' mi',
+            milesPerGalon: `${
+                data.milesPerGalon ? data.milesPerGalon.toFixed(2) : 0.0
+            }`,
+            fuelTotalGalons:
+                `${data.fuelTotalGalons ? data.fuelTotalGalons : 0}` + ' gal',
+            unit: data.truck.truckNumber,
+            truckTypeIcon: data.truck.truckType.logoName,
+            pickupPercentage: data.pickupPercentage.toFixed(2) + '%',
+            deliveryPercentage: data.deliveryPercentage.toFixed(2) + '%',
+            fuelPercentage: data.fuelPercentage.toFixed(2) + '%',
+            repairPercentage: data.repairPercentage.toFixed(2) + '%',
+            parkingPercentage: data.parkingPercentage.toFixed(2) + '%',
+            deadHeadPercentage: data.deadHeadPercentage.toFixed(2) + '%',
+            towingPercentage: data.towingPercentage.toFixed(2) + '%',
+            truckTypeClass: data.truck.truckType.logoName.replace('.svg', ''),
+        };
     }
 
     getGridColumns(activeTab: string, configType: string) {
@@ -98,106 +191,32 @@ export class MilesComponent implements OnInit {
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        return tableColumnsConfig ? tableColumnsConfig : getMilesColumnsDefinition();
+        return tableColumnsConfig
+            ? tableColumnsConfig
+            : getMilesColumnsDefinition();
     }
 
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showLocationFilter: this.selectedTab !== 'applicants',
-                showArhiveFilter: this.selectedTab === 'applicants',
+                hideOpenModalButton: true,
+                hideDeleteButton: true,
+                hideActivationButton: true,
+                showTimeFilter: true,
                 viewModeOptions: [
                     { name: 'List', active: this.activeViewMode === 'List' },
                     { name: 'Card', active: this.activeViewMode === 'Card' },
                 ],
             },
-            actions: this.getTableActions(),
+            actions: [],
         };
     }
 
-    getTableActions() {
-        return this.selectedTab === 'applicants'
-            ? [
-                  {
-                      title: 'Hire Applicant',
-                      name: 'hire-applicant',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Resend Invitation',
-                      name: 'resend-invitation',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Add to Favourites',
-                      name: 'add-to-favourites',
-                      class: '',
-                      contentType: '',
-                  },
-                  {
-                      title: 'Delete',
-                      name: 'delete-applicant',
-                      type: 'driver',
-                      text: 'Are you sure you want to delete applicant(s)?',
-                      class: 'delete-text',
-                      contentType: 'delete',
-                  },
-              ]
-            : [
-                  {
-                      title: 'Edit Driver',
-                      name: 'edit',
-                      class: 'regular-text',
-                      contentType: 'edit',
-                  },
-                  {
-                      title: 'Add CDL',
-                      name: 'new-licence',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add Medical',
-                      name: 'new-medical',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add MVR',
-                      name: 'new-mvr',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title: 'Add Test',
-                      name: 'new-drug',
-                      class: 'regular-text',
-                      contentType: 'add',
-                  },
-                  {
-                      title:
-                          this.selectedTab === 'inactive'
-                              ? 'Activate'
-                              : 'Deactivate',
-                      name: 'activate-item',
-                      class: 'regular-text',
-                      contentType: 'activate',
-                  },
-                  {
-                      title: 'Delete',
-                      name: 'delete-item',
-                      type: 'driver',
-                      text: 'Are you sure you want to delete driver(s)?',
-                      class: 'delete-text',
-                      contentType: 'delete',
-                  },
-              ];
-    }
-
     onToolBarAction(event: any) {
-        console.log(event);
+        if (event.action === 'tab-selected') {
+            this.selectedTab = event.tabData.field;
+            this.sendMilesData();
+        }
     }
 
     onTableHeadActions(event: any) {
@@ -206,5 +225,15 @@ export class MilesComponent implements OnInit {
 
     onTableBodyActions(event: any) {
         console.log(event);
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+        this.tableService.sendActionAnimation({});
+        this.resizeObserver.unobserve(
+            document.querySelector('.table-container')
+        );
+        this.resizeObserver.disconnect();
     }
 }

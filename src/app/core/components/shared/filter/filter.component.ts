@@ -188,10 +188,10 @@ import {
                     overflow: 'hidden',
                 })
             ),
-            transition('false <=> true', [
+            transition('false => true', [
                 animate('100ms cubic-bezier(0, 0, 0.60, 1.99)'),
             ]),
-            transition('true <=> false', [animate('100ms ease')]),
+            transition('true => false', [animate('100ms ease')]),
         ]),
         trigger('areaRightSideAnimation', [
             state('in', style({ width: '100%', 'position' : 'relative' })),
@@ -2788,7 +2788,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
             this.isAnimated = false;
             this.autoClose.tooltip.close();
             mainElementHolder?.classList.remove('closeFilterAnimation');
-        }, 190);
+        }, 120);
 
         if (this.defFilterHolder && this.type != 'stateFilter') {
             let mainArray: any[] = [];

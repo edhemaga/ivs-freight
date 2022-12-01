@@ -9,7 +9,7 @@ export class MilesStoreService {
         private milesService: MilesService
     ) {}
 
-    getMiles() {
-        return this.milesService.apiMilesListGet();
+    getMiles(truckId?: number, activeTruck?: number) {
+        return this.milesService.apiMilesListGet(truckId, activeTruck);
     }
 }

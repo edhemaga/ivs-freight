@@ -297,6 +297,7 @@
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
+                    [cardSecondResult]="test?.result.name"
                     [cardSecondName]="test?.testReason.name"
                     [shortName]="test.testType.name[0]"
                     [stateTooltipName]="test.testType.name + ' Test'"
