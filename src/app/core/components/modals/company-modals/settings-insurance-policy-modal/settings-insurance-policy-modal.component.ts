@@ -64,6 +64,8 @@ export class SettingsInsurancePolicyModalComponent
     public selectedTrailerRating: any = null;
 
     public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
     public ratings: any[] = [];
 
     public idCommercial = null;
@@ -146,6 +148,7 @@ export class SettingsInsurancePolicyModalComponent
             trailerRating: [null],
             trailerValue: [null, trailerValueInsurancePolicyValidation],
             note: [null],
+            files: [null],
         });
 
         this.inputService.customInputValidator(
@@ -360,8 +363,32 @@ export class SettingsInsurancePolicyModalComponent
         }
     }
 
-    public onFilesEvent(event) {
+    public onFilesEvent(event: any) {
         this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.insurancePolicyForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.insurancePolicyForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     private getInsurancePolicyDropdowns() {
@@ -432,6 +459,13 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
+        let documentsUpdate = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documentsUpdate.push(item.realFile);
+            }
+        });
+
         let newData: any = {
             companyId: company.divisions.length ? null : company.id,
             ...form,
@@ -440,6 +474,8 @@ export class SettingsInsurancePolicyModalComponent
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
+            files: documentsUpdate ? documentsUpdate : this.insurancePolicyForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         const commLiablity = commericalGeneralLiability
@@ -566,10 +602,17 @@ export class SettingsInsurancePolicyModalComponent
             insurancePolicyAddons.push(trailInterchange);
         }
 
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
         newData = {
             ...newData,
             insurancePolicyAddons,
-            files: [],
+            files: documents,
         };
 
         this.settingsCompanyService
@@ -804,6 +847,9 @@ export class SettingsInsurancePolicyModalComponent
             addressUnit: insurance.address.addressUnit,
             note: insurance.note,
         });
+
+        this.documents = insurance.files;
+
         if (insurance.insurancePolicyAddons.length) {
             for (const insur of insurance.insurancePolicyAddons) {
                 switch (insur.insurancePolicyAddonType?.name) {
