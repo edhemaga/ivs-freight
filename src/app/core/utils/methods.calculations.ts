@@ -112,11 +112,9 @@ export const convertDateFromBackendToTime = (date: string) => {
 };
 
 export const combineDateAndTimeToBackend = (date: string, time: string) => {
-    console.log('date & time: ', date, time);
-    console.log(
-        'after: ',
-        moment(new Date(date + ' ' + time)).toISOString(true)
-    );
+    if (!time) {
+        return moment(new Date(date)).toISOString(true);
+    }
     return moment(new Date(date + ' ' + time)).toISOString(true);
 };
 
