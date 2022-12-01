@@ -3,6 +3,7 @@ import { TodoListResponse } from './../../../../../../appcoretruckassist/model/t
 import { Injectable } from '@angular/core';
 import { flatMap, Observable } from 'rxjs';
 import { TodoStore } from './todo.store';
+import { FormDataService } from '../../../services/formData/form-data.service';
 import {
     TodoModalResponse,
     TodoResponse,
@@ -16,7 +17,8 @@ import {
 export class TodoTService {
     constructor(
         private todoService: TodoService,
-        private todoStore: TodoStore
+        private todoStore: TodoStore,
+        private formDataService: FormDataService
     ) {}
 
     public getTodoList(
@@ -56,8 +58,9 @@ export class TodoTService {
     }
 
     public updateTodo(data: any) {
+        this.formDataService.extractFormDataFromFunction(data);
         return this.todoService
-            .apiTodoPut(data)
+            .apiTodoPut()
             .pipe(
                 flatMap((param) => {
                     return this.getTodoById(data.id);
@@ -69,8 +72,9 @@ export class TodoTService {
     }
 
     public addTodo(data: any) {
+        this.formDataService.extractFormDataFromFunction(data);
         return this.todoService
-            .apiTodoPost(data)
+            .apiTodoPost()
             .pipe(
                 flatMap((param) => {
                     return this.getTodoById(param.id);

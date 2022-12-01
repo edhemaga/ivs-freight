@@ -15,7 +15,6 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
 import { descriptionValidation } from '../../../shared/ta-input/ta-input.regex-validations';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertNumberInThousandSep,
@@ -40,7 +39,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: FormBuilder,
         private pmTService: PmTService,
-        private notificationService: NotificationService,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService
@@ -336,9 +334,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         );
                     });
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -365,9 +361,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         );
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -393,9 +387,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         );
                     });
                 },
-                error: () => {
-                 
-                },
+                error: () => {},
             });
     }
 
@@ -421,9 +413,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         );
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -465,7 +455,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -488,9 +477,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -532,7 +519,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -555,9 +541,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -598,8 +582,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                   
-
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -622,9 +604,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -665,7 +645,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -688,9 +667,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -760,28 +737,14 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         this.pmTService
             .deletePMTruckById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private deleteTrailerPMList(id: number) {
         this.pmTService
             .deletePMTrailerById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     public identity(index: number, item: any): number {

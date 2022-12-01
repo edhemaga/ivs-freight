@@ -9,13 +9,12 @@ import {
 } from 'appcoretruckassist';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 
-import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
-import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
-import { rentValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../../../services/form/form.service';
+import { SettingsLocationService } from '../../../settings/state/location-state/settings-location.service';
+import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { rentValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../services/form/form.service';
 import {
     addressValidation,
     addressUnitValidation,
@@ -24,12 +23,12 @@ import {
     parkingNameValidation,
     parkingSlotValidation,
     fullParkingSlotValidation,
-} from '../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import {
     calculateParkingSlot,
     convertThousanSepInNumber,
     convertNumberInThousandSep,
-} from '../../../../../utils/methods.calculations';
+} from '../../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-settings-parking-modal',
@@ -120,7 +119,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private settingsLocationService: SettingsLocationService,
         private formService: FormService
     ) {}
@@ -361,14 +359,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .updateCompanyParking(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private addParking() {
@@ -420,28 +411,14 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .addCompanyParking(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private deleteParkingById(id: number) {
         this.settingsLocationService
             .deleteCompanyParkingById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private editCompanyParkingById(id: number) {
@@ -508,9 +485,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                         this.isPhoneExtExist = true;
                     }
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -524,9 +499,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     this.monthlyDays = res.payPeriodMonthly;
                     this.weeklyDays = res.dayOfWeek;
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

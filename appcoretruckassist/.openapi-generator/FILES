@@ -629,7 +629,6 @@ model/updateEmergencyContactReviewCommand.ts
 model/updateEmploymentHistoryCommand.ts
 model/updateEventCommand.ts
 model/updateFactoringCompanyCommand.ts
-model/updateFuelStopCommand.ts
 model/updateHosCommand.ts
 model/updateHosRulesCommand.ts
 model/updateLoadStatusCommand.ts

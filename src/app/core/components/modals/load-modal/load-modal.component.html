@@ -3,51 +3,39 @@
         !editData?.type?.includes('edit') ? 'Create Load' : 'Edit Load'
     "
     [editData]="editData"
+    [editName]="loadNumber"
+    [specificCaseModalName]="true"
     [isModalValid]="loadForm.valid && isFormDirty"
-    [tabChange]="headerTabs"
-    [customClass]="'modal-container-load'"
-    [loadModalTitle]="loadNumber"
-    [loadModalBill]="loadModalBill"
-    [hazardousLogo]="isHazardousPicked"
+    [customClass]="loadModalSize"
+    [isVisibleHazardous]="isHazardousPicked"
+    [isVisibleMap]="true"
     [loadModalTemplate]="true"
     [modalAdditionalPart]="true"
-    (onTabHeaderChange)="onModalHeaderTabChange($event)"
+    (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
 >
     <!-- Origin Tab -->
     <form
-        #originTab
         origin
         [formGroup]="loadForm"
         class="form-container form-container-without-mb"
     >
         <!-------------------------------- FTL Tab -------------------------------->
-        <div *ngIf="selectedTab === 1" class="m-tab">
+        <div class="m-tab">
             <div class="load-ftl-first-row">
-                <app-load-modal-statuses
-                    [mode]="editData?.type === 'edit' ? 'Edit' : 'Create'"
-                    [statuses]="
-                        editData?.type === 'edit' ? [] : loadCreateStatuses
-                    "
-                    [active]="
-                        (editData?.type === 'edit' ? [] : loadCreateStatuses)
-                            | activeLoadStatus
-                    "
-                    (selected)="loadCreateStatuses = $event"
-                ></app-load-modal-statuses>
-                <app-ta-input-dropdown
-                    formControlName="loadTemplateId"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Select Template',
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-220'
-                    }"
-                    [options]="labelsTemplate"
-                    [activeItem]="selectedTemplate"
-                    (selectedItem)="onSelectDropdown($event, 'template')"
-                ></app-ta-input-dropdown>
+                <!-- FTL-LTL Switcher -->
+                <app-ta-tab-switch
+                    [tabs]="tabs"
+                    (switchClicked)="onTabChange($event, 'ftl-ltl')"
+                    [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
+                <!-- Load Template Picker -->
+                <div class="load-template-switcher">
+                    <svg-icon
+                        src="assets/svg/common/load/ic_load_template_btn.svg"
+                    ></svg-icon>
+                </div>
                 <app-ta-input-dropdown
                     formControlName="dispatcherId"
                     [template]="'load-dispatcher'"
@@ -60,7 +48,7 @@
                             withText: true,
                             svg: false,
                             image: true,
-                            url: selectedDispatcher?.logoName,
+                            url: null,
                             nameInitialsInsteadUrl:
                                 !selectedDispatcher?.logoName
                                     ? selectedDispatcher?.name
@@ -68,12 +56,13 @@
                             template: 'user'
                         },
                         textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-220'
+                        dropdownWidthClass: 'w-col-230'
                     }"
                     [options]="labelsDispatcher"
                     [activeItem]="selectedDispatcher"
                     (selectedItem)="onSelectDropdown($event, 'dispatcher')"
                 ></app-ta-input-dropdown>
+                <!------------------ Companies Cassses ------------------>
                 <!-- Only One Company -->
                 <app-ta-input
                     *ngIf="labelsCompanies.length === 1"
@@ -101,57 +90,19 @@
                     [activeItem]="selectedCompany"
                     (selectedItem)="onSelectDropdown($event, 'company')"
                 ></app-ta-input-dropdown>
+                <!------------------  end ------------------>
             </div>
-            <div class="load-ftl-second-row">
-                <app-ta-input-dropdown
-                    formControlName="dispatchId"
-                    [template]="'load-dispatches-ttd'"
-                    [inputConfig]="loadDispatchesTTDInputConfig"
-                    [options]="labelsDispatches"
-                    [activeItem]="selectedDispatches"
-                    (selectedItem)="onSelectDropdown($event, 'dispatches')"
-                ></app-ta-input-dropdown>
-                <app-ta-input
-                    formControlName="referenceNumber"
-                    [inputConfig]="{
-                        name: 'Ref Number',
-                        type: 'text',
-                        label: 'Ref #',
-                        isRequired: true,
-                        textTransform: 'capitalize'
-                    }"
-                ></app-ta-input>
-                <app-ta-input-dropdown
-                    formControlName="generalCommodity"
-                    [template]="'svgtext-template'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'General Commodity',
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-178',
-                        placeholderIcon: isHazardousPicked
-                            ? 'hazardous-info'
-                            : null,
-                        blackInput: true
-                    }"
-                    [options]="labelsGeneralCommodity"
-                    [activeItem]="selectedGeneralCommodity"
-                    (placeholderIconEvent)="commandEvent()"
-                    (selectedItem)="
-                        onSelectDropdown($event, 'general-commodity')
-                    "
-                ></app-ta-input-dropdown>
-                <app-ta-input
-                    formControlName="weight"
-                    [inputConfig]="{
-                        name: 'Weight',
-                        type: 'text',
-                        label: 'Weight',
-                        placeholderIcon: 'weight',
-                        thousandSeparator: true
-                    }"
-                ></app-ta-input>
+            <div class="row">
+                <div class="col-12">
+                    <app-ta-input-dropdown
+                        formControlName="dispatchId"
+                        [template]="'load-dispatches-ttd'"
+                        [inputConfig]="loadDispatchesTTDInputConfig"
+                        [options]="labelsDispatches"
+                        [activeItem]="selectedDispatches"
+                        (selectedItem)="onSelectDropdown($event, 'dispatches')"
+                    ></app-ta-input-dropdown>
+                </div>
             </div>
             <div class="load-ftl-third-row">
                 <app-ta-input-dropdown
@@ -175,7 +126,7 @@
                             template: 'user'
                         },
                         textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-439'
+                        dropdownWidthClass: 'w-col-260'
                     }"
                     [canAddNew]="true"
                     [canOpenModal]="true"
@@ -195,79 +146,147 @@
                     (selectedItem)="onSelectDropdown($event, 'broker-contact')"
                 ></app-ta-input-dropdown>
             </div>
+            <div class="load-ftl-fourth-row">
+                <app-ta-input
+                    formControlName="referenceNumber"
+                    [inputConfig]="{
+                        name: 'Ref Number',
+                        type: 'text',
+                        label: 'Ref #',
+                        isRequired: true,
+                        textTransform: 'capitalize'
+                    }"
+                ></app-ta-input>
+                <app-ta-input-dropdown
+                    formControlName="generalCommodity"
+                    [template]="'svgtext-template'"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'General Commodity',
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-230',
+                        placeholderIcon: isHazardousPicked
+                            ? 'hazardous_modal_logo'
+                            : null,
+                        blackInput: true,
+                        customClass: 'hazardous-dropdown'
+                    }"
+                    [options]="labelsGeneralCommodity"
+                    [activeItem]="selectedGeneralCommodity"
+                    (selectedItem)="
+                        onSelectDropdown($event, 'general-commodity')
+                    "
+                ></app-ta-input-dropdown>
+                <app-ta-input
+                    formControlName="weight"
+                    [inputConfig]="{
+                        name: 'Weight',
+                        type: 'text',
+                        label: 'Weight',
+                        placeholderIcon: 'weight',
+                        thousandSeparator: true
+                    }"
+                ></app-ta-input>
+            </div>
+
+            <!-- Requirements Card -->
             <app-ta-custom-card
-                [cardName]="'Load Requirements'"
+                [cardName]="'Requirements'"
                 [animationMarginParams]="{
                     marginTop: '18px',
                     marginBottom: '22px'
                 }"
                 [isCardOpen]="false"
             >
-                <div class="load-requirements-load">
-                    <app-ta-input-dropdown
-                        formControlName="truckTypeId"
-                        [template]="'svgtext-template'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Truck Req.',
-                            isDropdown: true,
-                            dropdownImageInput: {
-                                withText: true,
-                                svg: true,
-                                image: false,
-                                url: selectedTruckReq?.logoName,
-                                template: 'truck',
-                                class: selectedTruckReq?.name
-                                    ?.trim()
-                                    .replace(' ', '')
-                                    .toLowerCase()
-                            },
-                            dropdownWidthClass: 'w-col-164',
-                            customClass: 'truck-trailer-dropdown'
-                        }"
-                        [options]="labelsTruckReq"
-                        [activeItem]="selectedTruckReq"
-                        (selectedItem)="onSelectDropdown($event, 'truck-req')"
-                    ></app-ta-input-dropdown>
+                <div class="row">
+                    <div class="col-6">
+                        <app-ta-input-dropdown
+                            formControlName="truckTypeId"
+                            [template]="'svgtext-template'"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Truck Req.',
+                                isDropdown: true,
+                                dropdownImageInput: {
+                                    withText: true,
+                                    svg: true,
+                                    image: false,
+                                    url: selectedTruckReq?.logoName,
+                                    template: 'truck',
+                                    class: selectedTruckReq?.name
+                                        ?.trim()
+                                        .replace(' ', '')
+                                        .toLowerCase()
+                                },
+                                dropdownWidthClass: 'w-col-296',
+                                customClass: 'truck-trailer-dropdown'
+                            }"
+                            [options]="labelsTruckReq"
+                            [activeItem]="selectedTruckReq"
+                            (selectedItem)="
+                                onSelectDropdown($event, 'truck-req')
+                            "
+                        ></app-ta-input-dropdown>
+                    </div>
+                    <div class="col-6">
+                        <app-ta-input-dropdown
+                            formControlName="trailerTypeId"
+                            [template]="'svgtext-template'"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Trailer Req.',
+                                isDropdown: true,
+                                dropdownImageInput: {
+                                    withText: true,
+                                    svg: true,
+                                    image: false,
+                                    url: selectedTrailerReq?.logoName,
+                                    template: 'trailer',
+                                    class: selectedTrailerReq?.name
+                                        ?.toLowerCase()
+                                        .includes('liquid')
+                                        ? 'tanker-liquid'
+                                        : selectedTrailerReq?.name
+                                              ?.toLowerCase()
+                                              ?.includes('rgn')
+                                        ? 'low-boy-rgn'
+                                        : selectedTrailerReq?.name
+                                              ?.toLowerCase()
+                                              .includes('dry-bulk')
+                                        ? 'tanker-dry-bulk'
+                                        : selectedTrailerReq?.name
+                                              ?.trim()
+                                              .replace(' ', '')
+                                              .toLowerCase()
+                                },
+                                dropdownWidthClass: 'w-col-308',
+                                customClass: 'truck-trailer-dropdown'
+                            }"
+                            [options]="labelsTrailerReq"
+                            [activeItem]="selectedTrailerReq"
+                            (selectedItem)="
+                                onSelectDropdown($event, 'trailer-req')
+                            "
+                        ></app-ta-input-dropdown>
+                    </div>
+                </div>
 
+                <div class="load-requirements-load-second-row">
                     <app-ta-input-dropdown
-                        formControlName="trailerTypeId"
-                        [template]="'svgtext-template'"
+                        formControlName="trailerLengthId"
                         [inputConfig]="{
                             name: 'Input Dropdown',
                             type: 'text',
-                            label: 'Trailer Req.',
+                            label: 'Length',
                             isDropdown: true,
-                            dropdownImageInput: {
-                                withText: true,
-                                svg: true,
-                                image: false,
-                                url: selectedTrailerReq?.logoName,
-                                template: 'trailer',
-                                class: selectedTrailerReq?.name
-                                    ?.toLowerCase()
-                                    .includes('liquid')
-                                    ? 'tanker-liquid'
-                                    : selectedTrailerReq?.name
-                                          ?.toLowerCase()
-                                          ?.includes('rgn')
-                                    ? 'low-boy-rgn'
-                                    : selectedTrailerReq?.name
-                                          ?.toLowerCase()
-                                          .includes('dry-bulk')
-                                    ? 'tanker-dry-bulk'
-                                    : selectedTrailerReq?.name
-                                          ?.trim()
-                                          .replace(' ', '')
-                                          .toLowerCase()
-                            },
-                            dropdownWidthClass: 'w-col-164',
-                            customClass: 'truck-trailer-dropdown'
+                            dropdownWidthClass: 'w-col-100'
                         }"
-                        [options]="labelsTrailerReq"
-                        [activeItem]="selectedTrailerReq"
-                        (selectedItem)="onSelectDropdown($event, 'trailer-req')"
+                        [options]="labelsTrailerLength"
+                        [activeItem]="selectedTrailerLength"
+                        (selectedItem)="onSelectDropdown($event, 'length')"
                     ></app-ta-input-dropdown>
 
                     <app-ta-input-dropdown
@@ -277,7 +296,7 @@
                             type: 'text',
                             label: 'Door Type',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-107'
+                            dropdownWidthClass: 'w-col-120'
                         }"
                         [options]="labelsDoorType"
                         [activeItem]="selectedDoorType"
@@ -291,25 +310,11 @@
                             type: 'text',
                             label: 'Suspension',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-177'
+                            dropdownWidthClass: 'w-col-150'
                         }"
                         [options]="labelsSuspension"
                         [activeItem]="selectedSuspension"
                         (selectedItem)="onSelectDropdown($event, 'suspension')"
-                    ></app-ta-input-dropdown>
-
-                    <app-ta-input-dropdown
-                        formControlName="trailerLengthId"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Length',
-                            isDropdown: true,
-                            dropdownWidthClass: 'w-col-88'
-                        }"
-                        [options]="labelsTrailerLength"
-                        [activeItem]="selectedTrailerLength"
-                        (selectedItem)="onSelectDropdown($event, 'length')"
                     ></app-ta-input-dropdown>
 
                     <app-ta-input-dropdown
@@ -319,7 +324,7 @@
                             type: 'text',
                             label: 'Year',
                             isDropdown: true,
-                            dropdownWidthClass: 'w-col-66'
+                            dropdownWidthClass: 'w-col-90'
                         }"
                         [options]="labelsYear"
                         [activeItem]="selectedYear"
@@ -332,86 +337,119 @@
                         [label]="'Lifgate'"
                     ></app-ta-checkbox>
                 </div>
+                <div class="row last-row">
+                    <div class="col-12">
+                        <app-ta-input
+                            formControlName="driverMessage"
+                            [inputConfig]="{
+                                name: 'Description',
+                                type: 'text',
+                                label: 'Driver Message',
+                                minLength: 2,
+                                maxLength: 160,
+                                textTransform: 'capitalize'
+                            }"
+                        ></app-ta-input>
+                    </div>
+                </div>
             </app-ta-custom-card>
 
             <app-ta-custom-card
-                [cardName]="'Create Stop'"
+                [cardName]="'Stops'"
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '18px',
                     marginBottom: '22px'
                 }"
             >
-                <div class="stop-load-first-row">
-                    <app-ta-tab-switch
-                        [tabs]="stopTabs"
-                        (switchClicked)="onTabChange($event, 'stop-tab')"
-                        [type]="'type2-modal-popup load-type2-modal-popup'"
-                    ></app-ta-tab-switch>
-
-                    <app-ta-input-dropdown
-                        formControlName="shipper"
-                        [template]="'load-shipper'"
-                        [inputConfig]="loadShipperInputConfig"
-                        [canAddNew]="true"
-                        [canOpenModal]="true"
-                        [options]="labelsShippers"
-                        [activeItem]="selectedShipper"
-                        (selectedItem)="onSelectDropdown($event, 'shipper')"
-                    ></app-ta-input-dropdown>
-                </div>
-
-                <div
-                    class="stop-load-second-row"
-                    [ngClass]="{ 'date-range-active': isDateRange }"
-                >
-                    <div class="date-range">
-                        <app-ta-input
-                            formControlName="dateFrom"
-                            [inputConfig]="{
-                                name: 'datepicker',
-                                type: 'text',
-                                isDropdown: true,
-                                label: isDateRange ? 'Date From' : 'Date',
-                                placeholderIcon: 'date',
-                                isRequired: true,
-                                customClass: 'datetimeclass'
-                            }"
-                        ></app-ta-input>
-                        <div
-                            *ngIf="!isDateRange"
-                            class="billing-plus billing-date-range"
-                            ngbTooltip
-                            mainTooltip="Date Range"
-                            tooltipBackground="#B7B7B7"
-                            position="top"
-                            (click)="isDateRange = true"
-                        >
-                            <svg-icon
-                                class="billing-date-range-plus"
-                                src="assets/svg/common/ic_plus.svg"
-                            ></svg-icon>
-                        </div>
-                        <app-ta-input
-                            *ngIf="isDateRange"
-                            formControlName="dateTo"
-                            [inputConfig]="{
-                                name: 'datepicker',
-                                type: 'text',
-                                isDropdown: true,
-                                label: 'Date To',
-                                placeholderIcon: 'date',
-                                customClass: 'datetimeclass'
-                            }"
-                        ></app-ta-input>
+                <div class="row">
+                    <div class="col-12">
+                        <app-ta-tab-switch
+                            [tabs]="stopTabs"
+                            (switchClicked)="onTabChange($event, 'stop-tab')"
+                            [type]="'type2-modal-popup load-type2-modal-popup'"
+                        ></app-ta-tab-switch>
                     </div>
-                    <div class="stop-time-tabs">
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <app-ta-input-dropdown
+                            formControlName="shipper"
+                            [template]="'load-shipper'"
+                            [inputConfig]="loadShipperInputConfig"
+                            [canAddNew]="true"
+                            [canOpenModal]="true"
+                            [options]="labelsShippers"
+                            [activeItem]="selectedShipper"
+                            (selectedItem)="onSelectDropdown($event, 'shipper')"
+                        ></app-ta-input-dropdown>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5">
                         <app-ta-tab-switch
                             [tabs]="stopTimeTabs"
                             (switchClicked)="onTabChange($event, 'stop-time')"
                             [type]="'type2-modal-popup'"
                         ></app-ta-tab-switch>
                     </div>
+                    <div class="col-7">
+                        <app-ta-input-dropdown
+                            formControlName="shipperContactId"
+                            [template]="'load-broker-contact'"
+                            [inputConfig]="loadShipperContactsInputConfig"
+                            [canAddNew]="true"
+                            [canOpenModal]="true"
+                            [options]="labelsShipperContacts"
+                            [activeItem]="selectedShipperContact"
+                            (selectedItem)="
+                                onSelectDropdown($event, 'shipper-contact')
+                            "
+                        ></app-ta-input-dropdown>
+                    </div>
+                </div>
+                <div
+                    class="stop-load-date-time"
+                    [ngClass]="{ 'date-range-active': isDateRange }"
+                >
+                    <app-ta-input
+                        formControlName="dateFrom"
+                        [inputConfig]="{
+                            name: 'datepicker',
+                            type: 'text',
+                            isDropdown: true,
+                            label: isDateRange ? 'Date From' : 'Date',
+                            placeholderIcon: 'date',
+                            isRequired: true,
+                            customClass: 'datetimeclass'
+                        }"
+                    ></app-ta-input>
+                    <div
+                        *ngIf="!isDateRange"
+                        class="load-plus-button"
+                        ngbTooltip
+                        mainTooltip="Date Range"
+                        tooltipBackground="#B7B7B7"
+                        position="top"
+                        (click)="isDateRange = true"
+                    >
+                        <svg-icon
+                            src="assets/svg/common/ic_plus.svg"
+                        ></svg-icon>
+                    </div>
+                    <app-ta-input
+                        *ngIf="isDateRange"
+                        formControlName="dateTo"
+                        [inputConfig]="{
+                            name: 'datepicker',
+                            type: 'text',
+                            isDropdown: true,
+                            label: 'Date To',
+                            placeholderIcon: 'date',
+                            customClass: 'datetimeclass'
+                        }"
+                    ></app-ta-input>
+
                     <!-- Time Picker -->
                     <app-ta-input
                         formControlName="timeFrom"
@@ -443,636 +481,7 @@
             </app-ta-custom-card>
 
             <app-ta-custom-card
-                [cardName]="'Stops'"
-                [hasBodyData]="loadStops().length > 0"
-                [hasCounter]="loadStops().length ? loadStops().length : 0"
-                [isCardOpen]="loadStops().length > 0"
-                [animationMarginParams]="{
-                    marginTop: '10px',
-                    marginBottom: '10px'
-                }"
-            >
-                <div
-                    *ngIf="loadStops().length"
-                    formArrayName="stops"
-                    class="common-fake-table-modal common-fake-table-modal-load-stops"
-                >
-                    <div class="common-fake-table-label">
-                        <p>#</p>
-                        <p>SHIPPER</p>
-                        <p>LOCATION</p>
-                        <p>DATE</p>
-                        <p>TIME</p>
-                        <p>LEG MI.</p>
-                        <p>TOTAL</p>
-                    </div>
-                    <div class="common-fake-table-body">
-                        <!-- Load Stop -->
-                        <div
-                            *ngFor="
-                                let loadStop of loadStops().controls;
-                                let loadStopIndex = index;
-                                trackBy: identity
-                            "
-                            style="margin-bottom: 2px"
-                        >
-                            <div
-                                [formGroupName]="loadStopIndex"
-                                class="common-fake-table-card"
-                            >
-                                <!-- Card Title -->
-                                <div
-                                    class="common-fake-table-card-title"
-                                    [ngClass]="{
-                                        'pickup-mode':
-                                            loadStop.get('stopType').value ===
-                                            'Pickup',
-                                        'delivery-mode':
-                                            loadStop.get('stopType').value ===
-                                            'Delivery'
-                                    }"
-                                    (click)="toggleLoadStop(loadStop)"
-                                >
-                                    <div class="load-stop-serial-number">
-                                        <p>
-                                            {{
-                                                loadStop.get('stopOrder').value
-                                            }}
-                                        </p>
-                                    </div>
-
-                                    <p class="load-stop-shipper-name">
-                                        {{ selectedShipper.name }}
-                                    </p>
-
-                                    <p class="load-stop-location">
-                                        {{ selectedShipper.address }}
-                                    </p>
-
-                                    <p class="load-stop-date">
-                                        {{
-                                            loadStop.get('dateFrom').value
-                                                | loadStopTimeDate
-                                                    : loadStop.get('dateTo')
-                                                          .value
-                                        }}
-                                    </p>
-
-                                    <p class="load-stop-time">
-                                        {{
-                                            loadStop.get('timeFrom').value
-                                                | loadStopTimeDate
-                                                    : loadStop.get('timeTo')
-                                                          .value
-                                        }}
-                                    </p>
-
-                                    <p class="load-stop-leg-mi">
-                                        {{ loadStop.get('legMiles').value }}
-                                    </p>
-
-                                    <p class="load-stop-total">
-                                        {{
-                                            loadStop.get('totalLegMiles').value
-                                        }}
-                                    </p>
-
-                                    <div
-                                        (click)="removeLoadStop(loadStopIndex)"
-                                        class="common-fake-table-delete"
-                                        mainTooltip="Delete"
-                                        ngbTooltip
-                                        position="top"
-                                        tooltipBackground="#EF5350"
-                                    >
-                                        <svg-icon
-                                            src="assets/svg/common/ic_trash.svg"
-                                        ></svg-icon>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <!-- Load Stop Details-->
-                                <div
-                                    *ngIf="loadStop.get('openClose').value"
-                                    class="common-fake-table-load-stop-details"
-                                >
-                                    <div class="load-shipper-more-details">
-                                        <div
-                                            class="load-shipper-more-details-item"
-                                        >
-                                            <p>Address</p>
-                                            <p>
-                                                {{
-                                                    loadStop.get('address')
-                                                        .value
-                                                }}
-                                            </p>
-                                        </div>
-                                        <div
-                                            class="load-shipper-more-details-item"
-                                        >
-                                            <p>Contact</p>
-                                            <p>
-                                                {{
-                                                    loadStop.get('contact')
-                                                        .value
-                                                }}
-                                            </p>
-                                        </div>
-                                        <div
-                                            class="load-shipper-more-details-item"
-                                        >
-                                            <p>Phone</p>
-                                            <p>
-                                                {{
-                                                    loadStop.get('phone').value
-                                                }}
-                                            </p>
-                                        </div>
-                                        <div
-                                            class="load-shipper-more-details-item"
-                                        >
-                                            <p>Ext.</p>
-                                            <p>
-                                                {{
-                                                    loadStop.get(
-                                                        'extensionPhone'
-                                                    ).value
-                                                }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div formArrayName="items">
-                                        <div
-                                            *ngIf="
-                                                loadStopsDetails(loadStopIndex)
-                                                    .length
-                                            "
-                                            class="load-stop-details-header"
-                                        >
-                                            <p>#</p>
-                                            <p>Description</p>
-                                            <p>QTY</p>
-                                            <p>Units</p>
-                                            <p>Weight</p>
-                                            <p>Length</p>
-                                            <p>Height</p>
-                                            <p>TMP</p>
-                                            <p>BOL #</p>
-                                            <p>Appointment #</p>
-                                            <p>Pickup #</p>
-                                            <p>PO #</p>
-                                            <p>Seal #</p>
-                                            <p>Code</p>
-                                            <p>Stackable</p>
-                                            <p>Tarp</p>
-                                            <p>Driver Assis</p>
-                                            <p>Strap/Chain</p>
-                                        </div>
-                                        <div
-                                            *ngFor="
-                                                let loadStopDetail of loadStopsDetails(
-                                                    loadStopIndex
-                                                ).controls;
-                                                let loadStopDetailsIndex = index;
-                                                trackBy: identity
-                                            "
-                                        >
-                                            <div
-                                                [formGroupName]="
-                                                    loadStopDetailsIndex
-                                                "
-                                                class="load-stop-more-details"
-                                            >
-                                                <!-- Load Details Serial Number -->
-                                                <p class="first-paragraf">
-                                                    {{
-                                                        loadStopDetailsIndex + 1
-                                                    }}
-                                                </p>
-
-                                                <!-- Description -->
-                                                <app-ta-input
-                                                    *ngIf="!isHazardousPicked"
-                                                    formControlName="description"
-                                                    [inputConfig]="{
-                                                        name: 'Description',
-                                                        type: 'text',
-                                                        minLength: 2,
-                                                        maxLength: 160,
-                                                        textTransform:
-                                                            'capitalize',
-                                                        blackInput: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                    [ngStyle]="{
-                                                        height: '20px'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- Hazardous Dropdown -->
-                                                <app-ta-input-dropdown
-                                                    *ngIf="isHazardousPicked"
-                                                    formControlName="hazardousMaterialId"
-                                                    [template]="
-                                                        'svgtext-template'
-                                                    "
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        isDropdown: true,
-                                                        dropdownImageInput: {
-                                                            withText: true,
-                                                            svg: true,
-                                                            image: false,
-                                                            url:
-                                                                'assets/svg/common/load/' +
-                                                                selectedLoadDetailsHazardous[
-                                                                    loadStopDetailsIndex
-                                                                ]?.logoName,
-                                                            template: 'user'
-                                                        },
-                                                        dropdownWidthClass:
-                                                            'w-col-156',
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                    [options]="
-                                                        labelsLoadDetailsHazardous
-                                                    "
-                                                    [activeItem]="
-                                                        selectedLoadDetailsHazardous[
-                                                            loadStopDetailsIndex
-                                                        ]
-                                                    "
-                                                    (selectedItem)="
-                                                        onSelectDropdown(
-                                                            $event,
-                                                            'hazardous',
-                                                            loadStopDetailsIndex
-                                                        )
-                                                    "
-                                                ></app-ta-input-dropdown>
-
-                                                <!-- QTY -->
-                                                <app-ta-input
-                                                    formControlName="quantity"
-                                                    [inputConfig]="{
-                                                        name: 'QTY',
-                                                        type: 'text',
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- Units -->
-                                                <app-ta-input-dropdown
-                                                    formControlName="units"
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-73',
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                    [options]="
-                                                        labelsloadDetailsUnits
-                                                    "
-                                                    [activeItem]="
-                                                        selectedLoadDetailsUnits[
-                                                            loadStopDetailsIndex
-                                                        ]
-                                                    "
-                                                    (selectedItem)="
-                                                        onSelectDropdown(
-                                                            $event,
-                                                            'units',
-                                                            loadStopDetailsIndex
-                                                        )
-                                                    "
-                                                ></app-ta-input-dropdown>
-
-                                                <!-- Weight -->
-                                                <app-ta-input
-                                                    formControlName="weight"
-                                                    [inputConfig]="{
-                                                        name: 'Weight',
-                                                        type: 'text',
-                                                        placeholderText: 'ibs',
-                                                        thousandSeparator: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- Length -->
-                                                <app-ta-input
-                                                    formControlName="length"
-                                                    [inputConfig]="{
-                                                        name: 'Length',
-                                                        type: 'text',
-                                                        placeholderText: 'ibs',
-                                                        thousandSeparator: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- Height -->
-                                                <app-ta-input
-                                                    formControlName="height"
-                                                    [inputConfig]="{
-                                                        name: 'Height',
-                                                        type: 'text',
-                                                        placeholderText: 'ibs',
-                                                        thousandSeparator: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- TMP -->
-                                                <app-ta-input
-                                                    formControlName="temperature"
-                                                    [inputConfig]="{
-                                                        name: 'TMP',
-                                                        type: 'text',
-                                                        placeholderText: 'ibs',
-                                                        thousandSeparator: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- BOL -->
-                                                <app-ta-input
-                                                    formControlName="bolNumber"
-                                                    [inputConfig]="{
-                                                        name: 'BOL',
-                                                        type: 'text',
-                                                        placeholderText: 'ibs',
-                                                        thousandSeparator: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- Appointment -->
-                                                <app-ta-input
-                                                    formControlName="appointmentNumber"
-                                                    [inputConfig]="{
-                                                        name: 'Appointment',
-                                                        type: 'text',
-                                                        placeholderText: 'ibs',
-                                                        thousandSeparator: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- Pickup -->
-                                                <app-ta-input
-                                                    formControlName="pickupNumber"
-                                                    [inputConfig]="{
-                                                        name: 'Pickup',
-                                                        type: 'text',
-                                                        placeholderText: 'ibs',
-                                                        thousandSeparator: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- PO -->
-                                                <app-ta-input
-                                                    formControlName="poNumber"
-                                                    [inputConfig]="{
-                                                        name: 'PO',
-                                                        type: 'text',
-                                                        placeholderText: 'ibs',
-                                                        thousandSeparator: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- Seal -->
-                                                <app-ta-input
-                                                    formControlName="sealNumber"
-                                                    [inputConfig]="{
-                                                        name: 'Seal',
-                                                        type: 'text',
-                                                        placeholderText: 'ibs',
-                                                        thousandSeparator: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- Code -->
-                                                <app-ta-input
-                                                    formControlName="code"
-                                                    [inputConfig]="{
-                                                        name: 'Code',
-                                                        type: 'text',
-                                                        placeholderText: 'ibs',
-                                                        thousandSeparator: true,
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <!-- Stackable -->
-                                                <app-ta-input-dropdown
-                                                    formControlName="stackable"
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-69',
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                    [options]="
-                                                        labelsLoadDetailsStackable
-                                                    "
-                                                    [activeItem]="
-                                                        selectedLoadDetailsStackable[
-                                                            loadStopDetailsIndex
-                                                        ]
-                                                    "
-                                                    (selectedItem)="
-                                                        onSelectDropdown(
-                                                            $event,
-                                                            'stackable',
-                                                            loadStopDetailsIndex
-                                                        )
-                                                    "
-                                                ></app-ta-input-dropdown>
-
-                                                <!-- Tarp -->
-                                                <app-ta-input-dropdown
-                                                    formControlName="tarp"
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-71',
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                    [options]="
-                                                        labelsLoadDetailsTarps
-                                                    "
-                                                    [activeItem]="
-                                                        selectedLoadDetailsTarps[
-                                                            loadStopDetailsIndex
-                                                        ]
-                                                    "
-                                                    (selectedItem)="
-                                                        onSelectDropdown(
-                                                            $event,
-                                                            'tarp',
-                                                            loadStopDetailsIndex
-                                                        )
-                                                    "
-                                                ></app-ta-input-dropdown>
-
-                                                <!-- Driver Assis -->
-                                                <app-ta-input-dropdown
-                                                    formControlName="driverAssist"
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-69',
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                    [options]="
-                                                        labelsLoadDetailsDriverAssis
-                                                    "
-                                                    [activeItem]="
-                                                        selectedLoadDetailsDriverAssis[
-                                                            loadStopDetailsIndex
-                                                        ]
-                                                    "
-                                                    (selectedItem)="
-                                                        onSelectDropdown(
-                                                            $event,
-                                                            'driverAssis',
-                                                            loadStopDetailsIndex
-                                                        )
-                                                    "
-                                                ></app-ta-input-dropdown>
-
-                                                <!-- Strap Chain -->
-                                                <app-ta-input-dropdown
-                                                    formControlName="secure"
-                                                    [inputConfig]="{
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-66',
-                                                        hideRequiredCheck: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        customClass:
-                                                            'load-stop-details'
-                                                    }"
-                                                    [options]="
-                                                        labelsLoadDetailsStrapChain
-                                                    "
-                                                    [activeItem]="
-                                                        selectedLoadDetailsStrapChain[
-                                                            loadStopDetailsIndex
-                                                        ]
-                                                    "
-                                                    (selectedItem)="
-                                                        onSelectDropdown(
-                                                            $event,
-                                                            'strapChain',
-                                                            loadStopDetailsIndex
-                                                        )
-                                                    "
-                                                ></app-ta-input-dropdown>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p
-                                        (click)="
-                                            addLoadStopDetails(loadStopIndex)
-                                        "
-                                        class="load-stop-add-btn"
-                                    >
-                                        Add Stop Details
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </app-ta-custom-card>
-
-            <app-ta-custom-card
-                [cardName]="'Billing & Payment'"
+                [cardName]="'Billing'"
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '18px',
@@ -1096,156 +505,6 @@
                         [ngStyle]="{ width: '130px' }"
                     ></app-ta-input>
 
-                    <!-- Adjusted Rate -->
-                    <div
-                        *ngIf="!isAvailableAdjustedRate"
-                        class="billing-plus billing-adjusted"
-                        ngbTooltip
-                        mainTooltip="Adjusted"
-                        tooltipBackground="#FFA726"
-                        position="top"
-                        (click)="
-                            isAvailableAdjustedRate =
-                                true && loadForm.get('baseRate').value
-                        "
-                    >
-                        <svg-icon
-                            class="billing-adjusted-plus"
-                            src="assets/svg/common/ic_plus.svg"
-                        ></svg-icon>
-                    </div>
-
-                    <app-ta-input
-                        *ngIf="isAvailableAdjustedRate"
-                        formControlName="adjustedRate"
-                        [inputConfig]="{
-                            name: 'adjusted-rate',
-                            type: 'text',
-                            label: 'Adjusted',
-                            placeholderIcon: 'dollar',
-                            customClass:
-                                'dollar-placeholderIcon load-adjusted-rate',
-                            thousandSeparator: true,
-                            blackInput: true
-                        }"
-                        [ngStyle]="{ width: '130px' }"
-                    ></app-ta-input>
-
-                    <!-- Advance Rate -->
-                    <div
-                        *ngIf="!isAvailableAdvanceRate"
-                        class="billing-plus billing-advance"
-                        ngbTooltip
-                        mainTooltip="Advance"
-                        tooltipBackground="#26A690"
-                        position="top"
-                        (click)="
-                            isAvailableAdvanceRate =
-                                true && loadForm.get('baseRate').value
-                        "
-                    >
-                        <svg-icon
-                            class="billing-advance-plus"
-                            src="assets/svg/common/ic_plus.svg"
-                        ></svg-icon>
-                    </div>
-
-                    <app-ta-input
-                        *ngIf="isAvailableAdvanceRate"
-                        formControlName="advancePay"
-                        [inputConfig]="{
-                            name: 'advance-pay-rate',
-                            type: 'text',
-                            label: 'Advance',
-                            placeholderIcon: 'dollar',
-                            customClass:
-                                'dollar-placeholderIcon load-advance-rate',
-                            thousandSeparator: true,
-                            blackInput: true
-                        }"
-                        [ngStyle]="{ width: '130px' }"
-                    ></app-ta-input>
-
-                    <!-- Layover -->
-                    <app-ta-input
-                        *ngIf="additionalBillingTypes[0]?.active"
-                        formControlName="layoverRate"
-                        [inputConfig]="{
-                            name: 'layover-rate',
-                            type: 'text',
-                            label: 'Layover',
-                            placeholderIcon: 'dollar',
-                            customClass: 'dollar-placeholderIcon',
-                            thousandSeparator: true,
-                            blackInput: true
-                        }"
-                        [ngStyle]="{ width: '130px' }"
-                    ></app-ta-input>
-
-                    <!-- Lumper -->
-                    <app-ta-input
-                        *ngIf="additionalBillingTypes[1]?.active"
-                        formControlName="lumperRate"
-                        [inputConfig]="{
-                            name: 'lumper-rate',
-                            type: 'text',
-                            label: 'Lumper',
-                            placeholderIcon: 'dollar',
-                            customClass: 'dollar-placeholderIcon',
-                            thousandSeparator: true,
-                            blackInput: true
-                        }"
-                        [ngStyle]="{ width: '130px' }"
-                    ></app-ta-input>
-
-                    <!-- Fuel Surcharge -->
-                    <app-ta-input
-                        *ngIf="additionalBillingTypes[2]?.active"
-                        formControlName="fuelSurchargeRate"
-                        [inputConfig]="{
-                            name: 'fuel-surcharge-rate',
-                            type: 'text',
-                            label: 'Fuel Surch.',
-                            placeholderIcon: 'dollar',
-                            customClass: 'dollar-placeholderIcon',
-                            thousandSeparator: true,
-                            blackInput: true
-                        }"
-                        [ngStyle]="{ width: '130px' }"
-                    ></app-ta-input>
-
-                    <!-- Escort -->
-                    <app-ta-input
-                        *ngIf="additionalBillingTypes[3]?.active"
-                        formControlName="escortRate"
-                        [inputConfig]="{
-                            name: 'escort-rate',
-                            type: 'text',
-                            label: 'Escort',
-                            placeholderIcon: 'dollar',
-                            customClass: 'dollar-placeholderIcon',
-                            thousandSeparator: true,
-                            blackInput: true
-                        }"
-                        [ngStyle]="{ width: '130px' }"
-                    ></app-ta-input>
-
-                    <!-- Detention -->
-                    <app-ta-input
-                        *ngIf="additionalBillingTypes[4]?.active"
-                        formControlName="detentionRate"
-                        [inputConfig]="{
-                            name: 'detention-rate',
-                            type: 'text',
-                            label: 'Detention',
-                            placeholderIcon: 'dollar',
-                            customClass: 'dollar-placeholderIcon',
-                            thousandSeparator: true,
-                            blackInput: true
-                        }"
-                        [ngStyle]="{ width: '130px' }"
-                    ></app-ta-input>
-
                     <div
                         #t2="ngbPopover"
                         popoverClass="load-additional-options"
@@ -1256,10 +515,9 @@
                         mainTooltip="Additional"
                         tooltipBackground="#536BC2"
                         position="top"
-                        class="billing-plus billing-additional"
+                        class="load-plus-button"
                     >
                         <svg-icon
-                            class="billing-additional-plus"
                             src="assets/svg/common/ic_plus.svg"
                         ></svg-icon>
                     </div>
@@ -1312,7 +570,7 @@
             <!-- Documents -->
             <app-ta-custom-card
                 [hasCounter]="documents.length ? documents.length : 0"
-                [cardName]="'Documents'"
+                [cardName]="'Document'"
                 [isCardOpen]="documents.length > 0"
             >
                 <app-ta-upload-files
@@ -1339,17 +597,12 @@
                 "
             ></app-ta-input-note>
         </div>
-        <!-------------------------------- LTL Tab -------------------------------->
-        <div *ngIf="selectedTab === 2" class="m-tab">
-            <div class="row">LTL</div>
-        </div>
     </form>
     <!-------------------------------- Additional Tab Part -------------------------------->
-    <!--       height: originTab?.clientHeight + 118 + 'px', -->
     <div
         additional
+        class="load-map-container"
         [ngClass]="{
-            'load-map-container': !isHazardousVisible,
             'load-hazardous-container': isHazardousVisible
         }"
         [ngStyle]="{
@@ -1361,7 +614,6 @@
         <!-- Hazardous -->
         <app-load-modal-hazardous
             *ngIf="isHazardousVisible"
-            (close)="isHazardousVisible = false"
         ></app-load-modal-hazardous>
 
         <!-- Map -->

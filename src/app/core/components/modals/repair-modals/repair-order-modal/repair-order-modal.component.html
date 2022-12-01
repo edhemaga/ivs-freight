@@ -57,10 +57,10 @@
                     type: 'text',
                     label: 'Odometer',
                     isRequired: selectedPM[selectedPMIndex]?.id,
-                    isDisabled: selectedHeaderTab !== 1,
+                    isDisabled: selectedHeaderTab !== 1 || !selectedPM[0]?.id,
                     thousandSeparator: true,
                     minLength: 1,
-                    maxLength: 7
+                    maxLength: 9
                 }"
             ></app-ta-input>
             <app-ta-input

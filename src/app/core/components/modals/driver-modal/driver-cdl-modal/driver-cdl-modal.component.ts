@@ -10,7 +10,6 @@ import { DriverTService } from '../../../driver/state/driver.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateFromBackend,
@@ -61,7 +60,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         private cdlService: CdlTService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private formService: FormService
     ) {}
 
@@ -143,7 +141,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     }
 
     public onSelectDropdown(event: any, action: string) {
-        console.log('desio se event: ', event, action);
         switch (action) {
             case 'class': {
                 this.selectedClassType = event;
@@ -155,28 +152,20 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             }
             case 'restrictions': {
                 this.selectedRestrictions = event;
-                if (this.selectedRestrictions) {
+                if (this.selectedRestrictions.length) {
                     this.cdlForm
                         .get('restrictionsHelper')
-                        .patchValue(
-                            this.selectedRestrictions.length
-                                ? JSON.stringify(this.selectedRestrictions)
-                                : null
-                        );
+                        .patchValue(JSON.stringify(this.selectedRestrictions));
                 }
 
                 break;
             }
             case 'endorsments': {
                 this.selectedEndorsments = event;
-                if (this.selectedEndorsments) {
+                if (this.selectedEndorsments.length) {
                     this.cdlForm
                         .get('endorsementsHelper')
-                        .patchValue(
-                            this.selectedEndorsments.length
-                                ? JSON.stringify(this.selectedEndorsments)
-                                : null
-                        );
+                        .patchValue(JSON.stringify(this.selectedEndorsments));
                 }
                 break;
             }
@@ -218,9 +207,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -232,9 +219,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 next: (res: DriverResponse) => {
                     this.modalName = res.firstName.concat(' ', res.lastName);
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -316,6 +301,15 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                             };
                         }
                     );
+
+                    if (this.selectedEndorsments.length) {
+                        this.cdlForm
+                            .get('endorsementsHelper')
+                            .patchValue(
+                                JSON.stringify(this.selectedEndorsments)
+                            );
+                    }
+
                     this.selectedRestrictions = res.cdlRestrictions.map(
                         (item) => {
                             return {
@@ -327,17 +321,29 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         }
                     );
 
+                    if (this.selectedRestrictions.length) {
+                        this.cdlForm
+                            .get('restrictionsHelper')
+                            .patchValue(
+                                JSON.stringify(this.selectedRestrictions)
+                            );
+                    }
+
                     this.selectedClassType = res.classType;
                     this.selectedStateType = res.state;
                 },
-                error: () => {
-                
-                },
+                error: () => {},
             });
     }
 
     public updateCdl() {
-        const { issueDate, expDate, note } = this.cdlForm.value;
+        const {
+            issueDate,
+            expDate,
+            note,
+            endorsementsHelper,
+            restrictionsHelper,
+        } = this.cdlForm.value;
         const newData: any = {
             id: this.editData.file_id,
             ...this.cdlForm.value,
@@ -363,18 +369,17 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         this.cdlService
             .updateCdl(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     public addCdl() {
-        const { issueDate, expDate, note } = this.cdlForm.value;
+        const {
+            issueDate,
+            expDate,
+            note,
+            endorsementsHelper,
+            restrictionsHelper,
+        } = this.cdlForm.value;
 
         const newData: any = {
             driverId: this.editData.id,
@@ -400,26 +405,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             this.cdlService
                 .renewCdlUpdate({ ...renewData, id: this.editData.file_id })
                 .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: () => {
-                        
-                    },
-                    error: () => {
-                       
-                    },
-                });
+                .subscribe();
         } else {
             this.cdlService
                 .addCdl(newData)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: () => {
-                       
-                    },
-                    error: () => {
-                      
-                    },
-                });
+                .subscribe();
         }
     }
 

@@ -1,4 +1,4 @@
-import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
+import { SettingsLocationService } from '../../../settings/state/location-state/settings-location.service';
 import { FormArray, Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
@@ -18,13 +18,12 @@ import {
 } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
-import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
-import { rentValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../../../services/form/form.service';
-import { UserModalComponent } from '../../../../modals/user-modal/user-modal.component';
+import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { rentValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../services/form/form.service';
+import { UserModalComponent } from '../../user-modal/user-modal.component';
 import {
     addressValidation,
     addressUnitValidation,
@@ -32,11 +31,11 @@ import {
     phoneExtension,
     departmentValidation,
     officeNameValidation,
-} from '../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import {
     convertThousanSepInNumber,
     convertNumberInThousandSep,
-} from '../../../../../utils/methods.calculations';
+} from '../../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-settings-office-modal',
@@ -94,7 +93,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private settingsLocationService: SettingsLocationService,
         private formService: FormService
     ) {}
@@ -322,14 +320,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .updateCompanyOffice(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
-            });
+            .subscribe();
     }
 
     private addCompanyOffice() {
@@ -372,7 +363,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                   
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'user-modal': {
@@ -395,9 +385,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -405,14 +393,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .deleteCompanyOfficeById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
-            });
+            .subscribe();
     }
 
     private editCompanyOfficeById(id: number) {
@@ -478,12 +459,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                             duplicateId:
                                 res.departmentContacts[index].department.id,
                         };
-                        console.log(this.selectedDepartmentFormArray);
                     }
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -498,9 +476,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     this.departments = res.departments;
                     this.weeklyDays = res.dayOfWeek;
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

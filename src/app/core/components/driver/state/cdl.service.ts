@@ -2,13 +2,10 @@ import { Injectable, OnDestroy } from '@angular/core';
 import {
     CdlResponse,
     CdlService,
-    /* CreateCdlCommand, */
     CreateResponse,
     DriverResponse,
-    /* EditCdlCommand, */
     GetCdlModalResponse,
 } from 'appcoretruckassist';
-/* import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse'; */
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -46,10 +43,7 @@ export class CdlTService implements OnDestroy {
                         next: (driver: DriverResponse | any) => {
                             this.activateCdlById(res.id)
                                 .pipe(takeUntil(this.destroy$))
-                                .subscribe({
-                                    next: (res: any) => {},
-                                    error: () => {},
-                                });
+                                .subscribe();
                             driver = {
                                 ...driver,
                                 fullName:
@@ -76,7 +70,7 @@ export class CdlTService implements OnDestroy {
     public updateCdl(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.cdlService.apiCdlPut().pipe(
-            tap((res: any) => {
+            tap(() => {
                 const subDriver = this.driverService
                     .getDriverById(data.driverId)
                     .subscribe({
@@ -110,7 +104,7 @@ export class CdlTService implements OnDestroy {
 
     public deleteCdlById(id: number): Observable<any> {
         return this.cdlService.apiCdlIdDelete(id).pipe(
-            tap((res: any) => {
+            tap(() => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const subDriver = this.driverService
                     .getDriverById(driverId)
@@ -144,7 +138,7 @@ export class CdlTService implements OnDestroy {
 
     public activateCdlById(id: number): Observable<any> {
         return this.cdlService.apiCdlActivateIdPut(id).pipe(
-            tap((res: any) => {
+            tap(() => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const subDriver = this.driverService
                     .getDriverById(driverId)
@@ -178,7 +172,7 @@ export class CdlTService implements OnDestroy {
     }
     public deactivateCdlById(id: number) {
         return this.cdlService.apiCdlDeactivateIdPut(id).pipe(
-            tap((res: any) => {
+            tap(() => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const subDriver = this.driverService
                     .getDriverById(driverId)
@@ -212,7 +206,7 @@ export class CdlTService implements OnDestroy {
     }
     public renewCdlUpdate(data: RenewCdlCommand): Observable<any> {
         return this.cdlService.apiCdlRenewPut(data).pipe(
-            tap((res: any) => {
+            tap(() => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const subDriver = this.driverService
                     .getDriverById(driverId)

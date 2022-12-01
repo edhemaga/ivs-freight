@@ -169,6 +169,10 @@
         padding-left: 29px;
     }
 
+    &.dropdown-input-image-user {
+        padding-left: 30px;
+    }
+
     &.valid-focus-in-datepicker {
         background-color: $input-background-color-valid-focus !important;
 
@@ -176,10 +180,6 @@
         span .border-picker {
             color: $input-text-color-normal-focus !important;
         }
-    }
-
-    &.dropdown-input-image-user {
-        padding-left: 30px;
     }
 
     &.valid-focus-in,
@@ -286,19 +286,6 @@
         background-color: transparent !important;
         display: grid;
         align-items: center;
-    }
-
-    &.load-dispatches-ttd {
-        grid-template-columns: repeat(3, 128px);
-
-        span:last-child {
-            .multiple-input-text {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                width: 98px;
-            }
-        }
 
         span {
             -webkit-user-select: none;
@@ -308,8 +295,21 @@
         }
     }
 
+    &.load-dispatches-ttd {
+        grid-template-columns: repeat(3, 156px) 16px 100px;
+
+        span:last-child {
+            color: #919191;
+            font-size: 14px;
+            font-weight: 400;
+        }
+    }
+
     &.load-broker-contact {
-        grid-template-columns: repeat(3, 120px);
+        grid-template-columns: 160px 120px;
+        align-items: center;
+        grid-column-gap: 10px;
+        column-gap: 10px;
     }
 
     &.load-shipper {

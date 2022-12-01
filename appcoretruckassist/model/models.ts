@@ -569,7 +569,6 @@ export * from './updateEmergencyContactReviewCommand';
 export * from './updateEmploymentHistoryCommand';
 export * from './updateEventCommand';
 export * from './updateFactoringCompanyCommand';
-export * from './updateFuelStopCommand';
 export * from './updateHosCommand';
 export * from './updateHosRulesCommand';
 export * from './updateLoadStatusCommand';

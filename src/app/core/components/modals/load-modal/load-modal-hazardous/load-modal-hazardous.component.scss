@@ -67,20 +67,6 @@ $yellow: #ffcb86;
             }
         }
 
-        .load-m-hazardous-title-close {
-            line-height: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-
-            &:hover {
-                svg {
-                    path {
-                        fill: $container-x-close !important;
-                    }
-                }
-            }
-        }
-
         // Container Classes
         &.segregation-title-container,
         &.additional-title-container {
@@ -283,15 +269,6 @@ $yellow: #ffcb86;
             }
         }
 
-        // Custom Class For Explanations
-        &-mt-33 {
-            margin-top: 33px !important;
-        }
-
-        &-mt-26 {
-            margin-top: 26px !important;
-        }
-
         &-mt-0 {
             margin-top: 0px !important;
         }
@@ -304,5 +281,16 @@ $yellow: #ffcb86;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+        svg {
+            width: 615px;
+            height: 350px;
+        }
+    }
+
+    .load-m-hazardous-compatibility-table {
+        svg {
+            width: 615px;
+            height: 252px;
+        }
     }
 }

@@ -17,8 +17,8 @@ import { TruckTService } from '../../truck/state/truck.service';
 import { TruckListResponse } from 'appcoretruckassist';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { ModalService } from '../ta-modal/modal.service';
-import { MapSettingsModalComponent } from './map-settings-modal/map-settings-modal.component';
-import { MapRouteModalComponent } from './map-route-modal/map-route-modal.component';
+import { MapSettingsModalComponent } from '../../modals/map-settings-modal/map-settings-modal.component';
+import { MapRouteModalComponent } from '../../modals/map-route-modal/map-route-modal.component';
 
 @Component({
     selector: 'app-map-toolbar',
