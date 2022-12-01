@@ -29,7 +29,6 @@ import {
     fullNameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { HttpResponseBase } from '@angular/common/http';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import {
     LikeDislikeModel,
@@ -86,9 +85,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public reviews: any[] = [];
 
     public isPhoneExtExist: boolean = false;
-
-    public shipperDnuStatus: boolean = true;
-    public shipperBanStatus: boolean = true;
 
     public companyUser: SignInResponse = null;
 
@@ -169,82 +165,36 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
-        if (data.action === 'bfb' || data.action === 'dnu') {
-            // DNU
-            if (data.action === 'dnu' && this.editData) {
-                this.shipperModalService
-                    .changeDnuStatus(this.editData.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: HttpResponseBase) => {
-                            if (res.status === 200 || res.status === 204) {
-                                this.shipperDnuStatus = !this.shipperDnuStatus;
-                                this.modalService.changeModalStatus({
-                                    name: 'dnu',
-                                    status: this.shipperDnuStatus,
-                                });
-                               
-                            }
-                        },
-                        error: () => {
-                           
-                        },
-                    });
-            }
-            // BFB
-            if (data.action === 'bfb' && this.editData) {
-                this.shipperForm.get('ban').patchValue(data.bool);
-                this.shipperModalService
-                    .changeBanStatus(this.editData.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res: HttpResponseBase) => {
-                            if (res.status === 200 || res.status === 204) {
-                                this.shipperBanStatus = !this.shipperBanStatus;
-                                this.modalService.changeModalStatus({
-                                    name: 'bfb',
-                                    status: this.shipperBanStatus,
-                                });
-                               
-                            }
-                        },
-                        error: () => {
-                         
-                        },
-                    });
-            }
+        if (data.action === 'close') {
+            return;
         } else {
-            if (data.action === 'close') {
-                return;
-            } else {
-                // Save & Update
-                if (data.action === 'save') {
-                    if (this.shipperForm.invalid || !this.isFormDirty) {
-                        this.inputService.markInvalid(this.shipperForm);
-                        return;
-                    }
-                    if (this.editData) {
-                        this.updateShipper(this.editData.id);
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                        });
-                    } else {
-                        this.addShipper();
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                        });
-                    }
+            // Save & Update
+            if (data.action === 'save') {
+                if (this.shipperForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.shipperForm);
+                    return;
                 }
-                // Delete
-                if (data.action === 'delete' && this.editData) {
-                    this.deleteShipperById(this.editData.id);
+                if (this.editData) {
+                    this.updateShipper(this.editData.id);
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: null,
+                        status: true,
+                    });
+                } else {
+                    this.addShipper();
+                    this.modalService.setModalSpinner({
+                        action: null,
                         status: true,
                     });
                 }
+            }
+            // Delete
+            if (data.action === 'delete' && this.editData) {
+                this.deleteShipperById(this.editData.id);
+                this.modalService.setModalSpinner({
+                    action: 'delete',
+                    status: true,
+                });
             }
         }
     }
@@ -401,11 +351,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     .subscribe({
                         next: () => {
                             this.editShipperById(this.editData.id);
-                         
                         },
-                        error: () => {
-                         
-                        },
+                        error: () => {},
                     });
             });
     }
@@ -432,11 +379,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         return item;
                     });
                     this.disableOneMoreReview = true;
-                  
                 },
-                error: () => {
-                
-                },
+                error: () => {},
             });
     }
 
@@ -446,14 +390,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.reviewRatingService
             .deleteReview(reviews.data)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                 
-                },
-                error: () => {
-            
-                },
-            });
+            .subscribe();
     }
 
     private updateReview(reviews: ReviewCommentModal) {
@@ -466,14 +403,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.reviewRatingService
             .updateReview(review)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                 
-                },
-                error: () => {
-                 
-                },
-            });
+            .subscribe();
     }
 
     private addShipper() {
@@ -514,18 +444,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shipperContacts,
         };
 
-        let shipperBuisnisName = this.shipperForm.value.businessName;
         this.shipperModalService
             .addShipper(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                  
-                },
-            });
+            .subscribe();
     }
 
     private updateShipper(id: number) {
@@ -572,28 +494,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.shipperModalService
             .updateShipper(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-              
-                },
-                error: () => {
-              
-                },
-            });
+            .subscribe();
     }
 
     private deleteShipperById(id: number) {
         this.shipperModalService
             .deleteShipperById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-               
-                },
-            });
+            .subscribe();
     }
 
     private editShipperById(id: number) {
@@ -601,48 +509,57 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .getShipperById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (reasponse: ShipperResponse) => {
+                next: (res: ShipperResponse) => {
+                    console.log(res);
                     this.shipperForm.patchValue({
-                        businessName: reasponse.businessName,
-                        phone: reasponse.phone,
-                        phoneExt: reasponse.phoneExt,
-                        email: reasponse.email,
-                        address: reasponse.address.address,
-                        addressUnit: reasponse.address.addressUnit,
-                        receivingAppointment: reasponse.receivingAppointment,
+                        businessName: res.businessName,
+                        phone: res.phone,
+                        phoneExt: res.phoneExt,
+                        email: res.email,
+                        address: res.address.address,
+                        addressUnit: res.address.addressUnit,
+                        receivingAppointment: res.receivingAppointment,
                         receivingOpenTwentyFourHours:
-                            reasponse.receivingOpenTwentyFourHours,
-                        receivingFrom: convertTimeFromBackend(
-                            reasponse.receivingFrom
-                        ),
-                        receivingTo: convertTimeFromBackend(
-                            reasponse.receivingTo
-                        ),
+                            res.receivingOpenTwentyFourHours,
+                        receivingFrom:
+                            res.receivingAppointment &&
+                            res.receivingOpenTwentyFourHours
+                                ? null
+                                : convertTimeFromBackend(res.receivingFrom),
+                        receivingTo:
+                            res.receivingAppointment &&
+                            res.receivingOpenTwentyFourHours
+                                ? null
+                                : convertTimeFromBackend(res.receivingTo),
                         shippingHoursSameReceiving:
-                            reasponse.shippingHoursSameReceiving,
-                        shippingAppointment: reasponse.shippingAppointment,
+                            res.shippingHoursSameReceiving,
+                        shippingAppointment: res.shippingAppointment,
                         shippingOpenTwentyFourHours:
-                            reasponse.shippingOpenTwentyFourHours,
-                        shippingFrom: convertTimeFromBackend(
-                            reasponse.shippingFrom
-                        ),
-                        shippingTo: convertTimeFromBackend(
-                            reasponse.shippingTo
-                        ),
-                        note: reasponse.note,
+                            res.shippingOpenTwentyFourHours,
+                        shippingFrom:
+                            res.shippingHoursSameReceiving &&
+                            res.shippingAppointment
+                                ? null
+                                : convertTimeFromBackend(res.shippingFrom),
+                        shippingTo:
+                            res.shippingHoursSameReceiving &&
+                            res.shippingAppointment
+                                ? null
+                                : convertTimeFromBackend(res.shippingTo),
+                        note: res.note,
                         shipperContacts: [],
                     });
 
-                    this.selectedAddress = reasponse.address;
-                    this.isPhoneExtExist = !!reasponse.phoneExt;
-                    this.documents = reasponse.files;
+                    this.selectedAddress = res.address;
+                    this.isPhoneExtExist = !!res.phoneExt;
+                    this.documents = res.files;
 
-                    if (reasponse.phoneExt) {
+                    if (res.phoneExt) {
                         this.isPhoneExtExist = true;
                     }
 
-                    if (reasponse.shipperContacts.length) {
-                        for (const contact of reasponse.shipperContacts) {
+                    if (res.shipperContacts.length) {
+                        for (const contact of res.shipperContacts) {
                             this.shipperContacts.push(
                                 this.createShipperContacts({
                                     fullName: contact.fullName,
@@ -660,18 +577,18 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    if (reasponse.receivingAppointment) {
+                    if (res.receivingAppointment) {
                         this.isAppointmentReceiving = true;
                     }
 
                     if (
-                        reasponse.shippingAppointment ||
-                        reasponse.shippingHoursSameReceiving
+                        res.shippingAppointment ||
+                        res.shippingHoursSameReceiving
                     ) {
                         this.isAppointmentShipping = true;
                     }
 
-                    this.reviews = reasponse.reviews.map((item: any) => ({
+                    this.reviews = res.reviews.map((item: any) => ({
                         ...item,
                         companyUser: {
                             ...item.companyUser,
@@ -691,15 +608,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     }
 
                     this.taLikeDislikeService.populateLikeDislikeEvent({
-                        downRatingCount: reasponse.downCount,
-                        upRatingCount: reasponse.upCount,
-                        currentCompanyUserRating:
-                            reasponse.currentCompanyUserRating,
+                        downRatingCount: res.downCount,
+                        upRatingCount: res.upCount,
+                        currentCompanyUserRating: res.currentCompanyUserRating,
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -711,9 +625,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 next: (res: ShipperModalResponse) => {
                     this.labelsDepartments = res.departments;
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

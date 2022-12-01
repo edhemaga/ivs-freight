@@ -1,9 +1,9 @@
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 
-import { SettingsBasicModalComponent } from '../../settings-company/company-modals/settings-basic-modal/settings-basic-modal.component';
-import { SettingsInsurancePolicyModalComponent } from '../../settings-company/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
-import { SettingsFactoringModalComponent } from '../../settings-company/company-modals/settings-factoring-modal/settings-factoring-modal.component';
+import { SettingsBasicModalComponent } from '../../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsInsurancePolicyModalComponent } from '../../../modals/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
+import { SettingsFactoringModalComponent } from '../../../modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import {
     CompanyModalResponse,

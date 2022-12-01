@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { ModalService } from '../../ta-modal/modal.service';
-import { TaInputService } from '../../ta-input/ta-input.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckTService } from '../../../truck/state/truck.service';
+import { TruckTService } from '../../truck/state/truck.service';
 import { TruckListResponse, CreateRouteCommand } from 'appcoretruckassist';
-import { RoutingStateService } from '../../../routing/state/routing-state/routing-state.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
+import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
     selector: 'app-map-route-modal',
@@ -184,12 +184,8 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .addRoute(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -207,12 +203,8 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .updateRoute(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -227,9 +219,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                     });
                     console.log(res);
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 

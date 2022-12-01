@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
-import { ModalService } from '../../ta-modal/modal.service';
-import { TaInputService } from '../../ta-input/ta-input.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
-import { RoutingStateService } from '../../../routing/state/routing-state/routing-state.service';
+import { FormService } from '../../../services/form/form.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
 import { UpdateMapCommand } from 'appcoretruckassist';
 
 @Component({
@@ -163,12 +163,8 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
             .updateMap(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -182,9 +178,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
                         mapName: res.name,
                     });
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 

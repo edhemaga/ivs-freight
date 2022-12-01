@@ -213,7 +213,7 @@ export const trailerVolumeValidation = [
 //---------------- Repair Odometer
 export const repairOdometerValidation = [
     Validators.minLength(1),
-    Validators.maxLength(7),
+    Validators.maxLength(9),
 ];
 
 //---------------- Invoice

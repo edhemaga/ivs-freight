@@ -16,31 +16,30 @@ import {
     deductableValidation,
     comprehenCollisionValidation,
     trailerValueInsurancePolicyValidation,
-} from './../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     AddressEntity,
     InsurancePolicyModalResponse,
 } from 'appcoretruckassist';
 
-import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
+import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 import {
     FormGroup,
     FormBuilder,
     Validators,
     AbstractControl,
 } from '@angular/forms';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
-import { FormService } from '../../../../../services/form/form.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
     convertDateFromBackend,
     convertNumberInThousandSep,
-} from '../../../../../utils/methods.calculations';
+} from '../../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-settings-insurance-policy-modal',
@@ -79,7 +78,6 @@ export class SettingsInsurancePolicyModalComponent
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private settingsCompanyService: SettingsCompanyService,
         private formService: FormService
     ) {}
@@ -430,7 +428,7 @@ export class SettingsInsurancePolicyModalComponent
         if (this.selectedAddress) {
             this.selectedAddress = {
                 ...this.selectedAddress,
-                addressUnit: addressUnit ? addressUnit : undefined,
+                addressUnit: addressUnit,
             };
         }
 
@@ -632,7 +630,7 @@ export class SettingsInsurancePolicyModalComponent
         if (this.selectedAddress) {
             this.selectedAddress = {
                 ...this.selectedAddress,
-                addressUnit: addressUnit ? addressUnit : undefined,
+                addressUnit: addressUnit,
             };
         }
 

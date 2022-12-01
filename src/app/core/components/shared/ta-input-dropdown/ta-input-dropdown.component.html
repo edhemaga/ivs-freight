@@ -135,7 +135,9 @@
                     <svg-icon
                         *ngIf="option.logoName"
                         class="svg-template-logo"
-                        [ngClass]="{ active: option.id === activeItem?.id }"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id
+                        }"
                         [src]="option.logoName"
                     ></svg-icon>
 
@@ -175,7 +177,9 @@
                     (click)="onActiveItem(option)"
                 >
                     <svg-icon
-                        class="svgtext-template-logo"
+                        class="svgtext-template-logo {{
+                            option.name.trim().replace(' ', '').toLowerCase()
+                        }}"
                         [ngClass]="{
                             active: option.id === activeItem?.id,
                             'no-svg': !option?.logoName,

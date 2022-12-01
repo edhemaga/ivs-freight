@@ -19,7 +19,6 @@ import {
 } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { TaUserService } from '../../../services/user/user.service';
 import Croppie from 'croppie';
 import { FormService } from '../../../services/form/form.service';
@@ -75,7 +74,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private userService: TaUserService,
-        private notificationService: NotificationService,
         private modalService: ModalService,
         private formService: FormService
     ) {}
@@ -202,9 +200,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                                         .setErrors({ invalid: true });
                                 }
                             },
-                            error: () => {
-                               
-                            },
+                            error: () => {},
                         });
                 }
             });
@@ -289,9 +285,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                     });
                     this.selectedAddress = res.address;
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -324,8 +318,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                 
-
                     const newUser = {
                         ...this.user,
                         firstName: this.profileUserForm.get('firstName').value,
@@ -335,9 +327,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                     this.userService.updateUserProfile(true);
                     localStorage.setItem('user', JSON.stringify(newUser));
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

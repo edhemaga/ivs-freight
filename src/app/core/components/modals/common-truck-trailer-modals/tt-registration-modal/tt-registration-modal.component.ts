@@ -172,14 +172,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         this.commonTruckTrailerService
             .updateRegistration(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private addRegistration() {
@@ -209,14 +202,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         this.commonTruckTrailerService
             .addRegistration(newData, this.editData.tabSelected)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private editRegistrationById() {
@@ -239,9 +225,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files;
                     this.selectedStateType = res.state;
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -259,9 +243,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

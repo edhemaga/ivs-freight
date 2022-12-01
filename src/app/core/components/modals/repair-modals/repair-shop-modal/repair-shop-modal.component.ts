@@ -22,7 +22,6 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
 
@@ -68,7 +67,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private shopService: RepairTService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService
     ) {}
@@ -286,16 +284,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    
                     this.selectedBank = {
                         id: res.id,
                         name: this.selectedBank.name,
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -360,9 +355,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         );
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -411,7 +404,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -434,9 +426,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -485,28 +475,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.shopService
             .updateRepairShop(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private deleteRepairShopById(id: number) {
         this.shopService
             .deleteRepairShopById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private getRepairShopModalDropdowns() {
@@ -526,9 +502,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {
-                 
-                },
+                error: () => {},
             });
     }
 

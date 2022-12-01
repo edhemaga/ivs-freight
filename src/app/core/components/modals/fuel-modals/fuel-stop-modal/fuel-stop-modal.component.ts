@@ -16,7 +16,6 @@ import { fuelStoreValidation } from '../../../shared/ta-input/ta-input.regex-val
 import { FormService } from '../../../../services/form/form.service';
 import { FuelTService } from '../../../fuel/state/fuel.service';
 import { GetFuelStopModalResponse } from '../../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FuelStopResponse } from '../../../../../../../appcoretruckassist/model/fuelStopResponse';
 
 @Component({
@@ -53,12 +52,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
-        private fuelService: FuelTService,
-        private notificationService: NotificationService
+        private fuelService: FuelTService
     ) {}
 
     ngOnInit() {
-        console.log('test');
         this.createForm();
         this.getModalDropdowns();
 
@@ -208,9 +205,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                         this.fuelStopForm.get('address').setErrors(null);
                     }
                 },
-                error: (err: any) => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -288,14 +283,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         this.fuelService
             .updateFuelStop(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: (error: any) => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private addFuelStop() {
@@ -321,14 +309,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         this.fuelService
             .addFuelStop(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: (error: any) => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private getFuelStopById(id: number) {
@@ -343,11 +324,13 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                             ? res.fuelStopFranchise.businessName
                             : null,
                         favourite: res.fuelStopExtensions[0].favourite,
-
                         fax: res.fax,
                         address: res.address.address,
                         note: res.fuelStopExtensions[0].note,
                     });
+
+                    this.isFavouriteFuelStop =
+                        res.fuelStopExtensions[0].favourite;
 
                     this.fuelStopForm
                         .get('phone')
@@ -379,9 +362,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                             .setValidators(Validators.required);
                     }
                 },
-                error: (error: any) => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -409,9 +390,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
                 },
-                error: (error: any) => {
-                   
-                },
+                error: () => {},
             });
     }
 

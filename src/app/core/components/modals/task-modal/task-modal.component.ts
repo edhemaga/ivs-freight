@@ -22,7 +22,6 @@ import {
     urlValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { CommentsService } from '../../../services/comments/comments.service';
 import { FormService } from '../../../services/form/form.service';
 import {
@@ -67,7 +66,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private todoService: TodoTService,
         private commentsService: CommentsService,
-        private notificationService: NotificationService,
         private formService: FormService
     ) {}
 
@@ -223,11 +221,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                         }
                         return item;
                     });
-                  
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -242,14 +237,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         this.commentsService
             .updateComment(comment)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private deleteComment(comments: ReviewCommentModal) {
@@ -257,14 +245,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         this.commentsService
             .deleteCommentById(comments.data)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
-            });
+            .subscribe();
     }
 
     public onFilesEvent(event: any) {
@@ -351,14 +332,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         this.todoService
             .deleteTodoById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private editTask(id: number) {
@@ -403,9 +377,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     this.taskStatus = res.status;
                     this.documents = res.files ? (res.files as any) : [];
                 },
-                error: () => {
-                 
-                },
+                error: () => {},
             });
     }
 
@@ -425,9 +397,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     });
                     this.resCompanyUsers = [...this.showCompanyUsers];
                 },
-                error: () => {
-                 
-                },
+                error: () => {},
             });
     }
 

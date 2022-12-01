@@ -37,7 +37,6 @@ import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.c
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../services/form/form.service';
-import { NotificationService } from '../../../services/notification/notification.service';
 import {
     convertNumberInThousandSep,
     convertDateToBackend,
@@ -155,7 +154,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private driverTService: DriverTService,
-        private notificationService: NotificationService,
         private modalService: ModalService,
         private uploadFileService: TaUploadFileService,
         private bankVerificationService: BankVerificationService,
@@ -181,7 +179,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
 
         if (data.action === 'deactivate' && this.editData) {
-            this.updateDriverStatus(data);
+            this.updateDriverStatus();
         }
         // Save And Add New
         else if (data.action === 'save and add new') {
@@ -394,16 +392,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    
                     this.selectedBank = {
                         id: res.id,
                         name: this.selectedBank.name,
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -757,9 +752,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                         .patchValue(this.owner.name);
                                 }
                             },
-                            error: () => {
-                               
-                            },
+                            error: () => {},
                         });
                 } else {
                     this.driverForm.get('bussinesName').patchValue(null);
@@ -1027,9 +1020,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
                     this.handlingPayrollFleetType(this.fleetType, true);
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -1291,15 +1282,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             files: documents,
         };
 
-        let driverFullName = newData.firstName + ' ' + newData.lastName;
-
         this.driverTService
             .addDriver(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    
-
                     // If clicked Save and Add New, reset form and fields
                     if (this.addNewAfterSave) {
                         this.formService.resetForm(this.driverForm);
@@ -1398,7 +1385,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.selectedAddress = null;
                     }
                 },
-                error: () => {}
+                error: () => {},
             });
     }
 
@@ -1676,20 +1663,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             filesForDeleteIds: this.filesForDelete,
         };
 
-        let driverFullName =
-            this.driverForm.get('firstName').value +
-            ' ' +
-            this.driverForm.get('lastName').value;
-
         this.driverTService
             .updateDriver(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {}
-            });
+            .subscribe();
     }
 
     private editDriverById(id: number): void {
@@ -1930,9 +1907,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {
-            
-                },
+                error: () => {},
             });
     }
 
@@ -1940,24 +1915,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverTService
             .deleteDriverById(id, !this.driverStatus ? 'active' : 'inactive')
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
-    private updateDriverStatus(data: { action: string; bool: boolean }) {
-        let successMessage = `"${this.driverFullName}" ${
-            data.action === 'deactivate' ? 'Deactivated' : 'Activated'
-        }`;
-        let errorMessage = `Failed to ${
-            data.action === 'deactivate' ? 'Deactivate' : 'Activate'
-        } "${this.driverFullName}"`;
-
+    private updateDriverStatus() {
         this.driverTService
             .changeDriverStatus(
                 this.editData.id,
@@ -1975,9 +1936,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         });
                     }
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

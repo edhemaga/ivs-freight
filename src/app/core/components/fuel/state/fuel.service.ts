@@ -9,7 +9,6 @@ import {
 
 import { GetFuelStopModalResponse } from '../../../../../../appcoretruckassist/model/getFuelStopModalResponse';
 import { CreateResponse } from '../../../../../../appcoretruckassist/model/createResponse';
-import { UpdateFuelStopCommand } from '../../../../../../appcoretruckassist/model/updateFuelStopCommand';
 import { FuelStore } from './fule-state/fuel-state.store';
 import { GetFuelModalResponse } from '../../../../../../appcoretruckassist/model/getFuelModalResponse';
 import { FuelDispatchHistoryResponse } from '../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
@@ -205,11 +204,11 @@ export class FuelTService {
 
     // For table method
     public updateFuelStopShortest(data: any): Observable<object> {
-        return this.fuelService.apiFuelFuelstopPut();
+        return this.fuelService.apiFuelFuelstopPut(data);
     }
 
     // For modal method
-    public updateFuelStop(data: UpdateFuelStopCommand): Observable<object> {
+    public updateFuelStop(data: any): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.fuelService.apiFuelFuelstopUpdatePut();
     }

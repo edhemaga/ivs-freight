@@ -10,7 +10,6 @@ import { DriverTService } from '../../../driver/state/driver.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateFromBackend,
@@ -61,7 +60,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         private cdlService: CdlTService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private formService: FormService
     ) {}
 
@@ -143,7 +141,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     }
 
     public onSelectDropdown(event: any, action: string) {
-        console.log('desio se event: ', event, action);
         switch (action) {
             case 'class': {
                 this.selectedClassType = event;
@@ -218,9 +215,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -232,9 +227,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 next: (res: DriverResponse) => {
                     this.modalName = res.firstName.concat(' ', res.lastName);
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -330,9 +323,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                     this.selectedClassType = res.classType;
                     this.selectedStateType = res.state;
                 },
-                error: () => {
-                
-                },
+                error: () => {},
             });
     }
 
@@ -363,14 +354,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         this.cdlService
             .updateCdl(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     public addCdl() {
@@ -401,25 +385,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 .renewCdlUpdate({ ...renewData, id: this.editData.file_id })
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
-                    next: () => {
-                        
-                    },
-                    error: () => {
-                       
-                    },
+                    next: () => {},
+                    error: () => {},
                 });
         } else {
             this.cdlService
                 .addCdl(newData)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: () => {
-                       
-                    },
-                    error: () => {
-                      
-                    },
-                });
+                .subscribe();
         }
     }
 

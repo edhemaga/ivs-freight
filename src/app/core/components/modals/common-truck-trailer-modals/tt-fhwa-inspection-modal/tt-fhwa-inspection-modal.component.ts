@@ -7,7 +7,6 @@ import { InspectionResponse } from 'appcoretruckassist';
 
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateFromBackend,
@@ -34,7 +33,6 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: FormBuilder,
-        private notificationService: NotificationService,
         private commonTruckTrailerService: CommonTruckTrailerService,
         private inputService: TaInputService,
         private modalService: ModalService,
@@ -134,14 +132,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
         this.commonTruckTrailerService
             .updateInspection(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private addInspection() {
@@ -168,14 +159,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
         this.commonTruckTrailerService
             .addInspection(newData, this.editData.tabSelected)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     public onFilesEvent(event: any) {

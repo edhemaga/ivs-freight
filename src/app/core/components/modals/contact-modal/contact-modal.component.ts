@@ -29,7 +29,6 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { ContactTService } from '../../contacts/state/contact.service';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../services/notification/notification.service';
 import Croppie from 'croppie';
 import { FormService } from '../../../services/form/form.service';
 import { phoneExtension } from '../../shared/ta-input/ta-input.regex-validations';
@@ -93,7 +92,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private contactService: ContactTService,
         private formService: FormService
     ) {}
@@ -315,9 +313,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.labelsContactEmails = res.contactEmailType;
                     this.labelsContactPhones = res.contactPhoneType;
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -381,9 +377,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     this.selectedAddress = res.address;
                     // TODO: shared departments label selected
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -410,14 +404,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         this.contactService
             .addCompanyContact(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private updateCompanyContact(id: number): void {
@@ -444,14 +431,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         this.contactService
             .updateCompanyContact(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     public deleteCompanyContactById(id: number): void {
@@ -460,15 +440,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    
                     this.modalService.setModalSpinner({
                         action: 'delete',
                         status: true,
                     });
                 },
-                error: () => {
-
-                }
+                error: () => {},
             });
     }
 
@@ -523,9 +500,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                 next: (res: Array<ContactColorResponse>) => {
                     this.colors = res;
                 },
-                error: () => {
-                 
-                },
+                error: () => {},
             });
     }
 
@@ -557,8 +532,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
-                            
-
                             this.contactService
                                 .getCompanyContactModal()
                                 .pipe(takeUntil(this.destroy$))
@@ -568,14 +541,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                                     ) => {
                                         this.contactLabels = res.labels;
                                     },
-                                    error: () => {
-                                        
-                                    },
+                                    error: () => {},
                                 });
                         },
-                        error: () => {
-                           
-                        },
+                        error: () => {},
                     });
                 break;
             }
@@ -608,8 +577,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (res: CreateResponse) => {
-                            
-
                             this.selectedContactLabel = {
                                 ...this.selectedContactLabel,
                                 id: res.id,
@@ -624,14 +591,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                                     ) => {
                                         this.contactLabels = res.labels;
                                     },
-                                    error: () => {
-                                        
-                                    },
+                                    error: () => {},
                                 });
                         },
-                        error: () => {
-                            
-                        },
+                        error: () => {},
                     });
                 break;
             }
