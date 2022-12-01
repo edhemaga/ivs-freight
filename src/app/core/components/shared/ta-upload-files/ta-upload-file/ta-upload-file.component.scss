@@ -379,23 +379,23 @@
 
         //-------------- Driver Details Single PDF
         &.driver-details-pdf {
-            width: 303px;
-            height: 303px;
+            width: 312px;
+            height: 312px;
             position: relative;
 
             .ng2-pdf-viewer-container {
                 overflow: visible !important;
                 background-color: transparent !important;
-                width: 295px !important;
-                height: 295px !important;
+                width: 304px !important;
+                height: 304px !important;
                 border-radius: 1px !important;
 
                 .canvasWrapper,
                 .pdfViewer,
                 .pdfViewer .page,
                 canvas {
-                    max-width: 295px !important;
-                    max-height: 295px !important;
+                    max-width: 304px !important;
+                    max-height: 304px !important;
                     margin: 0 !important;
                     border-radius: 1px !important;
                     width: auto !important;
@@ -410,23 +410,23 @@
         }
 
         &.driver-card-pdf {
-            width: 408px;
-            height: 408px;
+            width: 428px;
+            height: 428px;
             position: relative;
 
             .ng2-pdf-viewer-container {
                 overflow: visible !important;
                 background-color: transparent !important;
-                width: 400px !important;
-                height: 400px !important;
+                width: 420px !important;
+                height: 420px !important;
                 border-radius: 1px !important;
 
                 .canvasWrapper,
                 .pdfViewer,
                 .pdfViewer .page,
                 canvas {
-                    max-width: 400px !important;
-                    max-height: 400px !important;
+                    max-width: 420px !important;
+                    max-height: 420px !important;
                     margin: 0 !important;
                     border-radius: 1px !important;
                     width: auto !important;
@@ -702,109 +702,9 @@
 
     // --------------------- Custom Classes ---------------------
     &.driver-details-pdf {
-        width: 303px;
-        height: 303px;
-        grid-template-rows: 303px;
-
-        .ta-upload-file-footer {
-            opacity: 0;
-            bottom: 37px;
-            right: -4px;
-
-            width: 295px;
-            border-radius: 1px;
-            cursor: default;
-            transition: 0.3s all ease-in-out;
-
-            .footer_info {
-                left: 0 !important;
-            }
-
-            .ta-upload-file-name {
-                font-weight: 600 !important;
-            }
-        }
-
-        .ta-upload-file-tag {
-            opacity: 0;
-            bottom: 56px;
-            transition: 0.3s all ease-in-out;
-        }
-
-        &:hover {
-            .ta-upload-file-footer {
-                opacity: 1;
-                background-color: rgba(255, 255, 255, 0.9) !important;
-                transition: 0.3s all ease-in-out;
-            }
-
-            .ta-upload-file-tag {
-                opacity: 0.9;
-                transition: 0.3s all ease-in-out;
-            }
-        }
-
-        .ta-upload-file-delete-template {
-            width: 295px;
-            height: 295px;
-        }
-    }
-
-    &.driver-card-pdf {
-        width: 408px;
-        height: 408px;
-        grid-template-rows: 408px;
-
-        .ta-upload-file-footer {
-            opacity: 0;
-            bottom: 37px;
-            right: -4px;
-
-            width: 400px;
-            border-radius: 1px;
-            cursor: default;
-            transition: 0.3s all ease-in-out;
-
-            .footer_info {
-                left: 0 !important;
-            }
-
-            .ta-upload-file-name {
-                font-weight: 600 !important;
-            }
-        }
-
-        .ta-upload-file-tag {
-            opacity: 0;
-            bottom: 56px;
-            transition: 0.3s all ease-in-out;
-        }
-
-        &:hover {
-            .ta-upload-file-footer {
-                opacity: 1;
-                background-color: rgba(255, 255, 255, 0.9) !important;
-                transition: 0.3s all ease-in-out;
-            }
-
-            .ta-upload-file-tag {
-                opacity: 0.9;
-                transition: 0.3s all ease-in-out;
-            }
-        }
-
-        .ta-upload-file-delete-template {
-            width: 400px;
-            height: 400px;
-        }
-    }
-
-    &.landscape-details-view {
         width: 312px;
-        max-height: 200px;
-        min-height: 200px;
-        grid-template-rows: 200px;
-        overflow: visible;
+        height: 312px;
+        grid-template-rows: 312px;
 
         .ta-upload-file-footer {
             opacity: 0;
@@ -845,7 +745,107 @@
         }
 
         .ta-upload-file-delete-template {
-            width: 295px;
+            width: 304px;
+            height: 304px;
+        }
+    }
+
+    &.driver-card-pdf {
+        width: 428px;
+        height: 428px;
+        grid-template-rows: 428px;
+
+        .ta-upload-file-footer {
+            opacity: 0;
+            bottom: 37px;
+            right: -4px;
+
+            width: 420px;
+            border-radius: 1px;
+            cursor: default;
+            transition: 0.3s all ease-in-out;
+
+            .footer_info {
+                left: 0 !important;
+            }
+
+            .ta-upload-file-name {
+                font-weight: 600 !important;
+            }
+        }
+
+        .ta-upload-file-tag {
+            opacity: 0;
+            bottom: 56px;
+            transition: 0.3s all ease-in-out;
+        }
+
+        &:hover {
+            .ta-upload-file-footer {
+                opacity: 1;
+                background-color: rgba(255, 255, 255, 0.9) !important;
+                transition: 0.3s all ease-in-out;
+            }
+
+            .ta-upload-file-tag {
+                opacity: 0.9;
+                transition: 0.3s all ease-in-out;
+            }
+        }
+
+        .ta-upload-file-delete-template {
+            width: 420px;
+            height: 420px;
+        }
+    }
+
+    &.landscape-details-view {
+        width: 312px;
+        max-height: 200px;
+        min-height: 200px;
+        grid-template-rows: 200px;
+        overflow: visible;
+
+        .ta-upload-file-footer {
+            opacity: 0;
+            bottom: 37px;
+            right: -4px;
+
+            width: 304px;
+            border-radius: 1px;
+            cursor: default;
+            transition: 0.3s all ease-in-out;
+
+            .footer_info {
+                left: 0 !important;
+            }
+
+            .ta-upload-file-name {
+                font-weight: 600 !important;
+            }
+        }
+
+        .ta-upload-file-tag {
+            opacity: 0;
+            bottom: 31px;
+            transition: 0.3s all ease-in-out;
+        }
+
+        &:hover {
+            .ta-upload-file-footer {
+                opacity: 1;
+                background-color: rgba(255, 255, 255, 0.9) !important;
+                transition: 0.3s all ease-in-out;
+            }
+
+            .ta-upload-file-tag {
+                opacity: 0.9;
+                transition: 0.3s all ease-in-out;
+            }
+        }
+
+        .ta-upload-file-delete-template {
+            width: 304px;
             min-height: 192px;
         }
     }
