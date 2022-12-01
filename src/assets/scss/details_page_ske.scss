@@ -251,6 +251,13 @@ p {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
             }
+
+            &.inactive-assignTo-value{
+                padding-left: 6px;
+                color: #B7B7B7;
+                line-height: 34px;
+            }
+
         }
         p {
             margin: 0 !important;

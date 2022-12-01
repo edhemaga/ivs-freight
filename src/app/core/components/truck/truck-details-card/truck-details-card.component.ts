@@ -15,7 +15,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TruckTService } from '../state/truck.service';
-import { animate, style, transition, trigger, state, keyframes } from '@angular/animations';
+import { animate, style, transition, trigger, state } from '@angular/animations';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -546,18 +546,20 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         return index;
     }
     public getTruckDropdown() {
+
         this.truckDropDowns = this.truckMinimalListQuery
             .getAll()
             .map((item) => {
                 return {
                     id: item.id,
-                    name: item.truckNumber,
+                    name: this.truck.truckNumber,
                     status: item.status,
                     svg: item.truckType.logoName,
                     folder: 'common/trucks',
                     active: item.id === this.truck.id,
                 };
             });
+            
     }
     public onSelectedTruck(event: any) {
         if (event.id !== this.truck.id) {

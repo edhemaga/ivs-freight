@@ -88,6 +88,31 @@
                                     ></label>
                                 </div>
 
+                                <!-- MILES HALF PERCENT COLUMN -->
+                                <div
+                                    class="td-content"
+                                    *ngIf="
+                                        column.ngTemplate === 'halfPercentage'
+                                    "
+                                    [ngStyle]="{
+                                        width: column.width + 'px',
+                                        'min-width.px': column?.minWidth
+                                            ? column.minWidth
+                                            : 'unset'
+                                    }"
+                                >
+                                    <div class="halfPercentage">
+                                        <span class="table-text">{{
+                                            row[column.field]
+                                        }}</span>
+                                        <span class="perc-span">
+                                            {{
+                                                row[column.fieldPercentage]
+                                            }}</span
+                                        >
+                                    </div>
+                                </div>
+
                                 <!-- STATUS COLUMN -->
                                 <div
                                     class="td-content"
@@ -1665,6 +1690,31 @@
                                     <div class="no-template">NO TEMPLATE</div>
                                 </div>
 
+                                <!-- MILES HALF PERCENT COLUMN -->
+                                <div
+                                    class="td-content"
+                                    *ngIf="
+                                        column.ngTemplate === 'halfPercentage'
+                                    "
+                                    [ngStyle]="{
+                                        width: column.width + 'px',
+                                        'min-width.px': column?.minWidth
+                                            ? column.minWidth
+                                            : 'unset'
+                                    }"
+                                >
+                                    <div class="halfPercentage">
+                                        <span class="table-text">{{
+                                            row[column.field]
+                                        }}</span>
+                                        <span class="perc-span">
+                                            {{
+                                                row[column.fieldPercentage]
+                                            }}</span
+                                        >
+                                    </div>
+                                </div>
+
                                 <!-- DISPECHER AVATAR COLUMN -->
                                 <div
                                     class="td-content"
@@ -3098,7 +3148,7 @@
                         ></div>
 
                         <!-- ACTIONS -->
-                        <div class="actions-columns">
+                        <div class="actions-columns" *ngIf="actionsColumns.length">
                             <td
                                 class="action-td"
                                 *ngFor="let column of actionsColumns"

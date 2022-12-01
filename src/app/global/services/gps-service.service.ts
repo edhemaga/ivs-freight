@@ -49,6 +49,6 @@ export class GpsServiceService {
     };
 
     public closeConnection = () => {
-        this.hubConnection.stop();
+        this.hubConnection?.stop();
     }
 }

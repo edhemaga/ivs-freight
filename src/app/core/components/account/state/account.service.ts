@@ -9,6 +9,7 @@ import {
     CreateCompanyAccountLabelCommand,
     CreateResponse,
     GetCompanyAccountLabelListResponse,
+    GetCompanyAccountListResponse,
     UpdateCompanyAccountCommand,
     UpdateCompanyAccountLabelCommand,
 } from 'appcoretruckassist';
@@ -104,7 +105,7 @@ export class AccountTService {
         search?: string,
         search1?: string,
         search2?: string
-    ): Observable<CompanyAccountResponse> {
+    ): Observable<GetCompanyAccountListResponse> {
         return this.accountService.apiCompanyaccountListGet(
             labelId,
             pageIndex,

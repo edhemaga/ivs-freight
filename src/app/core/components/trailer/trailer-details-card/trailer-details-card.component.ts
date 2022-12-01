@@ -9,12 +9,12 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TrailerResponse } from 'appcoretruckassist';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
 import { TrailerTService } from '../state/trailer.service';
-import { animate, style, transition, trigger, state, keyframes } from '@angular/animations';
+import { animate, style, transition, trigger, state } from '@angular/animations';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -79,7 +79,7 @@ export class TrailerDetailsCardComponent
     }
 
     public getTrailerById(id: number) {
-        console.log('--trailer details called api--')
+        //console.log('--trailer details called api--')
         /*
         this.trailerService
             .getTrailerById(id, true)
@@ -134,12 +134,13 @@ export class TrailerDetailsCardComponent
     }
 
     public getTrailerDropdown() {
+
         this.trailerDropDowns = this.trailerMinimalQuery
             .getAll()
             .map((item) => {
                 return {
                     id: item.id,
-                    name: item.trailerNumber,
+                    name: this.trailer.trailerNumber,
                     svg: item.trailerType.logoName,
                     folder: 'common/trailers',
                     status: item.status,
