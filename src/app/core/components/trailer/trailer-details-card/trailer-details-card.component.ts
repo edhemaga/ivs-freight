@@ -79,7 +79,7 @@ export class TrailerDetailsCardComponent
     }
 
     public getTrailerById(id: number) {
-        console.log('--trailer details called api--')
+        //console.log('--trailer details called api--')
         /*
         this.trailerService
             .getTrailerById(id, true)
@@ -134,12 +134,13 @@ export class TrailerDetailsCardComponent
     }
 
     public getTrailerDropdown() {
+
         this.trailerDropDowns = this.trailerMinimalQuery
             .getAll()
             .map((item) => {
                 return {
                     id: item.id,
-                    name: item.trailerNumber,
+                    name: this.trailer.trailerNumber,
                     svg: item.trailerType.logoName,
                     folder: 'common/trailers',
                     status: item.status,

@@ -84,7 +84,6 @@ export class TaCommonHeaderComponent implements OnInit {
     toggleDropdownActions() {
         //console.log('--mainData---', this.mainData);
         let itemData = this.mainData?.data;
-        console.log('--itemData---', itemData);
         let diasbleClosedArray;
 
         if (this.mainData?.nameDefault == 'Repair Shop Details') {

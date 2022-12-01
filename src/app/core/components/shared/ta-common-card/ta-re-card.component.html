@@ -70,9 +70,13 @@
                                 testDate
                             }}</span>
                         </span>
-                        <span *ngIf="cardSecondName" class="second-name">
-                            {{ cardSecondName }}</span
-                        >
+                        <span *ngIf="cardSecondResult" 
+                            class="second-name resultHolder"
+                            [class.positiveResult]="cardSecondResult == 'Positive' ">
+                            {{ cardSecondResult }}
+                        </span>
+                        <span *ngIf="cardSecondName && !isCardOpen" class="second-name reason-span">
+                            {{ cardSecondName }}</span>
                     </span>
                     <span
                         *ngIf="hasCopyIcon"

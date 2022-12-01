@@ -14,6 +14,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { CompanyStore } from '../state/company-state/company-settings.store';
 
 @Component({
     selector: 'app-settings-company',
@@ -39,7 +40,8 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
         private tableService: TruckassistTableService,
         private settingCompanyQuery: CompanyQuery,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private CompanyStore: CompanyStore,
     ) {}
 
     ngOnInit(): void {
@@ -70,8 +72,13 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                             this.cdRef.detectChanges();
                         },
                         error: () => {
-                            this.getData(this.activated.snapshot.data.company);
-                           
+
+                            if ( this.CompanyStore.getValue()?.entities ) {
+                                this.getData(this.CompanyStore.getValue()?.entities[id]);
+                            } else {
+                                this.getData(this.activated.snapshot.data.company);
+                            } 
+                            
                         },
                     });
             });
@@ -81,6 +88,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
 
     public getData(data: CompanyResponse) {
         this.data = data;
+        console.log('--this.date---getData', this.data);
     }
     public selectCompanyFunction() {
         return this.settingCompanyQuery

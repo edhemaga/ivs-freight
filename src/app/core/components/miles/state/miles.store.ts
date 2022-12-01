@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { ApplicantShortResponse } from 'appcoretruckassist';
+import { MilesByUnitResponse } from 'appcoretruckassist';
 
 export interface MilesTableState
-    extends EntityState<ApplicantShortResponse, number> {}
+    extends EntityState<MilesByUnitResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'milesTable' })

@@ -263,18 +263,10 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             export: true,
         };
     }
-    public getTrailerById(id: number) {
-        console.log('--here---', id)
-        
+    public getTrailerById(id: number) { 
         this.trailerService
             .getTrailerById(id, true)
             .subscribe((item) => (this.trailerObject = item));
-
-
-        setTimeout(()=>{
-            console.log("tttt", this.trailerObject);
-        }, 1000)
-        
     }
     public deleteTrailerById(id: number) {
         let status = this.trailerObject.status == 0 ? 'inactive' : 'active';
