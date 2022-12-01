@@ -84,6 +84,9 @@ export class TaInputDropdownComponent
     @Output('activeGroup') activeGroupEvent: EventEmitter<number> =
         new EventEmitter<number>();
 
+    @Output('clearInputEvent') clearInputEvent: EventEmitter<boolean> =
+        new EventEmitter<any>();
+
     public paginationNumber: number = 0;
 
     public originalOptions: any[] = [];
@@ -972,6 +975,10 @@ export class TaInputDropdownComponent
 
     onBlurInput(e) {
         this.closeDropdown.emit(e);
+    }
+
+    onClearInputEvent(e) {
+        this.clearInputEvent.emit(e);
     }
 
     ngOnDestroy(): void {

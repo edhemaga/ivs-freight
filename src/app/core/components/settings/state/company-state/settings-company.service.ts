@@ -96,7 +96,21 @@ export class SettingsCompanyService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (company: CompanyResponse | any) => {
+                            
                             this.companyStore.add(company);
+                            this.companyStore.update(
+                                ({ id }) => id === company.id,
+                                {
+                                    
+                                    address: company.address,
+                                    phone: company.phone,
+                                    ein: company.ein,
+                                    email: company.email,
+                                    usDot: company.usDot,
+                                    
+                                }
+                            );
+
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 data: company,
