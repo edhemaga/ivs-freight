@@ -285,7 +285,12 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                 documents.push(item.realFile);
             }
         });
-        const { deadline, ...form } = this.taskForm.value;
+        const {
+            deadline,
+            companyUserIdsHeleper,
+            departmentIdsHelper,
+            ...form
+        } = this.taskForm.value;
 
         const newData: any = {
             id: id,
@@ -306,7 +311,12 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
 
     private addTask() {
-        const { deadline, ...form } = this.taskForm.value;
+        const {
+            deadline,
+            companyUserIdsHeleper,
+            departmentIdsHelper,
+            ...form
+        } = this.taskForm.value;
 
         let documents = [];
         this.documents.map((item) => {

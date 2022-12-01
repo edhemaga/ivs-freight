@@ -147,6 +147,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'state': {
+                console.log('selected: ', event, action);
                 this.selectedStateType = event;
                 break;
             }
@@ -236,10 +237,15 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             issueDate: null,
             expDate: null,
             classType: res.classType.name,
-            stateId: res.state.stateName,
+            stateId: res.state.stateShortName,
             restrictions: null,
+            restrictionsHelper: res.cdlRestrictions.length
+                ? JSON.stringify(res.cdlRestrictions)
+                : null,
             endorsements: null,
-
+            endorsementsHelper: res.cdlEndorsements.length
+                ? JSON.stringify(res.cdlEndorsements)
+                : null,
             note: res.note,
             file: res.files ? res.files : null,
         });
@@ -253,24 +259,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             };
         });
 
-        if (this.selectedEndorsments.length) {
-            this.cdlForm
-                .get('endorsementsHelper')
-                .patchValue(JSON.stringify(this.selectedEndorsments));
-        }
-
         this.selectedRestrictions = res.cdlRestrictions.map((item) => {
             return {
                 ...item,
                 name: item.code.concat(' ', '-').concat(' ', item.description),
             };
         });
-
-        if (this.selectedRestrictions.length) {
-            this.cdlForm
-                .get('restrictionsHelper')
-                .patchValue(JSON.stringify(this.selectedRestrictions));
-        }
 
         this.selectedClassType = res.classType;
         this.selectedStateType = res.state;
@@ -287,7 +281,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         issueDate: convertDateFromBackend(res.issueDate),
                         expDate: convertDateFromBackend(res.expDate),
                         classType: res.classType.name,
-                        stateId: res.state.stateName,
+                        stateId: res.state.stateShortName,
                         restrictions: null,
                         restrictionsHelper: res.cdlRestrictions.length
                             ? JSON.stringify(res.cdlRestrictions)
@@ -327,7 +321,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                     );
 
                     this.selectedClassType = res.classType;
-                    this.selectedStateType = res.state;
+                    this.selectedStateType = {
+                        ...res.state,
+                        name: res.state.stateShortName,
+                    };
+
+                    console.log('by id: ', res.state);
+
+                    console.log('response: ', res);
                 },
                 error: () => {},
             });
