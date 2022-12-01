@@ -20,7 +20,8 @@ export class MilesComponent implements OnInit, AfterViewInit {
     columns: any[] = [];
     tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
-    driversActive: any;
+    milesActive: any;
+    milesInactive: any;
 
     constructor(
         private milesTableQuery: MilesTableQuery,
@@ -117,11 +118,11 @@ export class MilesComponent implements OnInit, AfterViewInit {
 
     getTabData(dataType: string) {
         if (dataType === 'active') {
-            this.driversActive = this.milesTableQuery.getAll();
-            return this.driversActive?.length ? this.driversActive : [];
+            this.milesActive = this.milesTableQuery.getAll()[0];
+            return this.milesActive?.length ? this.milesActive : [];
         } else if (dataType === 'inactive') {
-            // this.driversInactive = this.driversInactiveQuery.getAll();
-            // return this.driversInactive?.length ? this.driversInactive : [];
+            this.milesInactive = this.milesTableQuery.getAll()[1];
+            return this.milesInactive?.length ? this.milesInactive : [];
         }
     }
 
@@ -162,8 +163,25 @@ export class MilesComponent implements OnInit, AfterViewInit {
         return {
             ...data,
             isSelected: false,
+            stopsCount: data.stopsCount.toFixed(0),
+            loadedMiles: data.loadedMiles.toFixed(0) + ' mi',
+            loadCount: data.loadCount.toFixed(0),
+            emptyMiles: data.emptyMiles.toFixed(0) + ' mi',
+            totalMiles: data.totalMiles.toFixed(0) + ' mi',
+            milesPerGalon: `${
+                data.milesPerGalon ? data.milesPerGalon.toFixed(2) : 0.0
+            }`,
+            fuelTotalGalons:
+                `${data.fuelTotalGalons ? data.fuelTotalGalons : 0}` + ' gal',
             unit: data.truck.truckNumber,
             truckTypeIcon: data.truck.truckType.logoName,
+            pickupPercentage: data.pickupPercentage.toFixed(2) + '%',
+            deliveryPercentage: data.deliveryPercentage.toFixed(2) + '%',
+            fuelPercentage: data.fuelPercentage.toFixed(2) + '%',
+            repairPercentage: data.repairPercentage.toFixed(2) + '%',
+            parkingPercentage: data.parkingPercentage.toFixed(2) + '%',
+            deadHeadPercentage: data.deadHeadPercentage.toFixed(2) + '%',
+            towingPercentage: data.towingPercentage.toFixed(2) + '%',
             truckTypeClass: data.truck.truckType.logoName.replace('.svg', ''),
         };
     }
@@ -181,8 +199,10 @@ export class MilesComponent implements OnInit, AfterViewInit {
     initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showLocationFilter: this.selectedTab !== 'applicants',
-                showArhiveFilter: this.selectedTab === 'applicants',
+                hideOpenModalButton: true,
+                hideDeleteButton: true,
+                hideActivationButton: true,
+                showTimeFilter: true,
                 viewModeOptions: [
                     { name: 'List', active: this.activeViewMode === 'List' },
                     { name: 'Card', active: this.activeViewMode === 'Card' },
@@ -193,7 +213,10 @@ export class MilesComponent implements OnInit, AfterViewInit {
     }
 
     onToolBarAction(event: any) {
-        console.log(event);
+        if (event.action === 'tab-selected') {
+            this.selectedTab = event.tabData.field;
+            this.sendMilesData();
+        }
     }
 
     onTableHeadActions(event: any) {
