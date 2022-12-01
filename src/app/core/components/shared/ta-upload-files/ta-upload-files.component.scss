@@ -70,6 +70,11 @@
         grid-template-rows: 303px;
     }
 
+    &.driver-card-pdf {
+        grid-template-columns: 1fr;
+        grid-template-rows: 408px;
+    }
+
     &.landscape-details-view {
         grid-template-columns: 1fr;
         grid-template-rows: 200px;

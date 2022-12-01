@@ -115,6 +115,14 @@
         }
     }
 
+    &.driver-card-pdf {
+        grid-template-rows: 408px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 408px;
+        }
+    }
+
     &.landscape-details-view {
         grid-template-columns: 312px 1fr;
 
@@ -125,6 +133,7 @@
     }
 
     &.driver-details-pdf,
+    &.driver-card-pdf,
     &.landscape-details-view {
         .ta-upload-carousel-control-bg {
             &.next {
