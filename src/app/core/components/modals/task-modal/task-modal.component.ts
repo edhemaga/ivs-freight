@@ -90,7 +90,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             url: [null, urlValidation],
             deadline: [null],
             departmentIds: [null, [...departmentValidation]],
-            departmentIdsHelper: [null],
+            departmentIdsHelper: [null, Validators.required],
             companyUserIds: [null],
             companyUserIdsHeleper: [null],
             note: [null],
@@ -351,6 +351,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                             ? convertDateFromBackend(res.deadline)
                             : null,
                         departmentIds: null,
+                        departmentIdsHelper: res.departments.length
+                            ? JSON.stringify(res.departments)
+                            : null,
                         companyUserIds: null,
                         note: res.note,
                         files: res.files.length
@@ -360,14 +363,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     this.taskName = res.title;
                     this.selectedDepartments = res.departments;
 
-                    if (this.selectedDepartments.length) {
-                        this.taskForm
-                            .get('departmentIdsHelper')
-                            .patchValue(
-                                JSON.stringify(this.selectedDepartments)
-                            );
-                    }
-
                     this.selectedCompanyUsers = res.todoUsers.map((item) => {
                         return {
                             id: item.companyUserId,
@@ -375,13 +370,14 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                         };
                     });
 
-                    if (this.selectedCompanyUsers.length) {
-                        this.taskForm
-                            .get('companyUserIdsHeleper')
-                            .patchValue(
-                                JSON.stringify(this.selectedCompanyUsers)
-                            );
-                    }
+                    this.taskForm
+                        .get('companyUserIdsHeleper')
+                        .patchValue(
+                            this.selectedCompanyUsers.length
+                                ? JSON.stringify(this.selectedCompanyUsers)
+                                : null
+                        );
+
                     this.comments = res.comments.map(
                         (item: CommentResponse) => {
                             return {
@@ -437,12 +433,12 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     }
                 });
 
+                this.taskForm
+                    .get('departmentIdsHelper')
+                    .patchValue(JSON.stringify(this.selectedDepartments));
+
                 if (this.selectedDepartments?.length) {
                     this.resCompanyUsers = [...usersForDepartment];
-
-                    this.taskForm
-                        .get('departmentIdsHelper')
-                        .patchValue(JSON.stringify(this.selectedDepartments));
                 } else {
                     this.resCompanyUsers = [...this.showCompanyUsers];
                 }
@@ -450,12 +446,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             }
             case 'assign-task': {
                 this.selectedCompanyUsers = [...event];
+                this.taskForm
+                    .get('companyUserIdsHeleper')
+                    .patchValue(JSON.stringify(this.selectedCompanyUsers));
 
-                if (this.selectedCompanyUsers.length) {
-                    this.taskForm
-                        .get('companyUserIdsHeleper')
-                        .patchValue(JSON.stringify(this.selectedCompanyUsers));
-                }
                 break;
             }
             default: {
