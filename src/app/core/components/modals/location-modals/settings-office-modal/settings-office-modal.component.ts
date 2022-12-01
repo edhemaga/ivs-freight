@@ -459,7 +459,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                             duplicateId:
                                 res.departmentContacts[index].department.id,
                         };
-                        console.log(this.selectedDepartmentFormArray);
                     }
                 },
                 error: () => {},

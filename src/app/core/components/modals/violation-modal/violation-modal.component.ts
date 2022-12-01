@@ -324,7 +324,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     private updateViolation(id: number) {
         const { ...form } = this.violationForm.value;
-        console.log(this.selectedAuthorityAddress);
+
         const newData: any = {
             id: id,
             county: this.selectedCounty ? this.selectedCounty.id : null,
@@ -436,8 +436,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             files: [],
             filesForDeleteIds: [],
         };
-
-        console.log('udpate violation: ', newData);
 
         this.roadsideService
             .updateRoadside(newData)

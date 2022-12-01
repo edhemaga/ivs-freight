@@ -126,7 +126,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
-                console.log(this.isFormDirty);
             });
     }
 
@@ -243,7 +242,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     }
 
     public onUploadImage(event: any) {
-        console.log('upload image ', event);
         this.profileUserForm.get('avatar').patchValue(event);
         this.profileUserForm.get('avatar').setErrors(null);
     }

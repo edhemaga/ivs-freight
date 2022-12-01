@@ -535,7 +535,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CompanyUserResponse) => {
-                    console.log(res);
                     this.userForm.patchValue({
                         firstName: res.firstName,
                         lastName: res.lastName,
@@ -669,7 +668,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CompanyUserModalResponse) => {
-                    console.log('drop: ', res);
                     this.departments = res.departments;
                     this.labelsBank = res.banks;
                     this.offices = res.officeShortResponses;

@@ -814,11 +814,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         }
                         return item;
                     });
-                  
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -828,12 +825,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .deleteCommentById(comments.data)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -849,12 +842,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .updateComment(comment)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -1201,9 +1190,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             }
                         );
                     },
-                    error: (err: any) => {
-                        console.log(err);
-                    },
+                    error: () => {},
                 });
         }
     }
@@ -1394,8 +1381,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
-                    console.log('dropdown: ', res);
-
                     this.loadNumber = res.loadNumber;
 
                     // Brokers
@@ -1639,9 +1624,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             };
                         });
                 },
-                error: (error: any) => {
-                  
-                },
+                error: (error: any) => {},
             });
     }
 
@@ -1719,12 +1702,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: (error: any) => {
-                    
-                },
+                next: () => {},
+                error: (error: any) => {},
             });
     }
     private updateLoad(id: number) {}
@@ -1792,15 +1771,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                   
                     this.modalService.setModalSpinner({
                         action: 'load-template',
                         status: false,
                     });
                 },
-                error: (error: any) => {
-                    
-                },
+                error: (error: any) => {},
             });
     }
 

@@ -74,7 +74,6 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
         if (this.editData?.type === 'edit') {
             this.editMap(this.editData.id);
         }
-        console.log(this.editData);
     }
 
     private createForm() {

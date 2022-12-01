@@ -149,8 +149,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.getTruckDropdowns();
         }
 
-        console.log(this.editData);
-
         if (this.editData?.id) {
             this.skipVinDecocerEdit = true;
             this.editTruckById(this.editData.id);

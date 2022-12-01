@@ -217,7 +217,6 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                     this.mapRouteForm.patchValue({
                         routeName: res.name,
                     });
-                    console.log(res);
                 },
                 error: () => {},
             });
