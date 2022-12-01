@@ -8,7 +8,7 @@ import { SettingsCompanyService } from '../../state/company-state/settings-compa
 })
 export class SettingsPayrollComponent implements OnChanges {
     @Input() public payrollData: any;
-
+    companyDivision: boolean = false;
     constructor(private settingsCompanyService: SettingsCompanyService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -17,7 +17,13 @@ export class SettingsPayrollComponent implements OnChanges {
             changes?.payrollData?.previousValue
         ) {
             this.payrollData = changes?.payrollData?.currentValue;
-        }        
+        }   
+        
+        if (changes?.payrollData?.currentValue?.divisions?.length < 1) {
+            this.companyDivision = true;
+        } else {
+            this.companyDivision = false;
+        }
     }
 
     public identity(index: number, item: any): number {
