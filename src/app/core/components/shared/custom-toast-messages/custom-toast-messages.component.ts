@@ -114,6 +114,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             blockLeft: true,
         },
         {
+            api: 'companycontactlabel',
+            value: 'LABEL'
+        },
+        {
+            api: 'companycontact',
+            value: 'CONTACT',
+        },
+        {
             api: 'company',
             value: 'COMPANY',
         },
@@ -124,10 +132,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'owner',
             value: 'OWNER',
-        },
-        {
-            api: 'companycontact',
-            value: 'CONTACT',
         },
         {
             api: 'cdl',
@@ -918,6 +922,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     : this.DetailsDataService.cardMainTitle;
                 this.message = terminalName;
                 break;
+            case 'LABEL':
+                let labelName = this.httpRequest.body?.name ? this.httpRequest.body?.name : '';
+                this.message = labelName;
+                break;    
         }
 
         if (this.actionType == 'DRIVER' && !this.message) {
