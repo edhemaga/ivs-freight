@@ -103,37 +103,43 @@
                 class="first-custom-card"
             >
                 <div class="assignTo">
-                    <div class="assignTo-item first">
+                    <div class="assignTo-item first" *ngIf="trailer?.assignedTo?.truck?.id">
                         <svg-icon class="assignTo-vehicle"> </svg-icon>
-                        <p class="assignTo-value no-truck">No truck</p>
-                        <!-- <span
-              tooltipBackground="#6c6c6c"
-              ngbTooltip
-              mainTooltip="View in Modal"
-              position="top"
-              class="semi-tooltip"
-            >
-              <svg-icon
-                class="open-modal-icon"
-                src="assets/svg/common/arrow_top_right.svg"
-              ></svg-icon>
-            </span> -->
+                        <p class="assignTo-value no-truck">{{trailer.assignedTo.truck.truckNumber}}</p>
+                       <span
+                            tooltipBackground="#6c6c6c"
+                            ngbTooltip
+                            mainTooltip="View in Modal"
+                            position="top"
+                            class="semi-tooltip"
+                            >
+                            <svg-icon
+                                class="open-modal-icon"
+                                src="assets/svg/common/arrow_top_right.svg"
+                            ></svg-icon>
+                        </span>
                     </div>
-                    <div class="assignTo-item second">
+                    <div class="assignTo-item second" *ngIf="!trailer?.assignedTo?.truck?.id">
+                        <p class="assignTo-value no-truck inactive-assignTo-value">No truck</p>
+                    </div>
+                    <div class="assignTo-item second" *ngIf="trailer?.assignedTo?.driver?.id">
                         <svg-icon class="assignTo-vehicle"></svg-icon>
-                        <p class="assignTo-value no-truck">No driver</p>
-                        <!-- <span
-              tooltipBackground="#6c6c6c"
-              ngbTooltip
-              mainTooltip="View in Modal"
-              position="top"
-              class="semi-tooltip"
-            >
-              <svg-icon
-                class="open-modal-icon2"
-                src="assets/svg/common/arrow_top_right.svg"
-              ></svg-icon>
-            </span> -->
+                        <p class="assignTo-value no-truck">{{trailer?.assignedTo?.driver?.firstName}} {{trailer?.assignedTo?.driver?.lastName}}</p>
+                        <span
+                            tooltipBackground="#6c6c6c"
+                            ngbTooltip
+                            mainTooltip="View in Modal"
+                            position="top"
+                            class="semi-tooltip"
+                            >
+                            <svg-icon
+                                class="open-modal-icon2"
+                                src="assets/svg/common/arrow_top_right.svg"
+                            ></svg-icon>
+                        </span>
+                    </div>
+                    <div class="assignTo-item second" *ngIf="!trailer?.assignedTo?.driver?.id">
+                        <p class="assignTo-value no-truck inactive-assignTo-value">No Driver</p>
                     </div>
                 </div>
             </app-ta-custom-card>

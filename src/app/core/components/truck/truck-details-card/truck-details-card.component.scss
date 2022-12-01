@@ -44,7 +44,7 @@ app-truck-details-card {
         padding: 9px 6px;
     }
     .note-cards {
-        padding: 0 4px;
+        padding: 0px 6px 0px 4px;
         .note-header{
             padding: 0px 0px !important;
         }
@@ -187,6 +187,16 @@ app-truck-details-card {
             padding-left: 6px;
             svg {
                 width: fit-content !important;
+            }
+        }
+
+        &.inactive-assignTo-item{
+            
+
+            .assignTo-value{
+                padding-left: 6px;
+                color: #B7B7B7;
+                cursor: auto ;
             }
         }
     }
