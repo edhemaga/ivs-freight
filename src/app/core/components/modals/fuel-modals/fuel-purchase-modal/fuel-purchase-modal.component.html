@@ -86,19 +86,31 @@
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
-                        label: 'Truck',
+                        label: 'Trailer',
                         isRequired: true,
                         isDropdown: true,
                         dropdownImageInput: {
                             withText: true,
                             svg: true,
                             image: false,
-                            url: selectedDispatchHistory?.logoName,
-                            template: 'truck',
-                            class: selectedDispatchHistory?.trailerTypeName
-                                ?.trim()
-                                .replace(' ', '')
-                                .toLowerCase()
+                            url: selectedTrailerType?.logoName,
+                            template: 'trailer',
+                            class: selectedTrailerType?.name
+                                ?.toLowerCase()
+                                .includes('liquid')
+                                ? 'tanker-liquid'
+                                : selectedTrailerType?.name
+                                      ?.toLowerCase()
+                                      ?.includes('rgn')
+                                ? 'low-boy-rgn'
+                                : selectedTrailerType?.name
+                                      ?.toLowerCase()
+                                      .includes('dry-bulk')
+                                ? 'tanker-dry-bulk'
+                                : selectedTrailerType?.name
+                                      ?.trim()
+                                      .replace(' ', '')
+                                      .toLowerCase()
                         },
                         dropdownWidthClass: 'w-col-216',
                         customClass: 'truck-trailer-dropdown',

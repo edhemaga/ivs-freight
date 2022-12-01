@@ -108,7 +108,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             total: [null],
         });
 
-        this.addFuelItems({ check: true, action: null });
+        if (this.editData?.type !== 'edit') {
+            this.addFuelItems({ check: true, action: null });
+        }
 
         this.formService.checkFormChange(this.fuelForm);
         this.formService.formValueChange$
@@ -276,6 +278,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             case 'truck': {
                 this.selectedTruckType = event;
                 this.getDriverTrailerBySelectedTruck('truckId');
+
                 break;
             }
             case 'fuel': {
@@ -401,6 +404,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     });
 
                     this.selectedTruckType = res.truck;
+                    this.getDriverTrailerBySelectedTruck('truckId');
+
                     this.selectedDispatchHistory = {
                         ...this.selectedDispatchHistory,
                         driverId: res.driver?.id,

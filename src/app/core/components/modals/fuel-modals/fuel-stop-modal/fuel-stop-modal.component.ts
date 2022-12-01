@@ -9,7 +9,7 @@ import {
     phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { AddressEntity, UpdateFuelStopCommand } from 'appcoretruckassist';
+import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import { fuelStoreValidation } from '../../../shared/ta-input/ta-input.regex-validations';
@@ -268,7 +268,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        const newData: UpdateFuelStopCommand = {
+        const newData: any = {
             id: id,
             ...form,
             address: this.selectedAddress,
