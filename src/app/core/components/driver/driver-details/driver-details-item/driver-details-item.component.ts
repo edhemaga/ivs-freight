@@ -41,14 +41,14 @@ import {
     templateUrl: './driver-details-item.component.html',
     styleUrls: ['./driver-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody'), trigger('stateHeader', [
-        state('in', style({ opacity: 1, height: '150px' })),
+    animations: [card_component_animation('showHideCardBody'), trigger('cardAnimation', [
+        state('in', style({ opacity: 1, 'max-height': '0px'})),
         transition(':enter', [
             animate(
                 5100,
                 keyframes([
-                    style({ opacity: 0, 'height': '0px' }),
-                    style({ opacity: 1, 'height' : '*' }),
+                    style({ opacity: 0, 'max-height': '0px' }),
+                    style({ opacity: 1, 'max-height' : '600px' }),
                 ])
             ),
         ]),
@@ -56,8 +56,8 @@ import {
             animate(
                 5100,
                 keyframes([
-                    style({ opacity: 1, 'height' : '*' }),
-                    style({ opacity: 0, 'height' : '0px' }),
+                    style({ opacity: 1, 'max-height' : '600px' }),
+                    style({ opacity: 0, 'max-height' : '0px' }),
                 ])
             ),
         ]),
@@ -199,6 +199,8 @@ export class DriverDetailsItemComponent
                 inactiveCdl: this.inactiveCdl,
             };
         });
+
+        console.log('----this.dataCdl', this.dataCDl)
     }
     public getNameForDrop(name: string, cdlId?: number) {
         this.templateName = name === 'cdl' ? false : true;
@@ -440,7 +442,7 @@ export class DriverDetailsItemComponent
     public optionsEvent(any: any, action: string) {
         const name = dropActionNameDriver(any, action);
         let dataForCdl;
-        console.log(any);
+        console.log('--any---',any);
 
         if (
             (this.activeCdl.length && any.type === 'activate-item') ||

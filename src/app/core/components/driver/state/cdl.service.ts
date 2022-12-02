@@ -75,10 +75,11 @@ export class CdlTService implements OnDestroy {
 
     public updateCdl(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
+        let driverId = data.driverId ? data.driverId : this.driverItemStore.getValue().ids[0];
         return this.cdlService.apiCdlPut().pipe(
             tap((res: any) => {
                 const subDriver = this.driverService
-                    .getDriverById(data.driverId)
+                    .getDriverById(driverId)
                     .subscribe({
                         next: (driver: DriverResponse | any) => {
                             this.driverStore.remove(

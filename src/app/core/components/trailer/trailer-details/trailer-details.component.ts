@@ -27,7 +27,7 @@ import { DetailsDataService } from '../../../services/details-data/details-data.
 export class TrailerDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public trailerDetailsConfig: any[] = [];
-    public trailerId: number = null;
+    public trailerId: number;
     public dataHeaderDropDown: any;
     public trailerObject: any;
     public trailerList: any = this.trailerMinimalQuery.getAll();
@@ -51,9 +51,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.initTableOptions(this.activated_route.snapshot.data.trailer);
-        this.DetailsDataService.setNewData(
-            this.activated_route.snapshot.data.trailer
-        );
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -121,6 +118,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     }
 
     trailerConf(data: TrailerResponse) {
+        this.DetailsDataService.setNewData(data);
         this.trailerDetailsConfig = [
             {
                 id: 0,
@@ -164,7 +162,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 status: data?.status == 0 ? true : false,
             },
         ];
-        this.trailerId = data?.id ? data.id : null;
+
+        this.trailerId = data?.id ? data.id : 0;
     }
     /**Function for dots in cards */
     public initTableOptions(data: TrailerResponse): void {
