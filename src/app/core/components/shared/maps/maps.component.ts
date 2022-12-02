@@ -35,28 +35,46 @@ export class MapsComponent implements OnInit, OnDestroy {
         var previousData = JSON.parse(JSON.stringify(this.viewData));
         var updatedData = false;
 
-        this.viewData = value;
+        //this.viewData = value;
+        var newData = value;
 
-        this.viewData.map((data, index) => {
-            var doAnimation = false;
-            if (previousData[index]?.latitude != data.latitude)
-                doAnimation = true;
+        newData.map((data, index) => {
+            // var doAnimation = false;
+            // if (previousData[index]?.latitude != data.latitude)
+            //     doAnimation = true;
 
-            if (
-                (data.actionAnimation == 'update' && doAnimation) ||
-                data.actionAnimation == 'add'
-            ) {
-                this.markerAnimations[data.id] = false;
-                this.showMarkerWindow[data.id] = false;
-                updatedData = true;
+            // if (
+            //     (data.actionAnimation == 'update' && doAnimation) ||
+            //     data.actionAnimation == 'add'
+            // ) {
+            //     this.markerAnimations[data.id] = false;
+            //     this.showMarkerWindow[data.id] = false;
+            //     updatedData = true;
+            // }
+
+            console.log('newData actionAnimation', data.actionAnimation);
+
+            if (data.actionAnimation == 'update') {
+                let markerIndex = this.viewData.findIndex(
+                    (item) => item.id === data.id
+                );
+                if ( markerIndex < 0 && !this.clusterDetailedInfo ) return false;
+
+                if (this.mapType == 'repairShop') {
+                    this.getRepairShop(data.id, markerIndex);
+                } else if (this.mapType == 'shipper') {
+                    this.getShipper(data.id, markerIndex);
+                } else if (this.mapType == 'fuelStop') {
+                    this.getFuelStop(data.id, markerIndex);
+                }
             }
         });
 
-        if (updatedData) {
-            setTimeout(() => {
-                this.markersDropAnimation();
-            }, 1000);
-        }
+        // if (updatedData) {
+        //     setTimeout(() => {
+        //         this.markersDropAnimation();
+        //     }, 1000);
+        // }
     }
     @Input() mapType: string = 'shipper'; // shipper, repairShop, fuelStop, accident, inspection, routing
     @Input() routes: any[] = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
@@ -119,6 +137,7 @@ export class MapsComponent implements OnInit, OnDestroy {
 
     public searchText: string = '';
     public firstClusterCall: boolean = true;
+    public clusterDetailedInfo: any = {};
 
     constructor(
         private ref: ChangeDetectorRef,
@@ -260,6 +279,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                 if (data.detailedInfo) {
                     setTimeout(() => {
                         data.detailedInfo = false;
+                        this.clusterDetailedInfo = false;
                     }, 200);
                 }
             }
@@ -343,6 +363,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     }
 
     dropDownActionCall(action) {
+        console.log('dropDownActionCall', action);
         this.callDropDownAction.emit(action);
     }
 
@@ -766,6 +787,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     }
                 } else if (data.detailedInfo) {
                     data.detailedInfo = false;
+                    this.clusterDetailedInfo = false;
                 } else {
                     this.markerSelected = false;
                 }
@@ -803,19 +825,35 @@ export class MapsComponent implements OnInit, OnDestroy {
             .getRepairShopById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res) => {
-                    this.viewData[index] = { ...this.viewData[index], ...res };
-
-                    this.viewData[index].shopRaiting = {
+                next: (res: any) => {
+                    var newData = {...res};
+                    newData.shopRaiting = {
                         hasLiked: res.currentCompanyUserRating === 1,
                         hasDislike: res.currentCompanyUserRating === -1,
                         likeCount: res?.upCount ? res.upCount : '0',
                         dislikeCount: res?.downCount ? res.downCount : '0',
                     };
 
+                    if ( index > -1 ) {
+                        this.viewData[index] = { ...this.viewData[index], ...newData };
+                    }
+
+                    if ( this.clusterDetailedInfo && this.clusterDetailedInfo.id == id ) {
+                        this.clusterMarkers.map((cluster) => {
+                            if ( cluster.detailedInfo && cluster.detailedInfo.id == id ) {
+                                cluster.detailedInfo = newData;   
+                                this.clusterDetailedInfo = newData;
+                                console.log('get clusterDetailedInfo', this.clusterDetailedInfo);
+                            }
+                        });
+                    }
+
                     setTimeout(() => {
-                        this.viewData[index].isSelected = true;
-                        this.selectMarker.emit([id, true]);
+                        if ( index > -1 ) {
+                            this.viewData[index].isSelected = true;
+                            this.selectMarker.emit([id, true]);
+                        }
+
                         this.ref.detectChanges();
                     }, 200);
                 },
@@ -830,19 +868,35 @@ export class MapsComponent implements OnInit, OnDestroy {
             .getShipperById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res) => {
-                    this.viewData[index] = { ...this.viewData[index], ...res };
-
-                    this.viewData[index].raiting = {
+                next: (res: any) => {
+                    var newData = {...res};
+                    newData.raiting = {
                         hasLiked: res.currentCompanyUserRating === 1,
                         hasDislike: res.currentCompanyUserRating === -1,
                         likeCount: res?.upCount ? res.upCount : '0',
                         dislikeCount: res?.downCount ? res.downCount : '0',
                     };
 
+                    if ( index > -1 ) {
+                        this.viewData[index] = { ...this.viewData[index], ...newData };
+                    }
+
+                    if ( this.clusterDetailedInfo && this.clusterDetailedInfo.id == id ) {
+                        this.clusterMarkers.map((cluster) => {
+                            if ( cluster.detailedInfo && cluster.detailedInfo.id == id ) {
+                                cluster.detailedInfo = newData;   
+                                this.clusterDetailedInfo = newData;
+                                console.log('get clusterDetailedInfo', this.clusterDetailedInfo);
+                            }
+                        });
+                    }
+
                     setTimeout(() => {
-                        this.viewData[index].isSelected = true;
-                        this.selectMarker.emit([id, true]);
+                        if ( index > -1 ) {
+                            this.viewData[index].isSelected = true;
+                            this.selectMarker.emit([id, true]);
+                        }
+                        
                         this.ref.detectChanges();
                     }, 200);
                 },
@@ -857,12 +911,28 @@ export class MapsComponent implements OnInit, OnDestroy {
             .getFuelStopById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res) => {
-                    this.viewData[index] = { ...this.viewData[index], ...res };
+                next: (res: any) => {
+                    var newData = {...res};
+
+                    if ( index > -1 ) {
+                        this.viewData[index] = { ...this.viewData[index], ...newData };
+                    }
+
+                    if ( this.clusterDetailedInfo && this.clusterDetailedInfo.id == id ) {
+                        this.clusterMarkers.map((cluster) => {
+                            if ( cluster.detailedInfo && cluster.detailedInfo.id == id ) {
+                                cluster.detailedInfo = newData;   
+                                this.clusterDetailedInfo = newData;
+                            }
+                        });
+                    }
 
                     setTimeout(() => {
-                        this.viewData[index].isSelected = true;
-                        this.selectMarker.emit([id, true]);
+                        if ( index > -1 ) {
+                            this.viewData[index].isSelected = true;
+                            this.selectMarker.emit([id, true]);
+                        }
+                        
                         this.ref.detectChanges();
                     }, 200);
                 },
@@ -895,6 +965,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                             dislikeCount: res?.downCount ? res.downCount : '0',
                         };
 
+                        this.clusterDetailedInfo = cluster.detailedInfo;
+
                         this.ref.detectChanges();
                     },
                     error: () => {
@@ -916,6 +988,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                             dislikeCount: res?.downCount ? res.downCount : '0',
                         };
 
+                        this.clusterDetailedInfo = cluster.detailedInfo;
+
                         this.ref.detectChanges();
                     },
                     error: () => {
@@ -929,6 +1003,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                 .subscribe({
                     next: (res) => {
                         cluster.detailedInfo = res;
+
+                        this.clusterDetailedInfo = res;
 
                         this.ref.detectChanges();
                     },

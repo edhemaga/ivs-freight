@@ -710,6 +710,8 @@ export class CustomerTableComponent
                         return data;
                     });
 
+                    this.ref.detectChanges();
+
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
                             false,
@@ -835,7 +837,9 @@ export class CustomerTableComponent
                     (item2) => item2.id === item.id
                 );
 
-                item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+                if ( itemIndex > -1 ) {
+                    item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+                }
             }
         });
     }

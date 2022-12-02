@@ -283,6 +283,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                     );
 
+                    console.log('add rating', res, this.viewData);
+                    
+                    this.ref.detectChanges();
+
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
                             false,
@@ -925,6 +929,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         return data;
                     });
+
+                    console.log('add rating', res, this.viewData);
+                    
+                    this.ref.detectChanges();
 
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(

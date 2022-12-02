@@ -63,7 +63,7 @@
 
         <app-maps
             #mapsComponent
-            [_viewData]="[]"
+            [_viewData]="viewData"
             [dropdownActions]="tableOptions.actions"
             [mapType]="'repairShop'"
             (callDropDownAction)="onTableBodyActions($event)"
