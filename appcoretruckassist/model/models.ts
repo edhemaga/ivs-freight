@@ -342,6 +342,7 @@ export * from './mapMinimalResponse';
 export * from './mapMinimalResponsePagination';
 export * from './mapResponse';
 export * from './markerNamesResponse';
+export * from './markerNamesResponsePagination';
 export * from './medicalCertificateFeedbackResponse';
 export * from './medicalCertificateReviewResponse';
 export * from './medicalResponse';

@@ -1,10 +1,4 @@
-import {
-    Component,
-    Input,
-    OnDestroy,
-    OnInit,
-    ViewEncapsulation,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, switchMap, of } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -32,13 +26,13 @@ import {
     priceValidation,
     fullNameValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
+import { FuelTransactionResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-purchase-modal',
     templateUrl: './fuel-purchase-modal.component.html',
     styleUrls: ['./fuel-purchase-modal.component.scss'],
     providers: [ModalService, FormService, SumArraysPipe],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -378,12 +372,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .getFuelTransactionById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any) => {
+                next: (res: FuelTransactionResponse) => {
                     this.fuelForm.patchValue({
                         efsAccount: null,
                         fuelCard: res.fuelCard,
                         truckId: res.truck ? res.truck.truckNumber : null,
-                        trailerId: null,
+                        trailerId: res.trailer
+                            ? res.trailer.trailerNumber
+                            : null,
                         driverFullName: res.driver
                             ? res.driver.firstName.concat(
                                   ' ',

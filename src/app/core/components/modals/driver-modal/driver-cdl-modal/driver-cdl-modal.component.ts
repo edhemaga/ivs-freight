@@ -152,21 +152,28 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             }
             case 'restrictions': {
                 this.selectedRestrictions = event;
-                if (this.selectedRestrictions.length) {
-                    this.cdlForm
-                        .get('restrictionsHelper')
-                        .patchValue(JSON.stringify(this.selectedRestrictions));
-                }
+
+                this.cdlForm
+                    .get('restrictionsHelper')
+                    .setValue(
+                        this.selectedRestrictions.length
+                            ? JSON.stringify(this.selectedRestrictions)
+                            : null
+                    );
 
                 break;
             }
             case 'endorsments': {
                 this.selectedEndorsments = event;
-                if (this.selectedEndorsments.length) {
-                    this.cdlForm
-                        .get('endorsementsHelper')
-                        .patchValue(JSON.stringify(this.selectedEndorsments));
-                }
+
+                this.cdlForm
+                    .get('endorsementsHelper')
+                    .setValue(
+                        this.selectedEndorsments.length
+                            ? JSON.stringify(this.selectedEndorsments)
+                            : null
+                    );
+
                 break;
             }
             default: {
@@ -229,10 +236,15 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             issueDate: null,
             expDate: null,
             classType: res.classType.name,
-            stateId: res.state.stateName,
+            stateId: res.state.stateShortName,
             restrictions: null,
+            restrictionsHelper: res.cdlRestrictions.length
+                ? JSON.stringify(res.cdlRestrictions)
+                : null,
             endorsements: null,
-
+            endorsementsHelper: res.cdlEndorsements.length
+                ? JSON.stringify(res.cdlEndorsements)
+                : null,
             note: res.note,
             file: res.files ? res.files : null,
         });
@@ -246,24 +258,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             };
         });
 
-        if (this.selectedEndorsments.length) {
-            this.cdlForm
-                .get('endorsementsHelper')
-                .patchValue(JSON.stringify(this.selectedEndorsments));
-        }
-
         this.selectedRestrictions = res.cdlRestrictions.map((item) => {
             return {
                 ...item,
                 name: item.code.concat(' ', '-').concat(' ', item.description),
             };
         });
-
-        if (this.selectedRestrictions.length) {
-            this.cdlForm
-                .get('restrictionsHelper')
-                .patchValue(JSON.stringify(this.selectedRestrictions));
-        }
 
         this.selectedClassType = res.classType;
         this.selectedStateType = res.state;
@@ -280,9 +280,15 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         issueDate: convertDateFromBackend(res.issueDate),
                         expDate: convertDateFromBackend(res.expDate),
                         classType: res.classType.name,
-                        stateId: res.state.stateName,
+                        stateId: res.state.stateShortName,
                         restrictions: null,
+                        restrictionsHelper: res.cdlRestrictions.length
+                            ? JSON.stringify(res.cdlRestrictions)
+                            : null,
                         endorsements: null,
+                        endorsementsHelper: res.cdlEndorsements.length
+                            ? JSON.stringify(res.cdlEndorsements)
+                            : null,
                         note: res.note,
                         files: res.files.length
                             ? JSON.stringify(res.files)
@@ -302,14 +308,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         }
                     );
 
-                    if (this.selectedEndorsments.length) {
-                        this.cdlForm
-                            .get('endorsementsHelper')
-                            .patchValue(
-                                JSON.stringify(this.selectedEndorsments)
-                            );
-                    }
-
                     this.selectedRestrictions = res.cdlRestrictions.map(
                         (item) => {
                             return {
@@ -321,16 +319,11 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         }
                     );
 
-                    if (this.selectedRestrictions.length) {
-                        this.cdlForm
-                            .get('restrictionsHelper')
-                            .patchValue(
-                                JSON.stringify(this.selectedRestrictions)
-                            );
-                    }
-
                     this.selectedClassType = res.classType;
-                    this.selectedStateType = res.state;
+                    this.selectedStateType = {
+                        ...res.state,
+                        name: res.state.stateShortName,
+                    };
                 },
                 error: () => {},
             });

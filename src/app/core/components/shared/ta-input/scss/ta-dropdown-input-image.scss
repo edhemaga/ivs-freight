@@ -53,6 +53,9 @@
 
     &.semisleeper {
         svg {
+            #Ellipse_9856,
+            #Ellipse_9857,
+            #Ellipse_9858,
             path {
                 fill: $input-semisleepertruck-path-fill !important;
             }
@@ -157,10 +160,18 @@
         }
     }
 
-    &.tanker-liquid {
+    &.tanker {
         svg {
-            path: {
+            path {
                 fill: $input-tankertrailer-path-fill !important;
+            }
+        }
+    }
+
+    &.pneumatictanker {
+        svg {
+            path {
+                fill: $input-pneumatictankertrailer-path-fill !important;
             }
         }
     }
@@ -209,14 +220,6 @@
         svg {
             path {
                 fill: $input-stepdecktrailer-path-fill !important;
-            }
-        }
-    }
-
-    &.tanker-dry-bulk {
-        svg {
-            path: {
-                fill: $input-pneumatictankertrailer-path-fill !important;
             }
         }
     }
