@@ -416,18 +416,26 @@
                         <app-ta-upload-files
                             [files]="[
                                 {
-                                    name: 'truckassist - 0',
+                                    fileName: 'truckassist - 0',
                                     url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                                     extension: 'pdf'
                                 },
                                 {
-                                    name: 'truckassist - 1',
+                                    fileName: 'truckassist - 1',
+                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                                    extension: 'pdf'
+                                },
+                                {
+                                    fileName: 'truckassist - 2',
                                     url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                                     extension: 'pdf'
                                 }
                             ]"
-                            [customClassName]="'driver-details-pdf'"
+                            [customClassName]="'company-details-pdf'"
+                            [slideWidth]="390"
+                            [type]="'details'"
                             [hasCarouselBottomTabs]="true"
+                            [reviewMode]="'REVIEW_MODE'"
                         ></app-ta-upload-files>
                     </div>
                     <div class="divider"></div>

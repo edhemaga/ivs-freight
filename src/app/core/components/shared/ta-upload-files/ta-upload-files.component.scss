@@ -75,6 +75,11 @@
         grid-template-rows: 428px;
     }
 
+    &.company-details-pdf {
+        grid-template-columns: 1fr;
+        grid-template-rows: 378px;
+    }
+
     &.landscape-details-view {
         grid-template-columns: 1fr;
         grid-template-rows: 200px;

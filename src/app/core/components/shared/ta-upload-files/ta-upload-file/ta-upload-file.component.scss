@@ -503,6 +503,37 @@
                 }
             }
         }
+
+        &.company-details-pdf {
+            width: 378px;
+            height: 378px;
+            position: relative;
+
+            .ng2-pdf-viewer-container {
+                overflow: visible !important;
+                background-color: transparent !important;
+                width: 370px !important;
+                height: 370px !important;
+                border-radius: 1px !important;
+
+                .canvasWrapper,
+                .pdfViewer,
+                .pdfViewer .page,
+                canvas {
+                    max-width: 370px !important;
+                    max-height: 370px !important;
+                    margin: 0 !important;
+                    border-radius: 1px !important;
+                    width: auto !important;
+                    min-width: 229px;
+
+                    &:not(:first-child) {
+                        opacity: 0;
+                        height: 0 !important;
+                    }
+                }
+            }
+        }
     }
 
     .ta-upload-file-delete-template {
@@ -644,7 +675,7 @@
             padding: 2px 6px;
             background-color: #919191;
             color: #ffffff;
-            border-radius: 2px;
+            border-radius: 1px;
 
             font-size: 11px;
             font-weight: 700;
@@ -719,10 +750,6 @@
             .footer_info {
                 left: 0 !important;
             }
-
-            .ta-upload-file-name {
-                font-weight: 600 !important;
-            }
         }
 
         .ta-upload-file-tag {
@@ -734,13 +761,56 @@
         &:hover {
             .ta-upload-file-footer {
                 opacity: 1;
-                background-color: rgba(255, 255, 255, 0.9) !important;
+                background-color: rgba(255, 255, 255, 0.7) !important;
                 transition: 0.3s all ease-in-out;
+
+                &:hover {
+                    transition: 0.3s all ease-in-out;
+                    background-color: rgba(255, 255, 255, 0.9) !important; 
+                }
+
+                .footer_info {
+                    .ta-upload-file-ext {
+                        &-jpg,
+                        &-jpeg,
+                        &-png {
+                            background-color: #ffb74d80;
+
+                            &:hover {
+                                background-color: #ffb74d;
+                            }
+                        }
+        
+                        &-pdf {
+                            background-color: #ef535090;
+        
+                            &:hover {
+                                background-color: #ef5350;
+                            }
+                        }
+                    }
+
+                    .document_info_hold {
+                        transition: 0.3s all ease-in-out;
+                        background-color: #6C6C6C80 !important;
+
+                        &:hover {
+                            transition: 0.3s all ease-in-out;
+                            background-color: #6C6C6CE6 !important;
+                        }
+                    }
+                }
             }
 
             .ta-upload-file-tag {
-                opacity: 0.9;
+                opacity: 1;
                 transition: 0.3s all ease-in-out;
+                background-color: rgb(83, 107, 194, 0.5);
+
+                &:hover {
+                    transition: 0.3s all ease-in-out;
+                    background-color: rgb(83, 107, 194);
+                }
             }
         }
 
@@ -767,10 +837,6 @@
 
             .footer_info {
                 left: 0 !important;
-            }
-
-            .ta-upload-file-name {
-                font-weight: 600 !important;
             }
         }
 
@@ -819,10 +885,6 @@
             .footer_info {
                 left: 0 !important;
             }
-
-            .ta-upload-file-name {
-                font-weight: 600 !important;
-            }
         }
 
         .ta-upload-file-tag {
@@ -868,10 +930,6 @@
             .footer_info {
                 left: 0 !important;
             }
-
-            .ta-upload-file-name {
-                font-weight: 600 !important;
-            }
         }
 
         .ta-upload-file-tag {
@@ -898,6 +956,51 @@
             height: 192px;
         }
     }
+
+    &.company-details-pdf {
+        width: 378px;
+        height: 378px;
+        grid-template-rows: 378px;
+
+        .ta-upload-file-footer {
+            opacity: 0;
+            bottom: 37px;
+            right: -4px;
+
+            width: 370px;
+            border-radius: 1px;
+            cursor: default;
+            transition: 0.3s all ease-in-out;
+
+            .footer_info {
+                left: 0 !important;
+            }
+        }
+
+        .ta-upload-file-tag {
+            opacity: 0;
+            bottom: 56px;
+            transition: 0.3s all ease-in-out;
+        }
+
+        &:hover {
+            .ta-upload-file-footer {
+                opacity: 1;
+                background-color: rgba(255, 255, 255, 0.9) !important;
+                transition: 0.3s all ease-in-out;
+            }
+
+            .ta-upload-file-tag {
+                opacity: 0.9;
+                transition: 0.3s all ease-in-out;
+            }
+        }
+
+        .ta-upload-file-delete-template {
+            width: 370px;
+            height: 370px;
+        }
+    }
 }
 
 .tags_main_holder {
@@ -905,7 +1008,7 @@
     padding: 2px;
 
     background-color: #fff;
-    border-radius: 2px;
+    border-radius: 1px;
     box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
 
     cursor: pointer;

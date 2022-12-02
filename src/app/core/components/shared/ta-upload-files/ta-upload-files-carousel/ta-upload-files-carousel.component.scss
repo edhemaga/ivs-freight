@@ -132,8 +132,17 @@
         }
     }
 
+    &.company-details-pdf {
+        grid-template-rows: 378px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 378px;
+        }
+    }
+
     &.driver-details-pdf,
     &.driver-card-pdf,
+    &.company-details-pdf,
     &.landscape-details-view {
         .ta-upload-carousel-control-bg {
             &.next {
