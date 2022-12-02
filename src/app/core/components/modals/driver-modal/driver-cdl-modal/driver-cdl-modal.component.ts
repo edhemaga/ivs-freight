@@ -147,7 +147,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'state': {
-                console.log('selected: ', event, action);
                 this.selectedStateType = event;
                 break;
             }
@@ -325,10 +324,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         ...res.state,
                         name: res.state.stateShortName,
                     };
-
-                    console.log('by id: ', res.state);
-
-                    console.log('response: ', res);
                 },
                 error: () => {},
             });

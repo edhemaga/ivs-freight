@@ -9,15 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MarkerNamesResponsePagination } from './markerNamesResponsePagination';
+import { MarkerNamesResponse } from './markerNamesResponse';
 
 
-export interface ClusterResponse { 
-    id?: number | null;
-    name?: string | null;
-    pagination?: MarkerNamesResponsePagination;
-    latitude?: number;
-    longitude?: number;
+export interface MarkerNamesResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
     count?: number;
+    data?: Array<MarkerNamesResponse> | null;
 }
 
