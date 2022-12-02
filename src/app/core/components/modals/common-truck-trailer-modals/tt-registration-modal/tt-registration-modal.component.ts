@@ -11,7 +11,6 @@ import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { licensePlateValidation } from '../../../shared/ta-input/ta-input.regex-validations';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateToBackend,
@@ -42,7 +41,6 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: FormBuilder,
         private commonTruckTrailerService: CommonTruckTrailerService,
-        private notificationService: NotificationService,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService
@@ -223,7 +221,10 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     });
 
                     this.documents = res.files;
-                    this.selectedStateType = res.state;
+                    this.selectedStateType = {
+                        ...res.state,
+                        name: res.state.stateShortName,
+                    };
                 },
                 error: () => {},
             });

@@ -308,7 +308,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CompanyContactModalResponse) => {
-                    this.contactLabels = res.labels;
+                    this.contactLabels = res.labels.map((item) => {
+                        return { ...item, dropLabel: true };
+                    });
                     this.sharedDepartments = res.departments;
                     this.labelsContactEmails = res.contactEmailType;
                     this.labelsContactPhones = res.contactPhoneType;
@@ -350,7 +352,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                                 )
                             );
                             this.selectedContactPhone[index] =
-                                res.contactPhones[index];
+                                res.contactPhones[index].contactPhoneType;
                             this.isContactPhoneExtExist[index] =
                                 !!res.contactPhones[index].phoneExt;
                         }
@@ -368,7 +370,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
                                 )
                             );
                             this.selectedContactEmail[index] =
-                                res.contactEmails[index];
+                                res.contactEmails[index].contactEmailType;
                         }
                     }
 

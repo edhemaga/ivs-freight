@@ -399,6 +399,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     'Base + Revenue %',
                 ].includes(this.selectedPayment?.name);
 
+                this.userForm.get('paymentType').reset();
+
                 break;
             }
             default: {
@@ -579,6 +581,15 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.selectedOffice = res.companyOffice;
                     this.selectedUserType = res.userType;
                     this.selectedPayment = res.paymentType;
+
+                    this.allowOnlyCommission = ['Load %', 'Revenue %'].includes(
+                        this.selectedPayment?.name
+                    );
+
+                    this.allowPairCommissionBase = [
+                        'Base + Load %',
+                        'Base + Revenue %',
+                    ].includes(this.selectedPayment?.name);
 
                     this.userStatus = res.status !== 1;
 
