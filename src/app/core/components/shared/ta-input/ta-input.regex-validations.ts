@@ -5,10 +5,6 @@ import moment from 'moment';
 const brnv = require('bank-routing-number-validator');
 
 export const bankRoutingValidator = async (routingNumber: string) => {
-    console.log(
-        'bank routing validator: ',
-        brnv.ABARoutingNumberIsValid(routingNumber)
-    );
     return await brnv.ABARoutingNumberIsValid(routingNumber);
 };
 
@@ -213,7 +209,7 @@ export const trailerVolumeValidation = [
 //---------------- Repair Odometer
 export const repairOdometerValidation = [
     Validators.minLength(1),
-    Validators.maxLength(7),
+    Validators.maxLength(9),
 ];
 
 //---------------- Invoice

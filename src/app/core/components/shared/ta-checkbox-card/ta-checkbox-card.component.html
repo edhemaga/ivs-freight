@@ -30,6 +30,7 @@
         ></svg-icon>
     </div>
 
+    <!-- Normal -->
     <div
         *ngIf="!reverseLogic"
         class="checkbox-card-body"
@@ -43,6 +44,7 @@
         <ng-content select="[body]"></ng-content>
     </div>
 
+    <!-- Reverse Logic -->
     <div
         *ngIf="reverseLogic"
         class="checkbox-card-body-falsy"
@@ -54,5 +56,10 @@
         }"
     >
         <ng-content select="[bodyFalse]"></ng-content>
+    </div>
+
+    <!-- Without Toogle (stop closing card) -->
+    <div *ngIf="withoutToggle" [ngStyle]="animationMarginParams">
+        <ng-content select="[bodyWithoutToggle]"></ng-content>
     </div>
 </div>

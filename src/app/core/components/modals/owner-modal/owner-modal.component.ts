@@ -4,7 +4,6 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { TruckModalComponent } from '../truck-modal/truck-modal.component';
 import { OwnerResponse } from '../../../../../../appcoretruckassist';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { OwnerModalResponse } from '../../../../../../appcoretruckassist';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -82,7 +81,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private ownerModalService: OwnerTService,
-        private notificationService: NotificationService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService
     ) {}
@@ -300,16 +298,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    
                     this.selectedBank = {
                         id: res.id,
                         name: this.selectedBank.name,
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -363,29 +358,14 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.ownerModalService
             .updateOwner(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private deleteOwnerById(id: number) {
-        let bussinesName = this.ownerForm.get('bussinesName')?.value;
         this.ownerModalService
             .deleteOwnerById(id, this.editData.selectedTab)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private addOwner() {
@@ -424,8 +404,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    
-
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'truck-modal': {
@@ -460,9 +438,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -497,9 +473,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         this.tabs.find((item) => item.id === res.ownerType.id)
                     );
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -511,9 +485,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 next: (res: OwnerModalResponse) => {
                     this.labelsBank = res.banks;
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 

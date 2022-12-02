@@ -10,9 +10,9 @@ import { SettingsInsurancepolicyComponent } from './settings-insurancepolicy/set
 import { SettingsFactoringComponent } from './settings-factoring/settings-factoring.component';
 
 // Modals
-import { SettingsBasicModalComponent } from './company-modals/settings-basic-modal/settings-basic-modal.component';
-import { SettingsInsurancePolicyModalComponent } from './company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
-import { SettingsFactoringModalComponent } from './company-modals/settings-factoring-modal/settings-factoring-modal.component';
+import { SettingsBasicModalComponent } from '../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsInsurancePolicyModalComponent } from '../../modals/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
+import { SettingsFactoringModalComponent } from '../../modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { SettingsNodataComponent } from './settings-nodata/settings-nodata.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';

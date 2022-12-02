@@ -168,14 +168,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         this.commonTruckTrailerService
             .addTitle(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private updateTitle() {
@@ -201,14 +194,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         this.commonTruckTrailerService
             .updateTitle(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private editTitleById(id: number) {
@@ -234,9 +220,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                     this.selectedStateType = res.state;
                     this.documents = res.files;
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -254,9 +238,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

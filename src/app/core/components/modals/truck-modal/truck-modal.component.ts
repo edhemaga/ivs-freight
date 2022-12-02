@@ -40,7 +40,6 @@ import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 import { Subject, takeUntil, skip, tap } from 'rxjs';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 import { FormService } from '../../../services/form/form.service';
@@ -133,7 +132,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private truckModalService: TruckTService,
-        private notificationService: NotificationService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private vinDecoderService: VinDecoderService,
@@ -269,12 +267,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                     name: 'deactivate',
                                     status: this.truckStatus,
                                 });
-                              
                             }
                         },
-                        error: () => {
-                            
-                        },
+                        error: () => {},
                     });
             } else {
                 // Save & Update
@@ -316,7 +311,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .get('companyOwned')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                console.log(value);
                 if (!value) {
                     this.inputService.changeValidators(
                         this.truckForm.get('ownerId')
@@ -327,7 +321,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         false
                     );
                 }
-                console.log('validator: ', this.truckForm.get('ownerId'));
             });
     }
 
@@ -335,7 +328,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         switch (action) {
             case 'truck-type': {
                 this.selectedTruckType = event;
-                console.log(this.selectedTruckType);
 
                 if (this.selectedTruckType?.name === 'Box Truck') {
                     this.inputService.changeValidators(
@@ -490,9 +482,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                     truckEngineModelId: res.engineModel?.name
                                         ? res.engineModel.name
                                         : null,
-                                    fuelType: this.fuelTypes.find(
-                                        (item) => item.name === res.fuelType
-                                    )?.name,
+                                    fuelType: res.fuelType
+                                        ? this.fuelTypes.find(
+                                              (item) =>
+                                                  item.name === res.fuelType
+                                          )?.name
+                                        : null,
                                 });
                                 this.loadingVinDecoder = false;
                                 this.selectedTruckMake = res.truckMake;
@@ -502,9 +497,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                     (item) => item.name === res.fuelType
                                 );
                             },
-                            error: () => {
-                               
-                            },
+                            error: () => {},
                         });
                 }
             });
@@ -552,9 +545,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.fuelTypes = res.fuelTypes;
                     this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -672,9 +663,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         status: this.truckStatus,
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -842,8 +831,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                   
-
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -866,7 +853,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {}
+                error: () => {},
             });
     }
 
@@ -955,29 +942,18 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     : null
                 : null,
         };
+
         this.truckModalService
             .updateTruck(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {}
-                   
-            });
+            .subscribe();
     }
 
     public deleteTruckById(id: number) {
         this.truckModalService
             .deleteTruckById(id, this.editData.tabSelected)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {}
-                  
-            });
+            .subscribe();
     }
 
     ngOnDestroy(): void {

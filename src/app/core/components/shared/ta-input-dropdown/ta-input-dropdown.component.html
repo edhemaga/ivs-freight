@@ -136,7 +136,9 @@
                     <svg-icon
                         *ngIf="option.logoName"
                         class="svg-template-logo"
-                        [ngClass]="{ active: option.id === activeItem?.id }"
+                        [ngClass]="{
+                            active: option.id === activeItem?.id
+                        }"
                         [src]="option.logoName"
                     ></svg-icon>
 
@@ -160,7 +162,9 @@
                     *ngFor="let option of options; trackBy: identity"
                     class="dropdown-option svg-text-template {{
                         option?.subFolder
-                    }} {{ option.name.trim().replace(' ', '').toLowerCase() }}"
+                    }} {{
+                        option.name.trim().replace(' ', '').toLowerCase()
+                    }} {{ inputConfig.customClass }}"
                     [ngClass]="{
                         disabled: option?.disabled,
                         'no-result':
@@ -169,7 +173,7 @@
                         'add-new': option.name === 'Add New',
                         active: option.id === activeItem?.id,
                         trailerContainer: option.name === 'Container',
-                        lowboyrgn: option.name === 'Low Boy/RGN'
+                        lowboyrgn: option.name === 'Low Boy / RGN'
                     }"
                     (click)="onActiveItem(option)"
                 >
@@ -509,34 +513,64 @@
                 >
                     <!-- Truck -->
                     <div
-                        class="load-dispatch-truck"
-                        [innerHtml]="
-                            option.truck.name
-                                | taHighlight
-                                    : [
-                                          {
-                                              index: 45632,
-                                              text: getSuperControl.value
-                                          }
-                                      ]
-                        "
-                    ></div>
+                        class="load-dispatches-container  {{
+                            option?.truck?.subFolder
+                        }} {{
+                            option?.truck?.logoType
+                                ? option?.truck?.logoType
+                                      .trim()
+                                      .replace(' ', '')
+                                      .toLowerCase()
+                                : null
+                        }}"
+                    >
+                        <svg-icon [src]="option.truck?.logoName"></svg-icon>
+                        <div
+                            class="load-dispatch-truck"
+                            [innerHtml]="
+                                option?.truck?.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+                    </div>
+
                     <!-- Trailer -->
                     <div
-                        class="load-dispatch-trailer"
-                        [innerHtml]="
-                            option.trailer.name
-                                | taHighlight
-                                    : [
-                                          {
-                                              index: 45632,
-                                              text: getSuperControl.value
-                                          }
-                                      ]
-                        "
-                    ></div>
+                        class="load-dispatches-container {{
+                            option?.trailer?.subFolder
+                        }} {{
+                            option?.trailer?.logoType
+                                ? option?.trailer?.logoType
+                                      .trim()
+                                      .replace(' ', '')
+                                      .toLowerCase()
+                                : null
+                        }}"
+                    >
+                        <svg-icon [src]="option?.trailer?.logoName"></svg-icon>
+                        <div
+                            class="load-dispatch-trailer"
+                            [innerHtml]="
+                                option.trailer.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+                    </div>
+
                     <!-- Driver -->
-                    <div class="load-dispatches-driver">
+                    <div class="load-dispatches-container">
                         <img
                             *ngIf="option.driver.logoName"
                             class="svg-template-logo"
@@ -544,6 +578,7 @@
                                 active:
                                     option.driver.id === activeItem?.driver?.id
                             }"
+                            [ngStyle]="{ position: 'relative', bottom: '1px' }"
                             [src]="
                                 this.imageBase64Service.sanitizer(
                                     option.driver.logoName
@@ -554,6 +589,7 @@
                         <div
                             *ngIf="!option.driver.logoName"
                             class="no-profile-image"
+                            [ngStyle]="{ position: 'relative', bottom: '1px' }"
                         >
                             <app-profile-images
                                 [indx]="0"
@@ -575,7 +611,14 @@
                                           ]
                             "
                         ></div>
+                        <svg-icon
+                            src="assets/svg/common/load/ic_load_driver_owner.svg"
+                        ></svg-icon>
                     </div>
+                    <span class="load-dispatch-driver-rate">
+                        <!-- {{option.driver?.rate}} -->
+                        Flat Rate
+                    </span>
                 </div>
             </div>
             <!--------------------------- Load Broker Template --------------------------->
@@ -683,30 +726,12 @@
                         ></div>
 
                         <div
-                            class="dropdown-subgroup-text"
-                            [ngClass]="{
-                                'active-without-check':
-                                    item.id === activeItem?.id
-                            }"
-                            [innerHtml]="
-                                item.phone
-                                    | taHighlight
-                                        : [
-                                              {
-                                                  index: 45632,
-                                                  text: getSuperControl.value
-                                              }
-                                          ]
-                            "
-                        ></div>
-
-                        <div
-                            class="dropdown-subgroup-text"
+                            class="dropdown-subgroup-text dropdown-subgroup-additional-text"
                             [ngClass]="{
                                 active: item.id === activeItem?.id
                             }"
                             [innerHtml]="
-                                item.extensionPhone
+                                item.phone
                                     | taHighlight
                                         : [
                                               {

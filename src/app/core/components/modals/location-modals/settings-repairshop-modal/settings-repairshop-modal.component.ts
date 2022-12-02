@@ -3,7 +3,7 @@ import {
     phoneExtension,
     addressValidation,
     addressUnitValidation,
-} from '../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -14,20 +14,19 @@ import {
 } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
-import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
-import { RepairTService } from '../../../../repair/state/repair.service';
-import { FormService } from '../../../../../services/form/form.service';
+import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { RepairTService } from '../../../repair/state/repair.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
     repairShopValidation,
     rentValidation,
-} from '../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import {
     convertThousanSepInNumber,
     convertNumberInThousandSep,
-} from '../../../../../utils/methods.calculations';
+} from '../../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-settings-repairshop-modal',
@@ -82,7 +81,6 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private repairService: RepairTService,
         private formService: FormService
     ) {}
@@ -241,14 +239,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         this.repairService
             .updateRepairShop(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private addRepairShop() {
@@ -284,28 +275,14 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         this.repairService
             .addRepairShop(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private deleteRepairShopById(id: number) {
         this.repairService
             .deleteRepairShopById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private editRepairShopById(id: number) {
@@ -354,9 +331,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                         this.isPhoneExtExist = true;
                     }
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -378,9 +353,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

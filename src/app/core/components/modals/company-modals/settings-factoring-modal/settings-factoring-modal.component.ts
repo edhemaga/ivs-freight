@@ -1,18 +1,17 @@
-import { AddressEntity } from './../../../../../../../../appcoretruckassist/model/addressEntity';
+import { AddressEntity } from '../../../../../../../appcoretruckassist/model/addressEntity';
 import {
     addressUnitValidation,
     addressValidation,
-} from './../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
+import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
-import { phoneFaxRegex } from '../../../../shared/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../../../services/form/form.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { phoneFaxRegex } from '../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../services/form/form.service';
 
 @Component({
     selector: 'app-settings-factoring-modal',
@@ -34,7 +33,6 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private settingsCompanyService: SettingsCompanyService,
         private formService: FormService
     ) {}
@@ -138,28 +136,14 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         this.settingsCompanyService
             .updateFactoringCompany(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private deleteFactoringCompanyById() {
         this.settingsCompanyService
             .deleteFactoringCompanyById(this.editData.company.id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private editFactoringCompany(company: any) {

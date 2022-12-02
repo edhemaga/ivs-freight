@@ -324,7 +324,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     private updateViolation(id: number) {
         const { ...form } = this.violationForm.value;
-        console.log(this.selectedAuthorityAddress);
+
         const newData: any = {
             id: id,
             county: this.selectedCounty ? this.selectedCounty.id : null,
@@ -437,22 +437,17 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             filesForDeleteIds: [],
         };
 
-        console.log('udpate violation: ', newData);
-
         this.roadsideService
             .updateRoadside(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    
                     this.modalService.setModalSpinner({
                         action: null,
                         status: false,
                     });
                 },
-                error: (err: any) => {
-              
-                },
+                error: () => {},
             });
     }
 
@@ -469,15 +464,20 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             : null,
                         inspectionLevel: res.inspectionLevel,
                         hmInspectionType: res.hmInspectionType,
-                        county: null, //TODO: Wait for backend
+                        county: res.county, //TODO: Wait for backend
                         state: res.state ? res.state.stateShortName : null,
                         startTime: res.startTime,
                         endTime: res.endTime,
                         date: res.date
                             ? convertDateFromBackend(res.date)
                             : null,
-                        // Driver
-                        driverName: res.driver_FullName,
+                        // Driver TODO: ceka se backend da napravi dobar response
+                        driverName: res.driver
+                            ? res.driver?.firstName?.concat(
+                                  ' ',
+                                  res.driver?.lastName
+                              )
+                            : res.driver_FullName,
                         driverLicenceNumber: res.driver_LicenceNo,
                         driverState: res.driver_State,
                         driverDOB: res.driver_DateOfBirth
@@ -491,19 +491,37 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             ? convertDateFromBackend(res.coDriver_DateOfBirth)
                             : null,
                         // Truck
-                        truck_Unit: res.truck_Unit,
-                        truck_Type: res.truck_Type,
-                        truck_Make: res.truck_Make,
-                        truck_PlateNo: res.truck_PlateNo,
+                        truck_Unit: res.truck
+                            ? res.truck?.truckNumber
+                            : res.truck_Unit,
+                        truck_Type: res.truck
+                            ? res.truck?.truckType?.name
+                            : res.truck_Type,
+                        truck_Make: res.truck
+                            ? res.truck?.truckMake?.name
+                            : res.truck_Make,
+                        truck_PlateNo: res.truck
+                            ? res.truck?.licensePlate
+                            : res.truck_PlateNo,
                         truck_State: res.truck_State,
-                        truck_VIN: res.truck_VIN,
+                        truck_VIN: res.truck ? res?.truck_VIN : res.truck_VIN,
                         // Trailer
-                        trailer_Unit: res.trailer_Unit,
-                        trailer_Type: res.trailer_Type,
-                        trailer_Make: res.trailer_Make,
-                        trailer_PlateNo: res.trailer_PlateNo,
+                        trailer_Unit: res.trailer
+                            ? res.trailer?.trailerNumber
+                            : res.trailer_Unit,
+                        trailer_Type: res.trailer
+                            ? res.trailer?.trailerType?.name
+                            : res.trailer_Type,
+                        trailer_Make: res.trailer
+                            ? res.trailer?.trailerMake?.name
+                            : res.trailer_Make,
+                        trailer_PlateNo: res.trailer
+                            ? res.trailer?.licensePlate
+                            : res.trailer_PlateNo,
                         trailer_State: res.trailer_State,
-                        trailer_VIN: res.trailer_VIN,
+                        trailer_VIN: res.trailer
+                            ? res.trailer?.vin
+                            : res.trailer_VIN,
                         // Violation
                         violations: [],
                         note: res.note,
@@ -606,9 +624,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: (err: any) => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -625,9 +641,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: (err: any) => {
-                 
-                },
+                error: () => {},
             });
     }
 
