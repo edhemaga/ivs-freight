@@ -708,6 +708,8 @@ export class Step3Component implements OnInit, OnDestroy {
             licences: [...filteredLicenseArray, filteredLastLicenseCard],
         };
 
+        console.log('saveData', saveData);
+
         const storeLicenceItems = saveData.licences.map((item) => {
             const filteredUsStateType = this.usStates.find(
                 (stateItem) => stateItem.id === item.stateId

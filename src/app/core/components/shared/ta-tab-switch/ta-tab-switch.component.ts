@@ -100,7 +100,8 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     ngAfterViewInit() {}
 
     public setSwitchActive(tabs) {
-        console.log('JHJJJJ');
+        /* 
+        console.log('JHJJJJ'); */
         const selectedIndex = tabs.findIndex((item) => item.checked);
 
         this.indexSwitch = selectedIndex == -1 ? 0 : selectedIndex;

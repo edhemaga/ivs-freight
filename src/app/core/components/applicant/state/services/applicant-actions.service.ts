@@ -53,6 +53,7 @@ import {
     UpdateDrugAndAlcoholReviewCommand,
     UpdateSevenDaysHosReviewCommand,
     UpdatePersonalInfoReviewCommand,
+    UpdateEducationReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -362,6 +363,12 @@ export class ApplicantActionsService {
         data: UpdatePersonalInfoReviewCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantPersonalReviewPut(data);
+    }
+
+    public updateEducationReview(
+        data: UpdateEducationReviewCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantEducationReviewPut(data);
     }
 
     public updateSevenDaysHosReview(

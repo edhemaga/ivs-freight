@@ -36,7 +36,7 @@ import {
 export class Step5Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public applicantId: number;
 
@@ -880,7 +880,6 @@ export class Step5Component implements OnInit, OnDestroy {
             isPrimary: true,
             commonMessage: null,
             isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
-            isVehicleTypeValid: true,
             isLocationValid: lastItemReview
                 ? lastItemReview.isLocationValid
                 : true,
@@ -900,31 +899,31 @@ export class Step5Component implements OnInit, OnDestroy {
 
         console.log('store', this.applicantStore);
 
-        this.applicantActionsService
-            .createTrafficViolationsReview(saveData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.router.navigate([
-                        `/application/${this.applicantId}/6`,
-                    ]);
+        // this.applicantActionsService
+        //     .createTrafficViolationsReview(saveData)
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe({
+        //         next: () => {
+        //             this.router.navigate([
+        //                 `/application/${this.applicantId}/6`,
+        //             ]);
 
-                    /*   this.applicantStore.update(store => {
-            return {
-              ...store,
-              applicant: {
-                ...store.applicant,
-                trafficViolation : {
-                  ...store.applicant.trafficViolation,
-                }
-              }
-            }
-          }) */
-                },
-                error: (err) => {
-                    console.log(err);
-                },
-            });
+        //             /*   this.applicantStore.update(store => {
+        //     return {
+        //       ...store,
+        //       applicant: {
+        //         ...store.applicant,
+        //         trafficViolation : {
+        //           ...store.applicant.trafficViolation,
+        //         }
+        //       }
+        //     }
+        //   }) */
+        //         },
+        //         error: (err) => {
+        //             console.log(err);
+        //         },
+        //     });
     }
 
     ngOnDestroy(): void {

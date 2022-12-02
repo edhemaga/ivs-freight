@@ -41,7 +41,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public applicantId: number;
 
@@ -736,6 +736,18 @@ export class Step2Component implements OnInit, OnDestroy {
 
         this.helperIndex = 2;
         this.selectedWorkExperienceIndex = -1;
+
+        const lastWorkExperienceCard = this.lastWorkExperienceCard;
+
+        this.previousFormValuesOnReview.workExperienceItemReview = {
+            ...this.previousFormValuesOnReview.workExperienceItemReview,
+            employerMessage: lastWorkExperienceCard.firstRowReview,
+            jobDescriptionMessage: lastWorkExperienceCard.secondRowReview,
+            contactMessage: lastWorkExperienceCard.thirdRowReview,
+            addressMessage: lastWorkExperienceCard.fourthRowReview,
+            accountForPeriodBetweenMessage:
+                lastWorkExperienceCard.seventhRowReview,
+        };
 
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
