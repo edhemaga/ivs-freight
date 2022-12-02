@@ -86,7 +86,7 @@ export class ModalService {
                 clearTimeout(timeout);
             }, 500);
         }
-        console.log('closing type: ', data?.closing);
+
         // Closing Modal and Open Old One
         if (data.action === 'close') {
             const timeout = setTimeout(

@@ -77,13 +77,14 @@
                     [template]="'multiselect'"
                     [inputConfig]="{
                         name: 'Input Dropdown Department',
-                        minLength: 2,
-                        maxLength: 36,
                         type: 'text',
-                        isDropdown: true,
                         label: 'Department',
+                        isRequired: true,
+                        isDropdown: true,
                         textTransform: 'capitalize',
                         multiselectDropdown: true,
+                        minLength: 2,
+                        maxLength: 36,
                         dropdownWidthClass: 'w-col-455'
                     }"
                     [options]="resDepartments"

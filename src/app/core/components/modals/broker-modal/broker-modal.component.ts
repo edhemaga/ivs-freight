@@ -330,12 +330,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                     name: 'bfb',
                                     status: this.brokerBanStatus,
                                 });
-                               
                             }
                         },
-                        error: () => {
-                           
-                        },
+                        error: () => {},
                     });
             }
         } else {
@@ -600,11 +597,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     .subscribe({
                         next: () => {
                             this.editBrokerById(this.editData.id);
-                            
                         },
-                        error: () => {
-                            
-                        },
+                        error: () => {},
                     });
             });
     }
@@ -632,11 +626,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     });
 
                     this.disableOneMoreReview = true;
-                  
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -647,12 +638,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .deleteReview(reviews.data)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -667,12 +654,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .updateReview(review)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -701,9 +684,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     this.labelsDepartments = reasponse.departments;
                     this.labelsPayTerms = reasponse.payTerms;
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -760,17 +741,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             brokerContacts,
         };
 
-        let businessName = this.brokerForm.value.businessName;
         this.brokerModalService
             .addBroker(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -832,12 +808,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .updateBroker(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -845,14 +817,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerModalService
             .deleteBrokerById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
-            });
+            .subscribe();
     }
 
     private editBrokerById(id: number): void {
@@ -860,8 +825,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .getBrokerById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (reasponse: any /*BrokerResponse*/) => {
-                    console.log(reasponse);
+                next: (reasponse: any) => {
                     this.brokerForm.patchValue({
                         businessName: reasponse.businessName,
                         dbaName: reasponse.dbaName,
@@ -1029,9 +993,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                               }
                     );
                 },
-                error: () => {
-                 
-                },
+                error: () => {},
             });
     }
 

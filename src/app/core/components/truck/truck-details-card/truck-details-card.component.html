@@ -101,19 +101,25 @@
                 [isCardOpen]="true"
             >
                 <div class="assignTo">
-                    <div class="assignTo-item first">
+                    <div class="assignTo-item first" *ngIf="truck?.assignedTo?.trailer?.id">
                         <svg-icon
                             class="assignTo-vehicle"
                             src="assets/svg/common/trailer.svg"
                         ></svg-icon>
-                        <p class="assignTo-value">3243</p>
+                        <p class="assignTo-value">{{truck.assignedTo.trailer.trailerNumber}}</p>
                     </div>
-                    <div class="assignTo-item">
+                    <div class="assignTo-item" *ngIf="!truck?.assignedTo?.trailer?.id">
+                        <p class="assignTo-value inactive-assignTo-value">No Trailer</p>
+                    </div>
+                    <div class="assignTo-item" *ngIf="truck?.assignedTo?.driver?.id"> 
                         <svg-icon
                             class="assignTo-vehicle"
                             src="assets/svg/common/user-image.svg"
                         ></svg-icon>
-                        <p class="assignTo-value">Pera Peric</p>
+                        <p class="assignTo-value">{{truck.assignedTo.driver.firstName}} {{truck.assignedTo.driver.lastName}}</p>
+                    </div>
+                    <div class="assignTo-item" *ngIf="!truck?.assignedTo?.driver?.id">
+                        <p class="assignTo-value inactive-assignTo-value">No Driver</p>
                     </div>
                 </div>
             </app-ta-custom-card>

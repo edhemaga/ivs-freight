@@ -3,7 +3,6 @@ import {
     convertThousanSepInNumber,
 } from '../../../../utils/methods.calculations';
 import { SumArraysPipe } from '../../../../pipes/sum-arrays.pipe';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
@@ -105,7 +104,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private repairService: RepairTService,
-        private notificationService: NotificationService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private sumArrayPipe: SumArraysPipe,
@@ -124,7 +122,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         if (this.editData?.type?.includes('edit')) {
             this.editRepairById(this.editData.id);
         } else {
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 if (this.editData?.type?.toLowerCase().includes('trailer')) {
                     this.onTypeOfRepair(
                         this.typeOfRepair.find(
@@ -138,6 +136,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         'true'
                     );
                 }
+                clearTimeout(timeout);
             }, 100);
         }
     }
@@ -364,6 +363,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             return;
         }
 
+        this.inputService.changeValidators(
+            this.repairOrderForm.get('odometer'),
+            false
+        );
         this.repairOrderForm.get('unit').patchValue(null);
         this.selectedUnit = null;
         this.selectedPM = [];
@@ -457,9 +460,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                         pinned: res.pinned,
                                     };
                                 },
-                                error: () => {
-                                    
-                                },
+                                error: () => {},
                             });
                     }
                 }
@@ -574,9 +575,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     });
                     this.labelsRepairShop = [...res.repairShops];
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -595,7 +594,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         }
         if (action.title === 'Add New') {
             if (!this.editData?.id && !this.selectedUnit?.id) {
-               
                 return;
             }
             this.ngbActiveModal.close();
@@ -700,12 +698,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .addRepair(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -790,12 +784,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .updateRepair(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -806,14 +796,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.editData.type === 'edit-trailer' ? 'inactive' : 'active'
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private populateForm(res: any) {
@@ -955,9 +938,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                                         pinned: res.pinned,
                                     };
                                 },
-                                error: () => {
-                                   
-                                },
+                                error: () => {},
                             });
                     }
 
@@ -1024,9 +1005,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 

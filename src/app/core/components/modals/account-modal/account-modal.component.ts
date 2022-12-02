@@ -24,7 +24,6 @@ import {
     urlValidation,
     usernameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { FormService } from '../../../services/form/form.service';
 import { passwordAccountValidation } from '../../shared/ta-input/ta-input.regex-validations';
 
@@ -52,7 +51,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private notificationService: NotificationService,
         private modalService: ModalService,
         private accountService: AccountTService,
         private formService: FormService
@@ -162,9 +160,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                 next: (res: Array<AccountColorResponse>) => {
                     this.colors = res;
                 },
-                error: () => {
-                
-                },
+                error: () => {},
             });
     }
 
@@ -186,9 +182,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     });
                     this.selectedAccountLabel = res.companyAccountLabel;
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -204,15 +198,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         this.accountService
             .addCompanyAccount(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () =>{
-
-                }
-                   
-            });
+            .subscribe();
     }
 
     private updateCompanyAccount(id: number): void {
@@ -228,30 +214,14 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         this.accountService
             .updateCompanyAccount(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () =>{
-
-                }
-                    
-            });
+            .subscribe();
     }
 
     public deleteCompanyAccountById(id: number): void {
         this.accountService
             .deleteCompanyAccountById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                }
-                    
-            });
+            .subscribe();
     }
 
     public onPickExistLabel(event: any) {
@@ -282,8 +252,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
-                           
-
                             this.accountService
                                 .companyAccountModal()
                                 .pipe(takeUntil(this.destroy$))
@@ -293,14 +261,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                                     ) => {
                                         this.accountLabels = res.labels;
                                     },
-                                    error: () => {
-                                       
-                                    },
+                                    error: () => {},
                                 });
                         },
-                        error: () => {
-                           
-                        },
+                        error: () => {},
                     });
                 break;
             }
@@ -333,13 +297,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (res: CreateResponse) => {
-                           
-
                             this.selectedAccountLabel = {
                                 ...this.selectedAccountLabel,
                                 id: res.id,
                             };
-
                             this.accountService
                                 .companyAccountModal()
                                 .pipe(takeUntil(this.destroy$))
@@ -349,14 +310,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                                     ) => {
                                         this.accountLabels = res.labels;
                                     },
-                                    error: () => {
-                                        
-                                    },
+                                    error: () => {},
                                 });
                         },
-                        error: () => {
-                           
-                        },
+                        error: () => {},
                     });
                 break;
             }

@@ -10,7 +10,6 @@ import { MvrTService } from '../../../driver/state/mvr.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateToBackend,
@@ -49,7 +48,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private driverService: DriverTService,
         private inputService: TaInputService,
-        private notificationService: NotificationService,
         private modalService: ModalService,
         private mvrService: MvrTService,
         private formService: FormService
@@ -96,9 +94,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                 next: (res: DriverResponse) => {
                     this.modalName = res.firstName.concat(' ', res.lastName);
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -206,14 +202,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         this.mvrService
             .updateMvr(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private addMVR() {
@@ -237,14 +226,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         this.mvrService
             .addMvr(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     public getMVRById(id: number) {
@@ -268,9 +250,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
                     this.documents = res.files ? (res.files as any) : [];
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -294,9 +274,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                             .patchValue(this.selectedCdl.name);
                     }
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -313,9 +291,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

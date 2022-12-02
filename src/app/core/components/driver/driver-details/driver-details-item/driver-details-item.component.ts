@@ -27,13 +27,41 @@ import { MedicalTService } from '../../state/medical.service';
 import { MvrTService } from '../../state/mvr.service';
 import { TestTService } from '../../state/test.service';
 import { DriverCdlModalComponent } from '../../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
+import {
+    animate,
+    style,
+    transition,
+    trigger,
+    state,
+    keyframes,
+} from '@angular/animations';
 
 @Component({
     selector: 'app-driver-details-item',
     templateUrl: './driver-details-item.component.html',
     styleUrls: ['./driver-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [card_component_animation('showHideCardBody'), trigger('stateHeader', [
+        state('in', style({ opacity: 1, height: '150px' })),
+        transition(':enter', [
+            animate(
+                5100,
+                keyframes([
+                    style({ opacity: 0, 'height': '0px' }),
+                    style({ opacity: 1, 'height' : '*' }),
+                ])
+            ),
+        ]),
+        transition(':leave', [
+            animate(
+                5100,
+                keyframes([
+                    style({ opacity: 1, 'height' : '*' }),
+                    style({ opacity: 0, 'height' : '0px' }),
+                ])
+            ),
+        ]),
+    ]),],
 })
 export class DriverDetailsItemComponent
     implements OnInit, OnDestroy, OnChanges

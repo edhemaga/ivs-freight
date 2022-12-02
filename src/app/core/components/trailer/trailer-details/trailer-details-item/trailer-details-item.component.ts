@@ -237,6 +237,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
         return item.id;
     }
     public optionsEvent(file: any, data: any, action: string) {
+        data = this.trailer[0]?.data;
         const name = dropActionNameTrailerTruck(file, action);
         this.dropDownService.dropActions(
             file,

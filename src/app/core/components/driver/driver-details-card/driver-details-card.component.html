@@ -80,7 +80,7 @@
                 class="first-custom-card"
             >
                 <div class="assignTo">
-                    <div class="assignTo-item first">
+                    <div class="assignTo-item first" *ngIf="driver?.assignedTo?.truck?.id">
                         <div class="icon-text-wrapper-cmp">
                             <span
                                 tooltipBackground="#6c6c6c"
@@ -95,7 +95,7 @@
                                 >
                                 </svg-icon>
                             </span>
-                            <span class="assignTo-value">36545</span>
+                            <span class="assignTo-value">{{driver.assignedTo.truck.truckNumber}}</span>
                         </div>
 
                         <span
@@ -111,7 +111,10 @@
                             ></svg-icon>
                         </span>
                     </div>
-                    <div class="assignTo-item second">
+                    <div class="assignTo-item first" *ngIf="!driver?.assignedTo?.truck?.id">
+                        <span class="assignTo-value inactive-assignTo-value">No Truck</span>
+                    </div>
+                    <div class="assignTo-item second" *ngIf="driver?.assignedTo?.trailer?.id">
                         <div class="icon-text-wrapper-cmp">
                             <span
                                 tooltipBackground="#6c6c6c"
@@ -126,7 +129,7 @@
                                 ></svg-icon>
                             </span>
                             <span class="assignTo-value container-value">
-                                R4578
+                                {{driver?.assignedTo?.trailer.trailerNumber}}
                             </span>
                         </div>
                         <span
@@ -141,6 +144,9 @@
                                 src="assets/svg/common/arrow_top_right.svg"
                             ></svg-icon>
                         </span>
+                    </div>
+                    <div class="assignTo-item first" *ngIf="!driver?.assignedTo?.trailer?.id">
+                        <span class="assignTo-value inactive-assignTo-value">No Trailer</span>
                     </div>
                 </div>
             </app-ta-custom-card>

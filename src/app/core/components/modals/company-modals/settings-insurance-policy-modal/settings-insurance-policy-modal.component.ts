@@ -16,31 +16,30 @@ import {
     deductableValidation,
     comprehenCollisionValidation,
     trailerValueInsurancePolicyValidation,
-} from './../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     AddressEntity,
     InsurancePolicyModalResponse,
 } from 'appcoretruckassist';
 
-import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
+import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 import {
     FormGroup,
     FormBuilder,
     Validators,
     AbstractControl,
 } from '@angular/forms';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
-import { FormService } from '../../../../../services/form/form.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateToBackend,
     convertThousanSepInNumber,
     convertDateFromBackend,
     convertNumberInThousandSep,
-} from '../../../../../utils/methods.calculations';
+} from '../../../../utils/methods.calculations';
 
 @Component({
     selector: 'app-settings-insurance-policy-modal',
@@ -65,6 +64,8 @@ export class SettingsInsurancePolicyModalComponent
     public selectedTrailerRating: any = null;
 
     public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
     public ratings: any[] = [];
 
     public idCommercial = null;
@@ -79,7 +80,6 @@ export class SettingsInsurancePolicyModalComponent
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private settingsCompanyService: SettingsCompanyService,
         private formService: FormService
     ) {}
@@ -148,6 +148,7 @@ export class SettingsInsurancePolicyModalComponent
             trailerRating: [null],
             trailerValue: [null, trailerValueInsurancePolicyValidation],
             note: [null],
+            files: [null],
         });
 
         this.inputService.customInputValidator(
@@ -362,8 +363,32 @@ export class SettingsInsurancePolicyModalComponent
         }
     }
 
-    public onFilesEvent(event) {
+    public onFilesEvent(event: any) {
         this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.insurancePolicyForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.insurancePolicyForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     private getInsurancePolicyDropdowns() {
@@ -374,9 +399,7 @@ export class SettingsInsurancePolicyModalComponent
                 next: (res: InsurancePolicyModalResponse) => {
                     this.ratings = res.ratings;
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -436,6 +459,13 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
+        let documentsUpdate = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documentsUpdate.push(item.realFile);
+            }
+        });
+
         let newData: any = {
             companyId: company.divisions.length ? null : company.id,
             ...form,
@@ -444,6 +474,8 @@ export class SettingsInsurancePolicyModalComponent
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
+            files: documentsUpdate ? documentsUpdate : this.insurancePolicyForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         const commLiablity = commericalGeneralLiability
@@ -570,22 +602,23 @@ export class SettingsInsurancePolicyModalComponent
             insurancePolicyAddons.push(trailInterchange);
         }
 
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
         newData = {
             ...newData,
             insurancePolicyAddons,
+            files: documents,
         };
 
         this.settingsCompanyService
             .addInsurancePolicy(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private updateInsurancePolicy(id: number) {
@@ -786,36 +819,24 @@ export class SettingsInsurancePolicyModalComponent
         newData = {
             ...newData,
             insurancePolicyAddons,
+            files: [],
         };
 
         this.settingsCompanyService
             .updateInsurancePolicy(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
-            });
+            .subscribe();
     }
 
     private deleteInsurancePolicyById(id: number) {
         this.settingsCompanyService
             .deleteInsurancePolicyById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private editInsurancePolicyById(insurance: any) {
+        console.log('insurance data: ', insurance);
         this.insurancePolicyForm.patchValue({
             producerName: insurance.producerName,
             issued: convertDateFromBackend(insurance.issued),
@@ -826,6 +847,9 @@ export class SettingsInsurancePolicyModalComponent
             addressUnit: insurance.address.addressUnit,
             note: insurance.note,
         });
+
+        this.documents = insurance.files;
+
         if (insurance.insurancePolicyAddons.length) {
             for (const insur of insurance.insurancePolicyAddons) {
                 switch (insur.insurancePolicyAddonType?.name) {

@@ -9,10 +9,11 @@ import {
     CreateCompanyAccountLabelCommand,
     CreateResponse,
     GetCompanyAccountLabelListResponse,
+    GetCompanyAccountListResponse,
     UpdateCompanyAccountCommand,
     UpdateCompanyAccountLabelCommand,
 } from 'appcoretruckassist';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AccountStore } from './account-state/account.store';
 import { AccountQuery } from './account-state/account.query';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
@@ -104,18 +105,17 @@ export class AccountTService {
         search?: string,
         search1?: string,
         search2?: string
-    ): Observable<CompanyAccountResponse> {
-        return of();
-        // return this.accountService.apiCompanyaccountListGet(
-        //     labelId,
-        //     pageIndex,
-        //     pageSize,
-        //     companyId,
-        //     sort,
-        //     search,
-        //     search1,
-        //     search2
-        // );
+    ): Observable<GetCompanyAccountListResponse> {
+        return this.accountService.apiCompanyaccountListGet(
+            labelId,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
     }
 
     // Get Account By Id

@@ -111,12 +111,9 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             this.router.navigate([`/truck/${res.id}/details`]);
                         }
 
-                      
                         this.cdRef.detectChanges();
                     },
-                    error: () => {
-                       
-                    },
+                    error: () => {},
                 });
             });
         this.truckConf(this.activated_route.snapshot.data.truck);
@@ -158,7 +155,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             }/details`,
                         ]);
                     }
-                   
                 },
                 error: () => {
                     this.router.navigate(['/truck']);
@@ -171,12 +167,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             .changeTruckStatus(id, status)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
     public optionsDrop(event: any) {
@@ -290,6 +282,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         const truck = this.activated_route.snapshot.data.truck;
+
         switch (action.toLowerCase()) {
             case 'registration': {
                 this.modalService.openModal(

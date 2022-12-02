@@ -15,5 +15,6 @@ export class TaCounterComponent {
     @Input() countWidth: string = '22px';
     @Input() countBorderRadius: string = '2px';
     @Input() countTextBottomPosition: string = '0px';
+    @Input() marginLeft: string = '0px';
     @Input() customClass: string = '';
 }

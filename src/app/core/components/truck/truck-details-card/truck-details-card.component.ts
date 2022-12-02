@@ -546,18 +546,20 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         return index;
     }
     public getTruckDropdown() {
+
         this.truckDropDowns = this.truckMinimalListQuery
             .getAll()
             .map((item) => {
                 return {
                     id: item.id,
-                    name: item.truckNumber,
+                    name: this.truck.truckNumber,
                     status: item.status,
                     svg: item.truckType.logoName,
                     folder: 'common/trucks',
                     active: item.id === this.truck.id,
                 };
             });
+            
     }
     public onSelectedTruck(event: any) {
         if (event.id !== this.truck.id) {
