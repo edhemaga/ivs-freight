@@ -1,8 +1,10 @@
 <app-ta-modal
-    [modalTitle]="editData?.type !== 'edit' ? 'Add Office' : 'Edit Office'"
+    [modalTitle]="
+        editData?.type !== 'edit' ? 'Add Repair Shop' : 'Edit Repair Shop'
+    "
     [editData]="editData"
-    [editName]="officeName"
-    [isModalValid]="officeForm.valid && isFormDirty"
+    [editName]="repairShopName"
+    [isModalValid]="repairShopForm.valid && isFormDirty"
     (action)="onModalAction($event)"
 >
     <div origin>
@@ -14,15 +16,15 @@
         </app-ta-tab-switch>
 
         <form
-            [formGroup]="officeForm"
+            [formGroup]="repairShopForm"
             class="form-container form-container-with-inputs"
             [ngClass]="{
                 'form-container-mt-12': selectedTab === 1,
+                'row-settings-location-additional': selectedTab === 2,
                 'form-container-without-mb':
-                    selectedTab === 1 && !isDepartmentContactCardOpen,
+                    selectedTab === 1 && !isServiceCardOpen,
                 'form-container-with-card':
-                    selectedTab === 1 && isDepartmentContactCardOpen,
-                'row-settings-location-additional': selectedTab === 2
+                    selectedTab === 1 && isServiceCardOpen
             }"
         >
             <div
@@ -33,27 +35,27 @@
                 <div class="m-tab" *ngIf="selectedTab === 1">
                     <!-- Company owned -->
                     <app-ta-checkbox-card
-                        formControlName="isOwner"
+                        formControlName="companyOwned"
                         [label]="'Company Owned'"
                         [name]="'company-owned'"
-                        [reverseLogic]="true"
-                        [isCardOpen]="officeForm.get('isOwner').value"
+                        [hasArrow]="false"
+                        [withoutToggle]="true"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '22px'
                         }"
                     >
-                        <ng-container bodyFalse>
+                        <ng-container bodyWithoutToggle>
                             <div class="row">
                                 <div class="col-12">
                                     <app-ta-input
                                         formControlName="name"
                                         [inputConfig]="{
-                                            name: 'Office Name',
+                                            name: 'Shop Name',
                                             type: 'text',
-                                            label: 'Office Name',
+                                            label: 'Shop Name',
                                             isRequired: true,
-                                            textTransform: 'capitalize',
+                                            textTransform: 'uppercase',
                                             autoFocus:
                                                 editData?.type !== 'edit',
                                             minLength: 2,
@@ -112,8 +114,8 @@
                                                 name: 'Phone',
                                                 type: 'text',
                                                 label: 'Phone',
-                                                isRequired: true,
                                                 placeholderIcon: 'phone',
+                                                isRequired: true,
                                                 mask: '(000) 000-0000',
                                                 maxLength: 14
                                             }"
@@ -136,7 +138,7 @@
                                     </div>
                                     <app-ta-input
                                         *ngIf="isPhoneExtExist"
-                                        formControlName="extensionPhone"
+                                        formControlName="phoneExt"
                                         [inputConfig]="{
                                             name: 'phone-extension',
                                             type: 'text',
@@ -165,131 +167,29 @@
                         </ng-container>
                     </app-ta-checkbox-card>
 
-                    <!-- Department Contacts -->
+                    <!-- Repair Shop Servies -->
                     <app-ta-custom-card
-                        [hasCounter]="
-                            departmentContacts.length
-                                ? departmentContacts.length
-                                : 0
-                        "
-                        [cardName]="'Department Contact'"
-                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-                        [hasArrow]="true"
-                        [isCardOpen]="departmentContacts.length > 0"
-                        [hasScrollBody]="departmentContacts.length > 10"
-                        [hasBodyData]="departmentContacts.length > 0"
-                        (onOpenCard)="isDepartmentContactCardOpen = $event"
-                        (onActionEvent)="addDepartmentContacts($event)"
+                        [hasCounter]="pickedServices() ? pickedServices() : 0"
+                        [cardName]="'Service'"
+                        [isCardOpen]="true"
+                        (onOpenCard)="isServiceCardOpen = $event"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '0px'
                         }"
                     >
-                        <div
-                            formArrayName="departmentContacts"
-                            class="common-fake-table-modal common-fake-table-modal-office-department-contacts"
-                            *ngIf="departmentContacts.length"
-                            (scroll)="onScrollingBrokerContacts($event)"
-                        >
-                            <div class="common-fake-table-label">
-                                <p>DEPARTMENT <span>*</span></p>
-                                <p>PHONE <span>*</span></p>
-                                <p>EXT</p>
-                                <p>EMAIL <span>*</span></p>
-                            </div>
-                            <div class="common-fake-table-body">
-                                <div
-                                    *ngFor="
-                                        let departmentContact of departmentContacts.controls;
-                                        let ind = index
-                                    "
-                                >
-                                    <div
-                                        [formGroupName]="ind"
-                                        class="common-fake-table-card"
-                                    >
-                                        <app-ta-input-dropdown
-                                            formControlName="departmentId"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown Department',
-                                                minLength: 2,
-                                                maxLength: 36,
-                                                type: 'text',
-                                                isDropdown: true,
-                                                textTransform: 'capitalize',
-                                                dropdownWidthClass: 'w-col-120',
-                                                hideErrorMessage: true,
-                                                blackInput: true,
-                                                hideRequiredCheck: true
-                                            }"
-                                            [options]="departments"
-                                            [activeItem]="
-                                                selectedDepartmentFormArray[ind]
-                                            "
-                                            (selectedItem)="
-                                                onSelectContactDepartment(
-                                                    $event,
-                                                    ind
-                                                )
-                                            "
-                                        ></app-ta-input-dropdown>
-                                        <app-ta-input
-                                            formControlName="phone"
-                                            [inputConfig]="{
-                                                name: 'Phone',
-                                                type: 'text',
-                                                mask: '(000) 000-0000',
-                                                maxLength: 14,
-                                                hideErrorMessage: true,
-                                                blackInput: true,
-                                                hideRequiredCheck: true
-                                            }"
-                                        ></app-ta-input>
-                                        <app-ta-input
-                                            formControlName="extensionPhone"
-                                            [inputConfig]="{
-                                                name: 'phone-extension',
-                                                type: 'text',
-                                                minLength: 1,
-                                                maxLength: 8,
-                                                hideErrorMessage: true,
-                                                blackInput: true,
-                                                hideRequiredCheck: true
-                                            }"
-                                        ></app-ta-input>
-                                        <app-ta-input
-                                            formControlName="email"
-                                            [inputConfig]="{
-                                                name: 'Email',
-                                                type: 'text',
-                                                minLength: 5,
-                                                maxLength: 64,
-                                                textTransform: 'lowercase',
-                                                hideErrorMessage: true,
-                                                blackInput: true,
-                                                hideRequiredCheck: true
-                                            }"
-                                        ></app-ta-input>
-                                        <div
-                                            ngbTooltip
-                                            mainTooltip="Delete"
-                                            tooltipBackground="#EF5350"
-                                            position="top"
-                                            class="common-fake-table-delete"
-                                            [ngClass]="{
-                                                scrolling:
-                                                    isDepartmentCardsScrolling
-                                            }"
-                                            (click)="
-                                                removeDepartmentContacts(ind)
-                                            "
-                                        >
-                                            <svg-icon
-                                                src="assets/svg/common/ic_trash.svg"
-                                            ></svg-icon>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="repair-shop-services">
+                            <div
+                                *ngFor="
+                                    let repair of services;
+                                    trackBy: identity
+                                "
+                                class="repair-shop-service"
+                                [class.active]="repair.active"
+                                (click)="repair.active = !repair.active"
+                            >
+                                <svg-icon src="{{ repair.svg }}"></svg-icon>
+                                <p>{{ repair.serviceType }}</p>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -338,7 +238,7 @@
                                     label: 'Day',
                                     isDropdown: true,
                                     isDisabled:
-                                        !officeForm.get('payPeriod').value,
+                                        !repairShopForm.get('payPeriod').value,
                                     dropdownWidthClass: 'w-col-148'
                                 }"
                                 [options]="

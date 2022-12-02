@@ -10,7 +10,6 @@ import { DriverTService } from '../../../driver/state/driver.service';
 import { MedicalTService } from '../../../driver/state/medical.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateToBackend,
@@ -45,7 +44,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         private driverService: DriverTService,
         private inputService: TaInputService,
         private medicalService: MedicalTService,
-        private notificationService: NotificationService,
         private modalService: ModalService,
         private formService: FormService
     ) {}
@@ -90,9 +88,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                 next: (res: DriverResponse) => {
                     this.modalName = res.firstName.concat(' ', res.lastName);
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -177,14 +173,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         this.medicalService
             .updateMedical(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private addMedical() {
@@ -208,14 +197,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         this.medicalService
             .addMedical(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     public getMedicalById(id: number) {
@@ -235,9 +217,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
                     this.documents = res.files ? (res.files as any) : [];
                 },
-                error: () => {
-                 
-                },
+                error: () => {},
             });
     }
 
@@ -264,7 +244,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: DriverListResponse) => {
-                    console.log('list of drivers: ', res);
                     this.labelsDrivers = res.pagination.data.map((item) => {
                         return {
                             id: item.id,
@@ -272,9 +251,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 

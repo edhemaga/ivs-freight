@@ -257,18 +257,7 @@ export class ShipperTService implements OnDestroy {
             })
         );
     }
-
-    // Change Ban Status
-    public changeBanStatus(id: number): Observable<any> {
-        return of();
-        // return this.shipperService.apiShipperBanIdPut(id, 'response');
-    }
-
-    // Change Dnu Status
-    public changeDnuStatus(id: number): Observable<any> {
-        return of();
-        // return this.shipperService.apiShipperDnuIdPut(id, 'response');
-    }
+    x;
 
     public getShipperDropdowns(): Observable<ShipperModalResponse> {
         return this.shipperService.apiShipperModalGet();

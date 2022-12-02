@@ -22,7 +22,6 @@ import {
     urlValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { CommentsService } from '../../../services/comments/comments.service';
 import { FormService } from '../../../services/form/form.service';
 import {
@@ -67,7 +66,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private todoService: TodoTService,
         private commentsService: CommentsService,
-        private notificationService: NotificationService,
         private formService: FormService
     ) {}
 
@@ -92,7 +90,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             url: [null, urlValidation],
             deadline: [null],
             departmentIds: [null, [...departmentValidation]],
+            departmentIdsHelper: [null, Validators.required],
             companyUserIds: [null],
+            companyUserIdsHeleper: [null],
             note: [null],
             files: [null],
         });
@@ -223,11 +223,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                         }
                         return item;
                     });
-                  
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -242,14 +239,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         this.commentsService
             .updateComment(comment)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private deleteComment(comments: ReviewCommentModal) {
@@ -257,14 +247,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         this.commentsService
             .deleteCommentById(comments.data)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
-            });
+            .subscribe();
     }
 
     public onFilesEvent(event: any) {
@@ -302,7 +285,12 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                 documents.push(item.realFile);
             }
         });
-        const { deadline, ...form } = this.taskForm.value;
+        const {
+            deadline,
+            companyUserIdsHeleper,
+            departmentIdsHelper,
+            ...form
+        } = this.taskForm.value;
 
         const newData: any = {
             id: id,
@@ -323,7 +311,12 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
 
     private addTask() {
-        const { deadline, ...form } = this.taskForm.value;
+        const {
+            deadline,
+            companyUserIdsHeleper,
+            departmentIdsHelper,
+            ...form
+        } = this.taskForm.value;
 
         let documents = [];
         this.documents.map((item) => {
@@ -351,14 +344,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         this.todoService
             .deleteTodoById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private editTask(id: number) {
@@ -375,6 +361,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                             ? convertDateFromBackend(res.deadline)
                             : null,
                         departmentIds: null,
+                        departmentIdsHelper: res.departments.length
+                            ? JSON.stringify(res.departments)
+                            : null,
                         companyUserIds: null,
                         note: res.note,
                         files: res.files.length
@@ -383,12 +372,22 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     });
                     this.taskName = res.title;
                     this.selectedDepartments = res.departments;
+
                     this.selectedCompanyUsers = res.todoUsers.map((item) => {
                         return {
                             id: item.companyUserId,
                             name: item.firstName.concat(' ', item.lastName),
                         };
                     });
+
+                    this.taskForm
+                        .get('companyUserIdsHeleper')
+                        .patchValue(
+                            this.selectedCompanyUsers.length
+                                ? JSON.stringify(this.selectedCompanyUsers)
+                                : null
+                        );
+
                     this.comments = res.comments.map(
                         (item: CommentResponse) => {
                             return {
@@ -403,9 +402,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     this.taskStatus = res.status;
                     this.documents = res.files ? (res.files as any) : [];
                 },
-                error: () => {
-                 
-                },
+                error: () => {},
             });
     }
 
@@ -425,9 +422,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     });
                     this.resCompanyUsers = [...this.showCompanyUsers];
                 },
-                error: () => {
-                 
-                },
+                error: () => {},
             });
     }
 
@@ -448,6 +443,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     }
                 });
 
+                this.taskForm
+                    .get('departmentIdsHelper')
+                    .patchValue(JSON.stringify(this.selectedDepartments));
+
                 if (this.selectedDepartments?.length) {
                     this.resCompanyUsers = [...usersForDepartment];
                 } else {
@@ -457,6 +456,10 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             }
             case 'assign-task': {
                 this.selectedCompanyUsers = [...event];
+                this.taskForm
+                    .get('companyUserIdsHeleper')
+                    .patchValue(JSON.stringify(this.selectedCompanyUsers));
+
                 break;
             }
             default: {

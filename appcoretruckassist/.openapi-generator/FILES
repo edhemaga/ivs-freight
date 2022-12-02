@@ -40,6 +40,7 @@ api/repairShop.service.ts
 api/route.service.ts
 api/routing.service.ts
 api/shipper.service.ts
+api/state.service.ts
 api/stop.service.ts
 api/tableConfig.service.ts
 api/telematics.service.ts
@@ -401,6 +402,7 @@ model/mapMinimalResponse.ts
 model/mapMinimalResponsePagination.ts
 model/mapResponse.ts
 model/markerNamesResponse.ts
+model/markerNamesResponsePagination.ts
 model/medicalCertificateFeedbackResponse.ts
 model/medicalCertificateReviewResponse.ts
 model/medicalResponse.ts
@@ -629,7 +631,6 @@ model/updateEmergencyContactReviewCommand.ts
 model/updateEmploymentHistoryCommand.ts
 model/updateEventCommand.ts
 model/updateFactoringCompanyCommand.ts
-model/updateFuelStopCommand.ts
 model/updateHosCommand.ts
 model/updateHosRulesCommand.ts
 model/updateLoadStatusCommand.ts

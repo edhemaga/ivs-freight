@@ -75,7 +75,6 @@
                     }"
                     [options]="truckType"
                     [activeItem]="selectedTruckType"
-                    (pagination)="truckListPagination($event)"
                     (selectedItem)="onSelectDropDown($event, 'truck')"
                 ></app-ta-input-dropdown>
             </div>
@@ -86,19 +85,31 @@
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
-                        label: 'Truck',
+                        label: 'Trailer',
                         isRequired: true,
                         isDropdown: true,
                         dropdownImageInput: {
                             withText: true,
                             svg: true,
                             image: false,
-                            url: selectedDispatchHistory?.logoName,
-                            template: 'truck',
-                            class: selectedDispatchHistory?.trailerTypeName
-                                ?.trim()
-                                .replace(' ', '')
-                                .toLowerCase()
+                            url: selectedTrailerType?.logoName,
+                            template: 'trailer',
+                            class: selectedTrailerType?.name
+                                ?.toLowerCase()
+                                .includes('liquid')
+                                ? 'tanker-liquid'
+                                : selectedTrailerType?.name
+                                      ?.toLowerCase()
+                                      ?.includes('rgn')
+                                ? 'low-boy-rgn'
+                                : selectedTrailerType?.name
+                                      ?.toLowerCase()
+                                      .includes('dry-bulk')
+                                ? 'tanker-dry-bulk'
+                                : selectedTrailerType?.name
+                                      ?.trim()
+                                      .replace(' ', '')
+                                      .toLowerCase()
                         },
                         dropdownWidthClass: 'w-col-216',
                         customClass: 'truck-trailer-dropdown',
@@ -256,8 +267,6 @@
             (onActionEvent)="addFuelItems($event)"
         >
             <div
-                cdkDropList
-                (cdkDropListDropped)="drop($event)"
                 formArrayName="fuelItems"
                 class="common-fake-table-modal common-fake-table-modal-fuel-transaction"
                 *ngIf="fuelItems.length"
@@ -275,22 +284,15 @@
                             let fuelItem of fuelItems.controls;
                             let ind = index
                         "
-                        cdkDrag
                     >
                         <div
                             [formGroupName]="ind"
                             class="common-fake-table-card"
-                            (mouseenter)="hoverRowTable[ind] = true"
-                            (mouseleave)="hoverRowTable[ind] = false"
                         >
-                            <p *ngIf="!hoverRowTable[ind]">
+                            <p>
                                 {{ fuelItem.get('reorderingNumber').value }}
                             </p>
-                            <svg-icon
-                                class="common-fake-table-card-transfer-svg"
-                                *ngIf="hoverRowTable[ind]"
-                                src="assets/svg/common/ic_transfer-array.svg"
-                            ></svg-icon>
+
                             <app-ta-input-dropdown
                                 formControlName="itemId"
                                 [inputConfig]="{

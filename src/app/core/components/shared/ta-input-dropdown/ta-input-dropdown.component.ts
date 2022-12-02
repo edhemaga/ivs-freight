@@ -145,17 +145,18 @@ export class TaInputDropdownComponent
 
         // MultiSelect Selected Items From Backend
         if (
-            changes.preloadMultiselectItems?.currentValue?.length !=
-                changes.preloadMultiselectItems?.previousValue?.length &&
+            changes.preloadMultiselectItems?.currentValue?.length &&
             this.inputConfig.multiselectDropdown
         ) {
             if (changes.preloadMultiselectItems?.currentValue?.length) {
-                const timeout = setTimeout(() => {
-                    this.preloadMultiselectItems.forEach((item) => {
+                if (!changes.preloadMultiselectItems?.currentValue?.length) {
+                    return;
+                }
+                changes.preloadMultiselectItems?.currentValue?.forEach(
+                    (item) => {
                         this.onMultiselectSelect(item);
-                    });
-                    clearTimeout(timeout);
-                }, 50);
+                    }
+                );
             } else {
                 this.deleteAllMultiSelectItems(
                     changes.inputConfig?.currentValue?.label
@@ -532,7 +533,7 @@ export class TaInputDropdownComponent
                         return {
                             ...element,
                             contacts: element?.contacts?.filter((subElement) =>
-                                subElement.name
+                                subElement?.fullName
                                     .toLowerCase()
                                     .includes(searchText.toLowerCase())
                             ),

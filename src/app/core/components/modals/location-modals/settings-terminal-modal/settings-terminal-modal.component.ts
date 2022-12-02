@@ -5,7 +5,7 @@ import {
     parkingSlotValidation,
     phoneExtension,
     terminalNameValidation,
-} from '../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -17,22 +17,21 @@ import {
 } from 'appcoretruckassist';
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
-import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
+import { SettingsLocationService } from '../../../settings/state/location-state/settings-location.service';
+import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import {
     phoneFaxRegex,
     rentValidation,
-} from '../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import {
     calculateParkingSlot,
     convertThousanSepInNumber,
     convertNumberInThousandSep,
-} from '../../../../../utils/methods.calculations';
-import { Address } from '../../../../shared/model/address';
-import { FormService } from '../../../../../services/form/form.service';
+} from '../../../../utils/methods.calculations';
+import { Address } from '../../../shared/model/address';
+import { FormService } from '../../../../services/form/form.service';
 
 @Component({
     selector: 'app-settings-terminal-modal',
@@ -122,7 +121,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private settingsLocationService: SettingsLocationService,
         private formService: FormService
     ) {}
@@ -454,14 +452,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .updateCompanyTerminal(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private addTerminal() {
@@ -504,28 +495,14 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         this.settingsLocationService
             .addCompanyTerminal(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private deleteTerminalById(id: number) {
         this.settingsLocationService
             .deleteCompanyTerminalById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private editTerminalById(id: number) {
@@ -626,9 +603,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                         this.isWarehousePhoneExtExist = true;
                     }
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -642,9 +617,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 

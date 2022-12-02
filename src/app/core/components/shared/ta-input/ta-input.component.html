@@ -45,9 +45,6 @@
                 getSuperControl.invalid &&
                 !focusInput),
         'dropdown-label-active': selectedDropdownLabelColor && !editInputMode,
-        'hazardous-mode': inputConfig.placeholderIcon
-            ?.toLowerCase()
-            ?.includes('hazardous'),
         datetimepickerdisabled:
             inputConfig.isDisabled &&
             (inputConfig.name === 'datepicker' ||
@@ -630,9 +627,12 @@
     >
         <span
             style="display: flex; gap: 6px; align-items: center"
-            *ngFor="let item of inputConfig.multipleInputValues.options"
+            *ngFor="
+                let item of inputConfig.multipleInputValues.options;
+                let indx = index
+            "
         >
-            <span *ngIf="item?.logoName">
+            <span *ngIf="item?.logoName && item?.isImg">
                 <img
                     *ngIf="item?.logoName !== 'no-url'"
                     [src]="this.imageBase64Service.sanitizer(item.logoName)"
@@ -651,7 +651,34 @@
                 </div>
             </span>
 
-            <span class="multiple-input-text">{{ item.value }}</span>
+            <svg-icon
+                *ngIf="item?.logoName && item?.isSvg"
+                class="{{ item?.subFolder }} {{
+                    item?.logoType.trim().replace(' ', '').toLowerCase()
+                }}"
+                [src]="item?.logoName"
+            ></svg-icon>
+
+            <span
+                class="multiple-input-text"
+                [ngStyle]="{
+                    color:
+                        indx ===
+                        inputConfig.multipleInputValues.options.length - 1
+                            ? '#919191'
+                            : '#2F2F2F'
+                }"
+            >
+                {{ item.value }}
+            </span>
+            <div
+                *ngIf="item?.isOwner"
+                [ngStyle]="{ position: 'relative', bottom: '1px' }"
+            >
+                <svg-icon
+                    src="assets/svg/common/load/ic_load_driver_owner.svg"
+                ></svg-icon>
+            </div>
         </span>
     </div>
 
@@ -790,7 +817,6 @@
                 inputConfig?.dropdownImageInput?.template === 'color',
             'dropdown-input-image-user':
                 inputConfig?.dropdownImageInput?.withText &&
-                inputConfig?.dropdownImageInput?.url &&
                 inputConfig?.dropdownImageInput?.template === 'user',
             'dropdown-input-image-without-text-transparent':
                 inputConfig?.dropdownImageInput &&
@@ -844,6 +870,7 @@
         <div
             *ngIf="inputConfig.multipleLabel?.labels?.length"
             [class]="inputConfig.multipleLabel?.customClass"
+            [ngClass]="{ 'focus-multiple-label': focusInput }"
         >
             <span
                 *ngFor="

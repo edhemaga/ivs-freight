@@ -19,10 +19,10 @@ import {
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { SettingsOfficeModalComponent } from '../../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from '../../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '../../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from '../../settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { SettingsOfficeModalComponent } from '../../../modals/location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from '../../../modals/location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from '../../../modals/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from '../../../modals/location-modals/settings-terminal-modal/settings-terminal-modal.component';
 import { CompanyParkingService } from '../../settings-location/settings-parking/parking-state/company-parking.service';
 import { ParkingStore } from '../../settings-location/settings-parking/parking-state/company-parking.store';
 import { OfficeStore } from '../../settings-location/settings-office/state/company-office.store';

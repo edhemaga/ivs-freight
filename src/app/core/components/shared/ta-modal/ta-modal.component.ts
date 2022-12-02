@@ -20,7 +20,6 @@ import {
     transition,
     trigger,
 } from '@angular/animations';
-import moment from 'moment';
 
 @Component({
     selector: 'app-ta-modal',
@@ -49,19 +48,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @Input() modalTitle: string;
     @Input() editName: string;
-    @Input() loadModalTitle: string;
-    @Input() loadModalBill: {
-        baseRate: number;
-        adjusted: number;
-        advance: number;
-        layover: number;
-        lumper: number;
-        fuelSurcharge: number;
-        escort: number;
-        detention: number;
-    } = null;
     @Input() loadModalTemplate: boolean;
-    @Input() hazardousLogo?: boolean;
+    @Input() isVisibleHazardous?: boolean;
+    @Input() isVisibleMap?: boolean;
     @Input() editData: any;
     @Input() confirmationData: any;
     @Input() headerSvg: string;
@@ -111,6 +100,12 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     @Output() onTabHeaderChange: EventEmitter<any> = new EventEmitter<any>();
 
+    @Output('additionalPartVisibility')
+    additionalPartVisibilityEvent: EventEmitter<{
+        action: string;
+        isOpen: boolean;
+    }> = new EventEmitter<{ action: string; isOpen: boolean }>();
+
     private timeout = null;
 
     public saveSpinnerVisibility: boolean = false;
@@ -127,7 +122,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     public isLeaveZone: boolean = false;
     public hoverZone: boolean = false;
 
-    public dateNow = moment().format('DD/MM/YY');
+    public mapVisibility: boolean = false;
+    public hazardousVisibility: boolean = false;
 
     constructor(
         private ngbActiveModal: NgbActiveModal,
@@ -408,9 +404,32 @@ export class TaModalComponent implements OnInit, OnDestroy {
         this.onTabHeaderChange.emit(event);
     }
 
-    public removeSelections(e) {
-        let selection = window.getSelection();
-        selection.removeAllRanges();
+    public toggleAdditionalPart(action: string) {
+        switch (action) {
+            case 'map': {
+                this.mapVisibility = !this.mapVisibility;
+                this.hazardousVisibility = false;
+
+                this.additionalPartVisibilityEvent.emit({
+                    action: 'map',
+                    isOpen: this.mapVisibility,
+                });
+                break;
+            }
+            case 'hazardous': {
+                this.hazardousVisibility = !this.hazardousVisibility;
+                this.mapVisibility = false;
+
+                this.additionalPartVisibilityEvent.emit({
+                    action: 'hazardous',
+                    isOpen: this.hazardousVisibility,
+                });
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {

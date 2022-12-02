@@ -158,12 +158,6 @@ ngb-modal-window[aria-hidden='true'] {
                     line-height: 16px;
                 }
 
-                .modal-hazardous-logo {
-                    width: 23px;
-                    height: 23px;
-                    line-height: 22px;
-                }
-
                 .edit-name {
                     color: #ffffff;
                     background: #424242;
@@ -288,32 +282,115 @@ ngb-modal-window[aria-hidden='true'] {
                     }
                 }
 
-                .modal-close {
-                    position: relative;
-                    right: 1px;
-                    cursor: pointer;
-                    transition: all 0.3s ease-in;
+                .modal-header-rightside {
+                    display: flex;
+                    align-items: center;
 
-                    svg {
-                        width: 26px;
+                    .modal-hazardous-logo {
                         height: 26px;
-                        path {
-                            fill: #919191;
+                        width: 26px;
+                        margin-right: 3px;
+                        cursor: pointer !important;
+                        position: relative;
+                    }
+
+                    .modal-header-load-map-button {
+                        height: 26px;
+                        width: 26px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        position: relative;
+                        background-color: transparent;
+                        border-radius: 2px;
+                        margin-right: 9px;
+                        cursor: pointer !important;
+                        padding-bottom: 1px;
+                        transition: all 0.3s ease-in-out;
+
+                        svg-icon {
+                            svg {
+                                path {
+                                    fill: #919191;
+                                }
+                            }
                         }
 
-                        rect {
-                            fill: transparent;
-                            border-radius: 2px;
+                        &::after {
+                            content: '';
+                            width: 1px;
+                            height: 20px;
+                            background-color: #dadada;
+                            border-radius: 1px;
+                            position: absolute;
+                            right: -5px;
+                            top: 3px;
+                        }
+
+                        &:hover {
+                            background-color: rgb(66, 66, 66, 0.2);
+
+                            svg-icon {
+                                svg {
+                                    path {
+                                        fill: #424242;
+                                    }
+                                }
+                            }
+                        }
+
+                        &.active {
+                            background-color: #3074d3;
+
+                            svg-icon {
+                                svg {
+                                    path {
+                                        fill: #ffffff;
+                                    }
+                                }
+                            }
+
+                            &:hover {
+                                background-color: #255bb9;
+
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #ffffff;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
-                    &:hover {
+                    .modal-close {
+                        position: relative;
+                        right: 1px;
+                        cursor: pointer;
+                        transition: all 0.3s ease-in-out;
+
                         svg {
+                            width: 26px;
+                            height: 26px;
                             path {
-                                fill: #424242;
+                                fill: #919191;
                             }
+
                             rect {
-                                fill: rgb(66, 66, 66, 0.2);
+                                fill: transparent;
+                                border-radius: 2px;
+                            }
+                        }
+
+                        &:hover {
+                            svg {
+                                path {
+                                    fill: #424242;
+                                }
+                                rect {
+                                    fill: rgb(66, 66, 66, 0.2);
+                                }
                             }
                         }
                     }

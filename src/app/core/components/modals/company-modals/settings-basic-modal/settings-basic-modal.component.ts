@@ -2,7 +2,7 @@ import {
     convertDateFromBackend,
     convertDateToBackend,
     convertThousanSepInNumber,
-} from './../../../../../utils/methods.calculations';
+} from '../../../../utils/methods.calculations';
 import {
     accountBankValidation,
     addressUnitValidation,
@@ -28,7 +28,7 @@ import {
     tollValidation,
     urlValidation,
     usdotValidation,
-} from './../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -41,23 +41,22 @@ import {
 } from 'appcoretruckassist';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
-import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
-import { ModalService } from '../../../../shared/ta-modal/modal.service';
-import { BankVerificationService } from '../../../../../services/BANK-VERIFICATION/bankVerification.service';
-import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
-import { DropZoneConfig } from '../../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../../services/notification/notification.service';
+import { SettingsCompanyService } from '../../../settings/state/company-state/settings-company.service';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
+import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import {
     einNumberRegex,
     phoneFaxRegex,
-} from '../../../../shared/ta-input/ta-input.regex-validations';
-import { convertNumberInThousandSep } from '../../../../../utils/methods.calculations';
-import { FormService } from '../../../../../services/form/form.service';
+} from '../../../shared/ta-input/ta-input.regex-validations';
+import { convertNumberInThousandSep } from '../../../../utils/methods.calculations';
+import { FormService } from '../../../../services/form/form.service';
 import {
     startingValidation,
     cvcValidation,
-} from '../../../../shared/ta-input/ta-input.regex-validations';
+} from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
     selector: 'app-settings-basic-modal',
@@ -252,7 +251,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private settingsCompanyService: SettingsCompanyService,
         private bankVerificationService: BankVerificationService,
         private formService: FormService
@@ -601,7 +599,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    
                     this.selectedBankAccountFormArray[index] = {
                         id: res.id,
                         name: bank.data.name,
@@ -611,9 +608,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                         this.selectedBankAccountFormArray[index],
                     ];
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -994,9 +989,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                     this.selectedOtherPayPeriod = res.payPeriods[0];
                     this.selectedOtherEndingIn = res.endingIns[0];
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -1114,14 +1107,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.settingsCompanyService
             .addCompanyDivision(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private editCompanyDivision() {
@@ -1336,28 +1322,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.settingsCompanyService
             .updateCompanyDivision(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     public deleteCompanyDivisionById(id: number) {
         this.settingsCompanyService
             .deleteCompanyDivisionById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                 
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     public updateCompany() {
@@ -1631,14 +1603,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         this.settingsCompanyService
             .updateCompany(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private editCompany() {
