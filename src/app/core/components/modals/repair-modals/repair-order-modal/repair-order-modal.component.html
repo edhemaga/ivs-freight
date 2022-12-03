@@ -10,7 +10,8 @@
     [editName]="editData?.data?.textUnit"
     [isModalValid]="repairOrderForm.valid && isFormDirty"
     [tabChange]="
-        editData?.type?.includes('edit') && repairType === 'Bill'
+        (editData?.type?.includes('edit') && selectedRepairType === 'Bill') ||
+        editData?.type?.includes('edit-fo')
             ? null
             : headerTabs
     "

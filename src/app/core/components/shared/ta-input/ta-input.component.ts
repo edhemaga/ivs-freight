@@ -178,7 +178,7 @@ export class TaInputComponent
 
                 this.input.nativeElement.focus();
                 clearTimeout(timeout);
-            }, 450);
+            }, 250);
         }
 
         // Reset Inputs

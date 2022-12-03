@@ -656,7 +656,9 @@ export class TaInputDropdownComponent
                 this.options = this.originalOptions;
 
                 if (this.template === 'fuel-franchise') {
-                    this.getSuperControl.patchValue(option.businessName);
+                    this.getSuperControl.patchValue(
+                        group ? option.name : option.businessName
+                    );
                     const { id } = option;
                     group
                         ? this.selectedItem.emit({
