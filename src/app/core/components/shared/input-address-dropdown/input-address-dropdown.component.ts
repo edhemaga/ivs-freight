@@ -101,15 +101,15 @@ export class InputAddressDropdownComponent
         this.superControl.valueAccessor = this;
     }
 
-    writeValue(obj: any): void {}
+    writeValue(_: any): void {}
 
     public registerOnChange(fn: any): void {
         this.onChange = fn;
     }
 
-    public onChange(event: any): void {}
+    public onChange(_: any): void {}
 
-    registerOnTouched(fn: any): void {}
+    registerOnTouched(_: any): void {}
 
     ngOnInit(): void {
         this.getSuperControl.valueChanges
@@ -265,7 +265,7 @@ export class InputAddressDropdownComponent
     }
 
     onClearInputEvent(e: any) {
-        if(e) {
+        if (e) {
             const addressData = {
                 address: {},
                 valid: false,

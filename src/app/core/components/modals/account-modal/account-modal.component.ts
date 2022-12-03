@@ -147,7 +147,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CompanyAccountModalResponse) => {
-                    this.accountLabels = res.labels;
+                    this.accountLabels = res.labels.map((item) => {
+                        return { ...item, dropLabel: true };
+                    });
                 },
             });
     }

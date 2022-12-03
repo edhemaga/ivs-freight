@@ -54,6 +54,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    private storeDrugType: any = null;
+
     constructor(
         private formBuilder: FormBuilder,
         private driverService: DriverTService,
@@ -66,7 +68,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
         this.getDrugDropdowns();
-        this.testStateChange();
 
         if (this.editData) {
             this.getDriverById(this.editData.id);
@@ -157,33 +158,22 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private testStateChange() {
-        this.drugForm
-            .get('testType')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.inputService.changeValidators(
-                        this.drugForm.get('testReasonId')
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.drugForm.get('testReasonId'),
-                        false
-                    );
-                }
-            });
-    }
-
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
             case 'test': {
                 this.selectedTestType = event;
 
-                this.inputService.changeValidators(
-                    this.drugForm.get('testReasonId'),
-                    event ? true : false
-                );
+                if (this.storeDrugType?.name !== this.selectedTestType?.name) {
+                    this.storeDrugType = this.selectedTestType;
+                    this.inputService.changeValidators(
+                        this.drugForm.get('testReasonId'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.drugForm.get('testReasonId'),
+                        true
+                    );
+                }
 
                 if (this.selectedTestType.name.toLowerCase() === 'drug') {
                     this.reasons = this.drugReasons;
@@ -314,6 +304,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                     });
                     this.selectedTestType = res.testType;
+                    this.storeDrugType = res.testType;
                     this.selectedReasonType = res.testReason;
                     this.selectedTestResult = res.result;
                     this.documents = res.files;

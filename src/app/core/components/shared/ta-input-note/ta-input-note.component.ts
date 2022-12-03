@@ -95,7 +95,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
         this.value = event;
     }
 
-    public registerOnTouched(fn: any): void {}
+    public registerOnTouched(_: any): void {}
 
     public openNote() {
         const oldNoActive = this.noActive;
@@ -137,14 +137,12 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     }
 
     checkActiveItems() {
-        if(this.noteContainer && this.noteContainer?.checkActiveItems) {
-            this.noteContainer?.checkActiveItems();     
+        if (this.noteContainer && this.noteContainer?.checkActiveItems) {
+            this.noteContainer?.checkActiveItems();
         }
     }
 
     saveNote(allowSave?: boolean) {
-        console.log('NOTE SAVED');
-
         if (this.value == '<br>') {
             this.value = this.value.replace('<br>', '');
         }
