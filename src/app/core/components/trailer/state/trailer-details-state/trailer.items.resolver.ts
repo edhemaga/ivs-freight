@@ -32,6 +32,8 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
     ): Observable<TrailerItemState> | Observable<any> {
         const trailer_id = route.paramMap.get('id');
         let trid = parseInt(trailer_id);
+
+        console.log('--here-----')
         if (this.trailerDetailListQuery.hasEntity(trid)) {
             return this.trailerDetailListQuery.selectEntity(trid).pipe(
                 tap((trailerResponse: TrailerResponse) => {
@@ -43,9 +45,11 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
             return this.trailerService.getTrailerById(trid).pipe(
                 catchError((error) => {
                     this.router.navigate(['/trailer']);
+                    console.log('--here-----')
                     return of('No trailer data for...' + trailer_id);
                 }),
                 tap((trailerReponse: TrailerResponse) => {
+                    console.log('--here-----')
                     this.trailerDetailListStore.add(trailerReponse);
                     this.trailerDetailStore.set([trailerReponse]);
                 })

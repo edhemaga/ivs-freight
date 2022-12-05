@@ -9,18 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DispatchShortResponse } from './dispatchShortResponse';
-import { MvrResponse } from './mvrResponse';
-import { TestResponse } from './testResponse';
-import { EnumValue } from './enumValue';
-import { PerMileEntity } from './perMileEntity';
 import { FileResponse } from './fileResponse';
-import { MedicalResponse } from './medicalResponse';
 import { BankResponse } from './bankResponse';
+import { DispatchShortResponse } from './dispatchShortResponse';
 import { EmploymentHistoryResponse } from './employmentHistoryResponse';
-import { CdlResponse } from './cdlResponse';
+import { EnumValue } from './enumValue';
 import { OwnerResponse } from './ownerResponse';
 import { OffDutyLocationResponse } from './offDutyLocationResponse';
+import { PerMileEntity } from './perMileEntity';
 import { NotificationEntity } from './notificationEntity';
 import { AddressEntity } from './addressEntity';
 
@@ -63,10 +59,6 @@ export interface DriverResponse {
     emergencyContactRelationship?: string | null;
     general?: NotificationEntity;
     payroll?: NotificationEntity;
-    medicals?: Array<MedicalResponse> | null;
-    tests?: Array<TestResponse> | null;
-    cdls?: Array<CdlResponse> | null;
-    mvrs?: Array<MvrResponse> | null;
     employmentHistories?: Array<EmploymentHistoryResponse> | null;
     offDutyLocations?: Array<OffDutyLocationResponse> | null;
     mvrExpirationDays?: number | null;
