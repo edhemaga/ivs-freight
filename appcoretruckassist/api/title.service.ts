@@ -163,7 +163,7 @@ export class TitleService {
             }
         }
 
-        let localVarPath = `/api/title/`;
+        let localVarPath = `/api/title/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
