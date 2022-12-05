@@ -483,14 +483,6 @@ export class ViolationService {
     /**
      * @param active 
      * @param categoryReport 
-     * @param dateFrom 
-     * @param dateTo 
-     * @param stateIds 
-     * @param driverIds 
-     * @param truckIds 
-     * @param trailerIds 
-     * @param violation 
-     * @param citation 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -501,10 +493,10 @@ export class ViolationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionListResponse>;
-    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
-    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
-    public apiViolationListGet(active?: boolean, categoryReport?: number, dateFrom?: string, dateTo?: string, stateIds?: Array<number>, driverIds?: Array<number>, truckIds?: Array<number>, trailerIds?: Array<number>, violation?: number, citation?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RoadsideInspectionListResponse>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RoadsideInspectionListResponse>>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RoadsideInspectionListResponse>>;
+    public apiViolationListGet(active?: boolean, categoryReport?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
@@ -514,46 +506,6 @@ export class ViolationService {
         if (categoryReport !== undefined && categoryReport !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>categoryReport, 'CategoryReport');
-        }
-        if (dateFrom !== undefined && dateFrom !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>dateFrom, 'DateFrom');
-        }
-        if (dateTo !== undefined && dateTo !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>dateTo, 'DateTo');
-        }
-        if (stateIds) {
-            stateIds.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'StateIds');
-            })
-        }
-        if (driverIds) {
-            driverIds.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'DriverIds');
-            })
-        }
-        if (truckIds) {
-            truckIds.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'TruckIds');
-            })
-        }
-        if (trailerIds) {
-            trailerIds.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'TrailerIds');
-            })
-        }
-        if (violation !== undefined && violation !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>violation, 'Violation');
-        }
-        if (citation !== undefined && citation !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>citation, 'Citation');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

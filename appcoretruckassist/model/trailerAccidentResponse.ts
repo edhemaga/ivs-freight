@@ -17,7 +17,6 @@ export interface TrailerAccidentResponse {
     id?: number;
     trailerType?: TrailerTypeResponse;
     trailerMake?: TrailerMakeResponse;
-    stateShortName?: string | null;
     trailerNumber?: string | null;
     licensePlate?: string | null;
     vin?: string | null;

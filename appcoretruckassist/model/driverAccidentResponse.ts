@@ -14,8 +14,5 @@
 export interface DriverAccidentResponse { 
     id?: number;
     fullName?: string | null;
-    dateOfBirth?: string;
-    cdlNumber?: string | null;
-    stateShortName?: string | null;
 }
 

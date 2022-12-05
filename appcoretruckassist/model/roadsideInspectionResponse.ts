@@ -11,20 +11,20 @@
  */
 import { FileResponse } from './fileResponse';
 import { BrokerMinimalResponse } from './brokerMinimalResponse';
-import { ViolationCategoryResponse } from './violationCategoryResponse';
+import { EnumValue } from './enumValue';
 import { TrailerAccidentResponse } from './trailerAccidentResponse';
 import { StateResponse } from './stateResponse';
+import { DriverMinimalResponse } from './driverMinimalResponse';
 import { TruckAccidentResponse } from './truckAccidentResponse';
 import { ViolationResponse } from './violationResponse';
 import { AddressEntity } from './addressEntity';
 import { RoadsideInspectionSpecialCheckResponse } from './roadsideInspectionSpecialCheckResponse';
-import { DriverAccidentResponse } from './driverAccidentResponse';
 
 
 export interface RoadsideInspectionResponse { 
     id?: number;
     report?: string | null;
-    violationCategory?: ViolationCategoryResponse;
+    categoryReport?: EnumValue;
     inspectionLevel?: string | null;
     hmInspectionType?: string | null;
     county?: string | null;
@@ -32,7 +32,7 @@ export interface RoadsideInspectionResponse {
     startTime?: string | null;
     endTime?: string | null;
     date?: string | null;
-    driver?: DriverAccidentResponse;
+    driver?: DriverMinimalResponse;
     driver_FullName?: string | null;
     driver_LicenceNo?: string | null;
     driver_State?: string | null;

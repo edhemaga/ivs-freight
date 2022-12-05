@@ -212,6 +212,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
+    public tags: any[] = [];
 
     public comments: any[] = [];
 
@@ -321,6 +322,7 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
             stops: this.formBuilder.array([]),
             note: [null],
             files: [null],
+            tags: [null],
         });
 
         this.formService.checkFormChange(this.loadForm);
@@ -1388,8 +1390,9 @@ export class LoadModalComponent implements OnInit, AfterViewInit, OnDestroy {
             .getLoadDropdowns(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: LoadModalResponse) => {
+                next: (res: any /*LoadModalResponse*/) => {
                     this.loadNumber = res.loadNumber;
+                    this.tags = res.tags;
 
                     // Brokers
                     this.labelsBroker = res.brokers.map((item) => {

@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ViolationCategoryResponse } from './violationCategoryResponse';
 
 
 export interface ViolationResponse { 
@@ -22,7 +21,7 @@ export interface ViolationResponse {
     sms?: boolean | null;
     description?: string | null;
     extraDescription?: string | null;
-    violationCategory?: ViolationCategoryResponse;
+    basic?: string | null;
     reason?: string | null;
 }
 

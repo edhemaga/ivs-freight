@@ -13,9 +13,9 @@ import { FileResponse } from './fileResponse';
 import { BrokerMinimalResponse } from './brokerMinimalResponse';
 import { TrailerAccidentResponse } from './trailerAccidentResponse';
 import { InsuranceTypeResponse } from './insuranceTypeResponse';
+import { DriverMinimalResponse } from './driverMinimalResponse';
 import { TruckAccidentResponse } from './truckAccidentResponse';
 import { AddressEntity } from './addressEntity';
-import { DriverAccidentResponse } from './driverAccidentResponse';
 
 
 export interface AccidentResponse { 
@@ -32,7 +32,7 @@ export interface AccidentResponse {
     addressAccident?: AddressEntity;
     date?: string | null;
     time?: string | null;
-    driver?: DriverAccidentResponse;
+    driver?: DriverMinimalResponse;
     driver_FullName?: string | null;
     driver_LicenceNo?: string | null;
     driver_State?: string | null;

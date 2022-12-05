@@ -14,8 +14,9 @@ import { RoadsideInspectionResponsePagination } from './roadsideInspectionRespon
 
 export interface RoadsideInspectionListResponse { 
     pagination?: RoadsideInspectionResponsePagination;
+    count?: number;
     active?: number;
     inactive?: number;
-    violationSummary?: number;
+    categoryReport?: number;
 }
 
