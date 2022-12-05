@@ -16,9 +16,13 @@ import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { RoadsideService } from '../../safety/violation/state/roadside.service';
 import { NotificationService } from '../../../services/notification/notification.service';
-import { convertDateFromBackend } from '../../../utils/methods.calculations';
+import {
+    convertDateFromBackend,
+    convertTimeFromBackend,
+} from '../../../utils/methods.calculations';
 import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
+import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
 
 @Component({
     selector: 'app-violation-modal',
@@ -109,8 +113,12 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     public selectedAuthorityOrigin: AddressEntity | any;
     public selectedAuthorityDestination: AddressEntity | any;
 
+    // Customer (Broker) on additional tab
     public selectedViolationCustomer: any = null;
     public labelsViolationCustomer: any[] = [];
+
+    // Violation array categories
+    public violationCategories: any[] = [];
 
     public selectedCounty: any = null;
     public labelsCounty: any[] = [];
@@ -243,6 +251,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     }
 
     public createViolation(data: {
+        id: number;
         code: string;
         category: string;
         unit: string;
@@ -251,10 +260,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         sms: boolean;
         description: string;
         extraDescription: string;
-        basic: string;
         reason: string;
     }) {
         return this.formBuilder.group({
+            id: [data.id],
             code: [data.code],
             category: [data.category],
             unit: [data.unit],
@@ -266,7 +275,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                 data.extraDescription,
                 [...descriptionValidation],
             ],
-            basic: [data.basic],
             reason: [data.reason],
         });
     }
@@ -276,19 +284,20 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             address: AddressEntity | any;
             valid: boolean;
         },
-        action
+        action: string
     ) {
         switch (action) {
             case 'address-authority': {
-                if (event.valid) this.selectedAuthorityAddress = event;
+                if (event.valid) this.selectedAuthorityAddress = event.address;
                 break;
             }
             case 'address-origin': {
-                if (event.valid) this.selectedAuthorityOrigin = event;
+                if (event.valid) this.selectedAuthorityOrigin = event.address;
                 break;
             }
             case 'address-destination': {
-                if (event.valid) this.selectedAuthorityDestination = event;
+                if (event.valid)
+                    this.selectedAuthorityDestination = event.address;
                 break;
             }
         }
@@ -324,7 +333,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     private updateViolation(id: number) {
         const { ...form } = this.violationForm.value;
-        console.log(this.selectedAuthorityAddress);
+
         const newData: any = {
             id: id,
             county: this.selectedCounty ? this.selectedCounty.id : null,
@@ -333,100 +342,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             policeDepartment: form.policeDepartment,
             policeOfficer: form.policeOfficer,
             badgeNo: form.badgeNo,
-            addressCity: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address.city
-                : null,
-            addressState: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address.state
-                : null,
-            addressCounty: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address.county
-                : null,
-            addressAddress: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address.address
-                : null,
-            addressStreet: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address.street
-                : null,
-            addressStreetNumber: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address.streetNumber
-                : null,
-            addressCountry: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address.country
-                : null,
-            addressZipCode: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address.zipCode
-                : null,
-            addressStateShortName: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address.stateShortName
-                : null,
-            addressAddressUnit: this.selectedAuthorityAddress
-                ? this.selectedAuthorityAddress.address.addressUnit
-                : null,
+            address: this.selectedAuthorityAddress,
             phone: form.phone,
             fax: form.fax,
             highway: form.highway,
             milePost: form.milePost,
-            originCity: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address.city
-                : null,
-            originState: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address.state
-                : null,
-            originCounty: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address.county
-                : null,
-            originAddress: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address.address
-                : null,
-            originStreet: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address.street
-                : null,
-            originStreetNumber: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address.streetNumber
-                : null,
-            originCountry: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address.country
-                : null,
-            originZipCode: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address.zipCode
-                : null,
-            originStateShortName: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address.stateShortName
-                : null,
-            originAddressUnit: this.selectedAuthorityOrigin
-                ? this.selectedAuthorityOrigin.address.addressUnit
-                : null,
-            destinationCity: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address.city
-                : null,
-            destinationState: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address.state
-                : null,
-            destinationCounty: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address.county
-                : null,
-            destinationAddress: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address.address
-                : null,
-            destinationStreet: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address.street
-                : null,
-            destinationStreetNumber: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address.streetNumber
-                : null,
-            destinationCountry: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address.country
-                : null,
-            destinationZipCode: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address.zipCode
-                : null,
-            destinationStateShortName: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address.stateShortName
-                : null,
-            destinationAddressUnit: this.selectedAuthorityDestination
-                ? this.selectedAuthorityDestination.address.addressUnit
-                : null,
+            origin: this.selectedAuthorityOrigin,
+            destination: this.selectedAuthorityDestination,
             brokerId: this.selectedViolationCustomer
                 ? this.selectedViolationCustomer.id
                 : null,
@@ -437,23 +359,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             filesForDeleteIds: [],
         };
 
-        console.log('udpate violation: ', newData);
-
         this.roadsideService
             .updateRoadside(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                    });
-                },
-                error: (err: any) => {
-              
-                },
-            });
+            .subscribe();
     }
 
     private editViolationById(id: number) {
@@ -461,26 +370,44 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .getRoadsideById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any) => {
+                next: (res: RoadsideInspectionResponse) => {
                     this.violationForm.patchValue({
                         report: res.report,
-                        categoryReport: res.categoryReport
-                            ? res.categoryReport.name
+                        categoryReport: res.violationCategory?.name
+                            ? res.violationCategory.name
                             : null,
                         inspectionLevel: res.inspectionLevel,
                         hmInspectionType: res.hmInspectionType,
-                        county: null, //TODO: Wait for backend
-                        state: res.state ? res.state.stateShortName : null,
-                        startTime: res.startTime,
-                        endTime: res.endTime,
+                        county: res.county, //TODO: Wait for backend
+                        state: res.state?.stateShortName
+                            ? res.state.stateShortName
+                            : null,
+                        startTime: res.startTime
+                            ? convertTimeFromBackend(res.startTime)
+                            : null,
+                        endTime: res.endTime
+                            ? convertTimeFromBackend(res.endTime)
+                            : null,
                         date: res.date
                             ? convertDateFromBackend(res.date)
                             : null,
                         // Driver
-                        driverName: res.driver_FullName,
-                        driverLicenceNumber: res.driver_LicenceNo,
-                        driverState: res.driver_State,
-                        driverDOB: res.driver_DateOfBirth
+                        driverName: res.driver
+                            ? res.driver?.fullName
+                            : res.driver_FullName,
+                        driverLicenceNumber: res.driver
+                            ? res.driver.cdlNumber
+                            : res.driver_LicenceNo,
+                        driverState: res.driver
+                            ? res.driver.stateShortName
+                            : res.driver_State,
+                        driverDOB: res.driver
+                            ? res.driver?.dateOfBirth
+                                ? convertDateFromBackend(
+                                      res.driver?.dateOfBirth
+                                  )
+                                : null
+                            : res.driver_DateOfBirth
                             ? convertDateFromBackend(res.driver_DateOfBirth)
                             : null,
                         // Co Driver
@@ -491,19 +418,41 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             ? convertDateFromBackend(res.coDriver_DateOfBirth)
                             : null,
                         // Truck
-                        truck_Unit: res.truck_Unit,
-                        truck_Type: res.truck_Type,
-                        truck_Make: res.truck_Make,
-                        truck_PlateNo: res.truck_PlateNo,
-                        truck_State: res.truck_State,
-                        truck_VIN: res.truck_VIN,
+                        truck_Unit: res.truck
+                            ? res.truck?.truckNumber
+                            : res.truck_Unit,
+                        truck_Type: res.truck
+                            ? res.truck?.truckType?.name
+                            : res.truck_Type,
+                        truck_Make: res.truck
+                            ? res.truck?.truckMake?.name
+                            : res.truck_Make,
+                        truck_PlateNo: res.truck
+                            ? res.truck?.licensePlate
+                            : res.truck_PlateNo,
+                        truck_State: res.truck
+                            ? res.truck?.stateShortName
+                            : res.truck_State,
+                        truck_VIN: res.truck ? res?.truck_VIN : res.truck_VIN,
                         // Trailer
-                        trailer_Unit: res.trailer_Unit,
-                        trailer_Type: res.trailer_Type,
-                        trailer_Make: res.trailer_Make,
-                        trailer_PlateNo: res.trailer_PlateNo,
-                        trailer_State: res.trailer_State,
-                        trailer_VIN: res.trailer_VIN,
+                        trailer_Unit: res.trailer
+                            ? res.trailer?.trailerNumber
+                            : res.trailer_Unit,
+                        trailer_Type: res.trailer
+                            ? res.trailer?.trailerType?.name
+                            : res.trailer_Type,
+                        trailer_Make: res.trailer
+                            ? res.trailer?.trailerMake?.name
+                            : res.trailer_Make,
+                        trailer_PlateNo: res.trailer
+                            ? res.trailer?.licensePlate
+                            : res.trailer_PlateNo,
+                        trailer_State: res.trailer
+                            ? res.trailer?.stateShortName
+                            : res.trailer_State,
+                        trailer_VIN: res.trailer
+                            ? res.trailer?.vin
+                            : res.trailer_VIN,
                         // Violation
                         violations: [],
                         note: res.note,
@@ -532,46 +481,15 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
                     this.violationModalName = res.report;
 
-                    if (res.driver) {
-                        this.violationForm.patchValue({
-                            driverName: res.driver.firstName.concat(
-                                ' ',
-                                res.driver.lastName
-                            ),
-                            driverLicenceNumber: null,
-                            driverState: null,
-                            driverDOB: null,
-                        });
-                    }
-
-                    if (res.truck) {
-                        this.violationForm.patchValue({
-                            truck_Unit: res.truck.truckNumber,
-                            truck_Type: res.truck.truckType.name,
-                            truck_Make: res.truck.truckMake.name,
-                            truck_PlateNo: res.truck.licensePlate,
-                            truck_State: null,
-                            truck_VIN: res.truck.vin,
-                        });
-                    }
-
-                    if (res.trailer) {
-                        this.violationForm.patchValue({
-                            trailer_Unit: res.trailer.trailerNumber,
-                            trailer_Type: res.trailer.trailerType.name,
-                            trailer_Make: res.trailer.trailerMake.name,
-                            trailer_PlateNo: res.trailer.licensePlate,
-                            trailer_State: null,
-                            trailer_VIN: res.trailer.vin,
-                        });
-                    }
-
                     if (res.violations.length) {
                         for (let i = 0; i < res.violations.length; i++) {
                             this.violations.push(
                                 this.createViolation({
+                                    id: res.violations[i].id,
                                     code: res.violations[i].code,
-                                    category: res.violations[i].basic,
+                                    category:
+                                        res.violations[i].violationCategory
+                                            .name,
                                     unit: res.violations[i].unit,
                                     sw: res.violations[i].sw,
                                     oos: res.violations[i].oos,
@@ -584,31 +502,25 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                                               res.violations[i].extraDescription
                                           )
                                         : res.violations[i].description,
-                                    basic: res.violations[i].basic,
                                     reason: res.violations[i].reason,
                                 })
                             );
+                            this.violationCategories[i] =
+                                res.violations[i].violationCategory;
                         }
                     }
 
                     if (res.specialChecks.length) {
-                        for (let i = 0; i < this.specialChecks.length; i++) {
-                            for (let j = 0; j < res.specialChecks.length; j++) {
-                                if (
-                                    this.specialChecks[i].name ===
-                                    res.specialChecks[j].specialChecks.name
-                                ) {
-                                    this.specialChecks[i].active =
-                                        res.specialChecks[j].active;
-                                    break;
-                                }
-                            }
-                        }
+                        this.specialChecks = res.specialChecks.map((item) => {
+                            return {
+                                id: item.specialChecks.id,
+                                name: item.specialChecks.name,
+                                active: item.active,
+                            };
+                        });
                     }
                 },
-                error: (err: any) => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -625,19 +537,14 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: (err: any) => {
-                 
-                },
+                error: () => {},
             });
     }
 
     private premmapedSpecialChecks() {
         return this.specialChecks.map((item) => {
             return {
-                specialCheck: {
-                    id: item.id,
-                    name: item.name,
-                },
+                specialCheck: item.id,
                 active: item.active,
             };
         });
@@ -646,6 +553,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     private premmapedViolations() {
         return this.violations.controls.map((item) => {
             return {
+                id: item.get('id').value,
                 code: item.get('code').value,
                 category: item.get('category').value,
                 unit: item.get('unit').value,
@@ -658,7 +566,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                           .get('extraDescription')
                           .value.replace(item.get('description').value, '')
                     : null,
-                basic: item.get('basic').value,
                 reason: item.get('reason').value,
             };
         });

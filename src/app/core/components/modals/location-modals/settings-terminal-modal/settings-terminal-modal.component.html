@@ -33,14 +33,14 @@
                         formControlName="isOwner"
                         [label]="'Company Owned'"
                         [name]="'company-owned'"
-                        [reverseLogic]="true"
-                        [isCardOpen]="terminalForm.get('isOwner').value"
+                        [hasArrow]="false"
+                        [withoutToggle]="true"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '22px'
                         }"
                     >
-                        <ng-container bodyFalse>
+                        <ng-container bodyWithoutToggle>
                             <div class="row">
                                 <div class="col-12">
                                     <app-ta-input
@@ -471,6 +471,11 @@
                         formControlName="fuelStationChecked"
                         [label]="'Fuel Station'"
                         [name]="'fuel-station'"
+                        [hasArrow]="false"
+                        [animationMarginParams]="{
+                            marginTop: '0px',
+                            marginBottom: '0px'
+                        }"
                     >
                     </app-ta-checkbox-card>
                 </div>

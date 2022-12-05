@@ -14,10 +14,10 @@ import { RepairShopModalComponent } from '../../components/modals/repair-modals/
 import { ShipperModalComponent } from '../../components/modals/shipper-modal/shipper-modal.component';
 import { TrailerModalComponent } from '../../components/modals/trailer-modal/trailer-modal.component';
 import { TruckModalComponent } from '../../components/modals/truck-modal/truck-modal.component';
-import { SettingsOfficeModalComponent } from '../../components/settings/settings-location/location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from '../../components/settings/settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '../../components/settings/settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from '../../components/settings/settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { SettingsOfficeModalComponent } from '../../components/modals/location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from '../../components/modals/location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from '../../components/modals/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from '../../components/modals/location-modals/settings-terminal-modal/settings-terminal-modal.component';
 import { SettingsLocationService } from '../../components/settings/state/location-state/settings-location.service';
 import { ModalService } from '../../components/shared/ta-modal/modal.service';
 

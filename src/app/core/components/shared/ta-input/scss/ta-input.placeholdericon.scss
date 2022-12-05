@@ -78,6 +78,15 @@
         }
     }
 
+    &.valid-required-out-dropdown-label {
+        text {
+            fill: $input-placeholder-icon-path-valid !important;
+        }
+        &::after {
+            background: $input-placeholder-icon-valid-after !important;
+        }
+    }
+
     &.invalid-required-in {
         transition: all 0.3s ease-in-out;
         svg {
@@ -216,16 +225,12 @@
         transition: all 0.3s ease-in-out;
         cursor: pointer;
         svg {
-            path {
-                fill: $input-yellow-color-2;
+            path:not(:nth-child(2)) {
+                fill: unset !important;
             }
-        }
 
-        &:hover {
-            svg {
-                path {
-                    fill: $input-yellow-color-2 !important;
-                }
+            path:nth-child(2) {
+                fill: #424242 !important;
             }
         }
     }

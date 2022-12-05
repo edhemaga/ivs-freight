@@ -25,12 +25,11 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { FormService } from '../../../services/form/form.service';
 import { UserTService } from '../../user/state/user.service';
 import { CompanyUserModalResponse } from '../../../../../../appcoretruckassist/model/companyUserModalResponse';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SettingsOfficeModalComponent } from '../../settings/settings-location/location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsOfficeModalComponent } from '../location-modals/settings-office-modal/settings-office-modal.component';
 import { Options } from 'ng5-slider';
 import { CreateCompanyUserCommand } from '../../../../../../appcoretruckassist/model/createCompanyUserCommand';
 import { CompanyUserResponse } from '../../../../../../appcoretruckassist/model/companyUserResponse';
@@ -158,7 +157,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private userService: UserTService,
         private bankVerificationService: BankVerificationService,
-        private notificationService: NotificationService,
         private formService: FormService,
         private ngbActiveModal: NgbActiveModal
     ) {}
@@ -252,7 +250,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             }
             case 'deactivate': {
                 if (this.editData) {
-                    this.updateUserStatus(this.editData.id, data);
+                    this.updateUserStatus(this.editData.id);
                 }
                 break;
             }
@@ -311,16 +309,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                   
                     this.selectedBank = {
                         id: res.id,
                         name: this.selectedBank.name,
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -404,6 +399,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     'Base + Revenue %',
                 ].includes(this.selectedPayment?.name);
 
+                this.userForm.get('paymentType').reset();
+
                 break;
             }
             default: {
@@ -469,14 +466,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         this.userService
             .updateUser(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: (error: any) => {
-                 
-                },
-            });
+            .subscribe();
     }
 
     private addUser() {
@@ -527,31 +517,18 @@ export class UserModalComponent implements OnInit, OnDestroy {
             base: base ? convertThousanSepInNumber(base) : null,
             commission: commission ? parseFloat(commission) : null,
         };
+
         this.userService
             .addUser(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: (error: any) => {
-                
-                },
-            });
+            .subscribe();
     }
 
     private deleteUserById(id: number) {
         this.userService
             .deleteUserById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: (error: any) => {
-                  
-                },
-            });
+            .subscribe();
     }
 
     private getUserById(id: number) {
@@ -560,7 +537,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CompanyUserResponse) => {
-                    console.log(res);
                     this.userForm.patchValue({
                         firstName: res.firstName,
                         lastName: res.lastName,
@@ -580,9 +556,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         extensionPhone: res.extensionPhone,
                         email: res.email,
                         includeInPayroll: res.includeInPayroll ? true : false,
-                        // paymentType: res.paymentType
-                        //     ? res.paymentType.name
-                        //     : null,
+                        paymentType: res.paymentType
+                            ? res.paymentType.name
+                            : null,
                         salary: res.salary
                             ? convertNumberInThousandSep(res.salary)
                             : null,
@@ -604,9 +580,34 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     this.selectedDepartment = res.department;
                     this.selectedOffice = res.companyOffice;
                     this.selectedUserType = res.userType;
-                    // this.selectedPayment = res.paymentType;
+                    this.selectedPayment = res.paymentType;
+
+                    this.allowOnlyCommission = ['Load %', 'Revenue %'].includes(
+                        this.selectedPayment?.name
+                    );
+
+                    this.allowPairCommissionBase = [
+                        'Base + Load %',
+                        'Base + Revenue %',
+                    ].includes(this.selectedPayment?.name);
 
                     this.userStatus = res.status !== 1;
+
+                    this.isPaymentTypeAvailable = [
+                        'Dispatch',
+                        'Manager',
+                    ].includes(this.selectedDepartment?.name);
+
+                    if (
+                        ['Dispatch', 'Manager'].includes(
+                            this.selectedDepartment?.name
+                        )
+                    ) {
+                        this.paymentOptions =
+                            this.selectedDepartment.name === 'Dispatch'
+                                ? this.heleperForDispatchers
+                                : this.helperForManagers;
+                    }
 
                     this.typeOfEmploye = this.typeOfEmploye.map(
                         (item, index) => {
@@ -649,23 +650,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
                     this.isPhoneExtExist = !!res.extensionPhone;
                 },
-                error: (error: any) => {
-                    
-                },
+                error: () => {},
             });
     }
 
-    private updateUserStatus(
-        id: number,
-        data: { action: string; bool: boolean }
-    ) {
-        let successMessage = `"${this.userFullName}" ${
-            data.action === 'deactivate' ? 'Deactivated' : 'Activated'
-        }`;
-        let errorMessage = `Failed to ${
-            data.action === 'deactivate' ? 'Deactivate' : 'Activate'
-        } "${this.userFullName}"`;
-
+    private updateUserStatus(id: number) {
         this.userService
             .updateUserStatus(id)
             .pipe(takeUntil(this.destroy$))
@@ -678,13 +667,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
                             name: 'deactivate',
                             status: this.userStatus,
                         });
-
-                       
                     }
                 },
-                error: () => {
-              
-                },
+                error: () => {},
             });
     }
 
@@ -694,16 +679,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CompanyUserModalResponse) => {
-                    console.log('drop: ', res);
                     this.departments = res.departments;
                     this.labelsBank = res.banks;
                     this.offices = res.officeShortResponses;
                     this.helperForManagers = res.managerResponses;
                     this.heleperForDispatchers = res.dispatcherResponses;
                 },
-                error: (error: any) => {
-                
-                },
+                error: () => {},
             });
     }
 

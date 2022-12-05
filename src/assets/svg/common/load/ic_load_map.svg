@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+  <g id="Location" transform="translate(-566 -166)">
+    <rect id="Rectangle_63440" data-name="Rectangle 63440" width="18" height="18" transform="translate(566 166)" fill="#fff" opacity="0"/>
+    <path id="map" d="M0,34.528V44.749a.472.472,0,0,0,.648.439l4.075-1.855V32L.594,33.651A.945.945,0,0,0,0,34.528Zm5.667,8.805,5.667,1.889V33.889L5.667,32Zm10.686-11.3-4.075,1.855V45.222l4.128-1.651A.944.944,0,0,0,17,42.694V32.473A.472.472,0,0,0,16.352,32.034Z" transform="translate(566.5 136.389)" fill="#fff"/>
+  </g>
+</svg>

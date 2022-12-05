@@ -67,8 +67,6 @@ export class TaStatusSwitchComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        console.log('WHAT IS STATUS');
-        console.log(this.nextStopType);
         let status_time = moment(new Date(this.statusDate).getTime()).format(
             'YYYY-MM-DD HH:mm'
         );
@@ -88,7 +86,6 @@ export class TaStatusSwitchComponent implements OnInit {
     }
 
     public setStatus(status, indx): void {
-        console.log('STATUS', status, indx);
         this.changeStatus.emit(status);
     }
 

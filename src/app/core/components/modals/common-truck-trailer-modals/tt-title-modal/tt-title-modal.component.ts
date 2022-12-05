@@ -6,7 +6,6 @@ import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateToBackend,
@@ -38,7 +37,6 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private commonTruckTrailerService: CommonTruckTrailerService,
         private formService: FormService
     ) {}
@@ -168,14 +166,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         this.commonTruckTrailerService
             .addTitle(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private updateTitle() {
@@ -201,14 +192,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         this.commonTruckTrailerService
             .updateTitle(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private editTitleById(id: number) {
@@ -231,12 +215,13 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                             ? JSON.stringify(res.files)
                             : null,
                     });
-                    this.selectedStateType = res.state;
+                    this.selectedStateType = {
+                        ...res.state,
+                        name: res.state.stateShortName,
+                    };
                     this.documents = res.files;
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -254,9 +239,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

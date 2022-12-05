@@ -406,10 +406,12 @@
                                                 }}
                                             </p>
                                             <div class="violation-category">
-                                                <!-- TODO: Change with backend path -->
                                                 <svg-icon
                                                     class="violation-category-svg"
-                                                    src="assets/svg/common/violation-details/ic_vehicle-maintance.svg"
+                                                    src="assets/svg/common/violation-details/{{
+                                                        violationCategories[ind]
+                                                            ?.logoName
+                                                    }}"
                                                 ></svg-icon>
                                                 <span
                                                     class="violation-category-text"

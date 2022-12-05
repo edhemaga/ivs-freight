@@ -41,7 +41,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
         private tableService: TruckassistTableService,
         private settingCompanyQuery: CompanyQuery,
         private DetailsDataService: DetailsDataService,
-        private CompanyStore: CompanyStore,
+        private CompanyStore: CompanyStore
     ) {}
 
     ngOnInit(): void {
@@ -68,17 +68,19 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
                     .subscribe({
                         next: (res: CompanyResponse) => {
                             this.getData(res);
-                            
+
                             this.cdRef.detectChanges();
                         },
                         error: () => {
-
-                            if ( this.CompanyStore.getValue()?.entities ) {
-                                this.getData(this.CompanyStore.getValue()?.entities[id]);
+                            if (this.CompanyStore.getValue()?.entities) {
+                                this.getData(
+                                    this.CompanyStore.getValue()?.entities[id]
+                                );
                             } else {
-                                this.getData(this.activated.snapshot.data.company);
-                            } 
-                            
+                                this.getData(
+                                    this.activated.snapshot.data.company
+                                );
+                            }
                         },
                     });
             });
@@ -88,7 +90,6 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
 
     public getData(data: CompanyResponse) {
         this.data = data;
-        console.log('--this.date---getData', this.data);
     }
     public selectCompanyFunction() {
         return this.settingCompanyQuery
