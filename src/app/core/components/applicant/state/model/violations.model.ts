@@ -1,5 +1,6 @@
 export interface ViolationModel {
     id?: number;
+    reviewId: number;
     date: string;
     vehicleType: string;
     location: any;

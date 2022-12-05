@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -152,105 +154,6 @@ export class Step2Component implements OnInit, OnDestroy {
 
     public patchStepValues(stepValues: WorkExperienceFeedbackResponse): void {
         const { haveWorkExperience, workExperienceItems } = stepValues;
-
-        if (this.selectedMode === SelectedMode.REVIEW) {
-            const workExperienceItemsReview = workExperienceItems.map(
-                (item) => item.workExperienceItemReview
-            );
-
-            workExperienceItemsReview.pop();
-
-            for (let i = 0; i < workExperienceItemsReview.length; i++) {
-                const firstEmptyObjectInList = this.openAnnotationArray.find(
-                    (item) => Object.keys(item).length === 0
-                );
-
-                const indexOfFirstEmptyObjectInList =
-                    this.openAnnotationArray.indexOf(firstEmptyObjectInList);
-
-                this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                    lineIndex: this.openAnnotationArray.indexOf(
-                        firstEmptyObjectInList
-                    ),
-                    lineInputs: [false],
-                    displayAnnotationButton: false,
-                    displayAnnotationTextArea: false,
-                };
-
-                const workExperienceItemReview = {
-                    ...workExperienceItemsReview[i],
-                };
-
-                delete workExperienceItemReview.isPrimary;
-
-                let hasIncorrectValue: boolean;
-
-                if (workExperienceItemsReview[0]) {
-                    hasIncorrectValue = Object.values(
-                        workExperienceItemReview
-                    ).includes(false);
-                }
-
-                const incorrectMessage =
-                    workExperienceItemsReview[i]?.commonMessage;
-
-                if (
-                    hasIncorrectValue === null ||
-                    hasIncorrectValue == undefined
-                ) {
-                    hasIncorrectValue = false;
-                }
-
-                this.openAnnotationArray[i] = {
-                    ...this.openAnnotationArray[i],
-                    lineInputs: [hasIncorrectValue],
-                    displayAnnotationButton:
-                        hasIncorrectValue && !incorrectMessage ? true : false,
-                    displayAnnotationTextArea: incorrectMessage ? true : false,
-                };
-
-                const inputFieldsArray = JSON.stringify(
-                    this.openAnnotationArray
-                        .filter((item) => Object.keys(item).length !== 0)
-                        .map((item) => item.lineInputs)
-                );
-
-                if (inputFieldsArray.includes('true')) {
-                    this.cardsWithIncorrectFields = true;
-                } else {
-                    this.cardsWithIncorrectFields = false;
-                }
-
-                this.workExperienceForm
-                    .get(`cardReview${i + 1}`)
-                    .patchValue(incorrectMessage ? incorrectMessage : null);
-            }
-        }
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            const lastWorkExperienceItem =
-                workExperienceItems[workExperienceItems.length - 1];
-
-            const lastWorkExperienceItemReview =
-                lastWorkExperienceItem.workExperienceItemReview;
-
-            if (lastWorkExperienceItemReview) {
-                this.stepFeedbackValues = lastWorkExperienceItemReview;
-
-                this.lastItemStepValues = lastWorkExperienceItem;
-
-                console.log('this.lastItemStepValues', this.lastItemStepValues);
-                console.log('this.stepFeedbackValues', this.stepFeedbackValues);
-            }
-
-            /*      if (drugAndAlcoholReview) {
-        this.stepFeedbackValues = drugAndAlcoholReview;
-      }
-
-      this.stepValues = stepValues;
-
-      this.startFeedbackValueChangesMonitoring(); */
-        }
 
         this.workExperienceForm
             .get('noWorkExperience')
@@ -428,6 +331,105 @@ export class Step2Component implements OnInit, OnDestroy {
                   };
         } else {
             this.formStatus = 'VALID';
+        }
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            const workExperienceItemsReview = workExperienceItems.map(
+                (item) => item.workExperienceItemReview
+            );
+
+            workExperienceItemsReview.pop();
+
+            for (let i = 0; i < workExperienceItemsReview.length; i++) {
+                const firstEmptyObjectInList = this.openAnnotationArray.find(
+                    (item) => Object.keys(item).length === 0
+                );
+
+                const indexOfFirstEmptyObjectInList =
+                    this.openAnnotationArray.indexOf(firstEmptyObjectInList);
+
+                this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                    lineIndex: this.openAnnotationArray.indexOf(
+                        firstEmptyObjectInList
+                    ),
+                    lineInputs: [false],
+                    displayAnnotationButton: false,
+                    displayAnnotationTextArea: false,
+                };
+
+                const workExperienceItemReview = {
+                    ...workExperienceItemsReview[i],
+                };
+
+                delete workExperienceItemReview.isPrimary;
+
+                let hasIncorrectValue: boolean;
+
+                if (workExperienceItemsReview[0]) {
+                    hasIncorrectValue = Object.values(
+                        workExperienceItemReview
+                    ).includes(false);
+                }
+
+                const incorrectMessage =
+                    workExperienceItemReview?.commonMessage;
+
+                if (
+                    hasIncorrectValue === null ||
+                    hasIncorrectValue == undefined
+                ) {
+                    hasIncorrectValue = false;
+                }
+
+                this.openAnnotationArray[i] = {
+                    ...this.openAnnotationArray[i],
+                    lineInputs: [hasIncorrectValue],
+                    displayAnnotationButton:
+                        hasIncorrectValue && !incorrectMessage ? true : false,
+                    displayAnnotationTextArea: incorrectMessage ? true : false,
+                };
+
+                const inputFieldsArray = JSON.stringify(
+                    this.openAnnotationArray
+                        .filter((item) => Object.keys(item).length !== 0)
+                        .map((item) => item.lineInputs)
+                );
+
+                if (inputFieldsArray.includes('true')) {
+                    this.cardsWithIncorrectFields = true;
+                } else {
+                    this.cardsWithIncorrectFields = false;
+                }
+
+                this.workExperienceForm
+                    .get(`cardReview${i + 1}`)
+                    .patchValue(incorrectMessage ? incorrectMessage : null);
+            }
+        }
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            const lastWorkExperienceItem =
+                workExperienceItems[workExperienceItems.length - 1];
+
+            const lastWorkExperienceItemReview =
+                lastWorkExperienceItem.workExperienceItemReview;
+
+            if (lastWorkExperienceItemReview) {
+                this.stepFeedbackValues = lastWorkExperienceItemReview;
+
+                this.lastItemStepValues = lastWorkExperienceItem;
+
+                console.log('this.lastItemStepValues', this.lastItemStepValues);
+                console.log('this.stepFeedbackValues', this.stepFeedbackValues);
+            }
+
+            /*      if (drugAndAlcoholReview) {
+        this.stepFeedbackValues = drugAndAlcoholReview;
+      }
+
+      this.stepValues = stepValues;
+
+      this.startFeedbackValueChangesMonitoring(); */
         }
     }
 

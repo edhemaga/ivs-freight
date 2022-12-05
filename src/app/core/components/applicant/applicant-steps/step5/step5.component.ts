@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -52,6 +54,7 @@ export class Step5Component implements OnInit, OnDestroy {
     public violationsArray: ViolationModel[] = [];
 
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
 
     public lastValidLicense: any;
 
@@ -182,7 +185,14 @@ export class Step5Component implements OnInit, OnDestroy {
         this.certifyForm.get('certify').patchValue(certifyViolations);
 
         if (!noViolationsForPastTwelveMonths) {
-            console.log('stepValues', stepValues);
+            const itemReviewPlaceholder = {
+                isDateValid: true,
+                isLocationValid: true,
+                isDescriptionValid: true,
+                locationMessage: null,
+                descriptionMessage: null,
+            };
+
             const lastItemInViolationsArray =
                 trafficViolationItems[trafficViolationItems.length - 1];
 
@@ -192,78 +202,35 @@ export class Step5Component implements OnInit, OnDestroy {
 
             const filteredViolationsArray = restOfTheItemsInViolationsArray.map(
                 (item) => {
-                    const itemVehicleTypeName = item.vehicleType.name;
-
-                    const itemVehicleType = {
-                        ...item.vehicleType,
-                    };
-
-                    switch (itemVehicleTypeName) {
-                        case 'Tow Truck Heavy':
-                            itemVehicleType.name = 'Tow Truck';
-                            break;
-
-                        case 'Car Hauler - Semi Truck':
-                            itemVehicleType.name = 'Car Hauler';
-                            break;
-
-                        case 'Semi Truck w Sleeper':
-                            itemVehicleType.name = 'Semi w/Sleeper';
-                            break;
-
-                        default:
-                            break;
-                    }
-
                     return {
+                        id: item.id,
+                        reviewId: item.trafficViolationItemReview?.id,
                         isEditingViolation: false,
                         date: convertDateFromBackend(item.date),
-                        vehicleType: itemVehicleType.name,
+                        vehicleType: item.vehicleType.name,
                         location: item.location,
                         description: item.description,
                         trafficViolationItemReview:
                             item.trafficViolationItemReview
                                 ? item.trafficViolationItemReview
-                                : null,
+                                : itemReviewPlaceholder,
                     };
                 }
             );
 
-            const lastItemInViolationsArrayVehicleTypeName =
-                lastItemInViolationsArray.vehicleType.name;
-
-            const lastItemVehicleType = {
-                ...lastItemInViolationsArray.vehicleType,
-            };
-
-            switch (lastItemInViolationsArrayVehicleTypeName) {
-                case 'Tow Truck Heavy':
-                    lastItemVehicleType.name = 'Tow Truck';
-                    break;
-
-                case 'Car Hauler - Semi Truck':
-                    lastItemVehicleType.name = 'Car Hauler';
-                    break;
-
-                case 'Semi Truck w Sleeper':
-                    lastItemVehicleType.name = 'Semi w/Sleeper';
-                    break;
-
-                default:
-                    break;
-            }
-
             const filteredLastItemInViolationsArray = {
                 id: lastItemInViolationsArray.id,
+                reviewId:
+                    lastItemInViolationsArray.trafficViolationItemReview?.id,
                 isEditingViolation: false,
                 date: convertDateFromBackend(lastItemInViolationsArray.date),
-                vehicleType: lastItemVehicleType.name,
+                vehicleType: lastItemInViolationsArray.vehicleType.name,
                 location: lastItemInViolationsArray.location,
                 description: lastItemInViolationsArray.description,
                 trafficViolationItemReview:
                     lastItemInViolationsArray.trafficViolationItemReview
                         ? lastItemInViolationsArray.trafficViolationItemReview
-                        : null,
+                        : itemReviewPlaceholder,
             };
 
             this.violationsArray = JSON.parse(
@@ -313,6 +280,89 @@ export class Step5Component implements OnInit, OnDestroy {
             );
 
             this.formStatus = 'VALID';
+        }
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            const violationItemsReview = trafficViolationItems.map(
+                (item) => item.trafficViolationItemReview
+            );
+
+            if (violationItemsReview[0]) {
+                this.stepHasReviewValues = true;
+
+                violationItemsReview.pop();
+
+                for (let i = 0; i < violationItemsReview.length; i++) {
+                    const firstEmptyObjectInList =
+                        this.openAnnotationArray.find(
+                            (item) => Object.keys(item).length === 0
+                        );
+
+                    const indexOfFirstEmptyObjectInList =
+                        this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        );
+
+                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                        lineIndex: this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        ),
+                        lineInputs: [false],
+                        displayAnnotationButton: false,
+                        displayAnnotationTextArea: false,
+                    };
+
+                    const violationItemReview = {
+                        ...violationItemsReview[i],
+                    };
+
+                    delete violationItemReview.isPrimary;
+
+                    let hasIncorrectValue: boolean;
+
+                    if (violationItemsReview[0]) {
+                        hasIncorrectValue =
+                            Object.values(violationItemReview).includes(false);
+                    }
+
+                    const incorrectMessage = violationItemReview?.commonMessage;
+
+                    if (
+                        hasIncorrectValue === null ||
+                        hasIncorrectValue == undefined
+                    ) {
+                        hasIncorrectValue = false;
+                    }
+
+                    this.openAnnotationArray[i] = {
+                        ...this.openAnnotationArray[i],
+                        lineInputs: [hasIncorrectValue],
+                        displayAnnotationButton:
+                            hasIncorrectValue && !incorrectMessage
+                                ? true
+                                : false,
+                        displayAnnotationTextArea: incorrectMessage
+                            ? true
+                            : false,
+                    };
+
+                    const inputFieldsArray = JSON.stringify(
+                        this.openAnnotationArray
+                            .filter((item) => Object.keys(item).length !== 0)
+                            .map((item) => item.lineInputs)
+                    );
+
+                    if (inputFieldsArray.includes('true')) {
+                        this.cardsWithIncorrectFields = true;
+                    } else {
+                        this.cardsWithIncorrectFields = false;
+                    }
+
+                    this.violationsForm
+                        .get(`cardReview${i + 1}`)
+                        .patchValue(incorrectMessage ? incorrectMessage : null);
+                }
+            }
         }
     }
 
@@ -517,9 +567,14 @@ export class Step5Component implements OnInit, OnDestroy {
         );
 
         if (hasInvalidFields.includes('false')) {
-            this.openAnnotationArray[
-                this.selectedViolationIndex
-            ].displayAnnotationButton = true;
+            if (
+                !this.openAnnotationArray[this.selectedViolationIndex]
+                    .displayAnnotationTextArea
+            ) {
+                this.openAnnotationArray[
+                    this.selectedViolationIndex
+                ].displayAnnotationButton = true;
+            }
 
             this.openAnnotationArray[
                 this.selectedViolationIndex
@@ -537,6 +592,12 @@ export class Step5Component implements OnInit, OnDestroy {
         this.helperIndex = 2;
         this.selectedViolationIndex = -1;
 
+        this.previousFormValuesOnReview.trafficViolationItemReview = {
+            ...this.previousFormValuesOnReview.trafficViolationItemReview,
+            locationMessage: this.lastViolationsCard.firstRowReview,
+            descriptionMessage: this.lastViolationsCard.secondRowReview,
+        };
+
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
@@ -548,6 +609,12 @@ export class Step5Component implements OnInit, OnDestroy {
 
         this.helperIndex = 2;
         this.selectedViolationIndex = -1;
+
+        this.previousFormValuesOnReview.trafficViolationItemReview = {
+            ...this.previousFormValuesOnReview.trafficViolationItemReview,
+            locationMessage: this.lastViolationsCard.firstRowReview,
+            descriptionMessage: this.lastViolationsCard.secondRowReview,
+        };
 
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
@@ -571,8 +638,9 @@ export class Step5Component implements OnInit, OnDestroy {
         );
 
         if (type === 'card') {
+            selectedInputsLine.lineInputs[inputIndex] = false;
+
             if (selectedInputsLine.displayAnnotationButton) {
-                selectedInputsLine.lineInputs[inputIndex] = false;
                 selectedInputsLine.displayAnnotationButton = false;
             }
 
@@ -580,6 +648,10 @@ export class Step5Component implements OnInit, OnDestroy {
                 selectedInputsLine.displayAnnotationButton = false;
                 selectedInputsLine.displayAnnotationTextArea = false;
             }
+
+            this.violationsForm
+                .get(`cardReview${lineIndex + 1}`)
+                .patchValue(null);
 
             Object.keys(
                 this.violationsArray[lineIndex].trafficViolationItemReview
@@ -714,25 +786,6 @@ export class Step5Component implements OnInit, OnDestroy {
         const { certify } = this.certifyForm.value;
 
         const filteredViolationsArray = this.violationsArray.map((item) => {
-            const itemVehicleType = item.vehicleType;
-
-            switch (itemVehicleType) {
-                case 'Tow Truck':
-                    item.vehicleType = 'Tow Truck Heavy';
-                    break;
-
-                case 'Car Hauler':
-                    item.vehicleType = 'Car Hauler - Semi Truck';
-                    break;
-
-                case 'Semi w/Sleeper':
-                    item.vehicleType = 'Semi Truck w Sleeper';
-                    break;
-
-                default:
-                    break;
-            }
-
             return {
                 date: convertDateToBackend(item.date),
                 vehicleTypeId: this.vehicleType.find(
@@ -742,26 +795,6 @@ export class Step5Component implements OnInit, OnDestroy {
                 description: item.description,
             };
         });
-
-        const lastViolationsCardVehicleType =
-            this.lastViolationsCard?.vehicleType;
-
-        switch (lastViolationsCardVehicleType) {
-            case 'Tow Truck':
-                this.lastViolationsCard.vehicleType = 'Tow Truck Heavy';
-                break;
-
-            case 'Car Hauler':
-                this.lastViolationsCard.vehicleType = 'Car Hauler - Semi Truck';
-                break;
-
-            case 'Semi w/Sleeper':
-                this.lastViolationsCard.vehicleType = 'Semi Truck w Sleeper';
-                break;
-
-            default:
-                break;
-        }
 
         let filteredLastViolationsCard: any;
 
@@ -870,20 +903,50 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
+        const violationsArrayReview = this.violationsArray.map(
+            (item, index) => {
+                const itemReview = item.trafficViolationItemReview;
+
+                return {
+                    ...(this.stepHasReviewValues && {
+                        id: item.reviewId,
+                    }),
+                    trafficViolationItemId: item.id,
+                    isPrimary: false,
+                    commonMessage: this.violationsForm.get(
+                        `cardReview${index + 1}`
+                    ).value,
+                    isDateValid: itemReview ? itemReview.isDateValid : true,
+                    isLocationValid: itemReview
+                        ? itemReview.isLocationValid
+                        : true,
+                    locationMessage: null,
+                    isDescriptionValid: itemReview
+                        ? itemReview.isDescriptionValid
+                        : true,
+                    descriptionMessage: null,
+                };
+            }
+        );
+
         const lastItemReview =
             this.previousFormValuesOnReview.trafficViolationItemReview;
 
+        const lastItemReviewId = this.previousFormValuesOnReview.reviewId;
         const lastItemId = this.previousFormValuesOnReview.id;
 
         const lastReviewedItemIViolationsArray = {
-            itemId: lastItemId,
+            ...(this.stepHasReviewValues && {
+                id: lastItemReviewId,
+            }),
+            trafficViolationItemId: lastItemId,
             isPrimary: true,
             commonMessage: null,
             isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
             isLocationValid: lastItemReview
                 ? lastItemReview.isLocationValid
                 : true,
-            vehicleTypeLocationMessage: this.lastViolationsCard.firstRowReview,
+            locationMessage: this.lastViolationsCard.firstRowReview,
             isDescriptionValid: lastItemReview
                 ? lastItemReview.isDescriptionValid
                 : true,
@@ -892,38 +955,98 @@ export class Step5Component implements OnInit, OnDestroy {
 
         const saveData: CreateTrafficViolationReviewCommand = {
             applicantId: this.applicantId,
-            trafficViolationReviews: [lastReviewedItemIViolationsArray],
+            trafficViolationReviews: [
+                ...violationsArrayReview,
+                lastReviewedItemIViolationsArray,
+            ],
         };
 
-        console.log('saveData', saveData.trafficViolationReviews[0]);
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createTrafficViolationsReview(
+                    saveData
+                );
+            }
 
-        console.log('store', this.applicantStore);
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateTrafficViolationsReview(
+                    saveData
+                );
+            }
+        };
 
-        // this.applicantActionsService
-        //     .createTrafficViolationsReview(saveData)
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe({
-        //         next: () => {
-        //             this.router.navigate([
-        //                 `/application/${this.applicantId}/6`,
-        //             ]);
+        selectMatchingBackendMethod()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        `/application/${this.applicantId}/6`,
+                    ]);
 
-        //             /*   this.applicantStore.update(store => {
-        //     return {
-        //       ...store,
-        //       applicant: {
-        //         ...store.applicant,
-        //         trafficViolation : {
-        //           ...store.applicant.trafficViolation,
-        //         }
-        //       }
-        //     }
-        //   }) */
-        //         },
-        //         error: (err) => {
-        //             console.log(err);
-        //         },
-        //     });
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                trafficViolation: {
+                                    ...store.applicant.trafficViolation,
+                                    trafficViolationItems:
+                                        store.applicant.trafficViolation.trafficViolationItems.map(
+                                            (item, index) => {
+                                                if (
+                                                    index ===
+                                                    store.applicant
+                                                        .trafficViolation
+                                                        .trafficViolationItems
+                                                        .length -
+                                                        1
+                                                ) {
+                                                    return {
+                                                        ...item,
+                                                        trafficViolationItemReview:
+                                                            {
+                                                                ...item.trafficViolationItemReview,
+                                                                isDateValid:
+                                                                    lastReviewedItemIViolationsArray.isDateValid,
+                                                                isLocationValid:
+                                                                    lastReviewedItemIViolationsArray.isLocationValid,
+                                                                locationMessage:
+                                                                    lastReviewedItemIViolationsArray.locationMessage,
+                                                                isDescriptionValid:
+                                                                    lastReviewedItemIViolationsArray.isDescriptionValid,
+                                                                descriptionMessage:
+                                                                    lastReviewedItemIViolationsArray.descriptionMessage,
+                                                            },
+                                                    };
+                                                }
+
+                                                return {
+                                                    ...item,
+                                                    trafficViolationItemReview:
+                                                        {
+                                                            ...item.trafficViolationItemReview,
+                                                            ...violationsArrayReview[
+                                                                index
+                                                            ],
+                                                        },
+                                                };
+                                            }
+                                        ),
+                                },
+                            },
+                        };
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     ngOnDestroy(): void {

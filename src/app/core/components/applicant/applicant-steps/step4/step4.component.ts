@@ -35,7 +35,7 @@ import {
 export class Step4Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public accidentForm: FormGroup;
 
@@ -664,10 +664,8 @@ export class Step4Component implements OnInit, OnDestroy {
 
         const lastItemId = this.previousFormValuesOnReview.id;
 
-        console.log('lastItemId', lastItemId);
-
         const lastReviewedItemInAccidentArray = {
-            itemId: lastItemId,
+            accidentItemId: lastItemId,
             isPrimary: true,
             commonMessage: null,
             isLocationValid: lastItemReview
@@ -688,8 +686,6 @@ export class Step4Component implements OnInit, OnDestroy {
 
         console.log('saveData', saveData);
 
-        console.log('store', this.applicantStore);
-
         this.applicantActionsService
             .createAccidentRecordReview(saveData)
             .pipe(takeUntil(this.destroy$))
@@ -699,17 +695,48 @@ export class Step4Component implements OnInit, OnDestroy {
                         `/application/${this.applicantId}/5`,
                     ]);
 
-                    /*   this.applicantStore.update(store => {
-            return {
-              ...store,
-              applicant: {
-                ...store.applicant,
-                accidentRecords : {
-                  ...store.applicant.accidentRecords,
-                }
-              }
-            }
-          }) */
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                accidentRecords: {
+                                    ...store.applicant.accidentRecords,
+                                    accidents:
+                                        store.applicant.accidentRecords.accidents.map(
+                                            (item, index) => {
+                                                if (
+                                                    index ===
+                                                    store.applicant
+                                                        .accidentRecords
+                                                        .accidents.length -
+                                                        1
+                                                ) {
+                                                    return {
+                                                        ...item,
+                                                        accidentRecordReview: {
+                                                            ...item.accidentRecordReview,
+                                                            isLocationValid:
+                                                                lastReviewedItemInAccidentArray.isLocationValid,
+                                                            isDateValid:
+                                                                lastReviewedItemInAccidentArray.isDateValid,
+                                                            locationDateMessage:
+                                                                lastReviewedItemInAccidentArray.locationDateMessage,
+                                                            isDescriptionValid:
+                                                                lastReviewedItemInAccidentArray.isDescriptionValid,
+                                                            descriptionMessage:
+                                                                lastReviewedItemInAccidentArray.descriptionMessage,
+                                                        },
+                                                    };
+                                                }
+
+                                                return item;
+                                            }
+                                        ),
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);

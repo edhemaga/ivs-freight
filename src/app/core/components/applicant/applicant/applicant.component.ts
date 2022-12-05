@@ -20,7 +20,7 @@ import { SelectedMode } from '../state/enum/selected-mode.enum';
 export class ApplicantComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode = SelectedMode.APPLICANT;
+    public selectedMode = SelectedMode.REVIEW;
 
     public menuItems: INavigation[] = [
         {
@@ -138,6 +138,7 @@ export class ApplicantComponent implements OnInit, OnDestroy {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
+                console.log('REEEES', res);
                 res = JSON.parse(JSON.stringify(res));
 
                 if (this.selectedMode === SelectedMode.REVIEW) {
@@ -218,7 +219,7 @@ export class ApplicantComponent implements OnInit, OnDestroy {
 
                                             const objectHasIncorrectValue =
                                                 isAnyPropertyInObjectFalse(
-                                                    workExperienceItemsReview[i]
+                                                    filteredItem
                                                 );
 
                                             incorrectValuesArray = [
@@ -242,6 +243,73 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                                 return {
                                     ...item,
                                     isReviewed: workExperienceItems
+                                        ? true
+                                        : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 4) {
+                                const trafficViolationItems =
+                                    res?.trafficViolation
+                                        ?.trafficViolationItems;
+
+                                const trafficViolationItemsReview =
+                                    trafficViolationItems?.map(
+                                        (item) =>
+                                            item?.trafficViolationItemReview
+                                    );
+
+                                let filteredTrafficViolationItemsReview = [];
+                                let hasIncorrectValue: boolean;
+
+                                if (trafficViolationItemsReview) {
+                                    if (trafficViolationItemsReview[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i <
+                                            trafficViolationItemsReview?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                trafficViolationItemsReview[i];
+
+                                            delete filteredItem.isPrimary;
+
+                                            filteredTrafficViolationItemsReview =
+                                                [
+                                                    ...filteredTrafficViolationItemsReview,
+                                                    filteredItem,
+                                                ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            hasIncorrectValue = true;
+                                        } else {
+                                            hasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed: trafficViolationItems
                                         ? true
                                         : false,
                                     hasIncorrectAnswer: hasIncorrectValue,

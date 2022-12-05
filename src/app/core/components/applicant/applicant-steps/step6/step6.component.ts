@@ -329,7 +329,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
         this.getStepValuesFromStore();
 
-        this.updateStoreWithIds();
+        /*  this.updateStoreWithIds(); */
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
@@ -484,7 +484,7 @@ export class Step6Component implements OnInit, OnDestroy {
             (item) => {
                 return {
                     id: item.id,
-                    reviewId: item.emergencyContactReview.id,
+                    reviewId: item.emergencyContactReview?.id,
                     isEditingContact: false,
                     name: item.name,
                     phone: item.phone,
@@ -498,7 +498,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
         const filteredLastItemInContactsArray = {
             id: lastItemInContactsArray.id,
-            reviewId: lastItemInContactsArray.emergencyContactReview.id,
+            reviewId: lastItemInContactsArray.emergencyContactReview?.id,
             isEditingContact: false,
             name: lastItemInContactsArray.name,
             phone: lastItemInContactsArray.phone,
@@ -718,6 +718,85 @@ export class Step6Component implements OnInit, OnDestroy {
                     questionReview4: datesMessage,
                     questionReview5: unableToPreformJobDescriptionMessage,
                 });
+            }
+
+            const emergencyContactItemsReview = emergencyContacts.map(
+                (item) => item.emergencyContactReview
+            );
+
+            if (emergencyContactItemsReview[0]) {
+                this.stepHasReviewValues = true;
+
+                emergencyContactItemsReview.pop();
+
+                for (let i = 0; i < emergencyContactItemsReview.length; i++) {
+                    const firstEmptyObjectInList =
+                        this.openAnnotationArray.find(
+                            (item) => Object.keys(item).length === 0
+                        );
+
+                    const indexOfFirstEmptyObjectInList =
+                        this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        );
+
+                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                        lineIndex: this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        ),
+                        lineInputs: [false],
+                        displayAnnotationButton: false,
+                        displayAnnotationTextArea: false,
+                    };
+
+                    const emergencyContactItemReview: any = {
+                        ...emergencyContactItemsReview[i],
+                    };
+
+                    delete emergencyContactItemReview.isPrimary;
+
+                    let hasIncorrectValue: boolean = Object.values(
+                        emergencyContactItemReview
+                    ).includes(false);
+
+                    const incorrectMessage =
+                        emergencyContactItemReview?.commonMessage;
+
+                    if (
+                        hasIncorrectValue === null ||
+                        hasIncorrectValue == undefined
+                    ) {
+                        hasIncorrectValue = false;
+                    }
+
+                    this.openAnnotationArray[i + 4] = {
+                        ...this.openAnnotationArray[i + 4],
+                        lineInputs: [hasIncorrectValue],
+                        displayAnnotationButton:
+                            hasIncorrectValue && !incorrectMessage
+                                ? true
+                                : false,
+                        displayAnnotationTextArea: incorrectMessage
+                            ? true
+                            : false,
+                    };
+
+                    const inputFieldsArray = JSON.stringify(
+                        this.openAnnotationArray
+                            .filter((item) => Object.keys(item).length !== 0)
+                            .map((item) => item.lineInputs)
+                    );
+
+                    if (inputFieldsArray.includes('true')) {
+                        this.cardsWithIncorrectFields = true;
+                    } else {
+                        this.cardsWithIncorrectFields = false;
+                    }
+
+                    this.contactForm
+                        .get(`cardReview${i + 1}`)
+                        .patchValue(incorrectMessage ? incorrectMessage : null);
+                }
             }
         }
 
@@ -1479,7 +1558,7 @@ export class Step6Component implements OnInit, OnDestroy {
             relationship: this.lastContactCard.relationship,
             ...((this.stepHasValues ||
                 this.selectedMode === SelectedMode.FEEDBACK) && {
-                id: this.lastContactCard.id,
+                id: this.lastContactCard.id ? this.lastContactCard.id : null,
             }),
         };
 
@@ -1585,7 +1664,9 @@ export class Step6Component implements OnInit, OnDestroy {
             const itemReview = item.emergencyContactReview;
 
             return {
-                id: item.reviewId,
+                ...(this.stepHasReviewValues && {
+                    id: item.reviewId,
+                }),
                 emergencyContactId: item.id,
                 isPrimary: false,
                 commonMessage: this.contactForm.get(`cardReview${index + 1}`)
@@ -1606,7 +1687,9 @@ export class Step6Component implements OnInit, OnDestroy {
         const lastItemId = this.previousFormValuesOnReview.id;
 
         const lastReviewedItemInContactsArray = {
-            id: lastItemReviewId,
+            ...(this.stepHasReviewValues && {
+                id: lastItemReviewId,
+            }),
             emergencyContactId: lastItemId,
             isPrimary: true,
             commonMessage: null,

@@ -28,7 +28,7 @@
                     isRequired: true,
                     isDropdown: true,
                     isDisabled: selectedMode === 'REVIEW_MODE',
-                    dropdownWidthClass: 'w-col-192',
+                    dropdownWidthClass: 'w-col-210',
                     dropdownImageInput: {
                         withText: true,
                         svg: true,
@@ -76,8 +76,9 @@
         <div
             class="review-feedback-container"
             *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
+                (selectedMode === 'REVIEW_MODE' ||
+                    selectedMode === 'FEEDBACK_MODE') &&
+                !isReviewingCard
             "
         >
             <app-applicant-review-feedback
@@ -123,8 +124,9 @@
         <div
             class="review-feedback-container"
             *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
+                (selectedMode === 'REVIEW_MODE' ||
+                    selectedMode === 'FEEDBACK_MODE') &&
+                !isReviewingCard
             "
         >
             <app-applicant-review-feedback

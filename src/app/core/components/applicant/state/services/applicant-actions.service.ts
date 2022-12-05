@@ -54,6 +54,8 @@ import {
     UpdateSevenDaysHosReviewCommand,
     UpdatePersonalInfoReviewCommand,
     UpdateEducationReviewCommand,
+    UpdateTrafficViolationReviewCommand,
+    UpdateAccidentRecordReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -359,10 +361,24 @@ export class ApplicantActionsService {
 
     /* BACKEND PUT ACTION FUNCTIONS - REVIEW MODE */
 
+    public updateAccidentRecordReview(
+        data: UpdateAccidentRecordReviewCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantAccidentrecordReviewPut(data);
+    }
+
     public updatePersonalInfoReview(
         data: UpdatePersonalInfoReviewCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantPersonalReviewPut(data);
+    }
+
+    public updateTrafficViolationsReview(
+        data: UpdateTrafficViolationReviewCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantTrafficviolationReviewPut(
+            data
+        );
     }
 
     public updateEducationReview(

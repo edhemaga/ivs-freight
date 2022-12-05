@@ -169,10 +169,6 @@ export class Step5FormComponent
                 changes.markFormInvalid?.previousValue !==
                 changes.markFormInvalid?.currentValue
             ) {
-                console.log(
-                    '  changes.markFormInvalid?.currentValue',
-                    changes.markFormInvalid?.currentValue
-                );
                 this.inputService.markInvalid(this.violationsForm);
                 this.markInvalidEmitter.emit(false);
             }
@@ -215,17 +211,55 @@ export class Step5FormComponent
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (formValue.trafficViolationItemReview) {
-                const { isDateValid, isLocationValid, isDescriptionValid } =
-                    formValue.trafficViolationItemReview;
+                const {
+                    isDateValid,
+                    isLocationValid,
+                    locationMessage,
+                    isDescriptionValid,
+                    descriptionMessage,
+                } = formValue.trafficViolationItemReview;
 
                 this.openAnnotationArray[10] = {
                     ...this.openAnnotationArray[10],
                     lineInputs: [!isDateValid, false, !isLocationValid],
+                    displayAnnotationButton:
+                        (!isDateValid || !isLocationValid) && !locationMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: locationMessage ? true : false,
                 };
                 this.openAnnotationArray[11] = {
                     ...this.openAnnotationArray[11],
                     lineInputs: [!isDescriptionValid],
+                    displayAnnotationButton:
+                        !isDescriptionValid && !descriptionMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: descriptionMessage
+                        ? true
+                        : false,
                 };
+
+                const inputFieldsArray = JSON.stringify(
+                    this.openAnnotationArray
+                        .filter((item) => Object.keys(item).length !== 0)
+                        .map((item) => item.lineInputs)
+                );
+
+                if (inputFieldsArray.includes('true')) {
+                    this.hasIncorrectFieldsEmitter.emit(true);
+
+                    this.isCardReviewedIncorrect = true;
+                } else {
+                    this.hasIncorrectFieldsEmitter.emit(false);
+
+                    this.isCardReviewedIncorrect = false;
+                }
+
+                this.violationsForm.patchValue({
+                    firstRowReview: locationMessage,
+                    secondRowReview: descriptionMessage,
+                });
             }
         }
 
@@ -405,33 +439,6 @@ export class Step5FormComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantModalResponse) => {
                 this.vehicleType = res.truckTypes.map((item) => {
-                    if (item.id === 3) {
-                        return {
-                            ...item,
-                            name: 'Tow Truck',
-                            folder: 'common',
-                            subFolder: 'trucks',
-                        };
-                    }
-
-                    if (item.id === 4) {
-                        return {
-                            ...item,
-                            name: 'Car Hauler',
-                            folder: 'common',
-                            subFolder: 'trucks',
-                        };
-                    }
-
-                    if (item.id === 6) {
-                        return {
-                            ...item,
-                            name: 'Semi w/Sleeper',
-                            folder: 'common',
-                            subFolder: 'trucks',
-                        };
-                    }
-
                     return {
                         ...item,
                         folder: 'common',

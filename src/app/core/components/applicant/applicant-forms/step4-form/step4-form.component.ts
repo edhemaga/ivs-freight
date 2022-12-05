@@ -272,6 +272,11 @@ export class Step4FormComponent
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (formValue.accidentRecordReview) {
+                console.log(
+                    'formValue.accidentRecordReview',
+                    formValue.accidentRecordReview
+                );
+
                 const { isLocationValid, isDateValid, isDescriptionValid } =
                     formValue.accidentRecordReview;
 
@@ -285,6 +290,46 @@ export class Step4FormComponent
                 };
             }
         }
+
+        /* this.openAnnotationArray[15] = {
+                    ...this.openAnnotationArray[15],
+                    lineInputs: [
+                        !isNameValid,
+                        !isPhoneValid,
+                        !isRelationshipValid,
+                    ],
+                    displayAnnotationButton:
+                        (!isNameValid ||
+                            !isPhoneValid ||
+                            !isRelationshipValid) &&
+                        !emergencyContactMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: emergencyContactMessage
+                        ? true
+                        : false,
+                };
+
+                const inputFieldsArray = JSON.stringify(
+                    this.openAnnotationArray
+                        .filter((item) => Object.keys(item).length !== 0)
+                        .map((item) => item.lineInputs)
+                );
+
+                if (inputFieldsArray.includes('true')) {
+                    this.hasIncorrectFieldsEmitter.emit(true);
+
+                    this.isCardReviewedIncorrect = true;
+                } else {
+                    this.hasIncorrectFieldsEmitter.emit(false);
+
+                    this.isCardReviewedIncorrect = false;
+                }
+
+                this.contactForm.patchValue({
+                    firstRowReview: emergencyContactMessage,
+                });
+            } */
 
         this.accidentForm.patchValue({
             location: formValue?.location ? formValue?.location?.address : null,
