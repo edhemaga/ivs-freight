@@ -249,6 +249,10 @@
       "iconPath": "/assets/svg/common/trailers/ic_trailer_carhauler.svg"
     },
     {
+      "iconName": "ic_carhauler_stinger.svg",
+      "iconPath": "/assets/svg/common/trailers/ic_carhauler_stinger.svg"
+    },
+    {
       "iconName": "ic_trailer_chassis.svg",
       "iconPath": "/assets/svg/common/trailers/ic_trailer_chassis.svg"
     },
@@ -293,16 +297,12 @@
       "iconPath": "/assets/svg/common/trailers/ic_trailer_tanker.svg"
     },
     {
-      "iconName": "ic_trailer-tanker_pneumatic.svg",
-      "iconPath": "/assets/svg/common/trailers/ic_trailer-tanker_pneumatic.svg"
+      "iconName": "ic_trailer_tanker_pneumatic.svg",
+      "iconPath": "/assets/svg/common/trailers/ic_trailer_tanker_pneumatic.svg"
     },
     {
       "iconName": "ic_truck_box-truck.svg",
       "iconPath": "/assets/svg/common/trucks/ic_truck_box-truck.svg"
-    },
-    {
-      "iconName": "ic_truck_car-hauler.svg",
-      "iconPath": "/assets/svg/common/trucks/ic_truck_car-hauler.svg"
     },
     {
       "iconName": "ic_truck_cargo-van.svg",
@@ -586,7 +586,7 @@
       "iconName": "mark-as-to-do",
       "iconPath": "assets/svg/common/ic_time.svg"
     }
-    
+
   ],
   "customIcons": []
 }

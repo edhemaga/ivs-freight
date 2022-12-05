@@ -237,7 +237,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: AccidentResponse) => {
-                    console.log;
                     this.accidentForm.patchValue({
                         report: res.report,
                         federallyRecordable: res.federallyRecordable,
@@ -336,9 +335,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     //   }),
                     // ]
                 },
-                error: (err: any) => {
-                  
-                },
+                error: (err: any) => {},
             });
     }
 
@@ -352,7 +349,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: AccidentModalResponse) => {
-                    console.log(res);
                     this.labelsTrailerUnits = res.trailers.map((item) => {
                         return {
                             id: item.id,
@@ -361,9 +357,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     });
                     this.labelsInsuranceType = res.insuranceType;
                 },
-                error: (err: any) => {
-               
-                },
+                error: () => {},
             });
     }
 

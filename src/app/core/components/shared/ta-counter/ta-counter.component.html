@@ -6,13 +6,11 @@
         'font-weight': countFontWeight,
         height: countHeight,
         'min-width': countWidth,
-        'border-radius': countBorderRadius
+        'border-radius': countBorderRadius,
+        'margin-left': marginLeft
     }"
 >
-    <p
-        class="ta-counter-number"
-        [ngStyle]="{ bottom: countTextBottomPosition }"
-    >
+    <p [ngStyle]="{ bottom: countTextBottomPosition }">
         {{ count > 0 ? (count | taThousandSeparator) : 0 }}
     </p>
 </div>

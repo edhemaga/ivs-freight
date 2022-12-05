@@ -35,7 +35,6 @@ import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 import { skip, Subject, takeUntil, tap } from 'rxjs';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { trailerVolumeValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { FormService } from '../../../services/form/form.service';
 import {
@@ -107,7 +106,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private trailerModalService: TrailerTService,
-        private notificationService: NotificationService,
         private modalService: ModalService,
         private ngbActiveModal: NgbActiveModal,
         private vinDecoderService: VinDecoderService,
@@ -194,7 +192,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
-        let trailerUnit = this.trailerForm.get('trailerNumber').value;
         if (data.action === 'close') {
             if (this.editData?.canOpenModal) {
                 switch (this.editData?.key) {
@@ -216,13 +213,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             }
             return;
         } else {
-            let successMessage = `Trailer "${trailerUnit}" ${
-                !this.trailerStatus ? 'Deactivated' : 'Activated'
-            } `;
-            let errorMessage = `Failed to ${
-                !this.trailerStatus ? 'Deactivated' : 'Activated'
-            } Trailer "${trailerUnit}" `;
-
             if (data.action === 'deactivate' && this.editData) {
                 this.trailerModalService
                     .changeTrailerStatus(
@@ -239,13 +229,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                     name: 'deactivate',
                                     status: this.trailerStatus,
                                 });
-
-                               
                             }
                         },
-                        error: () => {
-                         
-                        },
+                        error: () => {},
                     });
             } else {
                 // Save & Update
@@ -298,7 +284,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: GetTrailerModalResponse) => {
-                    console.log(res);
                     this.trailerType = res.trailerTypes.map((item) => {
                         return {
                             ...item,
@@ -326,9 +311,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
                     this.trailerForm.get('fhwaExp').patchValue(res.fhwaExp);
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -387,13 +370,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
         };
 
-        let trailerUnit = this.trailerForm.get('trailerNumber').value;
         this.trailerModalService
             .addTrailer(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                   
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
@@ -416,21 +397,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 },
-                error: () => {}
+                error: () => {},
             });
     }
 
     private deleteTrailerById(id: number): void {
-        let trailerUnit = this.trailerForm.get('trailerNumber').value;
         this.trailerModalService
             .deleteTrailerById(id, this.editData.tabSelected)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {}
-            });
+            .subscribe();
     }
 
     private updateTrailer(id: number): void {
@@ -501,20 +476,17 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
         };
 
-        let trailerUnit = this.trailerForm.get('trailerNumber').value;
-
         this.trailerModalService
             .updateTrailer(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
                     });
                 },
-                error: () => {}
+                error: () => {},
             });
     }
 
@@ -625,25 +597,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
                     });
 
-                    this.selectedTrailerType = res.trailerType
-                        ? res.trailerType
-                        : null;
-                    this.selectedTrailerMake = res.trailerMake
-                        ? res.trailerMake
-                        : null;
-                    this.selectedColor = res.color ? res.color : null;
-                    this.selectedTrailerLength = res.trailerLength
-                        ? res.trailerLength
-                        : null;
-                    this.selectedOwner = res.owner ? res.owner : null;
-                    this.selectedSuspension = res.suspension
-                        ? res.suspension.name
-                        : null;
-                    this.selectedTireSize = res.tireSize ? res.tireSize : null;
-                    this.selectedDoorType = res.doorType ? res.doorType : null;
-                    this.selectedReeferType = res.reeferUnit
-                        ? res.reeferUnit
-                        : null;
+                    this.selectedTrailerType = res.trailerType;
+                    this.selectedTrailerMake = res.trailerMake;
+                    this.selectedColor = res.color;
+                    this.selectedTrailerLength = res.trailerLength;
+                    this.selectedOwner = res.owner;
+                    this.selectedSuspension = res.suspension;
+                    this.selectedTireSize = res.tireSize;
+                    this.selectedDoorType = res.doorType;
+                    this.selectedReeferType = res.reeferUnit;
                     this.trailerStatus = res.status !== 1;
 
                     this.modalService.changeModalStatus({
@@ -651,9 +613,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         status: this.trailerStatus,
                     });
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
@@ -760,9 +720,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                 this.loadingVinDecoder = false;
                                 this.selectedTrailerMake = res.trailerMake;
                             },
-                            error: () => {
-                             
-                            },
+                            error: () => {},
                         });
                 }
             });

@@ -40,10 +40,10 @@ export class ApplicantReviewFeedbackComponent implements ControlValueAccessor {
         return this.superControl.control;
     }
 
-    public writeValue(obj: any): void {}
-    public registerOnChange(fn: any): void {}
-    public onChange(event: any): void {}
-    public registerOnTouched(fn: any): void {}
+    public writeValue(_: any): void {}
+    public registerOnChange(_: any): void {}
+    public onChange(_: any): void {}
+    public registerOnTouched(_: any): void {}
 
     public handleAnnotationClick(type: string): void {
         if (type === 'open') {

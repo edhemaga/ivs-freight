@@ -1,10 +1,8 @@
 <app-ta-modal
-    [modalTitle]="
-        editData?.type !== 'edit' ? 'Add Repair Shop' : 'Edit Repair Shop'
-    "
+    [modalTitle]="editData?.type !== 'edit' ? 'Add Parking' : 'Edit Parking'"
     [editData]="editData"
-    [editName]="repairShopName"
-    [isModalValid]="repairShopForm.valid && isFormDirty"
+    [editName]="parkingName"
+    [isModalValid]="parkingForm.valid && isFormDirty"
     (action)="onModalAction($event)"
 >
     <div origin>
@@ -16,15 +14,15 @@
         </app-ta-tab-switch>
 
         <form
-            [formGroup]="repairShopForm"
-            class="form-container form-container-with-inputs"
+            [formGroup]="parkingForm"
+            class="form-container form-container-mt-12"
             [ngClass]="{
-                'form-container-mt-12': selectedTab === 1,
-                'row-settings-location-additional': selectedTab === 2,
                 'form-container-without-mb':
-                    selectedTab === 1 && !isServiceCardOpen,
+                    (selectedTab === 2 && !isFinanceCardOpen) ||
+                    (selectedTab === 1 && !isParkingCardOpen),
                 'form-container-with-card':
-                    selectedTab === 1 && isServiceCardOpen
+                    (selectedTab === 2 && isFinanceCardOpen) ||
+                    (selectedTab === 1 && isParkingCardOpen)
             }"
         >
             <div
@@ -35,30 +33,30 @@
                 <div class="m-tab" *ngIf="selectedTab === 1">
                     <!-- Company owned -->
                     <app-ta-checkbox-card
-                        formControlName="companyOwned"
+                        formControlName="isOwner"
                         [label]="'Company Owned'"
                         [name]="'company-owned'"
-                        [reverseLogic]="true"
-                        [isCardOpen]="repairShopForm.get('companyOwned').value"
+                        [hasArrow]="false"
+                        [withoutToggle]="true"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '22px'
                         }"
                     >
-                        <ng-container bodyFalse>
+                        <ng-container bodyWithoutToggle>
                             <div class="row">
                                 <div class="col-12">
                                     <app-ta-input
                                         formControlName="name"
                                         [inputConfig]="{
-                                            name: 'Shop Name',
+                                            name: 'Parking Name',
                                             type: 'text',
-                                            label: 'Shop Name',
+                                            label: 'Parking Name',
                                             isRequired: true,
-                                            textTransform: 'uppercase',
                                             autoFocus:
                                                 editData?.type !== 'edit',
-                                            minLength: 2,
+                                            textTransform: 'uppercase',
+                                            minLength: 1,
                                             maxLength: 64
                                         }"
                                     ></app-ta-input>
@@ -115,7 +113,6 @@
                                                 type: 'text',
                                                 label: 'Phone',
                                                 placeholderIcon: 'phone',
-                                                isRequired: true,
                                                 mask: '(000) 000-0000',
                                                 maxLength: 14
                                             }"
@@ -138,7 +135,7 @@
                                     </div>
                                     <app-ta-input
                                         *ngIf="isPhoneExtExist"
-                                        formControlName="phoneExt"
+                                        formControlName="extensionPhone"
                                         [inputConfig]="{
                                             name: 'phone-extension',
                                             type: 'text',
@@ -167,37 +164,103 @@
                         </ng-container>
                     </app-ta-checkbox-card>
 
-                    <!-- Repair Shop Servies -->
+                    <!-- Parking Slot -->
                     <app-ta-custom-card
-                        [hasCounter]="pickedServices() ? pickedServices() : 0"
-                        [cardName]="'Service'"
+                        [hasCounter]="
+                            (parkingSlots | sumArrays) === 0
+                                ? 0
+                                : (parkingSlots | sumArrays)
+                        "
+                        [cardName]="'Parking Slot'"
+                        [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
                         [isCardOpen]="true"
-                        (onOpenCard)="isServiceCardOpen = $event"
+                        (onOpenCard)="isParkingCardOpen = $event"
                         [animationMarginParams]="{
-                            marginTop: '12px',
-                            marginBottom: '0px'
+                            marginTop: '18px',
+                            marginBottom: '12px'
                         }"
                     >
-                        <div class="repair-shop-services">
-                            <div
-                                *ngFor="
-                                    let repair of services;
-                                    trackBy: identity
-                                "
-                                class="repair-shop-service"
-                                [class.active]="repair.active"
-                                (click)="repair.active = !repair.active"
-                            >
-                                <svg-icon src="{{ repair.svg }}"></svg-icon>
-                                <p>{{ repair.serviceType }}</p>
+                        <div class="checkbox-card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <app-ta-input
+                                        formControlName="parkingSlot"
+                                        [inputConfig]="{
+                                            name: 'Parking Slot',
+                                            type: 'text',
+                                            label: 'Parking Slot # (Truck)',
+                                            minLength: 1,
+                                            maxLength: 64
+                                        }"
+                                    ></app-ta-input>
+                                </div>
+                            </div>
+                            <div class="row row-no-mb">
+                                <div class="col-12">
+                                    <app-ta-input
+                                        formControlName="fullParkingSlot"
+                                        [inputConfig]="{
+                                            name: 'Full Parking Slot',
+                                            type: 'text',
+                                            label: 'Full Parking Slot # (Semi Truck - Trailer)',
+                                            minLength: 1,
+                                            maxLength: 128
+                                        }"
+                                    ></app-ta-input>
+                                </div>
                             </div>
                         </div>
                     </app-ta-custom-card>
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">
-                    <div class="row row-no-m">
-                        <div class="col-4">
+                    <app-ta-custom-card
+                        [cardName]="'Features'"
+                        [isCardOpen]="true"
+                        [animationMarginParams]="{
+                            marginTop: '18px',
+                            marginBottom: '22px'
+                        }"
+                    >
+                        <div class="parking-gate-securityCamera">
+                            <div class="gate-field">
+                                <p>Gate</p>
+                                <div class="gate-radio">
+                                    <app-ta-tab-switch
+                                        [tabs]="gateBtns"
+                                        (switchClicked)="
+                                            tabChange($event, 'gate')
+                                        "
+                                        [type]="'type2-modal-popup'"
+                                    >
+                                    </app-ta-tab-switch>
+                                </div>
+                            </div>
+                            <div class="camera-field">
+                                <p>Security Camera</p>
+                                <div class="camera-radio">
+                                    <app-ta-tab-switch
+                                        [tabs]="cameraBtns"
+                                        (switchClicked)="
+                                            tabChange($event, 'camera')
+                                        "
+                                        [type]="'type2-modal-popup'"
+                                    >
+                                    </app-ta-tab-switch>
+                                </div>
+                            </div>
+                        </div>
+                    </app-ta-custom-card>
+                    <app-ta-custom-card
+                        [cardName]="'Finance'"
+                        [isCardOpen]="true"
+                        (onOpenCard)="isFinanceCardOpen = $event"
+                        [animationMarginParams]="{
+                            marginTop: '18px',
+                            marginBottom: '12px'
+                        }"
+                    >
+                        <div class="location-parking-financial-card">
                             <app-ta-input
                                 formControlName="rent"
                                 [inputConfig]="{
@@ -211,8 +274,6 @@
                                     maxLength: 8
                                 }"
                             ></app-ta-input>
-                        </div>
-                        <div class="col-4">
                             <app-ta-input-dropdown
                                 formControlName="payPeriod"
                                 [inputConfig]="{
@@ -220,7 +281,7 @@
                                     type: 'text',
                                     label: 'Pay Period',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-148'
+                                    dropdownWidthClass: 'w-col-144'
                                 }"
                                 [options]="payPeriods"
                                 [activeItem]="selectedPayPeriod"
@@ -228,8 +289,6 @@
                                     onSelectDropdown($event, 'pay-period')
                                 "
                             ></app-ta-input-dropdown>
-                        </div>
-                        <div class="col-4 no-p-left">
                             <app-ta-input-dropdown
                                 formControlName="monthlyDay"
                                 [inputConfig]="{
@@ -238,8 +297,8 @@
                                     label: 'Day',
                                     isDropdown: true,
                                     isDisabled:
-                                        !repairShopForm.get('payPeriod').value,
-                                    dropdownWidthClass: 'w-col-148'
+                                        !parkingForm.get('payPeriod').value,
+                                    dropdownWidthClass: 'w-col-144'
                                 }"
                                 [options]="
                                     selectedDay?.name === 'Weekly'
@@ -250,7 +309,7 @@
                                 (selectedItem)="onSelectDropdown($event, 'day')"
                             ></app-ta-input-dropdown>
                         </div>
-                    </div>
+                    </app-ta-custom-card>
                 </div>
             </div>
         </form>

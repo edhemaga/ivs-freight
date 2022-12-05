@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { MilesStoreService } from './miles.service';
 import { MilesTableStore } from './miles.store';
 
@@ -9,23 +9,28 @@ import { MilesTableStore } from './miles.store';
     providedIn: 'root',
 })
 export class MilesResolverService implements Resolve<any> {
-    constructor(private milesStoreService: MilesStoreService, private store: MilesTableStore) {}
+    constructor(
+        private milesStoreService: MilesStoreService,
+        private store: MilesTableStore
+    ) {}
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        return this.milesStoreService.getMiles().pipe(
-            catchError(() => {
-                return of('No miles data...');
-            }),
-            tap((milesList: any) => {
-                console.log(milesList);
+        const activeList = this.milesStoreService.getMiles(null, 1);
+        const innactiveList = this.milesStoreService.getMiles(null, 0);
+
+        return forkJoin([activeList, innactiveList]).pipe(
+            map((list: any) => {
                 localStorage.setItem(
                     'milesTableCount',
                     JSON.stringify({
-                        active: milesList.activeTruckCount,
-                        inactive: milesList.inactiveTruckCount,
+                        active: list[0].activeTruckCount,
+                        inactive: list[0].inactiveTruckCount,
                     })
                 );
-
-               this.store.set(milesList.pagination.data);
+                this.store.set({
+                    active: list[0].pagination.data,
+                    innactive: list[1].pagination.data,
+                });
+                return list;
             })
         );
         //return of();

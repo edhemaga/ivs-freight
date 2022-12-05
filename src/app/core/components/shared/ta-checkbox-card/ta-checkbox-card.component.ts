@@ -19,6 +19,7 @@ export class TaCheckboxCardComponent implements ControlValueAccessor {
     @Input() name: string; // must be set, because of multiple checkbox
     @Input() hasArrow: boolean = true;
     @Input() reverseLogic: boolean = false;
+    @Input() withoutToggle: boolean = false;
     @Input() animationMarginParams = {
         marginTop: '12px',
         marginBottom: '12px',
@@ -40,15 +41,15 @@ export class TaCheckboxCardComponent implements ControlValueAccessor {
         return this.superControl.control;
     }
 
-    public writeValue(obj: any): void {}
+    public writeValue(_: any): void {}
 
     public registerOnChange(fn: any): void {
         this.onChange = fn;
     }
 
-    public onChange(event: any): void {}
+    public onChange(_: any): void {}
 
-    public registerOnTouched(fn: any): void {}
+    public registerOnTouched(_: any): void {}
 
     public onToggleCard(event: any) {
         event.preventDefault();

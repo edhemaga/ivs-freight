@@ -20,20 +20,22 @@ export class FormDataService {
                         Object.entries(element).map((it, indx) => {
                             if (it[1] instanceof Object) {
                                 Object.entries(it[1]).map((at, indx) => {
-                                    this.formData.append(
-                                        `${item[0]}[${ind}].${it[0]}.${at[0]}`,
-                                        at[1] as any
-                                    );
+                                    at[1] &&
+                                        this.formData.append(
+                                            `${item[0]}[${ind}].${it[0]}.${at[0]}`,
+                                            at[1] as any
+                                        );
                                 });
                             } else {
-                                this.formData.append(
-                                    `${item[0]}[${ind}].${it[0]}`,
-                                    it[1] as any
-                                );
+                                it[1] &&
+                                    this.formData.append(
+                                        `${item[0]}[${ind}].${it[0]}`,
+                                        it[1] as any
+                                    );
                             }
                         });
                     } else {
-                        this.formData.append(item[0], element);
+                        element && this.formData.append(item[0], element);
                     }
                 });
             } else if (
@@ -45,7 +47,9 @@ export class FormDataService {
                         it[1] instanceof Object
                             ? JSON.stringify(it[1])
                             : (it[1] as any);
-                    this.formData.append(`${item[0]}.${it[0]}`, insideData);
+
+                    insideData &&
+                        this.formData.append(`${item[0]}.${it[0]}`, insideData);
                 });
             } else {
                 if (item[0] && item[1]) this.formData.append(item[0], item[1]);

@@ -1,8 +1,8 @@
 <app-ta-modal
-    [modalTitle]="editData?.type !== 'edit' ? 'Add Parking' : 'Edit Parking'"
+    [modalTitle]="editData?.type !== 'edit' ? 'Add Office' : 'Edit Office'"
     [editData]="editData"
-    [editName]="parkingName"
-    [isModalValid]="parkingForm.valid && isFormDirty"
+    [editName]="officeName"
+    [isModalValid]="officeForm.valid && isFormDirty"
     (action)="onModalAction($event)"
 >
     <div origin>
@@ -14,15 +14,15 @@
         </app-ta-tab-switch>
 
         <form
-            [formGroup]="parkingForm"
-            class="form-container form-container-mt-12"
+            [formGroup]="officeForm"
+            class="form-container form-container-with-inputs"
             [ngClass]="{
+                'form-container-mt-12': selectedTab === 1,
                 'form-container-without-mb':
-                    (selectedTab === 2 && !isFinanceCardOpen) ||
-                    (selectedTab === 1 && !isParkingCardOpen),
+                    selectedTab === 1 && !isDepartmentContactCardOpen,
                 'form-container-with-card':
-                    (selectedTab === 2 && isFinanceCardOpen) ||
-                    (selectedTab === 1 && isParkingCardOpen)
+                    selectedTab === 1 && isDepartmentContactCardOpen,
+                'row-settings-location-additional': selectedTab === 2
             }"
         >
             <div
@@ -36,27 +36,27 @@
                         formControlName="isOwner"
                         [label]="'Company Owned'"
                         [name]="'company-owned'"
-                        [reverseLogic]="true"
-                        [isCardOpen]="parkingForm.get('isOwner').value"
+                        [hasArrow]="false"
+                        [withoutToggle]="true"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '22px'
                         }"
                     >
-                        <ng-container bodyFalse>
+                        <ng-container bodyWithoutToggle>
                             <div class="row">
                                 <div class="col-12">
                                     <app-ta-input
                                         formControlName="name"
                                         [inputConfig]="{
-                                            name: 'Parking Name',
+                                            name: 'Office Name',
                                             type: 'text',
-                                            label: 'Parking Name',
+                                            label: 'Office Name',
                                             isRequired: true,
+                                            textTransform: 'capitalize',
                                             autoFocus:
                                                 editData?.type !== 'edit',
-                                            textTransform: 'uppercase',
-                                            minLength: 1,
+                                            minLength: 2,
                                             maxLength: 64
                                         }"
                                     ></app-ta-input>
@@ -112,6 +112,7 @@
                                                 name: 'Phone',
                                                 type: 'text',
                                                 label: 'Phone',
+                                                isRequired: true,
                                                 placeholderIcon: 'phone',
                                                 mask: '(000) 000-0000',
                                                 maxLength: 14
@@ -164,49 +165,130 @@
                         </ng-container>
                     </app-ta-checkbox-card>
 
-                    <!-- Parking Slot -->
+                    <!-- Department Contacts -->
                     <app-ta-custom-card
                         [hasCounter]="
-                            (parkingSlots | sumArrays) === 0
-                                ? 0
-                                : (parkingSlots | sumArrays)
+                            departmentContacts.length
+                                ? departmentContacts.length
+                                : 0
                         "
-                        [cardName]="'Parking Slot'"
-                        [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
-                        [isCardOpen]="true"
-                        (onOpenCard)="isParkingCardOpen = $event"
+                        [cardName]="'Department Contact'"
+                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                        [hasArrow]="true"
+                        [isCardOpen]="departmentContacts.length > 0"
+                        [hasScrollBody]="departmentContacts.length > 10"
+                        [hasBodyData]="departmentContacts.length > 0"
+                        (onOpenCard)="isDepartmentContactCardOpen = $event"
+                        (onActionEvent)="addDepartmentContacts($event)"
                         [animationMarginParams]="{
-                            marginTop: '18px',
-                            marginBottom: '12px'
+                            marginTop: '12px',
+                            marginBottom: '0px'
                         }"
                     >
-                        <div class="checkbox-card-body">
-                            <div class="row">
-                                <div class="col-12">
-                                    <app-ta-input
-                                        formControlName="parkingSlot"
-                                        [inputConfig]="{
-                                            name: 'Parking Slot',
-                                            type: 'text',
-                                            label: 'Parking Slot # (Truck)',
-                                            minLength: 1,
-                                            maxLength: 64
-                                        }"
-                                    ></app-ta-input>
-                                </div>
+                        <div
+                            formArrayName="departmentContacts"
+                            class="common-fake-table-modal common-fake-table-modal-office-department-contacts"
+                            *ngIf="departmentContacts.length"
+                            (scroll)="onScrollingBrokerContacts($event)"
+                        >
+                            <div class="common-fake-table-label">
+                                <p>DEPARTMENT <span>*</span></p>
+                                <p>PHONE <span>*</span></p>
+                                <p>EXT</p>
+                                <p>EMAIL <span>*</span></p>
                             </div>
-                            <div class="row row-no-mb">
-                                <div class="col-12">
-                                    <app-ta-input
-                                        formControlName="fullParkingSlot"
-                                        [inputConfig]="{
-                                            name: 'Full Parking Slot',
-                                            type: 'text',
-                                            label: 'Full Parking Slot # (Semi Truck - Trailer)',
-                                            minLength: 1,
-                                            maxLength: 128
-                                        }"
-                                    ></app-ta-input>
+                            <div class="common-fake-table-body">
+                                <div
+                                    *ngFor="
+                                        let departmentContact of departmentContacts.controls;
+                                        let ind = index
+                                    "
+                                >
+                                    <div
+                                        [formGroupName]="ind"
+                                        class="common-fake-table-card"
+                                    >
+                                        <app-ta-input-dropdown
+                                            formControlName="departmentId"
+                                            [inputConfig]="{
+                                                name: 'Input Dropdown Department',
+                                                minLength: 2,
+                                                maxLength: 36,
+                                                type: 'text',
+                                                isDropdown: true,
+                                                textTransform: 'capitalize',
+                                                dropdownWidthClass: 'w-col-120',
+                                                hideErrorMessage: true,
+                                                blackInput: true,
+                                                hideRequiredCheck: true
+                                            }"
+                                            [options]="departments"
+                                            [activeItem]="
+                                                selectedDepartmentFormArray[ind]
+                                            "
+                                            (selectedItem)="
+                                                onSelectContactDepartment(
+                                                    $event,
+                                                    ind
+                                                )
+                                            "
+                                        ></app-ta-input-dropdown>
+                                        <app-ta-input
+                                            formControlName="phone"
+                                            [inputConfig]="{
+                                                name: 'Phone',
+                                                type: 'text',
+                                                mask: '(000) 000-0000',
+                                                maxLength: 14,
+                                                hideErrorMessage: true,
+                                                blackInput: true,
+                                                hideRequiredCheck: true
+                                            }"
+                                        ></app-ta-input>
+                                        <app-ta-input
+                                            formControlName="extensionPhone"
+                                            [inputConfig]="{
+                                                name: 'phone-extension',
+                                                type: 'text',
+                                                minLength: 1,
+                                                maxLength: 8,
+                                                hideErrorMessage: true,
+                                                blackInput: true,
+                                                hideRequiredCheck: true
+                                            }"
+                                        ></app-ta-input>
+                                        <app-ta-input
+                                            formControlName="email"
+                                            [inputConfig]="{
+                                                name: 'Email',
+                                                type: 'text',
+                                                minLength: 5,
+                                                maxLength: 64,
+                                                textTransform: 'lowercase',
+                                                hideErrorMessage: true,
+                                                blackInput: true,
+                                                hideRequiredCheck: true
+                                            }"
+                                        ></app-ta-input>
+                                        <div
+                                            ngbTooltip
+                                            mainTooltip="Delete"
+                                            tooltipBackground="#EF5350"
+                                            position="top"
+                                            class="common-fake-table-delete"
+                                            [ngClass]="{
+                                                scrolling:
+                                                    isDepartmentCardsScrolling
+                                            }"
+                                            (click)="
+                                                removeDepartmentContacts(ind)
+                                            "
+                                        >
+                                            <svg-icon
+                                                src="assets/svg/common/ic_trash.svg"
+                                            ></svg-icon>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -214,53 +296,8 @@
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">
-                    <app-ta-custom-card
-                        [cardName]="'Features'"
-                        [isCardOpen]="true"
-                        [animationMarginParams]="{
-                            marginTop: '18px',
-                            marginBottom: '22px'
-                        }"
-                    >
-                        <div class="parking-gate-securityCamera">
-                            <div class="gate-field">
-                                <p>Gate</p>
-                                <div class="gate-radio">
-                                    <app-ta-tab-switch
-                                        [tabs]="gateBtns"
-                                        (switchClicked)="
-                                            tabChange($event, 'gate')
-                                        "
-                                        [type]="'type2-modal-popup'"
-                                    >
-                                    </app-ta-tab-switch>
-                                </div>
-                            </div>
-                            <div class="camera-field">
-                                <p>Security Camera</p>
-                                <div class="camera-radio">
-                                    <app-ta-tab-switch
-                                        [tabs]="cameraBtns"
-                                        (switchClicked)="
-                                            tabChange($event, 'camera')
-                                        "
-                                        [type]="'type2-modal-popup'"
-                                    >
-                                    </app-ta-tab-switch>
-                                </div>
-                            </div>
-                        </div>
-                    </app-ta-custom-card>
-                    <app-ta-custom-card
-                        [cardName]="'Finance'"
-                        [isCardOpen]="true"
-                        (onOpenCard)="isFinanceCardOpen = $event"
-                        [animationMarginParams]="{
-                            marginTop: '18px',
-                            marginBottom: '12px'
-                        }"
-                    >
-                        <div class="location-parking-financial-card">
+                    <div class="row row-no-m">
+                        <div class="col-4">
                             <app-ta-input
                                 formControlName="rent"
                                 [inputConfig]="{
@@ -274,6 +311,8 @@
                                     maxLength: 8
                                 }"
                             ></app-ta-input>
+                        </div>
+                        <div class="col-4">
                             <app-ta-input-dropdown
                                 formControlName="payPeriod"
                                 [inputConfig]="{
@@ -281,7 +320,7 @@
                                     type: 'text',
                                     label: 'Pay Period',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-144'
+                                    dropdownWidthClass: 'w-col-148'
                                 }"
                                 [options]="payPeriods"
                                 [activeItem]="selectedPayPeriod"
@@ -289,6 +328,8 @@
                                     onSelectDropdown($event, 'pay-period')
                                 "
                             ></app-ta-input-dropdown>
+                        </div>
+                        <div class="col-4 no-p-left">
                             <app-ta-input-dropdown
                                 formControlName="monthlyDay"
                                 [inputConfig]="{
@@ -297,8 +338,8 @@
                                     label: 'Day',
                                     isDropdown: true,
                                     isDisabled:
-                                        !parkingForm.get('payPeriod').value,
-                                    dropdownWidthClass: 'w-col-144'
+                                        !officeForm.get('payPeriod').value,
+                                    dropdownWidthClass: 'w-col-148'
                                 }"
                                 [options]="
                                     selectedDay?.name === 'Weekly'
@@ -309,7 +350,7 @@
                                 (selectedItem)="onSelectDropdown($event, 'day')"
                             ></app-ta-input-dropdown>
                         </div>
-                    </app-ta-custom-card>
+                    </div>
                 </div>
             </div>
         </form>

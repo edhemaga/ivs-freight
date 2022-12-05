@@ -12,7 +12,6 @@ import { DriverTService } from '../../../driver/state/driver.service';
 import { TestTService } from '../../../driver/state/test.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { FormService } from '../../../../services/form/form.service';
 import {
     convertDateToBackend,
@@ -55,12 +54,13 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    private storeDrugType: any = null;
+
     constructor(
         private formBuilder: FormBuilder,
         private driverService: DriverTService,
         private testService: TestTService,
         private inputService: TaInputService,
-        private notificationService: NotificationService,
         private modalService: ModalService,
         private formService: FormService
     ) {}
@@ -68,7 +68,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
         this.getDrugDropdowns();
-        this.testStateChange();
 
         if (this.editData) {
             this.getDriverById(this.editData.id);
@@ -140,9 +139,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                 next: (res: DriverResponse) => {
                     this.modalName = res.firstName.concat(' ', res.lastName);
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -157,27 +154,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     this.drugReasons = res.drugTestReasons;
                     this.testResults = res.testResults;
                 },
-                error: () => {
-                   
-                },
-            });
-    }
-
-    private testStateChange() {
-        this.drugForm
-            .get('testType')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.inputService.changeValidators(
-                        this.drugForm.get('testReasonId')
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.drugForm.get('testReasonId'),
-                        false
-                    );
-                }
+                error: () => {},
             });
     }
 
@@ -186,10 +163,17 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             case 'test': {
                 this.selectedTestType = event;
 
-                this.inputService.changeValidators(
-                    this.drugForm.get('testReasonId'),
-                    event ? true : false
-                );
+                if (this.storeDrugType?.name !== this.selectedTestType?.name) {
+                    this.storeDrugType = this.selectedTestType;
+                    this.inputService.changeValidators(
+                        this.drugForm.get('testReasonId'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.drugForm.get('testReasonId'),
+                        true
+                    );
+                }
 
                 if (this.selectedTestType.name.toLowerCase() === 'drug') {
                     this.reasons = this.drugReasons;
@@ -272,14 +256,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         this.testService
             .updateTest(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     public addTest() {
@@ -305,14 +282,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         this.testService
             .addTest(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     public getTestById(id: number) {
@@ -321,7 +291,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: TestResponse) => {
-                    console.log(res);
                     this.drugForm.patchValue({
                         testType: res.testType.name,
                         testReasonId: res.testReason
@@ -335,6 +304,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                     });
                     this.selectedTestType = res.testType;
+                    this.storeDrugType = res.testType;
                     this.selectedReasonType = res.testReason;
                     this.selectedTestResult = res.result;
                     this.documents = res.files;
@@ -344,9 +314,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                         this.reasons = this.alcoholReasons;
                     }
                 },
-                error: () => {
-                
-                },
+                error: () => {},
             });
     }
 
@@ -356,7 +324,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: DriverListResponse) => {
-                    console.log('list of drivers: ', res);
                     this.labelsDrivers = res.pagination.data.map((item) => {
                         return {
                             id: item.id,
@@ -364,9 +331,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

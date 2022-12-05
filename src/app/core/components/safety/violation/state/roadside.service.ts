@@ -5,12 +5,16 @@ import {
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 import { RoadsideInspectionResponse } from '../../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
+import { FormDataService } from '../../../../services/formData/form-data.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class RoadsideService {
-    constructor(private roadsideServis: ViolationService) {}
+    constructor(
+        private roadsideServis: ViolationService,
+        private formDataService: FormDataService
+    ) {}
 
     // Get Roadside List
     public getRoadsideList(
@@ -26,7 +30,7 @@ export class RoadsideService {
     ): Observable<RoadsideInspectionListResponse> {
         return this.roadsideServis.apiViolationListGet(
             active,
-            categoryReport,
+            categoryReport
             // pageIndex,
             // pageSize,
             // companyId,
@@ -47,10 +51,9 @@ export class RoadsideService {
             pageSize
         );
     }
-    public updateRoadside(
-        data: any /*UpdateRoadsideInspectionCommand*/
-    ): Observable<any> {
-        return this.roadsideServis.apiViolationPut(data);
+    public updateRoadside(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.roadsideServis.apiViolationPut();
     }
 
     public getRoadsideById(id: number): Observable<RoadsideInspectionResponse> {

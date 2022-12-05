@@ -1,9 +1,9 @@
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 
-import { SettingsBasicModalComponent } from '../../settings-company/company-modals/settings-basic-modal/settings-basic-modal.component';
-import { SettingsInsurancePolicyModalComponent } from '../../settings-company/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
-import { SettingsFactoringModalComponent } from '../../settings-company/company-modals/settings-factoring-modal/settings-factoring-modal.component';
+import { SettingsBasicModalComponent } from '../../../modals/company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsInsurancePolicyModalComponent } from '../../../modals/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
+import { SettingsFactoringModalComponent } from '../../../modals/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import {
     CompanyModalResponse,
@@ -18,6 +18,7 @@ import {
 } from 'appcoretruckassist';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CompanyStore } from './company-settings.store';
+import { FormDataService } from '../../../../services/formData/form-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsCompanyService implements OnDestroy {
@@ -27,7 +28,8 @@ export class SettingsCompanyService implements OnDestroy {
         private modalService: ModalService,
         private settingService: CompanyService,
         private tableService: TruckassistTableService,
-        private companyStore: CompanyStore
+        private companyStore: CompanyStore,
+        private formDataService: FormDataService
     ) {}
 
     /**
@@ -135,7 +137,7 @@ export class SettingsCompanyService implements OnDestroy {
         data: CreateDivisionCompanyCommand
     ): Observable<CreateResponse> {
         return this.settingService.apiCompanyDivisionPost(data).pipe(
-            tap((res: any) => {
+            tap(() => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -170,7 +172,7 @@ export class SettingsCompanyService implements OnDestroy {
         data: UpdateDivisionCompanyCommand
     ): Observable<object> {
         return this.settingService.apiCompanyDivisionPut(data).pipe(
-            tap((res: any) => {
+            tap(() => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -195,7 +197,7 @@ export class SettingsCompanyService implements OnDestroy {
 
     public deleteCompanyDivisionById(id: number): Observable<any> {
         return this.settingService.apiCompanyDivisionIdDelete(id).pipe(
-            tap((res: any) => {
+            tap(() => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -225,7 +227,7 @@ export class SettingsCompanyService implements OnDestroy {
 
     public deleteInsurancePolicyById(id: number): Observable<any> {
         return this.settingService.apiCompanyInsurancepolicyIdDelete(id).pipe(
-            tap((res: any) => {
+            tap((r) => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -244,8 +246,9 @@ export class SettingsCompanyService implements OnDestroy {
     }
 
     public addInsurancePolicy(data: any): Observable<CreateResponse> {
-        return this.settingService.apiCompanyInsurancepolicyPost(data).pipe(
-            tap((res: any) => {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.settingService.apiCompanyInsurancepolicyPost().pipe(
+            tap(() => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -265,8 +268,9 @@ export class SettingsCompanyService implements OnDestroy {
     }
 
     public updateInsurancePolicy(data: any): Observable<object> {
-        return this.settingService.apiCompanyInsurancepolicyPut(data).pipe(
-            tap((res: any) => {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.settingService.apiCompanyInsurancepolicyPut().pipe(
+            tap(() => {
                 const companySub = this.getCompany()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({

@@ -8,7 +8,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { ApplicantTService } from '../../driver/state/applicant.service';
 import { FormService } from '../../../services/form/form.service';
 import { ApplicantAdminResponse } from '../../../../../../appcoretruckassist';
@@ -34,7 +33,6 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
-        private notificationService: NotificationService,
         private modalService: ModalService,
         private applicantService: ApplicantTService,
         private formService: FormService
@@ -128,14 +126,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
         this.applicantService
             .resendApplicantInviteAdmin({ id })
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
-            });
+            .subscribe();
     }
 
     private updateApplicant(id: number) {
@@ -145,14 +136,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                 id,
             })
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                   
-                },
-            });
+            .subscribe();
     }
 
     private addApplicant() {
@@ -169,15 +153,12 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                         this.addNewApplicant = false;
                         this.formService.resetForm(this.applicantForm);
                     }
-
-                    
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
                         action: 'save and add new',
                         status: false,
                     });
-                   
                 },
             });
     }
@@ -195,15 +176,12 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                         email: res.email,
                         note: res.note,
                     });
-
                     this.applicantFullName = res.firstName.concat(
                         ' ',
                         res.lastName
                     );
                 },
-                error: () => {
-                    
-                },
+                error: () => {},
             });
     }
 
