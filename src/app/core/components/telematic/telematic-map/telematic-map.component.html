@@ -37,7 +37,7 @@
       >
         <ng-template>
           <div class="gps-marker-container marker-icon" [ngClass]="{ 'selected-marker': location.isFocused }" (click)="markerClick(i)">
-            <svg [ngStyle]="{ 'transform': 'rotate('+location.heading+'deg)' }" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="45" viewBox="0 0 34 45">
+            <svg *ngIf="location.unitType != 'Trailer'" [ngStyle]="{ 'transform': 'rotate('+location.heading+'deg)' }" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="45" viewBox="0 0 34 45">
               <defs>
                 <linearGradient id="gradient1" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
                   <stop offset="0" stop-color="#536bc2" stop-opacity="0"/>
@@ -60,6 +60,26 @@
                 <path id="Path_33426" data-name="Path 33426" d="M4.726.208,1.816,5.981a.378.378,0,0,0,.55.483L4.638,4.92a.756.756,0,0,1,.85,0L7.762,6.465a.378.378,0,0,0,.55-.483L5.4.208a.378.378,0,0,0-.675,0" transform="translate(19 5)" fill="#fff"/>
               </g>
             </svg>
+            <svg *ngIf="location.unitType == 'Trailer'" [ngStyle]="{ 'transform': 'rotate('+location.heading+'deg)' }" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45" height="33.999" viewBox="0 0 45 33.999">
+              <defs>
+                <linearGradient id="gradient1" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+                  <stop offset="0" stop-color="#536bc2" stop-opacity="0"/>
+                  <stop offset="1" stop-color="#536bc2"/>
+                </linearGradient>
+                <filter id="Path_41047" x="11" y="0" width="34" height="33.999" filterUnits="userSpaceOnUse">
+                  <feOffset input="SourceAlpha"/>
+                  <feGaussianBlur stdDeviation="2" result="blur"/>
+                  <feFlood flood-opacity="0.149"/>
+                  <feComposite operator="in" in2="blur"/>
+                  <feComposite in="SourceGraphic"/>
+                </filter>
+              </defs>
+              <path id="Path_41058" data-name="Path 41058" d="M0,0H18L14,28H4Z" transform="translate(0 26) rotate(-90)" fill="url(#gradient1)"/>
+              <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_41047)">
+                <path id="Path_41047-2" data-name="Path 41047" d="M44.015.921l7.857,7.857a3.142,3.142,0,0,1,0,4.444l-7.857,7.857a3.142,3.142,0,0,1-4.444,0l-7.857-7.857a3.139,3.139,0,0,1,0-4.444L39.571.921a3.142,3.142,0,0,1,4.444,0" transform="translate(-13.79 6)" fill="#fff"/>
+              </g>
+              <path id="Path_41050" data-name="Path 41050" d="M43.206,3.586l6,6a2,2,0,0,1,0,2.828l-6,6a2,2,0,0,1-2.828,0l-6-6a2,2,0,0,1,0-2.828l6-6a2,2,0,0,1,2.828,0" transform="translate(-13.793 6)" fill="#536bc2"/>
+            </svg>
           </div>
           <div
             class="gps-marker-dropdown marker-dropdown"
@@ -69,7 +89,7 @@
             }"
           >
             <app-map-marker-dropdown
-              [title]="'Job Gaston'"
+              [title]="location?.driver ? location.driver : 'Job Gaston'"
               [item]="location"
               [type]="'gps'"
             ></app-map-marker-dropdown>

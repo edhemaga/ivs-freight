@@ -208,6 +208,19 @@
     }
 }
 
+.pink-text {
+    color: #74BF97;
+
+    &::-moz-selection {
+        color: #74BF97;
+        background: #74BF9733;
+    }
+    &::selection {
+        color: #74BF97;
+        background: #74BF9733;
+    }
+}
+
 .font-weight-normal {
     font-weight: 400;
 }
@@ -458,4 +471,17 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.unit-number-text {
+    font-size: 18px;
+    line-height: 22px;
+    color: #6C6C6C;
+}
+
+.unit-status-text {
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 16px;
+    text-transform: uppercase;
 }

@@ -32,6 +32,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     driverLocations: any[] = [];
     driverDestinations: any[] = [];
 
+    gpsAssignedData: any[] = [];
+    gpsUnassignedData: any[] = [];
+
     routeLineOptions: any = {};
 
     constructor(
@@ -143,6 +146,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
                 console.log('getGpsData', gpsData);
+                this.gpsAssignedData = gpsData.data;
+                this.driverLocations = [...this.driverLocations, ...gpsData.data];
+                console.log('driverLocations', this.driverLocations);
             });
     }
 
@@ -152,7 +158,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((gpsData: any) => {
                 console.log('getUnassignedGpsData', gpsData);
-                this.driverLocations = gpsData.data;
+                this.gpsUnassignedData = gpsData.data;
+                this.driverLocations = [...this.driverLocations, ...gpsData.data];
+                console.log('driverLocations', this.driverLocations);
             });
     }
 
