@@ -31,7 +31,7 @@
             <app-ta-re-card
                 [cardNameCommon]="insurance?.producerName"
                 [haveHeaderText]="true"
-                [cardDocumentCounter]="1"
+                [cardDocumentCounter]="insurance?.files.length ? insurance?.files.length : 0"
                 [options]="dropOptions"
                 [optionsId]="insurance.id"
                 (resizePage)="toggleResizePage(i)"
@@ -400,7 +400,7 @@
                                     [countBackgroud]="'#F3F3F3'"
                                     [countHeight]="'24px'"
                                     [countWidth]="'24px'"
-                                    [count]="6"
+                                    [count]="insurance?.files.length ? insurance?.files.length : 0"
                                 >
                                 </app-ta-counter>
                                 <p class="details-document-name">Document</p>
@@ -414,23 +414,7 @@
                     </div>
                     <div class="card-pdf">
                         <app-ta-upload-files
-                            [files]="[
-                                {
-                                    fileName: 'truckassist - 0',
-                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                                    extension: 'pdf'
-                                },
-                                {
-                                    fileName: 'truckassist - 1',
-                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                                    extension: 'pdf'
-                                },
-                                {
-                                    fileName: 'truckassist - 2',
-                                    url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                                    extension: 'pdf'
-                                }
-                            ]"
+                            [files]="insurance?.files"
                             [customClassName]="'company-details-pdf'"
                             [slideWidth]="390"
                             [type]="'details'"
