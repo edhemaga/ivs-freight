@@ -12,7 +12,6 @@
 
 
 export interface CreateDrugAndAlcoholReviewCommand { 
-    id?: number | null;
     isCarrierValid?: boolean;
     isPhoneValid?: boolean;
     carrierPhoneMessage?: string | null;

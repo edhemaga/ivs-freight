@@ -2617,19 +2617,19 @@ export class ApplicantService {
     }
 
     /**
+     * @param id 
      * @param issueDate 
      * @param expireDate 
      * @param files 
      * @param filesForDeleteIds 
-     * @param cdlCardId 
      * @param applicantId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantCdlcardPut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, cdlCardId?: number, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiApplicantCdlcardPut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, cdlCardId?: number, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiApplicantCdlcardPut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, cdlCardId?: number, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiApplicantCdlcardPut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, cdlCardId?: number, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantCdlcardPut(id?: number, issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantCdlcardPut(id?: number, issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantCdlcardPut(id?: number, issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantCdlcardPut(id?: number, issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -2678,6 +2678,9 @@ export class ApplicantService {
             localVarFormParams = new HttpParams({encoder: this.encoder});
         }
 
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
         if (issueDate !== undefined) {
             localVarFormParams = localVarFormParams.append('IssueDate', <any>issueDate) as any || localVarFormParams;
         }
@@ -2693,9 +2696,6 @@ export class ApplicantService {
             filesForDeleteIds.forEach((element) => {
                 localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
             })
-        }
-        if (cdlCardId !== undefined) {
-            localVarFormParams = localVarFormParams.append('CdlCardId', <any>cdlCardId) as any || localVarFormParams;
         }
         if (applicantId !== undefined) {
             localVarFormParams = localVarFormParams.append('ApplicantId', <any>applicantId) as any || localVarFormParams;
@@ -4348,19 +4348,19 @@ export class ApplicantService {
     }
 
     /**
+     * @param id 
      * @param issueDate 
      * @param expireDate 
      * @param files 
      * @param filesForDeleteIds 
-     * @param applicantMedicalId 
      * @param applicantId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantMedicalcertificatePut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMedicalId?: number, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiApplicantMedicalcertificatePut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMedicalId?: number, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiApplicantMedicalcertificatePut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMedicalId?: number, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiApplicantMedicalcertificatePut(issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMedicalId?: number, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantMedicalcertificatePut(id?: number, issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantMedicalcertificatePut(id?: number, issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantMedicalcertificatePut(id?: number, issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantMedicalcertificatePut(id?: number, issueDate?: string, expireDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -4409,6 +4409,9 @@ export class ApplicantService {
             localVarFormParams = new HttpParams({encoder: this.encoder});
         }
 
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
         if (issueDate !== undefined) {
             localVarFormParams = localVarFormParams.append('IssueDate', <any>issueDate) as any || localVarFormParams;
         }
@@ -4424,9 +4427,6 @@ export class ApplicantService {
             filesForDeleteIds.forEach((element) => {
                 localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
             })
-        }
-        if (applicantMedicalId !== undefined) {
-            localVarFormParams = localVarFormParams.append('ApplicantMedicalId', <any>applicantMedicalId) as any || localVarFormParams;
         }
         if (applicantId !== undefined) {
             localVarFormParams = localVarFormParams.append('ApplicantId', <any>applicantId) as any || localVarFormParams;
@@ -4786,15 +4786,14 @@ export class ApplicantService {
      * @param signature 
      * @param files 
      * @param filesForDeleteIds 
-     * @param applicantMvrAuthId 
      * @param applicantId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMvrAuthId?: number, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMvrAuthId?: number, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMvrAuthId?: number, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantMvrAuthId?: number, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -4873,9 +4872,6 @@ export class ApplicantService {
             filesForDeleteIds.forEach((element) => {
                 localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
             })
-        }
-        if (applicantMvrAuthId !== undefined) {
-            localVarFormParams = localVarFormParams.append('ApplicantMvrAuthId', <any>applicantMvrAuthId) as any || localVarFormParams;
         }
         if (applicantId !== undefined) {
             localVarFormParams = localVarFormParams.append('ApplicantId', <any>applicantId) as any || localVarFormParams;
