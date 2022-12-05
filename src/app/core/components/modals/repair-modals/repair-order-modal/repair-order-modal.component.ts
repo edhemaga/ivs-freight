@@ -319,6 +319,23 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 true
             );
             this.repairOrderForm.get('repairType').patchValue('Order');
+
+            if (this.items.length) {
+                for (let i = 0; i < this.items.length; i++) {
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('description'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('quantity'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('price'),
+                        false
+                    );
+                }
+            }
         } else {
             this.inputService.changeValidators(
                 this.repairOrderForm.get('repairShopId')
@@ -332,6 +349,20 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.inputService.changeValidators(
                     this.repairOrderForm.get('odometer')
                 );
+            }
+
+            if (this.items.length) {
+                for (let i = 0; i < this.items.length; i++) {
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('description')
+                    );
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('quantity')
+                    );
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('price')
+                    );
+                }
             }
         }
 
