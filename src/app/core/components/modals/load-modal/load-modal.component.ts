@@ -1636,7 +1636,16 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         const { ...form } = this.loadForm.value;
 
         let documents = [];
+        let tagsArray = [];
         this.documents.map((item) => {
+            if(item.tagId?.length)
+            tagsArray.push(
+                {
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId
+                }
+            );
+
             if (item.realFile) {
                 documents.push(item.realFile);
             }
@@ -1698,6 +1707,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             additionalBillingRates: this.premmapedAdditionalBillingRate(),
             stops: this.premmapedStops() as any,
             files: documents,
+            tags: tagsArray,
         };
 
         this.loadService
