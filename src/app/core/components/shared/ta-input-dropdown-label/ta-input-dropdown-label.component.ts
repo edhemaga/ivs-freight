@@ -45,9 +45,9 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
         return this.superControl.control;
     }
 
-    writeValue(obj: any): void {}
-    registerOnChange(fn: any): void {}
-    registerOnTouched(fn: any): void {}
+    writeValue(_: any): void {}
+    registerOnChange(_: any): void {}
+    registerOnTouched(_: any): void {}
 
     /**
      * SELECT FROM ITEMS DROPDOWN

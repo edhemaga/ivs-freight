@@ -178,7 +178,7 @@ export class TaInputComponent
 
                 this.input.nativeElement.focus();
                 clearTimeout(timeout);
-            }, 300);
+            }, 250);
         }
 
         // Reset Inputs
@@ -260,9 +260,9 @@ export class TaInputComponent
         this.onChange = fn;
     }
 
-    public onChange(event: any): void {}
+    public onChange(_: any): void {}
 
-    public registerOnTouched(fn: any): void {}
+    public registerOnTouched(_: any): void {}
 
     public setDisabledState?(isDisabled: boolean): void {
         this.inputConfig.isDisabled = isDisabled;

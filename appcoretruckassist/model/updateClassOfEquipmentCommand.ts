@@ -12,9 +12,9 @@
 
 
 export interface UpdateClassOfEquipmentCommand { 
+    id?: number | null;
     vehicleTypeId?: number;
     trailerTypeId?: number | null;
     trailerLengthId?: number | null;
-    id?: number;
 }
 

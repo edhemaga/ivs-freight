@@ -597,25 +597,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
                     });
 
-                    this.selectedTrailerType = res.trailerType
-                        ? res.trailerType
-                        : null;
-                    this.selectedTrailerMake = res.trailerMake
-                        ? res.trailerMake
-                        : null;
-                    this.selectedColor = res.color ? res.color : null;
-                    this.selectedTrailerLength = res.trailerLength
-                        ? res.trailerLength
-                        : null;
-                    this.selectedOwner = res.owner ? res.owner : null;
-                    this.selectedSuspension = res.suspension
-                        ? res.suspension.name
-                        : null;
-                    this.selectedTireSize = res.tireSize ? res.tireSize : null;
-                    this.selectedDoorType = res.doorType ? res.doorType : null;
-                    this.selectedReeferType = res.reeferUnit
-                        ? res.reeferUnit
-                        : null;
+                    this.selectedTrailerType = res.trailerType;
+                    this.selectedTrailerMake = res.trailerMake;
+                    this.selectedColor = res.color;
+                    this.selectedTrailerLength = res.trailerLength;
+                    this.selectedOwner = res.owner;
+                    this.selectedSuspension = res.suspension;
+                    this.selectedTireSize = res.tireSize;
+                    this.selectedDoorType = res.doorType;
+                    this.selectedReeferType = res.reeferUnit;
                     this.trailerStatus = res.status !== 1;
 
                     this.modalService.changeModalStatus({

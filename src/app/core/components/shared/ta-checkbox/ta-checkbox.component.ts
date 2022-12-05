@@ -36,15 +36,15 @@ export class TaCheckboxComponent implements ControlValueAccessor {
         return this.superControl.control;
     }
 
-    public writeValue(obj: any): void {}
+    public writeValue(_: any): void {}
 
     public registerOnChange(fn: any): void {
         this.onChange = fn;
     }
 
-    public onChange(event: any): void {}
+    public onChange(_: any): void {}
 
-    public registerOnTouched(fn: any): void {}
+    public registerOnTouched(_: any): void {}
 
     public onAction() {
         this.formArrayCheck = !this.formArrayCheck;

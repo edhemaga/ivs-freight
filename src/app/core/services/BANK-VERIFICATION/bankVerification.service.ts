@@ -55,18 +55,11 @@ export class BankVerificationService {
             .pipe(distinctUntilChanged())
             .subscribe(async (value) => {
                 if (value?.length > 8) {
-                    console.log('routing value: ', value);
-                    console.log(
-                        'routing typing validation: ',
-                        bankRoutingValidator(value)
-                    );
                     if (await bankRoutingValidator(value)) {
                         routingControl.setErrors(null);
                     } else {
                         routingControl.setErrors({ invalid: true });
                     }
-
-                    console.log('Error: ', routingControl.errors);
                 }
             });
     }

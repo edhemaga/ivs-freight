@@ -243,7 +243,6 @@ export class CommonTruckTrailerService {
         data: any,
         tabSelected?: string
     ): Observable<object> {
-        console.log(data, 'datasent');
         this.formDataService.extractFormDataFromFunction(data);
         return this.inspectionService.apiInspectionPut().pipe(
             tap(() => {
@@ -396,7 +395,6 @@ export class CommonTruckTrailerService {
                 .getTrailerById(trailerId)
                 .subscribe({
                     next: (trailer: TrailerResponse | any) => {
-                        
                         if (tabSelected === 'active') {
                             this.trailerActiveStore.remove(
                                 ({ id }) => id === trailerId
@@ -410,7 +408,7 @@ export class CommonTruckTrailerService {
 
                             this.trailerInactiveStore.add(trailer);
                         }
-                        
+
                         this.tadl.update(trailer.id, {
                             titles: trailer.titles,
                         });
@@ -420,16 +418,14 @@ export class CommonTruckTrailerService {
                         this.tadl.update(trailer.id, {
                             inspections: trailer.inspections,
                         });
-                        
-                       
+
                         this.tableService.sendActionAnimation({
                             animation: 'update',
                             data: trailer,
                             id: trailer.id,
                         });
-                        
+
                         subTrailer.unsubscribe();
-                       
                     },
                 });
         }
