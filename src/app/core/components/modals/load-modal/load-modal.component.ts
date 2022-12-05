@@ -26,7 +26,6 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 
 import { FormService } from '../../../services/form/form.service';
 import { LoadTService } from '../../load/state/load.service';
-import { LoadModalResponse } from '../../../../../../appcoretruckassist';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { CommentsService } from '../../../services/comments/comments.service';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';

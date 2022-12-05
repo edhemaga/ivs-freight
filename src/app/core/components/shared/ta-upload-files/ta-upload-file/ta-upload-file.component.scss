@@ -378,33 +378,48 @@
         }
 
         //-------------- Driver Details Single PDF
-        &.driver-details-pdf {
-            width: 312px;
-            height: 312px;
+
+        &.driver-details-pdf,
+        &.driver-card-pdf,
+        &.landscape-details-view,
+        &.todo-details,
+        &.company-details-pdf {
             position: relative;
 
             .ng2-pdf-viewer-container {
                 overflow: visible !important;
                 background-color: transparent !important;
-                width: 304px !important;
-                height: 304px !important;
                 border-radius: 1px !important;
 
                 .canvasWrapper,
                 .pdfViewer,
                 .pdfViewer .page,
                 canvas {
-                    max-width: 304px !important;
-                    max-height: 304px !important;
                     margin: 0 !important;
                     border-radius: 1px !important;
                     width: auto !important;
-                    min-width: 229px;
 
                     &:not(:first-child) {
                         opacity: 0;
                         height: 0 !important;
                     }
+                }
+            }
+        }
+
+        &.driver-details-pdf {
+            width: 312px;
+            height: 312px;
+            .ng2-pdf-viewer-container {
+                width: 304px !important;
+                height: 304px !important;
+                .canvasWrapper,
+                .pdfViewer,
+                .pdfViewer .page,
+                canvas {
+                    max-width: 304px !important;
+                    max-height: 304px !important;
+                    min-width: 229px;
                 }
             }
         }
@@ -412,30 +427,16 @@
         &.driver-card-pdf {
             width: 428px;
             height: 428px;
-            position: relative;
-
             .ng2-pdf-viewer-container {
-                overflow: visible !important;
-                background-color: transparent !important;
                 width: 420px !important;
                 height: 420px !important;
-                border-radius: 1px !important;
-
                 .canvasWrapper,
                 .pdfViewer,
                 .pdfViewer .page,
                 canvas {
                     max-width: 420px !important;
                     max-height: 420px !important;
-                    margin: 0 !important;
-                    border-radius: 1px !important;
-                    width: auto !important;
-                    min-width: 314;
-
-                    &:not(:first-child) {
-                        opacity: 0;
-                        height: 0 !important;
-                    }
+                    min-width: 314px;
                 }
             }
         }
@@ -443,31 +444,18 @@
         &.landscape-details-view {
             width: 312px;
             max-height: 200px;
-            position: relative;
             bottom: 4px;
 
             .ng2-pdf-viewer-container {
-                overflow: visible !important;
-                background-color: transparent !important;
                 width: 304px !important;
                 max-height: 192px !important;
-                border-radius: 1px !important;
-
                 .canvasWrapper,
                 .pdfViewer,
                 .pdfViewer .page,
                 canvas {
                     max-width: 304px !important;
                     max-height: 192px !important;
-                    margin: 0 !important;
-                    border-radius: 1px !important;
-                    width: auto !important;
                     min-width: 304px;
-
-                    &:not(:first-child) {
-                        opacity: 0;
-                        height: 0 !important;
-                    }
                 }
             }
         }
@@ -475,11 +463,8 @@
         &.todo-details {
             width: 200px;
             height: 200px;
-            position: relative;
 
             .ng2-pdf-viewer-container {
-                overflow: visible !important;
-                background-color: transparent !important;
                 width: 178px !important;
                 height: 192px !important;
                 border-radius: 1px !important;
@@ -491,15 +476,7 @@
                 canvas {
                     max-width: 192px !important;
                     max-height: 192px !important;
-                    margin: 0 !important;
-                    border-radius: 1px !important;
-                    width: auto !important;
                     min-width: 150px;
-
-                    &:not(:first-child) {
-                        opacity: 0;
-                        height: 0 !important;
-                    }
                 }
             }
         }
@@ -507,11 +484,8 @@
         &.company-details-pdf {
             width: 378px;
             height: 378px;
-            position: relative;
 
             .ng2-pdf-viewer-container {
-                overflow: visible !important;
-                background-color: transparent !important;
                 width: 370px !important;
                 height: 370px !important;
                 border-radius: 1px !important;
@@ -522,15 +496,7 @@
                 canvas {
                     max-width: 370px !important;
                     max-height: 370px !important;
-                    margin: 0 !important;
-                    border-radius: 1px !important;
-                    width: auto !important;
                     min-width: 229px;
-
-                    &:not(:first-child) {
-                        opacity: 0;
-                        height: 0 !important;
-                    }
                 }
             }
         }
@@ -732,17 +698,13 @@
     }
 
     // --------------------- Custom Classes ---------------------
-    &.driver-details-pdf {
-        width: 312px;
-        height: 312px;
-        grid-template-rows: 312px;
-
+    &.driver-details-pdf,
+    &.driver-card-pdf,
+    &.landscape-details-view,
+    &.todo-details,
+    &.company-details-pdf {
         .ta-upload-file-footer {
             opacity: 0;
-            bottom: 37px;
-            right: -4px;
-
-            width: 304px;
             border-radius: 1px;
             cursor: default;
             transition: 0.3s all ease-in-out;
@@ -754,7 +716,6 @@
 
         .ta-upload-file-tag {
             opacity: 0;
-            bottom: 56px;
             transition: 0.3s all ease-in-out;
         }
 
@@ -813,6 +774,23 @@
                 }
             }
         }
+    }
+
+    &.driver-details-pdf {
+        width: 312px;
+        height: 312px;
+        grid-template-rows: 312px;
+
+        .ta-upload-file-footer {
+            bottom: 37px;
+            right: -4px;
+
+            width: 304px;
+        }
+
+        .ta-upload-file-tag {
+            bottom: 56px;
+        }
 
         .ta-upload-file-delete-template {
             width: 304px;
@@ -826,37 +804,14 @@
         grid-template-rows: 428px;
 
         .ta-upload-file-footer {
-            opacity: 0;
             bottom: 37px;
             right: -4px;
 
             width: 420px;
-            border-radius: 1px;
-            cursor: default;
-            transition: 0.3s all ease-in-out;
-
-            .footer_info {
-                left: 0 !important;
-            }
         }
 
         .ta-upload-file-tag {
-            opacity: 0;
             bottom: 56px;
-            transition: 0.3s all ease-in-out;
-        }
-
-        &:hover {
-            .ta-upload-file-footer {
-                opacity: 1;
-                background-color: rgba(255, 255, 255, 0.9) !important;
-                transition: 0.3s all ease-in-out;
-            }
-
-            .ta-upload-file-tag {
-                opacity: 0.9;
-                transition: 0.3s all ease-in-out;
-            }
         }
 
         .ta-upload-file-delete-template {
@@ -873,37 +828,15 @@
         overflow: visible;
 
         .ta-upload-file-footer {
-            opacity: 0;
             bottom: 37px;
             right: -4px;
 
             width: 304px;
-            border-radius: 1px;
-            cursor: default;
-            transition: 0.3s all ease-in-out;
-
-            .footer_info {
-                left: 0 !important;
-            }
         }
 
         .ta-upload-file-tag {
             opacity: 0;
             bottom: 31px;
-            transition: 0.3s all ease-in-out;
-        }
-
-        &:hover {
-            .ta-upload-file-footer {
-                opacity: 1;
-                background-color: rgba(255, 255, 255, 0.9) !important;
-                transition: 0.3s all ease-in-out;
-            }
-
-            .ta-upload-file-tag {
-                opacity: 0.9;
-                transition: 0.3s all ease-in-out;
-            }
         }
 
         .ta-upload-file-delete-template {
@@ -918,37 +851,14 @@
         grid-template-rows: 200px;
 
         .ta-upload-file-footer {
-            opacity: 0;
             bottom: 37px;
             right: -4px;
 
             width: 192px;
-            border-radius: 1px;
-            cursor: default;
-            transition: 0.3s all ease-in-out;
-
-            .footer_info {
-                left: 0 !important;
-            }
         }
 
         .ta-upload-file-tag {
-            opacity: 0;
             bottom: 56px;
-            transition: 0.3s all ease-in-out;
-        }
-
-        &:hover {
-            .ta-upload-file-footer {
-                opacity: 1;
-                background-color: rgba(255, 255, 255, 0.9) !important;
-                transition: 0.3s all ease-in-out;
-            }
-
-            .ta-upload-file-tag {
-                opacity: 0.9;
-                transition: 0.3s all ease-in-out;
-            }
         }
 
         .ta-upload-file-delete-template {
@@ -963,37 +873,14 @@
         grid-template-rows: 378px;
 
         .ta-upload-file-footer {
-            opacity: 0;
             bottom: 37px;
             right: -4px;
 
             width: 370px;
-            border-radius: 1px;
-            cursor: default;
-            transition: 0.3s all ease-in-out;
-
-            .footer_info {
-                left: 0 !important;
-            }
         }
 
         .ta-upload-file-tag {
-            opacity: 0;
             bottom: 56px;
-            transition: 0.3s all ease-in-out;
-        }
-
-        &:hover {
-            .ta-upload-file-footer {
-                opacity: 1;
-                background-color: rgba(255, 255, 255, 0.9) !important;
-                transition: 0.3s all ease-in-out;
-            }
-
-            .ta-upload-file-tag {
-                opacity: 0.9;
-                transition: 0.3s all ease-in-out;
-            }
         }
 
         .ta-upload-file-delete-template {
