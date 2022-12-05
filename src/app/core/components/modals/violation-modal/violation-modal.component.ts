@@ -370,7 +370,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .getRoadsideById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: RoadsideInspectionResponse) => {
+                next: (res: any /*RoadsideInspectionResponse*/) => {
                     this.violationForm.patchValue({
                         report: res.report,
                         categoryReport: res.violationCategory?.name
