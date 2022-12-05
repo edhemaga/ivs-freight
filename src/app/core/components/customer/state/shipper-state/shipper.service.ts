@@ -268,14 +268,18 @@ export class ShipperTService implements OnDestroy {
     }
 
     public getShipperClusters(
-        clustersQuery: GetRepairShopClustersQuery
+        clustersQuery: GetRepairShopClustersQuery,
+        pageIndex?: number,
+        pageSize?: number,
     ): Observable<Array<ClusterResponse>> {
         return this.shipperService.apiShipperClustersGet(
             clustersQuery.northEastLatitude,
             clustersQuery.northEastLongitude,
             clustersQuery.southWestLatitude,
             clustersQuery.southWestLongitude,
-            clustersQuery.zoomLevel
+            clustersQuery.zoomLevel,
+            pageIndex,
+            pageSize
         );
     }
 

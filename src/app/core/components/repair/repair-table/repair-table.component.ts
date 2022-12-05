@@ -959,9 +959,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // MAP
     selectItem(data: any) {
-        if ( !data[1] ) {
-            this.mapsComponent.clickedMarker(data[0]);
-        }
+        this.mapsComponent.clickedMarker(data[0]);
 
         this.mapListData.map((item) => {
             if ( item.id == data[0] ) {
@@ -969,7 +967,31 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     (item2) => item2.id === item.id
                 );
 
-                item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+                if ( itemIndex > -1 && this.mapsComponent.viewData[itemIndex].showMarker ) {
+                    item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+                } else {
+                    this.mapsComponent.clusterMarkers.map((cluster) => {
+                        var clusterData = cluster.pagination.data;
+            
+                        let clusterItemIndex = clusterData.findIndex(
+                            (item2) => item2.id === data[0]
+                        );
+            
+                        if ( clusterItemIndex > -1 ) {
+                            if ( !data[1] ) {
+                                if ( !cluster.isSelected || (cluster.isSelected && cluster.detailedInfo?.id == data[0]) ) {
+                                    this.mapsComponent.clickedCluster(cluster);
+                                }
+            
+                                if ( cluster.isSelected ) {
+                                    this.mapsComponent.showClusterItemInfo([cluster, clusterData[clusterItemIndex]]);
+                                }
+                            }
+
+                            item.isSelected = cluster.isSelected;
+                        }
+                    });
+                }
             }
         });
     }

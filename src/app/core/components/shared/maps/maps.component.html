@@ -424,9 +424,11 @@
                                 "
                                 [type]="'cluster'"
                                 [item]="cluster"
+                                [clusterItems]="cluster.data"
                                 (showClusterItemInfo)="
                                     showClusterItemInfo($event)
                                 "
+                                (loadMoreData)="showMoreData($event)"
                             ></app-map-marker-dropdown>
                             <app-map-marker-dropdown
                                 *ngIf="cluster?.detailedInfo"

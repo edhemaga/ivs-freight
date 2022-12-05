@@ -5,6 +5,7 @@ import {
     Output,
     EventEmitter,
     OnDestroy,
+    ChangeDetectorRef
 } from '@angular/core';
 import { MapsService } from '../../../services/shared/maps.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -31,7 +32,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     public locationFilterOn: boolean = false;
     sortCategory: any = {};
 
-    constructor(private mapsService: MapsService) {}
+    constructor(private mapsService: MapsService, private ref: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.sortCategory = this.mapsService.sortCategory;
@@ -41,6 +42,20 @@ export class MapListCardComponent implements OnInit, OnDestroy {
             .subscribe((category) => {
                 this.sortCategory = category;
             });
+
+        if ( this.mapsService.selectedMarkerId ) {
+            this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
+            this.item.isSelected = this.mapsService.selectedMarkerId == this.item.id;
+            console.log('selected card', this.mapsService.selectedMarkerId, this.item.id);
+        }
+
+        // this.mapsService.selectedMarkerChange
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe((id) => {
+        //         this.item.isSelected = this.item.id == id;
+        //         console.log('selectedMarkerChange', id);
+        //         this.ref.detectChanges();
+        //     });
     }
 
     selectCard() {
@@ -81,6 +96,12 @@ export class MapListCardComponent implements OnInit, OnDestroy {
 
     setSortCategory(category) {
         this.sortCategory = category;
+    }
+
+    addRemoveSelection(add) {
+        this.isSelected = add;
+        this.item.isSelected = add;
+        this.ref.detectChanges();
     }
 
     ngOnDestroy(): void {

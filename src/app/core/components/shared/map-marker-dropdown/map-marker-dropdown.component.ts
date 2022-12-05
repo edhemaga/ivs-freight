@@ -25,6 +25,7 @@ export class MapMarkerDropdownComponent implements OnInit {
     @Input() cluster: any = {};
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     @Output() showClusterItemInfo: EventEmitter<any> = new EventEmitter();
+    @Output() loadMoreData: EventEmitter<any> = new EventEmitter();
 
     public copiedPhone: boolean = false;
     public copiedEmail: boolean = false;
@@ -126,5 +127,17 @@ export class MapMarkerDropdownComponent implements OnInit {
 
     openClusterItemInfo(item2) {
         this.showClusterItemInfo.emit([this.item, item2]);
+    }
+
+    clusterListScroll(event) {
+        var element = event.target;
+        if (
+            Math.abs(
+                element.scrollHeight - element.scrollTop - element.clientHeight
+            ) <= 3.0
+        ) {
+            console.log('scrolled to bottom');
+            this.loadMoreData.emit(this.item);
+        }
     }
 }

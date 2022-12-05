@@ -87,6 +87,20 @@ export class MapListComponent
                 this.onSearch();
             });
 
+        this.mapsService.selectedMarkerChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                this.listCards.map((card) => {
+                    if ( card.isSelected && card.item.id != id ) {
+                        card.addRemoveSelection(false);
+                    }
+
+                    if ( card.item.id == id ) {
+                        card.addRemoveSelection(true);
+                    }
+                });
+            });
+
         this.setVisibleColumns();
 
         this.setSortTypes();

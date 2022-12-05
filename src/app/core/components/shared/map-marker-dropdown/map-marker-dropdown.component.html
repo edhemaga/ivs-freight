@@ -762,11 +762,11 @@
         </div>
         <div class="divider"></div>
     </div>
-    <div class="cluster-list-content">
+    <div class="cluster-list-content" (scroll)="clusterListScroll($event)">
         <div
             class="cluster-list-item"
             (click)="openClusterItemInfo(item2)"
-            *ngFor="let item2 of item.names"
+            *ngFor="let item2 of item.pagination.data"
         >
             {{ item2.name }}
         </div>
