@@ -146,7 +146,7 @@ export class EmploymentHistoryService {
             }
         }
 
-        let localVarPath = `/api/employmenthistory/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/api/employmenthistory/`;
         return this.httpClient.request<object>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

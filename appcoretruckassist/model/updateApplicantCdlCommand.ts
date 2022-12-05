@@ -14,7 +14,7 @@ import { ClassType } from './classType';
 
 
 export interface UpdateApplicantCdlCommand { 
-    id?: number | null;
+    id?: number;
     licenseNumber?: string | null;
     country?: CountryType;
     stateId?: number;

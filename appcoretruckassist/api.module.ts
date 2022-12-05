@@ -40,7 +40,6 @@ import { RepairShopService } from './api/repairShop.service';
 import { RouteService } from './api/route.service';
 import { RoutingService } from './api/routing.service';
 import { ShipperService } from './api/shipper.service';
-import { StateService } from './api/state.service';
 import { StopService } from './api/stop.service';
 import { TableConfigService } from './api/tableConfig.service';
 import { TerminalService } from './api/terminal.service';

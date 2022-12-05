@@ -20,7 +20,7 @@ export interface CreateSevenDaysHosCommand {
     location?: AddressEntity;
     workingForAnotherEmployer?: boolean;
     intendToWorkForAnotherEmployer?: boolean;
-    certifyInformation?: boolean;
+    certifyInfomation?: boolean;
     applicantId?: number;
 }
 

@@ -14,7 +14,7 @@ import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateWorkExperienceItemCommand { 
-    id?: number | null;
+    id?: number;
     employer?: string | null;
     jobDescription?: string | null;
     from?: string;

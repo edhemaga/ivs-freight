@@ -15,12 +15,11 @@ import { AddressEntity } from './addressEntity';
 
 export interface UpdateSevenDaysHosCommand { 
     hos?: Array<UpdateHosCommand> | null;
-    releasedFromWork?: boolean;
     releasedDate?: string;
     location?: AddressEntity;
     workingForAnotherEmployer?: boolean;
     intendToWorkForAnotherEmployer?: boolean;
-    certifyInformation?: boolean;
+    certifyInfomation?: boolean;
     applicantId?: number;
 }
 

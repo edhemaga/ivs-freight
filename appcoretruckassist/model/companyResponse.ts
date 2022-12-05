@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
 import { CompanyShortResponse } from './companyShortResponse';
 import { FactoringCompany } from './factoringCompany';
 import { CompanyAdditionalInfo } from './companyAdditionalInfo';
@@ -50,7 +49,6 @@ export interface CompanyResponse {
     companyPayrolls?: Array<CompanyPayrollResponse> | null;
     insurancePolicies?: Array<InsurancePolicyResponse> | null;
     divisions?: Array<CompanyShortResponse> | null;
-    files?: Array<FileResponse> | null;
     logo?: string | null;
     createdAt?: string;
     updatedAt?: string;
