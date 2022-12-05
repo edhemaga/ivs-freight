@@ -190,7 +190,12 @@
                     </div>
                     <p class="selected-item-name">
                         {{ selectedFuelStop?.businessName }}
-                        {{ '#'.concat(' ', selectedFuelStop?.name) }}
+                        {{
+                            selectedFuelStop?.name &&
+                            selectedFuelStop.fuelStopFranchise
+                                ? '#'.concat(' ', selectedFuelStop?.name)
+                                : ''
+                        }}
                     </p>
                     <div class="selected-item-additional">
                         <div
@@ -308,7 +313,7 @@
                                         fuelTransactionType?.name !== 'Manual'
                                 }"
                                 [options]="fuelItemsDropdown"
-                                [activeItem]="selectedFuelItemsFormArray[ind]"
+                                [activeItem]="selectedFuelItemDropFArray[ind]"
                                 (selectedItem)="
                                     onSelectDropDown($event, 'fuel-items', ind)
                                 "

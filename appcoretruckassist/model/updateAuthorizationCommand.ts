@@ -12,10 +12,10 @@
 
 
 export interface UpdateAuthorizationCommand { 
-    isFirstAuthorization?: boolean;
-    isSecondAuthorization?: boolean;
-    isThirdAuthorization?: boolean;
-    isFourthAuthorization?: boolean;
+    isFirstAuthorization?: boolean | null;
+    isSecondAuthorization?: boolean | null;
+    isThirdAuthorization?: boolean | null;
+    isFourthAuthorization?: boolean | null;
     signature?: string | null;
     applicantId?: number;
 }

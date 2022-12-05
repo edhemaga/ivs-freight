@@ -380,6 +380,12 @@
                 !focusInput &&
                 !selectedDropdownLabelColor &&
                 !inputConfig.dropdownLabel,
+            'valid-required-out-dropdown-label':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                !focusInput &&
+                selectedDropdownLabelColor &&
+                inputConfig.dropdownLabel,
             'invalid-required-in':
                 getSuperControl.value &&
                 getSuperControl.invalid &&

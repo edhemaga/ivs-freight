@@ -26,8 +26,7 @@ export interface UpdatePersonalInfoReviewCommand {
     isSsnValid?: boolean;
     ssnMessage?: string | null;
     isAccountNumberValid?: boolean;
-    isRoutingNumberValid?: boolean;
-    accountRoutingMessage?: string | null;
+    accountNumberMessage?: string | null;
     isAnotherNameValid?: boolean;
     anotherNameMessage?: string | null;
     isInMilitaryValid?: boolean;

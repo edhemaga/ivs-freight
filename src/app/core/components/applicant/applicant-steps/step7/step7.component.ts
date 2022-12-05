@@ -307,7 +307,8 @@ export class Step7Component implements OnInit, OnDestroy {
             location,
             workingForAnotherEmployer,
             intendToWorkForAnotherEmployer,
-            certifyInfomation,
+            // certifyInfomation,
+            id,
             sevenDaysHosReview,
         } = stepValues;
 
@@ -388,7 +389,7 @@ export class Step7Component implements OnInit, OnDestroy {
             address: location.address,
             anotherEmployer: workingForAnotherEmployer,
             intendToWorkAnotherEmployer: intendToWorkForAnotherEmployer,
-            isValidAnotherEmployer: certifyInfomation,
+            // isValidAnotherEmployer: certifyInfomation,
         });
 
         setTimeout(() => {
@@ -773,8 +774,8 @@ export class Step7Component implements OnInit, OnDestroy {
             releasedDate: convertDateToBackend(startDate),
             location: selectedAddress,
             workingForAnotherEmployer: anotherEmployer,
-            intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer,
-            certifyInfomation: isValidAnotherEmployer,
+            intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer /* 
+            certifyInfomation: isValidAnotherEmployer, */,
         };
 
         console.log('saveData', saveData);
@@ -823,8 +824,8 @@ export class Step7Component implements OnInit, OnDestroy {
                                         saveData.workingForAnotherEmployer,
                                     intendToWorkForAnotherEmployer:
                                         saveData.intendToWorkForAnotherEmployer,
-                                    certifyInfomation:
-                                        saveData.certifyInfomation,
+                                    // certifyInfomation:
+                                    //     saveData.certifyInfomation,
                                 },
                             },
                         };

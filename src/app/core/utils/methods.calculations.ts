@@ -18,7 +18,7 @@ export const calculateParkingSlot = (
         return;
     }
     return arrayStops
-        .map((item: string, index: number) => {
+        .map((item: string) => {
             // Third check if value has '-'
             if (item.includes('-')) {
                 const doubleValues: string[] = item.split('-');

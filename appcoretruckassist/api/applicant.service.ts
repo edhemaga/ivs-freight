@@ -4193,21 +4193,21 @@ export class ApplicantService {
     }
 
     /**
+     * @param id
      * @param issueDate
      * @param expireDate
      * @param files
      * @param filesForDeleteIds
-     * @param cdlCardId
      * @param applicantId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
     public apiApplicantCdlcardPut(
+        id?: number,
         issueDate?: string,
         expireDate?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        cdlCardId?: number,
         applicantId?: number,
         observe?: 'body',
         reportProgress?: boolean,
@@ -4217,11 +4217,11 @@ export class ApplicantService {
         }
     ): Observable<CreateWithUploadsResponse>;
     public apiApplicantCdlcardPut(
+        id?: number,
         issueDate?: string,
         expireDate?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        cdlCardId?: number,
         applicantId?: number,
         observe?: 'response',
         reportProgress?: boolean,
@@ -4231,11 +4231,11 @@ export class ApplicantService {
         }
     ): Observable<HttpResponse<CreateWithUploadsResponse>>;
     public apiApplicantCdlcardPut(
+        id?: number,
         issueDate?: string,
         expireDate?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        cdlCardId?: number,
         applicantId?: number,
         observe?: 'events',
         reportProgress?: boolean,
@@ -4245,11 +4245,11 @@ export class ApplicantService {
         }
     ): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiApplicantCdlcardPut(
+        id?: number,
         issueDate?: string,
         expireDate?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        cdlCardId?: number,
         applicantId?: number,
         observe: any = 'body',
         reportProgress: boolean = false,
@@ -4312,6 +4312,11 @@ export class ApplicantService {
             localVarFormParams = new HttpParams({ encoder: this.encoder });
         }
 
+        if (id !== undefined) {
+            localVarFormParams =
+                (localVarFormParams.append('Id', <any>id) as any) ||
+                localVarFormParams;
+        }
         if (issueDate !== undefined) {
             localVarFormParams =
                 (localVarFormParams.append(
@@ -4341,13 +4346,6 @@ export class ApplicantService {
                         <any>element
                     ) as any) || localVarFormParams;
             });
-        }
-        if (cdlCardId !== undefined) {
-            localVarFormParams =
-                (localVarFormParams.append(
-                    'CdlCardId',
-                    <any>cdlCardId
-                ) as any) || localVarFormParams;
         }
         if (applicantId !== undefined) {
             localVarFormParams =
@@ -7069,21 +7067,21 @@ export class ApplicantService {
     }
 
     /**
+     * @param id
      * @param issueDate
      * @param expireDate
      * @param files
      * @param filesForDeleteIds
-     * @param applicantMedicalId
      * @param applicantId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
     public apiApplicantMedicalcertificatePut(
+        id?: number,
         issueDate?: string,
         expireDate?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        applicantMedicalId?: number,
         applicantId?: number,
         observe?: 'body',
         reportProgress?: boolean,
@@ -7093,11 +7091,11 @@ export class ApplicantService {
         }
     ): Observable<CreateWithUploadsResponse>;
     public apiApplicantMedicalcertificatePut(
+        id?: number,
         issueDate?: string,
         expireDate?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        applicantMedicalId?: number,
         applicantId?: number,
         observe?: 'response',
         reportProgress?: boolean,
@@ -7107,11 +7105,11 @@ export class ApplicantService {
         }
     ): Observable<HttpResponse<CreateWithUploadsResponse>>;
     public apiApplicantMedicalcertificatePut(
+        id?: number,
         issueDate?: string,
         expireDate?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        applicantMedicalId?: number,
         applicantId?: number,
         observe?: 'events',
         reportProgress?: boolean,
@@ -7121,11 +7119,11 @@ export class ApplicantService {
         }
     ): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiApplicantMedicalcertificatePut(
+        id?: number,
         issueDate?: string,
         expireDate?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        applicantMedicalId?: number,
         applicantId?: number,
         observe: any = 'body',
         reportProgress: boolean = false,
@@ -7188,6 +7186,11 @@ export class ApplicantService {
             localVarFormParams = new HttpParams({ encoder: this.encoder });
         }
 
+        if (id !== undefined) {
+            localVarFormParams =
+                (localVarFormParams.append('Id', <any>id) as any) ||
+                localVarFormParams;
+        }
         if (issueDate !== undefined) {
             localVarFormParams =
                 (localVarFormParams.append(
@@ -7217,13 +7220,6 @@ export class ApplicantService {
                         <any>element
                     ) as any) || localVarFormParams;
             });
-        }
-        if (applicantMedicalId !== undefined) {
-            localVarFormParams =
-                (localVarFormParams.append(
-                    'ApplicantMedicalId',
-                    <any>applicantMedicalId
-                ) as any) || localVarFormParams;
         }
         if (applicantId !== undefined) {
             localVarFormParams =
@@ -7827,7 +7823,6 @@ export class ApplicantService {
      * @param signature
      * @param files
      * @param filesForDeleteIds
-     * @param applicantMvrAuthId
      * @param applicantId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -7842,7 +7837,6 @@ export class ApplicantService {
         signature?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        applicantMvrAuthId?: number,
         applicantId?: number,
         observe?: 'body',
         reportProgress?: boolean,
@@ -7861,7 +7855,6 @@ export class ApplicantService {
         signature?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        applicantMvrAuthId?: number,
         applicantId?: number,
         observe?: 'response',
         reportProgress?: boolean,
@@ -7880,7 +7873,6 @@ export class ApplicantService {
         signature?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        applicantMvrAuthId?: number,
         applicantId?: number,
         observe?: 'events',
         reportProgress?: boolean,
@@ -7899,7 +7891,6 @@ export class ApplicantService {
         signature?: string,
         files?: Array<Blob>,
         filesForDeleteIds?: Array<number>,
-        applicantMvrAuthId?: number,
         applicantId?: number,
         observe: any = 'body',
         reportProgress: boolean = false,
@@ -8024,13 +8015,6 @@ export class ApplicantService {
                         <any>element
                     ) as any) || localVarFormParams;
             });
-        }
-        if (applicantMvrAuthId !== undefined) {
-            localVarFormParams =
-                (localVarFormParams.append(
-                    'ApplicantMvrAuthId',
-                    <any>applicantMvrAuthId
-                ) as any) || localVarFormParams;
         }
         if (applicantId !== undefined) {
             localVarFormParams =
