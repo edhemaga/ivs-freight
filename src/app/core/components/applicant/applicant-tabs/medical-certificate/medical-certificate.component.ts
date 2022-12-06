@@ -269,8 +269,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
-            } else {
-                documents.push(item);
             }
         });
 
@@ -281,7 +279,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             files: documents,
             ...((this.stepHasValues ||
                 this.selectedMode === SelectedMode.FEEDBACK) && {
-                applicantMedicalId: this.medicalCertificateId,
+                id: this.medicalCertificateId,
                 filesForDeleteIds: this.documentsForDeleteIds,
             }),
         };

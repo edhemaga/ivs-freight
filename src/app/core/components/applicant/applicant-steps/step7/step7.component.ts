@@ -201,8 +201,6 @@ export class Step7Component implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
 
         this.getLastSevenDaysFromDateOfInvitation();
-
-        this.updateStoreWithIds();
     }
 
     public get hosArray(): FormArray {
@@ -241,64 +239,6 @@ export class Step7Component implements OnInit, OnDestroy {
             });
     }
 
-    public updateStoreWithIds(): void {
-        this.applicantActionsService
-            .getApplicantById(this.applicantId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: ApplicantResponse) => {
-                if (this.selectedMode === SelectedMode.APPLICANT) {
-                    if (res?.sevenDaysHos?.hos) {
-                        const ids = res?.sevenDaysHos?.hos.map(
-                            (item) => item.id
-                        );
-
-                        this.applicantStore.update((store) => {
-                            return {
-                                ...store,
-                                applicant: {
-                                    ...store.applicant,
-                                    sevenDaysHos: {
-                                        ...store.applicant.sevenDaysHos,
-                                        hos: store.applicant.sevenDaysHos.hos.map(
-                                            (item, index) => {
-                                                return {
-                                                    ...item,
-                                                    id: ids[index],
-                                                };
-                                            }
-                                        ),
-                                    },
-                                },
-                            };
-                        });
-                    }
-                }
-
-                if (this.selectedMode === SelectedMode.REVIEW) {
-                    if (res?.sevenDaysHos?.sevenDaysHosReview) {
-                        const id = res?.sevenDaysHos?.sevenDaysHosReview?.id;
-
-                        this.applicantStore.update((store) => {
-                            return {
-                                ...store,
-                                applicant: {
-                                    ...store.applicant,
-                                    sevenDaysHos: {
-                                        ...store.applicant.sevenDaysHos,
-                                        sevenDaysHosReview: {
-                                            ...store.applicant.sevenDaysHos
-                                                .sevenDaysHosReview,
-                                            id,
-                                        },
-                                    },
-                                },
-                            };
-                        });
-                    }
-                }
-            });
-    }
-
     public patchStepValues(stepValues: SevenDaysHosFeedbackResponse): void {
         const {
             hos,
@@ -307,8 +247,7 @@ export class Step7Component implements OnInit, OnDestroy {
             location,
             workingForAnotherEmployer,
             intendToWorkForAnotherEmployer,
-            // certifyInfomation,
-            id,
+            certifyInformation,
             sevenDaysHosReview,
         } = stepValues;
 
@@ -389,7 +328,7 @@ export class Step7Component implements OnInit, OnDestroy {
             address: location.address,
             anotherEmployer: workingForAnotherEmployer,
             intendToWorkAnotherEmployer: intendToWorkForAnotherEmployer,
-            // isValidAnotherEmployer: certifyInfomation,
+            isValidAnotherEmployer: certifyInformation,
         });
 
         setTimeout(() => {
@@ -774,8 +713,8 @@ export class Step7Component implements OnInit, OnDestroy {
             releasedDate: convertDateToBackend(startDate),
             location: selectedAddress,
             workingForAnotherEmployer: anotherEmployer,
-            intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer /* 
-            certifyInfomation: isValidAnotherEmployer, */,
+            intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer,
+            certifyInformation: isValidAnotherEmployer,
         };
 
         console.log('saveData', saveData);
@@ -824,8 +763,8 @@ export class Step7Component implements OnInit, OnDestroy {
                                         saveData.workingForAnotherEmployer,
                                     intendToWorkForAnotherEmployer:
                                         saveData.intendToWorkForAnotherEmployer,
-                                    // certifyInfomation:
-                                    //     saveData.certifyInfomation,
+                                    certifyInformation:
+                                        saveData.certifyInformation,
                                 },
                             },
                         };

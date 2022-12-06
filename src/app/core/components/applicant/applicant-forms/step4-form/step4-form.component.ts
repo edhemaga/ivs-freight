@@ -272,40 +272,34 @@ export class Step4FormComponent
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (formValue.accidentRecordReview) {
-                console.log(
-                    'formValue.accidentRecordReview',
-                    formValue.accidentRecordReview
-                );
-
-                const { isLocationValid, isDateValid, isDescriptionValid } =
-                    formValue.accidentRecordReview;
+                const {
+                    isLocationValid,
+                    isDateValid,
+                    locationDateMessage,
+                    isDescriptionValid,
+                    descriptionMessage,
+                } = formValue.accidentRecordReview;
 
                 this.openAnnotationArray[10] = {
                     ...this.openAnnotationArray[10],
                     lineInputs: [!isLocationValid, !isDateValid],
+                    displayAnnotationButton:
+                        (!isLocationValid || !isDateValid) &&
+                        !locationDateMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: locationDateMessage
+                        ? true
+                        : false,
                 };
                 this.openAnnotationArray[11] = {
                     ...this.openAnnotationArray[11],
                     lineInputs: [false, !isDescriptionValid],
-                };
-            }
-        }
-
-        /* this.openAnnotationArray[15] = {
-                    ...this.openAnnotationArray[15],
-                    lineInputs: [
-                        !isNameValid,
-                        !isPhoneValid,
-                        !isRelationshipValid,
-                    ],
                     displayAnnotationButton:
-                        (!isNameValid ||
-                            !isPhoneValid ||
-                            !isRelationshipValid) &&
-                        !emergencyContactMessage
+                        !isDescriptionValid && !descriptionMessage
                             ? true
                             : false,
-                    displayAnnotationTextArea: emergencyContactMessage
+                    displayAnnotationTextArea: descriptionMessage
                         ? true
                         : false,
                 };
@@ -326,10 +320,12 @@ export class Step4FormComponent
                     this.isCardReviewedIncorrect = false;
                 }
 
-                this.contactForm.patchValue({
-                    firstRowReview: emergencyContactMessage,
+                this.accidentForm.patchValue({
+                    firstRowReview: locationDateMessage,
+                    secondRowReview: descriptionMessage,
                 });
-            } */
+            }
+        }
 
         this.accidentForm.patchValue({
             location: formValue?.location ? formValue?.location?.address : null,

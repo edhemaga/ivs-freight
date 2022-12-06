@@ -75,7 +75,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public subscription: Subscription;
 
@@ -328,8 +328,6 @@ export class Step6Component implements OnInit, OnDestroy {
         this.createForm();
 
         this.getStepValuesFromStore();
-
-        /*  this.updateStoreWithIds(); */
     }
 
     public trackByIdentity = (index: number, _: any): number => index;
@@ -380,65 +378,6 @@ export class Step6Component implements OnInit, OnDestroy {
 
                     this.stepHasValues = true;
                 }
-            });
-    }
-
-    public updateStoreWithIds(): void {
-        this.applicantActionsService
-            .getApplicantById(this.applicantId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: ApplicantResponse) => {
-                if (this.selectedMode === SelectedMode.APPLICANT) {
-                    if (res?.education?.emergencyContacts) {
-                        const ids = res?.education?.emergencyContacts.map(
-                            (item) => item.id
-                        );
-
-                        this.applicantStore.update((store) => {
-                            return {
-                                ...store,
-                                applicant: {
-                                    ...store.applicant,
-                                    education: {
-                                        ...store.applicant.education,
-                                        emergencyContacts:
-                                            store.applicant.education.emergencyContacts.map(
-                                                (item, index) => {
-                                                    return {
-                                                        ...item,
-                                                        id: ids[index],
-                                                    };
-                                                }
-                                            ),
-                                    },
-                                },
-                            };
-                        });
-                    }
-                }
-
-                /*    if (this.selectedMode === SelectedMode.REVIEW) {
-                    if (res?.sevenDaysHos?.sevenDaysHosReview) {
-                        const id = res?.sevenDaysHos?.sevenDaysHosReview?.id;
-
-                        this.applicantStore.update((store) => {
-                            return {
-                                ...store,
-                                applicant: {
-                                    ...store.applicant,
-                                    sevenDaysHos: {
-                                        ...store.applicant.sevenDaysHos,
-                                        sevenDaysHosReview: {
-                                            ...store.applicant.sevenDaysHos
-                                                .sevenDaysHosReview,
-                                            id,
-                                        },
-                                    },
-                                },
-                            };
-                        });
-                    }
-                } */
             });
     }
 
@@ -990,6 +929,15 @@ export class Step6Component implements OnInit, OnDestroy {
     public getContactFormValues(event: any): void {
         this.contactsArray = [...this.contactsArray, event];
 
+        if (this.lastContactCard.id) {
+            this.contactsArray[this.contactsArray.length - 1].id =
+                this.lastContactCard.id;
+
+            this.lastContactCard.id = null;
+        } else {
+            this.contactsArray[this.contactsArray.length - 1].id = null;
+        }
+
         this.helperIndex = 2;
 
         const firstEmptyObjectInList = this.openAnnotationArray.find(
@@ -1022,7 +970,10 @@ export class Step6Component implements OnInit, OnDestroy {
         this.isEditing = false;
         this.contactsArray[this.selectedContactIndex].isEditingContact = false;
 
-        this.contactsArray[this.selectedContactIndex] = event;
+        this.contactsArray[this.selectedContactIndex] = {
+            ...this.contactsArray[this.selectedContactIndex],
+            ...event,
+        };
 
         this.helperIndex = 2;
         this.selectedContactIndex = -1;
@@ -1231,10 +1182,19 @@ export class Step6Component implements OnInit, OnDestroy {
             }
         }
 
-        const inputFieldsArray = JSON.stringify(
-            this.openAnnotationArray
-                .filter((item) => Object.keys(item).length !== 0)
-                .map((item) => item.lineInputs)
+        let inputFieldsArray: any = [];
+
+        for (let i = 0; i < this.openAnnotationArray.length; i++) {
+            if (i < 4) {
+                inputFieldsArray = [
+                    ...inputFieldsArray,
+                    this.openAnnotationArray[i],
+                ];
+            }
+        }
+
+        inputFieldsArray = JSON.stringify(
+            inputFieldsArray.map((item) => item.lineInputs)
         );
 
         if (inputFieldsArray.includes('true')) {

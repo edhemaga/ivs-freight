@@ -361,16 +361,16 @@ export class ApplicantActionsService {
 
     /* BACKEND PUT ACTION FUNCTIONS - REVIEW MODE */
 
-    public updateAccidentRecordReview(
-        data: UpdateAccidentRecordReviewCommand
-    ): Observable<object> {
-        return this.applicantService.apiApplicantAccidentrecordReviewPut(data);
-    }
-
     public updatePersonalInfoReview(
         data: UpdatePersonalInfoReviewCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantPersonalReviewPut(data);
+    }
+
+    public updateAccidentRecordReview(
+        data: UpdateAccidentRecordReviewCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantAccidentrecordReviewPut(data);
     }
 
     public updateTrafficViolationsReview(

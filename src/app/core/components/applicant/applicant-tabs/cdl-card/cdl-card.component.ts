@@ -33,6 +33,7 @@ export class CdlCardComponent implements OnInit, OnDestroy {
     public cdlCardForm: FormGroup;
 
     public applicantId: number;
+    public cdlCardId: number | null = null;
 
     public stepHasValues: boolean = false;
 
@@ -93,8 +94,6 @@ export class CdlCardComponent implements OnInit, OnDestroy {
             .subscribe((res: ApplicantResponse) => {
                 this.applicantId = res.id;
 
-                console.log('res', res);
-
                 if (res.cdlCard) {
                     this.patchStepValues(res.cdlCard);
 
@@ -105,12 +104,17 @@ export class CdlCardComponent implements OnInit, OnDestroy {
 
     public patchStepValues(stepValues: CdlCardFeedbackResponse): void {
         console.log('stepValues', stepValues);
-        const { issueDate, expireDate } = stepValues;
+        const { issueDate, expireDate, files, id } = stepValues;
+
+        this.cdlCardId = id;
 
         this.cdlCardForm.patchValue({
             fromDate: convertDateFromBackend(issueDate),
             toDate: convertDateFromBackend(expireDate),
+            files: JSON.stringify(files),
         });
+
+        this.documents = files;
     }
 
     public onFilesAction(event: any): void {
@@ -131,6 +135,11 @@ export class CdlCardComponent implements OnInit, OnDestroy {
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
+
+                this.documentsForDeleteIds = [
+                    ...this.documentsForDeleteIds,
+                    event.deleteId,
+                ];
 
                 break;
 
@@ -259,7 +268,14 @@ export class CdlCardComponent implements OnInit, OnDestroy {
             issueDate: convertDateToBackend(fromDate),
             expireDate: convertDateToBackend(toDate),
             files: documents,
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                id: this.cdlCardId,
+                filesForDeleteIds: this.documentsForDeleteIds,
+            }),
         };
+
+        console.log('saveDAta', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

@@ -198,8 +198,6 @@ export class SsnCardComponent implements OnInit, OnDestroy {
         this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
-            } else {
-                documents.push(item);
             }
         });
 

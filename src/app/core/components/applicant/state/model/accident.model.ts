@@ -11,6 +11,7 @@ export interface SphFormAccidentModel {
 
 export interface AccidentModel {
     id?: number;
+    reviewId: number;
     location: any;
     date: string;
     accidentState?: string;

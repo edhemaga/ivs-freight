@@ -45,6 +45,7 @@ export class Step4Component implements OnInit, OnDestroy {
     public accidentArray: AccidentModel[] = [];
 
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
 
     public lastAccidentCard: any;
 
@@ -136,6 +137,14 @@ export class Step4Component implements OnInit, OnDestroy {
         this.formStatus = 'VALID';
 
         if (!noAccidentInThreeYears) {
+            const itemReviewPlaceholder = {
+                isLocationValid: true,
+                isDateValid: true,
+                locationDateMessage: null,
+                isDescriptionValid: true,
+                descriptionMessage: null,
+            };
+
             const lastItemInAccidentArray = accidents[accidents.length - 1];
 
             const restOfTheItemsInAccidenteArray = [...accidents];
@@ -145,6 +154,8 @@ export class Step4Component implements OnInit, OnDestroy {
             const filteredAccidentArray = restOfTheItemsInAccidenteArray.map(
                 (item) => {
                     return {
+                        id: item.id,
+                        reviewId: item.accidentRecordReview?.id,
                         isEditingAccident: false,
                         location: item.location,
                         accidentState: item.location.stateShortName,
@@ -159,13 +170,15 @@ export class Step4Component implements OnInit, OnDestroy {
                         description: item.description,
                         accidentRecordReview: item.accidentRecordReview
                             ? item.accidentRecordReview
-                            : null,
+                            : itemReviewPlaceholder,
                     };
                 }
             );
 
             const filteredLastItemInAccidentArray = {
                 id: lastItemInAccidentArray.id,
+                reviewId:
+                lastItemInAccidentArray.accidentRecordReview?.id,
                 isEditingAccident: false,
                 location: lastItemInAccidentArray.location,
                 accidentState: lastItemInAccidentArray.location.stateShortName,
@@ -180,7 +193,19 @@ export class Step4Component implements OnInit, OnDestroy {
                 accidentRecordReview:
                     lastItemInAccidentArray.accidentRecordReview
                         ? lastItemInAccidentArray.accidentRecordReview
-                        : null,
+                        : itemReviewPlaceholder,
+            };
+
+            this.lastAccidentCard = {
+                id: filteredLastItemInAccidentArray.id,
+                location: filteredLastItemInAccidentArray.location,
+                accidentState: filteredLastItemInAccidentArray.accidentState,
+                date: filteredLastItemInAccidentArray.date,
+                hazmatSpill: filteredLastItemInAccidentArray.hazmatSpill,
+                fatalities: filteredLastItemInAccidentArray.fatalities,
+                injuries: filteredLastItemInAccidentArray.injuries,
+                vehicleType: filteredLastItemInAccidentArray.vehicleType,
+                description: filteredLastItemInAccidentArray.description,
             };
 
             this.accidentArray = JSON.parse(
@@ -218,6 +243,10 @@ export class Step4Component implements OnInit, OnDestroy {
                     displayAnnotationTextArea: false,
                 };
             }
+        }
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            this.stepHasReviewValues = true;
         }
     }
 
@@ -290,6 +319,15 @@ export class Step4Component implements OnInit, OnDestroy {
     public getAccidentFormValues(event: any): void {
         this.accidentArray = [...this.accidentArray, event];
 
+        if (this.lastAccidentCard.id) {
+            this.accidentArray[this.accidentArray.length - 1].id =
+                this.lastAccidentCard.id;
+
+            this.lastAccidentCard.id = null;
+        } else {
+            this.accidentArray[this.accidentArray.length - 1].id = null;
+        }
+
         this.helperIndex = 2;
 
         const firstEmptyObjectInList = this.openAnnotationArray.find(
@@ -324,7 +362,10 @@ export class Step4Component implements OnInit, OnDestroy {
         this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
             false;
 
-        this.accidentArray[this.selectedAccidentIndex] = event;
+        this.accidentArray[this.selectedAccidentIndex] = {
+            ...this.accidentArray[this.selectedAccidentIndex],
+            ...event,
+        };
 
         this.helperIndex = 2;
         this.selectedAccidentIndex = -1;
@@ -343,7 +384,10 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public onGetLastFormValues(event: any): void {
-        this.lastAccidentCard = event;
+        this.lastAccidentCard = {
+            ...this.lastAccidentCard,
+            ...event,
+        };
     }
 
     public onHasIncorrectFields(event: any): void {
@@ -379,9 +423,14 @@ export class Step4Component implements OnInit, OnDestroy {
         );
 
         if (hasInvalidFields.includes('false')) {
-            this.openAnnotationArray[
-                this.selectedAccidentIndex
-            ].displayAnnotationButton = true;
+            if (
+                !this.openAnnotationArray[this.selectedAccidentIndex]
+                    .displayAnnotationTextArea
+            ) {
+                this.openAnnotationArray[
+                    this.selectedAccidentIndex
+                ].displayAnnotationButton = true;
+            }
 
             this.openAnnotationArray[this.selectedAccidentIndex].lineInputs[0] =
                 true;
@@ -397,6 +446,12 @@ export class Step4Component implements OnInit, OnDestroy {
 
         this.helperIndex = 2;
         this.selectedAccidentIndex = -1;
+
+        this.previousFormValuesOnReview.accidentRecordReview = {
+            ...this.previousFormValuesOnReview.accidentRecordReview,
+            locationDateMessage: this.lastAccidentCard.firstRowReview,
+            descriptionMessage: this.lastAccidentCard.secondRowReview,
+        };
 
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
@@ -440,8 +495,9 @@ export class Step4Component implements OnInit, OnDestroy {
         );
 
         if (type === 'card') {
+            selectedInputsLine.lineInputs[inputIndex] = false;
+
             if (selectedInputsLine.displayAnnotationButton) {
-                selectedInputsLine.lineInputs[inputIndex] = false;
                 selectedInputsLine.displayAnnotationButton = false;
             }
 
@@ -449,6 +505,10 @@ export class Step4Component implements OnInit, OnDestroy {
                 selectedInputsLine.displayAnnotationButton = false;
                 selectedInputsLine.displayAnnotationTextArea = false;
             }
+
+            this.accidentForm
+                .get(`cardReview${lineIndex + 1}`)
+                .patchValue(null);
 
             Object.keys(
                 this.accidentArray[lineIndex].accidentRecordReview
@@ -568,6 +628,10 @@ export class Step4Component implements OnInit, OnDestroy {
                     (vehicleItem) => vehicleItem.name === item.vehicleType
                 ).id,
                 description: item.description,
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: item.id ? item.id : null,
+                }),
             };
         });
 
@@ -585,6 +649,12 @@ export class Step4Component implements OnInit, OnDestroy {
                         vehicleItem.name === this.lastAccidentCard.vehicleType
                 ).id,
                 description: this.lastAccidentCard.description,
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: this.lastAccidentCard.id
+                        ? this.lastAccidentCard.id
+                        : null,
+                }),
             };
         }
 
@@ -595,6 +665,8 @@ export class Step4Component implements OnInit, OnDestroy {
                 ? []
                 : [...filteredAccidentArray, filteredLastAccidentCard],
         };
+
+        console.log('saveData', saveData);
 
         const storeAccidentRecordItems = saveData.accidents.map((item) => {
             return {
@@ -659,12 +731,37 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
+        const accidentArrayReview = this.accidentArray.map((item, index) => {
+            const itemReview = item.accidentRecordReview;
+
+            return {
+                ...(this.stepHasReviewValues && {
+                    id: item.reviewId,
+                }),
+                accidentItemId: item.id,
+                isPrimary: false,
+                commonMessage: this.accidentForm.get(`cardReview${index + 1}`)
+                    .value,
+                isLocationValid: itemReview ? itemReview.isLocationValid : true,
+                isDateValid: itemReview ? itemReview.isDateValid : true,
+                locationDateMessage: null,
+                isDescriptionValid: itemReview
+                    ? itemReview.isDescriptionValid
+                    : true,
+                descriptionMessage: null,
+            };
+        });
+
         const lastItemReview =
             this.previousFormValuesOnReview.accidentRecordReview;
 
+            const lastItemReviewId = this.previousFormValuesOnReview.reviewId;
         const lastItemId = this.previousFormValuesOnReview.id;
 
         const lastReviewedItemInAccidentArray = {
+              ...(this.stepHasReviewValues && {
+                id: lastItemReviewId,
+            }),
             accidentItemId: lastItemId,
             isPrimary: true,
             commonMessage: null,
@@ -681,13 +778,34 @@ export class Step4Component implements OnInit, OnDestroy {
 
         const saveData: CreateAccidentRecordReviewCommand = {
             applicantId: this.applicantId,
-            accidentReviews: [lastReviewedItemInAccidentArray],
+            accidentReviews: [
+                ...accidentArrayReview,
+                lastReviewedItemInAccidentArray,
+            ],
         };
 
-        console.log('saveData', saveData);
 
-        this.applicantActionsService
-            .createAccidentRecordReview(saveData)
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createAccidentRecordReview(
+                    saveData
+                );
+            }
+
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateAccidentRecordReview(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -730,7 +848,15 @@ export class Step4Component implements OnInit, OnDestroy {
                                                     };
                                                 }
 
-                                                return item;
+                                                return {
+                                                    ...item,
+                                                    accidentRecordReview: {
+                                                        ...item.accidentRecordReview,
+                                                        ...accidentArrayReview[
+                                                            index
+                                                        ],
+                                                    },
+                                                };
                                             }
                                         ),
                                 },

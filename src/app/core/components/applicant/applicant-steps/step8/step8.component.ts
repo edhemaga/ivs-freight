@@ -149,10 +149,6 @@ export class Step8Component implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
 
         this.isTestedNegative();
-
-        if (this.selectedMode === SelectedMode.REVIEW) {
-            this.updateStoreWithIds();
-        }
     }
 
     public createForm(): void {
@@ -194,34 +190,6 @@ export class Step8Component implements OnInit, OnDestroy {
                     this.patchStepValues(res.drugAndAlcohol);
 
                     this.stepHasValues = true;
-                }
-            });
-    }
-
-    public updateStoreWithIds(): void {
-        this.applicantActionsService
-            .getApplicantById(this.applicantId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: ApplicantResponse) => {
-                if (res?.drugAndAlcohol?.drugAndAlcoholReview) {
-                    const id = res?.drugAndAlcohol?.drugAndAlcoholReview?.id;
-
-                    this.applicantStore.update((store) => {
-                        return {
-                            ...store,
-                            applicant: {
-                                ...store.applicant,
-                                drugAndAlcohol: {
-                                    ...store.applicant.drugAndAlcohol,
-                                    drugAndAlcoholReview: {
-                                        ...store.applicant.drugAndAlcohol
-                                            .drugAndAlcoholReview,
-                                        id,
-                                    },
-                                },
-                            },
-                        };
-                    });
                 }
             });
     }

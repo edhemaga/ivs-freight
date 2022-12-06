@@ -381,8 +381,6 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
         this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
-            } else {
-                documents.push(item);
             }
         });
 
@@ -400,7 +398,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
             files: dontHaveMvr ? [] : documents,
             ...((this.stepHasValues ||
                 this.selectedMode === SelectedMode.FEEDBACK) && {
-                applicantMvrAuthId: this.mvrAuthId,
+                id: this.mvrAuthId,
                 filesForDeleteIds: this.documentsForDeleteIds,
             }),
         };

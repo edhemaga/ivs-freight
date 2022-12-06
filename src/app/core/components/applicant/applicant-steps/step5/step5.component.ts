@@ -162,6 +162,7 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: TrafficViolationFeedbackResponse): void {
+        console.log('stepValues', stepValues);
         const {
             noViolationsForPastTwelveMonths,
             notBeenConvicted,
@@ -231,6 +232,14 @@ export class Step5Component implements OnInit, OnDestroy {
                     lastItemInViolationsArray.trafficViolationItemReview
                         ? lastItemInViolationsArray.trafficViolationItemReview
                         : itemReviewPlaceholder,
+            };
+
+            this.lastViolationsCard = {
+                id: filteredLastItemInViolationsArray.id,
+                date: filteredLastItemInViolationsArray.date,
+                vehicleType: filteredLastItemInViolationsArray.vehicleType,
+                location: filteredLastItemInViolationsArray.location,
+                description: filteredLastItemInViolationsArray.description,
             };
 
             this.violationsArray = JSON.parse(
@@ -475,6 +484,15 @@ export class Step5Component implements OnInit, OnDestroy {
     public getViolationFormValues(event: any): void {
         this.violationsArray = [...this.violationsArray, event];
 
+        if (this.lastViolationsCard.id) {
+            this.violationsArray[this.violationsArray.length - 1].id =
+                this.lastViolationsCard.id;
+
+            this.lastViolationsCard.id = null;
+        } else {
+            this.violationsArray[this.violationsArray.length - 1].id = null;
+        }
+
         this.helperIndex = 2;
 
         const firstEmptyObjectInList = this.openAnnotationArray.find(
@@ -498,7 +516,10 @@ export class Step5Component implements OnInit, OnDestroy {
         this.violationsArray[this.selectedViolationIndex].isEditingViolation =
             false;
 
-        this.violationsArray[this.selectedViolationIndex] = event;
+        this.violationsArray[this.selectedViolationIndex] = {
+            ...this.violationsArray[this.selectedViolationIndex],
+            ...event,
+        };
 
         this.helperIndex = 2;
         this.selectedViolationIndex = -1;
@@ -528,7 +549,10 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public onGetLastFormValues(event: any): void {
-        this.lastViolationsCard = event;
+        this.lastViolationsCard = {
+            ...this.lastViolationsCard,
+            ...event,
+        };
     }
 
     public onHasIncorrectFields(event: any): void {
@@ -793,6 +817,10 @@ export class Step5Component implements OnInit, OnDestroy {
                 ).id,
                 location: item.location,
                 description: item.description,
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: item.id ? item.id : null,
+                }),
             };
         });
 
@@ -807,6 +835,12 @@ export class Step5Component implements OnInit, OnDestroy {
                 ).id,
                 location: this.lastViolationsCard.location,
                 description: this.lastViolationsCard.description,
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: this.lastViolationsCard.id
+                        ? this.lastViolationsCard.id
+                        : null,
+                }),
             };
         }
 
@@ -837,6 +871,8 @@ export class Step5Component implements OnInit, OnDestroy {
                 };
             }
         );
+
+        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

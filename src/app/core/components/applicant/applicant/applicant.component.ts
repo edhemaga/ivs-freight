@@ -309,10 +309,89 @@ export class ApplicantComponent implements OnInit, OnDestroy {
 
                                 return {
                                     ...item,
-                                    isReviewed: trafficViolationItems
-                                        ? true
-                                        : false,
+                                    isReviewed:
+                                        trafficViolationItemsReview &&
+                                        trafficViolationItemsReview[0]
+                                            ? true
+                                            : false,
                                     hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 5) {
+                                const educationReview =
+                                    res?.education?.educationReview;
+
+                                const educationItems =
+                                    res?.education?.emergencyContacts;
+
+                                const educationtemsReview = educationItems?.map(
+                                    (item) => item?.emergencyContactReview
+                                );
+
+                                let cardHasIncorrectValue: boolean;
+                                let hasIncorrectValue: boolean;
+                                let filteredEducationItemsReview = [];
+
+                                if (educationReview) {
+                                    hasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            educationReview
+                                        );
+                                }
+
+                                if (educationtemsReview) {
+                                    if (educationtemsReview[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i < educationtemsReview?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                educationtemsReview[i];
+
+                                            delete filteredItem.isPrimary;
+
+                                            filteredEducationItemsReview = [
+                                                ...filteredEducationItemsReview,
+                                                filteredItem,
+                                            ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            cardHasIncorrectValue = true;
+                                        } else {
+                                            cardHasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        educationtemsReview &&
+                                        educationtemsReview[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer:
+                                        hasIncorrectValue ||
+                                        cardHasIncorrectValue,
                                 };
                             }
 
