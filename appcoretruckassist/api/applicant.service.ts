@@ -333,7 +333,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/accidentrecord/`;
+        let localVarPath = `/api/applicant/accidentrecord/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<AccidentRecordFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -924,7 +924,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/admin/delete/`;
+        let localVarPath = `/api/applicant/admin/delete/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<object>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -1921,7 +1921,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/authorization/`;
+        let localVarPath = `/api/applicant/authorization/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<AuthorizationFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -2137,7 +2137,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/cdl/`;
+        let localVarPath = `/api/applicant/cdl/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<CdlFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -2854,7 +2854,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/disclosurerelease/`;
+        let localVarPath = `/api/applicant/disclosurerelease/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<DisclosureReleaseFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -3220,7 +3220,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/drugandalcohol/`;
+        let localVarPath = `/api/applicant/drugandalcohol/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<DrugAndAlcoholFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -3586,7 +3586,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/education/`;
+        let localVarPath = `/api/applicant/education/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<EducationFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -3952,7 +3952,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/generatepdf/`;
+        let localVarPath = `/api/applicant/generatepdf/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<any>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -4234,7 +4234,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/medicalcertificate/`;
+        let localVarPath = `/api/applicant/medicalcertificate/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<MedicalCertificateFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -4647,7 +4647,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/mvr/`;
+        let localVarPath = `/api/applicant/mvr/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<MvrAuthFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -5785,7 +5785,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/previousemployer/`;
+        let localVarPath = `/api/applicant/previousemployer/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<SphPreviousEmployerProspectResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -6213,7 +6213,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/sevendayshos/`;
+        let localVarPath = `/api/applicant/sevendayshos/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<SevenDaysHosFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -7064,7 +7064,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/trafficviolation/`;
+        let localVarPath = `/api/applicant/trafficviolation/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<TrafficViolationFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -7430,7 +7430,7 @@ export class ApplicantService {
             }
         }
 
-        let localVarPath = `/api/applicant/workexperience/`;
+        let localVarPath = `/api/applicant/workexperience/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<WorkExperienceFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

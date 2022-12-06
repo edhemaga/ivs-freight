@@ -378,8 +378,8 @@ export const repairNavigationData: NavigationModal[] = [
 export const fuelNavigationData: NavigationModal[] = [
     {
         id: 17,
-        name: 'Purchase',
-        path: 'purchase',
+        name: 'Transaction',
+        path: 'transaction',
     },
     {
         id: 18,

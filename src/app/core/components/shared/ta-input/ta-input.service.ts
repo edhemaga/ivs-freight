@@ -192,6 +192,8 @@ export class TaInputService {
                 formControl.reset();
             }
         }
+
+        // Update Validity
         if (formControl) {
             formControl.updateValueAndValidity();
         }
