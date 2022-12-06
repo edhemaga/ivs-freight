@@ -125,10 +125,12 @@ export class TaInputComponent
     }
 
     ngOnInit(): void {
+        
         if (
             this.inputConfig.name === 'datepicker' ||
             this.inputConfig.name === 'timepicker'
         ) {
+            
             this.calendarService.dateChanged
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((date) => {
@@ -216,7 +218,9 @@ export class TaInputComponent
             text = moment(new Date(date)).format('MM/DD/YY');
             dateFormat = text.split('/');
         } else {
+            date = date instanceof Date ? date : new Date(moment().format("MM/DD/YYYY") + " " + date);
             text = moment(new Date(date)).format('HH:mm');
+            
             timeFormat = moment(new Date(date)).format('hh/mm/A');
             dateFormat = timeFormat.split('/');
         }

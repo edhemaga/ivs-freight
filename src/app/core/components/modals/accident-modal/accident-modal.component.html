@@ -90,7 +90,7 @@
                             }"
                         ></app-ta-input>
                         <app-ta-input
-                            formControlName="hazmat"
+                            formControlName="hazMat"
                             [inputConfig]="{
                                 name: 'Hazmat',
                                 type: 'text',
@@ -100,7 +100,7 @@
                             }"
                         ></app-ta-input>
                         <app-ta-input
-                            formControlName="vehicleNumber"
+                            formControlName="vehicleNo"
                             [inputConfig]="{
                                 name: 'Vehicle Number',
                                 type: 'text',
@@ -113,7 +113,7 @@
                     <div class="row last-row">
                         <div class="col-6">
                             <app-input-address-dropdown
-                                formControlName="location"
+                                formControlName="addressAccident"
                                 [inputConfig]="{
                                     name: 'Address',
                                     type: 'text',
@@ -442,7 +442,7 @@
                         (onActionEvent)="addInsurance($event)"
                     >
                         <div
-                            formArrayName="insurance"
+                            formArrayName="insuranceType"
                             class="common-fake-table-modal common-fake-table-modal-accident-insurance"
                             *ngIf="insurances.length"
                         >

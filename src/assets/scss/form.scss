@@ -631,7 +631,6 @@
 .repair-shop-services,
 .violation-special-checks {
     display: grid;
-    grid-template-columns: repeat(4, 105px);
     grid-template-rows: repeat(2, 26px);
     -moz-column-gap: 12px;
     column-gap: 12px;
@@ -644,8 +643,8 @@
 
     .repair-shop-service,
     .violation-special-check {
-        background-color: #f3f3f3;
-        color: #b7b7b7;
+        background-color: #eeeeee;
+        color: #919191;
         width: 100%;
         height: 100%;
         border-radius: 2px;
@@ -653,6 +652,7 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
+        transition: all 0.3s ease-in-out;
 
         p {
             margin: 0;
@@ -669,28 +669,58 @@
                 width: 100%;
                 height: 100%;
                 path {
-                    fill: #b7b7b7;
+                    fill: #cccccc;
                 }
             }
         }
 
         &:hover {
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-
-        &.active {
-            background-color: #e0eaf8;
-            color: #536bc2;
+            background-color: #e5e5e5;
+            color: #2f2f2f;
 
             svg-icon {
                 svg {
                     path {
-                        fill: #6d82c7;
+                        fill: #919191;
                     }
                 }
             }
         }
+
+        &.active {
+            background-color: rgb(111, 158, 224, 0.2);
+            color: #3074d3;
+
+            svg-icon {
+                svg {
+                    path {
+                        fill: #6f9ee0;
+                    }
+                }
+            }
+
+            &:hover {
+                background-color: rgb(111, 158, 224, 0.3);
+                color: #3074d3;
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: #3074d3;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.repair-shop-services {
+    grid-template-columns: repeat(5, 81.5px);
+    grid-template-rows: repeat(2, 54px);
+    .repair-shop-service {
+        flex-direction: column;
     }
 }
 
