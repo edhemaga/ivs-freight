@@ -362,6 +362,47 @@
         }
     }
 
+    // Original Repair Shop
+    &-original-repair-shop {
+        .common-fake-table-label {
+            width: 805px;
+            p {
+                &:nth-child(2) {
+                    margin-left: 108px;
+                }
+
+                &:nth-child(3) {
+                    margin-left: 45px;
+                }
+
+                &:nth-child(4) {
+                    margin-left: 91px;
+                }
+
+                &:nth-child(5) {
+                    margin-left: 50px;
+                }
+            }
+        }
+        .common-fake-table-body {
+            width: 805px;
+            .common-fake-table-card {
+                grid-template-columns: 170px 120px 130px 60px 234px;
+
+                .common-fake-table-delete {
+                    right: 197px;
+                    &.scrolling {
+                        right: 4px !important;
+                    }
+                }
+
+                &:hover .common-fake-table-delete {
+                    display: flex !important;
+                }
+            }
+        }
+    }
+
     // Bank Card Template
     &-bank-cards {
         .common-fake-table-label {

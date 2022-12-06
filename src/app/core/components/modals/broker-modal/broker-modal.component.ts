@@ -744,10 +744,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerModalService
             .addBroker(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private updateBroker(id: number): void {
@@ -807,10 +804,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerModalService
             .updateBroker(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private deleteBrokerById(id: number): void {
@@ -908,6 +902,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.selectedPayTerm = reasponse.payTerm;
 
+                    // Contacts
                     if (reasponse.brokerContacts) {
                         for (const contact of reasponse.brokerContacts) {
                             this.brokerContacts.push(
@@ -925,7 +920,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             );
                         }
                     }
-
+                    // Review
                     this.reviews = reasponse.reviews.map((item: any) => ({
                         ...item,
                         companyUser: {

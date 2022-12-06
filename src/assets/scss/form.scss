@@ -631,7 +631,6 @@
 .repair-shop-services,
 .violation-special-checks {
     display: grid;
-    grid-template-columns: repeat(4, 105px);
     grid-template-rows: repeat(2, 26px);
     -moz-column-gap: 12px;
     column-gap: 12px;
@@ -714,6 +713,14 @@
                 }
             }
         }
+    }
+}
+
+.repair-shop-services {
+    grid-template-columns: repeat(5, 81.5px);
+    grid-template-rows: repeat(2, 54px);
+    .repair-shop-service {
+        flex-direction: column;
     }
 }
 
