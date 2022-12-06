@@ -131,3 +131,51 @@
 .gps-marker-dropdown {
     padding-top: 18px;
 }
+
+.gps-legend {
+    position: absolute;
+    top: 62px;
+    right: 18px;
+
+    width: 300px;
+    height: 682px;
+    padding: 12px;
+
+    background: #ffffff;
+
+    border-radius: 3px;
+
+    .gps-legend-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 4px;
+
+        .gps-legend-title {
+            font-weight: 900;
+        }
+
+        .legend-svg-holder {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .svg-divider {
+                width: 2px;
+                height: 22px;
+                margin: 0px 8px;
+                background: #F3F3F3;
+                border-radius: 1px;
+            }
+        }
+    }
+
+    .legend-container {
+        margin-top: 12px;
+
+        .legend-dual-info-container {
+            display: inline-block;
+            width: 50%;
+        }
+    }
+}

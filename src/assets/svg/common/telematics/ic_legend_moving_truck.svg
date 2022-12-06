@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64.326" height="52.325" viewBox="0 0 64.326 52.325">
+  <defs>
+    <linearGradient id="gradient1" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#536bc2" stop-opacity="0"/>
+      <stop offset="1" stop-color="#536bc2"/>
+    </linearGradient>
+    <filter id="Ellipse_7908" x="21.164" y="9.162" width="34" height="34" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feFlood flood-opacity="0.149"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Ellipse_7908-2" x="9.164" y="9.162" width="34" height="34" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur-2"/>
+      <feFlood flood-opacity="0.149"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_98023" data-name="Group 98023" transform="translate(27.164 15.162)">
+    <path id="Path_41079" data-name="Path 41079" d="M0,0H18L14,28H4Z" transform="translate(37.163 24.435) rotate(135)" fill="url(#gradient1)"/>
+    <g transform="matrix(1, 0, 0, 1, -27.16, -15.16)">
+      <ellipse id="Ellipse_7908-3" data-name="Ellipse 7908" cx="11" cy="11" rx="11" ry="11" transform="translate(49.16 37.16) rotate(180)" fill="#fff" [ngStyle]="{
+                                                        filter: 'drop-shadow(0px 0px 4px #00000026)'
+                                                    }" />
+    </g>
+    <circle id="Ellipse_7909" data-name="Ellipse 7909" cx="8" cy="8" r="8" transform="translate(3 3)" fill="#97a8dc"/>
+  </g>
+  <g id="Group_98022" data-name="Group 98022" transform="translate(2.164 17.162)">
+    <path id="Path_41080" data-name="Path 41080" d="M0,0H18L14,28H4Z" transform="translate(-2.163 -4.435) rotate(-45)" fill="url(#gradient1)"/>
+    <g transform="matrix(1, 0, 0, 1, -2.16, -17.16)">
+      <circle id="Ellipse_7908-4" data-name="Ellipse 7908" cx="11" cy="11" r="11" transform="translate(37.16 37.16) rotate(180)" fill="#fff" [ngStyle]="{
+                                                        filter: 'drop-shadow(0px 0px 4px #00000026)'
+                                                    }" />
+    </g>
+    <circle id="Ellipse_7909-2" data-name="Ellipse 7909" cx="8" cy="8" r="8" transform="translate(16 1)" fill="#536bc2"/>
+  </g>
+</svg>

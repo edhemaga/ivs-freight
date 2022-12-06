@@ -1,7 +1,17 @@
 <div class="marker-tool-tip" *ngIf="type != 'cluster'">
     <div class="marker-info-container-all">
         <div class="title-container">
-            <div class="marker-business-name text-ellipsis">{{ title }}</div>
+            <div class="d-flex">
+                <app-profile-images
+                    *ngIf="type == 'gps'"
+                    [indx]="1"
+                    [size]="'small'"
+                    [type]="'driver'"
+                    [name]="title"
+                    [ngStyle]="{ 'margin-right': '6px' }"
+                ></app-profile-images>
+                <div class="marker-business-name text-ellipsis">{{ title }}</div>
+            </div>
             <div
                 class="show-more"
                 (click)="showMoreOptions()"
