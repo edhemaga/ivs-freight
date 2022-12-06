@@ -5,6 +5,7 @@ import { SignalRService } from './../../../services/dispatchboard/app-signalr.se
 import { MapsService } from '../../../services/shared/maps.service';
 import { TelematicStateService } from '../state/telematic-state.service';
 import { GpsServiceService } from '../../../../global/services/gps-service.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-telematic-map',
@@ -37,29 +38,38 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     routeLineOptions: any = {};
 
+    legendExpanded: boolean = false;
+    legendHidden: boolean = false;
+
+    searchForm!: FormGroup;
+
     constructor(
         private signalRService: SignalRService,
         private mapsService: MapsService,
         private telematicService: TelematicStateService,
-        private gpsService: GpsServiceService
+        private gpsService: GpsServiceService,
+        private formBuilder: FormBuilder
     ) {}
 
     ngOnInit(): void {
-      this.telematicService.startGpsConnection();
-      this.gpsService.gpsStatusChange
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((data) => {
-          let driverIndex = this.driverLocations.findIndex(
-            (device) => device.deviceId === data.deviceId
-          );
+        this.telematicService.startGpsConnection();
+        this.gpsService.gpsStatusChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => {
+                let driverIndex = this.driverLocations.findIndex(
+                    (device) => device.deviceId === data.deviceId
+                );
 
-          if ( driverIndex == -1 ) {
-            this.driverLocations.push(data);
-          } else {
-            this.driverLocations[driverIndex] = data;
-            console.log('update device', this.driverLocations[driverIndex]);
-          }
-        });
+                if (driverIndex == -1) {
+                    this.driverLocations.push(data);
+                } else {
+                    this.driverLocations[driverIndex] = data;
+                    console.log(
+                        'update device',
+                        this.driverLocations[driverIndex]
+                    );
+                }
+            });
 
         // this.driverLocations = [
         //   {
@@ -102,6 +112,8 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
         this.getGpsData();
         this.getUnassignedGpsData();
+
+        this.createSearchForm();
     }
 
     zoomChange(event) {
@@ -147,7 +159,10 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .subscribe((gpsData: any) => {
                 console.log('getGpsData', gpsData);
                 this.gpsAssignedData = gpsData.data;
-                this.driverLocations = [...this.driverLocations, ...gpsData.data];
+                this.driverLocations = [
+                    ...this.driverLocations,
+                    ...gpsData.data,
+                ];
                 console.log('driverLocations', this.driverLocations);
             });
     }
@@ -159,30 +174,56 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .subscribe((gpsData: any) => {
                 console.log('getUnassignedGpsData', gpsData);
                 this.gpsUnassignedData = gpsData.data;
-                this.driverLocations = [...this.driverLocations, ...gpsData.data];
+                this.driverLocations = [
+                    ...this.driverLocations,
+                    ...gpsData.data,
+                ];
                 console.log('driverLocations', this.driverLocations);
             });
     }
 
     getDataByDeviceId(deviceId) {
-      this.telematicService
-          .getDeviceData(deviceId)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((deviceData: any) => {
-              console.log('getDataByDeviceId deviceData', deviceData);
-              deviceData.transform = 'translate(-3309.177px, 10942px) rotate('+deviceData.heading+'deg)';
+        this.telematicService
+            .getDeviceData(deviceId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((deviceData: any) => {
+                console.log('getDataByDeviceId deviceData', deviceData);
+                deviceData.transform =
+                    'translate(-3309.177px, 10942px) rotate(' +
+                    deviceData.heading +
+                    'deg)';
 
-              let driverIndex = this.driverLocations.findIndex(
-                (device) => device.deviceId === deviceId
-              );
+                let driverIndex = this.driverLocations.findIndex(
+                    (device) => device.deviceId === deviceId
+                );
 
-              if ( driverIndex == -1 ) {
-                this.driverLocations.push(deviceData);
-              } else {
-                this.driverLocations[driverIndex] = deviceData;
-              }
-          });
-  }
+                if (driverIndex == -1) {
+                    this.driverLocations.push(deviceData);
+                } else {
+                    this.driverLocations[driverIndex] = deviceData;
+                }
+            });
+    }
+
+    resizeLegend() {
+        this.legendExpanded = !this.legendExpanded;
+    }
+
+    hideLegend() {
+        this.legendHidden = true;
+    }
+
+    createSearchForm() {
+        this.searchForm = this.formBuilder.group({
+            search: '',
+        });
+
+        this.searchForm.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((changes) => {
+                console.log('search input changes', changes);
+            });
+    }
 
     ngOnDestroy(): void {
         this.telematicService.stopGpsConnection();

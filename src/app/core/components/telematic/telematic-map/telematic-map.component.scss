@@ -83,15 +83,53 @@
     border-radius: 3px;
 }
 
-.gps-locations-list {
+.gps-devices-list {
     position: fixed;
     left: 74px;
     top: 62px;
 
-    min-width: 400px;
+    width: 300px;
     padding: 6px;
 
     background: #fff;
+    border-radius: 3px;
+
+    .gps-devices-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 2px;
+        margin-bottom: 12px;
+
+        .map-list-search {
+            .input-custom-group .input-icon {
+                pointer-events: none;
+            }
+        }
+
+        .header-svg-container {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .devices-list-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0px 6px;
+
+        .header-text-container {
+            display: flex;
+        }
+
+        svg-icon {
+            display: flex;
+            line-height: 14px;
+        }
+    }
 
     .gps-list-row {
         display: flex;
@@ -105,6 +143,10 @@
         border-radius: 2px;
 
         transition: 0.2s ease-in-out;
+
+        &:last-child {
+            border: 0px;
+        }
 
         &:hover {
             background: #F7F7F7;
@@ -125,6 +167,38 @@
             line-height: 18px;
             text-align: left;
         }
+
+        .truck-unit-container {
+            display: flex;
+            align-items: center;
+
+            svg {
+                margin-right: 4px;
+            }
+
+            .truck-unit-text {
+                width: 50px;
+                margin-right: 22px;
+            }
+        }
+
+        .driver-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .marker-like-text {
+                max-width: 138px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            svg-icon {
+                display: flex;
+                line-height: 14px;
+            }
+        }
     }
 }
 
@@ -138,44 +212,112 @@
     right: 18px;
 
     width: 300px;
-    height: 682px;
+    //height: 682px;
     padding: 12px;
+    height: 40px;
 
     background: #ffffff;
 
     border-radius: 3px;
+
+    transition: height 0.2s ease-in;
+    overflow: hidden;
+
+    &.legend-expanded {
+        height: 718px;
+    }
 
     .gps-legend-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding-bottom: 4px;
+        height: 18px;
 
         .gps-legend-title {
             font-weight: 900;
-        }
-
-        .legend-svg-holder {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            .svg-divider {
-                width: 2px;
-                height: 22px;
-                margin: 0px 8px;
-                background: #F3F3F3;
-                border-radius: 1px;
-            }
         }
     }
 
     .legend-container {
         margin-top: 12px;
 
-        .legend-dual-info-container {
-            display: inline-block;
-            width: 50%;
+        .legend-subtitle {
+            margin-bottom: 12px;
         }
+
+        .legend-dual-info-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            width: 50%;
+
+            .legend-description-text {
+                font-weight: 600;
+            }
+        }
+    }
+
+    .legend-divider {
+        width: 100%;
+        height: 2px;
+        margin: 12px 0px;
+
+        background: #F3F3F3;
+        border-radius: 1px;
+    }
+}
+
+.mg-bottom-12 {
+    margin-bottom: 12px;
+}
+
+.legend-absolute-svg {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 46px;
+    height: 22px;
+
+    svg {
+        position: absolute;
+        left: -9px;
+    }
+}
+
+.legend-cluster-icon {
+    position: relative;
+    left: -5px;
+    display: flex;
+    align-items: center;
+    height: 36px;
+}
+
+.legend-arrow {
+    transform: rotate(180deg);
+    transition: all 0.2s ease-in-out;
+
+    &.rotate {
+        transform: rotate(0deg);
+    }
+}
+
+.legend-svg-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .svg-divider {
+        width: 2px;
+        height: 22px;
+        margin: 0px 8px;
+        background: #F3F3F3;
+        border-radius: 1px;
+    }
+
+    svg-icon {
+        display: flex;
+        line-height: 18px;
+        cursor: pointer;
     }
 }

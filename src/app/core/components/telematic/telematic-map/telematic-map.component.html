@@ -434,30 +434,23 @@
     </div> -->
     </agm-map>
 
-    <div class="gps-locations-list" *ngIf="driverLocations?.length">
-        <div
-            *ngFor="let location of driverLocations; let i = index"
-            class="gps-list-row"
-            (click)="markerClick(i)"
-            [ngClass]="{ 'selected-row': location.isFocused }"
-        >
-            <div class="row-info">
-                Device ID:
-                <span class="marker-bold-text">{{ location.deviceId }}</span>
+    <div class="gps-devices-list" *ngIf="driverLocations?.length">
+        <div class="gps-devices-header">
+            <div class="map-list-search" [formGroup]="searchForm">
+                <app-ta-input
+                    formControlName="search"
+                    [inputConfig]="{
+                        name: 'search',
+                        type: 'text',
+                        label: 'Search',
+                        placeholderIcon: 'ic_search',
+                        placeholderInsteadOfLabel: true
+                    }"
+                ></app-ta-input>
             </div>
-            <div class="row-info">
-                Speed:
-                <span class="marker-bold-text">{{ location.speed }} mph</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="gps-legend">
-        <div class="gps-legend-header">
-            <div class="gps-legend-title marker-info-text">Legend</div>
             <div class="legend-svg-holder">
                 <svg-icon
-                    src="assets/svg/common/calendar/arrow-left.svg"
+                    src="assets/svg/common/telematics/ic_coordinates.svg"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                 ></svg-icon>
                 <div class="svg-divider"></div>
@@ -467,17 +460,342 @@
                 ></svg-icon>
             </div>
         </div>
-        <div class="legend-container">
-          <div class="legend-subtitle marker-info-text marker-bold-text">MOVING - Direction</div>
-          <div class="legend-dual-info-container">
+        <div class="devices-list-header">
+            <div class="header-text-container">
+                <div
+                    class="marker-like-text marker-bold-text uppercase"
+                    [ngStyle]="{ 'margin-right': '50px' }"
+                >
+                    Truck
+                </div>
+                <div class="marker-like-text marker-bold-text uppercase">
+                    Driver
+                </div>
+            </div>
             <svg-icon
-                src="assets/svg/common/telematics/ic_legend_moving_truck.svg"
+                src="assets/svg/common/telematics/ic_eye-open.svg"
+                [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
             ></svg-icon>
-            TRUCK
-          </div>
-          <div class="legend-dual-info-container">
-            TRAILER
-          </div>
+        </div>
+        <div class="marker-divider" [ngStyle]="{ 'margin-top': '6px' }"></div>
+        <ng-container *ngFor="let location of gpsAssignedData; let i = index">
+            <div
+                *ngIf="location.unitType == 'Truck'"
+                class="gps-list-row"
+                (click)="markerClick(i)"
+                [ngClass]="{ 'selected-row': location.isFocused }"
+            >
+                <div class="truck-unit-container">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        [ngStyle]="{
+                            transform: 'rotate(' + location.heading + 'deg)'
+                        }"
+                    >
+                        <circle
+                            id="Ellipse_8366"
+                            data-name="Ellipse 8366"
+                            cx="7"
+                            cy="7"
+                            r="7"
+                            fill="#6d82c7"
+                        />
+                        <g
+                            id="Group_97149"
+                            data-name="Group 97149"
+                            transform="translate(3312 -10938.999)"
+                        >
+                            <path
+                                id="Path_33425"
+                                data-name="Path 33425"
+                                d="M8,4A4,4,0,1,1,4,0,4,4,0,0,1,8,4"
+                                transform="translate(-3309 10942)"
+                                fill="#fff"
+                                opacity="0"
+                            />
+                            <path
+                                id="Path_33426"
+                                data-name="Path 33426"
+                                d="M4.726.208,1.816,5.981a.378.378,0,0,0,.55.483L4.638,4.92a.756.756,0,0,1,.85,0L7.762,6.465a.378.378,0,0,0,.55-.483L5.4.208a.378.378,0,0,0-.675,0"
+                                transform="translate(-3310.064 10942)"
+                                fill="#fff"
+                            />
+                        </g>
+                    </svg>
+                    <div
+                        class="truck-unit-text marker-like-text marker-bold-text"
+                    >
+                        {{ location.unitNumber }}
+                        <!-- <span class="marker-bold-text">{{ location.deviceId }}</span> -->
+                    </div>
+                </div>
+
+                <div class="driver-container">
+                    <div class="marker-like-text">{{ location.driver }}</div>
+                    <!-- <span class="marker-bold-text">{{ location.speed }} mph</span> -->
+
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_eye-open.svg"
+                        [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                    ></svg-icon>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <div
+        class="gps-legend"
+        [ngClass]="{ 'legend-expanded': legendExpanded }"
+        *ngIf="!legendHidden"
+    >
+        <div class="gps-legend-header">
+            <div class="gps-legend-title marker-info-text">Legend</div>
+            <div class="legend-svg-holder">
+                <svg-icon
+                    class="legend-arrow"
+                    src="assets/svg/common/ic_arrow-down.svg"
+                    [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                    [ngClass]="{ rotate: !legendExpanded }"
+                    (click)="resizeLegend()"
+                ></svg-icon>
+                <div class="svg-divider"></div>
+                <svg-icon
+                    src="assets/svg/applicant/close-x.svg"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    (click)="hideLegend()"
+                ></svg-icon>
+            </div>
+        </div>
+        <div class="legend-container">
+            <div class="legend-subtitle marker-info-text marker-bold-text">
+                MOVING - Direction
+            </div>
+            <div class="legend-dual-info-container">
+                <svg-icon
+                    class="legend-absolute-svg"
+                    src="assets/svg/common/telematics/ic_legend_moving_truck.svg"
+                ></svg-icon>
+                <div class="legend-description-text marker-like-text">
+                    <div class="uppercase">Truck</div>
+                    <div>Assigned</div>
+                </div>
+            </div>
+            <div class="legend-dual-info-container">
+                <svg-icon
+                    class="legend-absolute-svg"
+                    src="assets/svg/common/telematics/ic_legend_moving_trailer.svg"
+                ></svg-icon>
+                <div class="legend-description-text marker-like-text">
+                    <div class="uppercase">Trailer</div>
+                    <div>Assigned</div>
+                </div>
+            </div>
+        </div>
+        <div class="legend-divider"></div>
+        <div class="legend-container">
+            <div class="legend-subtitle marker-info-text marker-bold-text">
+                SHORT STOP (0 - 30 min)
+            </div>
+            <div class="mg-bottom-12">
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_shortstop1.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Truck</div>
+                        <div>Ignition OFF</div>
+                    </div>
+                </div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_shortstop2.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Trailer</div>
+                        <div>Ignition OFF</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_shortstop3.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Truck</div>
+                        <div>Ignition ON</div>
+                    </div>
+                </div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_shortstop4.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Reefer</div>
+                        <div>Ignition ON</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="legend-divider"></div>
+        <div class="legend-container">
+            <div class="legend-subtitle marker-info-text marker-bold-text">
+                EXT. STOP (30 min - 12 ho)
+            </div>
+            <div class="mg-bottom-12">
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_extstop1.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Truck</div>
+                        <div>Ignition OFF</div>
+                    </div>
+                </div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_extstop2.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Trailer</div>
+                        <div>Ignition OFF</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_extstop3.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Truck</div>
+                        <div>Ignition ON</div>
+                    </div>
+                </div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_extstop4.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Reefer</div>
+                        <div>Ignition ON</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="legend-divider"></div>
+        <div class="legend-container">
+            <div class="legend-subtitle marker-info-text marker-bold-text">
+                PARKING (12+ hours)
+            </div>
+            <div class="mg-bottom-12">
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_parking1.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Truck</div>
+                        <div>Ignition OFF</div>
+                    </div>
+                </div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_parking2.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Trailer</div>
+                        <div>Ignition OFF</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_parking3.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Truck</div>
+                        <div>Ignition ON</div>
+                    </div>
+                </div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_parking4.svg"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div class="uppercase">Reefer</div>
+                        <div>Ignition ON</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="legend-divider"></div>
+        <div class="legend-container d-flex">
+            <div class="legend-dual-info-container">
+                <div class="marker-info-text marker-bold-text">
+                    CLUSTER
+                    <div
+                        class="legend-description-text marker-like-text mg-top-4"
+                    >
+                        <div>2+ vehicles</div>
+                    </div>
+                </div>
+            </div>
+            <div class="legend-dual-info-container">
+                <svg-icon
+                    class="legend-cluster-icon"
+                    src="assets/svg/common/telematics/ic_legend_clusters.svg"
+                ></svg-icon>
+            </div>
+        </div>
+        <div class="legend-divider"></div>
+        <div class="legend-container">
+            <div class="legend-subtitle marker-info-text marker-bold-text">
+                COMPANY LOCATIONS
+            </div>
+            <div class="mg-bottom-12">
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_hq.svg"
+                        [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div>HQ / Terminal</div>
+                    </div>
+                </div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_office.svg"
+                        [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div>Office</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_repairshop.svg"
+                        [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div>Repair Shop</div>
+                    </div>
+                </div>
+                <div class="legend-dual-info-container">
+                    <svg-icon
+                        src="assets/svg/common/telematics/ic_legend_parking.svg"
+                        [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+                    ></svg-icon>
+                    <div class="legend-description-text marker-like-text">
+                        <div>Parking</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -22,18 +22,14 @@
   <g id="Group_98023" data-name="Group 98023" transform="translate(27.164 15.162)">
     <path id="Path_41079" data-name="Path 41079" d="M0,0H18L14,28H4Z" transform="translate(37.163 24.435) rotate(135)" fill="url(#gradient1)"/>
     <g transform="matrix(1, 0, 0, 1, -27.16, -15.16)">
-      <ellipse id="Ellipse_7908-3" data-name="Ellipse 7908" cx="11" cy="11" rx="11" ry="11" transform="translate(49.16 37.16) rotate(180)" fill="#fff" [ngStyle]="{
-                                                        filter: 'drop-shadow(0px 0px 4px #00000026)'
-                                                    }" />
+      <ellipse id="Ellipse_7908-3" data-name="Ellipse 7908" cx="11" cy="11" rx="11" ry="11" transform="translate(49.16 37.16) rotate(180)" fill="#fff" filter='drop-shadow(0px 0px 4px #00000026)' />
     </g>
     <circle id="Ellipse_7909" data-name="Ellipse 7909" cx="8" cy="8" r="8" transform="translate(3 3)" fill="#97a8dc"/>
   </g>
   <g id="Group_98022" data-name="Group 98022" transform="translate(2.164 17.162)">
     <path id="Path_41080" data-name="Path 41080" d="M0,0H18L14,28H4Z" transform="translate(-2.163 -4.435) rotate(-45)" fill="url(#gradient1)"/>
     <g transform="matrix(1, 0, 0, 1, -2.16, -17.16)">
-      <circle id="Ellipse_7908-4" data-name="Ellipse 7908" cx="11" cy="11" r="11" transform="translate(37.16 37.16) rotate(180)" fill="#fff" [ngStyle]="{
-                                                        filter: 'drop-shadow(0px 0px 4px #00000026)'
-                                                    }" />
+      <circle id="Ellipse_7908-4" data-name="Ellipse 7908" cx="11" cy="11" r="11" transform="translate(37.16 37.16) rotate(180)" fill="#fff" filter='drop-shadow(0px 0px 4px #00000026)' />
     </g>
     <circle id="Ellipse_7909-2" data-name="Ellipse 7909" cx="8" cy="8" r="8" transform="translate(16 1)" fill="#536bc2"/>
   </g>
