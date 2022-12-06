@@ -296,19 +296,72 @@
     }
 
     &.load-dispatches-ttd {
-        grid-template-columns: repeat(3, 156px) 16px 100px;
+        grid-template-columns: repeat(2, 156px) 140px 110px;
 
-        span:last-child {
-            color: #919191;
-            font-size: 14px;
-            font-weight: 400;
+        &.focus {
+            grid-template-columns: repeat(2, 156px) 171px 110px;
+        }
+
+        span {
+            &:nth-child(1),
+            &:nth-child(2) {
+                .multiple-input-text {
+                    max-width: 70px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            &:nth-child(3) {
+                .multiple-input-text {
+                    max-width: 87px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            &:last-child {
+                .multiple-input-text {
+                    color: #919191 !important;
+                    font-size: 14px;
+                    font-weight: 400;
+
+                    &.focusable-text {
+                        color: #6f9ee0 !important;
+                        font-size: 11px;
+                        font-weight: 400;
+                    }
+                }
+            }
+
+            &.focusable-text {
+                color: #6f9ee0 !important;
+            }
+        }
+
+        .focusable-svg {
+            svg {
+                #Ellipse_9856,
+                #Ellipse_9857,
+                #Ellipse_9858,
+                path {
+                    fill: #6f9ee0 !important;
+                }
+            }
+        }
+
+        .focusable-image {
+            opacity: 0.6;
         }
     }
 
     &.load-broker-contact {
-        grid-template-columns: 160px 120px;
+        grid-template-columns: 150px 120px;
         align-items: center;
         grid-column-gap: 10px;
+        -moz-column-gap: 10px;
         column-gap: 10px;
     }
 
@@ -377,6 +430,41 @@
         }
         &::selection {
             background-color: transparent !important;
+        }
+    }
+
+    &.hide-placeholder-in-multiple-placeholder-input {
+        &::-webkit-input-placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+        }
+        &::-moz-placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+        }
+        &:-ms-input-placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+        }
+        &::-ms-input-placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+        }
+        &::placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+        }
+    }
+
+    // Multiple Input Placeholders
+    &.multiple-input-placeholder {
+        pointer-events: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        &.load-broker-contact {
+            grid-template-columns: 161px 120px;
         }
     }
 }

@@ -46,8 +46,8 @@ export class TaInputDropdownComponent
     @Input() multiselectTemplate: string;
 
     @Input() inputConfig: ITaInput;
-    @Input() canAddNew: boolean; // add new item in options
-    @Input() canOpenModal: boolean; // open modal with Add New button
+    @Input() canAddNew: boolean; // ADD NEW item in options
+    @Input() canOpenModal: boolean; // open modal with ADD NEW button
     @Input() sort: string; // sort-template for different options
 
     @Input() activeItem: any; // currently active item
@@ -135,7 +135,7 @@ export class TaInputDropdownComponent
                     ) {
                         this.options.unshift({
                             id: 7655,
-                            name: 'Add New',
+                            name: 'ADD NEW',
                         });
                     }
                     this.originalOptions = this.options;
@@ -354,8 +354,8 @@ export class TaInputDropdownComponent
                     ) {
                         selectedItem = this.options[0].name;
                     }
-                    // Add New Option
-                    if (selectedItem === 'Add New') {
+                    // ADD NEW Option
+                    if (selectedItem === 'ADD NEW') {
                         this.addNewConfig();
                     }
                     // Normal Pick Dropdown
@@ -584,6 +584,7 @@ export class TaInputDropdownComponent
     }
 
     public onActiveItem(option: any, group?: any): void {
+        console.log('option: ', option, group);
         // Prevent user to pick franchise, without group
         if (
             this.template === 'fuel-franchise' &&
@@ -600,7 +601,7 @@ export class TaInputDropdownComponent
         if (option.id === 7654) {
             return;
         }
-        // Add New
+        // ADD NEW
         else if (option.id === 7655) {
             if (this.canOpenModal) {
                 this.selectedItem.emit({ ...option, canOpenModal: true });

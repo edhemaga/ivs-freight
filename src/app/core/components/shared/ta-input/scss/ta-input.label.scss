@@ -115,22 +115,24 @@
 
     .load-dispatches-ttd {
         display: grid;
-        grid-template-columns: repeat(3, 36px);
+        grid-template-columns: 92px 89px 1fr;
         align-items: center;
-        -moz-column-gap: 120px;
-        column-gap: 120px;
+        -moz-column-gap: 65px;
+        grid-column-gap: 65px;
+        column-gap: 65px;
     }
 
     .load-broker-contact {
         display: grid;
-        grid-template-columns: 160px 38px;
+        grid-template-columns: 150px 38px;
         align-items: center;
         grid-column-gap: 10px;
+        -moz-column-gap: 10px;
         column-gap: 10px;
         transition: all 0.3 ease-in-out;
 
         &.focus-multiple-label {
-            grid-template-columns: 258px 38px;
+            grid-template-columns: 259px 38px;
         }
     }
 

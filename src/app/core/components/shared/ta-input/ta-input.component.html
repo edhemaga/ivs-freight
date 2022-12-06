@@ -638,10 +638,16 @@
                 let indx = index
             "
         >
+            <!-- Image / SVG -->
             <span *ngIf="item?.logoName && item?.isImg">
                 <img
                     *ngIf="item?.logoName !== 'no-url'"
-                    [src]="this.imageBase64Service.sanitizer(item.logoName)"
+                    [ngStyle]="{
+                        width: '18px',
+                        'aspect-ratio': 1,
+                        'border-radis': '2px'
+                    }"
+                    [src]="imageBase64Service.sanitizer(item.logoName)"
                     [alt]="item.value"
                 />
                 <div
@@ -665,18 +671,22 @@
                 [src]="item?.logoName"
             ></svg-icon>
 
+            <!-- Text -->
             <span
                 class="multiple-input-text"
                 [ngStyle]="{
-                    color:
-                        indx ===
-                        inputConfig.multipleInputValues.options.length - 1
-                            ? '#919191'
-                            : '#2F2F2F'
+                    color: '#2F2F2F'
                 }"
             >
                 {{ item.value }}
+                <span
+                    *ngIf="item?.second_value"
+                    [ngStyle]="{ color: '#919191' }"
+                    >{{ item.second_value }}</span
+                >
             </span>
+
+            <!-- Owner Flag -->
             <div
                 *ngIf="item?.isOwner"
                 [ngStyle]="{ position: 'relative', bottom: '1px' }"
@@ -685,6 +695,76 @@
                     src="assets/svg/common/load/ic_load_driver_owner.svg"
                 ></svg-icon>
             </div>
+        </span>
+    </div>
+
+    <!-- Multiple Input Placeholder -->
+    <div
+        *ngIf="
+            inputConfig?.multipleInputValues?.options?.length &&
+            focusInput &&
+            !getSuperControl.value
+        "
+        class="input-control multiple-input-placeholder {{
+            inputConfig?.multipleInputValues?.customClass
+        }}"
+        [ngClass]="{ focus: focusInput }"
+    >
+        <span
+            style="display: flex; gap: 6px; align-items: center"
+            *ngFor="
+                let item of inputConfig.multipleInputValues.options;
+                let indx = index
+            "
+        >
+            <!-- Image / SVG -->
+            <span
+                *ngIf="item?.logoName && item?.isImg"
+                [ngClass]="{ 'focusable-image': focusInput }"
+            >
+                <img
+                    *ngIf="item?.logoName !== 'no-url'"
+                    [ngStyle]="{
+                        width: '18px',
+                        'aspect-ratio': 1,
+                        'border-radis': '2px'
+                    }"
+                    [src]="imageBase64Service.sanitizer(item.logoName)"
+                    [alt]="item.value"
+                />
+                <div
+                    *ngIf="item.logoName === 'no-url'"
+                    class="no-profile-image"
+                >
+                    <app-profile-images
+                        [indx]="0"
+                        [size]="'small'"
+                        [name]="item.value"
+                    >
+                    </app-profile-images>
+                </div>
+            </span>
+
+            <svg-icon
+                *ngIf="item?.logoName && item?.isSvg"
+                [ngClass]="{ 'focusable-svg': focusInput }"
+                class="{{ item?.subFolder }} {{
+                    item?.logoType.trim().replace(' ', '').toLowerCase()
+                }}"
+                [src]="item?.logoName"
+            ></svg-icon>
+
+            <!-- Text -->
+            <span
+                class="multiple-input-text"
+                [ngClass]="{ 'focusable-text': focusInput }"
+                [ngStyle]="{
+                    color: '#6F9EE0'
+                }"
+            >
+                {{ item.value }}
+                <span *ngIf="item?.second_value">{{ item.second_value }}</span>
+            </span>
         </span>
     </div>
 
@@ -831,7 +911,9 @@
             'multiple-input-values':
                 inputConfig?.multipleInputValues?.options?.length &&
                 !focusInput,
-            'disable-select-on-focus-out': !focusInput
+            'disable-select-on-focus-out': !focusInput,
+            'hide-placeholder-in-multiple-placeholder-input':
+                inputConfig?.multipleInputValues?.options?.length && focusInput
         }"
         (keypress)="manipulateWithInput($event)"
         (keyup)="onKeyUp($event)"
@@ -888,6 +970,26 @@
             </span>
         </div>
     </label>
+
+    <!-- Placeholder Icon on Right Side -->
+    <svg-icon
+        *ngIf="inputConfig.placeholderIconRightSide"
+        class="placeholder-icon-right-side"
+        [ngStyle]="{ position: 'absolute' }"
+        [ngClass]="{
+            hide: focusInput && getSuperControl.value,
+            focus: focusInput
+        }"
+        [style.left]="
+            (focusInput ? 86 : 23) +
+            getSuperControl?.value?.toString().length * 7 +
+            'px'
+        "
+        [src]="
+            inputConfig.placeholderIconRightSide?.toLowerCase()
+                | taSvg: 'common'
+        "
+    ></svg-icon>
 
     <!-- Input Error Message -->
     <span

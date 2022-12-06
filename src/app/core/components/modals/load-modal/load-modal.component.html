@@ -48,7 +48,7 @@
                             withText: true,
                             svg: false,
                             image: true,
-                            url: null,
+                            url: selectedDispatcher?.logoName,
                             nameInitialsInsteadUrl:
                                 !selectedDispatcher?.logoName
                                     ? selectedDispatcher?.name
@@ -126,7 +126,7 @@
                             template: 'user'
                         },
                         textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-260'
+                        dropdownWidthClass: 'w-col-252'
                     }"
                     [canAddNew]="true"
                     [canOpenModal]="true"
@@ -152,7 +152,7 @@
                     [inputConfig]="{
                         name: 'Ref Number',
                         type: 'text',
-                        label: 'Ref #',
+                        label: 'Reference No.',
                         isRequired: true,
                         textTransform: 'capitalize'
                     }"
@@ -166,8 +166,8 @@
                         label: 'General Commodity',
                         isDropdown: true,
                         dropdownWidthClass: 'w-col-230',
-                        placeholderIcon: isHazardousPicked
-                            ? 'hazardous_modal_logo'
+                        placeholderIconRightSide: isHazardousPicked
+                            ? 'hazardous'
                             : null,
                         blackInput: true,
                         customClass: 'hazardous-dropdown'

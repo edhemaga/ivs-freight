@@ -128,7 +128,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id
                     }"
                     (click)="onActiveItem(option)"
@@ -170,7 +170,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id,
                         trailerContainer: option.name === 'Container',
                         lowboyrgn: option.name === 'Low Boy / RGN'
@@ -289,12 +289,6 @@
                         }"
                         (click)="onActiveItem(item)"
                     >
-                        <img
-                            *ngIf="item.svg"
-                            class="dropdown-subgroup-image"
-                            [src]="item.svg"
-                            [alt]="item.name"
-                        />
                         <div
                             class="dropdown-subgroup-text"
                             [ngClass]="{
@@ -354,7 +348,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         'active-label':
                             option.id === activeItem?.id &&
                             labelMode === 'Label'
@@ -362,7 +356,7 @@
                     (click)="onActiveItem(option)"
                 >
                     <div
-                        *ngIf="!['No Results', 'Add New'].includes(option.name)"
+                        *ngIf="!['No Results', 'ADD NEW'].includes(option.name)"
                         class="labels-template-left-side"
                     >
                         <svg-icon
@@ -384,7 +378,7 @@
                         <div
                             class="labels-template-text"
                             [ngClass]="{
-                                'add-new': option.name === 'Add New'
+                                'add-new': option.name === 'ADD NEW'
                             }"
                             [innerHtml]="
                                 option.name
@@ -399,7 +393,7 @@
                         ></div>
                         <div
                             *ngIf="
-                                !['No Results', 'Add New'].includes(option.name)
+                                !['No Results', 'ADD NEW'].includes(option.name)
                             "
                             class="labels-template-counter"
                         >
@@ -432,7 +426,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id,
                         'active-repair-truck-trailer': option?.status === 1
                     }"
@@ -500,7 +494,11 @@
             <!--------------------------- Load Combine Truck-Trailer-Driver Template --------------------------->
             <div *ngSwitchCase="'load-dispatches-ttd'">
                 <div
-                    *ngFor="let option of options; trackBy: identity"
+                    *ngFor="
+                        let option of options;
+                        trackBy: identity;
+                        let indx = index
+                    "
                     class="dropdown-option load-dispatches-ttd-template"
                     [ngClass]="{
                         disabled: option?.disabled,
@@ -612,12 +610,18 @@
                             "
                         ></div>
                         <svg-icon
+                            class="load-dipstaches-owner-flag"
                             src="assets/svg/common/load/ic_load_driver_owner.svg"
                         ></svg-icon>
                     </div>
-                    <span class="load-dispatch-driver-rate">
-                        <!-- {{option.driver?.rate}} -->
-                        Flat Rate
+                    <span
+                        class="load-dispatch-driver-rate"
+                        [ngClass]="{
+                            active: indx === activeItem?.itemIndex
+                        }"
+                    >
+                        <!-- {{ option.driver?.rate }} -->
+                        $0.5 / $0.7 / $50
                     </span>
                 </div>
             </div>
@@ -631,13 +635,13 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id
                     }"
                     (click)="onActiveItem(option)"
                 >
                     <svg-icon
-                        *ngIf="option.name !== 'Add New'"
+                        *ngIf="option.name !== 'ADD NEW'"
                         class="load-broker-status"
                         [src]="option.logoName"
                         [ngClass]="{
@@ -675,7 +679,7 @@
                         trackBy: identity;
                         let i = index
                     "
-                    class="dropdown-groups load-broker-contact-groups"
+                    class="load-broker-contact-groups"
                     [ngClass]="{ 'last-group': i === options.length - 1 }"
                 >
                     <p
@@ -685,17 +689,22 @@
                         "
                         class="dropdown-group-header"
                         [ngClass]="{
-                            'add-new': option.name === 'Add New'
+                            'add-new': option.name === 'ADD NEW'
                         }"
+                        (click)="onActiveItem(item)"
                     >
                         {{
-                            option.name === 'Add New'
+                            option.name === 'ADD NEW'
                                 ? option.name
                                 : option?.department?.name
                         }}
                     </p>
                     <div
-                        *ngFor="let item of option?.contacts; trackBy: identity"
+                        *ngFor="
+                            let item of option?.contacts;
+                            trackBy: identity;
+                            let indx = index
+                        "
                         class="dropdown-subgroup-options"
                         [ngClass]="{
                             'no-result':
@@ -704,14 +713,14 @@
                         }"
                         (click)="onActiveItem(item)"
                     >
+                        <!-- Left Side -->
                         <div
                             class="dropdown-subgroup-text"
                             [ngClass]="{
                                 'no-result':
                                     options.length === 1 &&
                                     item.name === 'No Results',
-                                'active-without-check':
-                                    item.id === activeItem?.id
+                                active: item.id === activeItem?.id
                             }"
                             [innerHtml]="
                                 item.name
@@ -724,7 +733,7 @@
                                           ]
                             "
                         ></div>
-
+                        <!-- Right Side -->
                         <div
                             class="dropdown-subgroup-text dropdown-subgroup-additional-text"
                             [ngClass]="{
@@ -755,7 +764,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id
                     }"
                     (click)="onActiveItem(option)"
@@ -797,7 +806,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active:
                             option.id ===
                             (activeItem?.duplicateId
@@ -821,7 +830,7 @@
                     </span>
                     <span
                         *ngIf="
-                            option.name !== 'Add New' &&
+                            option.name !== 'ADD NEW' &&
                             option.name !== 'No Results'
                         "
                         class="option-counter"
@@ -876,7 +885,7 @@
                         >
                             <span
                                 *ngIf="
-                                    option.name !== 'Add New' &&
+                                    option.name !== 'ADD NEW' &&
                                     option.name !== 'No Results'
                                 "
                                 class="option-counter"
@@ -948,7 +957,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active:
                             option.id ===
                             (activeItem?.duplicateId

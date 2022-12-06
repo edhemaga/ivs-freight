@@ -25,7 +25,6 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from '../../../services/form/form.service';
 import { LoadTService } from '../../load/state/load.service';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { CommentsService } from '../../../services/comments/comments.service';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
@@ -177,7 +176,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         textTransform: 'capitalize',
         isDropdown: true,
         isDisabled: true,
-        dropdownWidthClass: 'w-col-344',
+        dropdownWidthClass: 'w-col-352',
     };
 
     public loadDispatchesTTDInputConfig: ITaInput = {
@@ -258,7 +257,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         private commentsService: CommentsService,
         private routingService: RoutingService,
         private loadService: LoadTService,
-        private notificationService: NotificationService,
         private modalService: ModalService
     ) {}
 
@@ -372,16 +370,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case 'delete': {
-                if (this.editData) {
-                    this.deleteLoadById(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                    });
-                }
-                break;
-            }
             case 'load-template': {
                 if (this.loadForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.loadForm);
@@ -466,7 +454,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     logoName: null,
                                 },
                                 {
-                                    value: this.selectedBrokerContact.phone,
+                                    value: this.selectedBrokerContact
+                                        .originalPhone,
+                                    second_value: `#${this.selectedBrokerContact.phoneExtension}`,
                                     logoName: null,
                                 },
                             ],
@@ -485,7 +475,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         ...event,
                         name: event?.name?.concat(' ', event?.phone),
                     };
-
                     this.loadBrokerContactsInputConfig = {
                         ...this.loadBrokerContactsInputConfig,
                         multipleInputValues: {
@@ -495,7 +484,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     logoName: null,
                                 },
                                 {
-                                    value: event.phone,
+                                    value: event.originalPhone,
+                                    second_value: `#${event.phoneExtension}`,
                                     logoName: null,
                                 },
                             ],
@@ -583,7 +573,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ],
                             customClass: 'load-broker-contact',
                         },
-                        blackInput: true,
                         isDisabled: false,
                     };
                 } else {
@@ -604,6 +593,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ?.concat(' ', event?.trailer?.name)
                             .concat(' ', event?.driver?.name),
                     };
+                    console.log('dispatches event: ', event);
 
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
@@ -640,7 +630,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     logoType: null,
                                 },
                                 {
-                                    value: 'Fleet Rate',
+                                    value: '$0.5 / $0.7 / $50',
                                     logoName: null,
                                     isImg: false,
                                     isSvg: false,
@@ -651,7 +641,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ],
                             customClass: 'load-dispatches-ttd',
                         },
-                        blackInput: true,
                     };
                 } else {
                     this.loadDispatchesTTDInputConfig.multipleInputValues =
@@ -1411,6 +1400,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                                 ? `x${item.extensionPhone}`
                                                 : ''
                                         ),
+                                        originalPhone: item.phone,
+                                        phoneExtension: item.extensionPhone,
                                         fullName: item?.contactName.concat(
                                             ' ',
                                             item?.phone?.concat(
@@ -1464,7 +1455,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     // Dispatches
                     this.labelsDispatches = this.originLabelsDispatches =
-                        res.dispatches.map((item) => {
+                        res.dispatches.map((item, index) => {
                             return {
                                 ...item,
                                 driver: {
@@ -1500,6 +1491,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     folder: 'common',
                                     subFolder: 'trailers',
                                 },
+                                itemIndex: index,
                             };
                         });
 
@@ -1624,7 +1616,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             };
                         });
                 },
-                error: (error: any) => {},
+                error: () => {},
             });
     }
 
@@ -1701,14 +1693,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.loadService
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: (error: any) => {},
-            });
+            .subscribe();
     }
-    private updateLoad(id: number) {}
-
-    private deleteLoadById(id: number) {}
+    private updateLoad(id: number) {
+        console.log(id);
+    }
 
     private saveLoadTemplate() {
         const { ...form } = this.loadForm.value;
@@ -1776,7 +1765,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         status: false,
                     });
                 },
-                error: (error: any) => {},
+                error: () => {},
             });
     }
 
