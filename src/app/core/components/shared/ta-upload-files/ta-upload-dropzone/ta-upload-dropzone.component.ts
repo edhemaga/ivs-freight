@@ -97,14 +97,15 @@ export class TaUploadDropzoneComponent {
     private async addFiles(files: FileList) {
         for (let index = 0; index < files.length; index++) {
             const file = files.item(index);
-            await this.addFile(file);
+            const prevent = index == files.length -1 ? false : true;
+            await this.addFile(file, prevent);
         }
     }
 
     /**
      * Mapped file object
      */
-    private async addFile(file: any) {
+    private async addFile(file: any, prevent?) {
         try {
             const base64Content = await this.getBase64(file);
             const fileNameArray = file.name.split('.');
@@ -137,7 +138,10 @@ export class TaUploadDropzoneComponent {
                     realFile: file,
                 },
             ];
-            this.onFileEvent.emit({ files: this.files, action: 'add' });
+
+            if (!prevent) {
+                this.onFileEvent.emit({ files: this.files, action: 'add' });
+            }
         } catch (err) {
             console.error(`Can't upload ${file.name} ${err}`);
         }

@@ -175,6 +175,14 @@ export class TaUploadFilesComponent implements OnInit {
     public onUploadFiles(data: { files: UploadFile[]; action: string }) {
         switch (data.action) {
             case 'add': {
+                data.files.map((files, i)=>{
+                    for(var a = 0; a<this.files.length; a++) {
+                        if(files.realFile?.name == this.files[a].realFile?.name) {
+                            data.files.splice(i);
+                        }
+                    }
+                });
+
                 data.files.map((file) => {
                     let setName = '';
                     const name = file.fileName.split('');

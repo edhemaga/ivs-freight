@@ -112,7 +112,6 @@
         width: 160px;
         height: 30px;
         display: flex;
-        align-items: center;
         justify-content: space-between;
         z-index: 10;
         display: none;
@@ -171,34 +170,27 @@
                     }
                 }
             }
-
-            &.no-action-tag {
-                opacity: 0;
-                visibility: none;
-                pointer-events: none !important;
-            }
         }
 
         .ta-upload-file-action-rightside {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 60px;
-            height: 30px;
+            width: 30px;
+            height: 60px;
             text-align: center;
-            padding-top: 2px;
             border-radius: 1px;
             background-color: rgb(108, 108, 108, 0.9);
             cursor: pointer;
 
             .ta-upload-action-download,
-            .ta-upload-action-delete {
+            .ta-upload-action-delete,
+            .ta-upload-action-tag {
                 display: flex;
                 align-items: center;
                 justify-content: center;
 
                 width: 100%;
-                height: 100%;
+                height: 30px;
+                padding: 6px;
+
                 line-height: 15px;
 
                 svg {
@@ -217,6 +209,22 @@
                         }
                     }
                 }
+
+                &.active {
+                    background-color: #536bc2e6;
+                    svg {
+                        path {
+                            fill: #ffffff;
+                        }
+                    } 
+                }
+
+                &.no-action-tag {
+                    opacity: 0;
+                    height: 0;
+                    padding: 0;
+                    pointer-events: none !important;
+                }
             }
 
             &.feedback-mode {
@@ -226,6 +234,12 @@
 
             &.small {
                 width: 30px;
+                height: 30px;
+            }
+
+            &.large {
+                width: 30px;
+                height: 90px;
             }
         }
 
@@ -383,7 +397,8 @@
         &.driver-card-pdf,
         &.landscape-details-view,
         &.todo-details,
-        &.company-details-pdf {
+        &.company-details-pdf,
+        &.modals {
             position: relative;
 
             .ng2-pdf-viewer-container {
@@ -420,6 +435,23 @@
                     max-width: 304px !important;
                     max-height: 304px !important;
                     min-width: 229px;
+                }
+            }
+        }
+
+        &.modals {
+            width: 168px;
+            height: 194px;
+            .ng2-pdf-viewer-container {
+                width: 159px !important;
+                height: 156px !important;
+                .canvasWrapper,
+                .pdfViewer,
+                .pdfViewer .page,
+                canvas {
+                    max-width: 156px !important;
+                    max-height: 156px !important;
+                    min-width: 120px;
                 }
             }
         }
@@ -572,18 +604,9 @@
 
     //------------------ File Footer Actions ------------------
     .ta-upload-file-footer {
-        display: flex;
         position: relative;
-        align-items: center;
         height: 26px;
-        padding: 4px;
-        align-self: flex-end;
-        position: relative;
-
-        &:hover {
-            background-color: #eeeeee;
-        }
-
+        
         p {
             margin: 0;
         }
@@ -667,6 +690,10 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
+            width: 100%;
+            height: 100%;
+            padding: 4px;
+            line-height: 18px;
 
             &::-moz-selection {
                 background-color: rgb(108, 108, 108, 0.2) !important;
@@ -679,7 +706,7 @@
             }
 
             &.details_title {
-                max-width: 259px;
+                max-width: 304px;
             }
 
             &.todo_title {
@@ -702,10 +729,11 @@
     &.driver-card-pdf,
     &.landscape-details-view,
     &.todo-details,
-    &.company-details-pdf {
+    &.company-details-pdf,
+    &.modals {
         .ta-upload-file-footer {
             opacity: 0;
-            border-radius: 1px;
+            border-radius: 2px;
             cursor: default;
             transition: 0.3s all ease-in-out;
 
@@ -719,60 +747,98 @@
             transition: 0.3s all ease-in-out;
         }
 
-        &:hover {
-            .ta-upload-file-footer {
-                opacity: 1;
+        .ta-upload-file-footer {
+            opacity: 0;
+            .ta-upload-file-name {
                 background-color: rgba(255, 255, 255, 0.7) !important;
                 transition: 0.3s all ease-in-out;
-
+    
                 &:hover {
                     transition: 0.3s all ease-in-out;
                     background-color: rgba(255, 255, 255, 0.9) !important; 
                 }
+            }
 
-                .footer_info {
-                    .ta-upload-file-ext {
-                        &-jpg,
-                        &-jpeg,
-                        &-png {
-                            background-color: #ffb74d80;
-
-                            &:hover {
-                                background-color: #ffb74d;
-                            }
-                        }
-        
-                        &-pdf {
-                            background-color: #ef535090;
-        
-                            &:hover {
-                                background-color: #ef5350;
-                            }
-                        }
-                    }
-
-                    .document_info_hold {
-                        transition: 0.3s all ease-in-out;
-                        background-color: #6C6C6C80 !important;
+            .footer_info {
+                .ta-upload-file-ext {
+                    &-jpg,
+                    &-jpeg,
+                    &-png {
+                        background-color: #ffb74d80;
 
                         &:hover {
-                            transition: 0.3s all ease-in-out;
-                            background-color: #6C6C6CE6 !important;
+                            background-color: #ffb74de6;
+                        }
+                    }
+    
+                    &-pdf {
+                        background-color: #ef535080;
+    
+                        &:hover {
+                            background-color: #ef5350e6;
                         }
                     }
                 }
+
+                .document_info_hold {
+                    transition: 0.3s all ease-in-out;
+                    background-color: #6C6C6C80 !important;
+
+                    &:hover {
+                        transition: 0.3s all ease-in-out;
+                        background-color: #6C6C6CE6 !important;
+                    }
+                }
+            }
+        }
+
+        .ta-upload-file-tag {
+            opacity: 0;
+            transition: 0.3s all ease-in-out;
+            background-color: #3074D380;
+
+            &:hover {
+                transition: 0.3s all ease-in-out;
+                background-color: #3074D3E6;
+            }
+        }
+
+        &:hover {
+            .ta-upload-file-footer {
+                opacity: 1;
+                border-radius: 1px;
             }
 
             .ta-upload-file-tag {
                 opacity: 1;
-                transition: 0.3s all ease-in-out;
-                background-color: rgb(83, 107, 194, 0.5);
+            }
+        }
+    }
 
-                &:hover {
+    &.modals {
+        background-color: #eeeeee !important;
+        .ta-upload-file-footer {
+            opacity: 1;
+
+            .ta-upload-file-name {
+                background-color: transparent !important;
+                transition: 0.3s all ease-in-out;
+                cursor: pointer;
+            }
+        }
+
+        &:hover {
+            background-color: #dadadada !important;
+            .ta-upload-file-footer {
+                .ta-upload-file-name {
                     transition: 0.3s all ease-in-out;
-                    background-color: rgb(83, 107, 194);
+                    background-color: #eeeeee !important;
                 }
             }
+        }
+
+        .ta-upload-file-tag {
+            opacity: 1;
         }
     }
 
@@ -795,6 +861,23 @@
         .ta-upload-file-delete-template {
             width: 304px;
             height: 304px;
+        }
+    }
+
+    &.modals {
+        width: 168px;
+        height: 194px;
+        grid-template-rows: 194px;
+
+        .ta-upload-file-footer {
+            bottom: 37px;
+            right: -4px;
+
+            width: 160px;
+        }
+
+        .ta-upload-file-tag {
+            bottom: 56px;
         }
     }
 

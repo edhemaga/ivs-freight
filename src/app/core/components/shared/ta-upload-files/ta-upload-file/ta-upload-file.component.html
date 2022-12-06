@@ -1,6 +1,6 @@
 <div
     class="ta-upload-file-container {{ customClassName }}"
-    [class.modal]="!customClassName || customClassName == ''"
+    [class.modal]="!customClassName || customClassName == '' || customClassName == 'modals'"
     [class.keep_open]="t2?.isOpen()"
 >
     <!-- File Header Actions -->
@@ -84,18 +84,25 @@
         class="ta-upload-file-header"
     >
         <!-- Left Side -->
+        <div></div>
+        <!-- Right Side -->
         <div
-            class="ta-upload-file-action-leftside"
-            [ngClass]="{ 'no-action-tag': !hasTagsDropdown, active: t2?.isOpen() }"
-            #t2="ngbPopover"
-            [ngbPopover]="tagsPopover"
-            [popoverClass]="'tags_popover'"
-            [placement]="'left-top left-bottom'"
-            autoclose="outside"
-            [container]="'body'"
-            triggers="'manual'"
+            class="ta-upload-file-action-rightside"
+            [ngClass]="{
+                'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
+                small: type == 'details' || type == 'todo' || reviewMode == 'REVIEW_MODE',
+                large: hasTagsDropdown
+            }"
         >
             <div
+                [ngClass]="{ 'no-action-tag': !hasTagsDropdown, active: t2?.isOpen() }"
+                #t2="ngbPopover"
+                [ngbPopover]="tagsPopover"
+                [popoverClass]="'tags_popover'"
+                [placement]="'left-top left-bottom'"
+                autoclose="outside"
+                [container]="'body'"
+                triggers="'manual'"
                 ngbTooltip
                 mainTooltip="Tag"
                 tooltipBackground="#6c6c6c"
@@ -105,15 +112,6 @@
             >
                 <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
             </div>
-        </div>
-        <!-- Right Side -->
-        <div
-            class="ta-upload-file-action-rightside"
-            [ngClass]="{
-                'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
-                small: type == 'details' || type == 'todo' || reviewMode == 'REVIEW_MODE'
-            }"
-        >
             <div
                 ngbTooltip
                 mainTooltip="Download"
