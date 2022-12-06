@@ -32,5 +32,6 @@ export interface ApplicantModalResponse {
     truckTypes?: Array<TruckTypeResponse> | null;
     trailerTypes?: Array<TrailerTypeResponse> | null;
     trailerLenghts?: Array<TrailerLengthResponse> | null;
+    truckLengths?: Array<EnumValue> | null;
 }
 

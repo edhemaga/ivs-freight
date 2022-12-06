@@ -13,7 +13,6 @@ import { AddressEntity } from './addressEntity';
 
 
 export interface CreateTrafficViolationItemCommand { 
-    id?: number | null;
     date?: string;
     vehicleTypeId?: number;
     location?: AddressEntity;

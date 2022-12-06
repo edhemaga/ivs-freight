@@ -566,6 +566,7 @@ model/trafficViolationItemReviewResponse.ts
 model/trailerAccidentResponse.ts
 model/trailerAutocompleteModelResponse.ts
 model/trailerDispatchModalResponse.ts
+model/trailerFilterResponse.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
@@ -581,6 +582,7 @@ model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
 model/truckDispatchModalResponse.ts
 model/truckEngineModelResponse.ts
+model/truckFilterResponse.ts
 model/truckGrossWeightResponse.ts
 model/truckListResponse.ts
 model/truckMakeResponse.ts

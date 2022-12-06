@@ -11,10 +11,8 @@
  */
 
 
-export interface UpdateEmergencyContactCommand { 
-    id?: number | null;
-    name?: string | null;
-    phone?: string | null;
-    relationship?: string | null;
+export interface TruckFilterResponse { 
+    id?: number;
+    truckNumber?: string | null;
 }
 

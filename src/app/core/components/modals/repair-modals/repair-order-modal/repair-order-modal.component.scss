@@ -35,6 +35,9 @@
 .repair-shop-services {
     grid-template-columns: 105px repeat(5, 104px);
     grid-template-rows: repeat(1, 26px);
+    .repair-shop-service {
+        flex-direction: row;
+    }
 }
 
 .repair-order {
