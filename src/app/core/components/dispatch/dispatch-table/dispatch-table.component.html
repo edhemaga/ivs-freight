@@ -1,0 +1,169 @@
+<div class="dispatch-table">
+    <table>
+        <thead>
+            <tr>
+                <th>TRUCK</th>
+                <th>TRAILER</th>
+                <th>DRIVER</th>
+                <th class="empty"></th>
+                <th>LAST LOCATION</th>
+                <th class="text-center">STATUS</th>
+                <th class="pick-delivery">
+                    <div>PICKUP</div>
+                    <div>DELIVERY</div>
+                </th>
+                <th>PROGRESS</th>
+                <th>PARKING</th>
+                <th class="empty"></th>
+                <th>NOTE</th>
+                <th class="empty"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of data">
+                <td>
+                    <div
+                        class="main_inside"
+                        [class.addNew]="item.add_new_truck"
+                    >
+                        <div class="padding-inside">
+                            <div class="add_new" *ngIf="item.add_new_truck">
+                                <div class="text">Add</div>
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/truckassist-table/dropdown/content/add.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                ></svg-icon>
+                            </div>
+                            <div
+                                class="drop-item"
+                                *ngIf="item.active_new_truck"
+                            >
+                                <app-ta-input-dropdown
+                                    [formControl]="truckFormControll"
+                                    [template]="'svgtext-template'"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown',
+                                        type: 'text',
+                                        label: 'Unit No',
+                                        isDropdown: true,
+                                        dropdownImageInput: {
+                                            withText: true,
+                                            svg: true,
+                                            image: false,
+                                            url: selectedColor?.code
+                                                ? 'ic_circle.svg'
+                                                : null,
+                                            template: 'color',
+                                            color: selectedColor?.code
+                                        },
+                                        dropdownWidthClass: 'w-col-148 connectDropdown',
+                                        placeholderInsteadOfLabel: true,
+                                        connectDropdown: true,
+                                        hideDropdownArrow: true
+                                    }"
+                                    [options]="truckList"
+                                    [activeItem]="selectedColor"
+                                    (selectedItem)="
+                                        onSelectDropdown($event, 'color')
+                                    "
+                                ></app-ta-input-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div
+                        class="main_inside"
+                        [class.addNew]="item.add_new_trailer"
+                    >
+                        <div class="padding-inside">
+                            <div class="add_new" *ngIf="item.add_new_trailer">
+                                <div class="text">Add</div>
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/truckassist-table/dropdown/content/add.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div
+                        class="main_inside"
+                        [class.addNew]="item.add_new_driver"
+                    >
+                        <div class="padding-inside">
+                            <div class="add_new" *ngIf="item.add_new_driver">
+                                <div class="text">Add</div>
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/truckassist-table/dropdown/content/add.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="box-item">
+                    <div class="main_inside">
+                        <div class="padding-inside"></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="main_inside">
+                        <div class="padding-inside"></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="main_inside">
+                        <div class="padding-inside"></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="main_inside">
+                        <div class="padding-inside"></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="main_inside">
+                        <div class="padding-inside"></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="main_inside">
+                        <div class="padding-inside"></div>
+                    </div>
+                </td>
+                <td class="box-item">
+                    <div class="main_inside">
+                        <div class="padding-inside"></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="main_inside">
+                        <div class="padding-inside"></div>
+                    </div>
+                </td>
+                <td class="box-item">
+                    <div class="main_inside">
+                        <div class="padding-inside"></div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

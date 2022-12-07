@@ -13,7 +13,6 @@ import { UpdateEmergencyContactReviewCommand } from './updateEmergencyContactRev
 
 
 export interface UpdateEducationReviewCommand { 
-    id?: number;
     isSpecialTrainingDescriptionValid?: boolean;
     specialTrainingDescriptionMessage?: string | null;
     isOtherTrainingDescriptionValid?: boolean;
