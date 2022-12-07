@@ -427,6 +427,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapTruckData(data);
             });
+
+            console.log('Truck Data');
+            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
@@ -435,44 +438,66 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     mapTruckData(data: any) {
         return {
             ...data,
-            textCommission: data?.commission ? data?.commission + '%' : '',
-            textGrossWeight: 'Nije povezano',
-            textPurchasePrice: 'Nije povezano',
-            textPurchaseDate: 'Nije povezano',
-            textYear: data.year ? data.year : '',
-            textMake: data?.truckMake?.name ? data.truckMake.name : '',
-            textModel: data?.model ? data.model : '',
-            color: data?.color?.code ? data.color.code : '',
-            colorName: data?.color?.name ? data.color.name : '',
             truckTypeIcon: data.truckType.logoName,
             truckTypeClass: data.truckType.logoName.replace('.svg', ''),
-            ownerName: data?.owner?.name ? data.owner.name : '',
-            truckAxises: data?.axles ? data.axles : '',
-            truckEmptyWeight: data?.emptyWeight
-                ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
-                : '',
-            truckEngine: data?.truckEngineType?.name
+            textMake: data?.truckMake?.name ? data.truckMake.name : '',
+            textModel: data?.model ? data.model : '',
+            textYear: data.year ? data.year : '',
+            tableColor: data?.color?.code ? data.color.code : '',
+            colorName: data?.color?.name ? data.color.name : '',
+            tableDriver: 'Nije Povezano',
+            tableTrailer: 'Nije Povezano',
+            tableTrailerType: 'Nije Povezano',
+            tabelOwnerDetailesType: 'Nije Povezano',
+            tabelOwnerDetailesName: 'Nije Povezano',
+            tabelOwnerDetailesEinSsn: 'Nije Povezano',
+            textGrossWeight: 'Nije povezano',
+            tabelEngineModel: data?.truckEngineType?.name
                 ? data.truckEngineType.name
                 : '',
-            truckTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-            truckMileage: data?.mileage
+            tabelOilType: 'Nije Povezano',
+            tabelTransmissionModel: 'Nije Povezano',
+            tabelTransmissionShifter: 'Nije Povezano',
+            tabelTransmissionRatio: 'Nije Povezano',
+            tabelTank: 'Nije Povezano',
+            tabelAxle: 'Nije Povezano',
+            tabelBrakes: 'Nije Povezano',
+            tableTireSize: data?.tireSize?.name ? data.tireSize.name : '',
+            tableWheelsMaterialFront: 'Nije Povezano',
+            tableWheelsMaterialRear: 'Nije Povezano',
+            tableAPUnit: 'Nije Povezano',
+            tableTollDeviceTransponder: 'Nije Povezano',
+            tableTollDeviceNo: 'Nije Povezano',
+            tableInsPolicy: 'Nije Povezano',
+            tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage) + ' mi'
                 : '',
-            truckIpasEzpass: data?.ipasEzpass ? data.ipasEzpass : '',
-            truckLicensePlate: data?.licensePlate
+            tableLicencePlateDetailNumber: data?.licensePlate
                 ? data.licensePlate
                 : data?.registrations?.length
                 ? data.registrations[0].licensePlate
                 : '',
-            truckInspectionProgres: {
-                start: data?.fhwaInspection
-                    ? data.fhwaInspection
-                    : data?.inspections?.length
-                    ? data.inspections[0].issueDate
-                    : null,
-                end: null,
-            },
-            tableAttachments: data?.files ? data.files : [],
+            tableLicencePlateDetailST: null,
+            tableLicencePlateDetailExpiration: null,
+            tableFhwaInspectionTerm: 'Nije Povezano',
+            tableFhwaInspectionExpiration: null,
+            tableTitleNumber: 'Nije Povezano',
+            tableTitleST: null,
+            tableTitleIssued: 'Nije Povezano',
+            tablePurchaseDate: 'Nije Povezano',
+            tablePurchasePrice: 'Nije Povezano',
+            tableTerminated: 'Nije Povezano',
+            tableAdded: 'Nije Povezano',
+            tableEdited: 'Nije Povezano',
+
+            // truckInspectionProgres: {
+            //     start: data?.fhwaInspection
+            //         ? data.fhwaInspection
+            //         : data?.inspections?.length
+            //         ? data.inspections[0].issueDate
+            //         : null,
+            //     end: null,
+            // },
         };
     }
 
