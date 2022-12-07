@@ -10,15 +10,16 @@
  * Do not edit the class manually.
  */
 import { TrailerLengthResponse } from './trailerLengthResponse';
+import { ShipperLoadModalResponse } from './shipperLoadModalResponse';
 import { TrailerTypeResponse } from './trailerTypeResponse';
 import { CompanyShortResponse } from './companyShortResponse';
-import { DispatchShortResponse } from './dispatchShortResponse';
+import { ShipperContactGroupResponse } from './shipperContactGroupResponse';
+import { BrokerLoadModalResponse } from './brokerLoadModalResponse';
 import { EnumValue } from './enumValue';
-import { ShipperShortResponse } from './shipperShortResponse';
 import { BrokerContactGroupResponse } from './brokerContactGroupResponse';
-import { BrokerShortResponse } from './brokerShortResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
+import { DispatchLoadModalResponse } from './dispatchLoadModalResponse';
 import { HazardousMaterialResponse } from './hazardousMaterialResponse';
 
 
@@ -27,15 +28,16 @@ export interface LoadModalResponse {
     templates?: Array<EnumValue> | null;
     dispatchers?: Array<CompanyUserShortResponse> | null;
     companies?: Array<CompanyShortResponse> | null;
-    dispatches?: Array<DispatchShortResponse> | null;
-    brokers?: Array<BrokerShortResponse> | null;
+    dispatches?: Array<DispatchLoadModalResponse> | null;
+    brokers?: Array<BrokerLoadModalResponse> | null;
     brokerContacts?: Array<BrokerContactGroupResponse> | null;
     loadTypes?: Array<EnumValue> | null;
     loadStopTypes?: Array<EnumValue> | null;
     loadItemUnits?: Array<EnumValue> | null;
     trailerLengths?: Array<TrailerLengthResponse> | null;
     years?: Array<number> | null;
-    shippers?: Array<ShipperShortResponse> | null;
+    shippers?: Array<ShipperLoadModalResponse> | null;
+    shipperContacts?: Array<ShipperContactGroupResponse> | null;
     truckTypes?: Array<TruckTypeResponse> | null;
     trailerTypes?: Array<TrailerTypeResponse> | null;
     doorTypes?: Array<EnumValue> | null;

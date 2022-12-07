@@ -16,7 +16,7 @@ import { CdlCardReviewResponse } from './cdlCardReviewResponse';
 export interface CdlCardFeedbackResponse { 
     id?: number;
     issueDate?: string;
-    expireDate?: string;
+    expirationDate?: string;
     reviewed?: boolean | null;
     approved?: boolean | null;
     applicantId?: number;
