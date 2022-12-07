@@ -60,6 +60,7 @@ export class TruckassistTableHeadComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        this.setColumnNameUpperCase();
         this.setVisibleColumns();
         this.getActiveTableData();
 
@@ -132,6 +133,15 @@ export class TruckassistTableHeadComponent
         }
     }
 
+    // Set Column Name To Upper Case
+    setColumnNameUpperCase() {
+        this.columns = this.columns.map((column) => {
+            column.name = column.name.toUpperCase();
+
+            return column;
+        });
+    }
+
     // Get Active Table Data
     getActiveTableData() {
         const td = this.tableData.find((t) => t.isActive);
@@ -158,10 +168,7 @@ export class TruckassistTableHeadComponent
             }
 
             if (!column.hidden) {
-                this.visibleColumns.push({
-                    ...column,
-                    name: column.name.toUpperCase(),
-                });
+                this.visibleColumns.push(column);
             }
         });
 
