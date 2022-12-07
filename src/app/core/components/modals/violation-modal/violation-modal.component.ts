@@ -15,7 +15,6 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { RoadsideService } from '../../safety/violation/state/roadside.service';
-import { NotificationService } from '../../../services/notification/notification.service';
 import {
     convertDateFromBackend,
     convertTimeFromBackend,
@@ -23,6 +22,7 @@ import {
 import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
 import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
+import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
 @Component({
     selector: 'app-violation-modal',
@@ -129,14 +129,43 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     public violationModalName: string = null;
 
+    public truckTypeConfig: ITaInput = {
+        name: 'Truck Type',
+        type: 'text',
+        label: 'Type',
+        isDisabled: true,
+        dropdownImageInput: {
+            withText: true,
+            svg: true,
+            image: false,
+            url: null,
+            template: 'truck',
+            class: null,
+        },
+    };
+
+    public trailerTypeConfig: ITaInput = {
+        name: 'Trailer Type',
+        type: 'text',
+        label: 'Type',
+        isDisabled: true,
+        dropdownImageInput: {
+            withText: true,
+            svg: true,
+            image: false,
+            url: null,
+            template: 'trailer',
+            class: null,
+        },
+    };
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
         private roadsideService: RoadsideService,
-        private accidentTService: AccidentTService,
-        private notificationService: NotificationService
+        private accidentTService: AccidentTService
     ) {}
 
     ngOnInit() {
@@ -371,6 +400,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RoadsideInspectionResponse) => {
+                    console.log('get violation id: ', res);
                     this.violationForm.patchValue({
                         report: res.report,
                         categoryReport: res.violationCategory?.name
@@ -480,6 +510,38 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     this.selectedViolationCustomer = res.broker;
 
                     this.violationModalName = res.report;
+
+                    this.truckTypeConfig = {
+                        ...this.truckTypeConfig,
+                        dropdownImageInput: {
+                            ...this.truckTypeConfig.dropdownImageInput,
+                            url: res.truck?.truckType?.logoName
+                                ? res.truck?.truckType?.logoName
+                                : null,
+                            class: res.truck?.truckType?.name
+                                ? res.truck?.truckType?.name
+                                      ?.trim()
+                                      .replace(' ', '')
+                                      .toLowerCase()
+                                : null,
+                        },
+                    };
+
+                    this.trailerTypeConfig = {
+                        ...this.trailerTypeConfig,
+                        dropdownImageInput: {
+                            ...this.trailerTypeConfig.dropdownImageInput,
+                            url: res.trailer?.trailerType?.logoName
+                                ? res.trailer?.trailerType?.logoName
+                                : null,
+                            class: res.trailer?.trailerType?.name
+                                ? res.trailer?.trailerType?.name
+                                      ?.trim()
+                                      .replace(' ', '')
+                                      .toLowerCase()
+                                : null,
+                        },
+                    };
 
                     if (res.violations.length) {
                         for (let i = 0; i < res.violations.length; i++) {
