@@ -113,7 +113,6 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
         this.dispatchTableList = this.dispatcherQuery.dispatchBoardListData$;
         this.dispatchBoardSmallList =
             this.dispatcherQuery.dispatchboardShortList$;
-        console.log(this.dispatchTableList);
 
         // this.dispatcherQuery.dispatchBoardListData$
         // .pipe(takeUntil(this.destroy$))

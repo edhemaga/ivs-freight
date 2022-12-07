@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ShipperContactShortResponse } from './shipperContactShortResponse';
 import { LoadStopItemResponse } from './loadStopItemResponse';
 import { EnumValue } from './enumValue';
 import { ShipperShortResponse } from './shipperShortResponse';
@@ -19,6 +20,7 @@ export interface LoadStopResponse {
     stopType?: EnumValue;
     stopOrder?: number;
     shipper?: ShipperShortResponse;
+    shipperContact?: ShipperContactShortResponse;
     dateFrom?: string;
     dateTo?: string | null;
     timeType?: EnumValue;

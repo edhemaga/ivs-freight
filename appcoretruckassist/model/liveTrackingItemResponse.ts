@@ -10,9 +10,9 @@
  * Do not edit the class manually.
  */
 import { GpsMotionStatus } from './gpsMotionStatus';
+import { GpsType } from './gpsType';
 import { LiveTrackingLoadStopResponse } from './liveTrackingLoadStopResponse';
 import { DispatchStatus } from './dispatchStatus';
-import { RepairUnitType } from './repairUnitType';
 
 
 export interface LiveTrackingItemResponse { 
@@ -26,11 +26,12 @@ export interface LiveTrackingItemResponse {
     headingString?: string | null;
     location?: string | null;
     motionStatus?: GpsMotionStatus;
+    type?: GpsType;
     updateTime?: string;
     dateString?: string | null;
     companyId?: number | null;
-    unitType?: RepairUnitType;
-    unitNumber?: string | null;
+    truckNumber?: string | null;
+    trailerNumber?: string | null;
     driver?: string | null;
     ignition?: boolean | null;
     loadNumber?: string | null;

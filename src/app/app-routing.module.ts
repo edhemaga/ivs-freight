@@ -89,6 +89,14 @@ const routes: Routes = [
         resolve: { dispatcher: DispatcherResolverService },
     },
     {
+        path: 'ads',
+        loadChildren: () =>
+            import('./core/components/dispatch/dispatch.module').then(
+                (m) => m.DispatchModule
+            ),
+        canActivate: [AuthGuard]
+    },
+    {
         path: 'settings',
         loadChildren: () =>
             import('./core/components/settings/settings.module').then(

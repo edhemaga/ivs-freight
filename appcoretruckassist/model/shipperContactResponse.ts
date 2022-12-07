@@ -15,6 +15,7 @@ import { DepartmentResponse } from './departmentResponse';
 export interface ShipperContactResponse { 
     id?: number;
     fullName?: string | null;
+    shipperId?: number;
     department?: DepartmentResponse;
     phone?: string | null;
     phoneExt?: string | null;

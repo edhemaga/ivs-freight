@@ -12,9 +12,8 @@
 
 
 export interface UpdatePreviousAddressReviewCommand { 
-    previousAddressId?: number;
+    id?: number;
     isPreviousAddressValid?: boolean;
     previousAddressMessage?: string | null;
-    id?: number;
 }
 

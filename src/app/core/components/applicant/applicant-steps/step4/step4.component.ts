@@ -155,7 +155,7 @@ export class Step4Component implements OnInit, OnDestroy {
                 (item) => {
                     return {
                         id: item.id,
-                        reviewId: item.accidentRecordReview?.id,
+                        reviewId: item /* .accidentRecordReview?.id */,
                         isEditingAccident: false,
                         location: item.location,
                         accidentState: item.location.stateShortName,
@@ -168,8 +168,8 @@ export class Step4Component implements OnInit, OnDestroy {
                         injuries: item.injuries,
                         vehicleType: item.vehicleType.name,
                         description: item.description,
-                        accidentRecordReview: item.accidentRecordReview
-                            ? item.accidentRecordReview
+                        accidentRecordReview: item /* .accidentRecordReview */
+                            ? item /* .accidentRecordReview */
                             : itemReviewPlaceholder,
                     };
                 }
@@ -177,7 +177,8 @@ export class Step4Component implements OnInit, OnDestroy {
 
             const filteredLastItemInAccidentArray = {
                 id: lastItemInAccidentArray.id,
-                reviewId: lastItemInAccidentArray.accidentRecordReview?.id,
+                reviewId:
+                    lastItemInAccidentArray /* .accidentRecordReview?.id */,
                 isEditingAccident: false,
                 location: lastItemInAccidentArray.location,
                 accidentState: lastItemInAccidentArray.location.stateShortName,
@@ -190,8 +191,8 @@ export class Step4Component implements OnInit, OnDestroy {
                 vehicleType: lastItemInAccidentArray.vehicleType.name,
                 description: lastItemInAccidentArray.description,
                 accidentRecordReview:
-                    lastItemInAccidentArray.accidentRecordReview
-                        ? lastItemInAccidentArray.accidentRecordReview
+                    lastItemInAccidentArray /* .accidentRecordReview */
+                        ? lastItemInAccidentArray /* .accidentRecordReview */
                         : itemReviewPlaceholder,
             };
 

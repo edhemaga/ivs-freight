@@ -13,7 +13,6 @@ import { AddressEntity } from './addressEntity';
 
 
 export interface CreatePreviousAddressCommand { 
-    id?: number | null;
     address?: AddressEntity;
 }
 

@@ -9,11 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UpdateAccidentItemReviewCommand } from './updateAccidentItemReviewCommand';
 import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateAccidentItemCommand { 
-    id?: number;
+    id?: number | null;
     location?: AddressEntity;
     date?: string;
     fatalities?: number | null;
@@ -21,5 +22,6 @@ export interface UpdateAccidentItemCommand {
     hazmatSpill?: boolean;
     vehicleTypeId?: number;
     description?: string | null;
+    accidentItemReview?: UpdateAccidentItemReviewCommand;
 }
 

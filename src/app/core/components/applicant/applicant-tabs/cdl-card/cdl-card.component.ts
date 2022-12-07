@@ -104,13 +104,13 @@ export class CdlCardComponent implements OnInit, OnDestroy {
 
     public patchStepValues(stepValues: CdlCardFeedbackResponse): void {
         console.log('stepValues', stepValues);
-        const { issueDate, expireDate, files, id } = stepValues;
+        const { issueDate, /* expireDate, */ files, id } = stepValues;
 
         this.cdlCardId = id;
 
         this.cdlCardForm.patchValue({
             fromDate: convertDateFromBackend(issueDate),
-            toDate: convertDateFromBackend(expireDate),
+            /*     toDate: convertDateFromBackend(expireDate), */
             files: JSON.stringify(files),
         });
 
