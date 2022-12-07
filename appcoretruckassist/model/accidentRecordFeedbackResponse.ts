@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccidentRecordItemResponse } from './accidentRecordItemResponse';
+import { AccidentItemResponse } from './accidentItemResponse';
 
 
 export interface AccidentRecordFeedbackResponse { 
@@ -17,7 +17,7 @@ export interface AccidentRecordFeedbackResponse {
     noAccidentInThreeYears?: boolean | null;
     reviewed?: boolean | null;
     approved?: boolean | null;
-    accidents?: Array<AccidentRecordItemResponse> | null;
+    accidents?: Array<AccidentItemResponse> | null;
     applicantId?: number;
 }
 
