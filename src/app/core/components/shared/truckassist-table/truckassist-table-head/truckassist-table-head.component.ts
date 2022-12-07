@@ -149,7 +149,7 @@ export class TruckassistTableHeadComponent
         this.actionsWidth = 0;
 
         this.columns.map((column, index) => {
-            if (!column.hasOwnProperty('isPined')) { 
+            if (!column.hasOwnProperty('isPined')) {
                 column.isPined = false;
             }
 
@@ -158,7 +158,10 @@ export class TruckassistTableHeadComponent
             }
 
             if (!column.hidden) {
-                this.visibleColumns.push(column);
+                this.visibleColumns.push({
+                    ...column,
+                    name: column.name.toUpperCase(),
+                });
             }
         });
 
