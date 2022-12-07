@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import {
     Component,
     OnDestroy,
@@ -34,6 +36,7 @@ import {
     CdlFeedbackResponse,
     CdlRestrictionResponse,
     CountryType,
+    CreateApplicantCdlInformationReviewCommand,
     EnumValue,
 } from 'appcoretruckassist/model/models';
 
@@ -55,7 +58,7 @@ export class Step3Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public permitForm: FormGroup;
     public licenseForm: FormGroup;
@@ -66,6 +69,7 @@ export class Step3Component implements OnInit, OnDestroy {
     public licenseArray: LicenseModel[] = [];
 
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
 
     public lastLicenseCard: any;
 
@@ -137,6 +141,7 @@ export class Step3Component implements OnInit, OnDestroy {
             displayAnnotationTextArea: false,
         },
     ];
+    public questionsHaveIncorrectFields: boolean = false;
     public hasIncorrectFields: boolean = false;
     public cardsWithIncorrectFields: boolean = false;
     public previousFormValuesOnReview: any;
@@ -196,8 +201,14 @@ export class Step3Component implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: CdlFeedbackResponse): void {
-        console.log('stepValues', stepValues);
         const { cdlDenied, cdlDeniedExplanation, licences } = stepValues;
+
+        const itemReviewPlaceholder = {
+            isLicenseValid: true,
+            licenseMessage: null,
+            isExpDateValid: true,
+            expDateMessage: null,
+        };
 
         const lastItemInLicenseArray = licences[licences.length - 1];
 
@@ -208,6 +219,8 @@ export class Step3Component implements OnInit, OnDestroy {
         const filteredLicenseArray = restOfTheItemsInLicenseArray.map(
             (item) => {
                 return {
+                    id: item.id,
+                    reviewId: item.licenseReview?.id,
                     isEditingLicense: false,
                     licenseNumber: item.licenseNumber,
                     country: item.country.name,
@@ -221,12 +234,14 @@ export class Step3Component implements OnInit, OnDestroy {
                     endorsments: item.cdlEndorsements,
                     licenseReview: item.licenseReview
                         ? item.licenseReview
-                        : null,
+                        : itemReviewPlaceholder,
                 };
             }
         );
 
         const filteredLastItemInLicenseArray = {
+            id: lastItemInLicenseArray.id,
+            reviewId: lastItemInLicenseArray.licenseReview?.id,
             isEditingLicense: false,
             licenseNumber: lastItemInLicenseArray.licenseNumber,
             country: lastItemInLicenseArray.country.name,
@@ -239,10 +254,19 @@ export class Step3Component implements OnInit, OnDestroy {
             endorsments: lastItemInLicenseArray.cdlEndorsements,
             licenseReview: lastItemInLicenseArray.licenseReview
                 ? lastItemInLicenseArray.licenseReview
-                : null,
+                : itemReviewPlaceholder,
         };
 
-        console.log('lastItemInLicenseArray', lastItemInLicenseArray);
+        this.lastLicenseCard = {
+            id: filteredLastItemInLicenseArray.id,
+            licenseNumber: filteredLastItemInLicenseArray.licenseNumber,
+            country: filteredLastItemInLicenseArray.country,
+            state: filteredLastItemInLicenseArray.state,
+            classType: filteredLastItemInLicenseArray.classType,
+            expDate: filteredLastItemInLicenseArray.expDate,
+            restrictions: filteredLastItemInLicenseArray.restrictions,
+            endorsments: filteredLastItemInLicenseArray.endorsments,
+        };
 
         this.licenseArray = JSON.parse(JSON.stringify(filteredLicenseArray));
 
@@ -290,6 +314,123 @@ export class Step3Component implements OnInit, OnDestroy {
                 this.permitRadios[1].checked = true;
             }
         }, 50);
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            if (stepValues.cdlInformationReview) {
+                const {
+                    isCdlDeniedExplanationValid,
+                    cdlDeniedExplanationMessage,
+                } = stepValues.cdlInformationReview;
+
+                this.stepHasReviewValues = true;
+
+                this.openAnnotationArray[14] = {
+                    ...this.openAnnotationArray[14],
+                    lineInputs: [!isCdlDeniedExplanationValid],
+                    displayAnnotationButton:
+                        !isCdlDeniedExplanationValid &&
+                        !cdlDeniedExplanationMessage
+                            ? true
+                            : false,
+                    displayAnnotationTextArea: cdlDeniedExplanationMessage
+                        ? true
+                        : false,
+                };
+
+                const inputFieldsArray = JSON.stringify(
+                    this.openAnnotationArray
+                        .filter((item) => Object.keys(item).length !== 0)
+                        .map((item) => item.lineInputs)
+                );
+
+                if (inputFieldsArray.includes('true')) {
+                    this.questionsHaveIncorrectFields = true;
+                } else {
+                    this.questionsHaveIncorrectFields = false;
+                }
+
+                this.permitForm.patchValue({
+                    fifthRowReview: cdlDeniedExplanationMessage,
+                });
+            }
+
+            const licenseItemsReview = licences.map(
+                (item) => item.licenseReview
+            );
+
+            if (licenseItemsReview[0]) {
+                this.stepHasReviewValues = true;
+
+                licenseItemsReview.pop();
+
+                for (let i = 0; i < licenseItemsReview.length; i++) {
+                    const firstEmptyObjectInList =
+                        this.openAnnotationArray.find(
+                            (item) => Object.keys(item).length === 0
+                        );
+
+                    const indexOfFirstEmptyObjectInList =
+                        this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        );
+
+                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                        lineIndex: this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        ),
+                        lineInputs: [false],
+                        displayAnnotationButton: false,
+                        displayAnnotationTextArea: false,
+                    };
+
+                    const licenseItemReview: any = {
+                        ...licenseItemsReview[i],
+                    };
+
+                    delete licenseItemReview.isPrimary;
+
+                    let hasIncorrectValue: boolean =
+                        Object.values(licenseItemReview).includes(false);
+
+                    const incorrectMessage = licenseItemReview?.commonMessage;
+
+                    if (
+                        hasIncorrectValue === null ||
+                        hasIncorrectValue == undefined
+                    ) {
+                        hasIncorrectValue = false;
+                    }
+
+                    this.openAnnotationArray[i] = {
+                        ...this.openAnnotationArray[i],
+                        lineInputs: [hasIncorrectValue],
+                        displayAnnotationButton:
+                            hasIncorrectValue && !incorrectMessage
+                                ? true
+                                : false,
+                        displayAnnotationTextArea: incorrectMessage
+                            ? true
+                            : false,
+                    };
+
+                    const inputFieldsArray = JSON.stringify(
+                        this.openAnnotationArray
+                            .filter((item) => Object.keys(item).length !== 0)
+                            .map((item) => item.lineInputs)
+                    );
+
+                    if (inputFieldsArray.includes('true')) {
+                        this.cardsWithIncorrectFields = true;
+                    } else {
+                        this.cardsWithIncorrectFields = false;
+                    }
+
+                    this.licenseForm
+                        .get(`cardReview${i + 1}`)
+                        .patchValue(incorrectMessage ? incorrectMessage : null);
+                }
+            }
+        }
     }
 
     public handleInputSelect(event: any, action: string): void {
@@ -366,6 +507,15 @@ export class Step3Component implements OnInit, OnDestroy {
     public getLicenseFormValues(event: any): void {
         this.licenseArray = [...this.licenseArray, event];
 
+        if (this.lastLicenseCard.id) {
+            this.licenseArray[this.licenseArray.length - 1].id =
+                this.lastLicenseCard.id;
+
+            this.lastLicenseCard.id = null;
+        } else {
+            this.licenseArray[this.licenseArray.length - 1].id = null;
+        }
+
         this.helperIndex = 2;
 
         const firstEmptyObjectInList = this.openAnnotationArray.find(
@@ -398,7 +548,10 @@ export class Step3Component implements OnInit, OnDestroy {
         this.isEditing = false;
         this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
 
-        this.licenseArray[this.selectedLicenseIndex] = event;
+        this.licenseArray[this.selectedLicenseIndex] = {
+            ...this.licenseArray[this.selectedLicenseIndex],
+            ...event,
+        };
 
         this.helperIndex = 2;
         this.selectedLicenseIndex = -1;
@@ -417,7 +570,10 @@ export class Step3Component implements OnInit, OnDestroy {
     }
 
     public onGetLastFormValues(event: any): void {
-        this.lastLicenseCard = event;
+        this.lastLicenseCard = {
+            ...this.lastLicenseCard,
+            ...event,
+        };
     }
 
     public onHasIncorrectFields(event: any): void {
@@ -450,9 +606,14 @@ export class Step3Component implements OnInit, OnDestroy {
         );
 
         if (hasInvalidFields.includes('false')) {
-            this.openAnnotationArray[
-                this.selectedLicenseIndex
-            ].displayAnnotationButton = true;
+            if (
+                !this.openAnnotationArray[this.selectedLicenseIndex]
+                    .displayAnnotationTextArea
+            ) {
+                this.openAnnotationArray[
+                    this.selectedLicenseIndex
+                ].displayAnnotationButton = true;
+            }
 
             this.openAnnotationArray[this.selectedLicenseIndex].lineInputs[0] =
                 true;
@@ -469,6 +630,12 @@ export class Step3Component implements OnInit, OnDestroy {
         this.helperIndex = 2;
         this.selectedLicenseIndex = -1;
 
+        this.previousFormValuesOnReview.licenseReview = {
+            ...this.previousFormValuesOnReview.licenseReview,
+            licenseMessage: this.lastLicenseCard.firstRowReview,
+            expDateMessage: this.lastLicenseCard.secondRowReview,
+        };
+
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
@@ -479,6 +646,12 @@ export class Step3Component implements OnInit, OnDestroy {
 
         this.helperIndex = 2;
         this.selectedLicenseIndex = -1;
+
+        this.previousFormValuesOnReview.licenseReview = {
+            ...this.previousFormValuesOnReview.licenseReview,
+            licenseMessage: this.lastLicenseCard.firstRowReview,
+            expDateMessage: this.lastLicenseCard.secondRowReview,
+        };
 
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
@@ -523,8 +696,9 @@ export class Step3Component implements OnInit, OnDestroy {
         );
 
         if (type === 'card') {
+            selectedInputsLine.lineInputs[inputIndex] = false;
+
             if (selectedInputsLine.displayAnnotationButton) {
-                selectedInputsLine.lineInputs[inputIndex] = false;
                 selectedInputsLine.displayAnnotationButton = false;
             }
 
@@ -532,6 +706,8 @@ export class Step3Component implements OnInit, OnDestroy {
                 selectedInputsLine.displayAnnotationButton = false;
                 selectedInputsLine.displayAnnotationTextArea = false;
             }
+
+            this.licenseForm.get(`cardReview${lineIndex + 1}`).patchValue(null);
 
             Object.keys(this.licenseArray[lineIndex].licenseReview).forEach(
                 (key) => {
@@ -541,6 +717,10 @@ export class Step3Component implements OnInit, OnDestroy {
 
             const inputFieldsArray = JSON.stringify(
                 this.openAnnotationArray
+                    .filter(
+                        (_, index) =>
+                            index !== this.openAnnotationArray.length - 1
+                    )
                     .filter((item) => Object.keys(item).length !== 0)
                     .map((item) => item.lineInputs)
             );
@@ -576,6 +756,18 @@ export class Step3Component implements OnInit, OnDestroy {
                     this.permitForm.get('fifthRowReview').patchValue(null);
                 }
             }
+        }
+
+        const inputFieldsArray = JSON.stringify(
+            this.openAnnotationArray
+                .filter((item) => Object.keys(item).length !== 0)
+                .map((item) => item.lineInputs)
+        );
+
+        if (inputFieldsArray.includes('true')) {
+            this.questionsHaveIncorrectFields = true;
+        } else {
+            this.questionsHaveIncorrectFields = false;
         }
     }
 
@@ -674,6 +866,10 @@ export class Step3Component implements OnInit, OnDestroy {
                 expDate: convertDateToBackend(item.expDate),
                 restrictions: item.restrictions.map((item) => item.id),
                 endorsements: item.endorsments.map((item) => item.id),
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: item.id ? item.id : null,
+                }),
             };
         });
 
@@ -699,6 +895,10 @@ export class Step3Component implements OnInit, OnDestroy {
             endorsements: this.lastLicenseCard.endorsments.map(
                 (item) => item.id
             ),
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                id: this.lastLicenseCard.id ? this.lastLicenseCard.id : null,
+            }),
         };
 
         const saveData: any = {
@@ -707,8 +907,6 @@ export class Step3Component implements OnInit, OnDestroy {
             cdlDeniedExplanation: permitExplain,
             licences: [...filteredLicenseArray, filteredLastLicenseCard],
         };
-
-        console.log('saveData', saveData);
 
         const storeLicenceItems = saveData.licences.map((item) => {
             const filteredUsStateType = this.usStates.find(
@@ -722,7 +920,7 @@ export class Step3Component implements OnInit, OnDestroy {
                   );
 
             return {
-                licenseNumber: item.licenseNumber,
+                ...item,
                 country: this.countryTypes.find(
                     (countryItem) => countryItem.name === item.country
                 ),
@@ -799,12 +997,34 @@ export class Step3Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
+        const licenseArrayReview = this.licenseArray.map((item, index) => {
+            const itemReview = item.licenseReview;
+
+            return {
+                ...(this.stepHasReviewValues && {
+                    id: item.reviewId,
+                }),
+                applicantCdlId: item.id,
+                isPrimary: false,
+                commonMessage: this.licenseForm.get(`cardReview${index + 1}`)
+                    .value,
+                isLicenseValid: itemReview ? itemReview.isLicenseValid : true,
+                licenseMessage: null,
+                isExpDateValid: itemReview ? itemReview.isExpDateValid : true,
+                expDateMessage: null,
+            };
+        });
+
         const lastItemReview = this.previousFormValuesOnReview.licenseReview;
 
+        const lastItemReviewId = this.previousFormValuesOnReview.reviewId;
         const lastItemId = this.previousFormValuesOnReview.id;
 
         const lastReviewedItemInLicenseArray = {
-            itemId: lastItemId,
+            ...(this.stepHasReviewValues && {
+                id: lastItemReviewId,
+            }),
+            applicantCdlId: lastItemId,
             isPrimary: true,
             commonMessage: null,
             isLicenseValid: lastItemReview
@@ -817,39 +1037,101 @@ export class Step3Component implements OnInit, OnDestroy {
             expDateMessage: this.lastLicenseCard.secondRowReview,
         };
 
-        const saveData: any = {
+        const saveData: CreateApplicantCdlInformationReviewCommand = {
             applicantId: this.applicantId,
             isCdlDeniedExplanationValid:
                 !this.openAnnotationArray[14].lineInputs[0],
             cdlDeniedExplanationMessage:
                 this.permitForm.get('fifthRowReview').value,
-            licenceReviews: [lastReviewedItemInLicenseArray],
+            licenceReviews: [
+                ...licenseArrayReview,
+                lastReviewedItemInLicenseArray,
+            ],
         };
 
-        console.log('store', this.applicantStore);
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createCdlInformationReview(
+                    saveData
+                );
+            }
 
-        console.log('save', saveData);
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateCdlInformationReview(
+                    saveData
+                );
+            }
+        };
 
-        this.applicantActionsService
-            .createCdlInformationReview(saveData)
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
                     this.router.navigate([
-                        `/application/${this.applicantId}/5`,
+                        `/application/${this.applicantId}/4`,
                     ]);
 
-                    /*   this.applicantStore.update(store => {
-          return {
-            ...store,
-            applicant: {
-              ...store.applicant,
-              cdlInformation : {
-                ...store.applicant.cdlInformation,
-              }
-            }
-          }
-        }) */
+                    const { licenceReviews, ...stepValuesReview } = saveData;
+
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                cdlInformation: {
+                                    ...store.applicant.cdlInformation,
+                                    cdlInformationReview: {
+                                        ...store.applicant.education
+                                            .cdlInformationReview,
+                                        ...stepValuesReview,
+                                    },
+                                    licences:
+                                        store.applicant.cdlInformation.licences.map(
+                                            (item, index) => {
+                                                if (
+                                                    index ===
+                                                    store.applicant
+                                                        .cdlInformation.licences
+                                                        .length -
+                                                        1
+                                                ) {
+                                                    return {
+                                                        ...item,
+                                                        licenseReview: {
+                                                            ...item.licenseReview,
+                                                            isLicenseValid:
+                                                                lastReviewedItemInLicenseArray.isLicenseValid,
+                                                            licenseMessage:
+                                                                lastReviewedItemInLicenseArray.licenseMessage,
+                                                            isExpDateValid:
+                                                                lastReviewedItemInLicenseArray.isExpDateValid,
+                                                            expDateMessage:
+                                                                lastReviewedItemInLicenseArray.expDateMessage,
+                                                        },
+                                                    };
+                                                }
+
+                                                return {
+                                                    ...item,
+                                                    licenseReview: {
+                                                        ...item.licenseReview,
+                                                        ...licenseArrayReview[
+                                                            index
+                                                        ],
+                                                    },
+                                                };
+                                            }
+                                        ),
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);

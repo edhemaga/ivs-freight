@@ -249,6 +249,83 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                                 };
                             }
 
+                            if (index === 2) {
+                                const cdlInformationReview =
+                                    res?.cdlInformation?.cdlInformationReview;
+
+                                const licenseItems =
+                                    res?.cdlInformation?.licences;
+
+                                const licensetemsReview = licenseItems?.map(
+                                    (item) => item?.licenseReview
+                                );
+
+                                let hasIncorrectValue: boolean;
+                                let cardHasIncorrectValue: boolean;
+                                let filteredLicenseItemsReview = [];
+
+                                if (cdlInformationReview) {
+                                    hasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            cdlInformationReview
+                                        );
+                                }
+
+                                if (licensetemsReview) {
+                                    if (licensetemsReview[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i < licensetemsReview?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                licensetemsReview[i];
+
+                                            delete filteredItem.isPrimary;
+
+                                            filteredLicenseItemsReview = [
+                                                ...filteredLicenseItemsReview,
+                                                filteredItem,
+                                            ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            cardHasIncorrectValue = true;
+                                        } else {
+                                            cardHasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        licensetemsReview &&
+                                        licensetemsReview[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer:
+                                        hasIncorrectValue ||
+                                        cardHasIncorrectValue,
+                                };
+                            }
+
                             if (index === 4) {
                                 const trafficViolationItems =
                                     res?.trafficViolation

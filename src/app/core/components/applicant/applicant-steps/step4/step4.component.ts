@@ -35,7 +35,7 @@ import {
 export class Step4Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public accidentForm: FormGroup;
 
@@ -177,8 +177,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
             const filteredLastItemInAccidentArray = {
                 id: lastItemInAccidentArray.id,
-                reviewId:
-                lastItemInAccidentArray.accidentRecordReview?.id,
+                reviewId: lastItemInAccidentArray.accidentRecordReview?.id,
                 isEditingAccident: false,
                 location: lastItemInAccidentArray.location,
                 accidentState: lastItemInAccidentArray.location.stateShortName,
@@ -473,6 +472,12 @@ export class Step4Component implements OnInit, OnDestroy {
         this.helperIndex = 2;
         this.selectedAccidentIndex = -1;
 
+        this.previousFormValuesOnReview.accidentRecordReview = {
+            ...this.previousFormValuesOnReview.accidentRecordReview,
+            locationDateMessage: this.lastAccidentCard.firstRowReview,
+            descriptionMessage: this.lastAccidentCard.secondRowReview,
+        };
+
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
@@ -755,11 +760,11 @@ export class Step4Component implements OnInit, OnDestroy {
         const lastItemReview =
             this.previousFormValuesOnReview.accidentRecordReview;
 
-            const lastItemReviewId = this.previousFormValuesOnReview.reviewId;
+        const lastItemReviewId = this.previousFormValuesOnReview.reviewId;
         const lastItemId = this.previousFormValuesOnReview.id;
 
         const lastReviewedItemInAccidentArray = {
-              ...(this.stepHasReviewValues && {
+            ...(this.stepHasReviewValues && {
                 id: lastItemReviewId,
             }),
             accidentItemId: lastItemId,
@@ -783,7 +788,6 @@ export class Step4Component implements OnInit, OnDestroy {
                 lastReviewedItemInAccidentArray,
             ],
         };
-
 
         const selectMatchingBackendMethod = () => {
             if (

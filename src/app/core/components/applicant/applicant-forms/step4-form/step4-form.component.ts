@@ -369,6 +369,7 @@ export class Step4FormComponent
                     accidentState,
                     isEditingAccident,
                     accidentRecordReview,
+                    id,
                     ...previousFormValues
                 } = this.formValuesToPatch;
 

@@ -75,7 +75,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public subscription: Subscription;
 
@@ -382,7 +382,6 @@ export class Step6Component implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: EducationFeedbackResponse): void {
-        console.log('stepValues', stepValues);
         const {
             highestGrade,
             collegeGrade,
@@ -1549,8 +1548,6 @@ export class Step6Component implements OnInit, OnDestroy {
             ],
         };
 
-        console.log('saveData', saveData);
-
         const selectMatchingBackendMethod = () => {
             if (
                 this.selectedMode === SelectedMode.APPLICANT &&
@@ -1684,8 +1681,6 @@ export class Step6Component implements OnInit, OnDestroy {
             ],
         };
 
-        console.log('saveData', saveData);
-
         const selectMatchingBackendMethod = () => {
             if (
                 this.selectedMode === SelectedMode.REVIEW &&
@@ -1724,7 +1719,11 @@ export class Step6Component implements OnInit, OnDestroy {
                                 ...store.applicant,
                                 education: {
                                     ...store.applicant.education,
-                                    educationReview: stepValuesReview,
+                                    educationReview: {
+                                        ...store.applicant.education
+                                            .educationReview,
+                                        ...stepValuesReview,
+                                    },
                                     emergencyContacts:
                                         store.applicant.education.emergencyContacts.map(
                                             (item, index) => {

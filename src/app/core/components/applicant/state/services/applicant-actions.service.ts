@@ -18,11 +18,9 @@ import {
     CreateEducationCommand,
     CreateTrafficViolationCommand,
     CreateAccidentRecordCommand,
-    CreateApplicantCdlCommand,
     CreateWorkExperienceCommand,
     CreatePersonalInfoReviewCommand,
     CreateWorkExperienceReviewCommand,
-    CreateApplicantCdlReviewCommand,
     CreateAccidentRecordReviewCommand,
     CreateTrafficViolationReviewCommand,
     CreateEducationReviewCommand,
@@ -44,7 +42,6 @@ import {
     UpdateEducationCommand,
     UpdateTrafficViolationCommand,
     UpdateAccidentRecordCommand,
-    UpdateApplicantCdlCommand,
     CreateWithUploadsResponse,
     UpdateWorkExperienceCommand,
     UpdatePspAuthCommand,
@@ -56,6 +53,10 @@ import {
     UpdateEducationReviewCommand,
     UpdateTrafficViolationReviewCommand,
     UpdateAccidentRecordReviewCommand,
+    CreateApplicantCdlInformationCommand,
+    UpdateApplicantCdlInformationCommand,
+    CreateApplicantCdlInformationReviewCommand,
+    UpdateApplicantCdlInformationReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -88,9 +89,9 @@ export class ApplicantActionsService {
     }
 
     public createCdlInformation(
-        data: CreateApplicantCdlCommand
+        data: CreateApplicantCdlInformationCommand
     ): Observable<object> {
-        return this.applicantService.apiApplicantCdlPost(/* data */);
+        return this.applicantService.apiApplicantCdlPost(data);
     }
 
     public createAccidentRecord(
@@ -164,9 +165,9 @@ export class ApplicantActionsService {
     }
 
     public updateCdlInformation(
-        data: UpdateApplicantCdlCommand
+        data: UpdateApplicantCdlInformationCommand
     ): Observable<object> {
-        return this.applicantService.apiApplicantCdlPut(/* data */);
+        return this.applicantService.apiApplicantCdlPut(data);
     }
 
     public updateAccidentRecord(
@@ -272,9 +273,9 @@ export class ApplicantActionsService {
     }
 
     public createCdlInformationReview(
-        data: CreateApplicantCdlReviewCommand
+        data: CreateApplicantCdlInformationReviewCommand
     ): Observable<object> {
-        return this.applicantService.apiApplicantCdlReviewPost(/* data */);
+        return this.applicantService.apiApplicantCdlReviewPost(data);
     }
 
     public createAccidentRecordReview(
@@ -365,6 +366,12 @@ export class ApplicantActionsService {
         data: UpdatePersonalInfoReviewCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantPersonalReviewPut(data);
+    }
+
+    public updateCdlInformationReview(
+        data: UpdateApplicantCdlInformationReviewCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantCdlReviewPut(data);
     }
 
     public updateAccidentRecordReview(

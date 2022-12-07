@@ -69,7 +69,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public personalInfoRadios: any;
 
@@ -96,6 +96,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     public applicantId: number;
     public personalInfoId: number | null = null;
     public previousAddressesId: number[];
+    public previousAddressesReviewId: number[] = [];
 
     public personalInfoForm: FormGroup;
 
@@ -716,6 +717,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 if (this.selectedMode === SelectedMode.REVIEW) {
                     const selectedPreviousAddressReview =
                         previousAddresses[i].previousAddressReview;
+
+                    this.previousAddressesReviewId = [
+                        ...this.previousAddressesReviewId,
+                        selectedPreviousAddressReview.id,
+                    ];
 
                     let isPreviousAddressValid: any = true;
                     let previousAddressMessage: any = null;
@@ -1752,21 +1758,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
 
-        this.selectedAddresses = this.selectedAddresses.filter(
-            (item) => item.address
-        );
+        this.selectedAddresses = this.selectedAddresses
+            .filter((item) => item.address)
+            .map((item, index) => {
+                return {
+                    ...item,
+                    addressUnit: previousAddresses[index]
+                        ? previousAddresses[index].addressUnit
+                        : null,
+                    county: null,
+                };
+            });
 
-        this.selectedAddresses = this.selectedAddresses.map((item, index) => {
-            return {
-                ...item,
-                addressUnit: previousAddresses[index]
-                    ? previousAddresses[index].addressUnit
-                    : null,
-                county: null,
-            };
-        });
-
-        console.log('selected', this.selectedAddresses);
+        const stepPreviousAddresses = this.stepValues?.previousAddresses;
 
         const saveData: UpdatePersonalInfoCommand = {
             ...personalInfoForm,
@@ -1778,10 +1782,21 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             previousAddresses:
                 this.selectedAddresses.length <= 1
                     ? []
-                    : this.selectedAddresses.filter(
-                          (item, index) =>
-                              index !== this.selectedAddresses.length - 1
-                      ),
+                    : this.selectedAddresses
+                          .filter(
+                              (_, index) =>
+                                  index !== this.selectedAddresses.length - 1
+                          )
+                          .map((item, index) => {
+                              return {
+                                  id: stepPreviousAddresses[index]?.id
+                                      ? stepPreviousAddresses[index]?.id
+                                      : null,
+                                  address: {
+                                      ...item,
+                                  },
+                              };
+                          }),
             usCitizen,
             legalWork,
             anotherName,
@@ -1796,8 +1811,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             drunkDrivingDescription: drunkDrivingExplain,
         };
 
-        const stepPreviousAddresses = this.stepValues?.previousAddresses;
-
         const storePreviousAddresses = this.selectedAddresses
             .filter((_, index) => index !== this.selectedAddresses.length - 1)
             .map((item, index) => {
@@ -1808,8 +1821,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         stepPreviousAddresses[index]?.previousAddressReview,
                 };
             });
-
-        console.log('saveData', saveData);
 
         this.applicantActionsService
             .updatePersonalInfo(saveData)
@@ -1902,28 +1913,33 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             questionReview7,
         } = this.personalInfoForm.value;
 
+        console.log(this.previousAddresses.controls);
+
         const previousAddresses =
             this.previousAddresses.controls.length === 1
                 ? []
-                : this.previousAddresses.controls.map((item, index) => {
-                      if (
-                          index ===
-                          this.previousAddresses.controls.length - 1
-                      ) {
-                          return;
-                      }
-
-                      return {
-                          previousAddressId: this.previousAddressesId[index],
-                          isPreviousAddressValid:
-                              !this.openAnnotationArray[index + 2]
-                                  .lineInputs[0],
-                          previousAddressMessage:
-                              this.previousAddresses.controls[index]?.get(
-                                  `cardReview${index + 1}`
-                              ).value,
-                      };
-                  });
+                : this.previousAddresses.controls
+                      .filter(
+                          (_, index) =>
+                              index !==
+                              this.previousAddresses.controls.length - 1
+                      )
+                      .map((_, index) => {
+                          return {
+                              ...(this.stepHasReviewValues && {
+                                  id: this.previousAddressesReviewId[index],
+                              }),
+                              previousAddressId:
+                                  this.previousAddressesId[index],
+                              isPreviousAddressValid:
+                                  !this.openAnnotationArray[index + 2]
+                                      .lineInputs[0],
+                              previousAddressMessage:
+                                  this.previousAddresses.controls[index]?.get(
+                                      `cardReview${index + 1}`
+                                  ).value,
+                          };
+                      });
 
         const saveData: any = {
             applicantId: this.applicantId,

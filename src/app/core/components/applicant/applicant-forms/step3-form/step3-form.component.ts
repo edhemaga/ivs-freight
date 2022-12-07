@@ -115,18 +115,6 @@ export class Step3FormComponent
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
         },
-        {
-            lineIndex: 12,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 13,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
     ];
     public isCardReviewedIncorrect: boolean = false;
 
@@ -229,17 +217,48 @@ export class Step3FormComponent
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
             if (formValue.licenseReview) {
-                const { isLicenseValid, isExpDateValid } =
-                    formValue.licenseReview;
+                const {
+                    isLicenseValid,
+                    licenseMessage,
+                    isExpDateValid,
+                    expDateMessage,
+                } = formValue.licenseReview;
 
                 this.openAnnotationArray[10] = {
                     ...this.openAnnotationArray[10],
                     lineInputs: [!isLicenseValid, false],
+                    displayAnnotationButton:
+                        !isLicenseValid && !licenseMessage ? true : false,
+                    displayAnnotationTextArea: licenseMessage ? true : false,
                 };
                 this.openAnnotationArray[11] = {
                     ...this.openAnnotationArray[11],
                     lineInputs: [false, false, !isExpDateValid],
+                    displayAnnotationButton:
+                        !isExpDateValid && !expDateMessage ? true : false,
+                    displayAnnotationTextArea: expDateMessage ? true : false,
                 };
+
+                const inputFieldsArray = JSON.stringify(
+                    this.openAnnotationArray
+                        .filter((item) => Object.keys(item).length !== 0)
+                        .map((item) => item.lineInputs)
+                );
+
+                if (inputFieldsArray.includes('true')) {
+                    this.hasIncorrectFieldsEmitter.emit(true);
+
+                    this.isCardReviewedIncorrect = true;
+                } else {
+                    this.hasIncorrectFieldsEmitter.emit(false);
+
+                    this.isCardReviewedIncorrect = false;
+                }
+
+                this.licenseForm.patchValue({
+                    firstRowReview: licenseMessage,
+                    secondRowReview: expDateMessage,
+                });
             }
         }
 
@@ -304,6 +323,7 @@ export class Step3FormComponent
                     isEditingLicense,
                     licenseReview,
                     expDate,
+                    id,
                     ...previousFormValues
                 } = this.formValuesToPatch;
 
@@ -323,7 +343,6 @@ export class Step3FormComponent
 
                 previousFormValues.licenseNumber =
                     previousFormValues.licenseNumber?.toUpperCase();
-
                 newFormValues.licenseNumber =
                     newFormValues.licenseNumber?.toUpperCase();
 
@@ -331,14 +350,18 @@ export class Step3FormComponent
                     previousFormValues.restrictions?.map((item) => item.id)
                 );
                 newFormValues.restrictions = JSON.stringify(
-                    restrictionsSubscription?.map((item) => item.id)
+                    restrictionsSubscription
+                        ? restrictionsSubscription?.map((item) => item.id)
+                        : []
                 );
 
                 previousFormValues.endorsments = JSON.stringify(
                     previousFormValues.endorsments?.map((item) => item.id)
                 );
                 newFormValues.endorsments = JSON.stringify(
-                    endorsmentsSubscription?.map((item) => item.id)
+                    endorsmentsSubscription
+                        ? endorsmentsSubscription?.map((item) => item.id)
+                        : []
                 );
 
                 if (isFormValueEqual(previousFormValues, newFormValues)) {
@@ -395,7 +418,6 @@ export class Step3FormComponent
                     .patchValue(this.selectedEndorsments);
 
                 break;
-
             default:
                 break;
         }
@@ -432,7 +454,11 @@ export class Step3FormComponent
         this.selectedEndorsments = [];
         this.selectedRestrictions = [];
 
+        console.log('prije', this.licenseForm.value);
+
         this.formService.resetForm(this.licenseForm);
+
+        console.log('poslije', this.licenseForm.value);
     }
 
     public onCancelEditLicense(): void {
@@ -683,20 +709,6 @@ export class Step3FormComponent
         );
 
         this.isCardReviewedIncorrect = false;
-
-        /*  this.restrictionsList = data.restrictions.map((item) => {
-          return {
-            ...item,
-            name: item.code.concat(' ', '-').concat(' ', item.description),
-          };
-        });
-        this.endorsmentsList = data.endorsements.map((item) => {
-          return {
-            ...item,
-            name: item.code.concat(' ', '-').concat(' ', item.description),
-          };
-        });
-      }); */
     }
 
     ngOnDestroy(): void {
