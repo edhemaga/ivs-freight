@@ -149,7 +149,7 @@ export class TruckassistTableHeadComponent
         this.actionsWidth = 0;
 
         this.columns.map((column, index) => {
-            if (!column.hasOwnProperty('isPined')) {
+            if (!column.hasOwnProperty('isPined')) { 
                 column.isPined = false;
             }
 
