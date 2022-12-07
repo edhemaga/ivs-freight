@@ -57,7 +57,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public drugTestRadios: any;
 
@@ -758,11 +758,6 @@ export class Step8Component implements OnInit, OnDestroy {
             return;
         }
 
-        if (this.drugTestForm.invalid) {
-            this.inputService.markInvalid(this.drugTestForm);
-            return;
-        }
-
         const {
             motorCarrier,
             phone,
@@ -895,8 +890,6 @@ export class Step8Component implements OnInit, OnDestroy {
             isSapAddressUnitValid: !this.openAnnotationArray[3].lineInputs[1],
             sapAddressMessage: fourthRowReview,
         };
-
-        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

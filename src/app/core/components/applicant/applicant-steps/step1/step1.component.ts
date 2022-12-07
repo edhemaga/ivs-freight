@@ -462,7 +462,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public patchStepValues(stepValues: PersonalInfoFeedbackResponse): void {
-        console.log('stepValues', stepValues);
         const {
             isAgreed,
             firstName,
@@ -1913,8 +1912,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             questionReview7,
         } = this.personalInfoForm.value;
 
-        console.log(this.previousAddresses.controls);
-
         const previousAddresses =
             this.previousAddresses.controls.length === 1
                 ? []
@@ -1985,15 +1982,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             previousAddressReviews: [...previousAddresses],
         };
 
-        console.log('saveData', saveData);
-
         const selectMatchingBackendMethod = () => {
             if (
                 this.selectedMode === SelectedMode.REVIEW &&
                 !this.stepHasReviewValues
             ) {
-                console.log('POST');
-
                 return this.applicantActionsService.createPersonalInfoReview(
                     saveData
                 );
@@ -2003,7 +1996,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 this.selectedMode === SelectedMode.REVIEW &&
                 this.stepHasReviewValues
             ) {
-                console.log('PUT');
                 return this.applicantActionsService.updatePersonalInfoReview(
                     saveData
                 );
