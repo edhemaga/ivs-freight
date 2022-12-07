@@ -46,7 +46,6 @@ export class MapListCardComponent implements OnInit, OnDestroy {
         if ( this.mapsService.selectedMarkerId ) {
             this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
             this.item.isSelected = this.mapsService.selectedMarkerId == this.item.id;
-            console.log('selected card', this.mapsService.selectedMarkerId, this.item.id);
         }
 
         // this.mapsService.selectedMarkerChange

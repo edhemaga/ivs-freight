@@ -53,6 +53,7 @@ export class MapListComponent
     activeSortType: any = {};
     searchIsActive: boolean = false;
     searchText: string = '';
+    searchLoading: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -99,6 +100,12 @@ export class MapListComponent
                         card.addRemoveSelection(true);
                     }
                 });
+            });
+
+        this.mapsService.searchLoadingChanged
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((loading) => {
+                this.searchLoading = loading;
             });
 
         this.setVisibleColumns();
@@ -383,11 +390,15 @@ export class MapListComponent
 
             this.highlightSearchedText();
 
+            this.mapsService.searchLoadingChanged.next(true);
+
             this.mapsService.searchTextChanged(this.searchText);
         } else if (this.searchIsActive && this.searchText?.length < 3) {
             this.searchIsActive = false;
 
             this.highlightSearchedText();
+
+            this.mapsService.searchLoadingChanged.next(true);
 
             this.mapsService.searchTextChanged('');
         }

@@ -521,6 +521,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     mapListData.changedSort = changedSearchOrSort;
 
                     this.updateMapList.emit(mapListData);
+                    this.mapsService.searchLoadingChanged.next(false);
                 });
         } else if (this.mapType == 'shipper') {
             this.shipperService
@@ -631,6 +632,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     mapListData.changedSort = changedSearchOrSort;
 
                     this.updateMapList.emit(mapListData);
+                    this.mapsService.searchLoadingChanged.next(false);
                 });
         } else if (this.mapType == 'fuelStop') {
             this.fuelStopService
@@ -750,6 +752,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     mapListData.changedSort = changedSearchOrSort;
 
                     this.updateMapList.emit(mapListData);
+                    this.mapsService.searchLoadingChanged.next(false);
                 });
         }
     }

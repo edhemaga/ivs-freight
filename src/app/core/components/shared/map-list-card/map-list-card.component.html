@@ -22,6 +22,7 @@
             <div class="d-flex">
                 <svg-icon
                     class="favorite-svg"
+                    [ngClass]="{ 'active': item?.pinned }"
                     src="assets/svg/detail-cards/favorite.svg"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     *ngIf="

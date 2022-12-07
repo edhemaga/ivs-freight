@@ -21,7 +21,14 @@
                         type: 'text',
                         label: 'Search',
                         placeholderIcon: 'ic_search',
-                        placeholderInsteadOfLabel: true
+                        placeholderInsteadOfLabel: true,
+                        blackInput: searchText?.length < 3 ? true : false,
+                        loadingSpinner: {
+                            size: 'small',
+                            color: 'white',
+                            isLoading:
+                                searchLoading
+                        }
                     }"
                     (clear)="clearSearchInput()"
                 ></app-ta-input>

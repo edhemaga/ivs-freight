@@ -27,6 +27,7 @@ export class MapsService implements OnDestroy {
     searchTextChange: Subject<any> = new Subject<any>();
     selectedMarkerChange: Subject<any> = new Subject<any>();
     selectedMarkerId: any;
+    searchLoadingChanged: Subject<any> = new Subject<any>();
 
     constructor(private mapService: MapService) {
         this.sortCategoryChange
