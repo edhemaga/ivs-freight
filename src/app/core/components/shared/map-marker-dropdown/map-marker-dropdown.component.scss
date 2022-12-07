@@ -472,8 +472,24 @@
 }
 
 .text-ellipsis {
-    margin-right: 10px;
+    margin-right: 6px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.favorite-svg {
+    position: relative;
+    display: flex;
+    height: 18px;
+    margin-left: 6px;
+    margin-right: 10px;
+
+    &.active {
+        svg {
+            path {
+                fill: #6d82c7;
+            }
+        }
+    }
 }

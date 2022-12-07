@@ -1,7 +1,18 @@
 <div class="marker-tool-tip" *ngIf="type != 'cluster'">
     <div class="marker-info-container-all">
         <div class="title-container">
-            <div class="marker-business-name text-ellipsis">{{ title }}</div>
+            <div class="d-flex" [ngStyle]="{ overflow: 'hidden' }">
+                <div class="marker-business-name text-ellipsis">
+                    {{ title }}
+                </div>
+                <span *ngIf="item?.pinned">
+                    <svg-icon
+                        class="favorite-svg active"
+                        src="assets/svg/detail-cards/favorite.svg"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    ></svg-icon>
+                </span>
+            </div>
             <div
                 class="show-more"
                 (click)="showMoreOptions()"
@@ -375,7 +386,11 @@
                         }}
                     </div>
                     <div class="title-text">
-                        {{ item?.address.city ? item.address.city : item.address.county }}, {{ item?.address.stateShortName
+                        {{
+                            item?.address.city
+                                ? item.address.city
+                                : item.address.county
+                        }}, {{ item?.address.stateShortName
                         }}<span
                             class="title-text"
                             *ngIf="item?.address.zipCode"
