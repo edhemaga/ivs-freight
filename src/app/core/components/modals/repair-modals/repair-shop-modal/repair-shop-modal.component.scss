@@ -39,3 +39,42 @@
         margin: 0px !important;
     }
 }
+
+.time-picker-all-days {
+    display: flex;
+    align-items: center;
+
+    &-btn {
+        position: relative;
+        right: 1.5px;
+        cursor: pointer;
+
+        svg {
+            transform: rotate(0deg);
+            transition: all 0.3s ease-in-out;
+            path {
+                fill: #919191;
+            }
+        }
+
+        &.rotate {
+            svg {
+                transform: rotate(180deg);
+                transition: all 0.3s ease-in-out;
+                path {
+                    fill: #3074d3;
+                }
+            }
+        }
+    }
+
+    &-title {
+        cursor: pointer;
+        color: #2f2f2f;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 14px;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+}

@@ -511,13 +511,15 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     }
 
                     if (res.specialChecks.length) {
-                        this.specialChecks = res.specialChecks.map((item) => {
-                            return {
-                                id: item.specialChecks.id,
-                                name: item.specialChecks.name,
-                                active: item.active,
-                            };
-                        });
+                        this.specialChecks = res.specialChecks.map(
+                            (item, index) => {
+                                return {
+                                    id: item.specialChecks.id,
+                                    name: this.specialChecks[index].name,
+                                    active: item.active,
+                                };
+                            }
+                        );
                     }
                 },
                 error: () => {},

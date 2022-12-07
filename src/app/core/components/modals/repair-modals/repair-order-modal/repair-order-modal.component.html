@@ -206,10 +206,15 @@
                 >
                     <div class="common-fake-table-label">
                         <p></p>
-                        <p>DESCRIPTION</p>
+                        <p>
+                            DESCRIPTION
+                            <span *ngIf="headerTabs[1].checked">*</span>
+                        </p>
                         <p>PM</p>
-                        <p *ngIf="selectedHeaderTab === 2">PRICE</p>
-                        <p>QTY</p>
+                        <p *ngIf="selectedHeaderTab === 2">
+                            PRICE <span>*</span>
+                        </p>
+                        <p>QTY <span *ngIf="headerTabs[1].checked">*</span></p>
                         <p *ngIf="selectedHeaderTab === 2">SUBTOTAL</p>
                     </div>
                     <div class="common-fake-table-body">
