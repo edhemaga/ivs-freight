@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { DispatcherQuery } from '../../dispatcher/state/dispatcher.query';
 
 @Component({
     selector: 'app-dispatch',
@@ -11,9 +13,13 @@ export class DispatchComponent implements OnInit {
     selectedTab = 'active';
     columns: any[] = [];
     tableContainerWidth: number = 0;
-    constructor() {}
+    dispatchBoardSmallList: Observable<any>;
+    
+    constructor(private dispatcherQuery: DispatcherQuery) {}
 
     ngOnInit(): void {
+        this.dispatchBoardSmallList =
+            this.dispatcherQuery.dispatchboardShortList$;
         this.sendDispatchData();
     }
 

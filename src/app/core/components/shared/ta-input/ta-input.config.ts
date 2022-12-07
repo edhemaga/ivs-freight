@@ -26,6 +26,8 @@ export interface ITaInput {
     placeholderIcon?: string;
     placeholderText?: string;
     placeholderInsteadOfLabel?: boolean;
+    hideDropdownArrow?: boolean;
+    connectDropdown?: boolean;
     isRequired?: boolean;
     isDisabled?: boolean;
     pattern?: string;

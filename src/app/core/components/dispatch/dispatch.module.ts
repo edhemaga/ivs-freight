@@ -6,6 +6,8 @@ import { DispatchComponent } from './dispatch/dispatch.component';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 import { DispatchTableComponent } from './dispatch-table/dispatch-table.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { SharedModule } from '../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     AngularSvgIconModule,
     CommonModule,
     DispatchRoutingModule,
-    TruckassistTableModule
+    TruckassistTableModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class DispatchModule { }
