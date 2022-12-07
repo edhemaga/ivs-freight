@@ -37,6 +37,20 @@ export class TaUploadFilesCarouselComponent {
     @Input() slideWidth: number = 180;
     public translateXMultipleSlides: number = 0;
 
+    ngOnInit(): void {
+        this.filesShown = ['large'].includes(
+            this.customClass?.toLowerCase()
+        )
+            ? 4
+            : ['medium'].includes(this.customClass?.toLowerCase())
+            ? 3
+            : ['extraLarge'].includes(
+                  this.customClass?.toLowerCase()
+              )
+            ? 7
+            : 2;
+    }
+
     public onAction(action: string) {
         switch (action) {
             case 'prev': {
@@ -56,7 +70,7 @@ export class TaUploadFilesCarouselComponent {
                 this.activeSlide.emit(this.currentSlide);
                 // Multiple slides previous
                 if (
-                    ['medium', 'large', 'small'].includes(
+                    ['medium', 'large', 'small', 'extraLarge'].includes(
                         this.customClass?.toLowerCase()
                     )
                 ) {

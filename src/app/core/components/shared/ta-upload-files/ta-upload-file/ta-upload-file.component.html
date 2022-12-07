@@ -84,38 +84,40 @@
         class="ta-upload-file-header"
     >
         <!-- Left Side -->
-        <div></div>
-        <!-- Right Side -->
         <div
-            class="ta-upload-file-action-rightside"
-            [ngClass]="{
-                'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
-                small: type == 'details' || type == 'todo' || reviewMode == 'REVIEW_MODE',
-                large: hasTagsDropdown
-            }"
+            class="ta-upload-file-action-leftside"
+            [ngClass]="{ 'no-action-tag': !hasTagsDropdown, active: t2?.isOpen() }"
+            #t2="ngbPopover"
+            [ngbPopover]="tagsPopover"
+            [popoverClass]="'tags_popover'"
+            [placement]="'left-top left-bottom'"
+            autoclose="outside"
+            [container]="'body'"
+            triggers="'manual'"
         >
             <div
-                [ngClass]="{ 'no-action-tag': !hasTagsDropdown, active: t2?.isOpen() }"
-                #t2="ngbPopover"
-                [ngbPopover]="tagsPopover"
-                [popoverClass]="'tags_popover'"
-                [placement]="'left-top left-bottom'"
-                autoclose="outside"
-                [container]="'body'"
-                triggers="'manual'"
                 ngbTooltip
                 mainTooltip="Tag"
-                tooltipBackground="#6c6c6c"
+                tooltipBackground="#2F2F2F"
                 position="top"
                 class="ta-upload-action-tag"
                 (click)="onAction('tag')"
             >
                 <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
             </div>
+        </div>
+        <!-- Right Side -->
+        <div
+            class="ta-upload-file-action-rightside"
+            [ngClass]="{
+                'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
+                small: type == 'details' || type == 'todo' || reviewMode == 'REVIEW_MODE'
+            }"
+        >
             <div
                 ngbTooltip
                 mainTooltip="Download"
-                tooltipBackground="#6c6c6c"
+                tooltipBackground="#2F2F2F"
                 position="top"
                 class="ta-upload-action-download"
                 (click)="onAction('download')"
@@ -194,14 +196,11 @@
 
         <!-- Tag Content -->
         <div
-            *ngIf="hasTagsDropdown || categoryTag"
+            *ngIf="(hasTagsDropdown || categoryTag) && file?.tags && file?.tags != '' && file?.tags != 'No Tag'"
             class="ta-upload-file-tag"
-            [ngClass]="{
-                'no-tag': (!categoryTag && !file?.tags) || file?.tags == 'No Tag'
-            }"
         >
             <span>{{
-                file?.tags ? file?.tags : categoryTag ? categoryTag : 'No Tag'
+                file?.tags ? file?.tags : categoryTag ? categoryTag : ''
             }}</span>
         </div>
     </div>
@@ -309,6 +308,14 @@
 
 <ng-template #tagsPopover let-data="data">
     <div class="tags_main_holder">
+        <div class="remove_tag_holder" *ngIf="file?.tags" (click)="removeTag()">
+            <div class="remove_tag">
+                Remove Tag
+            </div>
+        </div>
+        <div class="remove_tag_border_holder" *ngIf="file?.tags">
+            <div class="remove_tag_border"></div>
+        </div>
         <div
             class="tags_inner_holder"
             *ngFor="let tag of tagsOptions; index as i"

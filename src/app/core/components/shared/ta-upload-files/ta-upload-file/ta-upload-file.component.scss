@@ -132,6 +132,7 @@
             text-align: center;
             padding-top: 2px;
             cursor: pointer;
+            transition: all 0.1s ease-in-out;
 
             .ta-upload-action-tag {
                 display: flex;
@@ -150,7 +151,7 @@
                 }
 
                 &:hover {
-                    transition: all 0.3s ease-in-out;
+                    transition: all 0.1s ease-in-out;
                     svg {
                         path {
                             fill: #ffffff;
@@ -160,7 +161,8 @@
             }
 
             &.active {
-                background-color: #536bc2e6;
+                transition: all 0.1s ease-in-out;
+                background-color: #424242;
 
                 .ta-upload-action-tag {
                     svg {
@@ -170,11 +172,20 @@
                     }
                 }
             }
+
+            &.no-action-tag {
+                opacity: 0;
+                visibility: none;
+                pointer-events: none !important;
+            }
         }
 
         .ta-upload-file-action-rightside {
-            width: 30px;
-            height: 60px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 60px;
+            height: 30px;
             text-align: center;
             border-radius: 1px;
             background-color: rgb(108, 108, 108, 0.9);
@@ -236,11 +247,6 @@
                 width: 30px;
                 height: 30px;
             }
-
-            &.large {
-                width: 30px;
-                height: 90px;
-            }
         }
 
         .ta-upload-action-feedback-incorrect-mark {
@@ -289,6 +295,11 @@
 
             .canvasWrapper {
                 box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
+            }
+
+            .textLayer span {
+                user-select: none !important;
+                cursor: default !important;
             }
 
             .canvasWrapper,
@@ -539,8 +550,8 @@
         top: 0;
         left: 0;
         z-index: 20;
-        width: 168px;
-        height: 167px;
+        width: 100%;
+        height: 100%;
         background-color: rgb(243, 243, 243, 0.9);
         display: flex;
         flex-direction: column;
@@ -735,7 +746,7 @@
             opacity: 0;
             border-radius: 2px;
             cursor: default;
-            transition: 0.3s all ease-in-out;
+            transition: 0.1s all ease-in-out;
 
             .footer_info {
                 left: 0 !important;
@@ -744,17 +755,17 @@
 
         .ta-upload-file-tag {
             opacity: 0;
-            transition: 0.3s all ease-in-out;
+            transition: 0.1s all ease-in-out;
         }
 
         .ta-upload-file-footer {
             opacity: 0;
             .ta-upload-file-name {
                 background-color: rgba(255, 255, 255, 0.7) !important;
-                transition: 0.3s all ease-in-out;
+                transition: 0.1s all ease-in-out;
     
                 &:hover {
-                    transition: 0.3s all ease-in-out;
+                    transition: 0.1s all ease-in-out;
                     background-color: rgba(255, 255, 255, 0.9) !important; 
                 }
             }
@@ -781,11 +792,11 @@
                 }
 
                 .document_info_hold {
-                    transition: 0.3s all ease-in-out;
+                    transition: 0.1s all ease-in-out;
                     background-color: #6C6C6C80 !important;
 
                     &:hover {
-                        transition: 0.3s all ease-in-out;
+                        transition: 0.1s all ease-in-out;
                         background-color: #6C6C6CE6 !important;
                     }
                 }
@@ -794,11 +805,11 @@
 
         .ta-upload-file-tag {
             opacity: 0;
-            transition: 0.3s all ease-in-out;
+            transition: 0.1s all ease-in-out;
             background-color: #3074D380;
 
             &:hover {
-                transition: 0.3s all ease-in-out;
+                transition: 0.1s all ease-in-out;
                 background-color: #3074D3E6;
             }
         }
@@ -822,7 +833,7 @@
 
             .ta-upload-file-name {
                 background-color: transparent !important;
-                transition: 0.3s all ease-in-out;
+                transition: 0.1s all ease-in-out;
                 cursor: pointer;
             }
         }
@@ -831,8 +842,12 @@
             background-color: #dadadada !important;
             .ta-upload-file-footer {
                 .ta-upload-file-name {
-                    transition: 0.3s all ease-in-out;
+                    transition: 0.1s all ease-in-out;
                     background-color: #eeeeee !important;
+
+                    &:hover {
+                        background-color: #ffffff !important;
+                    }
                 }
             }
         }
@@ -975,23 +990,52 @@
 
 .tags_main_holder {
     min-width: 172px;
-    padding: 2px;
+    padding: 4px;
 
-    background-color: #fff;
-    border-radius: 1px;
+    background-color: #2F2F2F;
+    border-radius: 3px;
     box-shadow: 0 0 4px rgb(0, 0, 0, 0.15);
 
     cursor: pointer;
+
+    .remove_tag_holder {
+        padding: 6px;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: #1D1D1D;
+        }
+
+        .remove_tag {
+            color: #E57373;
+            font-weight: 700;
+            font-size: 11px;
+            line-height: 14px;
+        }
+    }
+
+    .remove_tag_border_holder {
+        width: 100%;
+        padding: 0px 4px;
+        margin: 4px 0px;
+
+        .remove_tag_border {
+            width: 100%;
+            height: 1px;
+
+            background-color: #AAAAAA;
+        }
+    }
 
     .tags_inner_holder {
         display: flex;
         align-items: center;
 
         height: 26px;
-        margin: 1px 0px;
-        padding-left: 4px;
+        margin: 2px 0px;
+        padding-left: 6px;
 
-        border-radius: 1px;
+        border-radius: 2px;
 
         &.firstRow {
             margin-top: 0;
@@ -1004,7 +1048,7 @@
         .tag_options_holder {
             display: flex;
             align-items: center;
-            padding-right: 4px;
+            padding-right: 6px;
 
             width: 100%;
             height: 100%;
@@ -1012,10 +1056,10 @@
                 flex: 1;
                 font-size: 14px;
                 line-height: 18px;
-                color: #6c6c6c;
+                color: #ffffff;
 
                 &.checked {
-                    color: #536bc2;
+                    font-weight: 700;
                 }
             }
 
@@ -1040,17 +1084,9 @@
         }
 
         &:hover {
-            background-color: #f3f3f3;
+            background-color: #1D1D1D;
 
             .tag_options_holder {
-                .tag_name {
-                    color: #3c3c3c;
-
-                    &.checked {
-                        color: #3551b7;
-                    }
-                }
-
                 .checked_icon {
                     svg-icon {
                         svg {

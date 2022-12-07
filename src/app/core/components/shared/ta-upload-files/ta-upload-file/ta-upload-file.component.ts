@@ -1,5 +1,6 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -77,7 +78,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
     constructor(
         private inputService: TaInputService,
-        private urlExt: UrlExtensionPipe
+        private urlExt: UrlExtensionPipe,
+        private ref: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -212,12 +214,6 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
     public setTags() {
         if (this.hasTagsDropdown && this.tags?.length) {
-            this.tagsOptions = [{
-                tagName: 'No Tag',
-                checked: true,
-                tagId: []
-            }];
-
             this.tags.map((item, i)=>{
                 item = {
                     ...item,
@@ -233,17 +229,25 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
         this.tagsOptions.map((item) => {
             if (item.tagName == tag) {
                 item.checked = true;
-                if (item.tagName == 'No Tag') {
-                    this.file.tags = null;
-                    this.file.tagId = [];
-                } else {
+
+                setTimeout(()=>{
                     this.file.tags = item.tagName;
                     this.file.tagId = [item.tagId];
-                }
+                    this.ref.detectChanges();
+                }, 200);
             } else {
                 item.checked = false;
             }
         });
+        this.ref.detectChanges();
+    }
+
+    public removeTag() {
+        setTimeout(()=>{
+            this.file.tags = null;
+            this.file.tagId = [];
+            this.ref.detectChanges();
+        }, 200);
     }
 
     ngOnDestroy(): void {

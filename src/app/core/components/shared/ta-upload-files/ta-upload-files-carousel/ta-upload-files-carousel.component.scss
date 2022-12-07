@@ -40,12 +40,12 @@
         }
 
         &.prev {
-            left: -4px;
+            left: -7px;
             padding-right: 1px;
         }
 
         &.next {
-            left: 90%;
+            right: -7px;
             padding-left: 1px;
         }
 
@@ -54,7 +54,7 @@
                 path {
                     stroke-linejoin: round;
                     paint-order: stroke;
-                    filter: drop-shadow(0 0 4px rgb(0 0 0 / 15%));
+                    filter: drop-shadow(0 0 4px rgb(0 0 0 / 10%));
                     fill: rgba(255, 255, 255, 0.7) !important;
                     cursor:  pointer;
                 }
@@ -91,22 +91,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-    }
-
-    &.medium {
-        .ta-upload-carousel-control-bg {
-            &.next {
-                left: 95%;
-            }
-        }
-    }
-
-    &.large {
-        .ta-upload-carousel-control-bg {
-            &.next {
-                left: 510px;
-            }
         }
     }
 
@@ -156,8 +140,12 @@
     &.company-details-pdf,
     &.landscape-details-view {
         .ta-upload-carousel-control-bg {
+            &.prev {
+                left: 4px;
+            }
+
             &.next {
-                left: 94%;
+                right: 5px;
                 padding-left: 1px;
             }
 

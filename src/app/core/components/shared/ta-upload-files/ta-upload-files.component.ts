@@ -88,7 +88,7 @@ export class TaUploadFilesComponent implements OnInit {
                 this.files.map((item, index) => {
                     if (
                         item.fileName == data.file.fileName &&
-                        index == this.files.length - 1
+                        (index == this.files.length - 1 || index == this.files.length - 2)
                     ) {
                         isLastDeleted = true;
                     }
@@ -197,6 +197,28 @@ export class TaUploadFilesComponent implements OnInit {
 
                 this.files = [...oldFiles, ...data.files];
                 this.onFileEvent.emit({ files: this.files, action: 'add' });
+                const slideTo =
+                        this.modalCarousel?.customClass == 'large'
+                            ? 3
+                            : this.modalCarousel?.customClass == 'medium'
+                            ? 2
+                            : 1;
+                    const allowSlide =
+                        this.modalCarousel?.customClass == 'large' &&
+                        this.files.length > 2
+                            ? true
+                            : this.modalCarousel?.customClass == 'medium' &&
+                              this.files.length > 1
+                            ? true
+                            : this.modalCarousel?.customClass == 'small' &&
+                              this.files.length > 0
+                            ? true
+                            : false;
+                    if (allowSlide) {
+                        this.modalCarousel?.slideToFile(
+                            this.files.length - slideTo
+                        );
+                    }
                 break;
             }
         }
