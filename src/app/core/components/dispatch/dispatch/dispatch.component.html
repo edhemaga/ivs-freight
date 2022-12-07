@@ -1,0 +1,12 @@
+<div class="table-container">
+    <app-truckassist-table-toolbar
+        (toolBarAction)="onToolBarAction($event)"
+        [options]="tableOptions"
+        [tableData]="tableData"
+        [selectedTab]="selectedTab"
+        [columns]="columns"
+        [tableContainerWidth]="tableContainerWidth"
+    ></app-truckassist-table-toolbar>
+
+    <app-dispatch-table></app-dispatch-table>
+</div>
