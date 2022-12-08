@@ -11,7 +11,6 @@
  */
 import { GpsMotionStatus } from './gpsMotionStatus';
 import { GpsType } from './gpsType';
-import { RepairUnitType } from './repairUnitType';
 
 
 export interface LiveTrackingItemLiteResponse { 
@@ -29,8 +28,8 @@ export interface LiveTrackingItemLiteResponse {
     updateTime?: string;
     dateString?: string | null;
     companyId?: number | null;
-    unitType?: RepairUnitType;
-    unitNumber?: string | null;
+    truckNumber?: string | null;
+    trailerNumber?: string | null;
     driver?: string | null;
     ignition?: boolean | null;
 }

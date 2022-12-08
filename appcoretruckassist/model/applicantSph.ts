@@ -14,8 +14,8 @@ import { Applicant } from './applicant';
 
 export interface ApplicantSph { 
     id?: number;
-    authorize?: boolean;
-    hasReadAndUnderstood?: boolean;
+    authorize?: boolean | null;
+    hasReadAndUnderstood?: boolean | null;
     signature?: string | null;
     reviewed?: boolean | null;
     approved?: boolean | null;

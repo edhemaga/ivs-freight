@@ -9,16 +9,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FuelModalStopResponse } from './fuelModalStopResponse';
+import { AccidentItemReviewResponse } from './accidentItemReviewResponse';
+import { TruckTypeResponse } from './truckTypeResponse';
 import { AddressEntity } from './addressEntity';
 
 
-export interface GetTransactionModalFranchiseStopResponse { 
+export interface AccidentItemResponse { 
     id?: number;
-    businessName?: string | null;
-    count?: number | null;
-    fuelStopStores?: Array<FuelModalStopResponse> | null;
-    isFranchise?: boolean;
-    address?: AddressEntity;
+    location?: AddressEntity;
+    date?: string;
+    fatalities?: number;
+    injuries?: number;
+    hazmatSpill?: boolean;
+    vehicleType?: TruckTypeResponse;
+    description?: string | null;
+    accidentItemReview?: AccidentItemReviewResponse;
 }
 

@@ -9,14 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UpdateEmergencyContactReviewCommand } from './updateEmergencyContactReviewCommand';
 
 
-export interface UpdateEmergencyContactCommand { 
-    id?: number | null;
-    name?: string | null;
-    phone?: string | null;
-    relationship?: string | null;
-    emergencyContactReview?: UpdateEmergencyContactReviewCommand;
+export interface AccidentItemReviewResponse { 
+    id?: number;
+    isLocationValid?: boolean;
+    isDateValid?: boolean;
+    locationDateMessage?: string | null;
+    isDescriptionValid?: boolean;
+    descriptionMessage?: string | null;
+    isPrimary?: boolean;
+    commonMessage?: string | null;
 }
 

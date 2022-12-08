@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UpdateEmergencyContactReviewCommand } from './updateEmergencyContactReviewCommand';
+import { UpdatePreviousAddressReviewCommand } from './updatePreviousAddressReviewCommand';
+import { AddressEntity } from './addressEntity';
 
 
-export interface UpdateEmergencyContactCommand { 
+export interface UpdatePreviousAddressCommand { 
     id?: number | null;
-    name?: string | null;
-    phone?: string | null;
-    relationship?: string | null;
-    emergencyContactReview?: UpdateEmergencyContactReviewCommand;
+    address?: AddressEntity;
+    previousAddressReview?: UpdatePreviousAddressReviewCommand;
 }
 

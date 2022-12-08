@@ -19,6 +19,7 @@ export interface GpsHistory {
     updateTime?: string;
     timeToFix?: string;
     ipAddress?: string | null;
+    seqId?: string | null;
     messageDataHex?: string | null;
     deviceId?: string | null;
     latitude?: number | null;
