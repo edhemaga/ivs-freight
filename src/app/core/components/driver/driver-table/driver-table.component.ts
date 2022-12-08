@@ -503,9 +503,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
 
-        console.log('Driver Data');
-        console.log(this.tableData[1].data);
-
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setDriverData(td);

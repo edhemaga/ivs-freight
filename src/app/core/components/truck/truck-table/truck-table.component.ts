@@ -403,6 +403,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
 
+        console.log('Truck Data');
+        console.log(this.tableData[0].data);
+
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setTruckData(td);
@@ -427,9 +430,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData = this.viewData.map((data) => {
                 return this.mapTruckData(data);
             });
-
-            console.log('Truck Data');
-            console.log(this.viewData);
         } else {
             this.viewData = [];
         }
