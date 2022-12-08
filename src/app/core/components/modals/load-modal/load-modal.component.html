@@ -337,6 +337,7 @@
             <app-ta-custom-card
                 [cardName]="'Stops'"
                 [isCardOpen]="true"
+                [hasCounter]="2"
                 [animationMarginParams]="{
                     marginTop: '18px',
                     marginBottom: '22px'
@@ -356,6 +357,7 @@
                     [shipperContact]="{
                         fullName: 'Angelo Trotter'
                     }"
+                    [isOpen]="isActivePickupStop"
                     (toggle)="toggleStopActivity($event, 'first-pickup')"
                 >
                     <div class="row">
@@ -369,7 +371,7 @@
                                 [options]="labelsShippers"
                                 [activeItem]="selectedShipper"
                                 (selectedItem)="
-                                    onSelectDropdown($event, 'shipper')
+                                    onSelectDropdown($event, 'shipper-pickup')
                                 "
                             ></app-ta-input-dropdown>
                         </div>
@@ -377,9 +379,9 @@
                     <div class="row">
                         <div class="col-5">
                             <app-ta-tab-switch
-                                [tabs]="stopTimeTabs"
+                                [tabs]="stopTimeTabsPickup"
                                 (switchClicked)="
-                                    onTabChange($event, 'stop-time')
+                                    onTabChange($event, 'stop-time-pickup')
                                 "
                                 [type]="'type2-modal-popup'"
                             ></app-ta-tab-switch>
@@ -394,7 +396,10 @@
                                 [options]="labelsShipperContacts"
                                 [activeItem]="selectedShipperContact"
                                 (selectedItem)="
-                                    onSelectDropdown($event, 'shipper-contact')
+                                    onSelectDropdown(
+                                        $event,
+                                        'shipper-contact-pickup'
+                                    )
                                 "
                             ></app-ta-input-dropdown>
                         </div>
@@ -464,7 +469,7 @@
                                 placeholderIcon: 'time',
                                 isDropdown: true,
                                 isRequired: true,
-                                isDisabled: selectedStopTime === 6,
+                                isDisabled: selectedStopTimePickup === 6,
                                 customClass: 'datetimeclass'
                             }"
                         ></app-ta-input>
@@ -499,6 +504,7 @@
                     [shipperContact]="{
                         fullName: 'Angelo Trotter'
                     }"
+                    [isOpen]="isActiveDeliveryStop"
                     (toggle)="toggleStopActivity($event, 'first-delivery')"
                 >
                     <div class="row">
@@ -520,9 +526,9 @@
                     <div class="row">
                         <div class="col-5">
                             <app-ta-tab-switch
-                                [tabs]="stopTimeTabs"
+                                [tabs]="stopTimeTabsDelivery"
                                 (switchClicked)="
-                                    onTabChange($event, 'stop-time')
+                                    onTabChange($event, 'stop-time-delivery')
                                 "
                                 [type]="'type2-modal-popup'"
                             ></app-ta-tab-switch>
@@ -607,7 +613,7 @@
                                 placeholderIcon: 'time',
                                 isDropdown: true,
                                 isRequired: true,
-                                isDisabled: selectedStopTime === 6,
+                                isDisabled: selectedStopTimeDelivery === 6,
                                 customClass: 'datetimeclass'
                             }"
                         ></app-ta-input>

@@ -19,8 +19,8 @@ export class LoadStopComponent {
         fullName: string;
         avatar: string;
     };
-
-    public activeStop: boolean = false;
+    // eslint-disable-next-line @angular-eslint/no-input-rename
+    @Input('isOpen') activeStop: boolean = false;
 
     @Output('toggle') toggleEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();

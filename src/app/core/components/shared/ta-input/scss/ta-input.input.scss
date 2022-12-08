@@ -411,10 +411,48 @@
     }
 
     &.load-shipper {
-        grid-template-columns: 300px 1fr;
+        grid-template-columns: 331px 139px 85px;
         -moz-column-gap: 2px;
         column-gap: 2px;
         padding-right: 25px;
+
+        span {
+            &:nth-child(2),
+            &:nth-child(3) {
+                justify-content: flex-end;
+            }
+
+            &:nth-child(2) {
+                span {
+                    color: #919191 !important;
+
+                    &.focusable-text {
+                        color: #6f9ee0 !important;
+                    }
+                }
+            }
+
+            &:nth-child(3) {
+                .multiple-input-text {
+                    &.counter {
+                        max-width: max-content;
+                        height: 18px;
+                        border-radius: 30px;
+                        text-align: center;
+                        font-size: 11px;
+                        font-weight: 400;
+                        color: #919191;
+                        background-color: rgb(145, 145, 145, 0.2);
+                        padding: 1px 6px;
+
+                        &.counter-focus {
+                            color: #6f9ee0;
+                            background-color: rgb(111, 158, 224, 0.2);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //------------------------- Custom class -------------------------

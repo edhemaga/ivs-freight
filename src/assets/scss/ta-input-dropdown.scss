@@ -772,9 +772,44 @@
             //------------------------ Load Shipper Contact Template -----------------------
             .load-shipper-template {
                 display: grid;
-                grid-template-columns: 300px 1fr;
+                grid-template-columns: 305px 166px 87px;
                 align-items: center;
                 padding-right: 25px;
+
+                div {
+                    &:nth-child(2),
+                    &:nth-child(3) {
+                        text-align: right;
+                    }
+
+                    &:nth-child(2) {
+                        color: #919191;
+                        font-size: 11px;
+                        font-weight: 400;
+
+                        &.active {
+                            color: #6f9ee0;
+                        }
+                    }
+                }
+
+                .load-shipper-load-counter {
+                    max-width: max-content;
+                    height: 18px;
+                    border-radius: 30px;
+                    text-align: right;
+                    font-size: 11px;
+                    font-weight: 400;
+                    color: #919191;
+                    background-color: rgb(145, 145, 145, 0.2);
+                    padding: 1px 6px;
+                    justify-self: flex-end;
+
+                    &.active {
+                        color: #6f9ee0;
+                        background-color: rgb(111, 158, 224, 0.2);
+                    }
+                }
             }
 
             //------------------------ Custom width dependent on 'col' bootstrap ------------------------
@@ -797,6 +832,10 @@
 
             &.w-col-616 {
                 width: 616px;
+            }
+
+            &.w-col-606 {
+                width: 606px;
             }
 
             &.w-col-582 {

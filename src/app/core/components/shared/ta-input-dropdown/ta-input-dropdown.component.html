@@ -805,7 +805,11 @@
             <!--------------------------- Load Shipper Template --------------------------->
             <div *ngSwitchCase="'load-shipper'">
                 <div
-                    *ngFor="let option of options; trackBy: identity"
+                    *ngFor="
+                        let option of options;
+                        trackBy: identity;
+                        let indx = index
+                    "
                     class="dropdown-option load-shipper-template"
                     [ngClass]="{
                         disabled: option?.disabled,
@@ -831,6 +835,8 @@
                     ></div>
 
                     <div
+                        *ngIf="indx !== 0"
+                        [ngClass]="{ active: option.id === activeItem?.id }"
                         [innerHtml]="
                             option.address
                                 | taHighlight
@@ -842,6 +848,14 @@
                                       ]
                         "
                     ></div>
+
+                    <div
+                        *ngIf="indx !== 0"
+                        class="load-shipper-load-counter"
+                        [ngClass]="{ active: option.id === activeItem?.id }"
+                    >
+                        {{ option.loadsCount }}
+                    </div>
                 </div>
             </div>
             <!--------------------------- Template Text - Counter --------------------------->
