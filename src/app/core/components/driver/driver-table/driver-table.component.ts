@@ -594,7 +594,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEmergContact: data?.emergencyContactPhone
                 ? data.emergencyContactPhone
                 : '',
-            tableTwicExp: 'Treba da srede podaci za progres na back-u',
+            tableTwicExp: 'Nema podatak sa back-a',
             tableFuelCardDetailNumber: data?.fuelCard ? data.fuelCard : '',
             tableFuelCardDetailType: 'Nema podatak sa back-a',
             tableFuelCardDetailAccount: 'Nema podatak sa back-a',

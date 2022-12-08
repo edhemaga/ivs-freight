@@ -23,6 +23,7 @@ import {
     tableSearch,
 } from '../../../utils/methods.globals';
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-truck-table',
@@ -61,7 +62,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private truckInactiveQuery: TruckInactiveQuery,
         private truckService: TruckTService,
         private thousandSeparator: TaThousandSeparatorPipe,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        public datePipe: DatePipe
     ) {}
 
     ngOnInit(): void {
@@ -445,62 +447,92 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textYear: data.year ? data.year : '',
             tableColor: data?.color?.code ? data.color.code : '',
             colorName: data?.color?.name ? data.color.name : '',
-            tableDriver: 'Nije Povezano',
-            tableTrailer: 'Nije Povezano',
-            tableTrailerType: 'Nije Povezano',
-            tabelOwnerDetailesName: 'Nije Povezano',
-            tabelOwnerDetailesComm: 'Nije Povezano',
-            textWeightGross: 'Nije povezano',
-            textWeightEmpty: 'Nije Povezano',
-            tabelEngineModel: data?.truckEngineType?.name
-                ? data.truckEngineType.name
+            tableDriver: 'Nema podatak sa back-a',
+            tableTrailer: 'Nema podatak sa back-a',
+            tableTrailerType: 'Nema podatak sa back-a',
+            tabelOwnerDetailesName: data?.owner?.name ? data.owner.name : '',
+            tabelOwnerDetailesComm: data?.commission
+                ? data.commission + '%'
                 : '',
-            tabelEngineOilType: 'Nije Povezano',
-            tabelTransmissionModel: 'Nije Povezano',
-            tabelTransmissionShifter: 'Nije Povezano',
-            tabelTransmissionRatio: 'Nije Povezano',
-            tabelFuelDetailsFuelType: 'Nije Povezano',
-            tabelFuelDetailsTank: 'Nije Povezano',
-            tabelAxle: 'Nije Povezano',
-            tabelBrakes: 'Nije Povezano',
+            textWeightGross: data?.truckGrossWeight?.name
+                ? data.truckGrossWeight.name
+                : '',
+            textWeightEmpty: data?.emptyWeight
+                ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
+                : '',
+            tabelEngineModel: data?.truckEngineModel?.name
+                ? data.truckEngineModel.name
+                : '',
+            tabelEngineOilType: data?.engineOilType?.name
+                ? data.engineOilType.name
+                : '',
+            tabelTransmissionModel: data?.transmissionModel
+                ? data.transmissionModel
+                : '',
+            tabelTransmissionShifter: data?.shifter?.name
+                ? data.shifter.name
+                : '',
+            tabelTransmissionRatio: data?.gearRatio?.name
+                ? data.gearRatio.name
+                : '',
+            tabelFuelDetailsFuelType: data?.fuelType?.name
+                ? data.fuelType.name
+                : '',
+            tabelFuelDetailsTank: data?.fuelTankSize
+                ? this.thousandSeparator.transform(data.fuelTankSize)
+                : '',
+            tabelAxle: data?.axles ? data.axles : '',
+            tabelBrakes: data?.brakes?.name ? data.brakes.name : '',
             tableTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-            tableWheelsMaterialFront: 'Nije Povezano',
-            tableWheelsMaterialRear: 'Nije Povezano',
-            tableAPUnit: 'Nije Povezano',
-            tableFeatures: 'Nije Povezano',
-            tableTollDeviceTransponder: 'Nije Povezano',
-            tableTollDeviceNo: 'Nije Povezano',
-            tableInsPolicy: 'Nije Povezano',
+            tableWheelsMaterialFront: data?.frontWheels?.name
+                ? data.frontWheels.name
+                : '',
+            tableWheelsMaterialRear: data?.rearWheels?.name
+                ? data.rearWheels.name
+                : '',
+            tableAPUnit: data?.apUnit?.name ? data.apUnit.name : '',
+            tableFeatures: `${data?.doubleBunk ? 'DBunk•' : ''}${
+                data?.refrigerator ? 'Fridge•' : ''
+            }${data?.dcInverter ? 'DCI•' : ''}${data?.blower ? 'Blower•' : ''}${
+                data?.pto ? 'PTO' : ''
+            }`,
+            tableTollDeviceTransponder: data?.tollTransponder?.name
+                ? data.tollTransponder.name
+                : '',
+            tableTollDeviceNo: data?.tollTransponderDeviceNo
+                ? data.tollTransponderDeviceNo
+                : '',
+            tableInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
             tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage) + ' mi'
                 : '',
             tableLicencePlateDetailNumber: data?.licensePlate
                 ? data.licensePlate
-                : data?.registrations?.length
-                ? data.registrations[0].licensePlate
                 : '',
-            tableLicencePlateDetailST: null,
-            tableLicencePlateDetailExpiration: null,
-            tableFhwaInspectionTerm: 'Nije Povezano',
-            tableFhwaInspectionExpiration: null,
-            tableTitleNumber: 'Nije Povezano',
-            tableTitleST: null,
-            tableTitleIssued: 'Nije Povezano',
-            tableTitlePurchase: 'Nije Povezano',
-            tablePurchasePrice: 'Nije Povezano',
-            tablePurchaseDate: 'Nije Povezano',
-            tableTerminated: 'Nije Povezano',
-            tableAdded: 'Nije Povezano',
-            tableEdited: 'Nije Povezano',
+            tableLicencePlateDetailST: 'Nema podatak sa back-a',
+            tableLicencePlateDetailExpiration: 'Nema podatak sa back-a',
+            tableFhwaInspectionTerm: data?.fhwaExp
+                ? data.fhwaExp + ' months'
+                : '',
+            tableFhwaInspectionExpiration: 'Nema podatak sa back-a',
+            tableTitleNumber: 'Nema podatak sa back-a',
+            tableTitleST: 'Nema podatak sa back-a',
+            tableTitleIssued: 'Nema podatak sa back-a',
+            tableTitlePurchase: 'Nema podatak sa back-a',
+            tablePurchasePrice: data?.purchasePrice
+                ? '$' + this.thousandSeparator.transform(data.purchasePrice)
+                : '',
+            tablePurchaseDate: data.purchaseDate
+                ? this.datePipe.transform(data.purchaseDate, 'MM/dd/yy')
+                : '',
 
-            // truckInspectionProgres: {
-            //     start: data?.fhwaInspection
-            //         ? data.fhwaInspection
-            //         : data?.inspections?.length
-            //         ? data.inspections[0].issueDate
-            //         : null,
-            //     end: null,
-            // },
+            tableTerminated: 'Nema podatak sa back-a',
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                : '',
         };
     }
 
