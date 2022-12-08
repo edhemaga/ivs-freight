@@ -702,7 +702,8 @@
             .load-broker-template {
                 display: grid;
                 align-items: center;
-                grid-template-columns: 211px 133px 39px;
+                grid-template-columns: 232px 82px 39px;
+                column-gap: 29px;
 
                 .load-broker-status-text {
                     display: flex;
@@ -731,7 +732,6 @@
                 }
 
                 .load-broker-progress-status {
-                    width: 100px;
                     height: 14px;
                     display: flex;
                     align-items: center;
@@ -761,6 +761,11 @@
                     color: #919191;
                     background-color: rgb(145, 145, 145, 0.2);
                     padding: 1px 6px;
+
+                    &.active {
+                        color: #6f9ee0;
+                        background-color: rgb(111, 158, 224, 0.2);
+                    }
                 }
             }
 
@@ -1095,6 +1100,10 @@
                 width: 156px;
             }
 
+            &.w-col-152 {
+                width: 152px;
+            }
+
             &.w-col-150 {
                 width: 150px;
             }
@@ -1215,7 +1224,7 @@
                 width: 116px;
             }
 
-            &.connectDropdown{
+            &.connectDropdown {
                 top: 0 !important;
                 border-radius: 0 0 2px 2px;
             }
@@ -1379,7 +1388,7 @@
                         -moz-column-gap: 10px;
                         column-gap: 10px;
                         align-items: center;
-                        padding: 4px;
+                        padding: 3px 4px;
                         margin-bottom: 2px;
                         cursor: pointer;
 

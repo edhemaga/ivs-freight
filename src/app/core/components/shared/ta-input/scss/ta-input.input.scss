@@ -15,7 +15,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
-    &.connectedDropdown{
+    &.connectedDropdown {
         border-radius: 2px 2px 0 0 !important;
     }
 
@@ -301,11 +301,7 @@
     }
 
     &.load-dispatches-ttd {
-        grid-template-columns: repeat(2, 156px) 140px 110px;
-
-        &.focus {
-            grid-template-columns: repeat(2, 156px) 162px 110px;
-        }
+        grid-template-columns: repeat(2, 156px) 150px 122px;
 
         span {
             &:nth-child(1),
@@ -320,7 +316,7 @@
 
             &:nth-child(3) {
                 .multiple-input-text {
-                    max-width: 87px;
+                    max-width: 100px;
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
@@ -328,15 +324,11 @@
             }
 
             &:last-child {
+                justify-content: flex-end;
                 .multiple-input-text {
                     color: #919191 !important;
-                    font-size: 14px;
+                    font-size: 11px;
                     font-weight: 400;
-                    width: 111px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    text-align: right;
 
                     &.focusable-text {
                         color: #6f9ee0 !important;
@@ -369,13 +361,9 @@
 
     &.load-broker {
         display: grid;
-        grid-template-columns: 214px 99px 50px;
+        grid-template-columns: 229px 115px 48px;
         align-items: center;
         padding-top: 6px;
-
-        &.focus {
-            grid-template-columns: 214px 99px 50px;
-        }
 
         span {
             &:nth-child(1) {
@@ -415,7 +403,7 @@
     }
 
     &.load-broker-contact {
-        grid-template-columns: 125px 120px;
+        grid-template-columns: 143px 120px;
         align-items: center;
         grid-column-gap: 10px;
         -moz-column-gap: 10px;
@@ -520,10 +508,6 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-
-        &.load-broker-contact {
-            grid-template-columns: 143px 120px;
-        }
     }
 }
 

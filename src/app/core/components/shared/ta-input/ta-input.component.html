@@ -985,7 +985,9 @@
             *ngIf="inputConfig.multipleLabel?.labels?.length"
             [class]="inputConfig.multipleLabel?.customClass"
             [ngClass]="{
-                'focus-multiple-label': focusInput,
+                'focus-multiple-label':
+                    focusInput ||
+                    inputConfig?.multipleInputValues?.options?.length,
                 required: inputConfig.isRequired && !inputConfig.isDisabled
             }"
         >

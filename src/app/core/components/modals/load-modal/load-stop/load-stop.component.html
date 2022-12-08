@@ -1,0 +1,57 @@
+<div class="load-stop-container" [ngClass]="{ active: activeStop }">
+    <div
+        class="load-stop-header-bar"
+        [ngClass]="{
+            'first-or-last': firstOrLast && activeStop,
+            'not-active-stop': !activeStop
+        }"
+        (click)="toggleStop()"
+    >
+        <div
+            class="load-stop-counter-container"
+            [ngClass]="{ 'delivery-mode': isDelivery }"
+        >
+            <p>{{ stopNumber }}</p>
+        </div>
+        <div class="load-stop-header-content">
+            <div class="load-stop-inner-content">
+                <div class="load-stop-content-up load-stop-content-up-name">
+                    <p>{{ shipper }}</p>
+                </div>
+                <div class="load-stop-content-down">
+                    <p>{{ shipperAddress }}</p>
+                </div>
+            </div>
+
+            <div class="load-stop-inner-content">
+                <div class="load-stop-content-up load-stop-content-up-datetime">
+                    <p>{{ dateRange }}</p>
+                </div>
+                <div class="load-stop-content-down">
+                    <p>{{ timeRange }}</p>
+                </div>
+            </div>
+
+            <div class="load-stop-inner-content">
+                <div class="load-stop-content-up load-stop-content-up-deadhead">
+                    <p>
+                        {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }}
+                        <span>{{ legMile }} mi</span>
+                    </p>
+                </div>
+                <div
+                    class="load-stop-content-down load-stop-content-down-deadhead"
+                >
+                    <p>{{ shipperContact?.fullName }}</p>
+                </div>
+            </div>
+
+            <svg-icon
+                *ngIf="!firstOrLast"
+                class="load-stop-header-remove-btn"
+                [src]="'assets/svg/common/load/ic_load_stop_delete.svg'"
+            ></svg-icon>
+        </div>
+    </div>
+    <ng-content *ngIf="activeStop"></ng-content>
+</div>

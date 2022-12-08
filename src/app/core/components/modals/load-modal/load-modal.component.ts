@@ -47,10 +47,14 @@ import { convertTimeFromBackend } from '../../../utils/methods.calculations';
     encapsulation: ViewEncapsulation.None,
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
+    private destroy$ = new Subject<void>();
+
     @Input() editData: any;
 
     public loadForm: FormGroup;
     public isFormDirty: boolean;
+
+    public loadModalSize: string = 'modal-container-M';
 
     public selectedTab: number = 1;
     public tabs = [
@@ -166,6 +170,19 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedLoadDetailsStrapChain: any[] = [];
     public selectedLoadDetailsHazardous: any[] = [];
 
+    public loadDispatchesTTDInputConfig: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        multipleLabel: {
+            labels: ['Truck', 'Trailer', 'Driver', 'Driver Pay'],
+            customClass: 'load-dispatches-ttd',
+        },
+        isDropdown: true,
+        blackInput: true,
+        textTransform: 'capitalize',
+        dropdownWidthClass: 'w-col-616',
+    };
+
     public loadBrokerInputConfig: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
@@ -174,8 +191,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             customClass: 'load-broker',
         },
         isDropdown: true,
-        blackInput: false,
         isRequired: true,
+        blackInput: true,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-432',
     };
@@ -187,37 +204,24 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             labels: ['Contact', 'Phone'],
             customClass: 'load-broker-contact',
         },
-        textTransform: 'capitalize',
         isDropdown: true,
-        blackInput: false,
         isDisabled: true,
-        dropdownWidthClass: 'w-col-330',
-    };
-
-    public loadDispatchesTTDInputConfig: ITaInput = {
-        name: 'Input Dropdown',
-        type: 'text',
-        multipleLabel: {
-            labels: ['Truck', 'Trailer', 'Driver', 'Driver Pay'],
-            customClass: 'load-dispatches-ttd',
-        },
+        blackInput: true,
         textTransform: 'capitalize',
-        isDropdown: true,
-        blackInput: false,
-        dropdownWidthClass: 'w-col-616',
+        dropdownWidthClass: 'w-col-330',
     };
 
     public loadShipperInputConfig: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
-            labels: ['Shipper', 'Location'],
+            labels: ['Shipper', 'City, State, Zip', 'Loads'],
             customClass: 'load-shipper',
         },
-        textTransform: 'uppercase',
         isDropdown: true,
         isRequired: true,
-        blackInput: false,
+        blackInput: true,
+        textTransform: 'uppercase',
         dropdownWidthClass: 'w-col-616',
     };
 
@@ -228,10 +232,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             labels: ['Contact', 'Phone'],
             customClass: 'load-broker-contact',
         },
-        textTransform: 'capitalize',
         isDropdown: true,
         isDisabled: true,
-        blackInput: false,
+        blackInput: true,
+        textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-344',
     };
 
@@ -257,16 +261,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     public companyUser: SignInResponse = null;
 
-    public isDateRange: boolean = false;
-
     public isHazardousPicked: boolean = false;
     public isHazardousVisible: boolean = false;
 
     public additionalPartHeight: any;
 
-    public loadModalSize: string = 'modal-container-M';
+    // Stops
+    public pickupDateRange: boolean = false;
+    public isActivePickupStop: boolean = false;
 
-    private destroy$ = new Subject<void>();
+    public deliveryDateRange: boolean = false;
+    public isActiveDeliveryStop: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -295,10 +300,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             dispatchId: [null],
             referenceNumber: [null, Validators.required],
             generalCommodity: [null],
-            weight: [null], // convert in number
+            weight: [null],
             brokerId: [null, Validators.required],
             brokerContactId: [null],
-            // loadRequirements
+            // Requirements
             truckTypeId: [null],
             trailerTypeId: [null],
             doorType: [null],
@@ -308,21 +313,39 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             liftgate: [null],
             driverMessage: [null],
             // ----------------
-            shipper: [null, Validators.required],
-            shipperContactId: [null],
-            dateFrom: [null, Validators.required],
-            dateTo: [null],
-            timeFrom: [null, Validators.required],
-            timeTo: [null, Validators.required],
-            baseRate: [null, Validators.required], // convert in number
-            adjustedRate: [null], // convert in number
-            advancePay: [null], // convert in number
+            // Pickup Stop
+            pickupStop: ['Pickup'],
+            pickupShipper: [null, Validators.required],
+            pickupShipperContactId: [null],
+            pickupDateFrom: [null, Validators.required],
+            pickupDateTo: [null],
+            pickupTimeFrom: [null, Validators.required],
+            pickupTimeTo: [null, Validators.required],
+            pickupItems: this.formBuilder.array([]),
+            // -------------
+            // Delivery Stop
+            deliveryStop: ['Delivery'],
+            deliveryShipper: [null, Validators.required],
+            deliveryShipperContactId: [null],
+            deliveryDateFrom: [null, Validators.required],
+            deliveryDateTo: [null],
+            deliveryTimeFrom: [null, Validators.required],
+            deliveryTimeTo: [null, Validators.required],
+            deliveryItems: this.formBuilder.array([]),
+            // -------------
+            // Extra Stops
+            stops: this.formBuilder.array([]),
+            // -------------
+            // Billing
+            baseRate: [null, Validators.required],
+            adjustedRate: [null],
+            advancePay: [null],
             layoverRate: [null],
             lumperRate: [null],
             fuelSurchargeRate: [null],
             escortRate: [null],
             detentionRate: [null],
-            stops: this.formBuilder.array([]),
+            // -------------
             note: [null],
             files: [null],
         });
@@ -441,7 +464,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'broker': {
                 this.selectedBroker = event;
-                console.log('broker: ', this.selectedBroker);
+
                 if (this.selectedBroker) {
                     this.loadBrokerInputConfig = {
                         ...this.loadBrokerInputConfig,
@@ -493,7 +516,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             multipleInputValues: {
                                 options: [
                                     {
-                                        value: this.selectedBrokerContact.name,
+                                        value: this.selectedBrokerContact
+                                            .fullName,
                                         logoName: null,
                                     },
                                     {
@@ -506,10 +530,27 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                 customClass: 'load-broker-contact',
                             },
                             isDisabled: false,
+                            blackInput: false,
                         };
                     }
-                } else {
+                }
+                // restart value if clear
+                else {
                     this.labelsBrokerContacts = this.originBrokerContacts;
+                    this.loadBrokerInputConfig = {
+                        ...this.loadBrokerInputConfig,
+                        multipleInputValues: null,
+                    };
+
+                    this.selectedBrokerContact = null;
+
+                    this.loadForm.get('brokerContactId').patchValue(null);
+
+                    this.loadBrokerContactsInputConfig = {
+                        ...this.loadBrokerContactsInputConfig,
+                        multipleInputValues: null,
+                        isDisabled: true,
+                    };
                 }
                 break;
             }
@@ -535,22 +576,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ],
                             customClass: 'load-broker-contact',
                         },
-                        blackInput: true,
                         isDisabled: false,
                     };
                 } else {
-                    this.loadBrokerContactsInputConfig.multipleInputValues =
-                        null;
                     this.loadBrokerContactsInputConfig = {
                         ...this.loadBrokerContactsInputConfig,
-                        isDisabled: true,
+                        multipleInputValues: null,
                     };
                 }
                 break;
             }
             case 'shipper': {
                 if (event) {
-                    // If Load Stops Doesn't exist, but 'delivery' is first picked just return
                     this.selectedShipper = event;
 
                     this.labelsShipperContacts = this.originShipperContacts.map(
@@ -686,8 +723,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         },
                     };
                 } else {
-                    this.loadDispatchesTTDInputConfig.multipleInputValues =
-                        null;
+                    this.loadDispatchesTTDInputConfig = {
+                        ...this.loadDispatchesTTDInputConfig,
+                        multipleInputValues: null,
+                    };
+
+                    this.selectedDispatches = null;
                 }
                 break;
             }
@@ -888,6 +929,19 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             return;
         }
         option.active = !option.active;
+    }
+
+    public toggleStopActivity(event: boolean, action: string) {
+        switch (action) {
+            case 'first-pickup': {
+                this.isActivePickupStop = event;
+                break;
+            }
+            case 'first-delivery': {
+                this.isActiveDeliveryStop = event;
+                break;
+            }
+        }
     }
 
     public trackBillingPayment() {

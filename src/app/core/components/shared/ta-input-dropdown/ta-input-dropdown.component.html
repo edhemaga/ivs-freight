@@ -709,7 +709,11 @@
                             "
                         ></app-load-modal-progress-bar>
                     </div>
-                    <div *ngIf="indx !== 0" class="load-broker-load-counter">
+                    <div
+                        *ngIf="indx !== 0"
+                        class="load-broker-load-counter"
+                        [ngClass]="{ active: option.id === activeItem?.id }"
+                    >
                         {{ option.loadsCount }}
                     </div>
                 </div>

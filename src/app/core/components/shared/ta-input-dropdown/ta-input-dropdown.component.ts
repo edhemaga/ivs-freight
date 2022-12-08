@@ -698,7 +698,7 @@ export class TaInputDropdownComponent
                             blackInput: false,
                         };
                         clearTimeout(timeout);
-                    }, 200);
+                    }, 300);
                 }
             }
         }

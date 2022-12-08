@@ -115,14 +115,31 @@
 
     .load-dispatches-ttd {
         display: grid;
-        grid-template-columns: 92px 89px 127px 1fr;
+        grid-template-columns: 92px 89px 150px 1fr;
         align-items: center;
         -moz-column-gap: 65px;
         grid-column-gap: 65px;
         column-gap: 65px;
 
+        span {
+            &:nth-child(4) {
+                color: #919191 !important;
+                opacity: 0;
+                top: -19px;
+                font-size: 11px;
+                font-weight: $input-label-color-active-up;
+            }
+        }
+
         &.focus-multiple-label {
-            grid-template-columns: 92px 89px 150px 1fr;
+            span {
+                &:nth-child(4) {
+                    transition-delay: 300ms;
+                    color: #919191 !important;
+                    opacity: 1;
+                    top: -19px;
+                }
+            }
         }
     }
 
@@ -130,13 +147,37 @@
         .load-broker {
             display: grid;
             align-items: center;
-            grid-template-columns: 245px 85px 69px;
+            grid-template-columns: 277px 82px 69px;
+
+            span {
+                &:nth-child(2),
+                &:nth-child(3) {
+                    color: #919191 !important;
+                    opacity: 0;
+                    top: -19px;
+                    font-size: 11px;
+                    font-weight: $input-label-color-active-up;
+                }
+            }
+
+            &.focus-multiple-label {
+                span {
+                    &:nth-child(2),
+                    &:nth-child(3) {
+                        transition-delay: 300ms;
+                        color: #919191 !important;
+                        opacity: 1;
+                        top: -19px;
+                    }
+                }
+            }
         }
 
         &.required {
             &::after {
                 position: absolute;
-                right: 18px;
+                left: 51px;
+                right: 0;
                 top: -1px;
             }
         }
@@ -145,7 +186,8 @@
             &.required {
                 &::after {
                     position: absolute;
-                    right: 27px;
+                    left: 41px;
+                    right: 0;
                     top: -1px;
                 }
             }
@@ -154,15 +196,32 @@
 
     .load-broker-contact {
         display: grid;
-        grid-template-columns: 126px 38px;
+        grid-template-columns: 241px 38px;
         align-items: center;
         grid-column-gap: 10px;
         -moz-column-gap: 10px;
         column-gap: 10px;
         transition: all 0.3 ease-in-out;
 
+        span {
+            &:nth-child(2) {
+                color: #919191 !important;
+                opacity: 0;
+                top: -19px;
+                font-size: 11px;
+                font-weight: $input-label-color-active-up;
+            }
+        }
+
         &.focus-multiple-label {
-            grid-template-columns: 241px 38px;
+            span {
+                &:nth-child(2) {
+                    transition-delay: 300ms;
+                    color: #919191 !important;
+                    opacity: 1;
+                    top: -19px;
+                }
+            }
         }
     }
 

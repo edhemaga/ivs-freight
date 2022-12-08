@@ -27,7 +27,7 @@ export class LoadModalProgressBarComponent implements OnChanges {
             this.activePercentageOfPaid = 100;
             this.status = {
                 status: this.disable ? 'disable' : 'low',
-                colorFilled: this.disable ? '#919191' : '#E57373',
+                colorFilled: this.disable ? 'transparent' : '#E57373',
             };
             return;
         } else {
@@ -41,7 +41,7 @@ export class LoadModalProgressBarComponent implements OnChanges {
         ) {
             this.status = {
                 status: this.disable ? 'disable' : 'low',
-                colorFilled: this.disable ? '#919191' : '#E57373',
+                colorFilled: this.disable ? 'transparent' : '#E57373',
             };
         } else if (
             this.activePercentageOfPaid > 30 &&
@@ -49,7 +49,7 @@ export class LoadModalProgressBarComponent implements OnChanges {
         ) {
             this.status = {
                 status: this.disable ? 'disable' : 'medium',
-                colorFilled: this.disable ? '#919191' : '#FFB74D',
+                colorFilled: this.disable ? 'transparent' : '#FFB74D',
             };
         } else if (
             this.activePercentageOfPaid > 60 &&
@@ -57,7 +57,7 @@ export class LoadModalProgressBarComponent implements OnChanges {
         ) {
             this.status = {
                 status: this.disable ? 'disable' : 'high',
-                colorFilled: this.disable ? '#919191' : '#4DB6A2',
+                colorFilled: this.disable ? 'transparent' : '#4DB6A2',
             };
         } else {
             this.status = null;
