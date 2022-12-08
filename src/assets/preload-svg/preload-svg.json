@@ -81,6 +81,10 @@
       "iconPath": "/assets/svg/common/colors/ic_color.svg"
     },
     {
+      "iconName": "ic_circle.svg",
+      "iconPath": "/assets/svg/common/colors/ic_circle.svg"
+    },
+    {
       "iconName": "ic_ac_compressor.svg",
       "iconPath": "/assets/svg/common/repair-pm/ic_ac_compressor.svg"
     },

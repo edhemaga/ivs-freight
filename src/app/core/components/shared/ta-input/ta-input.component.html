@@ -238,7 +238,8 @@
     <svg-icon
         class="input-dropdown-arrow {{ inputConfig.customClass }}"
         *ngIf="
-            ((inputConfig.isDropdown || inputConfig.dropdownLabel) &&
+            (!inputConfig.hideDropdownArrow &&
+                (inputConfig.isDropdown || inputConfig.dropdownLabel) &&
                 !inputConfig.multiSelectDropdownActive &&
                 !inputConfig.isDisabled) ||
             ((inputConfig.name === 'datepicker' ||
@@ -935,7 +936,8 @@
                 !focusInput,
             'disable-select-on-focus-out': !focusInput,
             'hide-placeholder-in-multiple-placeholder-input':
-                inputConfig?.multipleInputValues?.options?.length && focusInput
+                inputConfig?.multipleInputValues?.options?.length && focusInput,
+            connectedDropdown: inputConfig?.connectDropdown
         }"
         (keypress)="manipulateWithInput($event)"
         (keyup)="onKeyUp($event)"

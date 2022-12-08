@@ -60,6 +60,7 @@ export class TruckassistTableHeadComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        this.setColumnNameUpperCase();
         this.setVisibleColumns();
         this.getActiveTableData();
 
@@ -132,6 +133,15 @@ export class TruckassistTableHeadComponent
         }
     }
 
+    // Set Column Name To Upper Case
+    setColumnNameUpperCase() {
+        this.columns = this.columns.map((column) => {
+            column.name = column.name.toUpperCase();
+
+            return column;
+        });
+    }
+
     // Get Active Table Data
     getActiveTableData() {
         const td = this.tableData.find((t) => t.isActive);
@@ -168,6 +178,14 @@ export class TruckassistTableHeadComponent
                 this.pinedColumns.push(v);
 
                 this.pinedWidth += v.minWidth > v.width ? v.minWidth : v.width;
+
+                if (
+                    v.ngTemplate !== '' &&
+                    v.ngTemplate !== 'checkbox' &&
+                    v.ngTemplate !== 'user-checkbox'
+                ) {
+                    this.pinedWidth += 22;
+                }
             }
 
             /* Not Pined Columns */
@@ -201,7 +219,7 @@ export class TruckassistTableHeadComponent
             this.notPinedMaxWidth =
                 tableContainer.clientWidth -
                 (this.pinedWidth + this.actionsWidth) -
-                8;
+                12;
 
             this.changeDetectorRef.detectChanges();
         }

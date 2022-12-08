@@ -229,6 +229,7 @@
                     align-items: center;
 
                     .svgtext-template-logo {
+                        display: flex;
                         margin-right: 6px;
                         &.no-svg {
                             margin-right: 0px !important;
@@ -1212,6 +1213,11 @@
 
             &.w-col-116 {
                 width: 116px;
+            }
+
+            &.connectDropdown{
+                top: 0 !important;
+                border-radius: 0 0 2px 2px;
             }
 
             // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------

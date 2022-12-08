@@ -124,6 +124,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     public labelsCounty: any[] = [];
 
     public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
 
     public isFormDirty: boolean;
 
@@ -229,6 +231,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             customer: [null],
             boL: [null],
             cargo: [null],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.violationForm);
@@ -348,8 +351,32 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onFilesEvent(event) {
+    public onFilesEvent(event: any) {
         this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.violationForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.violationForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     public pickedSpecialChecks() {
@@ -362,6 +389,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     private updateViolation(id: number) {
         const { ...form } = this.violationForm.value;
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         const newData: any = {
             id: id,
@@ -384,8 +418,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             boL: form.boL,
             cargo: form.cargo,
             specialChecks: this.premmapedSpecialChecks(),
-            files: [],
-            filesForDeleteIds: [],
+            files: documents ? documents : this.violationForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.roadsideService
@@ -510,6 +544,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     this.selectedViolationCustomer = res.broker;
 
                     this.violationModalName = res.report;
+                    this.documents = res.files;
 
                     this.truckTypeConfig = {
                         ...this.truckTypeConfig,

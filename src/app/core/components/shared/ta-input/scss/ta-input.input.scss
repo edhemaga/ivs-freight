@@ -15,6 +15,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
+    &.connectedDropdown{
+        border-radius: 2px 2px 0 0 !important;
+    }
+
     &.datetimeclass:not(.disabled-filled) {
         letter-spacing: 1px;
         pointer-events: none;

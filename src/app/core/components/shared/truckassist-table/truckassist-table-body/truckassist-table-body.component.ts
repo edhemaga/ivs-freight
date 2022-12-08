@@ -310,13 +310,22 @@ export class TruckassistTableBodyComponent
                 this.pinedColumns.push(c);
 
                 this.pinedWidth += c.minWidth > c.width ? c.minWidth : c.width;
+
+                if (
+                    c.ngTemplate !== '' &&
+                    c.ngTemplate !== 'checkbox' &&
+                    c.ngTemplate !== 'user-checkbox'
+                ) {
+                    this.pinedWidth += 22;
+                }
             }
 
             // Not Pined
             if (!c.isPined && !c.isAction && !c.hidden) {
                 this.notPinedColumns.push(c);
 
-                notPinedWidth += c.minWidth > c.width ? c.minWidth : c.width;
+                notPinedWidth +=
+                    c.minWidth > c.width ? c.minWidth + 22 : c.width + 22;
             }
 
             // Actions
@@ -349,7 +358,7 @@ export class TruckassistTableBodyComponent
             this.notPinedMaxWidth =
                 tableContainer.clientWidth -
                 (this.pinedWidth + this.actionsWidth) -
-                8;
+                12;
 
             this.changeDetectorRef.detectChanges();
         }
