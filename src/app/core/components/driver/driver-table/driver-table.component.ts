@@ -503,6 +503,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
 
+        console.log('Driver Data');
+        console.log(this.tableData[1].data);
+
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setDriverData(td);
@@ -574,22 +577,30 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableDOB: data.dateOfBirth
                 ? this.datePipe.transform(data.dateOfBirth, 'MM/dd/yy')
                 : '',
-            tableAssignedUnitTruck: 'Nije Povezano',
-            tableAssignedUnitTruckType: null,
-            tableAssignedUnitTrailer: 'Nije Povezano',
-            tableAssignedUnitTrailerType: null,
-            tablePayrollDetailType: 'Nije Povezano',
+            tableAssignedUnitTruck: 'Nema podatak sa back-a',
+            tableAssignedUnitTruckType: 'Nema podatak sa back-a',
+            tableAssignedUnitTrailer: 'Nema podatak sa back-a',
+            tableAssignedUnitTrailerType: 'Nema podatak sa back-a',
+            tablePayrollDetailType: data?.payType?.name
+                ? data.payType.name
+                : '',
             tableBankDetailBankName: data?.bank?.name ? data.bank.name : '',
             tableBankDetailRouting: data.routing ? data.routing : '',
-            tableOwnerDetailsType: 'Nije Povezano',
-            tableOwnerDetailsBusinesName: 'Nije Povezano',
-            tableOwnerDetailsEin: 'Nije Povezano',
-            tableOffDutyLocation: null,
-            tableEmergContact: 'Nije Pvoezano',
-            tableTwicExp: null,
-            tableFuelCardDetailNumber: 'Nije Pvoezano',
-            tableFuelCardDetailType: 'Nije Povezano',
-            tableFuelCardDetailAccount: 'Nije Povezano',
+            tableOwnerDetailsType: data?.owner?.ownerType?.name
+                ? data.owner.ownerType.name
+                : '',
+            tableOwnerDetailsBusinesName: data?.owner?.name
+                ? data.owner.name
+                : '',
+            tableOwnerDetailsEin: data?.owner?.ssnEin ? data.owner.ssnEin : '',
+            tableOffDutyLocation: 'Nema podatak sa back-a',
+            tableEmergContact: data?.emergencyContactPhone
+                ? data.emergencyContactPhone
+                : '',
+            tableTwicExp: 'Treba da srede podaci za progres na back-u',
+            tableFuelCardDetailNumber: data?.fuelCard ? data.fuelCard : '',
+            tableFuelCardDetailType: 'Nema podatak sa back-a',
+            tableFuelCardDetailAccount: 'Nema podatak sa back-a',
             tableCdlDetailNumber: data?.cdlNumber
                 ? data.cdlNumber
                 : data?.cdls?.length
@@ -598,8 +609,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableCdlDetailState: data.address.stateShortName
                 ? data.address.stateShortName
                 : '',
-            tableCdlDetailEndorsment: null,
-            tableCdlDetailRestriction: null,
+            tableCdlDetailEndorsment: 'Nema podatak sa back-a',
+            tableCdlDetailRestriction: 'Nema podatak sa back-a',
             tableCdlDetailExpiration: {
                 expirationDays: data?.cdlExpirationDays
                     ? this.thousandSeparator.transform(data.cdlExpirationDays)
@@ -609,10 +620,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.cdlPercentage
                         : null,
             },
-            tableTestDetailsType: 'Nije Povezano',
-            tableTestDetailsReason: 'Nije Povezano',
-            tableTestDetailsIssued: 'Nije Povezano',
-            tableTestDetailsResult: 'Nije Povezano',
+            tableTestDetailsType: 'Nema podatak sa back-a',
+            tableTestDetailsReason: 'Nema podatak sa back-a',
+            tableTestDetailsIssued: 'Nema podatak sa back-a',
+            tableTestDetailsResult: 'Nema podatak sa back-a',
             tableMedicalData: {
                 expirationDays: data?.medicalExpirationDays
                     ? this.thousandSeparator.transform(
@@ -633,14 +644,23 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.mvrPercentage
                         : null,
             },
-            tabelNotificationGeneral: 'Nije Povezano',
-            tabelNotificationPayroll: 'Nije Povezano',
+
+            tabelNotificationGeneral: `${
+                data?.general?.mailNotification ? 'Email•' : ''
+            }${data?.general?.pushNotification ? 'Push•' : ''}${
+                data?.general?.smsNotification ? 'SMS' : ''
+            }`,
+            tabelNotificationPayroll: `${
+                data?.payroll?.mailNotification ? 'Email•' : ''
+            }${data?.payroll?.pushNotification ? 'Push•' : ''}${
+                data?.payroll?.smsNotification ? 'SMS' : ''
+            }`,
             tabelHired: data.hired
                 ? this.datePipe.transform(data.hired, 'MM/dd/yy')
                 : '',
-            tableTerminated: 'Nije Povezano',
-            tableAdded: 'Nije Povezano',
-            tableEdited: 'Nije Povezano',
+            tableTerminated: 'Nema podatak sa back-a',
+            tableAdded: 'Nema podatak sa back-a',
+            tableEdited: 'Nema podatak sa back-a',
             tableAttachments: data?.files ? data.files : [],
         };
     }
