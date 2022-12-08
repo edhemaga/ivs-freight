@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { DispatchShortResponse } from './dispatchShortResponse';
+import { TruckMakeResponse } from './truckMakeResponse';
 import { EnumValue } from './enumValue';
 import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
 import { ColorResponse } from './colorResponse';
@@ -17,10 +18,6 @@ import { TruckEngineModelResponse } from './truckEngineModelResponse';
 import { OwnerDetailsResponse } from './ownerDetailsResponse';
 import { TireSizeResponse } from './tireSizeResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
-import { InspectionResponse } from './inspectionResponse';
-import { TitleResponse } from './titleResponse';
-import { TruckMakeResponse } from './truckMakeResponse';
-import { RegistrationResponse } from './registrationResponse';
 import { OwnerHistoryResponse } from './ownerHistoryResponse';
 
 
@@ -68,9 +65,6 @@ export interface TruckResponse {
     pto?: boolean | null;
     createdAt?: string;
     updatedAt?: string;
-    registrations?: Array<RegistrationResponse> | null;
-    inspections?: Array<InspectionResponse> | null;
-    titles?: Array<TitleResponse> | null;
     ownerHistories?: Array<OwnerHistoryResponse> | null;
     assignedTo?: DispatchShortResponse;
 }
