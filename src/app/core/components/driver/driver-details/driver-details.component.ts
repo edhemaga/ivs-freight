@@ -23,6 +23,8 @@ import { CdlTService } from '../state/cdl.service';
 import { Subject, take, takeUntil } from 'rxjs';
 import { DriversDetailsListQuery } from '../state/driver-details-list-state/driver-details-list.query';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
+import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
 
 @Component({
     selector: 'app-driver-details',
@@ -66,16 +68,23 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private dropDownService: DropDownService,
         private driverDQuery: DriversDetailsListQuery,
         private cdlService: CdlTService,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private DriversDetailsListStore: DriversDetailsListStore,
+        private DriversItemStore: DriversItemStore,
     ) {}
 
     ngOnInit() {
+        
+
+        let dataId = this.activated_route.snapshot.params.id;
+        let driverData = {...this.DriversItemStore?.getValue()?.entities[dataId]};
+     
         this.currentIndex = this.driversList.findIndex(
             (driver) =>
-                driver.id === this.activated_route.snapshot.data.driver.id
+                driver.id === driverData.id
         );
-
-        this.detailCongif(this.activated_route.snapshot.data.driver);
+        
+        this.detailCongif(driverData);
         if (this.cdlActiveId > 0) {
             this.getCdlById(this.cdlActiveId);
         }
@@ -138,7 +147,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     query = this.driverService.getDriverById(id);
                 }
                 query.subscribe({
-                    next: (res: DriverResponse) => {
+                    next: (res: any) => {
+
                         this.currentIndex = this.driversList.findIndex(
                             (driver) => driver.id === res.id
                         );
@@ -162,7 +172,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
 
     /**Function template and names for header and other options in header */
-    public detailCongif(dataDriver: DriverResponse) {
+    public detailCongif(dataDriver: any) {
         this.DetailsDataService.setNewData(dataDriver);
         this.driverObject = dataDriver;
         this.initTableOptions(dataDriver);
@@ -227,16 +237,14 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             },
         ];
         this.driverId = dataDriver?.id ? dataDriver.id : null;
-        console.log('--driverDetailsConfig---', this.driverDetailsConfig);
     }
-    checkExpiration(data: DriverResponse) {
+    checkExpiration(data: any) {
         this.hasDangerCDL = false;
         this.hasDangerMedical = false;
         this.hasDangerMvr = false;
         this.arrayCDL = [];
         this.arrayMedical = [];
         this.arrayMvrs = [];
-
         data?.cdls?.map((el) => {
             if (moment(el.expDate).isAfter(moment())) {
                 this.arrayCDL.push(false);
@@ -245,7 +253,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 this.arrayCDL.push(true);
             }
         });
-
         data?.medicals?.map((el) => {
             if (moment(el.expDate).isAfter(moment())) {
                 this.arrayMedical.push(false);
@@ -254,7 +261,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 this.arrayMedical.push(true);
             }
         });
-
         // if(data.mvrs.length>0){
         //   data?.mvrs.map((el)=>{
         //     if(moment(el.issueDate).isAfter(moment())){
@@ -278,7 +284,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
 
     /**Function for dots in cards */
-    public initTableOptions(data: DriverResponse): void {
+    public initTableOptions(data: any): void {
         this.arrayActiveCdl = [];
         this.isActiveCdl = false;
         this.cdlActiveId = 0;

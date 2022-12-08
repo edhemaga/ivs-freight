@@ -1,4 +1,3 @@
-import { CdlService } from './../../../../../../appcoretruckassist/api/cdl.service';
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
@@ -9,6 +8,10 @@ import {
     DriverResponse,
     GetDriverModalResponse,
     OwnerService,
+    CdlService,
+    MedicalService,
+    MvrService,
+    TestService
 } from 'appcoretruckassist';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
@@ -43,7 +46,10 @@ export class DriverTService {
         private tableService: TruckassistTableService,
         private driverItemStore: DriversItemStore,
         private dlStore: DriversDetailsListStore,
-        private formDataService: FormDataService
+        private formDataService: FormDataService,
+        private MedicalService: MedicalService,
+        private MvrService: MvrService,
+        private TestService: TestService,
     ) {}
 
     // Get Driver Minimal List
@@ -97,7 +103,7 @@ export class DriverTService {
                 const subDriver = this.getDriverById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             driver = {
                                 ...driver,
                                 fullName:
@@ -173,7 +179,7 @@ export class DriverTService {
                 const driverSub = this.getDriverById(this.driverId, true)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             this.tableService.sendActionAnimation({
                                 animation: 'delete',
                                 data: driver,
@@ -268,10 +274,15 @@ export class DriverTService {
         this.formDataService.extractFormDataFromFunction(data);
         return this.driverService.apiDriverPut().pipe(
             tap((res: any) => {
+
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[data.id];
+     
                 const subDriver = this.getDriverById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             this.driverActiveStore.remove(
                                 ({ id }) => id === data.id
                             );
@@ -283,6 +294,11 @@ export class DriverTService {
                                 fullName:
                                     driver.firstName + ' ' + driver.lastName,
                             };
+
+                            driver.cdls = newData.cdls;
+                            driver.medicals = newData.medicals;
+                            driver.mvrs = newData.mvrs;
+                            driver.tests = newData.tests;
 
                             this.driverActiveStore.add(driver);
                             this.driverMinimimalListStore.add(driver);
@@ -296,6 +312,7 @@ export class DriverTService {
                             subDriver.unsubscribe();
                         },
                     });
+                 
             })
         );
     }
@@ -432,5 +449,30 @@ export class DriverTService {
                     // });
                 })
             );
+    }
+
+
+    public getDriverCdlsById(
+        driverId: number,
+    ){
+        return this.cdlService.apiCdlListGet(driverId);
+    }
+
+    public getDriverTestById(
+        driverId: number,
+        ){
+        return this.TestService.apiTestListGet(driverId);
+    }
+
+    public getDriverMedicalsById(
+        driverId: number,
+    ){
+        return this.MedicalService.apiMedicalListGet(driverId);
+    }
+
+    public getDriverMvrsById(
+        driverId: number
+    ){
+        return this.MvrService.apiMvrModalDriverIdGet(driverId);
     }
 }

@@ -68,7 +68,7 @@ export class DriverDetailsItemComponent
 {
     private destroy$ = new Subject<void>();
     @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-    @Input() drivers: DriverResponse | any = null;
+    @Input() drivers: any = null;
     public cdlNote: FormControl = new FormControl();
     public mvrNote: FormControl = new FormControl();
     public testNote: FormControl = new FormControl();
@@ -200,7 +200,6 @@ export class DriverDetailsItemComponent
             };
         });
 
-        console.log('----this.dataCdl', this.dataCDl)
     }
     public getNameForDrop(name: string, cdlId?: number) {
         this.templateName = name === 'cdl' ? false : true;
@@ -213,10 +212,11 @@ export class DriverDetailsItemComponent
         }
     }
     /**Function for dots in cards */
-    public initTableOptions(data: DriverResponse): void {
+    public initTableOptions(data: any): void {
         this.arrayOfRenewCdl = [];
         this.activateShow = [];
         this.expiredCard = [];
+        
         data?.cdls?.map((item) => {
             let endDate = moment(item.expDate);
             let daysDiff = endDate.diff(moment(), 'days');
@@ -238,7 +238,7 @@ export class DriverDetailsItemComponent
                 this.arrayOfRenewCdl.push(false);
             }
         });
-
+        
         this.dataDropDown = {
             disabledMutedStyle: null,
             toolbarActions: {

@@ -62,7 +62,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public dataEdit: any;
     private destroy$ = new Subject<void>();
     @Input() templateCard: boolean = false;
-    @Input() truck: TruckResponse | any;
+    @Input() truck: any | any;
     public ownersData: any;
     public truck_list: any[] = this.truckMinimalListQuery.getAll();
 

@@ -8,6 +8,9 @@ import {
     TrailerResponse,
     TrailerService,
     UpdateTrailerCommand,
+    RegistrationService,
+    TitleService,
+    InspectionService
 } from 'appcoretruckassist';
 import { TrailerActiveStore } from './trailer-active-state/trailer-active.store';
 import { TrailerInactiveStore } from './trailer-inactive-state/trailer-inactive.store';
@@ -35,13 +38,17 @@ export class TrailerTService implements OnDestroy {
         private trailerItemStore: TrailerItemStore,
         private trailerMinimalQuery: TrailersMinimalListQuery,
         private trailerMinimalStore: TrailersMinimalListStore,
-        private tadl: TrailerDetailsListStore
+        private tadl: TrailerDetailsListStore,
+        private RegistrationService: RegistrationService,
+        private TitleService: TitleService,
+        private InspectionService: InspectionService,
     ) {}
 
     /* Observable<CreateTrailerResponse> */
     public addTrailer(data: CreateTrailerCommand): Observable<any> {
         return this.trailerService.apiTrailerPost(data).pipe(
             tap((res: any) => {
+                console.log('---called here---')
                 const subTrailer = this.getTrailerById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -113,13 +120,19 @@ export class TrailerTService implements OnDestroy {
     public updateTrailer(data: UpdateTrailerCommand): Observable<any> {
         return this.trailerService.apiTrailerPut(data).pipe(
             tap(() => {
+                let storedTrailerData = {...this.trailerItemStore?.getValue()?.entities[data.id]};
+                console.log('---called here---')
                 const subTrailer = this.getTrailerById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (trailer: TrailerResponse | any) => {
+                        next: (trailer: any) => {
                             this.trailerActiveStore.remove(
                                 ({ id }) => id === data.id
                             );
+                            
+                            trailer.registrations = storedTrailerData.registrations;
+                            trailer.titles = storedTrailerData.titles;
+                            trailer.inspections = storedTrailerData.inspections;
 
                             this.trailerActiveStore.add(trailer);
                             this.tadl.replace(trailer.id, trailer);
@@ -170,6 +183,7 @@ export class TrailerTService implements OnDestroy {
                         inactive: trailerCount.inactive,
                     })
                 );
+                console.log('---called here---')
                 const subTrailer = this.getTrailerById(this.trailerId, true)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -269,6 +283,42 @@ export class TrailerTService implements OnDestroy {
         }
 
         return this.trailerService.apiTrailerIdGet(trailerId);
+    }
+
+    public getTrailerRegistrationsById(
+        trailerId: number,
+    ){
+        return this.RegistrationService.apiRegistrationListGet(undefined,trailerId);
+    }
+
+    public getTrailerRegistrationByRegistrationId(
+        registrationId: number,
+    ){
+        return this.RegistrationService.apiRegistrationIdGet(registrationId);
+    }
+
+    public getTrailerInspectionsById(
+        trailerId: number,
+    ){
+        return this.InspectionService.apiInspectionListGet(undefined,trailerId);
+    }
+
+    public getTrailerInspectionByInspectionId(
+        inspectionId: number,
+    ){
+        return this.InspectionService.apiInspectionIdGet(inspectionId);
+    }
+
+    public getTrailerTitlesById(
+        trailerId: number,
+    ){
+        return this.TitleService.apiTitleListGet(undefined,trailerId);
+    }
+
+    public getTrailerTitleByTitleId(
+        titleId: number,
+    ){
+        return this.TitleService.apiTitleIdGet(titleId);
     }
 
     public changeTrailerStatus(

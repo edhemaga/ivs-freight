@@ -61,7 +61,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
     @ViewChildren('fhwaUpload') fhwaUpload: any;
     @ViewChildren('registrationUpload') registrationUpload: any;
     @ViewChildren('titleUpload') titleUpload: any;
-    @Input() truck: TruckResponse | any = null;
+    @Input() truck: any | any = null;
     public note: FormControl = new FormControl();
     public fhwaNote: FormControl = new FormControl();
     public purchaseNote: FormControl = new FormControl();

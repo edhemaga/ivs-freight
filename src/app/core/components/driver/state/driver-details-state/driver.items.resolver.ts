@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { DriverResponse } from '../../../../../../../appcoretruckassist';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { DriverTService } from '../driver.service';
 import { DriversItemStore } from './driver-details.store';
@@ -23,8 +23,55 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
         private router: Router
     ) {}
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
+
         const driver_id = route.paramMap.get('id');
         let drid = parseInt(driver_id);
+
+
+        const driverData$ = this.driverService.getDriverById(
+            drid,
+        );
+
+        const driverCdl$ = this.driverService.getDriverCdlsById(
+            drid,
+        );
+
+        const driverTest$ = this.driverService.getDriverTestById(
+            drid,
+        );
+
+        const driverMedical$ = this.driverService.getDriverMedicalsById(
+            drid,
+        );
+
+        const driverMvr$ = this.driverService.getDriverMvrsById(
+            drid,
+        );
+
+        
+        return forkJoin({
+            driverData: driverData$,
+            driverCdl: driverCdl$,
+            driverTest: driverTest$,
+            driverMedical: driverMedical$,
+            driverMvr: driverMvr$,
+        }).pipe(
+            tap((data) => {
+                
+                let driverData = data.driverData;
+                driverData.cdls = data.driverCdl;
+                driverData.tests = data.driverTest;
+                driverData.medicals = data.driverMedical;
+                driverData.mvrs = data.driverMvr;
+
+                this.driverDetailsListStore.add(driverData);
+                this.driverItemStore.set([driverData]);
+                
+            })
+        );     
+
+
+        /*
         if (this.driverDetailsListQuery.hasEntity(drid)) {
             return this.driverDetailsListQuery.selectEntity(drid).pipe(
                 tap((driverResponse: DriverResponse) => {
@@ -44,5 +91,7 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
                 })
             );
         }
+        */
+        
     }
 }

@@ -502,7 +502,7 @@ export class DriverDetailsCardComponent
     }
 
     /**Function for dots in cards */
-    public initTableOptionsCard(data: DriverResponse): void {
+    public initTableOptionsCard(data: any): void {
         this.dropData = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -557,7 +557,7 @@ export class DriverDetailsCardComponent
         };
     }
 
-    public getExpireDate(data: DriverResponse) {
+    public getExpireDate(data: any) {
         this.dataCDl = data?.cdls?.map((ele) => {
             if (moment(ele.expDate).isBefore(moment())) {
                 this.expDateCard = false;

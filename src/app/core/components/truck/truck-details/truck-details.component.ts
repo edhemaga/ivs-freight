@@ -17,6 +17,7 @@ import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state
 import { TrucksMinimalListStore } from '../state/truck-details-minima-list-state/truck-details-minimal.store';
 import { TruckTService } from '../state/truck.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { TruckItemStore } from '../../truck/state/truck-details-state/truck.details.store';
 
 @Component({
     selector: 'app-truck-details',
@@ -51,11 +52,16 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
         private truckMinimalStore: TrucksMinimalListStore,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private TruckItemStore: TruckItemStore
     ) {}
 
     ngOnInit(): void {
-        this.initTableOptions(this.activated_route.snapshot.data.truck);
+
+        let dataId = this.activated_route.snapshot.params.id;
+        let truckData = {...this.TruckItemStore?.getValue()?.entities[dataId]};
+       
+        this.initTableOptions(truckData);
 
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
@@ -104,7 +110,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     query = this.truckTService.getTruckById(id);
                 }
                 query.pipe(takeUntil(this.destroy$)).subscribe({
-                    next: (res: TruckResponse) => {
+                    next: (res: any) => {
                         this.truckConf(res);
                         this.initTableOptions(res);
                         if (this.router.url.includes('details')) {
@@ -116,7 +122,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     error: () => {},
                 });
             });
-        this.truckConf(this.activated_route.snapshot.data.truck);
+        this.truckConf(truckData);
     }
     /**Function retrun id */
     public identity(index: number, item: any): number {
@@ -130,6 +136,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.truckTService
             .getTruckById(id, true)
             .subscribe((item) => (this.truckObject = item));
+            
     }
     public deleteTruckById(id: number) {
         let status = this.truckObject.status == 0 ? 'inactive' : 'active';
@@ -180,7 +187,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         );
     }
     /**Function for dots in cards */
-    public initTableOptions(data: TruckResponse): void {
+    public initTableOptions(data: any): void {
         this.currentIndex = this.truckList.findIndex(
             (truck) => truck.id === data.id
         );
@@ -281,7 +288,9 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        const truck = this.activated_route.snapshot.data.truck;
+        let dataId = this.activated_route.snapshot.params.id;
+        let truckData = {...this.TruckItemStore?.getValue()?.entities[dataId]};
+        const truck = truckData;
 
         switch (action.toLowerCase()) {
             case 'registration': {
@@ -329,7 +338,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    public truckConf(data: TruckResponse) {
+    public truckConf(data: any) {
+        //console.log('---data---', data);
         this.DetailsDataService.setNewData(data);
         this.truckDetailsConfig = [
             {

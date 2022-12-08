@@ -46,7 +46,7 @@ import { animate, style, transition, trigger, state } from '@angular/animations'
 export class TrailerDetailsCardComponent
     implements OnInit, OnChanges, OnDestroy
 {
-    @Input() trailer: TrailerResponse | any;
+    @Input() trailer: any;
     @Input() templateCard: boolean = false;
     public note: FormControl = new FormControl();
     public titleNote: FormControl = new FormControl();

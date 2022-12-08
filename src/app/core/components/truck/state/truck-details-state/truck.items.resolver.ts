@@ -6,7 +6,7 @@ import {
     Router,
     RouterStateSnapshot,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { TruckTService } from '../truck.service';
 import { TruckItemState, TruckItemStore } from './truck.details.store';
@@ -30,6 +30,45 @@ export class TruckItemResolver implements Resolve<TruckItemState> {
     ): Observable<TruckItemState> | Observable<any> {
         const truck_id = route.paramMap.get('id');
         let trid = parseInt(truck_id);
+
+
+        const truckData$ = this.truckService.getTruckById(
+            trid,
+        );
+
+        const truckRegistration$ = this.truckService.getTruckRegistrationsById(
+            trid,
+        );
+
+        const truckInspection$ = this.truckService.getTruckInspectionsById(
+            trid,
+        );
+
+        const truckTitles$ = this.truckService.getTruckTitlesById(
+            trid,
+        );
+        
+         
+        return forkJoin({
+            truckData: truckData$,
+            truckRegistrations: truckRegistration$,
+            truckInspection: truckInspection$,
+            truckTitles: truckTitles$,
+        }).pipe(
+            tap((data) => {
+                //console.log('---data--', data);
+                let truckData = data.truckData;
+                truckData.registrations = data.truckRegistrations;
+                truckData.inspections = data.truckInspection;
+                truckData.titles = data.truckTitles;
+                this.truckDetailsListStore.add(truckData);
+                this.truckDetailsStore.set([truckData]);
+                
+            })
+        ); 
+
+
+        /*
         if (this.truckDetailsListQuery.hasEntity(trid)) {
             return this.truckDetailsListQuery.selectEntity(trid).pipe(
                 tap((truckResponse: TruckResponse) => {
@@ -49,5 +88,7 @@ export class TruckItemResolver implements Resolve<TruckItemState> {
                 })
             );
         }
+
+        */
     }
 }

@@ -7,7 +7,7 @@ import {
     Router,
     RouterStateSnapshot,
 } from '@angular/router';
-import { Observable, tap, of } from 'rxjs';
+import { Observable, tap, of, forkJoin } from 'rxjs';
 import { catchError, take } from 'rxjs/operators';
 import { TrailerTService } from '../trailer.service';
 
@@ -26,6 +26,7 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
         private trailerDetailListStore: TrailerDetailsListStore,
         private router: Router
     ) {}
+    
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
@@ -33,15 +34,56 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
         const trailer_id = route.paramMap.get('id');
         let trid = parseInt(trailer_id);
 
-        console.log('--here-----')
+
+        const trailerData$ = this.trailerService.getTrailerById(
+            trid,
+        );
+
+        const trailerRegistration$ = this.trailerService.getTrailerRegistrationsById(
+            trid,
+        );
+
+        const trailerInspection$ = this.trailerService.getTrailerInspectionsById(
+            trid,
+        );
+
+        const trailerTitles$ = this.trailerService.getTrailerTitlesById(
+            trid,
+        );
+        
+
+        return forkJoin({
+                trailerData: trailerData$,
+                trailerRegistrations: trailerRegistration$,
+                trailerInspection: trailerInspection$,
+                trailerTitles: trailerTitles$,
+            }).pipe(
+                tap((data) => {
+                    //console.log('---data--', data);
+                    let trailerData = data.trailerData;
+                    trailerData.registrations = data.trailerRegistrations;
+                    trailerData.inspections = data.trailerInspection;
+                    trailerData.titles = data.trailerTitles;
+                    this.trailerDetailListStore.add(trailerData);
+                    this.trailerDetailStore.set([trailerData]);
+                    
+                })
+            );        
+
+        /*
+
         if (this.trailerDetailListQuery.hasEntity(trid)) {
+            console.log("-iffff--")
             return this.trailerDetailListQuery.selectEntity(trid).pipe(
                 tap((trailerResponse: TrailerResponse) => {
+                    console.log('trailerResponse---', trailerResponse);
+                    this.trailerDetailListStore.add(trailerResponse);
                     this.trailerDetailStore.set([trailerResponse]);
                 }),
                 take(1)
             );
         } else {
+            
             return this.trailerService.getTrailerById(trid).pipe(
                 catchError((error) => {
                     this.router.navigate(['/trailer']);
@@ -54,6 +96,9 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
                     this.trailerDetailStore.set([trailerReponse]);
                 })
             );
+
+           
         }
+         */
     }
 }

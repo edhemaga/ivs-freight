@@ -223,7 +223,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: DriverResponse) => {
+                next: (res: any) => {
                     this.modalName = res.firstName.concat(' ', res.lastName);
                 },
                 error: () => {},

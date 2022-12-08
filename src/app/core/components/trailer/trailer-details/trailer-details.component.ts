@@ -17,6 +17,7 @@ import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trailer-details.store';
 
 @Component({
     selector: 'app-trailer-details',
@@ -46,11 +47,15 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private trailerMinimalQuery: TrailersMinimalListQuery,
         private trailerMinimalStore: TrailersMinimalListStore,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private trailerItemStore: TrailerItemStore,
     ) {}
 
     ngOnInit(): void {
-        this.initTableOptions(this.activated_route.snapshot.data.trailer);
+        let dataId = this.activated_route.snapshot.params.id;
+        let trailerData = {...this.trailerItemStore?.getValue()?.entities[dataId]};
+        this.initTableOptions(trailerData);
+        
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
@@ -114,10 +119,11 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     },
                 });
             });
-        this.trailerConf(this.activated_route.snapshot.data.trailer);
+        this.trailerConf(trailerData);
     }
 
-    trailerConf(data: TrailerResponse) {
+    trailerConf(data: any) {
+        //console.log('--data--', data);
         this.DetailsDataService.setNewData(data);
         this.trailerDetailsConfig = [
             {
@@ -166,11 +172,12 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         this.trailerId = data?.id ? data.id : 0;
     }
     /**Function for dots in cards */
-    public initTableOptions(data: TrailerResponse): void {
+    public initTableOptions(data: any): void {
         this.currentIndex = this.trailerList.findIndex(
             (trailer) => trailer.id === data.id
         );
-        this.getTrailerById(data.id);
+        console.log('---called here---')
+        //this.getTrailerById(data.id);
         this.dataHeaderDropDown = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -322,7 +329,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         );
     }
     public onModalAction(action: string): void {
-        const trailer = this.activated_route.snapshot.data.trailer;
+        let dataId = this.activated_route.snapshot.params.id;
+        let trailer = {...this.trailerItemStore?.getValue()?.entities[dataId]};
         switch (action.toLowerCase()) {
             case 'registration': {
                 this.modalService.openModal(

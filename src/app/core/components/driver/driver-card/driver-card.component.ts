@@ -42,7 +42,7 @@ export class DriverCardComponent implements OnInit, OnDestroy {
                     .selectEntity(id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (res: DriverResponse) => {
+                        next: (res: any) => {
                             this.selectedData = res;
                             if (this.router.url.includes('details')) {
                                 this.router.navigate([
