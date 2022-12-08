@@ -409,7 +409,8 @@
         &.landscape-details-view,
         &.todo-details,
         &.company-details-pdf,
-        &.modals {
+        &.modals,
+        &.table-details {
             position: relative;
 
             .ng2-pdf-viewer-container {
@@ -508,10 +509,29 @@
             height: 200px;
 
             .ng2-pdf-viewer-container {
-                width: 178px !important;
+                width: 192px !important;
                 height: 192px !important;
                 border-radius: 1px !important;
-                margin-left: 7px;
+
+                .canvasWrapper,
+                .pdfViewer,
+                .pdfViewer .page,
+                canvas {
+                    max-width: 192px !important;
+                    max-height: 192px !important;
+                    min-width: 150px;
+                }
+            }
+        }
+
+        &.table-details {
+            width: 200px;
+            height: 200px;
+
+            .ng2-pdf-viewer-container {
+                width: 192px !important;
+                height: 192px !important;
+                border-radius: 1px !important;
 
                 .canvasWrapper,
                 .pdfViewer,
@@ -721,7 +741,7 @@
             }
 
             &.todo_title {
-                max-width: 127px;
+                max-width: 192px;
             }
         }
     }
@@ -741,7 +761,8 @@
     &.landscape-details-view,
     &.todo-details,
     &.company-details-pdf,
-    &.modals {
+    &.modals,
+    &.table-details {
         .ta-upload-file-footer {
             opacity: 0;
             border-radius: 2px;
@@ -906,6 +927,10 @@
             right: -4px;
 
             width: 420px;
+
+            .ta-upload-file-name {
+                max-width: 420px;
+            }
         }
 
         .ta-upload-file-tag {
@@ -953,6 +978,32 @@
             right: -4px;
 
             width: 192px;
+        }
+
+        .ta-upload-file-tag {
+            bottom: 56px;
+        }
+
+        .ta-upload-file-delete-template {
+            width: 192px;
+            height: 192px;
+        }
+    }
+
+    &.table-details {
+        width: 200px;
+        height: 200px;
+        grid-template-rows: 200px;
+
+        .ta-upload-file-footer {
+            bottom: 37px;
+            right: -4px;
+
+            width: 192px;
+
+            .ta-upload-file-name {
+                max-width: 192px;
+            }
         }
 
         .ta-upload-file-tag {

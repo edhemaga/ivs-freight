@@ -3757,7 +3757,7 @@
                                 <!-- Title -->
                                 <div class="document-title">
                                     <div class="document-count-title">
-                                        4 DOCUMENT
+                                        {{row?.tableAttachments?.length}} {{row?.tableAttachments?.length > 1 ? 'DOCUMENTS' : 'DOCUMENT'}}
                                     </div>
                                     <div class="download-document-btn">
                                         <svg-icon
@@ -3778,15 +3778,14 @@
                                 <!-- Attachments -->
                                 <div class="attacment-container">
                                     <app-ta-upload-files
-                                        [customClassName]="'todo-details'"
+                                        [customClassName]="'table-details'"
                                         [files]="
                                             row?.tableAttachments
                                                 ? row.tableAttachments
                                                 : []
                                         "
-                                        [size]="'extraLarge'"
+                                        [size]="'extralarge'"
                                         [reviewMode]="'REVIEW_MODE'"
-                                        [type]="'todo'"
                                         [slideWidth]="209"
                                     ></app-ta-upload-files>
                                 </div>

@@ -178,6 +178,29 @@
         }
     }
 
+    &.table-details {
+        grid-template-rows: 200px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 200px;
+        }
+
+        .ta-upload-carousel-control-bg {
+            &.prev {
+                left: 1.5%;
+            }
+
+            &.next {
+                left: 94%;
+                padding-left: 1px;
+            }
+
+            .ta-upload-files-control {
+                line-height: 24px;
+            }
+        }
+    }
+
     // Carousel Button Tabs
     .carousel-tabs-control {
         display: flex;

@@ -23,6 +23,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+import { FilesService } from 'src/app/core/services/shared/files.service';
 
 @Component({
     selector: 'app-truckassist-table-body',
@@ -111,7 +112,8 @@ export class TruckassistTableBodyComponent
         private tableService: TruckassistTableService,
         private changeDetectorRef: ChangeDetectorRef,
         private sharedService: SharedService,
-        private detailsDataService: DetailsDataService
+        private detailsDataService: DetailsDataService,
+        private filesService: FilesService
     ) {}
 
     // --------------------------------NgOnInit---------------------------------
@@ -506,6 +508,11 @@ export class TruckassistTableBodyComponent
     onShowAttachments(row: any) {
         if (this.activeAttachment !== row.id) {
             this.activeAttachment = row.id;
+
+            this.filesService.getFiles(this.activeTableData?.gridNameTitle, row.id).subscribe((res) => {
+                row.tableAttachments = res;
+                this.changeDetectorRef.detectChanges();
+            });
         } else {
             this.activeAttachment = -1;
         }
