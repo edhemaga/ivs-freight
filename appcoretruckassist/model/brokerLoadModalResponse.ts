@@ -16,6 +16,7 @@ export interface BrokerLoadModalResponse {
     id?: number;
     businessName?: string | null;
     availableCredit?: number | null;
+    creditLimit?: number | null;
     availableCreditType?: EnumValue;
     payTerm?: EnumValue;
     dnu?: boolean;
