@@ -565,30 +565,42 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...data,
             isSelected: false,
             isOwner: data?.owner ? data.owner : false,
-            textAddress: data.address.address ? data.address.address : '',
             textShortName: this.nameInitialsPipe.transform(data.fullName),
             avatarColor: this.getAvatarColors(),
             avatarImg: data?.avatar
                 ? this.imageBase64Service.sanitizer(data.avatar)
                 : '',
-            textDOB: data.dateOfBirth
+            tableAddress: data.address.address ? data.address.address : '',
+            tableDOB: data.dateOfBirth
                 ? this.datePipe.transform(data.dateOfBirth, 'MM/dd/yy')
                 : '',
-            textHired: data.hired
-                ? this.datePipe.transform(data.hired, 'MM/dd/yy')
-                : '',
-            textCDL: data?.cdlNumber
+            tableAssignedUnitTruck: 'Nije Povezano',
+            tableAssignedUnitTruckType: null,
+            tableAssignedUnitTrailer: 'Nije Povezano',
+            tableAssignedUnitTrailerType: null,
+            tablePayrollDetailType: 'Nije Povezano',
+            tableBankDetailBankName: data?.bank?.name ? data.bank.name : '',
+            tableBankDetailRouting: data.routing ? data.routing : '',
+            tableOwnerDetailsType: 'Nije Povezano',
+            tableOwnerDetailsBusinesName: 'Nije Povezano',
+            tableOwnerDetailsEin: 'Nije Povezano',
+            tableOffDutyLocation: null,
+            tableEmergContact: 'Nije Pvoezano',
+            tableTwicExp: null,
+            tableFuelCardDetailNumber: 'Nije Pvoezano',
+            tableFuelCardDetailType: 'Nije Povezano',
+            tableFuelCardDetailAccount: 'Nije Povezano',
+            tableCdlDetailNumber: data?.cdlNumber
                 ? data.cdlNumber
                 : data?.cdls?.length
                 ? data.cdls[0].cdlNumber
                 : '',
-            textState: data.address.stateShortName
+            tableCdlDetailState: data.address.stateShortName
                 ? data.address.stateShortName
                 : '',
-            textBank: data?.bank?.name ? data.bank.name : '',
-            textAccount: data.account ? data.account : '',
-            textRouting: data.routing ? data.routing : '',
-            tableCDLData: {
+            tableCdlDetailEndorsment: null,
+            tableCdlDetailRestriction: null,
+            tableCdlDetailExpiration: {
                 expirationDays: data?.cdlExpirationDays
                     ? this.thousandSeparator.transform(data.cdlExpirationDays)
                     : null,
@@ -597,6 +609,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.cdlPercentage
                         : null,
             },
+            tableTestDetailsType: 'Nije Povezano',
+            tableTestDetailsReason: 'Nije Povezano',
+            tableTestDetailsIssued: 'Nije Povezano',
+            tableTestDetailsResult: 'Nije Povezano',
             tableMedicalData: {
                 expirationDays: data?.medicalExpirationDays
                     ? this.thousandSeparator.transform(
@@ -608,7 +624,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.medicalPercentage
                         : null,
             },
-            tableMvrData: {
+            tableMvrDetailsExpiration: {
                 expirationDays: data?.mvrExpirationDays
                     ? this.thousandSeparator.transform(data.mvrExpirationDays)
                     : null,
@@ -617,75 +633,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.mvrPercentage
                         : null,
             },
-            tableDrugOrAlcoholTest: null,
-            textPayType: data?.payType?.name ? data.payType.name : '',
-            textTeam: [
-                {
-                    title: 'Loaded',
-                    value: data?.team?.loadedMile
-                        ? '$' +
-                          this.thousandSeparator.transform(data.team.loadedMile)
-                        : null,
-                },
-                {
-                    title: 'Empty',
-                    value: data?.team?.emptyMile
-                        ? '$' +
-                          this.thousandSeparator.transform(data.team.emptyMile)
-                        : null,
-                },
-                {
-                    title: 'Per Stop',
-                    value: data?.team?.perStop
-                        ? '$' +
-                          this.thousandSeparator.transform(data.team.perStop)
-                        : null,
-                },
-            ],
-            textSolo: [
-                {
-                    title: 'Loaded',
-                    value: data?.solo?.loadedMile
-                        ? '$' +
-                          this.thousandSeparator.transform(data.solo.loadedMile)
-                        : null,
-                },
-                {
-                    title: 'Empty',
-                    value: data?.solo?.emptyMile
-                        ? '$' +
-                          this.thousandSeparator.transform(data.solo.emptyMile)
-                        : null,
-                },
-                {
-                    title: 'Per Stop',
-                    value: data?.solo?.perStop
-                        ? '$' +
-                          this.thousandSeparator.transform(data.solo.perStop)
-                        : null,
-                },
-            ],
-            textFuelCard: data?.fuelCard ? data.fuelCard : '',
-            textEmergencyContact: [
-                {
-                    title: 'First Name',
-                    value: data?.emergencyContactName
-                        ? data.emergencyContactName
-                        : null,
-                },
-                {
-                    title: 'Phone',
-                    value: data?.emergencyContactPhone
-                        ? data.emergencyContactPhone
-                        : null,
-                },
-                {
-                    title: 'Relationship',
-                    value: data?.emergencyContactRelationship
-                        ? data.emergencyContactRelationship
-                        : null,
-                },
-            ],
+            tabelNotificationGeneral: 'Nije Povezano',
+            tabelNotificationPayroll: 'Nije Povezano',
+            tabelHired: data.hired
+                ? this.datePipe.transform(data.hired, 'MM/dd/yy')
+                : '',
+            tableTerminated: 'Nije Povezano',
+            tableAdded: 'Nije Povezano',
+            tableEdited: 'Nije Povezano',
             tableAttachments: data?.files ? data.files : [],
         };
     }
@@ -1068,12 +1023,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .changeDriverStatus(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                 
-                },
-                error: () => {
-                  
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -1102,9 +1053,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(inetval);
                     }, 900);
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
