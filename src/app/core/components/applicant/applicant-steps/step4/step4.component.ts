@@ -157,9 +157,9 @@ export class Step4Component implements OnInit, OnDestroy {
                         injuries: item.injuries,
                         vehicleType: item.vehicleType.name,
                         description: item.description,
-                        accidentRecordReview: item.accidentRecordReview
-                            ? item.accidentRecordReview
-                            : null,
+                        // accidentRecordReview: item.accidentRecordReview
+                        //     ? item.accidentRecordReview
+                        //     : null,
                     };
                 }
             );
@@ -177,10 +177,10 @@ export class Step4Component implements OnInit, OnDestroy {
                 injuries: lastItemInAccidentArray.injuries,
                 vehicleType: lastItemInAccidentArray.vehicleType.name,
                 description: lastItemInAccidentArray.description,
-                accidentRecordReview:
-                    lastItemInAccidentArray.accidentRecordReview
-                        ? lastItemInAccidentArray.accidentRecordReview
-                        : null,
+                // accidentRecordReview:
+                //     lastItemInAccidentArray.accidentRecordReview
+                //         ? lastItemInAccidentArray.accidentRecordReview
+                //         : null,
             };
 
             this.accidentArray = JSON.parse(
