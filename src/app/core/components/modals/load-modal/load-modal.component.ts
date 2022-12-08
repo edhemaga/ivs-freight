@@ -166,6 +166,20 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedLoadDetailsStrapChain: any[] = [];
     public selectedLoadDetailsHazardous: any[] = [];
 
+    public loadBrokerInputConfig: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        multipleLabel: {
+            labels: ['Broker', 'Avail. Credit', 'Loads'],
+            customClass: 'load-broker',
+        },
+        isDropdown: true,
+        blackInput: false,
+        isRequired: true,
+        textTransform: 'capitalize',
+        dropdownWidthClass: 'w-col-432',
+    };
+
     public loadBrokerContactsInputConfig: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
@@ -175,19 +189,21 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         },
         textTransform: 'capitalize',
         isDropdown: true,
+        blackInput: false,
         isDisabled: true,
-        dropdownWidthClass: 'w-col-352',
+        dropdownWidthClass: 'w-col-330',
     };
 
     public loadDispatchesTTDInputConfig: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
-            labels: ['Truck', 'Trailer', 'Driver'],
+            labels: ['Truck', 'Trailer', 'Driver', 'Driver Pay'],
             customClass: 'load-dispatches-ttd',
         },
         textTransform: 'capitalize',
         isDropdown: true,
+        blackInput: false,
         dropdownWidthClass: 'w-col-616',
     };
 
@@ -201,6 +217,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         textTransform: 'uppercase',
         isDropdown: true,
         isRequired: true,
+        blackInput: false,
         dropdownWidthClass: 'w-col-616',
     };
 
@@ -214,6 +231,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         textTransform: 'capitalize',
         isDropdown: true,
         isDisabled: true,
+        blackInput: false,
         dropdownWidthClass: 'w-col-344',
     };
 
@@ -423,8 +441,32 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'broker': {
                 this.selectedBroker = event;
-
+                console.log('broker: ', this.selectedBroker);
                 if (this.selectedBroker) {
+                    this.loadBrokerInputConfig = {
+                        ...this.loadBrokerInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: this.selectedBroker.businessName,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedBroker.availableCredit,
+                                    second_value: 10000,
+                                    logoName: null,
+                                    isProgressBar: true,
+                                },
+                                {
+                                    value: this.selectedBroker.loadsCount,
+                                    logoName: null,
+                                    isCounter: true,
+                                },
+                            ],
+                            customClass: 'load-broker',
+                        },
+                    };
+
                     this.labelsBrokerContacts = this.originBrokerContacts.map(
                         (el) => {
                             return {
@@ -441,29 +483,31 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.selectedBrokerContact =
                         this.labelsBrokerContacts[1].contacts[0];
 
-                    this.loadForm
-                        .get('brokerContactId')
-                        .patchValue(this.selectedBrokerContact.fullName);
+                    if (this.selectedBrokerContact) {
+                        this.loadForm
+                            .get('brokerContactId')
+                            .patchValue(this.selectedBrokerContact.fullName);
 
-                    this.loadBrokerContactsInputConfig = {
-                        ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedBrokerContact.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedBrokerContact
-                                        .originalPhone,
-                                    second_value: `#${this.selectedBrokerContact.phoneExtension}`,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-broker-contact',
-                        },
-                        isDisabled: false,
-                    };
+                        this.loadBrokerContactsInputConfig = {
+                            ...this.loadBrokerContactsInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedBrokerContact.name,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedBrokerContact
+                                            .originalPhone,
+                                        second_value: `#${this.selectedBrokerContact.phoneExtension}`,
+                                        logoName: null,
+                                    },
+                                ],
+                                customClass: 'load-broker-contact',
+                            },
+                            isDisabled: false,
+                        };
+                    }
                 } else {
                     this.labelsBrokerContacts = this.originBrokerContacts;
                 }
@@ -593,7 +637,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ?.concat(' ', event?.trailer?.name)
                             .concat(' ', event?.driver?.name),
                     };
-                    console.log('dispatches event: ', event);
 
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
@@ -626,11 +669,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     isSvg: false,
                                     folder: null,
                                     subFolder: null,
-                                    isOwner: true, // event?.driver?.owner,
+                                    isOwner: event?.driver?.owner,
                                     logoType: null,
                                 },
                                 {
-                                    value: '$0.5 / $0.7 / $50',
+                                    value: event?.payType,
                                     logoName: null,
                                     isImg: false,
                                     isSvg: false,
@@ -1370,7 +1413,105 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
+                    console.log('dropdown load: ', res);
                     this.loadNumber = res.loadNumber;
+
+                    // Dispatcher
+                    this.labelsDispatcher = res.dispatchers.map((item) => {
+                        return {
+                            ...item,
+                            name: item?.fullName,
+                            logoName: item?.avatar,
+                        };
+                    });
+
+                    const initialDispatcher = this.labelsDispatcher.find(
+                        (item) =>
+                            item?.name ===
+                            this.companyUser?.firstName?.concat(
+                                ' ',
+                                this.companyUser?.lastName
+                            )
+                    );
+
+                    this.loadForm
+                        .get('dispatcherId')
+                        .patchValue(initialDispatcher.name);
+
+                    this.selectedDispatcher = initialDispatcher;
+
+                    // Division Companies
+                    this.labelsCompanies = res.companies.map((item) => {
+                        return {
+                            ...item,
+                            name: item?.companyName,
+                        };
+                    });
+
+                    if (this.labelsCompanies.length > 1) {
+                        this.selectedCompany = this.labelsCompanies.find(
+                            (item) => item.name === this.companyUser.companyName
+                        );
+                    }
+
+                    // Dispatches
+                    this.labelsDispatches = this.originLabelsDispatches =
+                        res.dispatches.map((item, index) => {
+                            return {
+                                ...item,
+                                driver: {
+                                    ...item.driver,
+                                    name: item.driver?.firstName?.concat(
+                                        ' ',
+                                        item.driver?.lastName
+                                    ),
+                                    logoName: item.driver?.avatar,
+                                    owner: index === 1 || index === 3,
+                                },
+                                coDriver: {
+                                    ...item.coDriver,
+                                    name: item.coDriver?.firstName?.concat(
+                                        ' ',
+                                        item.coDriver?.lastName
+                                    ),
+                                    logoName: item.coDriver?.avatar,
+                                },
+                                truck: {
+                                    ...item.truck,
+                                    name: item.truck?.truckNumber,
+                                    logoType: item.truck?.truckType?.name,
+                                    logoName: item.truck?.truckType?.logoName,
+                                    folder: 'common',
+                                    subFolder: 'trucks',
+                                },
+                                trailer: {
+                                    ...item.trailer,
+                                    name: item.trailer?.trailerNumber,
+                                    logoType: item.trailer?.trailerType?.name,
+                                    logoName:
+                                        item.trailer?.trailerType?.logoName,
+                                    folder: 'common',
+                                    subFolder: 'trailers',
+                                },
+                                itemIndex: index,
+                                fullName: item.driver?.firstName
+                                    ?.concat(' ', item.driver?.lastName)
+                                    .concat(
+                                        ' ',
+                                        item.coDriver?.firstName?.concat(
+                                            ' ',
+                                            item.coDriver?.lastName
+                                        )
+                                    )
+                                    .concat(' ', item.truck?.truckNumber)
+                                    .concat(' ', item.trailer?.trailerNumber),
+                            };
+                        });
+
+                    this.labelsDispatches = this.labelsDispatches.filter(
+                        (item) =>
+                            item?.dispatcherId === this.selectedDispatcher.id
+                    );
 
                     // Brokers
                     this.labelsBroker = res.brokers.map((item) => {
@@ -1381,7 +1522,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             logoName:
                                 item?.dnu || item?.ban
                                     ? 'ic_load-broker-dnu-ban.svg'
-                                    : 'ic_load-broker-credit.svg',
+                                    : item?.status === 0
+                                    ? 'ic_load-broker-closed-business.svg'
+                                    : null,
                         };
                     });
 
@@ -1415,90 +1558,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                 }),
                             };
                         });
-
-                    // Dispatcher
-                    this.labelsDispatcher = res.dispatchers.map((item) => {
-                        return {
-                            ...item,
-                            name: item?.fullName,
-                            logoName: item?.avatar,
-                        };
-                    });
-
-                    const initialDispatcher = this.labelsDispatcher.find(
-                        (item) =>
-                            item?.name ===
-                            this.companyUser?.firstName?.concat(
-                                ' ',
-                                this.companyUser?.lastName
-                            )
-                    );
-
-                    this.loadForm
-                        .get('dispatcherId')
-                        .patchValue(initialDispatcher.name);
-                    this.selectedDispatcher = initialDispatcher;
-
-                    // Division Companies
-                    this.labelsCompanies = res.companies.map((item) => {
-                        return {
-                            ...item,
-                            name: item?.companyName,
-                        };
-                    });
-
-                    if (this.labelsCompanies.length > 1) {
-                        this.selectedCompany = this.labelsCompanies.find(
-                            (item) => item.name === this.companyUser.companyName
-                        );
-                    }
-
-                    // Dispatches
-                    this.labelsDispatches = this.originLabelsDispatches =
-                        res.dispatches.map((item, index) => {
-                            return {
-                                ...item,
-                                driver: {
-                                    ...item.driver,
-                                    name: item.driver?.firstName?.concat(
-                                        ' ',
-                                        item.driver?.lastName
-                                    ),
-                                    logoName: item.driver?.avatar,
-                                },
-                                coDriver: {
-                                    ...item.coDriver,
-                                    name: item.coDriver?.firstName?.concat(
-                                        ' ',
-                                        item.coDriver?.lastName
-                                    ),
-                                    logoName: item.coDriver?.avatar,
-                                },
-                                truck: {
-                                    ...item.truck,
-                                    name: item.truck?.truckNumber,
-                                    logoType: item.truck?.truckType?.name,
-                                    logoName: item.truck?.truckType?.logoName,
-                                    folder: 'common',
-                                    subFolder: 'trucks',
-                                },
-                                trailer: {
-                                    ...item.trailer,
-                                    name: item.trailer?.trailerNumber,
-                                    logoType: item.trailer?.trailerType?.name,
-                                    logoName:
-                                        item.trailer?.trailerType?.logoName,
-                                    folder: 'common',
-                                    subFolder: 'trailers',
-                                },
-                                itemIndex: index,
-                            };
-                        });
-
-                    this.labelsDispatches = this.labelsDispatches.filter(
-                        (item) =>
-                            item?.dispatcherId === this.selectedDispatcher.id
-                    );
 
                     // Door Type
                     this.labelsDoorType = res.doorTypes;
@@ -1562,7 +1621,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                 address: item.address?.address,
                             };
                         });
-                    // TODO: zameniti sa ovim kad bude gotovo
+
                     //   res.shippers.map((item) => {
                     //     return {
                     //         ...item,

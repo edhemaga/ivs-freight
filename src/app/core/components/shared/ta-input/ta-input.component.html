@@ -673,10 +673,12 @@
 
             <!-- Text -->
             <span
+                *ngIf="!item?.isProgressBar"
                 class="multiple-input-text"
                 [ngStyle]="{
                     color: '#2F2F2F'
                 }"
+                [ngClass]="{ counter: item?.isCounter }"
             >
                 {{ item.value }}
                 <span
@@ -695,6 +697,13 @@
                     src="assets/svg/common/load/ic_load_driver_owner.svg"
                 ></svg-icon>
             </div>
+
+            <!-- Load Broker ProgressBar -->
+            <app-load-modal-progress-bar
+                *ngIf="item?.isProgressBar"
+                [totalAmount]="item.second_value"
+                [availableCredit]="item.value ? item.value : 0"
+            ></app-load-modal-progress-bar>
         </span>
     </div>
 
@@ -756,8 +765,13 @@
 
             <!-- Text -->
             <span
+                *ngIf="!item?.isProgressBar"
                 class="multiple-input-text"
-                [ngClass]="{ 'focusable-text': focusInput }"
+                [ngClass]="{
+                    'focusable-text': focusInput,
+                    counter: item?.isCounter,
+                    'counter-focus': item?.isCounter && focusInput
+                }"
                 [ngStyle]="{
                     color: '#6F9EE0'
                 }"
@@ -765,6 +779,14 @@
                 {{ item.value }}
                 <span *ngIf="item?.second_value">{{ item.second_value }}</span>
             </span>
+
+            <!-- Load Broker ProgressBar -->
+            <app-load-modal-progress-bar
+                *ngIf="item?.isProgressBar"
+                [totalAmount]="item.second_value"
+                [availableCredit]="item.value ? item.value : 0"
+                [inputFocus]="focusInput"
+            ></app-load-modal-progress-bar>
         </span>
     </div>
 
@@ -951,14 +973,19 @@
                 getSuperControl.value && getSuperControl.invalid && !focusInput,
             'hidden-label':
                 inputConfig.placeholderInsteadOfLabel &&
-                (focusInput || getSuperControl.value)
+                (focusInput || getSuperControl.value),
+            'filled-multiple-label':
+                inputConfig?.multipleInputValues?.options?.length
         }"
     >
         <span *ngIf="inputConfig.label">{{ inputConfig.label }}</span>
         <div
             *ngIf="inputConfig.multipleLabel?.labels?.length"
             [class]="inputConfig.multipleLabel?.customClass"
-            [ngClass]="{ 'focus-multiple-label': focusInput }"
+            [ngClass]="{
+                'focus-multiple-label': focusInput,
+                required: inputConfig.isRequired && !inputConfig.isDisabled
+            }"
         >
             <span
                 *ngFor="

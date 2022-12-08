@@ -111,6 +111,11 @@
                 &.disabled {
                     color: #aaaaaa;
                     font-style: italic;
+                    pointer-events: none;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
                 }
 
                 &.no-result {
@@ -634,11 +639,8 @@
             //------------------------ Load Dispatches TTD Template ------------------------
             .load-dispatches-ttd-template {
                 display: grid;
-                grid-template-columns: repeat(3, 156px) 100px;
+                grid-template-columns: repeat(3, 156px) 97px;
                 align-items: center;
-
-                &.focus {
-                }
 
                 .load-dispatches-container {
                     display: flex;
@@ -651,7 +653,11 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
-                        max-width: 100px;
+                        width: 116px;
+                        min-width: max;
+                        max-width: -webkit-fit-content;
+                        max-width: -moz-fit-content;
+                        max-width: fit-content;
                         line-height: 17px;
                     }
 
@@ -670,51 +676,90 @@
                 }
 
                 .load-dispatch-driver-rate {
+                    width: 115px;
                     text-align: right;
                     font-size: 11px;
                     font-weight: 400;
                     color: #919191;
                     padding-bottom: 1px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
 
                     &.active {
                         color: #6f9ee0;
+                    }
+
+                    &.driver-owner {
+                        text-align: left;
+                        width: 80px;
                     }
                 }
             }
 
             //------------------------ Load Broker Template ------------------------
             .load-broker-template {
-                display: flex;
+                display: grid;
                 align-items: center;
-                gap: 6px;
+                grid-template-columns: 211px 133px 39px;
 
-                .load-broker-status {
-                    position: relative;
-                    line-height: 17px;
+                .load-broker-status-text {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    line-height: 18px;
 
-                    &.dnu-status {
-                        svg {
-                            #Path_36450 {
-                                fill: #b7b7b7;
+                    .load-broker-status {
+                        position: relative;
+                        line-height: 17px;
+
+                        &.dnu-status {
+                            svg {
+                                path {
+                                    fill: #aaaaaa;
+                                }
                             }
                         }
                     }
 
-                    &.low-status {
-                        svg {
-                            #Path_33564 {
-                                fill: #e57373;
-                            }
+                    .load-broker-text {
+                        &.disabled {
+                            color: #6c6c6c;
                         }
+                    }
+                }
+
+                .load-broker-progress-status {
+                    width: 100px;
+                    height: 14px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    grid-gap: 4px;
+                    gap: 4px;
+                    text-align: center;
+
+                    .progress-bar-price {
+                        color: #919191;
+                        font-size: 11px;
+                        font-weight: 400;
                     }
 
-                    &.medium-status {
-                        svg {
-                            #Path_33564 {
-                                fill: #ffb74d;
-                            }
-                        }
+                    .progress-bar-line {
+                        width: 24px;
                     }
+                }
+
+                .load-broker-load-counter {
+                    max-width: max-content;
+                    height: 18px;
+                    border-radius: 30px;
+                    text-align: center;
+                    font-size: 11px;
+                    font-weight: 400;
+                    color: #919191;
+                    background-color: rgb(145, 145, 145, 0.2);
+                    padding: 1px 6px;
                 }
             }
 
@@ -804,6 +849,10 @@
                 width: 439px;
             }
 
+            &.w-col-432 {
+                width: 432px;
+            }
+
             &.w-col-431 {
                 width: 431px;
             }
@@ -870,6 +919,10 @@
 
             &.w-col-334 {
                 width: 334px;
+            }
+
+            &.w-col-330 {
+                width: 330px;
             }
 
             &.w-col-310 {
@@ -1315,8 +1368,9 @@
 
                     .dropdown-subgroup-options {
                         display: grid;
-                        grid-template-columns: 160px 135px;
+                        grid-template-columns: 141px 135px;
                         grid-column-gap: 10px;
+                        -moz-column-gap: 10px;
                         column-gap: 10px;
                         align-items: center;
                         padding: 4px;

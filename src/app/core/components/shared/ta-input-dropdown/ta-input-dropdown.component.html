@@ -536,6 +536,17 @@
                                           ]
                             "
                         ></div>
+                        <!-- Percentage is driver owner -->
+                        <span
+                            *ngIf="option.driver?.owner"
+                            class="load-dispatch-driver-rate"
+                            [ngClass]="{
+                                'driver-owner': option.driver?.owner,
+                                active: indx === activeItem?.itemIndex
+                            }"
+                        >
+                            {{ option?.payType }}
+                        </span>
                     </div>
 
                     <!-- Trailer -->
@@ -576,7 +587,10 @@
                                 active:
                                     option.driver.id === activeItem?.driver?.id
                             }"
-                            [ngStyle]="{ position: 'relative', bottom: '1px' }"
+                            [ngStyle]="{
+                                position: 'relative',
+                                bottom: '1px'
+                            }"
                             [src]="
                                 this.imageBase64Service.sanitizer(
                                     option.driver.logoName
@@ -587,7 +601,10 @@
                         <div
                             *ngIf="!option.driver.logoName"
                             class="no-profile-image"
-                            [ngStyle]="{ position: 'relative', bottom: '1px' }"
+                            [ngStyle]="{
+                                position: 'relative',
+                                bottom: '1px'
+                            }"
                         >
                             <app-profile-images
                                 [indx]="0"
@@ -610,25 +627,31 @@
                             "
                         ></div>
                         <svg-icon
+                            *ngIf="option.driver?.owner"
                             class="load-dipstaches-owner-flag"
                             src="assets/svg/common/load/ic_load_driver_owner.svg"
                         ></svg-icon>
                     </div>
+                    <!-- Percentage is not driver owner -->
                     <span
+                        *ngIf="!option.driver?.owner"
                         class="load-dispatch-driver-rate"
                         [ngClass]="{
                             active: indx === activeItem?.itemIndex
                         }"
                     >
-                        <!-- {{ option.driver?.rate }} -->
-                        $0.5 / $0.7 / $50
+                        {{ option?.payType }}
                     </span>
                 </div>
             </div>
             <!--------------------------- Load Broker Template --------------------------->
             <div *ngSwitchCase="'load-broker'">
                 <div
-                    *ngFor="let option of options; trackBy: identity"
+                    *ngFor="
+                        let option of options;
+                        trackBy: identity;
+                        let indx = index
+                    "
                     class="dropdown-option load-broker-template"
                     [ngClass]="{
                         disabled: option?.disabled || option.dnu || option.ban,
@@ -640,34 +663,55 @@
                     }"
                     (click)="onActiveItem(option)"
                 >
-                    <svg-icon
-                        *ngIf="option.name !== 'ADD NEW'"
-                        class="load-broker-status"
-                        [src]="option.logoName"
-                        [ngClass]="{
-                            'dnu-status': option.dnu,
-                            'low-status':
-                                option?.status?.toLowerCase() === 'low' &&
-                                !option.dnu &&
-                                !option.ban,
-                            'medium-status':
-                                option?.status?.toLowerCase() === 'medium' &&
-                                !option.dnu &&
-                                !option.ban
-                        }"
-                    ></svg-icon>
-                    <div
-                        [innerHtml]="
-                            option.name
-                                | taHighlight
-                                    : [
-                                          {
-                                              index: 45632,
-                                              text: getSuperControl.value
-                                          }
-                                      ]
-                        "
-                    ></div>
+                    <div class="load-broker-status-text">
+                        <svg-icon
+                            *ngIf="option.name !== 'ADD NEW' && option.logoName"
+                            class="load-broker-status"
+                            [src]="option.logoName"
+                            [ngClass]="{
+                                'dnu-status': option.dnu
+                            }"
+                        ></svg-icon>
+
+                        <div
+                            class="load-broker-text"
+                            [ngStyle]="{
+                                disabled:
+                                    option.dnu ||
+                                    option.ban ||
+                                    option.status === 0,
+                                overflow: 'hidden',
+                                'text-overflow': 'ellipsis',
+                                'white-space': 'nowrap'
+                            }"
+                            [innerHtml]="
+                                option.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+                    </div>
+                    <div *ngIf="indx !== 0" class="load-broker-progress-status">
+                        <app-load-modal-progress-bar
+                            [totalAmount]="10000"
+                            [availableCredit]="
+                                option.availableCredit
+                                    ? option.availableCredit
+                                    : 0
+                            "
+                            [disable]="
+                                option.dnu || option.ban || option.status === 0
+                            "
+                        ></app-load-modal-progress-bar>
+                    </div>
+                    <div *ngIf="indx !== 0" class="load-broker-load-counter">
+                        {{ option.loadsCount }}
+                    </div>
                 </div>
             </div>
 

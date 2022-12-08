@@ -115,16 +115,46 @@
 
     .load-dispatches-ttd {
         display: grid;
-        grid-template-columns: 92px 89px 1fr;
+        grid-template-columns: 92px 89px 127px 1fr;
         align-items: center;
         -moz-column-gap: 65px;
         grid-column-gap: 65px;
         column-gap: 65px;
+
+        &.focus-multiple-label {
+            grid-template-columns: 92px 89px 150px 1fr;
+        }
+    }
+
+    &.load-broker {
+        .load-broker {
+            display: grid;
+            align-items: center;
+            grid-template-columns: 245px 85px 69px;
+        }
+
+        &.required {
+            &::after {
+                position: absolute;
+                right: 18px;
+                top: -1px;
+            }
+        }
+
+        &.filled-multiple-label {
+            &.required {
+                &::after {
+                    position: absolute;
+                    right: 27px;
+                    top: -1px;
+                }
+            }
+        }
     }
 
     .load-broker-contact {
         display: grid;
-        grid-template-columns: 150px 38px;
+        grid-template-columns: 126px 38px;
         align-items: center;
         grid-column-gap: 10px;
         -moz-column-gap: 10px;
@@ -132,7 +162,7 @@
         transition: all 0.3 ease-in-out;
 
         &.focus-multiple-label {
-            grid-template-columns: 259px 38px;
+            grid-template-columns: 241px 38px;
         }
     }
 

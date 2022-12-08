@@ -1,6 +1,6 @@
 export interface IMultipleInput {
-    value: string;
-    second_value?: string;
+    value: string | number;
+    second_value?: string | number;
     logoName?: string;
     isImg?: boolean;
     isSvg?: boolean;
@@ -8,6 +8,8 @@ export interface IMultipleInput {
     subFolder?: string;
     logoType?: string;
     isOwner?: boolean;
+    isProgressBar?: boolean;
+    isCounter?: boolean;
 }
 
 export interface ITaInput {

@@ -459,9 +459,12 @@ export class TaInputDropdownComponent
     private search(searchText: string): void {
         // Single Dropdown
         if (
-            !['groups', 'load-broker-contact', 'fuel-franchise'].includes(
-                this.template
-            )
+            ![
+                'groups',
+                'load-broker-contact',
+                'fuel-franchise',
+                'load-dispatches-ttd',
+            ].includes(this.template)
         ) {
             if (
                 searchText?.length &&
@@ -567,6 +570,21 @@ export class TaInputDropdownComponent
                     });
                 }
 
+                if (this.template === 'load-dispatches-ttd') {
+                    this.options = this.originalOptions.filter((item) =>
+                        item.name
+                            ? item.name
+                                  .toLowerCase()
+                                  .includes(searchText.toLowerCase())
+                            : item.code
+                            ? item.code
+                                  .concat(' - ', item.description)
+                                  .toLowerCase()
+                                  .includes(searchText.toLowerCase())
+                            : searchText.toLowerCase()
+                    );
+                }
+
                 if (!this.options.length) {
                     this.options.push({
                         groups: [
@@ -584,7 +602,6 @@ export class TaInputDropdownComponent
     }
 
     public onActiveItem(option: any, group?: any): void {
-        console.log('option: ', option, group);
         // Prevent user to pick franchise, without group
         if (
             this.template === 'fuel-franchise' &&
