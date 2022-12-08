@@ -23,6 +23,7 @@ import {
     tableSearch,
 } from '../../../utils/methods.globals';
 import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-truck-table',
@@ -61,7 +62,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private truckInactiveQuery: TruckInactiveQuery,
         private truckService: TruckTService,
         private thousandSeparator: TaThousandSeparatorPipe,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        public datePipe: DatePipe
     ) {}
 
     ngOnInit(): void {
@@ -403,6 +405,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
 
+        console.log('Truck Data');
+        console.log(this.tableData[0].data);
+
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setTruckData(td);
@@ -435,44 +440,99 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     mapTruckData(data: any) {
         return {
             ...data,
-            textCommission: data?.commission ? data?.commission + '%' : '',
-            textGrossWeight: 'Nije povezano',
-            textPurchasePrice: 'Nije povezano',
-            textPurchaseDate: 'Nije povezano',
-            textYear: data.year ? data.year : '',
-            textMake: data?.truckMake?.name ? data.truckMake.name : '',
-            textModel: data?.model ? data.model : '',
-            color: data?.color?.code ? data.color.code : '',
-            colorName: data?.color?.name ? data.color.name : '',
             truckTypeIcon: data.truckType.logoName,
             truckTypeClass: data.truckType.logoName.replace('.svg', ''),
-            ownerName: data?.owner?.name ? data.owner.name : '',
-            truckAxises: data?.axles ? data.axles : '',
-            truckEmptyWeight: data?.emptyWeight
+            textMake: data?.truckMake?.name ? data.truckMake.name : '',
+            textModel: data?.model ? data.model : '',
+            textYear: data.year ? data.year : '',
+            tableColor: data?.color?.code ? data.color.code : '',
+            colorName: data?.color?.name ? data.color.name : '',
+            tableDriver: 'Nema podatak sa back-a',
+            tableTrailer: 'Nema podatak sa back-a',
+            tableTrailerType: 'Nema podatak sa back-a',
+            tabelOwnerDetailesName: data?.owner?.name ? data.owner.name : '',
+            tabelOwnerDetailesComm: data?.commission
+                ? data.commission + '%'
+                : '',
+            textWeightGross: data?.truckGrossWeight?.name
+                ? data.truckGrossWeight.name
+                : '',
+            textWeightEmpty: data?.emptyWeight
                 ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
                 : '',
-            truckEngine: data?.truckEngineType?.name
-                ? data.truckEngineType.name
+            tabelEngineModel: data?.truckEngineModel?.name
+                ? data.truckEngineModel.name
                 : '',
-            truckTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-            truckMileage: data?.mileage
+            tabelEngineOilType: data?.engineOilType?.name
+                ? data.engineOilType.name
+                : '',
+            tabelTransmissionModel: data?.transmissionModel
+                ? data.transmissionModel
+                : '',
+            tabelTransmissionShifter: data?.shifter?.name
+                ? data.shifter.name
+                : '',
+            tabelTransmissionRatio: data?.gearRatio?.name
+                ? data.gearRatio.name
+                : '',
+            tabelFuelDetailsFuelType: data?.fuelType?.name
+                ? data.fuelType.name
+                : '',
+            tabelFuelDetailsTank: data?.fuelTankSize
+                ? this.thousandSeparator.transform(data.fuelTankSize)
+                : '',
+            tabelAxle: data?.axles ? data.axles : '',
+            tabelBrakes: data?.brakes?.name ? data.brakes.name : '',
+            tableTireSize: data?.tireSize?.name ? data.tireSize.name : '',
+            tableWheelsMaterialFront: data?.frontWheels?.name
+                ? data.frontWheels.name
+                : '',
+            tableWheelsMaterialRear: data?.rearWheels?.name
+                ? data.rearWheels.name
+                : '',
+            tableAPUnit: data?.apUnit?.name ? data.apUnit.name : '',
+            tableFeatures: `${data?.doubleBunk ? 'DBunk•' : ''}${
+                data?.refrigerator ? 'Fridge•' : ''
+            }${data?.dcInverter ? 'DCI•' : ''}${data?.blower ? 'Blower•' : ''}${
+                data?.pto ? 'PTO' : ''
+            }`,
+            tableTollDeviceTransponder: data?.tollTransponder?.name
+                ? data.tollTransponder.name
+                : '',
+            tableTollDeviceNo: data?.tollTransponderDeviceNo
+                ? data.tollTransponderDeviceNo
+                : '',
+            tableInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
+            tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage) + ' mi'
                 : '',
-            truckIpasEzpass: data?.ipasEzpass ? data.ipasEzpass : '',
-            truckLicensePlate: data?.licensePlate
+            tableLicencePlateDetailNumber: data?.licensePlate
                 ? data.licensePlate
-                : data?.registrations?.length
-                ? data.registrations[0].licensePlate
                 : '',
-            truckInspectionProgres: {
-                start: data?.fhwaInspection
-                    ? data.fhwaInspection
-                    : data?.inspections?.length
-                    ? data.inspections[0].issueDate
-                    : null,
-                end: null,
-            },
-            tableAttachments: data?.files ? data.files : [],
+            tableLicencePlateDetailST: 'Nema podatak sa back-a',
+            tableLicencePlateDetailExpiration: 'Nema podatak sa back-a',
+            tableFhwaInspectionTerm: data?.fhwaExp
+                ? data.fhwaExp + ' months'
+                : '',
+            tableFhwaInspectionExpiration: 'Nema podatak sa back-a',
+            tableTitleNumber: 'Nema podatak sa back-a',
+            tableTitleST: 'Nema podatak sa back-a',
+            tableTitleIssued: 'Nema podatak sa back-a',
+            tableTitlePurchase: 'Nema podatak sa back-a',
+            tablePurchasePrice: data?.purchasePrice
+                ? '$' + this.thousandSeparator.transform(data.purchasePrice)
+                : '',
+            tablePurchaseDate: data.purchaseDate
+                ? this.datePipe.transform(data.purchaseDate, 'MM/dd/yy')
+                : '',
+
+            tableTerminated: 'Nema podatak sa back-a',
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                : '',
         };
     }
 

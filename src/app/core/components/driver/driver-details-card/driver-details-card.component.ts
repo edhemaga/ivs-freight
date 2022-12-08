@@ -14,7 +14,6 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DriverResponse } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
@@ -502,7 +501,7 @@ export class DriverDetailsCardComponent
     }
 
     /**Function for dots in cards */
-    public initTableOptionsCard(data: DriverResponse): void {
+    public initTableOptionsCard(data: any): void {
         this.dropData = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -557,7 +556,7 @@ export class DriverDetailsCardComponent
         };
     }
 
-    public getExpireDate(data: DriverResponse) {
+    public getExpireDate(data: any) {
         this.dataCDl = data?.cdls?.map((ele) => {
             if (moment(ele.expDate).isBefore(moment())) {
                 this.expDateCard = false;

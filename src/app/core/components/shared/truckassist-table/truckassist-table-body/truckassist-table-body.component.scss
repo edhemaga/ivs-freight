@@ -23,6 +23,12 @@ table {
                 height: 100%;
                 display: flex;
 
+                .not-pined-columns{
+                    td{
+                        margin-right: 22px;
+                    }
+                }
+
                 .pined-columns,
                 .not-pined-columns,
                 .actions-columns {
@@ -2985,6 +2991,10 @@ table {
 }
 
 // NG CLASS
+.pined-columns-margin{
+    margin-right: 22px;
+}
+
 .active-drop {
     background-image: url('../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select.svg') !important;
 

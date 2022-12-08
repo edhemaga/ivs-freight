@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UpdateApplicantCdlReviewCommand } from './updateApplicantCdlReviewCommand';
 import { CountryType } from './countryType';
 import { ClassType } from './classType';
 
@@ -22,5 +23,6 @@ export interface UpdateApplicantCdlCommand {
     expDate?: string;
     restrictions?: Array<number> | null;
     endorsements?: Array<number> | null;
+    licenseReview?: UpdateApplicantCdlReviewCommand;
 }
 

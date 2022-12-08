@@ -20,5 +20,6 @@ export interface LoadRequirementsCommand {
     trailerLengthId?: number | null;
     year?: number | null;
     liftgate?: boolean | null;
+    driverMessage?: string | null;
 }
 

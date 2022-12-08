@@ -49,7 +49,15 @@
                     <div class="columns-container">
                         <!-- PINED -->
                         <div class="pined-columns">
-                            <td *ngFor="let column of pinedColumns">
+                            <td
+                                *ngFor="let column of pinedColumns"
+                                [ngClass]="{
+                                    'pined-columns-margin':
+                                        column.ngTemplate !== '' &&
+                                        column.ngTemplate !== 'checkbox' &&
+                                        column.ngTemplate !== 'user-checkbox'
+                                }"
+                            >
                                 <!-- NO TEMPLATE -->
                                 <div
                                     *ngIf="column.ngTemplate === ''"
@@ -3148,7 +3156,10 @@
                         ></div>
 
                         <!-- ACTIONS -->
-                        <div class="actions-columns" *ngIf="actionsColumns.length">
+                        <div
+                            class="actions-columns"
+                            *ngIf="actionsColumns.length"
+                        >
                             <td
                                 class="action-td"
                                 *ngFor="let column of actionsColumns"

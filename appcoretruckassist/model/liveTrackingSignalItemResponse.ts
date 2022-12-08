@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { GpsMotionStatus } from './gpsMotionStatus';
+import { GpsType } from './gpsType';
 
 
 export interface LiveTrackingSignalItemResponse { 
@@ -23,6 +24,7 @@ export interface LiveTrackingSignalItemResponse {
     headingString?: string | null;
     location?: string | null;
     motionStatus?: GpsMotionStatus;
+    type?: GpsType;
     updateTime?: string;
     dateString?: string | null;
     companyId?: number | null;

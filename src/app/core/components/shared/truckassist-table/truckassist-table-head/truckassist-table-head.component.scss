@@ -329,6 +329,10 @@ table {
 
     .scroll-container {
         display: flex;
+
+        th {
+            margin-right: 22px;
+        }
     }
 }
 
@@ -392,6 +396,21 @@ table {
 }
 
 // NG CLASS
+.remuve-head-title {
+    .th-title,
+    .special-title,
+    .sw-tw-title-container,
+    .citation-container,
+    .accident-citation-container,
+    .icons {
+        visibility: hidden !important;
+    }
+}
+
+.pined-columns-margin {
+    margin-right: 22px;
+}
+
 .set-cursor-resize {
     /* cursor: ew-resize !important; */
     user-select: none !important;

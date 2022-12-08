@@ -93,6 +93,9 @@ p {
     align-items: center;
     justify-content: space-between;
     background-color: #ffffff;
+
+    
+
     .no-factoring-data {
         justify-content: flex-end !important;
     }
@@ -186,6 +189,24 @@ p {
                     }
                 }
             }
+        }
+    }
+
+    &.divisionHeader{
+        background-color: transparent;
+        
+        .settings-header-buttons{
+            background-color: transparent;
+            width: 105px;
+        }
+
+        .settings-header-button{
+            border-radius: 3px;
+        }
+
+        .current-active-item-company{
+            background-color: #fff;
+            max-width: 479px;
         }
     }
 }
