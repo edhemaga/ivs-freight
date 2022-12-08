@@ -14,10 +14,12 @@ export class DispatchComponent implements OnInit {
     columns: any[] = [];
     tableContainerWidth: number = 0;
     dispatchBoardSmallList: Observable<any>;
+    dispatchTableList: Observable<number[]>;
     
     constructor(private dispatcherQuery: DispatcherQuery) {}
 
     ngOnInit(): void {
+        this.dispatchTableList = this.dispatcherQuery.dispatchBoardListData$;
         this.dispatchBoardSmallList =
             this.dispatcherQuery.dispatchboardShortList$;
         this.sendDispatchData();

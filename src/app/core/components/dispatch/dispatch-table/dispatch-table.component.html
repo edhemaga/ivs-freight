@@ -20,7 +20,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of data; let indx = index">
+            <tr
+                *ngFor="let item of dData.dispatches; let rowIndex = index"
+            >
                 <td class="truck-field">
                     <div
                         class="main_inside"
@@ -29,11 +31,14 @@
                         <div
                             class="padding-inside"
                             *ngIf="
-                                openedTruckDropdown != indx &&
+                                openedTruckDropdown != rowIndex &&
                                 item.add_new_truck
                             "
                         >
-                            <div class="add_new" (click)="showDropdown(indx)">
+                            <div
+                                class="add_new"
+                                (click)="showTruckDropdown(rowIndex)"
+                            >
                                 <div class="text">Add</div>
                                 <svg-icon
                                     [src]="
@@ -48,7 +53,7 @@
                         </div>
                         <div
                             class="drop-item"
-                            *ngIf="openedTruckDropdown == indx"
+                            *ngIf="openedTruckDropdown == rowIndex"
                         >
                             <app-ta-input-dropdown
                                 [formControl]="truckFormControll"
@@ -58,25 +63,15 @@
                                     type: 'text',
                                     label: 'Unit No',
                                     isDropdown: true,
-                                    dropdownImageInput: {
-                                        withText: true,
-                                        svg: true,
-                                        image: false,
-                                        url: selectedColor?.code
-                                            ? 'ic_circle.svg'
-                                            : null,
-                                        template: 'color',
-                                        color: selectedColor?.code
-                                    },
                                     dropdownWidthClass: 'w-col-118',
                                     placeholderInsteadOfLabel: true,
                                     hideDropdownArrow: true,
                                     autoFocus: true
                                 }"
                                 [options]="truckList"
-                                [activeItem]="selectedColor"
+                                [activeItem]="null"
                                 (selectedItem)="
-                                    onSelectDropdown($event, 'color')
+                                    onSelectDropdown($event, 'color', 'truck')
                                 "
                             ></app-ta-input-dropdown>
                         </div>
@@ -87,8 +82,18 @@
                         class="main_inside"
                         [class.addNew]="item.add_new_trailer"
                     >
-                        <div class="padding-inside">
-                            <div class="add_new" *ngIf="item.add_new_trailer">
+                        <div
+                            class="padding-inside"
+                            *ngIf="
+                                openedTrailerDropdown != rowIndex &&
+                                item.add_new_trailer
+                            "
+                        >
+                            <div
+                                class="add_new"
+                                *ngIf="item.add_new_trailer"
+                                (click)="showTrailerDropdown(rowIndex)"
+                            >
                                 <div class="text">Add</div>
                                 <svg-icon
                                     [src]="
@@ -101,6 +106,30 @@
                                 ></svg-icon>
                             </div>
                         </div>
+                        <div
+                            class="drop-item"
+                            *ngIf="openedTrailerDropdown == rowIndex"
+                        >
+                            <app-ta-input-dropdown
+                                [formControl]="truckFormControll"
+                                [template]="'svgtext-template'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Unit No',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-118',
+                                    placeholderInsteadOfLabel: true,
+                                    hideDropdownArrow: true,
+                                    autoFocus: true
+                                }"
+                                [options]="trailerList"
+                                [activeItem]="null"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'color', 'trailer')
+                                "
+                            ></app-ta-input-dropdown>
+                        </div>
                     </div>
                 </td>
                 <td class="driver-field">
@@ -108,8 +137,18 @@
                         class="main_inside"
                         [class.addNew]="item.add_new_driver"
                     >
-                        <div class="padding-inside">
-                            <div class="add_new" *ngIf="item.add_new_driver">
+                        <div
+                            class="padding-inside"
+                            *ngIf="
+                                openedDriverDropdown != rowIndex &&
+                                item.add_new_driver
+                            "
+                        >
+                            <div
+                                class="add_new"
+                                *ngIf="item.add_new_driver"
+                                (click)="showDriverDropdown(rowIndex)"
+                            >
                                 <div class="text">Add</div>
                                 <svg-icon
                                     [src]="
@@ -121,6 +160,30 @@
                                     }"
                                 ></svg-icon>
                             </div>
+                        </div>
+                        <div
+                            class="drop-item"
+                            *ngIf="openedDriverDropdown == rowIndex"
+                        >
+                            <app-ta-input-dropdown
+                                [formControl]="truckFormControll"
+                                [template]="'svgtext-template'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Unit No',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-228',
+                                    placeholderInsteadOfLabel: true,
+                                    hideDropdownArrow: true,
+                                    autoFocus: true
+                                }"
+                                [options]="driverList"
+                                [activeItem]="null"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'color', 'driver')
+                                "
+                            ></app-ta-input-dropdown>
                         </div>
                     </div>
                 </td>
