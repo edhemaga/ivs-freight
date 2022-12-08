@@ -14,7 +14,6 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DriverResponse } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';

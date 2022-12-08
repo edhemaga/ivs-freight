@@ -2,7 +2,6 @@ import { MvrService } from './../../../../../../appcoretruckassist/api/mvr.servi
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, tap, takeUntil, Subject } from 'rxjs';
 import {
-    DriverResponse,
     GetMvrModalResponse,
     MvrResponse,
 } from 'appcoretruckassist';

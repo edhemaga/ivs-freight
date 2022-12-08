@@ -8,7 +8,6 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TrailerResponse } from 'appcoretruckassist';
 import { Subject } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';

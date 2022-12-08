@@ -9,7 +9,6 @@ import {
     AddressEntity,
     CheckOwnerSsnEinResponse,
     CreateResponse,
-    DriverResponse,
     GetDriverModalResponse,
 } from 'appcoretruckassist';
 import {

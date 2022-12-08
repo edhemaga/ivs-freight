@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
     DriverListResponse,
-    DriverResponse,
     GetTestModalResponse,
     TestResponse,
 } from 'appcoretruckassist';

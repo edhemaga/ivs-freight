@@ -1,4 +1,3 @@
-import { TruckResponse } from './../../../../../../../appcoretruckassist/model/truckResponse';
 import { Injectable } from '@angular/core';
 import {
     ActivatedRouteSnapshot,
@@ -6,8 +5,8 @@ import {
     Router,
     RouterStateSnapshot,
 } from '@angular/router';
-import { Observable, of, forkJoin } from 'rxjs';
-import { catchError, tap, take } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { TruckTService } from '../truck.service';
 import { TruckItemState, TruckItemStore } from './truck.details.store';
 import { TrucksDetailsListQuery } from '../truck-details-list-state/truck-details-list.query';

@@ -10,7 +10,6 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DriverResponse } from 'appcoretruckassist';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';

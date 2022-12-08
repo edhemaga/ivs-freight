@@ -3,10 +3,8 @@ import {
     ViewEncapsulation,
     OnInit,
     OnDestroy,
-    OnChanges,
     Input,
     ViewChildren,
-    SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TrailerResponse } from 'appcoretruckassist';

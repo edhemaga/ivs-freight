@@ -6,7 +6,6 @@ import {
     OnDestroy,
     ChangeDetectorRef,
 } from '@angular/core';
-import { DriverResponse } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 import { Subject, takeUntil } from 'rxjs';

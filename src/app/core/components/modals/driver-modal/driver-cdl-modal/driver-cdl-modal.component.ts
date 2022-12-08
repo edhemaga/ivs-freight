@@ -2,7 +2,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     CdlResponse,
-    DriverResponse,
     GetCdlModalResponse,
 } from 'appcoretruckassist';
 import { CdlTService } from '../../../driver/state/cdl.service';

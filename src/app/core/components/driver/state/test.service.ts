@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import {
-    DriverResponse,
     GetTestModalResponse,
     TestResponse,
     TestService,

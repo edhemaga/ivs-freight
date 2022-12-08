@@ -6,8 +6,6 @@ import {
     RegistrationService,
     TitleResponse,
     TitleService,
-    TruckResponse,
-    TrailerResponse,
     RegistrationModalResponse,
     TitleModalResponse,
 } from 'appcoretruckassist';

@@ -9,7 +9,6 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TruckResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';

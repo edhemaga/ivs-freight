@@ -9,7 +9,6 @@ import {
     ViewChildren,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TruckResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';

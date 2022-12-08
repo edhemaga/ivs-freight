@@ -6,7 +6,6 @@ import { ModalService } from './../../shared/ta-modal/modal.service';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
-import { DriverResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';

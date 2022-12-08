@@ -1,4 +1,3 @@
-import { TrailerResponse } from '../../../../../../../appcoretruckassist/model/trailerResponse';
 
 import { Injectable } from '@angular/core';
 import {
@@ -7,8 +6,7 @@ import {
     Router,
     RouterStateSnapshot,
 } from '@angular/router';
-import { Observable, tap, of, forkJoin } from 'rxjs';
-import { catchError, take } from 'rxjs/operators';
+import { Observable, tap, forkJoin } from 'rxjs';
 import { TrailerTService } from '../trailer.service';
 
 import { TrailerItemState, TrailerItemStore } from './trailer-details.store';
