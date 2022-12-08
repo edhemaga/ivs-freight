@@ -1,5 +1,11 @@
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewEncapsulation,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
     AddressEntity,
@@ -14,6 +20,7 @@ import {
     addressUnitValidation,
     addressValidation,
     bankValidation,
+    departmentValidation,
     phoneExtension,
     phoneFaxRegex,
     repairShopValidation,
@@ -24,11 +31,24 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
 import { FormService } from '../../../../services/form/form.service';
 import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
+import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
+import {
+    TaLikeDislikeService,
+    LikeDislikeModel,
+} from '../../../shared/ta-like-dislike/ta-like-dislike.service';
+import { SignInResponse } from '../../../../../../../appcoretruckassist/model/signInResponse';
+import { CreateRatingCommand } from '../../../../../../../appcoretruckassist/model/createRatingCommand';
+import { CreateReviewCommand } from '../../../../../../../appcoretruckassist/model/createReviewCommand';
+import { UpdateReviewCommand } from '../../../../../../../appcoretruckassist/model/updateReviewCommand';
 
 @Component({
     selector: 'app-repair-shop-modal',
     templateUrl: './repair-shop-modal.component.html',
     styleUrls: ['./repair-shop-modal.component.scss'],
+    animations: [tab_modal_animation('animationTabsModal')],
+    encapsulation: ViewEncapsulation.None,
     providers: [ModalService, BankVerificationService, FormService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
@@ -36,6 +56,27 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: any;
     public repairShopForm: FormGroup;
+
+    public selectedTab: number = 1;
+    public tabs: any[] = [
+        {
+            id: 1,
+            name: 'Details',
+        },
+        {
+            id: 2,
+            name: 'Contact',
+        },
+        {
+            id: 3,
+            name: 'Review',
+        },
+    ];
+
+    public animationObject = {
+        value: this.selectedTab,
+        params: { height: '0px' },
+    };
 
     public isRepairShopFavourite: boolean = false;
     public isPhoneExtExist: boolean = false;
@@ -47,20 +88,37 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public isBankSelected: boolean = false;
 
     public services: any[] = [];
+
+    // DAYS
     public openHoursDays = [
-        'Sunday',
+        'MON - SAT',
         'Monday',
         'Tuesday',
         'Wednesday',
         'Thursday',
         'Friday',
         'Saturday',
+        'Sunday',
     ];
+    public isDaysVisible: boolean = false;
 
-    public isFormDirty: boolean;
+    // Documents
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
+
+    // Contact Tab
+    public isContactCardsScrolling: boolean = false;
+    public labelsDepartments: any[] = [];
+    public selectedContractDepartmentFormArray: any[] = [];
+
+    // Review
+    public reviews: any[] = [];
+    public companyUser: SignInResponse = null;
+    public disableOneMoreReview: boolean = false;
+
+    public addNewAfterSave: boolean = false;
+    public isFormDirty: boolean;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -68,21 +126,29 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private shopService: RepairTService,
         private modalService: ModalService,
         private bankVerificationService: BankVerificationService,
-        private formService: FormService
+        private formService: FormService,
+        private reviewRatingService: ReviewsRatingService,
+        private taLikeDislikeService: TaLikeDislikeService
     ) {}
 
     ngOnInit() {
+        this.companyUser = JSON.parse(localStorage.getItem('user'));
         this.createForm();
         this.getRepairShopModalDropdowns();
         this.onBankSelected();
 
         if (this.editData?.id) {
             this.editRepairShopById(this.editData.id);
+            this.ratingChanges();
         }
 
         if (!this.editData || this.editData?.canOpenModal) {
             for (let i = 0; i < this.openHoursDays.length; i++) {
-                this.addOpenHours(this.openHoursDays[i], i !== 0, i);
+                this.addOpenHours(
+                    this.openHoursDays[i],
+                    i !== this.openHoursDays.length - 1,
+                    i
+                );
             }
         }
     }
@@ -96,12 +162,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             email: [null],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
-            companyOwned: [false],
             openHours: this.formBuilder.array([]),
             bankId: [null, [...bankValidation]],
             routing: [null, routingBankValidation],
             account: [null, accountBankValidation],
             note: [null],
+            contacts: this.formBuilder.array([]),
             files: [null],
         });
 
@@ -117,6 +183,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    public tabChange(event: any): void {
+        this.selectedTab = event.id;
+        let dotAnimation = document.querySelector('.animation-three-tabs');
+
+        this.animationObject = {
+            value: this.selectedTab,
+            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+        };
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -143,6 +219,19 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 }
+                break;
+            }
+            case 'save and add new': {
+                if (this.repairShopForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.repairShopForm);
+                    return;
+                }
+                this.addRepairShop();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
                 break;
             }
             case 'save': {
@@ -240,6 +329,64 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return this.services.filter((item) => item.active).length;
     }
 
+    public get contacts(): FormArray {
+        return this.repairShopForm.get('contacts') as FormArray;
+    }
+
+    private createContacts(data?: {
+        contactName: string;
+        departmentId: string;
+        phone: string;
+        extensionPhone: string;
+        email: string;
+    }): FormGroup {
+        return this.formBuilder.group({
+            contactName: [
+                data?.contactName ? data.contactName : null,
+                Validators.required,
+            ],
+            departmentId: [
+                data?.departmentId ? data.departmentId : null,
+                [Validators.required, ...departmentValidation],
+            ],
+            phone: [
+                data?.phone ? data.phone : null,
+                [Validators.required, phoneFaxRegex],
+            ],
+            extensionPhone: [
+                data?.extensionPhone ? data.extensionPhone : null,
+                [...phoneExtension],
+            ],
+            email: [data?.email ? data.email : null],
+        });
+    }
+
+    public addContacts(event: { check: boolean; action: string }) {
+        const form = this.createContacts();
+
+        if (event.check) {
+            this.contacts.push(form);
+        }
+        this.inputService.customInputValidator(
+            form.get('email'),
+            'email',
+            this.destroy$
+        );
+    }
+
+    public removeContacts(id: number) {
+        this.contacts.removeAt(id);
+        this.selectedContractDepartmentFormArray.splice(id, 1);
+
+        if (this.contacts.length === 0) {
+            this.repairShopForm.markAsUntouched();
+        }
+    }
+
+    public onScrollingContacts(event: any) {
+        this.isContactCardsScrolling = event.target.scrollLeft > 1;
+    }
+
     public onHandleAddress(event: {
         address: AddressEntity | any;
         valid: boolean;
@@ -260,13 +407,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    public onSelectDropdown(event: any, action: string) {
+    public onSelectDropdown(event: any, action: string, indx?: number) {
         switch (action) {
             case 'bank': {
                 this.selectedBank = event;
                 if (!event) {
                     this.repairShopForm.get('bankId').patchValue(null);
                 }
+                break;
+            }
+            case 'contact-department': {
+                this.selectedContractDepartmentFormArray[indx] = event;
                 break;
             }
             default: {
@@ -321,7 +472,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         email: res.email,
                         address: res.address.address,
                         addressUnit: res.address.addressUnit,
-                        companyOwned: res.companyOwned,
                         openHours: [],
                         bankId: res.bank ? res.bank.name : null,
                         routing: res.routing,
@@ -343,6 +493,52 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             active: item.active,
                         };
                     });
+                    // Contacts
+                    //   if (reasponse.contacts) {
+                    //     for (const contact of reasponse.contacts) {
+                    //         this.contacts.push(
+                    //             this.createContacts({
+                    //                 contactName: contact.contactName,
+                    //                 departmentId: contact.department.name,
+                    //                 phone: contact.phone,
+                    //                 extensionPhone: contact.extensionPhone,
+                    //                 email: contact.email,
+                    //             })
+                    //         );
+
+                    //         this.selectedContractDepartmentFormArray.push(
+                    //             contact.department
+                    //         );
+                    //     }
+                    // }
+
+                    // Review
+                    // this.reviews = reasponse.reviews.map((item: any) => ({
+                    //     ...item,
+                    //     companyUser: {
+                    //         ...item.companyUser,
+                    //         avatar: item.companyUser.avatar,
+                    //     },
+                    //     commentContent: item.comment,
+                    //     rating: item.ratingFromTheReviewer,
+                    // }));
+
+                    // const reviewIndex = this.reviews.findIndex(
+                    //     (item) =>
+                    //         item.companyUser.id ===
+                    //         this.companyUser.companyUserId
+                    // );
+
+                    // if (reviewIndex !== -1) {
+                    //     this.disableOneMoreReview = true;
+                    // }
+
+                    // this.taLikeDislikeService.populateLikeDislikeEvent({
+                    //     downRatingCount: reasponse.downCount,
+                    //     upRatingCount: reasponse.upCount,
+                    //     currentCompanyUserRating:
+                    //         reasponse.currentCompanyUserRating,
+                    // });
 
                     res.openHours.forEach((el) => {
                         this.addOpenHours(
@@ -369,6 +565,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
 
         openHours = openHours.map((item) => {
+            if (!this.toggleDays) {
+                return {
+                    dayOfWeek: openHours[0].dayOfWeek,
+                    startTime: openHours[0].startTime,
+                    endTime: openHours[0].endTime,
+                };
+            }
             if (item.isDay) {
                 return {
                     dayOfWeek: item.dayOfWeek,
@@ -384,7 +587,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        const newData: any = {
+        let newData: any = {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
@@ -396,6 +599,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 };
             }),
             files: documents,
+        };
+
+        for (let index = 0; index < this.contacts.length; index++) {
+            this.contacts[index].departmentId =
+                this.selectedContractDepartmentFormArray[index].id;
+        }
+
+        newData = {
+            ...newData,
+            contacts: this.contacts,
         };
 
         this.shopService
@@ -424,6 +637,40 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             }
                         }
                     }
+
+                    if (this.addNewAfterSave) {
+                        this.formService.resetForm(this.repairShopForm);
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                        });
+
+                        this.services = this.services.map((item) => {
+                            return {
+                                ...item,
+                                active: false,
+                            };
+                        });
+                        if (!this.editData || this.editData?.canOpenModal) {
+                            for (
+                                let i = 0;
+                                i < this.openHoursDays.length;
+                                i++
+                            ) {
+                                this.addOpenHours(
+                                    this.openHoursDays[i],
+                                    i !== this.openHoursDays.length - 1,
+                                    i
+                                );
+                            }
+                        }
+                        this.isRepairShopFavourite = false;
+                        this.favouriteRepairShop = null;
+                        this.isPhoneExtExist = false;
+                        this.documents = [];
+
+                        this.addNewAfterSave = false;
+                    }
                 },
                 error: () => {},
             });
@@ -440,6 +687,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
 
         openHours = openHours.map((item) => {
+            if (!this.toggleDays) {
+                return {
+                    dayOfWeek: openHours[0].dayOfWeek,
+                    startTime: openHours[0].startTime,
+                    endTime: openHours[0].endTime,
+                };
+            }
             if (item.isDay) {
                 return {
                     dayOfWeek: item.dayOfWeek,
@@ -455,7 +709,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        const newData: any = {
+        let newData: any = {
             id: id,
             ...form,
             bankId: this.selectedBank ? this.selectedBank.id : null,
@@ -469,6 +723,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }),
             files: documents ? documents : this.repairShopForm.value.files,
             filesForDeleteIds: this.filesForDelete,
+        };
+
+        for (let index = 0; index < this.contacts.length; index++) {
+            this.contacts[index].departmentId =
+                this.selectedContractDepartmentFormArray[index].id;
+        }
+
+        newData = {
+            ...newData,
+            contacts: this.contacts,
         };
 
         this.shopService
@@ -531,6 +795,147 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    // Reviews
+    public changeReviewsEvent(reviews: ReviewCommentModal) {
+        switch (reviews.action) {
+            case 'delete': {
+                this.deleteReview(reviews);
+                break;
+            }
+            case 'add': {
+                this.addReview(reviews);
+                break;
+            }
+            case 'update': {
+                this.updateReview(reviews);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    public createReview() {
+        if (
+            this.reviews.some((item) => item.isNewReview) ||
+            this.disableOneMoreReview
+        ) {
+            return;
+        }
+        // ------------------------ PRODUCTION MODE -----------------------------
+        // this.reviews.unshift({
+        //   companyUser: {
+        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
+        //     avatar: this.companyUser.avatar,
+        //   },
+        //   commentContent: '',
+        //   createdAt: new Date().toISOString(),
+        //   updatedAt: new Date().toISOString(),
+        //   isNewReview: true,
+        // });
+        // -------------------------- DEVELOP MODE --------------------------------
+        this.reviews.unshift({
+            companyUser: {
+                fullName: this.companyUser.firstName.concat(
+                    ' ',
+                    this.companyUser.lastName
+                ),
+                avatar: this.companyUser.avatar,
+            },
+            commentContent: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            isNewReview: true,
+        });
+    }
+
+    private ratingChanges() {
+        this.taLikeDislikeService.userLikeDislike$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((action: LikeDislikeModel) => {
+                let rating: CreateRatingCommand;
+
+                if (action.action === 'liked') {
+                    rating = {
+                        entityTypeRatingId: 2,
+                        entityTypeId: this.editData.id,
+                        thumb: action.likeDislike,
+                    };
+                } else {
+                    rating = {
+                        entityTypeRatingId: 2,
+                        entityTypeId: this.editData.id,
+                        thumb: action.likeDislike,
+                    };
+                }
+
+                this.reviewRatingService
+                    .addRating(rating)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: () => {
+                            this.editRepairShopById(this.editData.id);
+                        },
+                        error: () => {},
+                    });
+            });
+    }
+
+    private addReview(reviews: ReviewCommentModal) {
+        const review: CreateReviewCommand = {
+            entityTypeReviewId: 2,
+            entityTypeId: this.editData.id,
+            comment: reviews.data.commentContent,
+        };
+
+        this.reviewRatingService
+            .addReview(review)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: any) => {
+                    this.reviews = reviews.sortData.map((item, index) => {
+                        if (index === 0) {
+                            return {
+                                ...item,
+                                id: res.id,
+                            };
+                        }
+                        return item;
+                    });
+
+                    this.disableOneMoreReview = true;
+                },
+                error: () => {},
+            });
+    }
+
+    private deleteReview(reviews: ReviewCommentModal) {
+        this.reviews = reviews.sortData;
+        this.disableOneMoreReview = false;
+        this.reviewRatingService
+            .deleteReview(reviews.data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private updateReview(reviews: ReviewCommentModal) {
+        this.reviews = reviews.sortData;
+        const review: UpdateReviewCommand = {
+            id: reviews.data.id,
+            comment: reviews.data.commentContent,
+        };
+
+        this.reviewRatingService
+            .updateReview(review)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    public toggleDays() {
+        this.isDaysVisible = !this.isDaysVisible;
     }
 
     ngOnDestroy(): void {

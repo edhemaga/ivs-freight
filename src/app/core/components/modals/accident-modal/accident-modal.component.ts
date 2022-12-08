@@ -15,7 +15,6 @@ import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentResponse } from '../../../../../../appcoretruckassist/model/accidentResponse';
 import { convertDateFromBackend } from '../../../utils/methods.calculations';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
-import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
     selector: 'app-accident-modal',
@@ -26,6 +25,7 @@ import { NotificationService } from '../../../services/notification/notification
 })
 export class AccidentModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+
     @Input() editData: any;
 
     public accidentForm: FormGroup;
@@ -50,13 +50,16 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     public documents: any[] = [];
     public media: any[] = [];
 
+    // Customer (Broker)
     public labelsAccidentCustomer: any[] = [];
-    public labelsTrailerUnits: any[] = [];
+    public selectedAccidentCustomer: any = null;
 
+    // Insurance Type (Labels)
     public labelsInsuranceType: any[] = [];
     public selectedInsuranceType: any[] = [];
 
-    public selectedAccidentCustomer: any = null;
+    // Trailer Units
+    public labelsTrailerUnits: any[] = [];
     public selectedTrailerUnit: any = null;
 
     public selectedAddressLocation: AddressEntity = null;
@@ -75,8 +78,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
-        private accidentTService: AccidentTService,
-        private notificationService: NotificationService
+        private accidentTService: AccidentTService
     ) {}
 
     ngOnInit() {
@@ -96,9 +98,9 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             injury: [null],
             fatality: [null],
             towing: [null],
-            hazmat: [null],
-            vehicleNumber: [null],
-            location: [null, [...addressValidation]],
+            hazMat: [null],
+            vehicleNo: [null],
+            addressAccident: [null, [...addressValidation]],
             date: [null],
             time: [null],
             driverName: [null],
@@ -118,7 +120,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             trailerState: [null],
             trailerVIN: [null, [...vinNumberValidation]],
             violations: this.formBuilder.array([]),
-            insurance: this.formBuilder.array([]),
+            insuranceType: this.formBuilder.array([]),
             note: [null],
             roadwayTrafficWay: [null],
             weatherCondition: [null],
@@ -136,6 +138,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             customer: [null],
             boL: [null],
             cargo: [null],
+            files: [null],
+            medies: [null],
         });
 
         this.formService.checkFormChange(this.accidentForm);
@@ -161,7 +165,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     }
 
     public get insurances(): FormArray {
-        return this.accidentForm.get('insurance') as FormArray;
+        return this.accidentForm.get('insuranceType') as FormArray;
     }
 
     private createInsurance(data?: {
@@ -237,7 +241,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: AccidentResponse) => {
-                    console.log;
                     this.accidentForm.patchValue({
                         report: res.report,
                         federallyRecordable: res.federallyRecordable,
@@ -245,9 +248,9 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                         injury: res.injury,
                         fatality: res.fatality,
                         towing: res.towing,
-                        hazmat: res.hazMat,
-                        vehicleNumber: res.vehicloNo,
-                        location: res.addressAccident
+                        hazMat: res.hazMat,
+                        vehicleNo: res.vehicloNo,
+                        addressAccident: res.addressAccident
                             ? res.addressAccident.address
                             : null,
                         date: res.date
@@ -273,7 +276,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                         trailerState: res.trailer_State,
                         trailerVIN: res.trailer_VIN,
                         violations: [],
-                        insurance: [],
+                        insuranceType: [],
                         note: null,
                         roadwayTrafficWay: res.roadwayTrafficway,
                         weatherCondition: res.weatherCondition,
@@ -336,13 +339,13 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     //   }),
                     // ]
                 },
-                error: (err: any) => {
-                  
-                },
+                error: () => {},
             });
     }
 
-    private updateAccident(id: number) {}
+    private updateAccident(id: number) {
+        console.log('update: ', id);
+    }
 
     private addAccident() {}
 
@@ -352,7 +355,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: AccidentModalResponse) => {
-                    console.log(res);
+                    console.log('accident response: ', res);
                     this.labelsTrailerUnits = res.trailers.map((item) => {
                         return {
                             id: item.id,
@@ -361,9 +364,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     });
                     this.labelsInsuranceType = res.insuranceType;
                 },
-                error: (err: any) => {
-               
-                },
+                error: () => {},
             });
     }
 
@@ -372,23 +373,24 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             address: AddressEntity | any;
             valid: boolean;
         },
-        action
+        action: string
     ) {
         switch (action) {
             case 'address-authority': {
-                if (event.valid) this.selectedAddressAuthority = event;
+                if (event.valid) this.selectedAddressAuthority = event.address;
                 break;
             }
             case 'address-origin': {
-                if (event.valid) this.selectedAddressOrigin = event;
+                if (event.valid) this.selectedAddressOrigin = event.address;
                 break;
             }
             case 'address-destination': {
-                if (event.valid) this.selectedAddressDestination = event;
+                if (event.valid)
+                    this.selectedAddressDestination = event.address;
                 break;
             }
             case 'location': {
-                if (event.valid) this.selectedAddressLocation = event;
+                if (event.valid) this.selectedAddressLocation = event.address;
                 break;
             }
             default: {

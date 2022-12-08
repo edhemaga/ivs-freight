@@ -250,7 +250,15 @@
                                     name: 'Truck Type',
                                     type: 'text',
                                     label: 'Type',
-                                    isDisabled: true
+                                    isDisabled: true,
+                                    dropdownImageInput: {
+                                        withText: true,
+                                        svg: true,
+                                        image: false,
+                                        url: 'logoname_treba',
+                                        template: 'truck',
+                                        class: 'type_name'
+                                    }
                                 }"
                             ></app-ta-input>
                             <app-ta-input
@@ -318,7 +326,15 @@
                                     name: 'Trailer Type',
                                     type: 'text',
                                     label: 'Type',
-                                    isDisabled: true
+                                    isDisabled: true,
+                                    dropdownImageInput: {
+                                        withText: true,
+                                        svg: true,
+                                        image: false,
+                                        url: 'logoname_treba',
+                                        template: 'trailer',
+                                        class: 'type_name'
+                                    }
                                 }"
                             ></app-ta-input>
                             <app-ta-input
@@ -406,10 +422,12 @@
                                                 }}
                                             </p>
                                             <div class="violation-category">
-                                                <!-- TODO: Change with backend path -->
                                                 <svg-icon
                                                     class="violation-category-svg"
-                                                    src="assets/svg/common/violation-details/ic_vehicle-maintance.svg"
+                                                    src="assets/svg/common/violation-details/{{
+                                                        violationCategories[ind]
+                                                            ?.logoName
+                                                    }}"
                                                 ></svg-icon>
                                                 <span
                                                     class="violation-category-text"

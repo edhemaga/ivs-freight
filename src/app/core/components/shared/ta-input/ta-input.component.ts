@@ -125,10 +125,12 @@ export class TaInputComponent
     }
 
     ngOnInit(): void {
+        
         if (
             this.inputConfig.name === 'datepicker' ||
             this.inputConfig.name === 'timepicker'
         ) {
+            
             this.calendarService.dateChanged
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((date) => {
@@ -178,7 +180,7 @@ export class TaInputComponent
 
                 this.input.nativeElement.focus();
                 clearTimeout(timeout);
-            }, 300);
+            }, 250);
         }
 
         // Reset Inputs
@@ -216,7 +218,9 @@ export class TaInputComponent
             text = moment(new Date(date)).format('MM/DD/YY');
             dateFormat = text.split('/');
         } else {
+            date = date instanceof Date ? date : new Date(moment().format("MM/DD/YYYY") + " " + date);
             text = moment(new Date(date)).format('HH:mm');
+            
             timeFormat = moment(new Date(date)).format('hh/mm/A');
             dateFormat = timeFormat.split('/');
         }
@@ -260,9 +264,9 @@ export class TaInputComponent
         this.onChange = fn;
     }
 
-    public onChange(event: any): void {}
+    public onChange(_: any): void {}
 
-    public registerOnTouched(fn: any): void {}
+    public registerOnTouched(_: any): void {}
 
     public setDisabledState?(isDisabled: boolean): void {
         this.inputConfig.isDisabled = isDisabled;

@@ -509,7 +509,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .getShipperById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
+                
                 next: (res: ShipperResponse) => {
+                    console.log(convertTimeFromBackend(res.receivingTo), "-------");
                     this.shipperForm.patchValue({
                         businessName: res.businessName,
                         phone: res.phone,
@@ -524,12 +526,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
-                                : convertTimeFromBackend(res.receivingFrom),
+                                : res.receivingFrom,
                         receivingTo:
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
-                                : convertTimeFromBackend(res.receivingTo),
+                                : res.receivingTo,
                         shippingHoursSameReceiving:
                             res.shippingHoursSameReceiving,
                         shippingAppointment: res.shippingAppointment,

@@ -474,7 +474,9 @@ export class SettingsInsurancePolicyModalComponent
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
-            files: documentsUpdate ? documentsUpdate : this.insurancePolicyForm.value.files,
+            files: documentsUpdate
+                ? documentsUpdate
+                : this.insurancePolicyForm.value.files,
             filesForDeleteIds: this.filesForDelete,
         };
 
@@ -836,7 +838,6 @@ export class SettingsInsurancePolicyModalComponent
     }
 
     private editInsurancePolicyById(insurance: any) {
-        console.log('insurance data: ', insurance);
         this.insurancePolicyForm.patchValue({
             producerName: insurance.producerName,
             issued: convertDateFromBackend(insurance.issued),

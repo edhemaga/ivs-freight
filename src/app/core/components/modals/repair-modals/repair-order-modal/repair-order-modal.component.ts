@@ -7,19 +7,16 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import {
-    RepairModalResponse,
-    RepairResponse,
-    RepairShopResponse,
-} from 'appcoretruckassist';
+import { RepairModalResponse, RepairShopResponse } from 'appcoretruckassist';
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
 import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
-import { Subject, takeUntil } from 'rxjs';
+import { delay, Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../../services/form/form.service';
+import { RepairResponse } from '../../../../../../../appcoretruckassist/model/repairResponse';
 import {
     convertDateToBackend,
     convertNumberInThousandSep,
@@ -50,24 +47,24 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public headerTabs = [
         {
             id: 1,
-            name: 'Bill',
+            name: 'Order',
             checked: true,
         },
         {
             id: 2,
-            name: 'Order',
+            name: 'Bill',
             checked: false,
         },
     ];
 
     public typeOfRepair = [
         {
-            id: 5231,
+            id: 3,
             name: 'Truck',
             checked: true,
         },
         {
-            id: 5232,
+            id: 4,
             name: 'Trailer',
             checked: false,
         },
@@ -100,6 +97,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
 
+    public selectedRepairType: any = null;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -113,41 +112,35 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
 
-        this.getRepairDropdowns();
+        // If open with trailer tab
+        if (this.editData?.type?.toLowerCase().includes('trailer')) {
+            this.onTypeOfRepair(this.typeOfRepair[1]);
+            this.getRepairDropdowns(null, null, 'Trailers', false);
+        }
+        // If open with truck tab
+        else {
+            this.onTypeOfRepair(this.typeOfRepair[0]);
+            this.getRepairDropdowns(null, null, 'Trucks', false);
+        }
 
+        // storage data
         if (this.editData?.storageData) {
             this.populateForm(this.editData?.storageData);
         }
 
+        // Edit mode
         if (this.editData?.type?.includes('edit')) {
             this.editRepairById(this.editData.id);
-        } else {
-            const timeout = setTimeout(() => {
-                if (this.editData?.type?.toLowerCase().includes('trailer')) {
-                    this.onTypeOfRepair(
-                        this.typeOfRepair.find(
-                            (item) => item.name === 'Trailer'
-                        ),
-                        'true'
-                    );
-                } else {
-                    this.onTypeOfRepair(
-                        this.typeOfRepair.find((item) => item.name === 'Truck'),
-                        'true'
-                    );
-                }
-                clearTimeout(timeout);
-            }, 100);
         }
     }
 
     private createForm() {
         this.repairOrderForm = this.formBuilder.group({
-            repairType: ['Bill'],
+            repairType: ['Order'],
             unitType: ['Truck'],
             unit: [null, [Validators.required, ...vehicleUnitValidation]],
             odometer: [null, repairOdometerValidation],
-            date: [null, Validators.required],
+            date: [null],
             invoice: [null, invoiceValidation],
             repairShopId: [null, Validators.required],
             items: this.formBuilder.array([]),
@@ -161,6 +154,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+
+        if (
+            !this.editData?.storageData &&
+            !this.editData?.type?.includes('edit')
+        ) {
+            this.addItems({ check: true, action: null });
+        }
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
@@ -295,7 +295,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public onModalHeaderTabChange(event: any) {
         this.selectedHeaderTab = event.id;
-        if (event.id === 2) {
+        if (event.id === 1) {
             this.inputService.changeValidators(
                 this.repairOrderForm.get('repairShopId'),
                 false
@@ -319,6 +319,23 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 true
             );
             this.repairOrderForm.get('repairType').patchValue('Order');
+
+            if (this.items.length) {
+                for (let i = 0; i < this.items.length; i++) {
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('description'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('quantity'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('price'),
+                        false
+                    );
+                }
+            }
         } else {
             this.inputService.changeValidators(
                 this.repairOrderForm.get('repairShopId')
@@ -333,6 +350,20 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.repairOrderForm.get('odometer')
                 );
             }
+
+            if (this.items.length) {
+                for (let i = 0; i < this.items.length; i++) {
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('description')
+                    );
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('quantity')
+                    );
+                    this.inputService.changeValidators(
+                        this.items.controls[i].get('price')
+                    );
+                }
+            }
         }
 
         this.headerTabs = this.headerTabs.map((item) => {
@@ -344,37 +375,37 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public onTypeOfRepair(event: any, action?: string) {
-        this.typeOfRepair = this.typeOfRepair.map((item) => {
-            if (item.id === event.id) {
-                this.repairOrderForm.get('unitType').patchValue(item.name);
+        setTimeout(() => {
+            this.typeOfRepair = this.typeOfRepair.map((item) => {
+                if (item.id === event.id) {
+                    this.repairOrderForm.get('unitType').patchValue(item.name);
+                }
+                return {
+                    ...item,
+                    checked: item.id === event.id,
+                };
+            });
+
+            this.labelsUnit =
+                event.name === 'Trailer'
+                    ? [...this.unitTrailers]
+                    : [...this.unitTrucks];
+
+            // If Edit Mode, don't go below
+            if (action) {
+                return;
             }
-            return {
-                ...item,
-                checked: item.id === event.id,
-            };
-        });
 
-        this.labelsUnit =
-            event.name === 'Trailer'
-                ? [...this.unitTrailers]
-                : [...this.unitTrucks];
-
-        if (action) {
-            return;
-        }
-
-        this.inputService.changeValidators(
-            this.repairOrderForm.get('odometer'),
-            false
-        );
-        this.repairOrderForm.get('unit').patchValue(null);
-        this.selectedUnit = null;
-        this.selectedPM = [];
-        this.selectedPM.push({
-            id: null,
-            logoName: 'assets/svg/common/repair-pm/ic_custom_pm.svg',
-        });
-        this.selectedPMIndex = null;
+            this.inputService.changeValidators(
+                this.repairOrderForm.get('odometer'),
+                false
+            );
+            this.repairOrderForm.get('unit').patchValue(null);
+            this.selectedUnit = null;
+            this.selectedPM = [];
+            this.pmOptions = [];
+            this.selectedPMIndex = null;
+        }, 100);
     }
 
     public onSelectDropDown(event: any, action: string) {
@@ -411,10 +442,26 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     });
                 } else {
                     this.selectedUnit = event;
+                    if (!event) {
+                        this.selectedPM = [];
+
+                        this.selectedPMIndex = null;
+                    }
+
                     this.typeOfRepair.find((item) => item.checked).name ===
                     'Truck'
-                        ? this.getRepairDropdowns(this.selectedUnit?.id, null)
-                        : this.getRepairDropdowns(null, this.selectedUnit?.id);
+                        ? this.getRepairDropdowns(
+                              this.selectedUnit?.id,
+                              null,
+                              'Trucks',
+                              false
+                          )
+                        : this.getRepairDropdowns(
+                              null,
+                              this.selectedUnit?.id,
+                              'Trailers',
+                              false
+                          );
                 }
                 break;
             }
@@ -509,36 +556,29 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         return item.value;
     }
 
-    private getRepairDropdowns(truckId?: number, trailerId?: number) {
+    private getRepairDropdowns(
+        truckId?: number,
+        trailerId?: number,
+        unitType?: string,
+        onlyPMS?: boolean
+    ) {
         this.repairService
             .getRepairModalDropdowns(truckId, trailerId)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RepairModalResponse) => {
-                    // PM Trucks
-                    if (res.pmTrucks?.length) {
-                        this.pmOptions = res.pmTrucks.map((item) => {
-                            return {
-                                ...item,
-                                logoName: item.logoName,
-                            };
-                        });
-                    }
-
-                    if (res.pmTrailers?.length) {
-                        // // PM Trailers
-                        this.pmOptions = res.pmTrailers.map((item) => {
-                            return {
-                                ...item,
-                                logoName: item.logoName,
-                            };
-                        });
-                    }
+                    // PM Options
+                    this.pmOptions = res.pmTrucks?.length
+                        ? res.pmTrucks
+                        : res.pmTrailers;
 
                     if (
-                        !this.pmOptions.find((item) => item.title === 'Add New')
+                        this.pmOptions?.length &&
+                        !this.pmOptions?.find(
+                            (item) => item.title === 'Add New'
+                        )
                     ) {
-                        this.pmOptions.unshift({
+                        this.pmOptions?.unshift({
                             id: this.pmOptions.length + 1,
                             logoName: null,
                             mileage: null,
@@ -546,6 +586,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             status: null,
                             title: 'Add New',
                         });
+                    }
+
+                    if (onlyPMS) {
+                        return;
                     }
 
                     // Unit Trucks
@@ -564,6 +608,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         };
                     });
 
+                    // Labels Unit
+                    this.labelsUnit =
+                        unitType === 'Trailers'
+                            ? this.unitTrailers
+                            : this.unitTrucks;
+
                     // Services
                     this.services = res.serviceTypes.map((item) => {
                         return {
@@ -573,6 +623,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             active: false,
                         };
                     });
+
+                    // Repair Shops
                     this.labelsRepairShop = [...res.repairShops];
                 },
                 error: () => {},
@@ -580,7 +632,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public onAction(action: any, index: number) {
-        if (action.title !== 'Add New' && this.selectedHeaderTab === 1) {
+        if (action.title !== 'Add New' && this.selectedHeaderTab === 2) {
             this.selectedPM[index] = action;
             this.selectedPMIndex = index;
             this.inputService.changeValidators(
@@ -639,7 +691,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         let newData: any = null;
 
-        if (this.selectedHeaderTab === 2) {
+        if (this.selectedHeaderTab === 1) {
             newData = {
                 ...form,
                 truckId:
@@ -697,10 +749,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairService
             .addRepair(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private updateRepair(id: number) {
@@ -716,7 +765,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         let newData: any = null;
 
-        if (this.selectedHeaderTab === 2) {
+        if (this.selectedHeaderTab === 1) {
             newData = {
                 id: id,
                 ...form,
@@ -783,10 +832,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairService
             .updateRepair(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private deleteRepair(id: number) {
@@ -802,8 +848,18 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private populateForm(res: any) {
         const timeout = setTimeout(() => {
             res.typeOfRepair.find((item) => item.checked).name === 'Truck'
-                ? this.getRepairDropdowns(res.selectedUnit?.id, null)
-                : this.getRepairDropdowns(null, res.selectedUnit?.id);
+                ? this.getRepairDropdowns(
+                      res.selectedUnit?.id,
+                      null,
+                      'Trucks',
+                      false
+                  )
+                : this.getRepairDropdowns(
+                      null,
+                      res.selectedUnit?.id,
+                      'Trailers',
+                      false
+                  );
 
             const timeout2 = setTimeout(() => {
                 this.repairOrderForm.patchValue({
@@ -821,19 +877,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.selectedUnit = res.selectedUnit;
 
                 // Repair Services
-                this.services = [...res.services];
+                this.services = res.services;
 
                 // Repair Shop
                 this.selectedRepairShop = res.selectedRepairShop;
 
-                this.headerTabs = [...res.headerTabs];
+                // Header Tabs
+                this.headerTabs = res.headerTabs;
                 this.selectedHeaderTab = res.selectedHeaderTab;
 
+                // Repair Type
                 this.typeOfRepair = res.typeOfRepair;
 
                 // Items
                 this.subtotal = [...res.subtotal];
 
+                // PMS-ovi
                 this.selectedPM = [...res.selectedPM];
 
                 if (res.items_array.length) {
@@ -862,17 +921,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private editRepairById(id: number) {
         this.repairService
             .getRepairById(id)
-            .pipe(takeUntil(this.destroy$))
+            .pipe(delay(700), takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RepairResponse) => {
-                    if (!this.editData.type.includes('fo')) {
-                        this.onModalHeaderTabChange(
-                            this.headerTabs.find(
-                                (item) => item.name === res.repairType.name
-                            )
-                        );
-                    }
+                    // Header Tab
+                    this.onModalHeaderTabChange(
+                        this.headerTabs.find(
+                            (item) => item.name === res.repairType.name
+                        )
+                    );
 
+                    // Repair Type
                     this.onTypeOfRepair(
                         this.typeOfRepair.find(
                             (item) => item.name === res.unitType.name
@@ -880,8 +939,30 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         'edit-mode'
                     );
 
+                    // Truck/Trailer Unit number
+                    this.selectedUnit =
+                        res.unitType.name === 'Truck' ? res.truck : res.trailer;
+
+                    this.selectedHeaderTab =
+                        res.repairType.name === 'Bill' ||
+                        this.editData?.type.includes('edit-fo')
+                            ? this.headerTabs[1].id
+                            : this.headerTabs[0].id;
+
+                    this.getRepairDropdowns(
+                        res.truckId,
+                        res.trailerId,
+                        res.unitType.name,
+                        true
+                    );
+
+                    // Storage repair type bill / order
+                    this.selectedRepairType = res.repairType.name;
+
+                    // Documents
                     this.documents = res.files;
 
+                    // Patch form
                     this.repairOrderForm.patchValue({
                         repairType: res.repairType ? res.repairType.name : null,
                         unitType: res.unitType ? res.unitType.name : null,
@@ -892,15 +973,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         odometer:
                             res.odometer &&
                             res.date &&
-                            this.selectedHeaderTab === 1
+                            this.selectedHeaderTab === 2
                                 ? convertNumberInThousandSep(res.odometer)
                                 : null,
                         date:
-                            res.date && this.selectedHeaderTab === 1
+                            res.date && this.selectedHeaderTab === 2
                                 ? convertDateFromBackend(res.date)
                                 : null,
                         invoice:
-                            res.date && this.selectedHeaderTab === 1
+                            res.date && this.selectedHeaderTab === 2
                                 ? res.invoice
                                 : null,
                         repairShopId: res.repairShop ? res.repairShop.id : null,
@@ -908,19 +989,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                     });
 
-                    // Truck/Trailer Unit number
-                    this.selectedUnit =
-                        res.unitType.name === 'Truck' ? res.truck : res.trailer;
-
                     // Repair Services
-                    this.services = res.serviceTypes.map((item) => {
-                        return {
-                            id: item.serviceType.id,
-                            serviceType: item.serviceType.name,
-                            svg: `assets/svg/common/repair-services/${item.logoName}`,
-                            active: item.active,
-                        };
-                    });
+                    this.services = [
+                        ...res.serviceTypes.map((item) => {
+                            return {
+                                id: item.serviceType.id,
+                                serviceType: item.serviceType.name,
+                                svg: `assets/svg/common/repair-services/${item.logoName}`,
+                                active: item.active,
+                            };
+                        }),
+                    ];
 
                     // Repair Shop
                     if (res.repairShop?.id) {
@@ -944,64 +1023,66 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                     // Repair Items
                     if (res.items.length) {
-                        for (const iterator of res.items) {
+                        for (let i = 0; i < res.items.length; i++) {
                             this.items.push(
                                 this.createItems({
-                                    id: iterator.id,
-                                    description: iterator.description,
-                                    price: iterator.price ? iterator.price : 0,
-                                    quantity: iterator.price
-                                        ? iterator.quantity
-                                            ? iterator.quantity
-                                            : 1
-                                        : iterator.quantity,
-                                    subtotal: iterator.subtotal
-                                        ? iterator.subtotal
+                                    id: res.items[i].id,
+                                    description: res.items[i].description,
+                                    price: res.items[i].price
+                                        ? res.items[i].price
                                         : 0,
-                                    pmTruckId: iterator.pmTruck,
-                                    pmTrailerId: iterator.pmTrailer,
+                                    quantity: res.items[i].price
+                                        ? res.items[i].quantity
+                                            ? res.items[i].quantity
+                                            : 1
+                                        : res.items[i].quantity,
+                                    subtotal: res.items[i].subtotal
+                                        ? res.items[i].subtotal
+                                        : 0,
+                                    pmTruckId: res.items[i].pmTruck,
+                                    pmTrailerId: res.items[i].pmTrailer,
                                 })
                             );
-                            this.selectedPMIndex = 0;
 
-                            if (this.selectedHeaderTab === 1) {
+                            if (this.selectedHeaderTab === 2) {
                                 this.inputService.changeValidators(
                                     this.repairOrderForm.get('odometer')
                                 );
                             }
+
                             this.subtotal = [
                                 ...this.subtotal,
                                 {
-                                    id: iterator.id,
-                                    value: iterator.subtotal
-                                        ? iterator.subtotal
+                                    id: res.items[i].id,
+                                    value: res.items[i].subtotal
+                                        ? res.items[i].subtotal
                                         : 0,
                                 },
                             ];
 
                             if (res.unitType.name === 'Truck') {
                                 this.selectedPM.push({
-                                    id: iterator.pmTruck
-                                        ? iterator.pmTruck.id
-                                        : null,
+                                    id: res.items[i].pmTruck?.id,
                                     logoName: `assets/svg/common/repair-pm/${
-                                        iterator.pmTruck
-                                            ? iterator.pmTruck.logoName
+                                        res.items[i].pmTruck?.logoName
+                                            ? res.items[i].pmTruck.logoName
                                             : 'ic_custom_pm.svg'
                                     }`,
                                 });
                             } else {
                                 this.selectedPM.push({
-                                    id: iterator.pmTrailer
-                                        ? iterator.pmTrailer.id
-                                        : null,
+                                    id: res.items[i].pmTrailer?.id,
                                     logoName: `assets/svg/common/repair-pm/${
-                                        iterator.pmTrailer
-                                            ? iterator.pmTrailer.logoName
+                                        res.items[i].pmTrailer?.logoName
+                                            ? res.items[i].pmTrailer.logoName
                                             : 'ic_custom_pm.svg'
                                     }`,
                                 });
                             }
+
+                            this.selectedPMIndex = res.items.length;
+
+                            this.itemsCounter = res.items[i].id;
                         }
                     }
                 },
@@ -1014,27 +1095,27 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             return {
                 description: item.get('description').value,
                 price:
-                    this.selectedHeaderTab === 1
+                    this.selectedHeaderTab === 2
                         ? item.get('price').value
                             ? convertThousanSepInNumber(item.get('price').value)
                             : null
                         : null,
                 quantity: item.get('quantity').value,
                 subtotal:
-                    this.selectedHeaderTab === 1
+                    this.selectedHeaderTab === 2
                         ? this.subtotal[index].value
                             ? this.subtotal[index].value
                             : null
                         : null,
                 pmTruckId:
                     this.repairOrderForm.get('unitType').value === 'Truck'
-                        ? this.selectedPM
+                        ? this.selectedPM[index]?.id
                             ? this.selectedPM[index].id
                             : null
                         : null,
                 pmTrailerId:
                     this.repairOrderForm.get('unitType').value === 'Trailer'
-                        ? this.selectedPM
+                        ? this.selectedPM[index]?.id
                             ? this.selectedPM[index].id
                             : null
                         : null,

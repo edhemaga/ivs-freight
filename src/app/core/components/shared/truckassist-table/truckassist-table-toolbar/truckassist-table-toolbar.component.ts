@@ -195,6 +195,20 @@ export class TruckassistTableToolbarComponent
         this.columns.map((c) => {
             if (!c.hidden) {
                 columnsSumWidth += c.width < c.minWidth ? c.minWidth : c.width;
+
+                if (
+                    c.ngTemplate !== 'checkbox' &&
+                    c.ngTemplate !== 'attachments' &&
+                    c.ngTemplate !== 'media' &&
+                    c.ngTemplate !== 'insurance' &&
+                    c.ngTemplate !== 'comment' &&
+                    c.ngTemplate !== 'hire' &&
+                    c.ngTemplate !== 'favorite' &&
+                    c.ngTemplate !== 'note' &&
+                    c.ngTemplate !== 'actions'
+                ) {
+                    columnsSumWidth += 22;
+                }
             }
 
             if (c.minWidth) {
@@ -204,6 +218,11 @@ export class TruckassistTableToolbarComponent
             if (
                 c.ngTemplate !== 'checkbox' &&
                 c.ngTemplate !== 'attachments' &&
+                c.ngTemplate !== 'media' &&
+                c.ngTemplate !== 'insurance' &&
+                c.ngTemplate !== 'comment' &&
+                c.ngTemplate !== 'hire' &&
+                c.ngTemplate !== 'favorite' &&
                 c.ngTemplate !== 'note' &&
                 c.ngTemplate !== 'actions'
             ) {

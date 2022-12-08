@@ -117,6 +117,7 @@ export class TaInputDropdownComponent
 
     ngOnChanges(changes: SimpleChanges): void {
         // Sorting backend options
+
         if (changes.options?.currentValue != changes.options?.previousValue) {
             switch (this.sort) {
                 case 'active-drivers': {
@@ -259,9 +260,9 @@ export class TaInputDropdownComponent
         return this.superControl.control;
     }
 
-    writeValue(obj: any): void {}
-    registerOnChange(fn: any): void {}
-    registerOnTouched(fn: any): void {}
+    writeValue(_: any): void {}
+    registerOnChange(_: any): void {}
+    registerOnTouched(_: any): void {}
 
     private dropDownShowHideEvent() {
         this.inputService.dropDownShowHide$
@@ -379,8 +380,9 @@ export class TaInputDropdownComponent
                                 else if (item.logoName) {
                                     return { ...item };
                                 }
+
                                 // Code
-                                else if (item.code) {
+                                else if (item.code && item.description) {
                                     return {
                                         id: item.id,
                                         name: item.code.concat(
@@ -388,6 +390,10 @@ export class TaInputDropdownComponent
                                             item.description
                                         ),
                                     };
+                                }
+                                // Dropdown Labels
+                                else if (item?.dropLabel) {
+                                    return { ...item };
                                 }
                                 // Default
                                 else {
@@ -399,11 +405,17 @@ export class TaInputDropdownComponent
                                     }
                                 }
                             })
-                            .find(
-                                (item) =>
+                            .find((item) => {
+                                return (
                                     item.name.toLowerCase() ===
-                                    selectedItem.toLowerCase()
-                            );
+                                    (item?.dropLabel
+                                        ? selectedItem.substring(
+                                              0,
+                                              selectedItem.lastIndexOf(' ')
+                                          )
+                                        : selectedItem.toLowerCase())
+                                );
+                            });
 
                         // MultiSelect Dropdown
                         if (this.inputConfig.multiselectDropdown) {
@@ -417,7 +429,7 @@ export class TaInputDropdownComponent
                                 blackInput: true,
                             };
 
-                            this.getSuperControl.setValue(existItem.name);
+                            this.getSuperControl.setValue(existItem?.name);
                             this.selectedItem.emit(existItem);
                             this.activeItem = existItem;
                             this.inputService.dropDownItemSelectedOnEnter$.next(
@@ -572,6 +584,14 @@ export class TaInputDropdownComponent
     }
 
     public onActiveItem(option: any, group?: any): void {
+        // Prevent user to pick franchise, without group
+        if (
+            this.template === 'fuel-franchise' &&
+            option?.isFranchise &&
+            !group
+        ) {
+            return;
+        }
         // Disable to picking banned or dnu user
         if (option?.dnu || option?.ban) {
             return;
@@ -629,13 +649,16 @@ export class TaInputDropdownComponent
 
                 this.activeItem = option;
 
-                this.getSuperControl.setValue(
+                this.getSuperControl.patchValue(
                     option?.number ? option.number : option.name
                 );
 
                 this.options = this.originalOptions;
 
                 if (this.template === 'fuel-franchise') {
+                    this.getSuperControl.patchValue(
+                        group ? option.name : option.businessName
+                    );
                     const { id } = option;
                     group
                         ? this.selectedItem.emit({

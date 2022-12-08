@@ -78,6 +78,15 @@
         }
     }
 
+    &.valid-required-out-dropdown-label {
+        text {
+            fill: $input-placeholder-icon-path-valid !important;
+        }
+        &::after {
+            background: $input-placeholder-icon-valid-after !important;
+        }
+    }
+
     &.invalid-required-in {
         transition: all 0.3s ease-in-out;
         svg {

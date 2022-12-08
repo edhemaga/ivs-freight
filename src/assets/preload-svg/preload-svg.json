@@ -81,6 +81,10 @@
       "iconPath": "/assets/svg/common/colors/ic_color.svg"
     },
     {
+      "iconName": "ic_circle.svg",
+      "iconPath": "/assets/svg/common/colors/ic_circle.svg"
+    },
+    {
       "iconName": "ic_ac_compressor.svg",
       "iconPath": "/assets/svg/common/repair-pm/ic_ac_compressor.svg"
     },
@@ -249,8 +253,8 @@
       "iconPath": "/assets/svg/common/trailers/ic_trailer_carhauler.svg"
     },
     {
-      "iconName": "ic_truck_carhauler_stinger.svg",
-      "iconPath": "/assets/svg/common/trucks/ic_truck_carhauler_stinger.svg"
+      "iconName": "ic_carhauler_stinger.svg",
+      "iconPath": "/assets/svg/common/trailers/ic_carhauler_stinger.svg"
     },
     {
       "iconName": "ic_trailer_chassis.svg",

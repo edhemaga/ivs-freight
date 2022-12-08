@@ -85,8 +85,8 @@ export class TaInputArrowsComponent
         return this.superControl.control;
     }
 
-    public writeValue(obj: any): void {}
-    public registerOnChange(fn: any): void {}
+    public writeValue(_: any): void {}
+    public registerOnChange(_: any): void {}
     public onChange(): void {}
-    public registerOnTouched(fn: any): void {}
+    public registerOnTouched(_: any): void {}
 }
