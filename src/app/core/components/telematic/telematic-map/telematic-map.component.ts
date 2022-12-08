@@ -179,6 +179,15 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     ...gpsData.data,
                 ];
                 console.log('driverLocations', this.driverLocations);
+                // var deviceIds = { ids: [1275164307,
+                //     1275164387,
+                //     1275164311] };
+                // // deviceIds.ids = this.gpsUnassignedData.map((device) => {
+                // //     return parseInt(device.deviceId);
+                // // });
+                // console.log('deviceIds', deviceIds);
+                // this.assignDevicesToCopmany(deviceIds);
+                // this.assignDeviceToTruck(this.gpsUnassignedData[0].deviceId, 1);
             });
     }
 
@@ -222,6 +231,24 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((changes) => {
                 console.log('search input changes', changes);
+            });
+    }
+
+    assignDeviceToTruck(deviceId, truckId) {
+        this.telematicService
+            .assignDeviceToTruck({ deviceId: deviceId, truckId: truckId })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                console.log('assignDeviceToTruck res', res);
+            });
+    }
+
+    assignDevicesToCopmany(devices) {
+        this.telematicService
+            .assignDevicesToCompany(devices)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                console.log('assignDeviceToTruck res', res);
             });
     }
 
