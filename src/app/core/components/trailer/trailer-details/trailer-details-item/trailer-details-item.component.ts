@@ -17,13 +17,41 @@ import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-
 import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
+import {
+    animate,
+    style,
+    transition,
+    trigger,
+    state,
+    keyframes,
+} from '@angular/animations';
 
 @Component({
     selector: 'app-trailer-details-item',
     templateUrl: './trailer-details-item.component.html',
     styleUrls: ['./trailer-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [card_component_animation('showHideCardBody'), trigger('cardAnimation', [
+        state('in', style({ opacity: 1, 'max-height': '0px'})),
+        transition(':enter', [
+            animate(
+                5100,
+                keyframes([
+                    style({ opacity: 0, 'max-height': '0px' }),
+                    style({ opacity: 1, 'max-height' : '600px' }),
+                ])
+            ),
+        ]),
+        transition(':leave', [
+            animate(
+                5100,
+                keyframes([
+                    style({ opacity: 1, 'max-height' : '600px' }),
+                    style({ opacity: 0, 'max-height' : '0px' }),
+                ])
+            ),
+        ]),
+    ]),],
 })
 export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
     @ViewChildren('fhwaUpload') fhwaUpload: any;
@@ -41,6 +69,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
     public dataTest: any;
     public dataFHWA: any;
     public toggler: boolean[] = [];
+    public registrationArray: any = [];
     constructor(
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
@@ -48,7 +77,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
         private commonTrailerService: CommonTruckTrailerService,
         private dropDownService: DropDownService
     ) {}
-
+    
     ngOnInit(): void {
         this.note?.patchValue(this.trailer[0]?.data?.note);
         // Confirmation Subscribe
@@ -75,6 +104,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
             });
         this.initTableOptions();
     }
+
     /**Function for toggle page in cards */
     public toggleResizePage(value: number, indexName: string) {
         this.toggler[value + indexName] = !this.toggler[value + indexName];

@@ -9,7 +9,6 @@ import {
     AddressEntity,
     CheckOwnerSsnEinResponse,
     CreateResponse,
-    DriverResponse,
     GetDriverModalResponse,
 } from 'appcoretruckassist';
 import {
@@ -1057,7 +1056,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         } = this.driverForm.value;
 
         let documents = [];
-        this.documents.map((item) => {
+        this.documents?.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
             }
@@ -1424,7 +1423,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         } = this.driverForm.value;
 
         let documents = [];
-        this.documents.map((item) => {
+        this.documents?.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
             }
@@ -1674,7 +1673,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: DriverResponse) => {
+                next: (res: any) => {
                     this.driverForm.patchValue({
                         firstName: res.firstName,
                         lastName: res.lastName,
@@ -1747,7 +1746,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         mailNotificationPayroll: res.payroll.mailNotification,
                         pushNotificationPayroll: res.payroll.pushNotification,
                         smsNotificationPayroll: res.payroll.smsNotification,
-                        files: res.files.length
+                        files: res.files?.length
                             ? JSON.stringify(res.files)
                             : null,
                     });

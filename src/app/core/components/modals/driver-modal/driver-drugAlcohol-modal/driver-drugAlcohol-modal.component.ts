@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
     DriverListResponse,
-    DriverResponse,
     GetTestModalResponse,
     TestResponse,
 } from 'appcoretruckassist';
@@ -136,7 +135,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: DriverResponse) => {
+                next: (res: any) => {
                     this.modalName = res.firstName.concat(' ', res.lastName);
                 },
                 error: () => {},

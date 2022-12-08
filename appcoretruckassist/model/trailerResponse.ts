@@ -9,16 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { InspectionResponse } from './inspectionResponse';
 import { TrailerLengthResponse } from './trailerLengthResponse';
-import { TitleResponse } from './titleResponse';
 import { TrailerTypeResponse } from './trailerTypeResponse';
 import { DispatchShortResponse } from './dispatchShortResponse';
 import { EnumValue } from './enumValue';
 import { TrailerMakeResponse } from './trailerMakeResponse';
 import { ColorResponse } from './colorResponse';
 import { OwnerDetailsResponse } from './ownerDetailsResponse';
-import { RegistrationResponse } from './registrationResponse';
 import { TireSizeResponse } from './tireSizeResponse';
 import { OwnerHistoryResponse } from './ownerHistoryResponse';
 
@@ -51,9 +48,6 @@ export interface TrailerResponse {
     fhwaExp?: number;
     createdAt?: string;
     updatedAt?: string;
-    registrations?: Array<RegistrationResponse> | null;
-    inspections?: Array<InspectionResponse> | null;
-    titles?: Array<TitleResponse> | null;
     ownerHistories?: Array<OwnerHistoryResponse> | null;
     assignedTo?: DispatchShortResponse;
 }
