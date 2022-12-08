@@ -109,6 +109,16 @@ export class MapListCardComponent implements OnInit, OnDestroy {
         this.ref.detectChanges();
     }
 
+    onFavorite(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.bodyActions.emit({
+            data: this.item,
+            type: 'favorite'
+        });
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

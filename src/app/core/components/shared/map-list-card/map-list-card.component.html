@@ -25,6 +25,7 @@
                     [ngClass]="{ 'active': item?.pinned }"
                     src="assets/svg/detail-cards/favorite.svg"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    (click)="onFavorite($event)"
                     *ngIf="
                         sortCategory.name == 'Favorites' ||
                         sortCategory.name == 'Fuel Price'

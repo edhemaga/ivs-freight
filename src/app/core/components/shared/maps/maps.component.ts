@@ -65,6 +65,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                 } else if (this.mapType == 'fuelStop') {
                     this.getFuelStop(data.id, markerIndex);
                 }
+                
+                this.getClusters(true);
             }
         });
 

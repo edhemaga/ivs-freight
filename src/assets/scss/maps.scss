@@ -492,14 +492,14 @@
                 .dropdown-dots {
                     svg {
                         path {
-                            fill: #6c6c6c !important;
+                            //fill: #6c6c6c !important;
                         }
                     }
 
                     &:hover {
                         svg {
                             path {
-                                fill: #3d3d3d !important;
+                                //fill: #3d3d3d !important;
                             }
                         }
                     }
@@ -632,6 +632,12 @@
                 // transform: translate(14px, 14px) scale(0.5); - old svg
 
                 transform: translate(644px, 2298px) scale(0.5);
+
+                transition: all 0.15s;
+            }
+
+            #Favorite {
+                transform: translate(-1346.5px, -147.5px) scale(0.75);
 
                 transition: all 0.15s;
             }

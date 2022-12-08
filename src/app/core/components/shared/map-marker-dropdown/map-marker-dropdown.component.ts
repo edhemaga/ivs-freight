@@ -89,6 +89,8 @@ export class MapMarkerDropdownComponent implements OnInit {
 
     toggleWorkingHours() {
         this.showAllDays = !this.showAllDays;
+        console.log('item', this.item);
+        this.ref.detectChanges();
     }
 
     showMoreOptions() {

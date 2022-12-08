@@ -464,13 +464,13 @@
                 <div
                     class="marker-expanded-info-container"
                     [ngStyle]="{
-                        height: showAllDays ? '88px' : '44px',
+                        height: showAllDays ? '80px' : '36px',
                         transition: 'all 0.2s ease-in-out',
                         overflow: 'hidden'
                     }"
                 >
                     <div
-                        class="marker-dual-info-container mg-bottom-8"
+                        class="marker-dual-info-container"
                         *ngIf="!showAllDays"
                     >
                         <div
@@ -539,9 +539,10 @@
                         </div>
                     </div>
                     <div
-                        class="marker-dual-info-container mg-bottom-8"
+                        class="marker-dual-info-container"
                         [ngStyle]="{
-                            display: showAllDays ? 'inline-block' : 'none'
+                            display: showAllDays ? 'inline-block' : 'none',
+                            'vertical-align': 'bottom'
                         }"
                     >
                         <div
@@ -551,19 +552,30 @@
                         </div>
                         <div
                             class="marker-info-text"
-                            *ngIf="item.openHours[0].startTime"
+                            *ngIf="
+                                item.openHours[0].startTime &&
+                                item.openHours[0].startTime != 'null' &&
+                                item.openHours[0].startTime != 'Invalid date'
+                            "
                         >
                             {{ item.openHours[0].startTime }} -
                             {{ item.openHours[0].endTime }}
                         </div>
                         <div
                             class="marker-info-text"
-                            *ngIf="!item.openHours[0].startTime"
+                            *ngIf="
+                                !item.openHours[0].startTime ||
+                                item.openHours[0].startTime == 'null' ||
+                                item.openHours[0].startTime == 'Invalid date'
+                            "
                         >
                             Closed
                         </div>
                     </div>
-                    <div class="marker-dual-info-container mg-bottom-8">
+                    <div
+                        class="marker-dual-info-container"
+                        [ngStyle]="{ 'vertical-align': 'bottom' }"
+                    >
                         <div
                             class="marker-like-text marker-bold-text mg-bottom-4"
                         ></div>
@@ -589,7 +601,7 @@
         </div>
         <div class="marker-info-container-all">
             <div class="marker-title">
-                <div class="marker-dual-info-container align-center p-0">
+                <div class="marker-dual-info-container p-0">
                     <span class="load-text">{{
                         type == 'shipper'
                             ? 'Load'
@@ -601,17 +613,38 @@
                             ? 'Order'
                             : ''
                     }}</span>
-                    <span class="data-count align-center">{{
-                        type == 'shipper'
-                            ? '769'
-                            : type == 'repairShop'
-                            ? item.order
-                            : type == 'accident' || type == 'inspection'
-                            ? '9'
-                            : type == 'fuelStop'
-                            ? '769'
-                            : ''
-                    }}</span>
+                    <span class="align-center">
+                        <!-- {{
+                            type == 'shipper'
+                                ? '769'
+                                : type == 'repairShop'
+                                ? item.order
+                                : type == 'accident' || type == 'inspection'
+                                ? '9'
+                                : type == 'fuelStop'
+                                ? '769'
+                                : ''
+                        }} -->
+                        <app-ta-counter
+                            [count]="
+                                type == 'shipper'
+                                    ? '769'
+                                    : type == 'repairShop'
+                                    ? item.order
+                                    : type == 'accident' || type == 'inspection'
+                                    ? '9'
+                                    : type == 'fuelStop'
+                                    ? '769'
+                                    : ''
+                            "
+                            [countBackground]="'#424242'"
+                            [countColor]="'#ffffff'"
+                            [countHeight]="'22px'"
+                            [countWidth]="'22px'"
+                            [countBorderRadius]="'11px'"
+                            [marginLeft]="'4px'"
+                        ></app-ta-counter>
+                    </span>
                 </div>
                 <div
                     class="marker-dual-info-container"
