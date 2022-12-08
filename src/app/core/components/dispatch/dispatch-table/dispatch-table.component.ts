@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ColorFinderPipe } from '../../dispatcher/pipes/color-finder.pipe';
 
@@ -6,6 +6,7 @@ import { ColorFinderPipe } from '../../dispatcher/pipes/color-finder.pipe';
     selector: 'app-dispatch-table',
     templateUrl: './dispatch-table.component.html',
     styleUrls: ['./dispatch-table.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     providers: [ColorFinderPipe],
 })
 export class DispatchTableComponent implements OnInit {
@@ -41,6 +42,8 @@ export class DispatchTableComponent implements OnInit {
 
     public selectedColor: any = {};
 
+    openedTruckDropdown: number = -1;
+
     data: any[] = [
         {
             add_new_truck: true,
@@ -75,12 +78,18 @@ export class DispatchTableComponent implements OnInit {
     ngOnInit(): void {}
 
     public onSelectDropdown(event: any, action: string) {
-      console.log(event, action);
-      switch (action) {
-          case 'color': {
-            this.selectedColor = event;
-            break;
-          }
-      }
+        console.log("WHAT IS EVENT");
+        this.openedTruckDropdown = -1;
+        this.truckFormControll.reset();
+        switch (action) {
+            case 'color': {
+                this.selectedColor = event;
+                break;
+            }
+        }
+    }
+
+    showDropdown(ind: number) {
+        this.openedTruckDropdown = ind;
     }
 }

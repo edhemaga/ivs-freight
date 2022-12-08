@@ -832,8 +832,7 @@
             'multiple-input-values':
                 inputConfig?.multipleInputValues?.options?.length &&
                 !focusInput,
-            'disable-select-on-focus-out': !focusInput,
-            'connectedDropdown': inputConfig?.connectDropdown
+            'disable-select-on-focus-out': !focusInput
         }"
         (keypress)="manipulateWithInput($event)"
         (keyup)="onKeyUp($event)"

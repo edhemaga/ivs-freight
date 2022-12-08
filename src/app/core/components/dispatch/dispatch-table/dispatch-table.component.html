@@ -20,14 +20,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of data">
-                <td>
+            <tr *ngFor="let item of data; let indx = index">
+                <td class="truck-field">
                     <div
                         class="main_inside"
                         [class.addNew]="item.add_new_truck"
                     >
-                        <div class="padding-inside">
-                            <div class="add_new" *ngIf="item.add_new_truck">
+                        <div
+                            class="padding-inside"
+                            *ngIf="
+                                openedTruckDropdown != indx &&
+                                item.add_new_truck
+                            "
+                        >
+                            <div class="add_new" (click)="showDropdown(indx)">
                                 <div class="text">Add</div>
                                 <svg-icon
                                     [src]="
@@ -39,44 +45,44 @@
                                     }"
                                 ></svg-icon>
                             </div>
-                            <div
-                                class="drop-item"
-                                *ngIf="item.active_new_truck"
-                            >
-                                <app-ta-input-dropdown
-                                    [formControl]="truckFormControll"
-                                    [template]="'svgtext-template'"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Unit No',
-                                        isDropdown: true,
-                                        dropdownImageInput: {
-                                            withText: true,
-                                            svg: true,
-                                            image: false,
-                                            url: selectedColor?.code
-                                                ? 'ic_circle.svg'
-                                                : null,
-                                            template: 'color',
-                                            color: selectedColor?.code
-                                        },
-                                        dropdownWidthClass: 'w-col-148 connectDropdown',
-                                        placeholderInsteadOfLabel: true,
-                                        connectDropdown: true,
-                                        hideDropdownArrow: true
-                                    }"
-                                    [options]="truckList"
-                                    [activeItem]="selectedColor"
-                                    (selectedItem)="
-                                        onSelectDropdown($event, 'color')
-                                    "
-                                ></app-ta-input-dropdown>
-                            </div>
+                        </div>
+                        <div
+                            class="drop-item"
+                            *ngIf="openedTruckDropdown == indx"
+                        >
+                            <app-ta-input-dropdown
+                                [formControl]="truckFormControll"
+                                [template]="'svgtext-template'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Unit No',
+                                    isDropdown: true,
+                                    dropdownImageInput: {
+                                        withText: true,
+                                        svg: true,
+                                        image: false,
+                                        url: selectedColor?.code
+                                            ? 'ic_circle.svg'
+                                            : null,
+                                        template: 'color',
+                                        color: selectedColor?.code
+                                    },
+                                    dropdownWidthClass: 'w-col-118',
+                                    placeholderInsteadOfLabel: true,
+                                    hideDropdownArrow: true,
+                                    autoFocus: true
+                                }"
+                                [options]="truckList"
+                                [activeItem]="selectedColor"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'color')
+                                "
+                            ></app-ta-input-dropdown>
                         </div>
                     </div>
                 </td>
-                <td>
+                <td class="trailer-field">
                     <div
                         class="main_inside"
                         [class.addNew]="item.add_new_trailer"
@@ -97,7 +103,7 @@
                         </div>
                     </div>
                 </td>
-                <td>
+                <td class="driver-field">
                     <div
                         class="main_inside"
                         [class.addNew]="item.add_new_driver"
@@ -123,27 +129,27 @@
                         <div class="padding-inside"></div>
                     </div>
                 </td>
-                <td>
+                <td class="location-field">
                     <div class="main_inside">
                         <div class="padding-inside"></div>
                     </div>
                 </td>
-                <td>
+                <td class="status-field">
                     <div class="main_inside">
                         <div class="padding-inside"></div>
                     </div>
                 </td>
-                <td>
+                <td class="pickup-delivery-field">
                     <div class="main_inside">
                         <div class="padding-inside"></div>
                     </div>
                 </td>
-                <td>
+                <td class="progress-field">
                     <div class="main_inside">
                         <div class="padding-inside"></div>
                     </div>
                 </td>
-                <td>
+                <td class="parking-field">
                     <div class="main_inside">
                         <div class="padding-inside"></div>
                     </div>
@@ -153,7 +159,7 @@
                         <div class="padding-inside"></div>
                     </div>
                 </td>
-                <td>
+                <td class="note-field">
                     <div class="main_inside">
                         <div class="padding-inside"></div>
                     </div>
