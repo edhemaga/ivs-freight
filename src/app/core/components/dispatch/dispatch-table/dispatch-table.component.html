@@ -20,22 +20,19 @@
             </tr>
         </thead>
         <tbody>
-            <tr
-                *ngFor="let item of dData.dispatches; let rowIndex = index"
-            >
+            <tr *ngFor="let item of dData.dispatches; let rowIndex = index">
                 <td class="truck-field">
                     <div
                         class="main_inside"
-                        [class.addNew]="item.add_new_truck"
+                        [class.addNew]="!item.truck"
+                        [class.filled]="item.truck"
                     >
-                        <div
-                            class="padding-inside"
-                            *ngIf="
-                                openedTruckDropdown != rowIndex &&
-                                item.add_new_truck
-                            "
-                        >
+                        <div class="padding-inside">
                             <div
+                                *ngIf="
+                                    openedTruckDropdown != rowIndex &&
+                                    !item.truck
+                                "
                                 class="add_new"
                                 (click)="showTruckDropdown(rowIndex)"
                             >
@@ -49,6 +46,16 @@
                                         'height.px': '18'
                                     }"
                                 ></svg-icon>
+                            </div>
+                            <div class="info-item" *ngIf="item.truck">
+                                <svg-icon
+                                    [src]="'ic_circle.svg'"
+                                    [svgStyle]="{
+                                        'width.px': '10',
+                                        'height.px': '10'
+                                    }"
+                                ></svg-icon>
+                                <span>{{ item.truck.truckNumber }}</span>
                             </div>
                         </div>
                         <div
@@ -70,9 +77,7 @@
                                 }"
                                 [options]="truckList"
                                 [activeItem]="null"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'color', 'truck')
-                                "
+                                (selectedItem)="addTruck($event)"
                             ></app-ta-input-dropdown>
                         </div>
                     </div>
@@ -80,18 +85,19 @@
                 <td class="trailer-field">
                     <div
                         class="main_inside"
-                        [class.addNew]="item.add_new_trailer"
+                        [class.addNew]="!item.trailer"
+                        [class.filled]="item.trailer"
                     >
                         <div
                             class="padding-inside"
-                            *ngIf="
-                                openedTrailerDropdown != rowIndex &&
-                                item.add_new_trailer
-                            "
+                            *ngIf="openedTrailerDropdown != rowIndex"
                         >
                             <div
                                 class="add_new"
-                                *ngIf="item.add_new_trailer"
+                                *ngIf="
+                                    openedTrailerDropdown != rowIndex &&
+                                    !item.trailer
+                                "
                                 (click)="showTrailerDropdown(rowIndex)"
                             >
                                 <div class="text">Add</div>
@@ -104,6 +110,16 @@
                                         'height.px': '18'
                                     }"
                                 ></svg-icon>
+                            </div>
+                            <div class="info-item" *ngIf="item.trailer">
+                                <svg-icon
+                                    [src]="'ic_circle.svg'"
+                                    [svgStyle]="{
+                                        'width.px': '10',
+                                        'height.px': '10'
+                                    }"
+                                ></svg-icon>
+                                <span>{{ item.trailer.trailerNumber }}</span>
                             </div>
                         </div>
                         <div
@@ -125,9 +141,7 @@
                                 }"
                                 [options]="trailerList"
                                 [activeItem]="null"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'color', 'trailer')
-                                "
+                                (selectedItem)="addTrailer($event)"
                             ></app-ta-input-dropdown>
                         </div>
                     </div>
@@ -135,18 +149,16 @@
                 <td class="driver-field">
                     <div
                         class="main_inside"
-                        [class.addNew]="item.add_new_driver"
+                        [class.addNew]="!item.driver"
+                        [class.filled]="item.driver"
                     >
                         <div
                             class="padding-inside"
-                            *ngIf="
-                                openedDriverDropdown != rowIndex &&
-                                item.add_new_driver
-                            "
+                            *ngIf="openedDriverDropdown != rowIndex"
                         >
                             <div
                                 class="add_new"
-                                *ngIf="item.add_new_driver"
+                                *ngIf="!item.driver"
                                 (click)="showDriverDropdown(rowIndex)"
                             >
                                 <div class="text">Add</div>
@@ -159,6 +171,56 @@
                                         'height.px': '18'
                                     }"
                                 ></svg-icon>
+                            </div>
+                            <div class="info-item" *ngIf="item.driver">
+                                <span class="dr-span-left"
+                                    >{{ item.driver.firstName }}
+                                    {{ item.driver.lastName }}</span
+                                >
+                                <span
+                                    class="dr-span"
+                                    ngbTooltip
+                                    mainTooltip="Owner"
+                                    tooltipBackground="#3074D3"
+                                    position="right"
+                                >
+                                    <svg-icon
+                                        [src]="
+                                            'assets/svg/common/ic_driver-owner.svg'
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': '13',
+                                            'height.px': '13'
+                                        }"
+                                        [fill]="'#ff0000'"
+                                    ></svg-icon>
+                                </span>
+                                <div class="driver-buttons">
+                                    <span>
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/common/ic_phone.svg'
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': '18',
+                                                'height.px': '18'
+                                            }"
+                                            [fill]="'#ff0000'"
+                                        ></svg-icon>
+                                    </span>
+                                    <span>
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/common/ic_email.svg'
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': '18',
+                                                'height.px': '18'
+                                            }"
+                                            [fill]="'#ff0000'"
+                                        ></svg-icon>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div
@@ -180,9 +242,7 @@
                                 }"
                                 [options]="driverList"
                                 [activeItem]="null"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'color', 'driver')
-                                "
+                                (selectedItem)="addDriver($event)"
                             ></app-ta-input-dropdown>
                         </div>
                     </div>
@@ -193,18 +253,57 @@
                     </div>
                 </td>
                 <td class="location-field">
-                    <div class="main_inside">
-                        <div class="padding-inside"></div>
+                    <div class="main_inside" [class.filled]="item.location.address">
+                        <div class="padding-inside">
+                            <div class="info-item" *ngIf="item.location.address">
+                                <div class="location-field">
+                                    <div class="location-f-city">
+                                        {{ item.location.city }} ,
+                                    </div>
+                                    <div class="location-f-st">
+                                        {{ item.location.stateShortName }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </td>
                 <td class="status-field">
                     <div class="main_inside">
-                        <div class="padding-inside"></div>
+                        <div class="padding-inside status-inside">
+                            <app-ta-status-switch
+                                *ngIf="
+                                    item.driver &&
+                                    item.trailer &&
+                                    item.location.address
+                                "
+                                (changeStatus)="addStatus($event)"
+                                (openIndex)="openIndex($event)"
+                                [openedStatus]="statusOpenedIndex"
+                                [dispatchboardId]="item.id"
+                                [statusHeight]="32"
+                                [status]="item.status"
+                                [possibleNextStatuses]="
+                                    item.possibleNextStatuses
+                                "
+                                [statusMainIndex]="rowIndex"
+                                [statusTypes]="'dispatch'"
+                                [withStatusAgo]="true"
+                                [nextStopType]="item.nextStopType"
+                                [currentStopType]="item.currentStopType"
+                            ></app-ta-status-switch>
+                        </div>
                     </div>
                 </td>
                 <td class="pickup-delivery-field">
-                    <div class="main_inside">
-                        <div class="padding-inside"></div>
+                    <div class="main_inside filled">
+                        <div class="padding-inside">
+                            <div class="info-item">
+                                <div class="no-delpickup">
+                                    No Active or Pending Load
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </td>
                 <td class="progress-field">

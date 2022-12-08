@@ -27,8 +27,13 @@ table {
             border-radius: 3px;
 
             .padding-inside {
-                padding: 4px;
+                position: relative;
+                
                 height: 100%;
+
+                &:not(.status-inside){
+                    padding: 4px;
+                }
 
                 .add_new {
                     height: 100%;
@@ -53,6 +58,89 @@ table {
                         }
                     }
                 }
+
+                .info-item {
+                    position: relative;
+                    display: flex;
+                    padding: 0 6px;
+                    height: 100%;
+                    align-items: center;
+                    border-radius: 2px;
+
+                    svg-icon {
+                        display: flex;
+                    }
+
+                    span {
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: #2f2f2f;
+
+                        &:not(.dr-span-left){
+                            padding-left: 6px;
+                        }
+
+                        &.dr-span {
+                            svg-icon {
+                                svg {
+                                    g {
+                                        stroke: #3074d3;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .driver-buttons{
+                        display: none;
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+
+                        span{
+                            width: 26px;
+                            height: 26px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            padding-left: inherit;
+
+                            &:hover{
+                                background-color: #3074D333;
+                                border-radius: 2px;
+                                cursor: pointer;
+                                svg-icon{
+                                    path{
+                                        fill: #3074D3;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                
+                    .location-field{
+                        display: flex;
+
+                        .location-f-city, .location-f-st{
+                            font-size: 14px;
+                            color: #2F2F2F;
+
+                            &.location-f-city{
+                                white-space: nowrap;
+                                width: 70%;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+                        }
+                    }
+                    .no-delpickup{
+                        font-size: 11px;
+                        color: #919191;
+                        font-weight: 500;
+                        text-transform: uppercase;
+                    }
+
+                }
             }
 
             &.addNew {
@@ -61,6 +149,22 @@ table {
                 &:hover {
                     cursor: pointer;
                     background-color: #3074d3;
+                }
+            }
+
+            &.filled {
+                background-color: #fff;
+
+                .padding-inside {
+                    &:hover {
+                        .info-item {
+                            background-color: #eeeeee;
+
+                            .driver-buttons{
+                                display: flex;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -81,7 +185,8 @@ table {
             }
         }
 
-        &.truck-field, &.trailer-field {
+        &.truck-field,
+        &.trailer-field {
             min-width: 120px;
             max-width: 120px;
             width: 120px;
@@ -93,45 +198,45 @@ table {
             width: 230px;
         }
 
-        &.location-field{
+        &.location-field {
             min-width: 160px;
             max-width: 160px;
             width: 160px;
         }
 
-        &.status-field{
+        &.status-field {
             min-width: 140px;
             max-width: 140px;
             width: 140px;
         }
 
-        &.pickup-delivery-field{
+        &.pickup-delivery-field {
             min-width: 340px;
             max-width: 340px;
             width: 340px;
         }
 
-        &.progress-field{
+        &.progress-field {
             min-width: 226px;
             max-width: 226px;
             width: 226px;
         }
 
-        &.parking-field{
+        &.parking-field {
             min-width: 130px;
             max-width: 130px;
             width: 130px;
         }
 
-        &.note-field{
+        &.note-field {
             min-width: 240px;
             max-width: 240px;
             width: 240px;
         }
 
-        .drop-item{
-            app-ta-input-dropdown{
-                input{
+        .drop-item {
+            app-ta-input-dropdown {
+                input {
                     height: 34px !important;
                 }
             }
