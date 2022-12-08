@@ -6,7 +6,6 @@ import {
     OnDestroy,
     ChangeDetectorRef,
 } from '@angular/core';
-import { DriverResponse } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 import { Subject, takeUntil } from 'rxjs';
@@ -42,7 +41,7 @@ export class DriverCardComponent implements OnInit, OnDestroy {
                     .selectEntity(id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (res: DriverResponse) => {
+                        next: (res: any) => {
                             this.selectedData = res;
                             if (this.router.url.includes('details')) {
                                 this.router.navigate([
