@@ -227,7 +227,7 @@ export function getTruckColumnDefinition() {
             class: 'overflow-unset',
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Assigned To Driver',
             field: 'tableDriver',
             isPined: false,
@@ -882,7 +882,7 @@ export function getTruckColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Licence Plate Detail ST',
             field: 'tableLicencePlateDetailST',
             name: 'Licence Plate Detail ST',
@@ -907,7 +907,7 @@ export function getTruckColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Licence Plate Detail Expiration',
             field: 'tableLicencePlateDetailExpiration',
             name: 'Licence Plate Detail Expiration',
@@ -957,7 +957,7 @@ export function getTruckColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Fhwa Inspection Expiration',
             field: 'tableFhwaInspectionExpiration',
             name: 'Fhwa Inspection Expiration',
