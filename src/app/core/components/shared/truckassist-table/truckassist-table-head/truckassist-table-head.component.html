@@ -22,7 +22,13 @@
                     'set-center':
                         column.ngTemplate === 'checkbox' || column.thSetCenter,
                     'column-unlocket': !locked,
-                    'resize-hit-limit': resizeHitLimit === i && resizeIsPined
+                    'resize-hit-limit': resizeHitLimit === i && resizeIsPined,
+                    'pined-columns-margin':
+                        column.ngTemplate !== '' &&
+                        column.ngTemplate !== 'checkbox' &&
+                        column.ngTemplate !== 'user-checkbox',
+                    'remuve-head-title':
+                        column.width < 68 && !locked && !rezaizeing
                 }"
             >
                 <!-- Selected Row Count -->
@@ -350,7 +356,9 @@
                         'column-unlocket': !locked,
                         'column-locked': locked,
                         'resize-hit-limit':
-                            resizeHitLimit === i && !resizeIsPined
+                            resizeHitLimit === i && !resizeIsPined,
+                        'remuve-head-title':
+                            column.width < 68 && !locked && !rezaizeing
                     }"
                 >
                     <!-- Title -->
