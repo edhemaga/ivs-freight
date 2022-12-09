@@ -102,34 +102,27 @@ export class TestTService implements OnDestroy {
         return this.drugService.apiTestIdDelete(id).pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
-                const subDriver = this.driverService
-                    .getDriverById(driverId)
-                    .subscribe({
-                        next: (driver: any) => {
-                            this.driverStore.remove(
-                                ({ id }) => id === driverId
-                            );
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
 
-                            driver = {
-                                ...driver,
-                                fullName:
-                                    driver.firstName + ' ' + driver.lastName,
-                            };
+                let indexNum;
+                newData.tests.map((reg: any, index: any) => {
+                    if ( reg.id == id ) {
+                        indexNum = index;
+                    }
+                })
 
-                            this.driverStore.add(driver);
-                            /*
-                            this.dlStore.update(driver.id, {
-                                tests: driver.tests,
-                            }); */
-                            this.tableService.sendActionAnimation({
-                                animation: 'delete',
-                                data: driver,
-                                id: driverId,
-                            });
+                newData.tests.splice(indexNum, 1);
 
-                            subDriver.unsubscribe();
-                        },
-                    });
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                
+                this.dlStore.add(newData);
+                this.driverItemStore.set([newData]);  
             })
         );
     }

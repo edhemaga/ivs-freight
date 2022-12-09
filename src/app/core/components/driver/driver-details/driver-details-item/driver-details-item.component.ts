@@ -155,10 +155,10 @@ export class DriverDetailsItemComponent
                                             {
                                                 id: res.data.driver?.id,
                                                 file_id:
-                                                    res.data.driver.file_id,
+                                                    res.data.driver?.file_id,
                                                 type: 'renew-licence',
                                                 renewData:
-                                                    res.data.driver.renewData,
+                                                    res.data.driver?.renewData,
                                             }
                                         );
                                         clearTimeout(timeout);
@@ -180,8 +180,7 @@ export class DriverDetailsItemComponent
             });
     }
     public getExpireDate() {
-        this.dataCDl = this.drivers[1]?.data?.cdls?.map((ele) => {
-          
+        this.dataCDl = this.drivers[0]?.data?.cdls?.map((ele) => {
             let endDate = moment(ele.expDate);
             if (
                 moment(ele.expDate).isBefore(moment()) ||
@@ -203,7 +202,7 @@ export class DriverDetailsItemComponent
                 inactiveCdl: this.inactiveCdl,
             };
         });
-
+        
     }
     public getNameForDrop(name: string, cdlId?: number) {
         this.templateName = name === 'cdl' ? false : true;
@@ -443,10 +442,22 @@ export class DriverDetailsItemComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.dataTest = item));
     }
+
+    public preloadData(data: any, title?: any){
+        if ( title == 'cdl' ) {
+            this.dataCdl = data;
+        } else if ( title == 'test' ) {
+            this.dataTest = data;
+        } else if ( title == 'med' ) {
+            this.dataMedical = data;
+        } else if ( title == 'mvr' ) {
+            this.dataMvr = data;
+        }
+    }
+
     public optionsEvent(any: any, action: string) {
         const name = dropActionNameDriver(any, action);
         let dataForCdl;
-        console.log('--any---',any);
 
         if (
             (this.activeCdl.length && any.type === 'activate-item') ||
@@ -457,8 +468,8 @@ export class DriverDetailsItemComponent
             dataForCdl = this.dataCdl;
         }
 
-        console.log('--here---', dataForCdl)
-        console.log('--this.dataMvr---', this.dataMvr)
+      
+        
         setTimeout(() => {
             this.dropDownService.dropActions(
                 any,

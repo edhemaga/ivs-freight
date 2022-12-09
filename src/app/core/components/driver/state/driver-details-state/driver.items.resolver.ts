@@ -57,7 +57,6 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
             driverMvr: driverMvr$,
         }).pipe(
             tap((data) => {
-                
                 let driverData = data.driverData;
                 driverData.cdls = data.driverCdl;
                 driverData.tests = data.driverTest;

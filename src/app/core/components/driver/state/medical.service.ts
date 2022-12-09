@@ -30,38 +30,27 @@ export class MedicalTService implements OnDestroy {
         return this.medicalService.apiMedicalIdDelete(id).pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
-                const subDriver = this.driverService
-                    .getDriverById(driverId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (driver: any) => {
-                            this.driverStore.remove(
-                                ({ id }) => id === driverId
-                            );
-                            this.driverItemStore.remove(
-                                ({ id }) => id === driverId
-                            );
-                            driver = {
-                                ...driver,
-                                fullName:
-                                    driver.firstName + ' ' + driver.lastName,
-                            };
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
 
-                            this.driverStore.add(driver);
-                            this.driverItemStore.add(driver);
-                            /*
-                            this.dlStore.update(driver.id, {
-                                medicals: driver.medicals,
-                            }); */
-                            this.tableService.sendActionAnimation({
-                                animation: 'delete',
-                                data: driver,
-                                id: driverId,
-                            });
+                let indexNum;
+                newData.medicals.map((reg: any, index: any) => {
+                    if ( reg.id == id ) {
+                        indexNum = index;
+                    }
+                })
 
-                            subDriver.unsubscribe();
-                        },
-                    });
+                newData.medicals.splice(indexNum, 1);
+
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                
+                this.dlStore.add(newData);
+                this.driverItemStore.set([newData]);
             })
         );
     }
