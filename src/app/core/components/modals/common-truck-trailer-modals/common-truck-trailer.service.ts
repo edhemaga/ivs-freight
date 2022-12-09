@@ -59,30 +59,26 @@ export class CommonTruckTrailerService {
                         .getTruckById(data.truckId)
                         .subscribe({
                             next: (truck: TruckResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.truckActiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckActiveStore.add(truck);
-                                } else if (tabSelected === 'inactive') {
-                                    this.truckInactiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckInactiveStore.add(truck);
-                                }
-                                this.tdlStore.update(truck.id, {
-                                    registrations: truck.registrations,
-                                });
-
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: truck,
-                                    id: truck.id,
-                                });
-
-                                subTruck.unsubscribe();
+                                // if (tabSelected === 'active') {
+                                //     this.truckActiveStore.remove(
+                                //         ({ id }) => id === data.truckId
+                                //     );
+                                //     this.truckActiveStore.add(truck);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.truckInactiveStore.remove(
+                                //         ({ id }) => id === data.truckId
+                                //     );
+                                //     this.truckInactiveStore.add(truck);
+                                // }
+                                // this.tdlStore.update(truck.id, {
+                                //     registrations: truck.registrations,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: truck,
+                                //     id: truck.id,
+                                // });
+                                // subTruck.unsubscribe();
                             },
                         });
                 }
@@ -92,29 +88,26 @@ export class CommonTruckTrailerService {
                         .getTrailerById(data.trailerId)
                         .subscribe({
                             next: (trailer: TrailerResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.trailerActiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerActiveStore.add(trailer);
-                                } else if (tabSelected === 'inactive') {
-                                    this.trailerInactiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerInactiveStore.add(trailer);
-                                }
-                                this.tadl.update(trailer.id, {
-                                    registrations: trailer.registrations,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: trailer,
-                                    id: trailer.id,
-                                });
-
-                                subTrailer.unsubscribe();
+                                // if (tabSelected === 'active') {
+                                //     this.trailerActiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerActiveStore.add(trailer);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.trailerInactiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerInactiveStore.add(trailer);
+                                // }
+                                // this.tadl.update(trailer.id, {
+                                //     registrations: trailer.registrations,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: trailer,
+                                //     id: trailer.id,
+                                // });
+                                // subTrailer.unsubscribe();
                             },
                         });
                 }
@@ -179,29 +172,26 @@ export class CommonTruckTrailerService {
                         .getTruckById(data.truckId)
                         .subscribe({
                             next: (truck: TruckResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.truckActiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckActiveStore.add(truck);
-                                } else if (tabSelected === 'inactive') {
-                                    this.truckInactiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckInactiveStore.add(truck);
-                                }
-                                this.tdlStore.update(truck.id, {
-                                    inspections: truck.inspections,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: truck,
-                                    id: truck.id,
-                                });
-
-                                subTruck.unsubscribe();
+                                // if (tabSelected === 'active') {
+                                //     this.truckActiveStore.remove(
+                                //         ({ id }) => id === data.truckId
+                                //     );
+                                //     this.truckActiveStore.add(truck);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.truckInactiveStore.remove(
+                                //         ({ id }) => id === data.truckId
+                                //     );
+                                //     this.truckInactiveStore.add(truck);
+                                // }
+                                // this.tdlStore.update(truck.id, {
+                                //     inspections: truck.inspections,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: truck,
+                                //     id: truck.id,
+                                // });
+                                // subTruck.unsubscribe();
                             },
                         });
                 } else if (data.trailerId) {
@@ -209,29 +199,26 @@ export class CommonTruckTrailerService {
                         .getTrailerById(data.trailerId)
                         .subscribe({
                             next: (trailer: TrailerResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.trailerActiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerActiveStore.add(trailer);
-                                } else if (tabSelected === 'inactive') {
-                                    this.trailerInactiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerInactiveStore.add(trailer);
-                                }
-                                this.tadl.update(trailer.id, {
-                                    inspections: trailer.inspections,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: trailer,
-                                    id: trailer.id,
-                                });
-
-                                subTrailer.unsubscribe();
+                                // if (tabSelected === 'active') {
+                                //     this.trailerActiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerActiveStore.add(trailer);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.trailerInactiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerInactiveStore.add(trailer);
+                                // }
+                                // this.tadl.update(trailer.id, {
+                                //     inspections: trailer.inspections,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: trailer,
+                                //     id: trailer.id,
+                                // });
+                                // subTrailer.unsubscribe();
                             },
                         });
                 }
@@ -274,29 +261,26 @@ export class CommonTruckTrailerService {
                         .getTruckById(data.truckId)
                         .subscribe({
                             next: (truck: TruckResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.truckActiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckActiveStore.add(truck);
-                                } else if (tabSelected === 'inactive') {
-                                    this.truckInactiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckInactiveStore.add(truck);
-                                }
-                                this.tdlStore.update(truck.id, {
-                                    titles: truck.titles,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: truck,
-                                    id: truck.id,
-                                });
-
-                                subTruck.unsubscribe();
+                                // if (tabSelected === 'active') {
+                                //     this.truckActiveStore.remove(
+                                //         ({ id }) => id === data.truckId
+                                //     );
+                                //     this.truckActiveStore.add(truck);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.truckInactiveStore.remove(
+                                //         ({ id }) => id === data.truckId
+                                //     );
+                                //     this.truckInactiveStore.add(truck);
+                                // }
+                                // this.tdlStore.update(truck.id, {
+                                //     titles: truck.titles,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: truck,
+                                //     id: truck.id,
+                                // });
+                                // subTruck.unsubscribe();
                             },
                         });
                 } else if (data.trailerId) {
@@ -304,29 +288,26 @@ export class CommonTruckTrailerService {
                         .getTrailerById(data.trailerId)
                         .subscribe({
                             next: (trailer: TrailerResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.trailerActiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerActiveStore.add(trailer);
-                                } else if (tabSelected === 'inactive') {
-                                    this.trailerInactiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerInactiveStore.add(trailer);
-                                }
-                                this.tadl.update(trailer.id, {
-                                    titles: trailer.titles,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: trailer,
-                                    id: trailer.id,
-                                });
-
-                                subTrailer.unsubscribe();
+                                // if (tabSelected === 'active') {
+                                //     this.trailerActiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerActiveStore.add(trailer);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.trailerInactiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerInactiveStore.add(trailer);
+                                // }
+                                // this.tadl.update(trailer.id, {
+                                //     titles: trailer.titles,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: trailer,
+                                //     id: trailer.id,
+                                // });
+                                // subTrailer.unsubscribe();
                             },
                         });
                 }
@@ -360,33 +341,30 @@ export class CommonTruckTrailerService {
         if (truckId) {
             const subTruck = this.truckService.getTruckById(truckId).subscribe({
                 next: (truck: TruckResponse | any) => {
-                    if (tabSelected === 'active') {
-                        this.truckActiveStore.remove(
-                            ({ id }) => id === truckId
-                        );
-
-                        this.truckActiveStore.add(truck);
-                    } else if (tabSelected === 'inactive') {
-                        this.truckInactiveStore.remove(
-                            ({ id }) => id === truckId
-                        );
-
-                        this.truckInactiveStore.add(truck);
-                    }
-                    this.tdlStore.update(truck.id, { titles: truck.titles });
-                    this.tdlStore.update(truck.id, {
-                        registrations: truck.registrations,
-                    });
-                    this.tdlStore.update(truck.id, {
-                        inspections: truck.inspections,
-                    });
-                    this.tableService.sendActionAnimation({
-                        animation: 'update',
-                        data: truck,
-                        id: truck.id,
-                    });
-
-                    subTruck.unsubscribe();
+                    // if (tabSelected === 'active') {
+                    //     this.truckActiveStore.remove(
+                    //         ({ id }) => id === truckId
+                    //     );
+                    //     this.truckActiveStore.add(truck);
+                    // } else if (tabSelected === 'inactive') {
+                    //     this.truckInactiveStore.remove(
+                    //         ({ id }) => id === truckId
+                    //     );
+                    //     this.truckInactiveStore.add(truck);
+                    // }
+                    // this.tdlStore.update(truck.id, { titles: truck.titles });
+                    // this.tdlStore.update(truck.id, {
+                    //     registrations: truck.registrations,
+                    // });
+                    // this.tdlStore.update(truck.id, {
+                    //     inspections: truck.inspections,
+                    // });
+                    // this.tableService.sendActionAnimation({
+                    //     animation: 'update',
+                    //     data: truck,
+                    //     id: truck.id,
+                    // });
+                    // subTruck.unsubscribe();
                 },
             });
         }
@@ -395,37 +373,32 @@ export class CommonTruckTrailerService {
                 .getTrailerById(trailerId)
                 .subscribe({
                     next: (trailer: TrailerResponse | any) => {
-                        if (tabSelected === 'active') {
-                            this.trailerActiveStore.remove(
-                                ({ id }) => id === trailerId
-                            );
-
-                            this.trailerActiveStore.add(trailer);
-                        } else if (tabSelected === 'inactive') {
-                            this.trailerInactiveStore.remove(
-                                ({ id }) => id === trailerId
-                            );
-
-                            this.trailerInactiveStore.add(trailer);
-                        }
-
-                        this.tadl.update(trailer.id, {
-                            titles: trailer.titles,
-                        });
-                        this.tadl.update(trailer.id, {
-                            registrations: trailer.registrations,
-                        });
-                        this.tadl.update(trailer.id, {
-                            inspections: trailer.inspections,
-                        });
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: trailer,
-                            id: trailer.id,
-                        });
-
-                        subTrailer.unsubscribe();
+                        // if (tabSelected === 'active') {
+                        //     this.trailerActiveStore.remove(
+                        //         ({ id }) => id === trailerId
+                        //     );
+                        //     this.trailerActiveStore.add(trailer);
+                        // } else if (tabSelected === 'inactive') {
+                        //     this.trailerInactiveStore.remove(
+                        //         ({ id }) => id === trailerId
+                        //     );
+                        //     this.trailerInactiveStore.add(trailer);
+                        // }
+                        // this.tadl.update(trailer.id, {
+                        //     titles: trailer.titles,
+                        // });
+                        // this.tadl.update(trailer.id, {
+                        //     registrations: trailer.registrations,
+                        // });
+                        // this.tadl.update(trailer.id, {
+                        //     inspections: trailer.inspections,
+                        // });
+                        // this.tableService.sendActionAnimation({
+                        //     animation: 'update',
+                        //     data: trailer,
+                        //     id: trailer.id,
+                        // });
+                        // subTrailer.unsubscribe();
                     },
                 });
         }

@@ -128,17 +128,18 @@ export class BrokerTService implements OnDestroy {
         search1?: string,
         search2?: string
     ): Observable<GetBrokerListResponse> {
-        return this.brokerService.apiBrokerListGet(
-            ban,
-            dnu,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        );
+        // return this.brokerService.apiBrokerListGet(
+        //     ban,
+        //     dnu,
+        //     pageIndex,
+        //     pageSize,
+        //     companyId,
+        //     sort,
+        //     search,
+        //     search1,
+        //     search2
+        // );
+        return of();
     }
 
     // Get Broker By ID

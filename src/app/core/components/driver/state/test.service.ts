@@ -51,16 +51,15 @@ export class TestTService implements OnDestroy {
                 data: driver,
                 id: driver.id,
               }); */
-                            this.dlStore.update(driver.id, {
-                                tests: driver.tests,
-                            });
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: driver,
-                                id: driver.id,
-                            });
-
-                            subDriver.unsubscribe();
+                            // this.dlStore.update(driver.id, {
+                            //     tests: driver.tests,
+                            // });
+                            // this.tableService.sendActionAnimation({
+                            //     animation: 'update',
+                            //     data: driver,
+                            //     id: driver.id,
+                            // });
+                            // subDriver.unsubscribe();
                         },
                     });
             })
@@ -76,27 +75,24 @@ export class TestTService implements OnDestroy {
                     .getDriverById(driverId)
                     .subscribe({
                         next: (driver: DriverResponse | any) => {
-                            this.driverStore.remove(
-                                ({ id }) => id === driverId
-                            );
-
-                            driver = {
-                                ...driver,
-                                fullName:
-                                    driver.firstName + ' ' + driver.lastName,
-                            };
-
-                            this.driverStore.add(driver);
-                            this.dlStore.update(driver.id, {
-                                tests: driver.tests,
-                            });
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: driver,
-                                id: driverId,
-                            });
-
-                            subDriver.unsubscribe();
+                            // this.driverStore.remove(
+                            //     ({ id }) => id === driverId
+                            // );
+                            // driver = {
+                            //     ...driver,
+                            //     fullName:
+                            //         driver.firstName + ' ' + driver.lastName,
+                            // };
+                            // this.driverStore.add(driver);
+                            // this.dlStore.update(driver.id, {
+                            //     tests: driver.tests,
+                            // });
+                            // this.tableService.sendActionAnimation({
+                            //     animation: 'update',
+                            //     data: driver,
+                            //     id: driverId,
+                            // });
+                            // subDriver.unsubscribe();
                         },
                     });
             })
@@ -111,27 +107,24 @@ export class TestTService implements OnDestroy {
                     .getDriverById(driverId)
                     .subscribe({
                         next: (driver: DriverResponse | any) => {
-                            this.driverStore.remove(
-                                ({ id }) => id === driverId
-                            );
-
-                            driver = {
-                                ...driver,
-                                fullName:
-                                    driver.firstName + ' ' + driver.lastName,
-                            };
-
-                            this.driverStore.add(driver);
-                            this.dlStore.update(driver.id, {
-                                tests: driver.tests,
-                            });
-                            this.tableService.sendActionAnimation({
-                                animation: 'delete',
-                                data: driver,
-                                id: driverId,
-                            });
-
-                            subDriver.unsubscribe();
+                            // this.driverStore.remove(
+                            //     ({ id }) => id === driverId
+                            // );
+                            // driver = {
+                            //     ...driver,
+                            //     fullName:
+                            //         driver.firstName + ' ' + driver.lastName,
+                            // };
+                            // this.driverStore.add(driver);
+                            // this.dlStore.update(driver.id, {
+                            //     tests: driver.tests,
+                            // });
+                            // this.tableService.sendActionAnimation({
+                            //     animation: 'delete',
+                            //     data: driver,
+                            //     id: driverId,
+                            // });
+                            // subDriver.unsubscribe();
                         },
                     });
             })
