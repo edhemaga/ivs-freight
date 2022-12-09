@@ -285,7 +285,8 @@
     &.load-dispatches-ttd,
     &.load-broker-contact,
     &.load-broker,
-    &.load-shipper {
+    &.load-shipper,
+    &.load-shipper-contact {
         position: absolute;
         bottom: 1.5px;
         background-color: transparent !important;
@@ -402,12 +403,21 @@
         }
     }
 
-    &.load-broker-contact {
-        grid-template-columns: 143px 120px;
+    &.load-broker-contact,
+    &.load-shipper-contact {
+        grid-template-columns: 143px 144px;
         align-items: center;
         grid-column-gap: 10px;
         -moz-column-gap: 10px;
         column-gap: 10px;
+
+        span {
+            span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
     }
 
     &.load-shipper {
@@ -451,6 +461,14 @@
                         }
                     }
                 }
+            }
+        }
+
+        span {
+            span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         }
     }

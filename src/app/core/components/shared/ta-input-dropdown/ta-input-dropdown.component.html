@@ -676,10 +676,6 @@
                         <div
                             class="load-broker-text"
                             [ngStyle]="{
-                                disabled:
-                                    option.dnu ||
-                                    option.ban ||
-                                    option.status === 0,
                                 overflow: 'hidden',
                                 'text-overflow': 'ellipsis',
                                 'white-space': 'nowrap'
@@ -812,7 +808,7 @@
                     "
                     class="dropdown-option load-shipper-template"
                     [ngClass]="{
-                        disabled: option?.disabled,
+                        disabled: option?.disabled || option.status === 0,
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
@@ -821,19 +817,31 @@
                     }"
                     (click)="onActiveItem(option)"
                 >
-                    <div
-                        [innerHtml]="
-                            option.name
-                                | taHighlight
-                                    : [
-                                          {
-                                              index: 45632,
-                                              text: getSuperControl.value
-                                          }
-                                      ]
-                        "
-                    ></div>
-
+                    <div class="load-shipper-status-text">
+                        <svg-icon
+                            *ngIf="option.name !== 'ADD NEW' && option.logoName"
+                            class="load-shipper-status"
+                            [src]="option.logoName"
+                        ></svg-icon>
+                        <div
+                            class="load-shipper-text"
+                            [ngStyle]="{
+                                overflow: 'hidden',
+                                'text-overflow': 'ellipsis',
+                                'white-space': 'nowrap'
+                            }"
+                            [innerHtml]="
+                                option.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+                    </div>
                     <div
                         *ngIf="indx !== 0"
                         [ngClass]="{ active: option.id === activeItem?.id }"

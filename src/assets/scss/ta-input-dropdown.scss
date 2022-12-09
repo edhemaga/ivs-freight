@@ -776,6 +776,24 @@
                 align-items: center;
                 padding-right: 25px;
 
+                .load-shipper-status-text {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    line-height: 18px;
+
+                    .load-shipper-status {
+                        position: relative;
+                        line-height: 17px;
+                    }
+
+                    .load-shipper-text {
+                        &.disabled {
+                            color: #6c6c6c;
+                        }
+                    }
+                }
+
                 div {
                     &:nth-child(2),
                     &:nth-child(3) {

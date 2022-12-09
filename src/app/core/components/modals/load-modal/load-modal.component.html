@@ -376,33 +376,30 @@
                             ></app-ta-input-dropdown>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-5">
-                            <app-ta-tab-switch
-                                [tabs]="stopTimeTabsPickup"
-                                (switchClicked)="
-                                    onTabChange($event, 'stop-time-pickup')
-                                "
-                                [type]="'type2-modal-popup'"
-                            ></app-ta-tab-switch>
-                        </div>
-                        <div class="col-7">
-                            <app-ta-input-dropdown
-                                formControlName="pickupShipperContactId"
-                                [template]="'load-broker-contact'"
-                                [inputConfig]="loadShipperContactsInputConfig"
-                                [canAddNew]="true"
-                                [canOpenModal]="true"
-                                [options]="labelsShipperContacts"
-                                [activeItem]="selectedShipperContact"
-                                (selectedItem)="
-                                    onSelectDropdown(
-                                        $event,
-                                        'shipper-contact-pickup'
-                                    )
-                                "
-                            ></app-ta-input-dropdown>
-                        </div>
+                    <div class="load-shipper-contact-row">
+                        <app-ta-tab-switch
+                            [tabs]="stopTimeTabsPickup"
+                            (switchClicked)="
+                                onTabChange($event, 'stop-time-pickup')
+                            "
+                            [type]="'type2-modal-popup'"
+                        ></app-ta-tab-switch>
+
+                        <app-ta-input-dropdown
+                            formControlName="pickupShipperContactId"
+                            [template]="'load-broker-contact'"
+                            [inputConfig]="loadShipperContactsInputConfig"
+                            [canAddNew]="true"
+                            [canOpenModal]="true"
+                            [options]="labelsShipperContacts"
+                            [activeItem]="selectedShipperContact"
+                            (selectedItem)="
+                                onSelectDropdown(
+                                    $event,
+                                    'shipper-contact-pickup'
+                                )
+                            "
+                        ></app-ta-input-dropdown>
                     </div>
                     <div
                         class="stop-load-date-time"
@@ -523,30 +520,27 @@
                             ></app-ta-input-dropdown>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-5">
-                            <app-ta-tab-switch
-                                [tabs]="stopTimeTabsDelivery"
-                                (switchClicked)="
-                                    onTabChange($event, 'stop-time-delivery')
-                                "
-                                [type]="'type2-modal-popup'"
-                            ></app-ta-tab-switch>
-                        </div>
-                        <div class="col-7">
-                            <app-ta-input-dropdown
-                                formControlName="deliveryShipperContactId"
-                                [template]="'load-broker-contact'"
-                                [inputConfig]="loadShipperContactsInputConfig"
-                                [canAddNew]="true"
-                                [canOpenModal]="true"
-                                [options]="labelsShipperContacts"
-                                [activeItem]="selectedShipperContact"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'shipper-contact')
-                                "
-                            ></app-ta-input-dropdown>
-                        </div>
+                    <div class="load-shipper-contact-row">
+                        <app-ta-tab-switch
+                            [tabs]="stopTimeTabsDelivery"
+                            (switchClicked)="
+                                onTabChange($event, 'stop-time-delivery')
+                            "
+                            [type]="'type2-modal-popup'"
+                        ></app-ta-tab-switch>
+
+                        <app-ta-input-dropdown
+                            formControlName="deliveryShipperContactId"
+                            [template]="'load-broker-contact'"
+                            [inputConfig]="loadShipperContactsInputConfig"
+                            [canAddNew]="true"
+                            [canOpenModal]="true"
+                            [options]="labelsShipperContacts"
+                            [activeItem]="selectedShipperContact"
+                            (selectedItem)="
+                                onSelectDropdown($event, 'shipper-contact')
+                            "
+                        ></app-ta-input-dropdown>
                     </div>
                     <div
                         class="stop-load-date-time"

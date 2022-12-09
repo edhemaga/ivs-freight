@@ -229,7 +229,8 @@
         }
     }
 
-    .load-broker-contact {
+    .load-broker-contact,
+    .load-shipper-contact {
         display: grid;
         grid-template-columns: 241px 38px;
         align-items: center;

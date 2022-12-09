@@ -100,12 +100,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedStopTimeDelivery: number = 5;
     public stopTimeTabsDelivery = [
         {
-            id: 5,
+            id: 7,
             name: 'Open',
             checked: true,
         },
         {
-            id: 6,
+            id: 8,
             name: 'APPT',
             checked: false,
         },
@@ -243,7 +243,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         type: 'text',
         multipleLabel: {
             labels: ['Contact', 'Phone'],
-            customClass: 'load-broker-contact',
+            customClass: 'load-shipper-contact',
         },
         isDropdown: true,
         isDisabled: true,
@@ -676,7 +676,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     logoName: null,
                                 },
                             ],
-                            customClass: 'load-broker-contact',
+                            customClass: 'load-shipper-contact',
                         },
                         isDisabled: false,
                     };
@@ -723,7 +723,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     logoName: null,
                                 },
                             ],
-                            customClass: 'load-broker-contact',
+                            customClass: 'load-shipper-contact',
                         },
                         isDisabled: false,
                     };
@@ -1667,6 +1667,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             address: item.address?.city
                                 .concat(', ', item.address?.stateShortName)
                                 .concat(' ', item.address?.zipCode),
+                            logoName:
+                                item.status === 0
+                                    ? 'ic_load-broker-closed-business.svg'
+                                    : null,
                         };
                     });
 
@@ -1745,7 +1749,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getLoadById(id: number) {}
+    private getLoadById(id: number) {
+        console.log('id: ', id);
+    }
 
     private addLoad() {
         const { ...form } = this.loadForm.value;

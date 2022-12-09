@@ -910,13 +910,23 @@
     margin-bottom: 32px;
 }
 
-.load-ftl-fourth-row {
+.load-ftl-fourth-row,
+.load-shipper-contact-row {
     display: grid;
     grid-template-columns: 330px 152px 110px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
     margin-bottom: 22px;
+}
+
+.load-shipper-contact-row {
+    display: grid;
+    grid-template-columns: 1fr 330px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    align-items: center;
+    margin-bottom: 32px;
 }
 
 .load-requirements-load-second-row {
