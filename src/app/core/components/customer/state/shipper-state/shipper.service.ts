@@ -274,6 +274,10 @@ export class ShipperTService implements OnDestroy {
         southWestLatitude?: number,
         southWestLongitude?: number,
         zoomLevel?: number,
+        shipperLong?: number,
+        shipperLat?: number,
+        shipperDistance?: number,
+        shipperStates?: Array<string>,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -288,6 +292,10 @@ export class ShipperTService implements OnDestroy {
             southWestLatitude,
             southWestLongitude,
             zoomLevel,
+            shipperLong,
+            shipperLat,
+            shipperDistance,
+            shipperStates,
             pageIndex,
             pageSize,
             companyId,
@@ -303,6 +311,10 @@ export class ShipperTService implements OnDestroy {
         northEastLongitude?: number,
         southWestLatitude?: number,
         southWestLongitude?: number,
+        shipperLong?: number,
+        shipperLat?: number,
+        shipperDistance?: number,
+        shipperStates?: Array<string>,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -311,20 +323,23 @@ export class ShipperTService implements OnDestroy {
         search1?: string,
         search2?: string
     ) {
-        // return this.shipperService.apiShipperListmapGet(
-        //     northEastLatitude,
-        //     northEastLongitude,
-        //     southWestLatitude,
-        //     southWestLongitude,
-        //     pageIndex,
-        //     pageSize,
-        //     companyId,
-        //     sort,
-        //     search,
-        //     search1,
-        //     search2
-        // );
-        return of();
+        return this.shipperService.apiShipperListmapGet(
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            shipperLong,
+            shipperLat,
+            shipperDistance,
+            shipperStates,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
     }
 
     //  <--------------------------------- Review ---------------------------------->

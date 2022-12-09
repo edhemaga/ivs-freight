@@ -543,13 +543,17 @@ export class MapsComponent implements OnInit, OnDestroy {
                     clustersObj.southWestLatitude,
                     clustersObj.southWestLongitude,
                     clustersObj.zoomLevel,
+                    null, // shipperLong
+                    null, // shipperLat
+                    null, // shipperDistance
+                    null, // shipperStates
                     pageIndex,
                     pageSize,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    null, // companyId
+                    null, // sort
+                    null, // search
+                    null, // search1
+                    null  // search2
                 )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((clustersResponse: any) => {
@@ -634,11 +638,17 @@ export class MapsComponent implements OnInit, OnDestroy {
                     clustersObj.northEastLongitude,
                     clustersObj.southWestLatitude,
                     clustersObj.southWestLongitude,
-                    null,
-                    null,
-                    null,
+                    null, // shipperLong
+                    null, // shipperLat
+                    null, // shipperDistance
+                    null, // shipperStates
+                    null, // pageIndex
+                    null, // pageSize
+                    null, // companyId
                     this.sortBy,
-                    this.searchText
+                    this.searchText,
+                    null, // search1
+                    null  // search2
                 )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((mapListResponse: any) => {
