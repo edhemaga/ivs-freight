@@ -505,10 +505,14 @@
                                     selectedExtraStopShipper[indx]?.address
                                 "
                                 [dateRange]="
-                                    extraStop.get('deliveryDateFrom').value
+                                    loadExtraStops().controls[indx].get(
+                                        'dateFrom'
+                                    ).value
                                 "
                                 [timeRange]="
-                                    extraStop.get('deliveryDateTo').value
+                                    loadExtraStops().controls[indx].get(
+                                        'timeFrom'
+                                    ).value
                                 "
                                 [legMile]="null"
                                 [isEmptyLoad]="false"
@@ -517,10 +521,7 @@
                                         selectedExtraStopShipperContact[indx]
                                             ?.name
                                 }"
-                                [isOpen]="
-                                    selectedExtraStopShipperContact[indx]
-                                        ?.openClose
-                                "
+                                [isOpen]="false"
                                 (toggle)="
                                     toggleStopActivity(
                                         $event,

@@ -736,7 +736,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'shipper-pickup': {
                 this.selectedPickupShipper = event;
-                console.log('selected shipper: ', this.selectedPickupShipper);
                 if (this.selectedPickupShipper) {
                     this.loadPickupShipperInputConfig = {
                         ...this.loadPickupShipperInputConfig,
@@ -778,10 +777,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.selectedPickupShipperContact =
                         this.labelsShipperContacts[1].contacts[0];
 
-                    console.log(
-                        this.selectedPickupShipper,
-                        this.selectedPickupShipperContact
-                    );
                     this.loadForm
                         .get('pickupShipperContactId')
                         .patchValue(this.selectedPickupShipperContact.fullName);
@@ -827,8 +822,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         multipleInputValues: null,
                         isDisabled: true,
                     };
-
-                    console.log(this.loadPickupShipperContactsInputConfig);
                 }
                 break;
             }
@@ -868,7 +861,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
             case 'shipper-delivery': {
                 this.selectedDeliveryShipper = event;
-                console.log('selected shipper: ', this.selectedDeliveryShipper);
                 if (this.selectedDeliveryShipper) {
                     this.loadDeliveryShipperInputConfig = {
                         ...this.loadDeliveryShipperInputConfig,
@@ -1258,6 +1250,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             dropdownWidthClass: 'w-col-344',
         };
 
+        // Selected Push
+        this.selectedExtraStopShipper[this.loadExtraStops.length] = null;
+        this.selectedExtraStopShipperContact[this.loadExtraStops.length] = null;
+        this.selectedExtraStopTab[this.loadExtraStops.length] = null;
+
         // If Load Stop Exist , just return
         // const existLoadStop = this.loadExtraStops().controls.find(
         //     (item) =>
@@ -1453,8 +1450,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                               })
                       )
                     : JSON.stringify({
-                          longitude: this.selectedPickupShipper.longitude,
-                          latitude: this.selectedPickupShipper.latitude,
+                          longitude: this.selectedPickupShipper?.longitude,
+                          latitude: this.selectedPickupShipper?.latitude,
                       })
             )
             .pipe(debounceTime(1000), takeUntil(this.destroy$))
@@ -1556,7 +1553,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
-                    console.log('dropdown load: ', res);
                     this.loadNumber = res.loadNumber;
 
                     // Dispatcher
@@ -1761,8 +1757,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ...item,
                             name: item?.businessName,
                             address: item.address?.city
-                                .concat(', ', item.address?.stateShortName)
-                                .concat(' ', item.address?.zipCode),
+                                ?.concat(', ', item.address?.stateShortName)
+                                ?.concat(' ', item.address?.zipCode),
                             logoName:
                                 item.status === 0
                                     ? 'ic_load-broker-closed-business.svg'
