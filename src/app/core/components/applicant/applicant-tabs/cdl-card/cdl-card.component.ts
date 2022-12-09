@@ -4,10 +4,7 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
@@ -102,7 +99,6 @@ export class CdlCardComponent implements OnInit, OnDestroy {
     public patchStepValues(stepValues: CdlCardFeedbackResponse): void {
         // console.log('stepValues', stepValues);
         // const { issueDate, expireDate } = stepValues;
-
         // this.cdlCardForm.patchValue({
         //     fromDate: convertDateFromBackend(issueDate),
         //     toDate: convertDateFromBackend(expireDate),

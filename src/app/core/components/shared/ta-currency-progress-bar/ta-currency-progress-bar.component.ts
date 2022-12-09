@@ -1,10 +1,4 @@
-import {
-    Component,
-    Input,
-    OnInit,
-    OnChanges,
-    SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 
 @Component({
     selector: 'app-ta-currency-progress-bar',
@@ -19,7 +13,7 @@ export class TaCurrencyProgressBarComponent implements OnInit, OnChanges {
 
     public activePercentageOfPaid: number = 0;
     public status = null;
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges() {
         //Need here for broker currency
         this.calculateCurrencyPercentage();
     }

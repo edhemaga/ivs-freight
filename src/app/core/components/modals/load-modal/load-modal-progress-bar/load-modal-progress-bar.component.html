@@ -1,0 +1,14 @@
+<div class="load-progress-bar-container">
+    <div class="progress-bar-price" [ngClass]="{ focus: inputFocus }">
+        {{ availableCredit | currency }}
+    </div>
+    <div class="progress-bar-line {{ status?.status }}">
+        <div
+            [ngStyle]="{
+                width: activePercentageOfPaid + '%',
+                height: '100%',
+                'background-color': status?.colorFilled
+            }"
+        ></div>
+    </div>
+</div>
