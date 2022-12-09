@@ -137,11 +137,24 @@
 
         &.required {
             &::after {
-                content: ' *';
                 position: absolute;
                 right: 0px;
                 left: 60px;
                 top: 0px;
+            }
+        }
+
+        &.filled-multiple-label,
+        &.up-label {
+            &.required {
+                &::after {
+                    transition-delay: 100ms;
+                    transition-timing-function: ease-in;
+                    position: absolute;
+                    right: 0px;
+                    left: 48px;
+                    top: 0px;
+                }
             }
         }
     }
@@ -217,11 +230,14 @@
             }
         }
 
-        &.filled-multiple-label {
+        &.filled-multiple-label,
+        &.up-label {
             &.required {
                 &::after {
+                    transition-delay: 100ms;
+                    transition-timing-function: ease-in;
                     position: absolute;
-                    left: 41px;
+                    left: 44px;
                     right: 0;
                     top: -1px;
                 }

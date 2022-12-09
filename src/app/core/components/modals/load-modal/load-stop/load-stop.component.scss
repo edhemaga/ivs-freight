@@ -63,11 +63,15 @@
                         -moz-user-select: none;
                         -ms-user-select: none;
                         user-select: none;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                     }
 
                     &-name {
                         p {
                             text-transform: uppercase;
+                            width: 240px;
                         }
                     }
 
@@ -105,13 +109,25 @@
                         -moz-user-select: none;
                         -ms-user-select: none;
                         user-select: none;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                     }
 
                     &-deadhead {
-                        text-align: right;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        line-height: 14px;
+                        gap: 4px;
+                        position: relative;
+                        bottom: 1px;
+
                         p {
                             color: #919191;
                             font-weight: 500;
+
+                            line-height: 14px;
                         }
                     }
                 }
@@ -148,6 +164,21 @@
                     display: inline-block;
                 }
             }
+        }
+    }
+
+    .load-stop-body {
+        &.innactive {
+            height: 0px !important;
+            overflow: hidden !important;
+            opacity: 0 !important;
+            margin-top: 0px !important;
+            margin-bottom: 0px !important;
+        }
+
+        &.active {
+            overflow: visible !important;
+            opacity: 1 !important;
         }
     }
 

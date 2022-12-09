@@ -55,6 +55,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     public loadModalSize: string = 'modal-container-M';
 
+    public companyUser: SignInResponse = null;
+
     public selectedTab: number = 1;
     public tabs = [
         {
@@ -139,11 +141,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public labelsDispatches: any[] = [];
     public originLabelsDispatches: any[] = [];
     public labelsGeneralCommodity: any[] = [];
+
+    // Broker Labels
     public labelsBroker: any[] = [];
     public labelsBrokerContacts: any[] = [];
     public originBrokerContacts: any[] = [];
+
+    // Shipper Labels
     public originShipperContacts: any[] = [];
     public labelsShipperContacts: any[] = [];
+
+    // Requirements LAbels
     public labelsTruckReq: any[] = [];
     public labelsTrailerReq: any[] = [];
     public labelsDoorType: any[] = [];
@@ -157,16 +165,26 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedCompany: any = null;
     public selectedDispatches: any = null;
     public selectedGeneralCommodity: any = null;
+
+    // Broker
     public selectedBroker: any = null;
     public selectedBrokerContact: any = null;
-    public selectedShipperContact: any = null;
+
+    // Pickup Shipper
+    public selectedPickupShipper: any = null;
+    public selectedPickupShipperContact: any = null;
+
+    // Delivery Shipper
+    public selectedDeliveryShipper: any = null;
+    public selectedDeliveryShipperContact: any = null;
+
+    // Requirements
     public selectedTruckReq: any = null;
     public selectedTrailerReq: any = null;
     public selectedDoorType: any = null;
     public selectedSuspension: any = null;
     public selectedTrailerLength: any = null;
     public selectedYear: any = null;
-    public selectedShipper: any = null;
 
     // Load Details Labels
     public labelsloadDetailsUnits: any[] = [];
@@ -183,6 +201,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedLoadDetailsStrapChain: any[] = [];
     public selectedLoadDetailsHazardous: any[] = [];
 
+    // Some Inputs Configurations
     public loadDispatchesTTDInputConfig: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
@@ -224,7 +243,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         dropdownWidthClass: 'w-col-330',
     };
 
-    public loadShipperInputConfig: ITaInput = {
+    public loadPickupShipperInputConfig: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
@@ -238,7 +257,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         dropdownWidthClass: 'w-col-606',
     };
 
-    public loadShipperContactsInputConfig: ITaInput = {
+    public loadPickupShipperContactsInputConfig: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
@@ -252,17 +271,48 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         dropdownWidthClass: 'w-col-344',
     };
 
-    public additionalBillingTypes: any[] = [];
+    public loadDeliveryShipperInputConfig: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        multipleLabel: {
+            labels: ['Shipper', 'City, State, Zip', 'Loads'],
+            customClass: 'load-shipper',
+        },
+        isDropdown: true,
+        isRequired: true,
+        blackInput: true,
+        textTransform: 'uppercase',
+        dropdownWidthClass: 'w-col-606',
+    };
 
+    public loadDeliveryShipperContactsInputConfig: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        multipleLabel: {
+            labels: ['Contact', 'Phone'],
+            customClass: 'load-shipper-contact',
+        },
+        isDropdown: true,
+        isDisabled: true,
+        blackInput: true,
+        textTransform: 'capitalize',
+        dropdownWidthClass: 'w-col-344',
+    };
+
+    // Billing
+    public additionalBillingTypes: any[] = [];
     public isAvailableAdjustedRate: boolean = false;
     public isAvailableAdvanceRate: boolean = false;
 
+    // Documents
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
+    // Comments
     public comments: any[] = [];
 
+    // Map Routes
     public loadStopRoutes: {
         routeColor: string;
         stops: {
@@ -272,17 +322,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         }[];
     }[] = [];
 
-    public companyUser: SignInResponse = null;
-
+    // Hazardous Dropdown
     public isHazardousPicked: boolean = false;
     public isHazardousVisible: boolean = false;
 
-    public additionalPartHeight: any;
-
-    // Stops
+    // Pickup Stops
     public pickupDateRange: boolean = false;
     public isActivePickupStop: boolean = false;
 
+    // Delivery Stops
     public deliveryDateRange: boolean = false;
     public isActiveDeliveryStop: boolean = false;
 
@@ -492,6 +540,72 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
+            case 'dispatches': {
+                if (event) {
+                    this.selectedDispatches = {
+                        ...event,
+                        name: event?.truck?.name
+                            ?.concat(' ', event?.trailer?.name)
+                            .concat(' ', event?.driver?.name),
+                    };
+
+                    this.loadDispatchesTTDInputConfig = {
+                        ...this.loadDispatchesTTDInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: event?.truck?.name,
+                                    logoName: event?.truck?.logoName,
+                                    isImg: false,
+                                    isSvg: true,
+                                    folder: 'common',
+                                    subFolder: 'trucks',
+                                    logoType: event?.truck?.logoType,
+                                },
+                                {
+                                    value: event?.trailer?.name,
+                                    logoName: event?.trailer?.logoName,
+                                    isImg: false,
+                                    isSvg: true,
+                                    folder: 'common',
+                                    subFolder: 'trailers',
+                                    logoType: event?.trailer?.logoType,
+                                },
+                                {
+                                    value: event?.driver?.name,
+                                    logoName: event?.driver?.logoName
+                                        ? event?.driver?.logoName
+                                        : 'no-url',
+                                    isImg: true,
+                                    isSvg: false,
+                                    folder: null,
+                                    subFolder: null,
+                                    isOwner: event?.driver?.owner,
+                                    logoType: null,
+                                },
+                                {
+                                    value: event?.payType,
+                                    logoName: null,
+                                    isImg: false,
+                                    isSvg: false,
+                                    folder: null,
+                                    subFolder: null,
+                                    logoType: null,
+                                },
+                            ],
+                            customClass: 'load-dispatches-ttd',
+                        },
+                    };
+                } else {
+                    this.loadDispatchesTTDInputConfig = {
+                        ...this.loadDispatchesTTDInputConfig,
+                        multipleInputValues: null,
+                    };
+
+                    this.selectedDispatches = null;
+                }
+                break;
+            }
             case 'broker': {
                 this.selectedBroker = event;
 
@@ -616,23 +730,25 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'shipper-pickup': {
-                this.selectedShipper = event;
-                console.log('selected shipper: ', this.selectedShipper);
-                if (this.selectedShipper) {
-                    this.loadShipperInputConfig = {
-                        ...this.loadShipperInputConfig,
+                this.selectedPickupShipper = event;
+                console.log('selected shipper: ', this.selectedPickupShipper);
+                if (this.selectedPickupShipper) {
+                    this.loadPickupShipperInputConfig = {
+                        ...this.loadPickupShipperInputConfig,
                         multipleInputValues: {
                             options: [
                                 {
-                                    value: this.selectedShipper.businessName,
+                                    value: this.selectedPickupShipper
+                                        .businessName,
                                     logoName: null,
                                 },
                                 {
-                                    value: this.selectedShipper.address,
+                                    value: this.selectedPickupShipper.address,
                                     logoName: null,
                                 },
                                 {
-                                    value: this.selectedShipper.loadsCount,
+                                    value: this.selectedPickupShipper
+                                        .loadsCount,
                                     logoName: null,
                                     isCounter: true,
                                 },
@@ -648,31 +764,36 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                 contacts: el?.contacts?.filter(
                                     (subEl) =>
                                         subEl.shipperId ===
-                                        this.selectedShipper.id
+                                        this.selectedPickupShipper.id
                                 ),
                             };
                         }
                     );
 
-                    this.selectedShipperContact =
+                    this.selectedPickupShipperContact =
                         this.labelsShipperContacts[1].contacts[0];
 
+                    console.log(
+                        this.selectedPickupShipper,
+                        this.selectedPickupShipperContact
+                    );
                     this.loadForm
                         .get('pickupShipperContactId')
-                        .patchValue(this.selectedShipperContact.fullName);
+                        .patchValue(this.selectedPickupShipperContact.fullName);
 
-                    this.loadShipperContactsInputConfig = {
-                        ...this.loadShipperContactsInputConfig,
+                    this.loadPickupShipperContactsInputConfig = {
+                        ...this.loadPickupShipperContactsInputConfig,
                         multipleInputValues: {
                             options: [
                                 {
-                                    value: this.selectedShipperContact.name,
+                                    value: this.selectedPickupShipperContact
+                                        .name,
                                     logoName: null,
                                 },
                                 {
-                                    value: this.selectedShipperContact
+                                    value: this.selectedPickupShipperContact
                                         .originalPhone,
-                                    second_value: `#${this.selectedShipperContact.phoneExtension}`,
+                                    second_value: `#${this.selectedPickupShipperContact.phoneExtension}`,
                                     logoName: null,
                                 },
                             ],
@@ -685,17 +806,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 else {
                     this.labelsShipperContacts = this.originShipperContacts;
 
-                    this.loadShipperInputConfig = {
-                        ...this.loadShipperInputConfig,
+                    this.loadPickupShipperInputConfig = {
+                        ...this.loadPickupShipperInputConfig,
                         multipleInputValues: null,
                     };
 
-                    this.selectedShipperContact = null;
+                    this.selectedPickupShipperContact = null;
 
                     this.loadForm.get('shipperContactId').patchValue(null);
 
-                    this.loadShipperContactsInputConfig = {
-                        ...this.loadShipperContactsInputConfig,
+                    this.loadPickupShipperContactsInputConfig = {
+                        ...this.loadPickupShipperContactsInputConfig,
                         multipleInputValues: null,
                         isDisabled: true,
                     };
@@ -704,13 +825,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'shipper-contact-pickup': {
                 if (event) {
-                    this.selectedShipperContact = {
+                    this.selectedPickupShipperContact = {
                         ...event,
                         name: event?.name?.concat(' ', event?.phone),
                     };
 
-                    this.loadShipperContactsInputConfig = {
-                        ...this.loadShipperContactsInputConfig,
+                    this.loadPickupShipperContactsInputConfig = {
+                        ...this.loadPickupShipperContactsInputConfig,
                         multipleInputValues: {
                             options: [
                                 {
@@ -728,79 +849,142 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         isDisabled: false,
                     };
                 } else {
-                    this.loadShipperContactsInputConfig = {
-                        ...this.loadShipperContactsInputConfig,
+                    this.loadPickupShipperContactsInputConfig = {
+                        ...this.loadPickupShipperContactsInputConfig,
                         multipleInputValues: null,
                     };
                 }
                 break;
             }
-            case 'dispatches': {
-                if (event) {
-                    this.selectedDispatches = {
-                        ...event,
-                        name: event?.truck?.name
-                            ?.concat(' ', event?.trailer?.name)
-                            .concat(' ', event?.driver?.name),
-                    };
 
-                    this.loadDispatchesTTDInputConfig = {
-                        ...this.loadDispatchesTTDInputConfig,
+            case 'shipper-delivery': {
+                this.selectedDeliveryShipper = event;
+                console.log('selected shipper: ', this.selectedDeliveryShipper);
+                if (this.selectedDeliveryShipper) {
+                    this.loadDeliveryShipperInputConfig = {
+                        ...this.loadDeliveryShipperInputConfig,
                         multipleInputValues: {
                             options: [
                                 {
-                                    value: event?.truck?.name,
-                                    logoName: event?.truck?.logoName,
-                                    isImg: false,
-                                    isSvg: true,
-                                    folder: 'common',
-                                    subFolder: 'trucks',
-                                    logoType: event?.truck?.logoType,
-                                },
-                                {
-                                    value: event?.trailer?.name,
-                                    logoName: event?.trailer?.logoName,
-                                    isImg: false,
-                                    isSvg: true,
-                                    folder: 'common',
-                                    subFolder: 'trailers',
-                                    logoType: event?.trailer?.logoType,
-                                },
-                                {
-                                    value: event?.driver?.name,
-                                    logoName: event?.driver?.logoName
-                                        ? event?.driver?.logoName
-                                        : 'no-url',
-                                    isImg: true,
-                                    isSvg: false,
-                                    folder: null,
-                                    subFolder: null,
-                                    isOwner: event?.driver?.owner,
-                                    logoType: null,
-                                },
-                                {
-                                    value: event?.payType,
+                                    value: this.selectedDeliveryShipper
+                                        .businessName,
                                     logoName: null,
-                                    isImg: false,
-                                    isSvg: false,
-                                    folder: null,
-                                    subFolder: null,
-                                    logoType: null,
+                                },
+                                {
+                                    value: this.selectedDeliveryShipper.address,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedDeliveryShipper
+                                        .loadsCount,
+                                    logoName: null,
+                                    isCounter: true,
                                 },
                             ],
-                            customClass: 'load-dispatches-ttd',
+                            customClass: 'load-shipper',
                         },
                     };
-                } else {
-                    this.loadDispatchesTTDInputConfig = {
-                        ...this.loadDispatchesTTDInputConfig,
+
+                    this.labelsShipperContacts = this.originShipperContacts.map(
+                        (el) => {
+                            return {
+                                ...el,
+                                contacts: el?.contacts?.filter(
+                                    (subEl) =>
+                                        subEl.shipperId ===
+                                        this.selectedDeliveryShipper.id
+                                ),
+                            };
+                        }
+                    );
+
+                    this.selectedDeliveryShipperContact =
+                        this.labelsShipperContacts[1].contacts[0];
+
+                    this.loadForm
+                        .get('deliveryShipperContactId')
+                        .patchValue(
+                            this.selectedDeliveryShipperContact.fullName
+                        );
+
+                    this.loadDeliveryShipperContactsInputConfig = {
+                        ...this.loadDeliveryShipperContactsInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: this.selectedDeliveryShipperContact
+                                        .name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedDeliveryShipperContact
+                                        .originalPhone,
+                                    second_value: `#${this.selectedDeliveryShipperContact.phoneExtension}`,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass: 'load-shipper-contact',
+                        },
+                        isDisabled: false,
+                    };
+                }
+                // Restart value if clear
+                else {
+                    this.labelsShipperContacts = this.originShipperContacts;
+
+                    this.loadPickupShipperInputConfig = {
+                        ...this.loadPickupShipperInputConfig,
                         multipleInputValues: null,
                     };
 
-                    this.selectedDispatches = null;
+                    this.selectedDeliveryShipperContact = null;
+
+                    this.loadForm
+                        .get('deliveryShipperContactId')
+                        .patchValue(null);
+
+                    this.loadDeliveryShipperContactsInputConfig = {
+                        ...this.loadDeliveryShipperContactsInputConfig,
+                        multipleInputValues: null,
+                        isDisabled: true,
+                    };
                 }
                 break;
             }
+            case 'shipper-contact-delivery': {
+                if (event) {
+                    this.selectedDeliveryShipperContact = {
+                        ...event,
+                        name: event?.name?.concat(' ', event?.phone),
+                    };
+
+                    this.selectedDeliveryShipperContact = {
+                        ...this.selectedDeliveryShipperContact,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: event.name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: event.originalPhone,
+                                    second_value: `#${event.phoneExtension}`,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass: 'load-shipper-contact',
+                        },
+                        isDisabled: false,
+                    };
+                } else {
+                    this.selectedDeliveryShipperContact = {
+                        ...this.selectedDeliveryShipperContact,
+                        multipleInputValues: null,
+                    };
+                }
+                break;
+            }
+
             case 'truck-req': {
                 this.selectedTruckReq = event;
                 break;
@@ -1129,7 +1313,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .subscribe((value) => {
                 const stop = this.loadStops().controls.find(
                     (item) =>
-                        item.get('shipperId').value === this.selectedShipper.id
+                        item.get('shipperId').value ===
+                        this.selectedPickupShipper.id
                 );
 
                 if (stop && !stop.get('dateFrom').value) {
@@ -1143,7 +1328,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .subscribe((value) => {
                 const stop = this.loadStops().controls.find(
                     (item) =>
-                        item.get('shipperId').value === this.selectedShipper.id
+                        item.get('shipperId').value ===
+                        this.selectedPickupShipper.id
                 );
                 if (stop && !stop.get('dateTo').value) {
                     stop.get('dateTo').patchValue(value);
@@ -1156,7 +1342,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .subscribe((value) => {
                 const stop = this.loadStops().controls.find(
                     (item) =>
-                        item.get('shipperId').value === this.selectedShipper.id
+                        item.get('shipperId').value ===
+                        this.selectedPickupShipper.id
                 );
                 if (stop && !stop.get('timeFrom').value) {
                     stop.get('timeFrom').patchValue(value);
@@ -1169,7 +1356,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .subscribe((value) => {
                 const stop = this.loadStops().controls.find(
                     (item) =>
-                        item.get('shipperId').value === this.selectedShipper.id
+                        item.get('shipperId').value ===
+                        this.selectedPickupShipper.id
                 );
                 if (stop && !stop.get('timeTo').value) {
                     stop.get('timeTo').patchValue(value);
@@ -1275,17 +1463,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     // Load Stop
     public createNewStop() {
-        if (this.selectedShipper) {
-            this.loadShipperInputConfig = {
-                ...this.loadShipperInputConfig,
+        if (this.selectedPickupShipper) {
+            this.loadPickupShipperInputConfig = {
+                ...this.loadPickupShipperInputConfig,
                 multipleInputValues: {
                     options: [
                         {
-                            value: this.selectedShipper.name,
+                            value: this.selectedPickupShipper.name,
                             logoName: null,
                         },
                         {
-                            value: this.selectedShipper.address,
+                            value: this.selectedPickupShipper.address,
                             logoName: null,
                         },
                     ],
@@ -1296,7 +1484,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             // If Load Stop Exist , just return
             const existLoadStop = this.loadStops().controls.find(
                 (item) =>
-                    item.get('shipperId').value === this.selectedShipper.id
+                    item.get('shipperId').value ===
+                    this.selectedPickupShipper.id
             );
 
             if (existLoadStop) {
@@ -1360,7 +1549,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id: [null],
             stopType: [this.selectedStopTab === 3 ? 'Pickup' : 'Delivery'],
             stopOrder: [this.loadStops().length + 1],
-            shipperId: [this.selectedShipper.id],
+            shipperId: [this.selectedPickupShipper.id],
             dateFrom: [null], // convert for backend
             dateTo: [null], // convert for backend
             // timeType: [
@@ -1373,8 +1562,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             timeTo: [null],
             arrive: [null], // null when create mode
             depart: [null], // null when create mode
-            longitude: [this.selectedShipper.longitude],
-            latitude: [this.selectedShipper.latitude],
+            longitude: [this.selectedPickupShipper.longitude],
+            latitude: [this.selectedPickupShipper.latitude],
             // From legs
             legMiles: [null],
             legHours: [null],

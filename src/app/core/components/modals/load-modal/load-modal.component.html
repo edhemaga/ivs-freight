@@ -348,28 +348,36 @@
                     [firstOrLast]="true"
                     [stopNumber]="1"
                     [isDelivery]="false"
-                    [shipper]="'Becker'"
-                    [shipperAddress]="'Address'"
-                    [dateRange]="'04/07/23'"
-                    [timeRange]="'10:00 AM - 09:00 PM'"
-                    [legMile]="'360.5'"
+                    [shipper]="selectedPickupShipper?.name"
+                    [shipperAddress]="selectedPickupShipper?.address"
+                    [dateRange]="
+                        loadForm.get('pickupDateFrom').value
+                            | loadDatetimeRange
+                                : loadForm.get('pickupDateTo').value
+                    "
+                    [timeRange]="
+                        loadForm.get('pickupDateFrom').value
+                            | loadDatetimeRange
+                                : loadForm.get('pickupDateTo').value
+                    "
+                    [legMile]="null"
                     [isEmptyLoad]="true"
                     [shipperContact]="{
-                        fullName: 'Angelo Trotter'
+                        fullName: selectedPickupShipperContact?.name
                     }"
                     [isOpen]="isActivePickupStop"
                     (toggle)="toggleStopActivity($event, 'first-pickup')"
                 >
-                    <div class="row">
+                    <div class="row row-no-mt">
                         <div class="col-12">
                             <app-ta-input-dropdown
                                 formControlName="pickupShipper"
                                 [template]="'load-shipper'"
-                                [inputConfig]="loadShipperInputConfig"
+                                [inputConfig]="loadPickupShipperInputConfig"
                                 [canAddNew]="true"
                                 [canOpenModal]="true"
                                 [options]="labelsShippers"
-                                [activeItem]="selectedShipper"
+                                [activeItem]="selectedPickupShipper"
                                 (selectedItem)="
                                     onSelectDropdown($event, 'shipper-pickup')
                                 "
@@ -388,11 +396,11 @@
                         <app-ta-input-dropdown
                             formControlName="pickupShipperContactId"
                             [template]="'load-broker-contact'"
-                            [inputConfig]="loadShipperContactsInputConfig"
+                            [inputConfig]="loadPickupShipperContactsInputConfig"
                             [canAddNew]="true"
                             [canOpenModal]="true"
                             [options]="labelsShipperContacts"
-                            [activeItem]="selectedShipperContact"
+                            [activeItem]="selectedPickupShipperContact"
                             (selectedItem)="
                                 onSelectDropdown(
                                     $event,
@@ -402,7 +410,7 @@
                         ></app-ta-input-dropdown>
                     </div>
                     <div
-                        class="stop-load-date-time"
+                        class="stop-load-date-time row-no-mb"
                         [ngClass]="{ 'date-range-active': pickupDateRange }"
                     >
                         <app-ta-input
@@ -492,14 +500,14 @@
                     [firstOrLast]="true"
                     [stopNumber]="1"
                     [isDelivery]="true"
-                    [shipper]="'Delivery Stop'"
-                    [shipperAddress]="'Address'"
-                    [dateRange]="'04/07/23'"
-                    [timeRange]="'10:00 AM - 09:00 PM'"
-                    [legMile]="'360.5'"
-                    [isEmptyLoad]="false"
+                    [shipper]="selectedDeliveryShipper?.name"
+                    [shipperAddress]="selectedDeliveryShipper?.address"
+                    [dateRange]="loadForm.get('deliveryDateFrom').value"
+                    [timeRange]="loadForm.get('deliveryDateTo').value"
+                    [legMile]="null"
+                    [isEmptyLoad]="true"
                     [shipperContact]="{
-                        fullName: 'Angelo Trotter'
+                        fullName: selectedDeliveryShipperContact?.name
                     }"
                     [isOpen]="isActiveDeliveryStop"
                     (toggle)="toggleStopActivity($event, 'first-delivery')"
@@ -509,13 +517,13 @@
                             <app-ta-input-dropdown
                                 formControlName="deliveryShipper"
                                 [template]="'load-shipper'"
-                                [inputConfig]="loadShipperInputConfig"
+                                [inputConfig]="loadDeliveryShipperInputConfig"
                                 [canAddNew]="true"
                                 [canOpenModal]="true"
                                 [options]="labelsShippers"
-                                [activeItem]="selectedShipper"
+                                [activeItem]="selectedDeliveryShipper"
                                 (selectedItem)="
-                                    onSelectDropdown($event, 'shipper')
+                                    onSelectDropdown($event, 'shipper-delivery')
                                 "
                             ></app-ta-input-dropdown>
                         </div>
@@ -532,13 +540,18 @@
                         <app-ta-input-dropdown
                             formControlName="deliveryShipperContactId"
                             [template]="'load-broker-contact'"
-                            [inputConfig]="loadShipperContactsInputConfig"
+                            [inputConfig]="
+                                loadDeliveryShipperContactsInputConfig
+                            "
                             [canAddNew]="true"
                             [canOpenModal]="true"
                             [options]="labelsShipperContacts"
-                            [activeItem]="selectedShipperContact"
+                            [activeItem]="selectedDeliveryShipperContact"
                             (selectedItem)="
-                                onSelectDropdown($event, 'shipper-contact')
+                                onSelectDropdown(
+                                    $event,
+                                    'shipper-contact-delivery'
+                                )
                             "
                         ></app-ta-input-dropdown>
                     </div>
@@ -573,7 +586,7 @@
                         </div>
                         <app-ta-input
                             *ngIf="deliveryDateRange"
-                            formControlName="pickupDateTo"
+                            formControlName="deliveryDateTo"
                             [inputConfig]="{
                                 name: 'datepicker',
                                 type: 'text',
@@ -741,7 +754,6 @@
             'load-hazardous-container': isHazardousVisible
         }"
         [ngStyle]="{
-            height: additionalPartHeight,
             overflow: 'hidden',
             'owerflow-y': 'scroll'
         }"
