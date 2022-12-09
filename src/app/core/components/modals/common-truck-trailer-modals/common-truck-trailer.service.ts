@@ -8,6 +8,8 @@ import {
     TitleService,
     RegistrationModalResponse,
     TitleModalResponse,
+    TruckResponse,
+    TrailerResponse,
 } from 'appcoretruckassist';
 
 import { Observable, tap } from 'rxjs';
