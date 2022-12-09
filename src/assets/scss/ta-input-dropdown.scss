@@ -21,6 +21,7 @@
                 transition: all 0.3s ease-in-out;
                 overflow-y: scroll !important;
                 scrollbar-width: none !important; /* Firefox */
+                padding-right: 0px;
 
                 &::-webkit-scrollbar {
                     width: 3px;
@@ -57,7 +58,10 @@
                 }
 
                 .load-dispatches-container {
-                    svg:not(:hover) {
+                    svg:not(:hover):not(.load-dipstaches-owner-flag) {
+                        #Ellipse_9856,
+                        #Ellipse_9857,
+                        #Ellipse_9858,
                         path {
                             fill: #aaaaaa;
                         }
@@ -107,6 +111,11 @@
                 &.disabled {
                     color: #aaaaaa;
                     font-style: italic;
+                    pointer-events: none;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
                 }
 
                 &.no-result {
@@ -117,8 +126,10 @@
                 }
 
                 &.add-new {
+                    padding: 4.5px 4px;
+                    font-size: 11px;
+                    font-weight: 700;
                     color: #6f9ee0;
-                    font-weight: 600;
                     transition: all 0.3s ease-in-out;
                     position: relative;
 
@@ -230,7 +241,7 @@
 
                         &.truck-trailer-logo {
                             position: absolute;
-                            right: 30px;
+                            right: 25px;
                             text-align: right;
                             display: none;
                             margin-right: 0px;
@@ -605,6 +616,12 @@
                     }
                 }
 
+                //------------------------ SVG Template ------------------------
+                .svg-template-logo {
+                    height: 18px;
+                    aspect-ratio: 1;
+                }
+
                 //------------------------ Routing Dropdown ------------------------
 
                 &.routing_dropdown {
@@ -623,7 +640,7 @@
             //------------------------ Load Dispatches TTD Template ------------------------
             .load-dispatches-ttd-template {
                 display: grid;
-                grid-template-columns: repeat(3, 156px) 100px;
+                grid-template-columns: repeat(3, 156px) 97px;
                 align-items: center;
 
                 .load-dispatches-container {
@@ -637,7 +654,11 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
-                        max-width: 100px;
+                        width: 116px;
+                        min-width: max;
+                        max-width: -webkit-fit-content;
+                        max-width: -moz-fit-content;
+                        max-width: fit-content;
                         line-height: 17px;
                     }
 
@@ -645,49 +666,105 @@
                         position: relative;
                         bottom: 2px;
                     }
+
+                    .load-dipstaches-owner-flag {
+                        svg {
+                            path {
+                                fill: #6f9ee0 !important;
+                            }
+                        }
+                    }
                 }
 
                 .load-dispatch-driver-rate {
+                    width: 115px;
                     text-align: right;
                     font-size: 11px;
                     font-weight: 400;
                     color: #919191;
                     padding-bottom: 1px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+
+                    &.active {
+                        color: #6f9ee0;
+                    }
+
+                    &.driver-owner {
+                        text-align: left;
+                        width: 80px;
+                    }
                 }
             }
 
             //------------------------ Load Broker Template ------------------------
             .load-broker-template {
-                display: flex;
+                display: grid;
                 align-items: center;
-                gap: 6px;
+                grid-template-columns: 232px 82px 39px;
+                column-gap: 29px;
 
-                .load-broker-status {
-                    position: relative;
-                    line-height: 17px;
+                .load-broker-status-text {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    line-height: 18px;
 
-                    &.dnu-status {
-                        svg {
-                            #Path_36450 {
-                                fill: #b7b7b7;
+                    .load-broker-status {
+                        position: relative;
+                        line-height: 17px;
+
+                        &.dnu-status {
+                            svg {
+                                path {
+                                    fill: #aaaaaa;
+                                }
                             }
                         }
                     }
 
-                    &.low-status {
-                        svg {
-                            #Path_33564 {
-                                fill: #e57373;
-                            }
+                    .load-broker-text {
+                        &.disabled {
+                            color: #6c6c6c;
                         }
                     }
+                }
 
-                    &.medium-status {
-                        svg {
-                            #Path_33564 {
-                                fill: #ffb74d;
-                            }
-                        }
+                .load-broker-progress-status {
+                    height: 14px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    grid-gap: 4px;
+                    gap: 4px;
+                    text-align: center;
+
+                    .progress-bar-price {
+                        color: #919191;
+                        font-size: 11px;
+                        font-weight: 400;
+                    }
+
+                    .progress-bar-line {
+                        width: 24px;
+                    }
+                }
+
+                .load-broker-load-counter {
+                    max-width: max-content;
+                    height: 18px;
+                    border-radius: 30px;
+                    text-align: center;
+                    font-size: 11px;
+                    font-weight: 400;
+                    color: #919191;
+                    background-color: rgb(145, 145, 145, 0.2);
+                    padding: 1px 6px;
+
+                    &.active {
+                        color: #6f9ee0;
+                        background-color: rgb(111, 158, 224, 0.2);
                     }
                 }
             }
@@ -695,9 +772,62 @@
             //------------------------ Load Shipper Contact Template -----------------------
             .load-shipper-template {
                 display: grid;
-                grid-template-columns: 300px 1fr;
+                grid-template-columns: 305px 166px 87px;
                 align-items: center;
                 padding-right: 25px;
+
+                .load-shipper-status-text {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    line-height: 18px;
+
+                    .load-shipper-status {
+                        position: relative;
+                        line-height: 17px;
+                    }
+
+                    .load-shipper-text {
+                        &.disabled {
+                            color: #6c6c6c;
+                        }
+                    }
+                }
+
+                div {
+                    &:nth-child(2),
+                    &:nth-child(3) {
+                        text-align: right;
+                    }
+
+                    &:nth-child(2) {
+                        color: #919191;
+                        font-size: 11px;
+                        font-weight: 400;
+
+                        &.active {
+                            color: #6f9ee0;
+                        }
+                    }
+                }
+
+                .load-shipper-load-counter {
+                    max-width: max-content;
+                    height: 18px;
+                    border-radius: 30px;
+                    text-align: right;
+                    font-size: 11px;
+                    font-weight: 400;
+                    color: #919191;
+                    background-color: rgb(145, 145, 145, 0.2);
+                    padding: 1px 6px;
+                    justify-self: flex-end;
+
+                    &.active {
+                        color: #6f9ee0;
+                        background-color: rgb(111, 158, 224, 0.2);
+                    }
+                }
             }
 
             //------------------------ Custom width dependent on 'col' bootstrap ------------------------
@@ -720,6 +850,10 @@
 
             &.w-col-616 {
                 width: 616px;
+            }
+
+            &.w-col-606 {
+                width: 606px;
             }
 
             &.w-col-582 {
@@ -778,6 +912,10 @@
                 width: 439px;
             }
 
+            &.w-col-432 {
+                width: 432px;
+            }
+
             &.w-col-431 {
                 width: 431px;
             }
@@ -830,6 +968,10 @@
                 width: 366px;
             }
 
+            &.w-col-352 {
+                width: 352px;
+            }
+
             &.w-col-348 {
                 width: 348px;
             }
@@ -840,6 +982,10 @@
 
             &.w-col-334 {
                 width: 334px;
+            }
+
+            &.w-col-330 {
+                width: 330px;
             }
 
             &.w-col-310 {
@@ -884,6 +1030,10 @@
 
             &.w-col-256 {
                 width: 256px;
+            }
+
+            &.w-col-252 {
+                width: 252px;
             }
 
             &.w-col-251 {
@@ -1007,6 +1157,10 @@
                 width: 156px;
             }
 
+            &.w-col-152 {
+                width: 152px;
+            }
+
             &.w-col-150 {
                 width: 150px;
             }
@@ -1127,7 +1281,7 @@
                 width: 116px;
             }
 
-            &.connectDropdown{
+            &.connectDropdown {
                 top: 0 !important;
                 border-radius: 0 0 2px 2px;
             }
@@ -1137,13 +1291,17 @@
                 max-height: 198px;
                 overflow-y: scroll;
 
-                .dropdown-groups,
-                .load-broker-contact-groups {
+                // This class is only for Truck tollTransporder
+                .dropdown-groups {
                     display: flex;
                     flex-direction: column;
                     padding: 0px 4px;
                     padding-top: 8px;
                     position: relative;
+
+                    p {
+                        margin: 0;
+                    }
 
                     &::after {
                         content: '';
@@ -1155,18 +1313,14 @@
                         background-color: rgb(170, 170, 170, 0.2);
                     }
 
+                    &.last-group {
+                        padding-bottom: 4px;
+                    }
+
                     &:last-child {
                         &::after {
                             display: none !important;
                         }
-                    }
-
-                    p {
-                        margin: 0;
-                    }
-
-                    &.last-group {
-                        padding-bottom: 8px;
                     }
 
                     .dropdown-group-header {
@@ -1208,36 +1362,96 @@
 
                         &:hover {
                             background-color: #1d1d1d;
-                            color: #ffffff !important;
                             cursor: pointer;
                             transition: all 0.3s ease-in-out;
+                        }
 
-                            .dropdown-subgroup-text {
-                                font-size: 14px;
-                                font-weight: 400;
-                                color: #ffffff;
-                                transition: all 0.3s ease-in-out;
+                        .dropdown-subgroup-text {
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #ffffff;
+                            transition: all 0.3s ease-in-out;
 
-                                &.active {
-                                    // Higlight text
-                                    .highlight-text-45632 {
-                                        font-weight: 700;
-                                        transition: all 0.3s ease-in-out;
-                                        &:hover {
-                                            color: #ffffff !important;
-                                        }
+                            &.active {
+                                font-weight: 700;
+                                // Higlight text
+                                .highlight-text-45632 {
+                                    font-weight: 700;
+                                    transition: all 0.3s ease-in-out;
+                                    &:hover {
+                                        color: #ffffff !important;
                                     }
+                                }
+
+                                &::after {
+                                    position: absolute;
+                                    right: 11px;
+                                    content: url('../..//assets/svg/common/ic_confirm.svg');
+                                    width: 14px;
+                                    height: 10px;
                                 }
                             }
                         }
+                    }
+                }
 
-                        .dropdown-subgroup-image {
-                            width: 16px;
-                            height: 16px;
-                            border-radius: 50%;
-                            -o-object-fit: fill;
-                            object-fit: fill;
-                            margin-right: 4px;
+                // Override groups classes for load-broker-contact-template
+                .load-broker-contact-groups {
+                    display: flex;
+                    flex-direction: column;
+                    position: relative;
+                    padding: 4px 2px;
+                    padding-bottom: 0px;
+                    margin: 0;
+
+                    p {
+                        margin: 0;
+                    }
+
+                    &.last-group {
+                        padding-bottom: 4px;
+                    }
+
+                    .dropdown-group-header {
+                        padding: 0px;
+                        margin: 0px;
+
+                        padding-left: 4px;
+                        margin-bottom: 4px;
+
+                        color: #919191;
+                        font-size: 11px;
+                        text-transform: capitalize;
+
+                        &.add-new {
+                            font-weight: 700;
+                            color: #6f9ee0;
+                            padding: 4px;
+                            margin: 0;
+                            cursor: pointer;
+
+                            &:hover {
+                                border-radius: 2px;
+                                color: #3074d3;
+                                background-color: #1d1d1d;
+                            }
+                        }
+                    }
+
+                    .dropdown-subgroup-options {
+                        display: grid;
+                        grid-template-columns: 141px 135px;
+                        grid-column-gap: 10px;
+                        -moz-column-gap: 10px;
+                        column-gap: 10px;
+                        align-items: center;
+                        padding: 3px 4px;
+                        margin-bottom: 2px;
+                        cursor: pointer;
+
+                        &:hover {
+                            border-radius: 2px;
+                            background-color: #1d1d1d;
                         }
 
                         .dropdown-subgroup-text {
@@ -1250,112 +1464,40 @@
                             // Higlight text
                             .highlight-text-45632 {
                                 font-weight: 700;
-                                transition: all 0.3s ease-in-out;
                                 &:hover {
                                     color: #ffffff !important;
                                 }
                             }
 
-                            &:hover {
-                                color: #ffffff !important;
-                            }
-
                             &.active {
-                                color: #ffffff;
-                                font-size: 14px;
                                 font-weight: 700;
-                                position: relative;
-
-                                &:hover {
-                                    color: #ffffff;
-                                    transition: all 0.3s ease-in-out;
-                                }
 
                                 &::after {
                                     position: absolute;
-                                    right: -16px;
+                                    right: -26px;
                                     content: url('../..//assets/svg/common/ic_confirm.svg');
                                     width: 14px;
                                     height: 10px;
                                 }
                             }
                         }
-                    }
-                }
-
-                // Override groups classes for load-broker-contact-template
-                .load-broker-contact-groups {
-                    padding: 4px 2px;
-                    padding-bottom: 0px;
-                    margin: 0;
-                    position: relative;
-
-                    &::after {
-                        bottom: -1px;
-                        width: 99%;
-                    }
-
-                    &.last-group {
-                        padding-bottom: 4px;
-                    }
-
-                    .dropdown-group-header {
-                        padding: 0px;
-                        padding-left: 4px;
-                        margin: 0px;
-                        margin-bottom: 4px;
-                        color: #6c6c6c;
-                        text-transform: capitalize;
-                    }
-
-                    .dropdown-subgroup-options {
-                        display: grid;
-                        grid-template-columns: 160px 135px;
-                        grid-column-gap: 10px;
-                        column-gap: 10px;
-                        align-items: center;
-                        padding: 0px;
-                        padding-left: 4px;
-                        margin-bottom: 2px;
-
-                        .dropdown-subgroup-text {
-                            &.active-without-check {
-                                color: #ffffff;
-                                font-size: 14px;
-                                font-weight: 700;
-                                position: relative;
-
-                                &:hover {
-                                    color: #ffffff;
-                                }
-                            }
-
-                            // Higlight text
-                            .highlight-text-45632 {
-                                font-weight: 700;
-                                transition: all 0.3s ease-in-out;
-                                &:hover {
-                                    color: #ffffff !important;
-                                }
-                            }
-                        }
 
                         .dropdown-subgroup-additional-text {
                             color: #919191;
-                            font-size: 11px !important;
+                            font-size: 11px;
                             font-weight: 400;
                             position: relative;
                             text-align: right;
 
-                            // Higlight text
-                            .highlight-text-45632 {
-                                color: #ffffff !important;
-                                font-weight: 500 !important;
-                                transition: all 0.3s ease-in-out;
+                            &.active {
+                                font-weight: 400;
+                                color: #6f9ee0;
                             }
 
-                            &.active::after {
-                                right: -23px !important;
+                            // Higlight text
+                            .highlight-text-45632 {
+                                font-weight: 500;
+                                color: #6f9ee0 !important;
                             }
                         }
                     }

@@ -135,17 +135,18 @@ export class ShipperTService implements OnDestroy {
         search1?: string,
         search2?: string
     ): Observable<ShipperListResponse> {
-        return this.shipperService.apiShipperListGet(
-            ban,
-            dnu,
-            pageIndex
-            // pageSize,
-            // companyId,
-            // sort,
-            // search,
-            // search1,
-            // search2
-        );
+        // return this.shipperService.apiShipperListGet(
+        //     ban,
+        //     dnu,
+        //     pageIndex
+        //     // pageSize,
+        //     // companyId,
+        //     // sort,
+        //     // search,
+        //     // search1,
+        //     // search2
+        // );
+        return of();
     }
 
     // Get Shipper By Id
@@ -310,19 +311,20 @@ export class ShipperTService implements OnDestroy {
         search1?: string,
         search2?: string
     ) {
-        return this.shipperService.apiShipperListmapGet(
-            northEastLatitude,
-            northEastLongitude,
-            southWestLatitude,
-            southWestLongitude,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        );
+        // return this.shipperService.apiShipperListmapGet(
+        //     northEastLatitude,
+        //     northEastLongitude,
+        //     southWestLatitude,
+        //     southWestLongitude,
+        //     pageIndex,
+        //     pageSize,
+        //     companyId,
+        //     sort,
+        //     search,
+        //     search1,
+        //     search2
+        // );
+        return of();
     }
 
     //  <--------------------------------- Review ---------------------------------->
