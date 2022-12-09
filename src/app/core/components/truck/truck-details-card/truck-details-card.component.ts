@@ -9,7 +9,6 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TruckResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
@@ -62,7 +61,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public dataEdit: any;
     private destroy$ = new Subject<void>();
     @Input() templateCard: boolean = false;
-    @Input() truck: TruckResponse | any;
+    @Input() truck: any | any;
     public ownersData: any;
     public truck_list: any[] = this.truckMinimalListQuery.getAll();
 
