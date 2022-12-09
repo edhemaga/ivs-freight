@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { LoadStopType } from './loadStopType';
-import { LoadStopItemCommand } from './loadStopItemCommand';
 import { TimeType } from './timeType';
 
 
@@ -33,6 +32,6 @@ export interface LoadStopCommand {
     totalLegMiles?: number | null;
     totalLegHours?: number | null;
     totalLegMinutes?: number | null;
-    items?: Array<LoadStopItemCommand> | null;
+    items?: Array<any> | null;
 }
 
