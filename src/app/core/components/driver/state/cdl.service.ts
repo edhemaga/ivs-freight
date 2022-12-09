@@ -3,10 +3,9 @@ import {
     CdlResponse,
     CdlService,
     CreateResponse,
-    DriverResponse,
     GetCdlModalResponse,
 } from 'appcoretruckassist';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
@@ -67,6 +66,9 @@ export class CdlTService implements OnDestroy {
 
     public updateCdl(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
+        let driverId = data.driverId
+            ? data.driverId
+            : this.driverItemStore.getValue().ids[0];
         return this.cdlService.apiCdlPut().pipe(
             tap(() => {
                 const subDriver = this.driverService

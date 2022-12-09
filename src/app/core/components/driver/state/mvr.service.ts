@@ -1,11 +1,7 @@
 import { MvrService } from './../../../../../../appcoretruckassist/api/mvr.service';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, tap, takeUntil, Subject } from 'rxjs';
-import {
-    DriverResponse,
-    GetMvrModalResponse,
-    MvrResponse,
-} from 'appcoretruckassist';
+import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';

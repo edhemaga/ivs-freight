@@ -6,8 +6,6 @@ import {
     RegistrationService,
     TitleResponse,
     TitleService,
-    TruckResponse,
-    TrailerResponse,
     RegistrationModalResponse,
     TitleModalResponse,
 } from 'appcoretruckassist';
@@ -52,7 +50,7 @@ export class CommonTruckTrailerService {
     public addRegistration(data: any, tabSelected?: string): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.registrationService.apiRegistrationPost().pipe(
-            tap(() => {
+            tap((res: any) => {
                 // Truck Add Registration
                 if (data.truckId) {
                     const subTruck = this.truckService
@@ -121,8 +119,12 @@ export class CommonTruckTrailerService {
     ): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.registrationService.apiRegistrationPut().pipe(
-            tap(() => {
-                this.updateDataAnimation(tabSelected);
+            tap((res: any) => {
+                this.updateDataAnimation(
+                    tabSelected,
+                    'registration',
+                    res['id']
+                );
             })
         );
     }
@@ -165,7 +167,7 @@ export class CommonTruckTrailerService {
     public addInspection(data: any, tabSelected?: string): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.inspectionService.apiInspectionPost().pipe(
-            tap(() => {
+            tap((res: any) => {
                 // Truck Add Inspection
                 if (data.truckId) {
                     const subTruck = this.truckService
@@ -233,7 +235,7 @@ export class CommonTruckTrailerService {
         this.formDataService.extractFormDataFromFunction(data);
         return this.inspectionService.apiInspectionPut().pipe(
             tap(() => {
-                this.updateDataAnimation(tabSelected);
+                this.updateDataAnimation(tabSelected, 'inspection', data.id);
             })
         );
     }
@@ -254,9 +256,32 @@ export class CommonTruckTrailerService {
     public addTitle(data: any, tabSelected?: string): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.titleService.apiTitlePost().pipe(
-            tap(() => {
+            tap((res: any) => {
                 // Truck Add Inspection
                 if (data.truckId) {
+                    let newTitleId = res?.id;
+                    const tr = this.truckItemStore.getValue();
+                    const truckData = JSON.parse(JSON.stringify(tr.entities));
+                    let newData = truckData[data.truckId];
+
+                    let titleApi = this.trailerService
+                        .getTrailerTitleByTitleId(newTitleId)
+                        .subscribe({
+                            next: (resp: any) => {
+                                newData.titles.push(resp);
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: newData,
+                                    id: newData.id,
+                                });
+                                this.tdlStore.add(newData);
+                                this.truckItemStore.set([newData]);
+                                titleApi.unsubscribe();
+                            },
+                        });
+
+                    /*
+                    console.log('--called here--')
                     const subTruck = this.truckService
                         .getTruckById(data.truckId)
                         .subscribe({
@@ -283,6 +308,8 @@ export class CommonTruckTrailerService {
                                 // subTruck.unsubscribe();
                             },
                         });
+
+                    */
                 } else if (data.trailerId) {
                     const subTrailer = this.trailerService
                         .getTrailerById(data.trailerId)
@@ -319,7 +346,7 @@ export class CommonTruckTrailerService {
         this.formDataService.extractFormDataFromFunction(data);
         return this.titleService.apiTitlePut().pipe(
             tap(() => {
-                this.updateDataAnimation(tabSelected);
+                this.updateDataAnimation(tabSelected, 'title', data.id);
             })
         );
     }
@@ -328,7 +355,11 @@ export class CommonTruckTrailerService {
         return this.titleService.apiTitleModalGet();
     }
 
-    public updateDataAnimation(tabSelected?: string) {
+    public updateDataAnimation(
+        tabSelected?: string,
+        cardUpdated?: string,
+        cardId?: any
+    ) {
         let val = window.location.pathname.includes('truck');
         let truckId;
         let trailerId;
@@ -369,6 +400,77 @@ export class CommonTruckTrailerService {
             });
         }
         if (trailerId) {
+            const tr = this.trailerItemStore.getValue();
+            const trailerData = JSON.parse(JSON.stringify(tr.entities));
+            let newData = trailerData[trailerId];
+            if (cardUpdated == 'registration') {
+                let regApi = this.trailerService
+                    .getTrailerRegistrationByRegistrationId(cardId)
+                    .subscribe({
+                        next: (res: any) => {
+                            newData.registrations.map(
+                                (reg: any, index: any) => {
+                                    if (reg.id == res.id) {
+                                        newData.registrations[index] = res;
+                                    }
+                                }
+                            );
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tadl.add(newData);
+                            this.trailerItemStore.set([newData]);
+                            regApi.unsubscribe();
+                        },
+                    });
+            } else if (cardUpdated == 'inspection') {
+                let inspectionApi = this.trailerService
+                    .getTrailerInspectionByInspectionId(cardId)
+                    .subscribe({
+                        next: (res: any) => {
+                            newData.inspections.map((insp: any, index: any) => {
+                                if (insp.id == res.id) {
+                                    newData.inspections[index] = res;
+                                }
+                            });
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tadl.add(newData);
+                            this.trailerItemStore.set([newData]);
+                            inspectionApi.unsubscribe();
+                        },
+                    });
+            } else if (cardUpdated == 'title') {
+                let titleApi = this.trailerService
+                    .getTrailerTitleByTitleId(cardId)
+                    .subscribe({
+                        next: (res: any) => {
+                            newData.titles.map((insp: any, index: any) => {
+                                if (insp.id == res.id) {
+                                    newData.titles[index] = res;
+                                }
+                            });
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tadl.add(newData);
+                            this.trailerItemStore.set([newData]);
+                            titleApi.unsubscribe();
+                        },
+                    });
+            }
+
+            /*
             const subTrailer = this.trailerService
                 .getTrailerById(trailerId)
                 .subscribe({
@@ -400,7 +502,8 @@ export class CommonTruckTrailerService {
                         // });
                         // subTrailer.unsubscribe();
                     },
-                });
+
+                }); */
         }
     }
 }

@@ -8,6 +8,9 @@ import {
     TruckResponse,
     TruckService,
     UpdateTruckCommand,
+    RegistrationService,
+    TitleService,
+    InspectionService
 } from 'appcoretruckassist';
 import { TruckInactiveStore } from './truck-inactive-state/truck-inactive.store';
 import { TruckActiveStore } from './truck-active-state/truck-active.store';
@@ -36,7 +39,10 @@ export class TruckTService implements OnDestroy {
         private truckMinimalQuery: TrucksMinimalListQuery,
         private truckMinimalStore: TrucksMinimalListStore,
         private truckItem: TruckItemStore,
-        private tdlStore: TrucksDetailsListStore
+        private tdlStore: TrucksDetailsListStore,
+        private RegistrationService: RegistrationService,
+        private TitleService: TitleService,
+        private InspectionService: InspectionService,
     ) {}
 
     //Get Truck Minimal List
@@ -78,7 +84,7 @@ export class TruckTService implements OnDestroy {
                 const subTruck = this.getTruckById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (truck: TruckResponse | any) => {
+                        next: (truck: any) => {
                             this.truckActiveStore.add(truck);
                             this.truckMinimalStore.add(truck);
                             const truckCount = JSON.parse(
@@ -111,16 +117,23 @@ export class TruckTService implements OnDestroy {
     public updateTruck(data: UpdateTruckCommand): Observable<any> {
         return this.truckService.apiTruckPut(data).pipe(
             tap(() => {
+                let storedTruckData = {...this.truckItem?.getValue()?.entities[data.id]};
+                
                 const subTruck = this.getTruckById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (truck: TruckResponse | any) => {
+                        next: (truck: any) => {
                             this.truckActiveStore.remove(
                                 ({ id }) => id === data.id
                             );
+                             
+                            truck.registrations = storedTruckData.registrations;
+                            truck.titles = storedTruckData.titles;
+                            truck.inspections = storedTruckData.inspections;
 
-                            this.truckActiveStore.add(truck);
-                            this.tdlStore.replace(truck.id, truck);
+                            this.tdlStore.add(truck);
+                            this.truckItem.set([truck]);
+                            
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
                                 data: truck,
@@ -319,7 +332,7 @@ export class TruckTService implements OnDestroy {
                 const subTruck = this.getTruckById(truckId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (truck: TruckResponse | any) => {
+                        next: (truck: any) => {
                             this.tdlStore.update(truck.id, {
                                 status: truck.status,
                             });
@@ -339,6 +352,45 @@ export class TruckTService implements OnDestroy {
     public getTruckDropdowns(): Observable<GetTruckModalResponse> {
         return this.truckService.apiTruckModalGet();
     }
+
+
+    public getTruckRegistrationsById(
+        truckId: number,
+    ){
+        return this.RegistrationService.apiRegistrationListGet(truckId);
+    }
+
+    public getTruckRegistrationByRegistrationId(
+        registrationId: number,
+    ){
+        return this.RegistrationService.apiRegistrationIdGet(registrationId);
+    }
+
+    public getTruckInspectionsById(
+        truckId: number,
+    ){
+        return this.InspectionService.apiInspectionListGet(truckId);
+    }
+
+    public getTruckInspectionByInspectionId(
+        inspectionId: number,
+    ){
+        return this.InspectionService.apiInspectionIdGet(inspectionId);
+    }
+
+    public getTruckTitlesById(
+        truckId: number,
+    ){
+        return this.TitleService.apiTitleListGet(truckId);
+    }
+
+    public getTruckTitleByTitleId(
+        titleId: number,
+    ){
+        return this.TitleService.apiTitleIdGet(titleId);
+    }
+
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

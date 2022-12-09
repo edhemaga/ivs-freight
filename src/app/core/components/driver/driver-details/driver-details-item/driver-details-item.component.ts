@@ -10,7 +10,6 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DriverResponse } from 'appcoretruckassist';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
@@ -43,14 +42,14 @@ import {
     encapsulation: ViewEncapsulation.None,
     animations: [
         card_component_animation('showHideCardBody'),
-        trigger('stateHeader', [
-            state('in', style({ opacity: 1, height: '150px' })),
+        trigger('cardAnimation', [
+            state('in', style({ opacity: 1, 'max-height': '0px' })),
             transition(':enter', [
                 animate(
                     5100,
                     keyframes([
-                        style({ opacity: 0, height: '0px' }),
-                        style({ opacity: 1, height: '*' }),
+                        style({ opacity: 0, 'max-height': '0px' }),
+                        style({ opacity: 1, 'max-height': '600px' }),
                     ])
                 ),
             ]),
@@ -58,8 +57,8 @@ import {
                 animate(
                     5100,
                     keyframes([
-                        style({ opacity: 1, height: '*' }),
-                        style({ opacity: 0, height: '0px' }),
+                        style({ opacity: 1, 'max-height': '600px' }),
+                        style({ opacity: 0, 'max-height': '0px' }),
                     ])
                 ),
             ]),
@@ -71,7 +70,7 @@ export class DriverDetailsItemComponent
 {
     private destroy$ = new Subject<void>();
     @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-    @Input() drivers: DriverResponse | any = null;
+    @Input() drivers: any = null;
     public cdlNote: FormControl = new FormControl();
     public mvrNote: FormControl = new FormControl();
     public testNote: FormControl = new FormControl();
@@ -213,7 +212,7 @@ export class DriverDetailsItemComponent
         }
     }
     /**Function for dots in cards */
-    public initTableOptions(data: DriverResponse): void {
+    public initTableOptions(data: any): void {
         this.arrayOfRenewCdl = [];
         this.activateShow = [];
         this.expiredCard = [];
@@ -442,7 +441,7 @@ export class DriverDetailsItemComponent
     public optionsEvent(any: any, action: string) {
         const name = dropActionNameDriver(any, action);
         let dataForCdl;
-        console.log(any);
+        console.log('--any---', any);
 
         if (
             (this.activeCdl.length && any.type === 'activate-item') ||

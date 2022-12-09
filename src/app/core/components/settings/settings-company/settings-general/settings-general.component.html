@@ -1,5 +1,5 @@
 <div class="settings-general">
-    <div class="settings-header">
+    <div class="settings-header" [class.divisionHeader]="companyDivision">
         <div
             *ngIf="!toggleSelect && optionsCompany"
             class="current-active-item-company"
@@ -55,8 +55,14 @@
                     "
                 ></svg-icon>
             </div>
+            <div class="settings-header-button" *ngIf="companyDivision">
+                <svg-icon
+                    src="assets/svg/common/ic_trash.svg"
+                    class="settings-edit-button"
+                ></svg-icon>
+            </div>
             <div class="settings-header-button">
-                <div class="border-left"></div>
+                <div class="border-left" *ngIf="!companyDivision"></div>
                 <svg-icon
                     src="assets/svg/common/ic_plus.svg"
                     class="settings-plus-button"
