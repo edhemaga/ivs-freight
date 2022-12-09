@@ -32,6 +32,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     public locationFilterOn: boolean = false;
     sortCategory: any = {};
+    clickedOnDots: boolean = false;
 
     constructor(private mapsService: MapsService, private ref: ChangeDetectorRef, public elementRef: ElementRef) {}
 
@@ -58,13 +59,19 @@ export class MapListCardComponent implements OnInit, OnDestroy {
         //     });
     }
 
-    selectCard() {
+    selectCard(event) {
+        if ( this.clickedOnDots ) {
+            this.clickedOnDots = false;
+            return false;
+        }
+
         this.clickedMarker.emit([this.item.id, false]);
     }
 
     showMoreOptions(event) {
-        event.preventDefault();
-        event.stopPropagation();
+        // event.preventDefault();
+        // event.stopPropagation();
+        this.clickedOnDots = true;
     }
 
     callBodyAction(action) {

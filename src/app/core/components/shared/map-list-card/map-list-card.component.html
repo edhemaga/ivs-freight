@@ -2,7 +2,7 @@
     class="map-list-card-container"
     [ngClass]="{ 'map-list-card-selected': isSelected }"
     [attr.data-id]="'map-list-card-' + item.id"
-    (click)="selectCard()"
+    (click)="selectCard($event)"
 >
     <div class="map-list-card-info">
         <div class="title-container">
@@ -38,6 +38,7 @@
                             ? 'table-dropdown-container active-drop'
                             : 'table-dropdown-container'
                     "
+                    (click)="showMoreOptions($event)"
                 >
                     <app-details-page-dropdown
                         [options]="dropdownActions"

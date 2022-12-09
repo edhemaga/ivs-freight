@@ -67,6 +67,10 @@ export class MapsComponent implements OnInit, OnDestroy {
                 }
                 
                 this.getClusters(true);
+            } else if ( data.actionAnimation == 'add' || data.actionAnimation == 'delete' ) {
+                setTimeout(() => {
+                    this.getClusters(true, true);
+                }, 1000);
             }
         });
 
@@ -138,6 +142,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     public searchText: string = '';
     public firstClusterCall: boolean = true;
     public clusterDetailedInfo: any = {};
+    public lastClusterCoordinates: any = {};
 
     constructor(
         private ref: ChangeDetectorRef,
@@ -183,6 +188,11 @@ export class MapsComponent implements OnInit, OnDestroy {
         ) {
             map.addListener('idle', () => {
                 // update the coordinates here
+
+                var mapCenter = map.getCenter();
+
+                this.mapLatitude = mapCenter.lat();
+                this.mapLongitude = mapCenter.lng();
 
                 clearTimeout(this.clustersTimeout);
 
@@ -1058,7 +1068,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         }
     }
 
-    getClusters(changedSearchOrSort?) {
+    getClusters(changedSearchOrSort?, moveMap?) {
         var bounds = this.agmMap.getBounds();
         var ne = bounds.getNorthEast(); // LatLng of the north-east corner
         var sw = bounds.getSouthWest(); // LatLng of the south-west corder
@@ -1070,6 +1080,26 @@ export class MapsComponent implements OnInit, OnDestroy {
             southWestLongitude: sw.lng(),
             zoomLevel: this.mapZoom,
         };
+
+        // if (
+        //     this.lastClusterCoordinates.northEastLatitude == clustersObject.northEastLatitude &&
+        //     this.lastClusterCoordinates.northEastLongitude == clustersObject.northEastLongitude &&
+        //     this.lastClusterCoordinates.southWestLatitude == clustersObject.southWestLatitude &&
+        //     this.lastClusterCoordinates.southWestLongitude == clustersObject.southWestLongitude
+        // ) {
+        //     clustersObject.northEastLatitude = clustersObject.northEastLatitude + 0.000001;
+        //     clustersObject.northEastLongitude = clustersObject.northEastLongitude + 0.000001;
+        //     clustersObject.southWestLatitude = clustersObject.southWestLatitude + 0.000001;
+        //     clustersObject.southWestLongitude = clustersObject.southWestLongitude + 0.000001;
+        // }
+
+        if ( moveMap ) {
+            this.mapLatitude = this.mapLatitude + 0.000001;
+            this.mapLongitude = this.mapLongitude + 0.000001;
+        }
+        
+
+        this.lastClusterCoordinates = clustersObject;
 
         this.callClusters(clustersObject, changedSearchOrSort);
     }
