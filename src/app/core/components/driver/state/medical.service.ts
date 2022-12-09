@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { MedicalResponse, MedicalService } from 'appcoretruckassist';
+import { DriverResponse, MedicalResponse, MedicalService } from 'appcoretruckassist';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
@@ -31,7 +31,7 @@ export class MedicalTService implements OnDestroy {
                     .getDriverById(driverId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );
@@ -73,7 +73,7 @@ export class MedicalTService implements OnDestroy {
                     .getDriverById(data.driverId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === data.driverId
                             // );
@@ -107,7 +107,7 @@ export class MedicalTService implements OnDestroy {
                     .getDriverById(driverId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );

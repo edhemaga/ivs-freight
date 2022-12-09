@@ -1,7 +1,7 @@
 import { MvrService } from './../../../../../../appcoretruckassist/api/mvr.service';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, tap, takeUntil, Subject } from 'rxjs';
-import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
+import { DriverResponse, GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
@@ -33,7 +33,7 @@ export class MvrTService implements OnDestroy {
                     .getDriverById(driverId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );
@@ -71,7 +71,7 @@ export class MvrTService implements OnDestroy {
                     .getDriverById(data.driverId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === data.driverId
                             // );
@@ -105,7 +105,7 @@ export class MvrTService implements OnDestroy {
                     .getDriverById(driverId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );

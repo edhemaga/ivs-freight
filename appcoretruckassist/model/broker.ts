@@ -50,6 +50,7 @@ export interface Broker {
     status?: number;
     loads?: Array<Load> | null;
     totalDebt?: number | null;
+    revenue?: number | null;
     createdAt?: string;
     updatedAt?: string;
     loadTemplates?: Array<LoadTemplate> | null;
