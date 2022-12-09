@@ -282,8 +282,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             return repair;
                         }
                     );
-
-                    console.log('add rating', res, this.viewData);
                     
                     this.ref.detectChanges();
 
@@ -929,8 +927,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         return data;
                     });
-
-                    console.log('add rating', res, this.viewData);
                     
                     this.ref.detectChanges();
 

@@ -32,26 +32,10 @@ export class MapsComponent implements OnInit, OnDestroy {
     viewData = [];
     @Input() set _viewData(value) {
         // table data (shippers, repair shops)
-        var previousData = JSON.parse(JSON.stringify(this.viewData));
-        var updatedData = false;
-
-        //this.viewData = value;
+        
         var newData = value;
 
-        newData.map((data, index) => {
-            // var doAnimation = false;
-            // if (previousData[index]?.latitude != data.latitude)
-            //     doAnimation = true;
-
-            // if (
-            //     (data.actionAnimation == 'update' && doAnimation) ||
-            //     data.actionAnimation == 'add'
-            // ) {
-            //     this.markerAnimations[data.id] = false;
-            //     this.showMarkerWindow[data.id] = false;
-            //     updatedData = true;
-            // }
-
+        newData.map((data) => {
             if (data.actionAnimation == 'update') {
                 let markerIndex = this.viewData.findIndex(
                     (item) => item.id === data.id
@@ -73,12 +57,6 @@ export class MapsComponent implements OnInit, OnDestroy {
                 }, 1000);
             }
         });
-
-        // if (updatedData) {
-        //     setTimeout(() => {
-        //         this.markersDropAnimation();
-        //     }, 1000);
-        // }
     }
     @Input() mapType: string = 'shipper'; // shipper, repairShop, fuelStop, accident, inspection, routing
     @Input() routes: any[] = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
@@ -1091,32 +1069,17 @@ export class MapsComponent implements OnInit, OnDestroy {
             zoomLevel: this.mapZoom,
         };
 
-        // if (
-        //     this.lastClusterCoordinates.northEastLatitude == clustersObject.northEastLatitude &&
-        //     this.lastClusterCoordinates.northEastLongitude == clustersObject.northEastLongitude &&
-        //     this.lastClusterCoordinates.southWestLatitude == clustersObject.southWestLatitude &&
-        //     this.lastClusterCoordinates.southWestLongitude == clustersObject.southWestLongitude
-        // ) {
-        //     clustersObject.northEastLatitude = clustersObject.northEastLatitude + 0.000001;
-        //     clustersObject.northEastLongitude = clustersObject.northEastLongitude + 0.000001;
-        //     clustersObject.southWestLatitude = clustersObject.southWestLatitude + 0.000001;
-        //     clustersObject.southWestLongitude = clustersObject.southWestLongitude + 0.000001;
-        // }
-
         if ( moveMap ) {
             this.mapLatitude = this.mapLatitude + 0.000001;
             this.mapLongitude = this.mapLongitude + 0.000001;
         }
         
-
         this.lastClusterCoordinates = clustersObject;
 
         this.callClusters(clustersObject, changedSearchOrSort);
     }
 
-    showMoreData(event) {
-        console.log('showMoreData', event);
-
+    showMoreData() {
         var bounds = this.agmMap.getBounds();
         var ne = bounds.getNorthEast(); // LatLng of the north-east corner
         var sw = bounds.getSouthWest(); // LatLng of the south-west corder
@@ -1129,7 +1092,7 @@ export class MapsComponent implements OnInit, OnDestroy {
             zoomLevel: this.mapZoom,
         };
 
-        //this.callClusters(clustersObject, false, event.pagination.pageIndex+1, 25);
+        //this.callClusters(clustersObject, false, 1, 25);
     }
 
     ngOnDestroy(): void {

@@ -2730,12 +2730,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             event.stopPropagation();
             event.preventDefault();
         }
-
-        console.log(
-            'focusOnInput',
-            routeIndex,
-            this.tableData[this.selectedMapIndex].routes[routeIndex].isFocused
-        );
+        
         if (
             !this.tableData[this.selectedMapIndex].routes[routeIndex].isFocused
         ) {

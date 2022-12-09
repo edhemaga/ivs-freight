@@ -89,7 +89,6 @@ export class MapMarkerDropdownComponent implements OnInit {
 
     toggleWorkingHours() {
         this.showAllDays = !this.showAllDays;
-        console.log('item', this.item);
         this.ref.detectChanges();
     }
 
@@ -138,8 +137,7 @@ export class MapMarkerDropdownComponent implements OnInit {
                 element.scrollHeight - element.scrollTop - element.clientHeight
             ) <= 3.0
         ) {
-            console.log('scrolled to bottom');
-            this.loadMoreData.emit(this.item);
+            //this.loadMoreData.emit(this.item);
         }
     }
 }
