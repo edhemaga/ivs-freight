@@ -33,7 +33,7 @@ export class MvrTService implements OnDestroy {
                     .getDriverById(driverId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );
@@ -71,7 +71,7 @@ export class MvrTService implements OnDestroy {
                     .getDriverById(data.driverId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === data.driverId
                             // );
@@ -105,7 +105,7 @@ export class MvrTService implements OnDestroy {
                     .getDriverById(driverId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );

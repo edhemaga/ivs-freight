@@ -67,7 +67,7 @@ export class TestTService implements OnDestroy {
                 const subDriver = this.driverService
                     .getDriverById(driverId)
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );
@@ -99,7 +99,7 @@ export class TestTService implements OnDestroy {
                 const subDriver = this.driverService
                     .getDriverById(driverId)
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );

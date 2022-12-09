@@ -40,7 +40,7 @@ export class CdlTService implements OnDestroy {
                 const subDriver = this.driverService
                     .getDriverById(data.driverId)
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.activateCdlById(res.id)
                             //     .pipe(takeUntil(this.destroy$))
                             //     .subscribe();
@@ -75,7 +75,7 @@ export class CdlTService implements OnDestroy {
                 const subDriver = this.driverService
                     .getDriverById(data.driverId)
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === data.driverId
                             // );
@@ -107,7 +107,7 @@ export class CdlTService implements OnDestroy {
                 const subDriver = this.driverService
                     .getDriverById(driverId)
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );
@@ -139,7 +139,7 @@ export class CdlTService implements OnDestroy {
                 const subDriver = this.driverService
                     .getDriverById(driverId)
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );
@@ -170,7 +170,7 @@ export class CdlTService implements OnDestroy {
                 const subDriver = this.driverService
                     .getDriverById(driverId)
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );
@@ -201,7 +201,7 @@ export class CdlTService implements OnDestroy {
                 const subDriver = this.driverService
                     .getDriverById(driverId)
                     .subscribe({
-                        next: (driver: DriverResponse | any) => {
+                        next: (driver: any) => {
                             // this.driverStore.remove(
                             //     ({ id }) => id === driverId
                             // );

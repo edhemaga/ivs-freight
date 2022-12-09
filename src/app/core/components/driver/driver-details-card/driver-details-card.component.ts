@@ -541,7 +541,7 @@ export class DriverDetailsCardComponent
         };
     }
 
-    public getExpireDate(data: DriverResponse) {
+    public getExpireDate(data: any) {
         // this.dataCDl = data?.cdls?.map((ele) => {
         //     if (moment(ele.expDate).isBefore(moment())) {
         //         this.expDateCard = false;

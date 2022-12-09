@@ -58,7 +58,7 @@ export class CommonTruckTrailerService {
                     const subTruck = this.truckService
                         .getTruckById(data.truckId)
                         .subscribe({
-                            next: (truck: TruckResponse | any) => {
+                            next: (truck: any) => {
                                 // if (tabSelected === 'active') {
                                 //     this.truckActiveStore.remove(
                                 //         ({ id }) => id === data.truckId
@@ -87,7 +87,7 @@ export class CommonTruckTrailerService {
                     const subTrailer = this.trailerService
                         .getTrailerById(data.trailerId)
                         .subscribe({
-                            next: (trailer: TrailerResponse | any) => {
+                            next: (trailer: any) => {
                                 // if (tabSelected === 'active') {
                                 //     this.trailerActiveStore.remove(
                                 //         ({ id }) => id === data.trailerId
@@ -175,7 +175,7 @@ export class CommonTruckTrailerService {
                     const subTruck = this.truckService
                         .getTruckById(data.truckId)
                         .subscribe({
-                            next: (truck: TruckResponse | any) => {
+                            next: (truck: any) => {
                                 // if (tabSelected === 'active') {
                                 //     this.truckActiveStore.remove(
                                 //         ({ id }) => id === data.truckId
@@ -202,7 +202,7 @@ export class CommonTruckTrailerService {
                     const subTrailer = this.trailerService
                         .getTrailerById(data.trailerId)
                         .subscribe({
-                            next: (trailer: TrailerResponse | any) => {
+                            next: (trailer: any) => {
                                 // if (tabSelected === 'active') {
                                 //     this.trailerActiveStore.remove(
                                 //         ({ id }) => id === data.trailerId
@@ -316,7 +316,7 @@ export class CommonTruckTrailerService {
                     const subTrailer = this.trailerService
                         .getTrailerById(data.trailerId)
                         .subscribe({
-                            next: (trailer: TrailerResponse | any) => {
+                            next: (trailer: any) => {
                                 // if (tabSelected === 'active') {
                                 //     this.trailerActiveStore.remove(
                                 //         ({ id }) => id === data.trailerId
@@ -373,7 +373,7 @@ export class CommonTruckTrailerService {
         }
         if (truckId) {
             const subTruck = this.truckService.getTruckById(truckId).subscribe({
-                next: (truck: TruckResponse | any) => {
+                next: (truck: any) => {
                     // if (tabSelected === 'active') {
                     //     this.truckActiveStore.remove(
                     //         ({ id }) => id === truckId
