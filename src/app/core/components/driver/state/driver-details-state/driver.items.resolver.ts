@@ -12,7 +12,7 @@ import { DriversDetailsListQuery } from '../driver-details-list-state/driver-det
 @Injectable({
     providedIn: 'root',
 })
-export class DriverItemResolver implements Resolve<DriverResponse[]> {
+export class DriverItemResolver implements Resolve<any[]> {
     pageIndex: number = 1;
     pageSize: number = 25;
     constructor(
@@ -73,7 +73,7 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
         /*
         if (this.driverDetailsListQuery.hasEntity(drid)) {
             return this.driverDetailsListQuery.selectEntity(drid).pipe(
-                tap((driverResponse: DriverResponse) => {
+                tap((driverResponse: any) => {
                     this.driverItemStore.set([driverResponse]);
                 }),
                 take(1)
@@ -84,7 +84,7 @@ export class DriverItemResolver implements Resolve<DriverResponse[]> {
                     this.router.navigate(['/driver']);
                     return of('No drivers data for...' + driver_id);
                 }),
-                tap((driverResponse: DriverResponse) => {
+                tap((driverResponse: any) => {
                     this.driverDetailsListStore.add(driverResponse);
                     this.driverItemStore.set([driverResponse]);
                 })

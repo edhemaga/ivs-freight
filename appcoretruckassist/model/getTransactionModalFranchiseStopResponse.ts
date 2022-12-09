@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { FuelModalStopResponse } from './fuelModalStopResponse';
+import { AddressEntity } from './addressEntity';
 
 
 export interface GetTransactionModalFranchiseStopResponse { 
@@ -18,5 +19,6 @@ export interface GetTransactionModalFranchiseStopResponse {
     count?: number | null;
     fuelStopStores?: Array<FuelModalStopResponse> | null;
     isFranchise?: boolean;
+    address?: AddressEntity;
 }
 

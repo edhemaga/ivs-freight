@@ -9,7 +9,7 @@ import { DriverTService } from '../state/driver.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import moment from 'moment';
+
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import {
     Confirmation,
@@ -69,20 +69,19 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private cdlService: CdlTService,
         private DetailsDataService: DetailsDataService,
         private DriversDetailsListStore: DriversDetailsListStore,
-        private DriversItemStore: DriversItemStore,
+        private DriversItemStore: DriversItemStore
     ) {}
 
     ngOnInit() {
-        
-
         let dataId = this.activated_route.snapshot.params.id;
-        let driverData = {...this.DriversItemStore?.getValue()?.entities[dataId]};
-     
+        let driverData = {
+            ...this.DriversItemStore?.getValue()?.entities[dataId],
+        };
+
         this.currentIndex = this.driversList.findIndex(
-            (driver) =>
-                driver.id === driverData.id
+            (driver) => driver.id === driverData.id
         );
-        
+
         this.detailCongif(driverData);
         if (this.cdlActiveId > 0) {
             this.getCdlById(this.cdlActiveId);
@@ -147,7 +146,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 }
                 query.subscribe({
                     next: (res: any) => {
-
                         this.currentIndex = this.driversList.findIndex(
                             (driver) => driver.id === res.id
                         );
@@ -160,12 +158,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         if (this.router.url.includes('details')) {
                             this.router.navigate([`/driver/${res.id}/details`]);
                         }
-         
+
                         this.cdRef.detectChanges();
                     },
-                    error: () => {
-                     
-                    },
+                    error: () => {},
                 });
             });
     }
@@ -186,54 +182,54 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         }
 
         this.driverDetailsConfig = [
-            {
-                id: 0,
-                name: 'Driver Details',
-                template: 'general',
-                data: dataDriver,
-            },
-            {
-                id: 1,
-                name: 'CDL',
-                template: 'cdl',
-                req: false,
-                status: this.statusDriver,
-                hasDanger: this.hasDangerCDL,
-                length: dataDriver?.cdls?.length ? dataDriver.cdls.length : 0,
-                data: dataDriver,
-            },
-            {
-                id: 2,
-                name: 'Drug & Alcohol Test',
-                template: 'drug-alcohol',
-                req: true,
-                status: this.statusDriver,
-                hasDanger: false,
-                length: dataDriver?.tests?.length ? dataDriver.tests.length : 0,
-                data: dataDriver.tests,
-            },
-            {
-                id: 3,
-                name: 'Medical',
-                template: 'medical',
-                req: false,
-                status: this.statusDriver,
-                hasDanger: this.hasDangerMedical,
-                length: dataDriver?.medicals?.length
-                    ? dataDriver.medicals.length
-                    : 0,
-                data: dataDriver.medicals,
-            },
-            {
-                id: 4,
-                name: 'MVR',
-                template: 'mvr',
-                req: true,
-                status: this.statusDriver,
-                hasDanger: this.hasDangerMvr,
-                length: dataDriver?.mvrs?.length ? dataDriver.mvrs.length : 0,
-                data: dataDriver.mvrs,
-            },
+            // {
+            //     id: 0,
+            //     name: 'Driver Details',
+            //     template: 'general',
+            //     data: dataDriver,
+            // },
+            // {
+            //     id: 1,
+            //     name: 'CDL',
+            //     template: 'cdl',
+            //     req: false,
+            //     status: this.statusDriver,
+            //     hasDanger: this.hasDangerCDL,
+            //     length: dataDriver?.cdls?.length ? dataDriver.cdls.length : 0,
+            //     data: dataDriver,
+            // },
+            // {
+            //     id: 2,
+            //     name: 'Drug & Alcohol Test',
+            //     template: 'drug-alcohol',
+            //     req: true,
+            //     status: this.statusDriver,
+            //     hasDanger: false,
+            //     length: dataDriver?.tests?.length ? dataDriver.tests.length : 0,
+            //     data: dataDriver.tests,
+            // },
+            // {
+            //     id: 3,
+            //     name: 'Medical',
+            //     template: 'medical',
+            //     req: false,
+            //     status: this.statusDriver,
+            //     hasDanger: this.hasDangerMedical,
+            //     length: dataDriver?.medicals?.length
+            //         ? dataDriver.medicals.length
+            //         : 0,
+            //     data: dataDriver.medicals,
+            // },
+            // {
+            //     id: 4,
+            //     name: 'MVR',
+            //     template: 'mvr',
+            //     req: true,
+            //     status: this.statusDriver,
+            //     hasDanger: this.hasDangerMvr,
+            //     length: dataDriver?.mvrs?.length ? dataDriver.mvrs.length : 0,
+            //     data: dataDriver.mvrs,
+            // },
         ];
         this.driverId = dataDriver?.id ? dataDriver.id : null;
     }
@@ -244,22 +240,25 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.arrayCDL = [];
         this.arrayMedical = [];
         this.arrayMvrs = [];
-        data?.cdls?.map((el) => {
-            if (moment(el.expDate).isAfter(moment())) {
-                this.arrayCDL.push(false);
-            }
-            if (moment(el.expDate).isBefore(moment())) {
-                this.arrayCDL.push(true);
-            }
-        });
-        data?.medicals?.map((el) => {
-            if (moment(el.expDate).isAfter(moment())) {
-                this.arrayMedical.push(false);
-            }
-            if (moment(el.expDate).isBefore(moment())) {
-                this.arrayMedical.push(true);
-            }
-        });
+
+        // data?.cdls?.map((el) => {
+        //     if (moment(el.expDate).isAfter(moment())) {
+        //         this.arrayCDL.push(false);
+        //     }
+        //     if (moment(el.expDate).isBefore(moment())) {
+        //         this.arrayCDL.push(true);
+        //     }
+        // });
+
+        // data?.medicals?.map((el) => {
+        //     if (moment(el.expDate).isAfter(moment())) {
+        //         this.arrayMedical.push(false);
+        //     }
+        //     if (moment(el.expDate).isBefore(moment())) {
+        //         this.arrayMedical.push(true);
+        //     }
+        // });
+
         // if(data.mvrs.length>0){
         //   data?.mvrs.map((el)=>{
         //     if(moment(el.issueDate).isAfter(moment())){
@@ -287,16 +286,16 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.arrayActiveCdl = [];
         this.isActiveCdl = false;
         this.cdlActiveId = 0;
-        data?.cdls?.map((item) => {
-            if (item.status == 1) {
-                this.cdlActiveId = item.id;
-                this.arrayActiveCdl.push(true);
-                this.isActiveCdl = true;
-            } else {
-                this.arrayActiveCdl.push(false);
-                this.isActiveCdl = false;
-            }
-        });
+        // data?.cdls?.map((item) => {
+        //     if (item.status == 1) {
+        //         this.cdlActiveId = item.id;
+        //         this.arrayActiveCdl.push(true);
+        //         this.isActiveCdl = true;
+        //     } else {
+        //         this.arrayActiveCdl.push(false);
+        //         this.isActiveCdl = false;
+        //     }
+        // });
         this.dataTest = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -315,7 +314,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     disabled: data.status == 0 ? true : false,
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'border',
@@ -428,12 +427,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .changeDriverStatus(id, status)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -462,7 +457,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             }/details`,
                         ]);
                     }
-                  
                 },
                 error: () => {
                     this.router.navigate(['/driver']);
@@ -474,12 +468,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .deactivateCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -488,12 +478,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .activateCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-               
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
     public onModalAction(action: string): void {

@@ -53,47 +53,61 @@ export class CommonTruckTrailerService {
             tap((res: any) => {
                 // Truck Add Registration
                 if (data.truckId) {
-                    let newRegId = res?.id;
-                    const tr = this.truckItemStore.getValue();
-                    const truckData = JSON.parse(JSON.stringify(tr.entities));
-                    let newData = truckData[data.truckId];
-
-                    let regApi = this.trailerService.getTrailerRegistrationByRegistrationId(newRegId).subscribe({
-                        next: (resp: any) => {
-                            
-                            newData.registrations.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tdlStore.add(newData);
-                            this.truckItemStore.set([newData]);
-                            regApi.unsubscribe();
-                        },
-                    });   
+                    const subTruck = this.truckService
+                        .getTruckById(data.truckId)
+                        .subscribe({
+                            next: (truck: any) => {
+                                // if (tabSelected === 'active') {
+                                //     this.truckActiveStore.remove(
+                                //         ({ id }) => id === data.truckId
+                                //     );
+                                //     this.truckActiveStore.add(truck);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.truckInactiveStore.remove(
+                                //         ({ id }) => id === data.truckId
+                                //     );
+                                //     this.truckInactiveStore.add(truck);
+                                // }
+                                // this.tdlStore.update(truck.id, {
+                                //     registrations: truck.registrations,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: truck,
+                                //     id: truck.id,
+                                // });
+                                // subTruck.unsubscribe();
+                            },
+                        });
                 }
                 // Trailer Add Registration
                 else if (data.trailerId) {
-                    let newRegId = res?.id;
-                    const tr = this.trailerItemStore.getValue();
-                    const trailerData = JSON.parse(JSON.stringify(tr.entities));
-                    let newData = trailerData[data.trailerId];
-                    
-                    let regApi = this.trailerService.getTrailerRegistrationByRegistrationId(newRegId).subscribe({
-                        next: (resp: any) => {
-                            
-                            newData.registrations.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tadl.add(newData);
-                            this.trailerItemStore.set([newData]);
-                            regApi.unsubscribe();
-                        },
-                    }); 
+                    const subTrailer = this.trailerService
+                        .getTrailerById(data.trailerId)
+                        .subscribe({
+                            next: (trailer: any) => {
+                                // if (tabSelected === 'active') {
+                                //     this.trailerActiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerActiveStore.add(trailer);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.trailerInactiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerInactiveStore.add(trailer);
+                                // }
+                                // this.tadl.update(trailer.id, {
+                                //     registrations: trailer.registrations,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: trailer,
+                                //     id: trailer.id,
+                                // });
+                                // subTrailer.unsubscribe();
+                            },
+                        });
                 }
             })
         );
@@ -106,7 +120,11 @@ export class CommonTruckTrailerService {
         this.formDataService.extractFormDataFromFunction(data);
         return this.registrationService.apiRegistrationPut().pipe(
             tap((res: any) => {
-                this.updateDataAnimation(tabSelected, 'registration', res['id']);
+                this.updateDataAnimation(
+                    tabSelected,
+                    'registration',
+                    res['id']
+                );
             })
         );
     }
@@ -152,47 +170,59 @@ export class CommonTruckTrailerService {
             tap((res: any) => {
                 // Truck Add Inspection
                 if (data.truckId) {
-                    let newInspId = res?.id;
-                    const tr = this.truckItemStore.getValue();
-                    const truckData = JSON.parse(JSON.stringify(tr.entities));
-                    let newData = truckData[data.truckId];
-                    
-                    let inspApi = this.trailerService.getTrailerInspectionByInspectionId(newInspId).subscribe({
-                        next: (resp: any) => {   
-                            newData.inspections.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tdlStore.add(newData);
-                            this.truckItemStore.set([newData]);
-                           
-                            
-                            inspApi.unsubscribe();
-                        },
-                    }); 
-                } else if (data.trailerId) {    
-                    let newInspId = res?.id;
-                    const tr = this.trailerItemStore.getValue();
-                    const trailerData = JSON.parse(JSON.stringify(tr.entities));
-                    let newData = trailerData[data.trailerId];
-                    
-                    let inspApi = this.trailerService.getTrailerInspectionByInspectionId(newInspId).subscribe({
-                        next: (resp: any) => {   
-                            newData.inspections.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tadl.add(newData);
-                            this.trailerItemStore.set([newData]);
-                           
-                            
-                            inspApi.unsubscribe();
-                        },
-                    }); 
+                    const subTruck = this.truckService
+                        .getTruckById(data.truckId)
+                        .subscribe({
+                            next: (truck: any) => {
+                                // if (tabSelected === 'active') {
+                                //     this.truckActiveStore.remove(
+                                //         ({ id }) => id === data.truckId
+                                //     );
+                                //     this.truckActiveStore.add(truck);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.truckInactiveStore.remove(
+                                //         ({ id }) => id === data.truckId
+                                //     );
+                                //     this.truckInactiveStore.add(truck);
+                                // }
+                                // this.tdlStore.update(truck.id, {
+                                //     inspections: truck.inspections,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: truck,
+                                //     id: truck.id,
+                                // });
+                                // subTruck.unsubscribe();
+                            },
+                        });
+                } else if (data.trailerId) {
+                    const subTrailer = this.trailerService
+                        .getTrailerById(data.trailerId)
+                        .subscribe({
+                            next: (trailer: any) => {
+                                // if (tabSelected === 'active') {
+                                //     this.trailerActiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerActiveStore.add(trailer);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.trailerInactiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerInactiveStore.add(trailer);
+                                // }
+                                // this.tadl.update(trailer.id, {
+                                //     inspections: trailer.inspections,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: trailer,
+                                //     id: trailer.id,
+                                // });
+                                // subTrailer.unsubscribe();
+                            },
+                        });
                 }
             })
         );
@@ -229,46 +259,53 @@ export class CommonTruckTrailerService {
             tap((res: any) => {
                 // Truck Add Inspection
                 if (data.truckId) {
-
                     let newTitleId = res?.id;
                     const tr = this.truckItemStore.getValue();
                     const truckData = JSON.parse(JSON.stringify(tr.entities));
                     let newData = truckData[data.truckId];
-    
-                    let titleApi = this.trailerService.getTrailerTitleByTitleId(newTitleId).subscribe({
-                        next: (resp: any) => {  
-                            newData.titles.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tdlStore.add(newData);
-                            this.truckItemStore.set([newData]);
-                            titleApi.unsubscribe();
-                        },
-                    }); 
 
+                    let titleApi = this.trailerService
+                        .getTrailerTitleByTitleId(newTitleId)
+                        .subscribe({
+                            next: (resp: any) => {
+                                newData.titles.push(resp);
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: newData,
+                                    id: newData.id,
+                                });
+                                this.tdlStore.add(newData);
+                                this.truckItemStore.set([newData]);
+                                titleApi.unsubscribe();
+                            },
+                        });
                 } else if (data.trailerId) {
-
-                    let newTitleId = res?.id;
-                    const tr = this.trailerItemStore.getValue();
-                    const trailerData = JSON.parse(JSON.stringify(tr.entities));
-                    let newData = trailerData[data.trailerId];
-    
-                    let titleApi = this.trailerService.getTrailerTitleByTitleId(newTitleId).subscribe({
-                        next: (resp: any) => {  
-                            newData.titles.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tadl.add(newData);
-                            this.trailerItemStore.set([newData]);
-                            titleApi.unsubscribe();
-                        },
-                    }); 
+                    const subTrailer = this.trailerService
+                        .getTrailerById(data.trailerId)
+                        .subscribe({
+                            next: (trailer: any) => {
+                                // if (tabSelected === 'active') {
+                                //     this.trailerActiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerActiveStore.add(trailer);
+                                // } else if (tabSelected === 'inactive') {
+                                //     this.trailerInactiveStore.remove(
+                                //         ({ id }) => id === data.trailerId
+                                //     );
+                                //     this.trailerInactiveStore.add(trailer);
+                                // }
+                                // this.tadl.update(trailer.id, {
+                                //     titles: trailer.titles,
+                                // });
+                                // this.tableService.sendActionAnimation({
+                                //     animation: 'update',
+                                //     data: trailer,
+                                //     id: trailer.id,
+                                // });
+                                // subTrailer.unsubscribe();
+                            },
+                        });
                 }
             })
         );
@@ -287,7 +324,11 @@ export class CommonTruckTrailerService {
         return this.titleService.apiTitleModalGet();
     }
 
-    public updateDataAnimation(tabSelected?: string, cardUpdated?: string, cardId?: any) {
+    public updateDataAnimation(
+        tabSelected?: string,
+        cardUpdated?: string,
+        cardId?: any
+    ) {
         let val = window.location.pathname.includes('truck');
         let truckId;
         let trailerId;
@@ -298,7 +339,6 @@ export class CommonTruckTrailerService {
             trailerId = this.trailerItemStore.getValue().ids[0];
         }
         if (truckId) {
-
             const tr = this.truckItemStore.getValue();
             const truckData = JSON.parse(JSON.stringify(tr.entities));
             let newData = truckData[truckId];
@@ -421,22 +461,23 @@ export class CommonTruckTrailerService {
                 this.tdlStore.add(newData);
                 this.truckItemStore.set([newData]);
             }
-            
         }
         if (trailerId) {
             const tr = this.trailerItemStore.getValue();
             const trailerData = JSON.parse(JSON.stringify(tr.entities));
             let newData = trailerData[trailerId];
-            if ( cardUpdated == 'registration' ) {
-                
-                let regApi = this.trailerService.getTrailerRegistrationByRegistrationId(cardId).subscribe({
-                    next: (res: any) => {
-                        newData.registrations.map((reg: any, index: any) => {
-                            if ( reg.id == res.id ) {
-                                newData.registrations[index] = res;  
-                            }
-                        })
-
+            if (cardUpdated == 'registration') {
+                let regApi = this.trailerService
+                    .getTrailerRegistrationByRegistrationId(cardId)
+                    .subscribe({
+                        next: (res: any) => {
+                            newData.registrations.map(
+                                (reg: any, index: any) => {
+                                    if (reg.id == res.id) {
+                                        newData.registrations[index] = res;
+                                    }
+                                }
+                            );
                         this.tableService.sendActionAnimation({
                             animation: 'update',
                             data: newData,

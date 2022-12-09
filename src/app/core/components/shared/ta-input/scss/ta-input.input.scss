@@ -15,7 +15,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
-    &.connectedDropdown{
+    &.connectedDropdown {
         border-radius: 2px 2px 0 0 !important;
     }
 
@@ -284,7 +284,9 @@
 
     &.load-dispatches-ttd,
     &.load-broker-contact,
-    &.load-shipper {
+    &.load-broker,
+    &.load-shipper,
+    &.load-shipper-contact {
         position: absolute;
         bottom: 1.5px;
         background-color: transparent !important;
@@ -300,27 +302,175 @@
     }
 
     &.load-dispatches-ttd {
-        grid-template-columns: repeat(3, 156px) 16px 100px;
+        grid-template-columns: repeat(2, 156px) 150px 122px;
 
-        span:last-child {
-            color: #919191;
-            font-size: 14px;
-            font-weight: 400;
+        span {
+            &:nth-child(1),
+            &:nth-child(2) {
+                .multiple-input-text {
+                    max-width: 70px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            &:nth-child(3) {
+                .multiple-input-text {
+                    max-width: 100px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            &:last-child {
+                justify-content: flex-end;
+                .multiple-input-text {
+                    color: #919191 !important;
+                    font-size: 11px;
+                    font-weight: 400;
+
+                    &.focusable-text {
+                        color: #6f9ee0 !important;
+                        font-size: 11px;
+                        font-weight: 400;
+                    }
+                }
+            }
+
+            &.focusable-text {
+                color: #6f9ee0 !important;
+            }
+        }
+
+        .focusable-svg {
+            svg {
+                #Ellipse_9856,
+                #Ellipse_9857,
+                #Ellipse_9858,
+                path {
+                    fill: #6f9ee0 !important;
+                }
+            }
+        }
+
+        .focusable-image {
+            opacity: 0.6;
         }
     }
 
-    &.load-broker-contact {
-        grid-template-columns: 160px 120px;
+    &.load-broker {
+        display: grid;
+        grid-template-columns: 229px 115px 48px;
+        align-items: center;
+        padding-top: 6px;
+
+        span {
+            &:nth-child(1) {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            &:nth-child(2),
+            &:nth-child(3) {
+                justify-content: flex-end;
+            }
+
+            &:nth-child(3) {
+                .multiple-input-text {
+                    &.counter {
+                        max-width: max-content;
+                        height: 18px;
+                        border-radius: 30px;
+                        text-align: center;
+                        font-size: 11px;
+                        font-weight: 400;
+                        color: #919191;
+                        background-color: rgb(145, 145, 145, 0.2);
+                        padding: 1px 6px;
+
+                        &.counter-focus {
+                            color: #6f9ee0;
+                            background-color: rgb(111, 158, 224, 0.2);
+                        }
+                    }
+                }
+                position: relative;
+                bottom: 1px;
+            }
+        }
+    }
+
+    &.load-broker-contact,
+    &.load-shipper-contact {
+        grid-template-columns: 143px 144px;
         align-items: center;
         grid-column-gap: 10px;
+        -moz-column-gap: 10px;
         column-gap: 10px;
+
+        span {
+            span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
     }
 
     &.load-shipper {
-        grid-template-columns: 300px 1fr;
+        grid-template-columns: 331px 139px 85px;
         -moz-column-gap: 2px;
         column-gap: 2px;
         padding-right: 25px;
+
+        span {
+            &:nth-child(2),
+            &:nth-child(3) {
+                justify-content: flex-end;
+            }
+
+            &:nth-child(2) {
+                span {
+                    color: #919191 !important;
+
+                    &.focusable-text {
+                        color: #6f9ee0 !important;
+                    }
+                }
+            }
+
+            &:nth-child(3) {
+                .multiple-input-text {
+                    &.counter {
+                        max-width: max-content;
+                        height: 18px;
+                        border-radius: 30px;
+                        text-align: center;
+                        font-size: 11px;
+                        font-weight: 400;
+                        color: #919191;
+                        background-color: rgb(145, 145, 145, 0.2);
+                        padding: 1px 6px;
+
+                        &.counter-focus {
+                            color: #6f9ee0;
+                            background-color: rgb(111, 158, 224, 0.2);
+                        }
+                    }
+                }
+            }
+        }
+
+        span {
+            span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
     }
 
     //------------------------- Custom class -------------------------
@@ -382,6 +532,38 @@
         &::selection {
             background-color: transparent !important;
         }
+    }
+
+    &.hide-placeholder-in-multiple-placeholder-input {
+        &::-webkit-input-placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+        }
+        &::-moz-placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+        }
+        &:-ms-input-placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+        }
+        &::-ms-input-placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+        }
+        &::placeholder {
+            opacity: 0 !important;
+            color: transparent !important;
+        }
+    }
+
+    // Multiple Input Placeholders
+    &.multiple-input-placeholder {
+        pointer-events: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
 }
 

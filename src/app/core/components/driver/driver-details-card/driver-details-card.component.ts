@@ -398,12 +398,8 @@ export class DriverDetailsCardComponent
             .deleteCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -412,12 +408,8 @@ export class DriverDetailsCardComponent
             .deleteMedicalById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -426,12 +418,8 @@ export class DriverDetailsCardComponent
             .deleteMvrById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -440,12 +428,8 @@ export class DriverDetailsCardComponent
             .deleteTestById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
     /**Function retrun id */
@@ -557,17 +541,17 @@ export class DriverDetailsCardComponent
     }
 
     public getExpireDate(data: any) {
-        this.dataCDl = data?.cdls?.map((ele) => {
-            if (moment(ele.expDate).isBefore(moment())) {
-                this.expDateCard = false;
-            } else {
-                this.expDateCard = true;
-            }
-            return {
-                ...ele,
-                showButton: this.expDateCard,
-            };
-        });
+        // this.dataCDl = data?.cdls?.map((ele) => {
+        //     if (moment(ele.expDate).isBefore(moment())) {
+        //         this.expDateCard = false;
+        //     } else {
+        //         this.expDateCard = true;
+        //     }
+        //     return {
+        //         ...ele,
+        //         showButton: this.expDateCard,
+        //     };
+        // });
     }
 
     public onModalAction(action: string): void {
