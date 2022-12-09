@@ -136,7 +136,6 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
                 }
 
                 this.t2.open();
-                //this.fileAction.emit({ file: this.file, action });
                 break;
             }
             case 'download': {

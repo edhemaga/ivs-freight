@@ -845,6 +845,19 @@
                 opacity: 1;
             }
         }
+
+        &.table-details {
+            .ta-upload-file-tag {
+                opacity: 1 !important;
+                bottom: 8px !important;
+            }
+
+            &:hover {
+                .ta-upload-file-tag {
+                    bottom: 56px !important;
+                }
+            }
+        }
     }
 
     &.modals {

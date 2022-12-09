@@ -44,6 +44,8 @@ export class TruckassistTableBodyComponent
     @ViewChild('tableScrollRef', { static: false })
     public virtualScrollViewport: CdkVirtualScrollViewport;
 
+    @ViewChild('tableFiles', { static: false }) public tableFiles: any;
+
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
     @Input() viewData: any[];
@@ -508,8 +510,13 @@ export class TruckassistTableBodyComponent
     onShowAttachments(row: any) {
         if (this.activeAttachment !== row.id) {
             this.activeAttachment = row.id;
+            let entity = this.activeTableData?.gridNameTitle;
 
-            this.filesService.getFiles(this.activeTableData?.gridNameTitle, row.id).subscribe((res) => {
+            if(entity == 'Repair' && this.selectedTab == 'repair-shop') {
+                entity = 'Repair-Shop';
+            }
+
+            this.filesService.getFiles(entity, row.id).subscribe((res) => {
                 row.tableAttachments = res;
                 this.changeDetectorRef.detectChanges();
             });

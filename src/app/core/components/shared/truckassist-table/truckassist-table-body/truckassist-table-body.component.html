@@ -3771,13 +3771,14 @@
                                             }"
                                         ></svg-icon>
 
-                                        <div class="title">Download All</div>
+                                        <div class="title" (click)="tableFiles?.downloadAllFiles()">Download All</div>
                                     </div>
                                 </div>
 
                                 <!-- Attachments -->
                                 <div class="attacment-container">
                                     <app-ta-upload-files
+                                        #tableFiles
                                         [customClassName]="'table-details'"
                                         [files]="
                                             row?.tableAttachments

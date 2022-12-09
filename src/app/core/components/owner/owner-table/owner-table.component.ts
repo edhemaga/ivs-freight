@@ -383,6 +383,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textPhone: data?.phone ? this.phonePipe.transform(data.phone) : '',
             textAddress: data?.address?.address ? data.address.address : '',
             textBankName: data?.bank?.name ? data.bank.name : '',
+            tableAttachments: data?.files ? data.files : [],
         };
     }
 
