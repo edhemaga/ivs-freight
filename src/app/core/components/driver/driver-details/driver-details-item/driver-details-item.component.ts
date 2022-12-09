@@ -221,27 +221,27 @@ export class DriverDetailsItemComponent
         this.arrayOfRenewCdl = [];
         this.activateShow = [];
         this.expiredCard = [];
-        // data?.cdls?.map((item) => {
-        //     let endDate = moment(item.expDate);
-        //     let daysDiff = endDate.diff(moment(), 'days');
+        data?.cdls?.map((item) => {
+            let endDate = moment(item.expDate);
+            let daysDiff = endDate.diff(moment(), 'days');
 
-        //     if (moment(item.expDate).isBefore(moment())) {
-        //         this.expiredCard.push(true);
-        //     } else {
-        //         this.expiredCard.push(false);
-        //     }
-        //     if (item.dateDeactivated) {
-        //         this.activateShow.push(true);
-        //     } else {
-        //         this.activateShow.push(false);
-        //     }
+            if (moment(item.expDate).isBefore(moment())) {
+                 this.expiredCard.push(true);
+            } else {
+                this.expiredCard.push(false);
+            }
+            if (item.dateDeactivated) {
+                this.activateShow.push(true);
+            } else {
+                this.activateShow.push(false);
+            }
 
-        //     if (daysDiff < -365) {
-        //         this.arrayOfRenewCdl.push(true);
-        //     } else {
-        //         this.arrayOfRenewCdl.push(false);
-        //     }
-        // });
+            if (daysDiff < -365) {
+                this.arrayOfRenewCdl.push(true);
+            } else {
+                this.arrayOfRenewCdl.push(false);
+            }
+        });
 
         this.dataDropDown = {
             disabledMutedStyle: null,

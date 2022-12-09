@@ -3,6 +3,7 @@ import {
     CdlResponse,
     CdlService,
     CreateResponse,
+    DriverResponse,
     GetCdlModalResponse,
 } from 'appcoretruckassist';
 import { Observable, Subject, tap } from 'rxjs';
@@ -123,7 +124,7 @@ export class CdlTService implements OnDestroy {
                 });
                 
                 this.dlStore.add(newData);
-                this.driverItemStore.set([newData]);    
+                this.driverItemStore.set([newData]); 
             })
         );
     }

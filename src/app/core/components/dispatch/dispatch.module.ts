@@ -8,11 +8,13 @@ import { DispatchTableComponent } from './dispatch-table/dispatch-table.componen
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ColorFinderPipe } from './pipes/color-finder.pipe';
 
 @NgModule({
   declarations: [
     DispatchComponent,
-    DispatchTableComponent
+    DispatchTableComponent,
+    ColorFinderPipe
   ],
   imports: [
     AngularSvgIconModule,

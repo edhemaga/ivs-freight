@@ -94,7 +94,8 @@ const routes: Routes = [
             import('./core/components/dispatch/dispatch.module').then(
                 (m) => m.DispatchModule
             ),
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        resolve: { dispatcher: DispatcherResolverService }
     },
     {
         path: 'settings',
