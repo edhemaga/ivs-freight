@@ -16,7 +16,7 @@ export class DispatcherResolverService implements Resolve<any> {
         private dispatcherQuery: DispatcherQuery
     ) {}
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        if (!this.dispatcherQuery.modalList?.dispatchBoards?.length) {
+        if (this.dispatcherQuery.modalList?.dispatchBoards?.length) {
             return this.dispatcherQuery.modalList;
         } else {
             const dispatcherId = localStorage.getItem('dispatchUserSelect')
