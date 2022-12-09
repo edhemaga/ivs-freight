@@ -36,6 +36,7 @@ import { LoadStopTimeDatePipe } from '../components/modals/load-modal/load-stop-
 import { ActiveLoadStatusPipe } from '../components/modals/load-modal/load-modal-statuses/activeLoadStatus.pipe';
 import { UrlExtensionPipe } from './url-extension.pipe';
 import { ByteConvertPipe } from './byte-convert.pipe';
+import { LoadDatetimeRangePipe } from '../components/modals/load-modal/load-datetime-range.pipe';
 
 @NgModule({
     declarations: [
@@ -75,6 +76,7 @@ import { ByteConvertPipe } from './byte-convert.pipe';
         ActiveLoadStatusPipe,
         UrlExtensionPipe,
         ByteConvertPipe,
+        LoadDatetimeRangePipe,
     ],
     imports: [CommonModule],
     exports: [
@@ -114,6 +116,7 @@ import { ByteConvertPipe } from './byte-convert.pipe';
         ActiveLoadStatusPipe,
         UrlExtensionPipe,
         ByteConvertPipe,
+        LoadDatetimeRangePipe,
     ],
     providers: [
         DatePipe,

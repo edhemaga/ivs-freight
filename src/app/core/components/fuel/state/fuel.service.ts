@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { FuelStopResponse } from './../../../../../../appcoretruckassist/model/fuelStopResponse';
 import { Injectable } from '@angular/core';
 import {
@@ -53,29 +53,30 @@ export class FuelTService {
         fuelTransactionSpecParamsSearch1?: string,
         fuelTransactionSpecParamsSearch2?: string
     ): Observable<FuelTransactionListResponse> {
-        return this.fuelService.apiFuelTransactionListGet(
-            fuelTransactionSpecParamsFuelStopStoreIds,
-            fuelTransactionSpecParamsTruckIds,
-            fuelTransactionSpecParamsCategoryIds,
-            fuelTransactionSpecParamsDateFrom,
-            fuelTransactionSpecParamsDateTo,
-            fuelTransactionSpecParamsLong,
-            fuelTransactionSpecParamsLat,
-            fuelTransactionSpecParamsDistance,
-            fuelTransactionSpecParamsLastFrom,
-            fuelTransactionSpecParamsLastTo,
-            fuelTransactionSpecParamsCostFrom,
-            fuelTransactionSpecParamsCostTo,
-            fuelTransactionSpecParamsPpgFrom,
-            fuelTransactionSpecParamsPpgTo,
-            fuelTransactionSpecParamsPageIndex,
-            fuelTransactionSpecParamsPageSize,
-            fuelTransactionSpecParamsCompanyId,
-            fuelTransactionSpecParamsSort,
-            fuelTransactionSpecParamsSearch,
-            fuelTransactionSpecParamsSearch1,
-            fuelTransactionSpecParamsSearch2
-        );
+        // return this.fuelService.apiFuelTransactionListGet(
+        //     fuelTransactionSpecParamsFuelStopStoreIds,
+        //     fuelTransactionSpecParamsTruckIds,
+        //     fuelTransactionSpecParamsCategoryIds,
+        //     fuelTransactionSpecParamsDateFrom,
+        //     fuelTransactionSpecParamsDateTo,
+        //     fuelTransactionSpecParamsLong,
+        //     fuelTransactionSpecParamsLat,
+        //     fuelTransactionSpecParamsDistance,
+        //     fuelTransactionSpecParamsLastFrom,
+        //     fuelTransactionSpecParamsLastTo,
+        //     fuelTransactionSpecParamsCostFrom,
+        //     fuelTransactionSpecParamsCostTo,
+        //     fuelTransactionSpecParamsPpgFrom,
+        //     fuelTransactionSpecParamsPpgTo,
+        //     fuelTransactionSpecParamsPageIndex,
+        //     fuelTransactionSpecParamsPageSize,
+        //     fuelTransactionSpecParamsCompanyId,
+        //     fuelTransactionSpecParamsSort,
+        //     fuelTransactionSpecParamsSearch,
+        //     fuelTransactionSpecParamsSearch1,
+        //     fuelTransactionSpecParamsSearch2
+        // );
+        return of();
     }
 
     set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {

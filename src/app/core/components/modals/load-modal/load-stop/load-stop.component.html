@@ -1,0 +1,82 @@
+<div class="load-stop-container" [ngClass]="{ active: _isCardOpen }">
+    <div
+        class="load-stop-header-bar"
+        [ngClass]="{
+            'first-or-last': firstOrLast && _isCardOpen,
+            'not-active-stop': !_isCardOpen
+        }"
+        (click)="toggleStop()"
+    >
+        <div
+            class="load-stop-counter-container"
+            [ngClass]="{ 'delivery-mode': isDelivery }"
+        >
+            <p>{{ stopNumber }}</p>
+        </div>
+        <div class="load-stop-header-content">
+            <div class="load-stop-inner-content">
+                <div
+                    *ngIf="shipper"
+                    class="load-stop-content-up load-stop-content-up-name"
+                >
+                    <p>{{ shipper }}</p>
+                </div>
+                <div *ngIf="shipperAddress" class="load-stop-content-down">
+                    <p>{{ shipperAddress }}</p>
+                </div>
+            </div>
+
+            <div class="load-stop-inner-content">
+                <div
+                    *ngIf="dateRange"
+                    class="load-stop-content-up load-stop-content-up-datetime"
+                >
+                    <p>{{ dateRange }}</p>
+                </div>
+                <div *ngIf="timeRange" class="load-stop-content-down">
+                    <p>{{ timeRange }}</p>
+                </div>
+            </div>
+
+            <div class="load-stop-inner-content">
+                <div
+                    *ngIf="legMile"
+                    class="load-stop-content-up load-stop-content-up-deadhead"
+                >
+                    <p>
+                        {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }}
+                        <span>{{ legMile }} mi</span>
+                    </p>
+                </div>
+                <div
+                    *ngIf="shipperContact?.fullName"
+                    class="load-stop-content-down load-stop-content-down-deadhead"
+                >
+                    <svg-icon
+                        [src]="
+                            'assets/svg/common/load/ic_load_shipper_contact_avatar.svg'
+                        "
+                    ></svg-icon>
+                    <p>{{ shipperContact?.fullName }}</p>
+                </div>
+            </div>
+
+            <svg-icon
+                *ngIf="!firstOrLast"
+                class="load-stop-header-remove-btn"
+                [src]="'assets/svg/common/load/ic_load_stop_delete.svg'"
+            ></svg-icon>
+        </div>
+    </div>
+    <div
+        class="load-stop-body"
+        [ngClass]="noActive"
+        [ngStyle]="animationMarginParams"
+        [@showHideCardBody]="{
+            value: _isCardOpen.toString(),
+            params: animationMarginParams
+        }"
+    >
+        <ng-content></ng-content>
+    </div>
+</div>

@@ -246,20 +246,7 @@
                             ></app-ta-input>
                             <app-ta-input
                                 formControlName="truck_Type"
-                                [inputConfig]="{
-                                    name: 'Truck Type',
-                                    type: 'text',
-                                    label: 'Type',
-                                    isDisabled: true,
-                                    dropdownImageInput: {
-                                        withText: true,
-                                        svg: true,
-                                        image: false,
-                                        url: 'logoname_treba',
-                                        template: 'truck',
-                                        class: 'type_name'
-                                    }
-                                }"
+                                [inputConfig]="truckTypeConfig"
                             ></app-ta-input>
                             <app-ta-input
                                 formControlName="truck_Make"
@@ -322,20 +309,7 @@
                             ></app-ta-input>
                             <app-ta-input
                                 formControlName="trailer_Type"
-                                [inputConfig]="{
-                                    name: 'Trailer Type',
-                                    type: 'text',
-                                    label: 'Type',
-                                    isDisabled: true,
-                                    dropdownImageInput: {
-                                        withText: true,
-                                        svg: true,
-                                        image: false,
-                                        url: 'logoname_treba',
-                                        template: 'trailer',
-                                        class: 'type_name'
-                                    }
-                                }"
+                                [inputConfig]="trailerTypeConfig"
                             ></app-ta-input>
                             <app-ta-input
                                 formControlName="trailer_Make"

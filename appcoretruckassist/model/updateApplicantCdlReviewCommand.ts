@@ -19,5 +19,6 @@ export interface UpdateApplicantCdlReviewCommand {
     expDateMessage?: string | null;
     isPrimary?: boolean;
     commonMessage?: string | null;
+    applicantCdlId?: number;
 }
 
