@@ -33,6 +33,7 @@ export class DispatchTableComponent implements OnInit {
     truckList: any[];
     trailerList: any[];
     driverList: any[];
+    copyIndex: number = -1;
     @Input() set smallList(value) {
         const newTruckList = JSON.parse(JSON.stringify(value.trucks));
         this.truckList = newTruckList.map((item) => {
@@ -77,6 +78,15 @@ export class DispatchTableComponent implements OnInit {
     statusOpenedIndex: number = -1;
     showAddAddressField: number = -1;
     savedTruckId: any;
+
+    driverHover: { indx: number; txt: string } = {
+        indx: -1,
+        txt: '',
+    };
+    driverCopy: { indx: number; txt: string } = {
+        indx: -1,
+        txt: '',
+    };
 
     __isBoardLocked: boolean = true;
     __change_in_proggress: boolean = false;
@@ -283,5 +293,44 @@ export class DispatchTableComponent implements OnInit {
             this.checkForEmpty = value;
             this.chd.detectChanges();
         }, 300);
+    }
+
+    public copy(text: string, indx: number, type: string): void {
+        this.driverCopy = {
+            indx: indx,
+            txt: type,
+        };
+        this.copyIndex = indx;
+
+        setTimeout(() => {
+            this.driverCopy = {
+                indx: -1,
+                txt: '',
+            };
+            this.copyIndex = -1;
+            this.chd.detectChanges();
+        }, 2000);
+
+        const el = document.createElement('textarea');
+        el.value = text;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+
+    setMouseOver(txt: string, indx: number) {
+        console.log(txt, indx);
+        this.driverHover = {
+            indx: indx,
+            txt: txt,
+        };
+    }
+
+    setMouseOut() {
+        this.driverHover = {
+            indx: -1,
+            txt: '',
+        };
     }
 }
