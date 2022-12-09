@@ -66,7 +66,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     this.getFuelStop(data.id, markerIndex);
                 }
                 
-                this.getClusters(true);
+                this.getClusters(true, true);
             } else if ( data.actionAnimation == 'add' || data.actionAnimation == 'delete' ) {
                 setTimeout(() => {
                     this.getClusters(true, true);
