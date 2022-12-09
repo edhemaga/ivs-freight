@@ -319,12 +319,6 @@ export class TruckassistTableToolbarComponent
                     })
                     .subscribe(() => {});
             }
-
-            /* if (!this.tableLocked) {
-        this.setInactivityTimer();
-      } else {
-        clearTimeout(this.inactiveTimeOutInterval);
-      } */
         } else if (action.text === 'Columns') {
             action.active = !action.active;
         } else if (action.text === 'Reset Columns') {
@@ -333,17 +327,6 @@ export class TruckassistTableToolbarComponent
             );
 
             this.tableService.sendResetColumns(true);
-
-            /* this.tableService
-        .deleteTableConfig(this.tableConfigurationType)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          localStorage.removeItem(
-            `table-${this.tableConfigurationType}-Configuration`
-          );
-
-          this.tableService.sendResetColumns(true);
-        }); */
         } else {
             alert('Treba da se odradi!');
         }
@@ -352,30 +335,6 @@ export class TruckassistTableToolbarComponent
             this.optionsPopup.close();
         }
     }
-
-    // Reset Inactivity Timer
-    /* resetInactivityTimer() {
-    clearTimeout(this.inactiveTimeOutInterval);
-
-    setTimeout(() => {
-      this.setInactivityTimer();
-    }, 100);
-  } */
-
-    // Set Inactivity Timer
-    /* setInactivityTimer() {
-    this.inactiveTimeOutInterval = setTimeout(() => {
-      this.tableLocked = true;
-
-      this.optionsPopupContent[0].text = 'Unlock table';
-      this.optionsPopupContent[0].svgPath =
-        'assets/svg/truckassist-table/lock.svg';
-
-      this.tableService.sendUnlockTable({
-        toaggleUnlockTable: true,
-      });
-    }, 60000);
-  } */
 
     // Toaggle Column
     onToaggleColumn(column: any, index: number) {

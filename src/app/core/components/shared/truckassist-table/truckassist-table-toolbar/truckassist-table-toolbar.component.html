@@ -53,7 +53,13 @@
     <div class="table-actions">
         <div class="actions-container">
             <!-- Activation -->
-            <div *ngIf="tableRowsSelected.length && !options.toolbarActions.hideActivationButton" class="action-div">
+            <div
+                *ngIf="
+                    tableRowsSelected.length &&
+                    !options.toolbarActions.hideActivationButton
+                "
+                class="action-div"
+            >
                 <svg-icon
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     [src]="'assets/svg/truckassist-table/activation-icon.svg'"
@@ -61,13 +67,22 @@
             </div>
 
             <!-- BORDER -->
-            <div class="border-container" *ngIf="tableRowsSelected.length && !options.toolbarActions.hideDeleteButton">
+            <div
+                class="border-container"
+                *ngIf="
+                    tableRowsSelected.length &&
+                    !options.toolbarActions.hideDeleteButton
+                "
+            >
                 <div class="border"></div>
             </div>
 
             <!-- Delete -->
             <div
-                *ngIf="tableRowsSelected.length && !options.toolbarActions.hideDeleteButton" 
+                *ngIf="
+                    tableRowsSelected.length &&
+                    !options.toolbarActions.hideDeleteButton
+                "
                 (click)="deleteSelectedRows()"
                 class="action-div"
             >
@@ -78,7 +93,13 @@
             </div>
 
             <!-- BORDER -->
-            <div class="border-container" *ngIf="tableRowsSelected.length && !options.toolbarActions.hideActivationButton">
+            <div
+                class="border-container"
+                *ngIf="
+                    tableRowsSelected.length &&
+                    !options.toolbarActions.hideActivationButton
+                "
+            >
                 <div class="border"></div>
             </div>
 
@@ -214,7 +235,7 @@
                     class="column-text"
                     [ngClass]="{ 'selectable-text': !column.isPined }"
                 >
-                    {{ column.name !== '' ? column.name : column.title }}
+                    {{ column.title !== '' ? column.title : column.name }}
                 </div>
             </div>
         </div>

@@ -104,6 +104,7 @@ export class TruckassistTableHeadComponent
         if (changes?.columns && !changes?.columns?.firstChange) {
             this.columns = changes.columns.currentValue;
 
+            this.setColumnNameUpperCase();
             this.setVisibleColumns(true);
         }
 
