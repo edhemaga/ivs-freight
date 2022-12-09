@@ -1,7 +1,18 @@
 <div class="marker-tool-tip" *ngIf="type != 'cluster'">
     <div class="marker-info-container-all">
         <div class="title-container">
-            <div class="marker-business-name text-ellipsis">{{ title }}</div>
+            <div class="d-flex" [ngStyle]="{ overflow: 'hidden' }">
+                <div class="marker-business-name text-ellipsis">
+                    {{ title }}
+                </div>
+                <span *ngIf="item?.pinned">
+                    <svg-icon
+                        class="favorite-svg active"
+                        src="assets/svg/detail-cards/favorite.svg"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    ></svg-icon>
+                </span>
+            </div>
             <div
                 class="show-more"
                 (click)="showMoreOptions()"
@@ -375,7 +386,11 @@
                         }}
                     </div>
                     <div class="title-text">
-                        {{ item?.address.city }}, {{ item?.address.state
+                        {{
+                            item?.address.city
+                                ? item.address.city
+                                : item.address.county
+                        }}, {{ item?.address.stateShortName
                         }}<span
                             class="title-text"
                             *ngIf="item?.address.zipCode"
@@ -449,13 +464,13 @@
                 <div
                     class="marker-expanded-info-container"
                     [ngStyle]="{
-                        height: showAllDays ? '88px' : '44px',
+                        height: showAllDays ? '80px' : '36px',
                         transition: 'all 0.2s ease-in-out',
                         overflow: 'hidden'
                     }"
                 >
                     <div
-                        class="marker-dual-info-container mg-bottom-8"
+                        class="marker-dual-info-container"
                         *ngIf="!showAllDays"
                     >
                         <div
@@ -524,9 +539,10 @@
                         </div>
                     </div>
                     <div
-                        class="marker-dual-info-container mg-bottom-8"
+                        class="marker-dual-info-container"
                         [ngStyle]="{
-                            display: showAllDays ? 'inline-block' : 'none'
+                            display: showAllDays ? 'inline-block' : 'none',
+                            'vertical-align': 'bottom'
                         }"
                     >
                         <div
@@ -536,19 +552,30 @@
                         </div>
                         <div
                             class="marker-info-text"
-                            *ngIf="item.openHours[0].startTime"
+                            *ngIf="
+                                item.openHours[0].startTime &&
+                                item.openHours[0].startTime != 'null' &&
+                                item.openHours[0].startTime != 'Invalid date'
+                            "
                         >
                             {{ item.openHours[0].startTime }} -
                             {{ item.openHours[0].endTime }}
                         </div>
                         <div
                             class="marker-info-text"
-                            *ngIf="!item.openHours[0].startTime"
+                            *ngIf="
+                                !item.openHours[0].startTime ||
+                                item.openHours[0].startTime == 'null' ||
+                                item.openHours[0].startTime == 'Invalid date'
+                            "
                         >
                             Closed
                         </div>
                     </div>
-                    <div class="marker-dual-info-container mg-bottom-8">
+                    <div
+                        class="marker-dual-info-container"
+                        [ngStyle]="{ 'vertical-align': 'bottom' }"
+                    >
                         <div
                             class="marker-like-text marker-bold-text mg-bottom-4"
                         ></div>
@@ -575,17 +602,6 @@
         <div class="marker-info-container-all">
             <div class="marker-title">
                 <div class="marker-dual-info-container p-0">
-                    <span class="data-count">{{
-                        type == 'shipper'
-                            ? '769'
-                            : type == 'repairShop'
-                            ? item.order
-                            : type == 'accident' || type == 'inspection'
-                            ? '9'
-                            : type == 'fuelStop'
-                            ? '769'
-                            : ''
-                    }}</span>
                     <span class="load-text">{{
                         type == 'shipper'
                             ? 'Load'
@@ -597,6 +613,38 @@
                             ? 'Order'
                             : ''
                     }}</span>
+                    <span class="align-center">
+                        <!-- {{
+                            type == 'shipper'
+                                ? '769'
+                                : type == 'repairShop'
+                                ? item.order
+                                : type == 'accident' || type == 'inspection'
+                                ? '9'
+                                : type == 'fuelStop'
+                                ? '769'
+                                : ''
+                        }} -->
+                        <app-ta-counter
+                            [count]="
+                                type == 'shipper'
+                                    ? '769'
+                                    : type == 'repairShop'
+                                    ? item.order
+                                    : type == 'accident' || type == 'inspection'
+                                    ? '9'
+                                    : type == 'fuelStop'
+                                    ? '769'
+                                    : ''
+                            "
+                            [countBackground]="'#424242'"
+                            [countColor]="'#ffffff'"
+                            [countHeight]="'22px'"
+                            [countWidth]="'22px'"
+                            [countBorderRadius]="'11px'"
+                            [marginLeft]="'4px'"
+                        ></app-ta-counter>
+                    </span>
                 </div>
                 <div
                     class="marker-dual-info-container"
@@ -608,7 +656,7 @@
                 </div>
             </div>
             <div
-                class="marker-expanded-info-container"
+                class="marker-expanded-info-container mg-top-10"
                 *ngIf="type == 'shipper'"
             >
                 <div class="marker-dual-info-container">
@@ -621,7 +669,7 @@
                     </div>
                 </div>
                 <div class="marker-dual-info-container">
-                    <div class="marker-info-text mg-bottom-4">
+                    <div class="marker-info-text">
                         <span class="marker-bold-text">127</span> Delivered
                     </div>
                 </div>
@@ -762,11 +810,11 @@
         </div>
         <div class="divider"></div>
     </div>
-    <div class="cluster-list-content">
+    <div class="cluster-list-content" (scroll)="clusterListScroll($event)">
         <div
             class="cluster-list-item"
             (click)="openClusterItemInfo(item2)"
-            *ngFor="let item2 of item.names"
+            *ngFor="let item2 of item.pagination.data"
         >
             {{ item2.name }}
         </div>
