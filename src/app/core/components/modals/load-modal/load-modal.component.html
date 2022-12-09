@@ -333,14 +333,20 @@
                     </div>
                 </div>
             </app-ta-custom-card>
-
+            <!-- selectedPickupShipper
+                        ? 'assets/svg/common/ic_plus.svg'
+                        : null -->
             <app-ta-custom-card
                 [cardName]="'Stops'"
                 [isCardOpen]="true"
                 [hasCounter]="2"
+                [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                [isCardOpen]="true"
+                [hasBodyData]="true"
+                (onActionEvent)="createNewExtraStop()"
                 [animationMarginParams]="{
-                    marginTop: '18px',
-                    marginBottom: '22px'
+                    marginTop: '10px',
+                    marginBottom: '12px'
                 }"
             >
                 <!-- Pickup Stop  -->
@@ -481,19 +487,69 @@
                     </div>
                 </app-load-stop>
 
-                <!-- <div class="row"> -->
-                <!-- <div class="col-12">
-                            <app-ta-tab-switch
-                                [tabs]="stopTabs"
-                                (switchClicked)="
-                                    onTabChange($event, 'stop-tab')
+                <div formArrayName="extraStops">
+                    <div
+                        *ngFor="
+                            let extraStop of loadExtraStops().controls;
+                            let indx = index
+                        "
+                    >
+                        <div [formGroupName]="indx">
+                            <!-- Extra Stops -->
+                            <app-load-stop
+                                *ngIf="loadExtraStops().controls.length"
+                                [stopNumber]="2"
+                                [isDelivery]="true"
+                                [shipper]="selectedExtraStopShipper[indx]?.name"
+                                [shipperAddress]="
+                                    selectedExtraStopShipper[indx]?.address
                                 "
-                                [type]="
-                                    'type2-modal-popup load-type2-modal-popup'
+                                [dateRange]="
+                                    extraStop.get('deliveryDateFrom').value
                                 "
-                            ></app-ta-tab-switch>
-                        </div> -->
-                <!-- </div> -->
+                                [timeRange]="
+                                    extraStop.get('deliveryDateTo').value
+                                "
+                                [legMile]="null"
+                                [isEmptyLoad]="false"
+                                [shipperContact]="{
+                                    fullName:
+                                        selectedExtraStopShipperContact[indx]
+                                            ?.name
+                                }"
+                                [isOpen]="
+                                    selectedExtraStopShipperContact[indx]
+                                        ?.openClose
+                                "
+                                (toggle)="
+                                    toggleStopActivity(
+                                        $event,
+                                        'extra-stops',
+                                        indx
+                                    )
+                                "
+                            >
+                                <div class="row">
+                                    <div class="col-12">
+                                        <app-ta-tab-switch
+                                            [tabs]="stopTabs"
+                                            (switchClicked)="
+                                                onTabChange(
+                                                    $event,
+                                                    'stop-tab',
+                                                    indx
+                                                )
+                                            "
+                                            [type]="
+                                                'type2-modal-popup load-type2-modal-popup'
+                                            "
+                                        ></app-ta-tab-switch>
+                                    </div>
+                                </div>
+                            </app-load-stop>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Delivery Stop -->
                 <app-load-stop

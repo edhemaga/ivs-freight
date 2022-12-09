@@ -9,16 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyIntegrationResponse } from './companyIntegrationResponse';
 
 
-export interface UpdateApplicantCdlReviewCommand { 
-    id?: number;
-    isLicenseValid?: boolean;
-    licenseMessage?: string | null;
-    isExpDateValid?: boolean;
-    expDateMessage?: string | null;
-    isPrimary?: boolean;
-    commonMessage?: string | null;
-    applicantCdlId?: number;
+export interface CompanyIntegrationResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<CompanyIntegrationResponse> | null;
 }
 

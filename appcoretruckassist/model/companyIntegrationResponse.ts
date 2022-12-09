@@ -10,18 +10,17 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
+import { IntegrationProviderResponse } from './integrationProviderResponse';
 
 
-export interface BrokerLoadModalResponse { 
+export interface CompanyIntegrationResponse { 
     id?: number;
-    businessName?: string | null;
-    availableCredit?: number | null;
-    creditLimit?: number | null;
-    availableCreditType?: EnumValue;
-    payTerm?: EnumValue;
-    dnu?: boolean;
-    ban?: boolean;
-    status?: number;
-    loadsCount?: number;
+    integrationProvider?: IntegrationProviderResponse;
+    integrationConnectedStatus?: EnumValue;
+    userId?: string | null;
+    carrierId?: string | null;
+    password?: string | null;
+    lastConnected?: string | null;
+    disconnectedDate?: string | null;
 }
 

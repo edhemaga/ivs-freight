@@ -71,7 +71,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         },
     ];
 
-    public selectedStopTab: number = 3;
+    public selectedExtraStopTab: number[] = [];
     public stopTabs = [
         {
             id: 3,
@@ -299,6 +299,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         dropdownWidthClass: 'w-col-344',
     };
 
+    // Extra Stop Configuration
+    public selectedExtraStopShipper: any[] = [];
+    public selectedExtraStopShipperContact: any[] = [];
+    public loadExtraStopsShipperInputConfig: ITaInput[] = [];
+    public loadExtraStopsShipperContactsInputConfig: ITaInput[] = [];
+
     // Billing
     public additionalBillingTypes: any[] = [];
     public isAvailableAdjustedRate: boolean = false;
@@ -350,7 +356,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.getLoadDropdowns();
 
         // this.trackBillingPayment();
-        // this.trackStopInformation();
     }
 
     private createForm() {
@@ -395,7 +400,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             deliveryItems: this.formBuilder.array([]),
             // -------------
             // Extra Stops
-            stops: this.formBuilder.array([]),
+            extraStops: this.formBuilder.array([]),
             // -------------
             // Billing
             baseRate: [null, Validators.required],
@@ -420,14 +425,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onTabChange(event: any, action: string) {
+    public onTabChange(event: any, action: string, indx?: number) {
         switch (action) {
             case 'ftl-ltl': {
                 this.selectedTab = event.id;
                 break;
             }
             case 'stop-tab': {
-                this.selectedStopTab = event.id;
+                this.selectedExtraStopTab[indx] = event.id;
                 break;
             }
             case 'stop-time-pickup': {
@@ -813,13 +818,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     this.selectedPickupShipperContact = null;
 
-                    this.loadForm.get('shipperContactId').patchValue(null);
+                    this.loadForm
+                        .get('pickupShipperContactId')
+                        .patchValue(null);
 
                     this.loadPickupShipperContactsInputConfig = {
                         ...this.loadPickupShipperContactsInputConfig,
                         multipleInputValues: null,
                         isDisabled: true,
                     };
+
+                    console.log(this.loadPickupShipperContactsInputConfig);
                 }
                 break;
             }
@@ -1039,6 +1048,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    // Documents
     public onFilesEvent(event: any) {
         this.documents = event.files;
         switch (event.action) {
@@ -1067,124 +1077,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    /* Comments */
-    public changeCommentsEvent(comments: ReviewCommentModal) {
-        switch (comments.action) {
-            case 'delete': {
-                this.deleteComment(comments);
-                break;
-            }
-            case 'add': {
-                this.addComment(comments);
-                break;
-            }
-            case 'update': {
-                this.updateComment(comments);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public createComment() {
-        if (this.comments.some((item) => item.isNewReview)) {
-            return;
-        }
-        // ------------------------ PRODUCTION MODE -----------------------------
-        // this.reviews.unshift({
-        //   companyUser: {
-        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-        //     avatar: this.companyUser.avatar,
-        //   },
-        //   commentContent: '',
-        //   createdAt: new Date().toISOString(),
-        //   updatedAt: new Date().toISOString(),
-        //   isNewReview: true,
-        // });
-        // -------------------------- DEVELOP MODE --------------------------------
-        this.comments.unshift({
-            companyUser: {
-                fullName: this.companyUser.firstName.concat(
-                    ' ',
-                    this.companyUser.lastName
-                ),
-                avatar: this.companyUser.avatar,
-            },
-            commentContent: '',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            isNewReview: true,
-        });
-    }
-
-    public addComment(comments: ReviewCommentModal) {
-        const comment: CreateCommentCommand = {
-            entityTypeCommentId: 2,
-            entityTypeId: this.editData.id,
-            commentContent: comments.data.commentContent,
-        };
-
-        this.commentsService
-            .createComment(comment)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: any) => {
-                    this.comments = comments.sortData.map((item, index) => {
-                        if (index === 0) {
-                            return {
-                                ...item,
-                                id: res.id,
-                            };
-                        }
-                        return item;
-                    });
-                },
-                error: () => {},
-            });
-    }
-
-    public deleteComment(comments: ReviewCommentModal) {
-        this.comments = comments.sortData;
-        this.commentsService
-            .deleteCommentById(comments.data)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
-    }
-
-    public updateComment(comments: ReviewCommentModal) {
-        this.comments = comments.sortData;
-
-        const comment: UpdateCommentCommand = {
-            id: comments.data.id,
-            commentContent: comments.data.commentContent,
-        };
-
-        this.commentsService
-            .updateComment(comment)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
-    }
-
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
-
-    public onSelectAdditionalOption(option: any) {
-        if (!this.loadForm.get('baseRate').value) {
-            return;
-        }
-        option.active = !option.active;
-    }
-
-    public toggleStopActivity(event: boolean, action: string) {
+    // First Pickup and Last Delivery Stop Toggling
+    public toggleStopActivity(event: boolean, action: string, indx?: number) {
         switch (action) {
             case 'first-pickup': {
                 this.isActivePickupStop = event;
@@ -1196,9 +1090,26 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 this.isActivePickupStop = false;
                 break;
             }
+            case 'extra-stops': {
+                this.selectedExtraStopShipperContact[indx].openClose = event;
+
+                this.closeAllLoadExtraStopExceptActive(
+                    this.loadExtraStops[indx]
+                );
+
+                break;
+            }
+            default: {
+                break;
+            }
         }
+
+        this.loadExtraStops().controls.filter((item) => {
+            item.get('openClose').patchValue(false);
+        });
     }
 
+    // Billing Payment
     public trackBillingPayment() {
         this.loadForm
             .get('baseRate')
@@ -1306,225 +1217,96 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public trackStopInformation() {
-        this.loadForm
-            .get('dateFrom')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const stop = this.loadStops().controls.find(
-                    (item) =>
-                        item.get('shipperId').value ===
-                        this.selectedPickupShipper.id
-                );
-
-                if (stop && !stop.get('dateFrom').value) {
-                    stop.get('dateFrom').patchValue(value);
-                }
-            });
-
-        this.loadForm
-            .get('dateTo')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const stop = this.loadStops().controls.find(
-                    (item) =>
-                        item.get('shipperId').value ===
-                        this.selectedPickupShipper.id
-                );
-                if (stop && !stop.get('dateTo').value) {
-                    stop.get('dateTo').patchValue(value);
-                }
-            });
-
-        this.loadForm
-            .get('timeFrom')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const stop = this.loadStops().controls.find(
-                    (item) =>
-                        item.get('shipperId').value ===
-                        this.selectedPickupShipper.id
-                );
-                if (stop && !stop.get('timeFrom').value) {
-                    stop.get('timeFrom').patchValue(value);
-                }
-            });
-
-        this.loadForm
-            .get('timeTo')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const stop = this.loadStops().controls.find(
-                    (item) =>
-                        item.get('shipperId').value ===
-                        this.selectedPickupShipper.id
-                );
-                if (stop && !stop.get('timeTo').value) {
-                    stop.get('timeTo').patchValue(value);
-                }
-            });
-    }
-
-    public closeAllLoadStopExceptActive(loadStop: AbstractControl) {
-        this.loadStops().controls.map((item) => {
-            if (
-                item.get('stopOrder').value === loadStop.get('stopOrder').value
-            ) {
-                item.get('openClose').patchValue(true);
-            } else {
-                item.get('openClose').patchValue(false);
-            }
-        });
-    }
-
-    public drawStopOnMap() {
-        if (this.loadStops().length > 1) {
-            this.routingService
-                .apiRoutingGet(
-                    JSON.stringify(
-                        this.loadStops()
-                            .controls.filter((item) => item)
-                            .map((item) => {
-                                return {
-                                    longitude: item.get('longitude').value,
-                                    latitude: item.get('latitude').value,
-                                };
-                            })
-                    )
-                )
-                .pipe(debounceTime(1000), takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res: RoutingResponse) => {
-                        // TODO: Populate lat and long with routesPoints
-                        this.loadStopRoutes[0] = {
-                            routeColor: '#919191',
-                            stops: this.loadStops()
-                                .controls.filter((item) => item)
-                                .map((item, index) => {
-                                    return {
-                                        lat: item.get('latitude').value,
-                                        long: item.get('longitude').value,
-                                        empty: index === 0,
-                                    };
-                                }),
-                        };
-
-                        this.loadStops().controls.forEach(
-                            (element: FormGroup, index: number) => {
-                                if (index === 0) {
-                                    element.get('legMiles').patchValue(null);
-                                    element.get('legHours').patchValue(null);
-                                    element.get('legMinutes').patchValue(null);
-                                    return;
-                                }
-                                // index - 1, because firstStop was skipped
-                                element
-                                    .get('legMiles')
-                                    .patchValue(res.legs[index - 1].miles);
-                                element
-                                    .get('legHours')
-                                    .patchValue(res.legs[index - 1].hours);
-                                element
-                                    .get('legMinutes')
-                                    .patchValue(res.legs[index - 1].minutes);
-
-                                if (!element.get('totalLegMiles').value) {
-                                    element.get('totalLegMiles').patchValue(
-                                        res.legs
-                                            .map((item) => item.miles)
-                                            .reduce((accumulator, item) => {
-                                                return (accumulator += item);
-                                            }, 0)
-                                    );
-
-                                    element.get('totalLegHours').patchValue(
-                                        res.legs
-                                            .map((item) => item.hours)
-                                            .reduce((accumulator, item) => {
-                                                return (accumulator += item);
-                                            }, 0)
-                                    );
-
-                                    element.get('totalLegMinutes').patchValue(
-                                        res.legs
-                                            .map((item) => item.minutes)
-                                            .reduce((accumulator, item) => {
-                                                return (accumulator += item);
-                                            }, 0)
-                                    );
-                                }
-                            }
-                        );
-                    },
-                    error: () => {},
-                });
+    public onSelectAdditionalOption(option: any) {
+        if (!this.loadForm.get('baseRate').value) {
+            return;
         }
+        option.active = !option.active;
     }
 
     // Load Stop
-    public createNewStop() {
-        if (this.selectedPickupShipper) {
-            this.loadPickupShipperInputConfig = {
-                ...this.loadPickupShipperInputConfig,
-                multipleInputValues: {
-                    options: [
-                        {
-                            value: this.selectedPickupShipper.name,
-                            logoName: null,
-                        },
-                        {
-                            value: this.selectedPickupShipper.address,
-                            logoName: null,
-                        },
-                    ],
-                    customClass: 'load-shipper',
-                },
-            };
+    public createNewExtraStop() {
+        // 1. Set Config For Shipper in Extra Stop
+        this.loadExtraStopsShipperInputConfig[this.loadExtraStops.length] = {
+            name: 'Input Dropdown',
+            type: 'text',
+            multipleLabel: {
+                labels: ['Shipper', 'City, State, Zip', 'Loads'],
+                customClass: 'load-shipper',
+            },
+            isDropdown: true,
+            isRequired: true,
+            blackInput: true,
+            textTransform: 'uppercase',
+            dropdownWidthClass: 'w-col-606',
+        };
 
-            // If Load Stop Exist , just return
-            const existLoadStop = this.loadStops().controls.find(
-                (item) =>
-                    item.get('shipperId').value ===
-                    this.selectedPickupShipper.id
-            );
+        // 2. Set Config For Shipper Contacts in Extra Stop
+        this.loadExtraStopsShipperContactsInputConfig[
+            this.loadExtraStops.length
+        ] = {
+            name: 'Input Dropdown',
+            type: 'text',
+            multipleLabel: {
+                labels: ['Contact', 'Phone'],
+                customClass: 'load-shipper-contact',
+            },
+            isDropdown: true,
+            isDisabled: true,
+            blackInput: true,
+            textTransform: 'capitalize',
+            dropdownWidthClass: 'w-col-344',
+        };
 
-            if (existLoadStop) {
-                this.loadForm
-                    .get('dateFrom')
-                    .patchValue(existLoadStop.get('dateFrom').value, {
-                        emitEvent: false,
-                    });
+        // If Load Stop Exist , just return
+        // const existLoadStop = this.loadExtraStops().controls.find(
+        //     (item) =>
+        //         item.get('shipperId').value ===
+        //         this.selectedPickupShipper.id
+        // );
 
-                this.loadForm
-                    .get('dateTo')
-                    .patchValue(existLoadStop.get('dateTo').value, {
-                        emitEvent: false,
-                    });
+        // if (existLoadStop) {
+        //     this.loadForm
+        //         .get('dateFrom')
+        //         .patchValue(existLoadStop.get('dateFrom').value, {
+        //             emitEvent: false,
+        //         });
 
-                this.loadForm
-                    .get('timeFrom')
-                    .patchValue(existLoadStop.get('timeFrom').value, {
-                        emitEvent: false,
-                    });
+        //     this.loadForm
+        //         .get('dateTo')
+        //         .patchValue(existLoadStop.get('dateTo').value, {
+        //             emitEvent: false,
+        //         });
 
-                this.loadForm
-                    .get('timeTo')
-                    .patchValue(existLoadStop.get('timeTo').value, {
-                        emitEvent: false,
-                    });
+        //     this.loadForm
+        //         .get('timeFrom')
+        //         .patchValue(existLoadStop.get('timeFrom').value, {
+        //             emitEvent: false,
+        //         });
 
-                return;
-            }
+        //     this.loadForm
+        //         .get('timeTo')
+        //         .patchValue(existLoadStop.get('timeTo').value, {
+        //             emitEvent: false,
+        //         });
 
-            this.addLoadStop();
-        }
+        //     return;
+        // }
+
+        this.addLoadExtraStop();
     }
 
-    public addLoadStop() {
-        this.loadStops().push(this.newLoadStop());
+    public addLoadExtraStop() {
+        // if (!this.selectedPickupShipper) {
+        //     return;
+        // }
+
+        this.loadExtraStops().push(this.newLoadExtraStop());
+
         this.drawStopOnMap();
-        this.closeAllLoadStopExceptActive(
-            this.loadStops().controls[this.loadStops().length - 1]
+
+        this.closeAllLoadExtraStopExceptActive(
+            this.loadExtraStops().controls[this.loadExtraStops().length - 1]
         );
 
         if (
@@ -1544,26 +1326,21 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public newLoadStop(): FormGroup {
+    public newLoadExtraStop(): FormGroup {
         return this.formBuilder.group({
             id: [null],
-            stopType: [this.selectedStopTab === 3 ? 'Pickup' : 'Delivery'],
-            stopOrder: [this.loadStops().length + 1],
-            shipperId: [this.selectedPickupShipper.id],
-            dateFrom: [null], // convert for backend
-            dateTo: [null], // convert for backend
-            // timeType: [
-            //     this.stopTimeTabs.find(
-            //         (item) => item.id === this.selectedStopTime
-            //     ).name,
-            // ],
+            stopType: ['Pickup'],
+            stopOrder: [this.loadExtraStops().length + 1],
+            shipperId: [null],
+            dateFrom: [null],
+            dateTo: [null],
             timeType: [null],
             timeFrom: [null],
             timeTo: [null],
-            arrive: [null], // null when create mode
-            depart: [null], // null when create mode
-            longitude: [this.selectedPickupShipper.longitude],
-            latitude: [this.selectedPickupShipper.latitude],
+            arrive: [null],
+            depart: [null],
+            longitude: [null], //this.selectedPickupShipper.longitude],
+            latitude: [null], //this.selectedPickupShipper.latitude],
             // From legs
             legMiles: [null],
             legHours: [null],
@@ -1573,25 +1350,25 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             totalLegMinutes: [null],
             // -----------
             // Shipper Contact information
-            address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
-            contact: ['A. Djordjevic'],
-            phone: ['(987) 654-3210'],
-            extensionPhone: ['444'],
+            address: [null],
+            contact: [null],
+            phone: [null],
+            extensionPhone: [null],
             // -----------
             items: this.formBuilder.array([]),
             openClose: [true],
         });
     }
 
-    public loadStops(): FormArray {
-        return this.loadForm.get('stops') as FormArray;
+    public loadExtraStops(): FormArray {
+        return this.loadForm.get('extraStops') as FormArray;
     }
 
-    public removeLoadStop(index: number) {
-        this.loadStops().removeAt(index);
+    public removeLoadExtraStop(index: number) {
+        this.loadExtraStops().removeAt(index);
         this.loadStopRoutes[0] = {
             routeColor: '#919191',
-            stops: this.loadStops()
+            stops: this.loadExtraStops()
                 .controls.filter((item) => item)
                 .map((item) => {
                     return {
@@ -1603,13 +1380,30 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         };
     }
 
-    // Load Stop Details
+    public closeAllLoadExtraStopExceptActive(loadStop: AbstractControl) {
+        this.isActivePickupStop = false;
+        this.isActiveDeliveryStop = false;
+
+        this.loadExtraStops().controls.map((item) => {
+            if (
+                item.get('stopOrder').value === loadStop.get('stopOrder').value
+            ) {
+                item.get('openClose').patchValue(true);
+            } else {
+                item.get('openClose').patchValue(false);
+            }
+        });
+    }
+
+    // Load Stop Details (Items)
     public addLoadStopDetails(id: number) {
         this.loadStopsDetails(id).push(this.newLoadStopDetails());
     }
 
     public loadStopsDetails(loadStopIndex: number): FormArray {
-        return this.loadStops().at(loadStopIndex).get('items') as FormArray;
+        return this.loadExtraStops()
+            .at(loadStopIndex)
+            .get('items') as FormArray;
     }
 
     public newLoadStopDetails(): FormGroup {
@@ -1643,6 +1437,119 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.loadStopsDetails(loadStopIndex).removeAt(loadStopDetailsIndex);
     }
 
+    // Draw Routes on Map
+    public drawStopOnMap() {
+        this.routingService
+            .apiRoutingGet(
+                this.loadExtraStops().length > 1
+                    ? JSON.stringify(
+                          this.loadExtraStops()
+                              .controls.filter((item) => item)
+                              .map((item) => {
+                                  return {
+                                      longitude: item.get('longitude').value,
+                                      latitude: item.get('latitude').value,
+                                  };
+                              })
+                      )
+                    : JSON.stringify({
+                          longitude: this.selectedPickupShipper.longitude,
+                          latitude: this.selectedPickupShipper.latitude,
+                      })
+            )
+            .pipe(debounceTime(1000), takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: RoutingResponse) => {
+                    // TODO: Populate lat and long with routesPoints
+                    this.loadStopRoutes[0] = {
+                        routeColor: '#919191',
+                        stops: this.loadExtraStops()
+                            .controls.filter((item) => item)
+                            .map((item, index) => {
+                                return {
+                                    lat: item.get('latitude').value,
+                                    long: item.get('longitude').value,
+                                    empty: index === 0,
+                                };
+                            }),
+                    };
+
+                    this.loadExtraStops().controls.forEach(
+                        (element: FormGroup, index: number) => {
+                            if (index === 0) {
+                                element.get('legMiles').patchValue(null);
+                                element.get('legHours').patchValue(null);
+                                element.get('legMinutes').patchValue(null);
+                                return;
+                            }
+                            // index - 1, because firstStop was skipped
+                            element
+                                .get('legMiles')
+                                .patchValue(res.legs[index - 1].miles);
+                            element
+                                .get('legHours')
+                                .patchValue(res.legs[index - 1].hours);
+                            element
+                                .get('legMinutes')
+                                .patchValue(res.legs[index - 1].minutes);
+
+                            if (!element.get('totalLegMiles').value) {
+                                element.get('totalLegMiles').patchValue(
+                                    res.legs
+                                        .map((item) => item.miles)
+                                        .reduce((accumulator, item) => {
+                                            return (accumulator += item);
+                                        }, 0)
+                                );
+
+                                element.get('totalLegHours').patchValue(
+                                    res.legs
+                                        .map((item) => item.hours)
+                                        .reduce((accumulator, item) => {
+                                            return (accumulator += item);
+                                        }, 0)
+                                );
+
+                                element.get('totalLegMinutes').patchValue(
+                                    res.legs
+                                        .map((item) => item.minutes)
+                                        .reduce((accumulator, item) => {
+                                            return (accumulator += item);
+                                        }, 0)
+                                );
+                            }
+                        }
+                    );
+                },
+                error: () => {},
+            });
+    }
+
+    // Toggle Additional Part of Load Visibility
+    public additionalPartVisibility(event: {
+        action: string;
+        isOpen: boolean;
+    }) {
+        this.loadModalSize = event.isOpen
+            ? 'modal-container-load'
+            : 'modal-container-M';
+
+        switch (event.action) {
+            case 'hazardous': {
+                this.isHazardousVisible = event.isOpen;
+                break;
+            }
+            case 'map': {
+                this.isHazardousVisible = false;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    // CRUD OPERATIONS
     private getLoadDropdowns(id?: number) {
         this.loadService
             .getLoadDropdowns(id)
@@ -2015,6 +1922,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
+
     private updateLoad(id: number) {
         console.log(id);
     }
@@ -2135,7 +2043,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         // this.stopTimeTabs.find(
         //     (item) => item.id === this.selectedStopTime
         // ).name;
-        return this.loadStops().controls.map((item, index) => {
+        return this.loadExtraStops().controls.map((item, index) => {
             return {
                 id: null,
                 stopOrder: item.get('stopOrder').value,
@@ -2229,27 +2137,114 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public additionalPartVisibility(event: {
-        action: string;
-        isOpen: boolean;
-    }) {
-        this.loadModalSize = event.isOpen
-            ? 'modal-container-load'
-            : 'modal-container-M';
-
-        switch (event.action) {
-            case 'hazardous': {
-                this.isHazardousVisible = event.isOpen;
+    /* Comments */
+    public changeCommentsEvent(comments: ReviewCommentModal) {
+        switch (comments.action) {
+            case 'delete': {
+                this.deleteComment(comments);
                 break;
             }
-            case 'map': {
-                this.isHazardousVisible = false;
+            case 'add': {
+                this.addComment(comments);
+                break;
+            }
+            case 'update': {
+                this.updateComment(comments);
                 break;
             }
             default: {
                 break;
             }
         }
+    }
+
+    public createComment() {
+        if (this.comments.some((item) => item.isNewReview)) {
+            return;
+        }
+        // ------------------------ PRODUCTION MODE -----------------------------
+        // this.reviews.unshift({
+        //   companyUser: {
+        //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
+        //     avatar: this.companyUser.avatar,
+        //   },
+        //   commentContent: '',
+        //   createdAt: new Date().toISOString(),
+        //   updatedAt: new Date().toISOString(),
+        //   isNewReview: true,
+        // });
+        // -------------------------- DEVELOP MODE --------------------------------
+        this.comments.unshift({
+            companyUser: {
+                fullName: this.companyUser.firstName.concat(
+                    ' ',
+                    this.companyUser.lastName
+                ),
+                avatar: this.companyUser.avatar,
+            },
+            commentContent: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            isNewReview: true,
+        });
+    }
+
+    public addComment(comments: ReviewCommentModal) {
+        const comment: CreateCommentCommand = {
+            entityTypeCommentId: 2,
+            entityTypeId: this.editData.id,
+            commentContent: comments.data.commentContent,
+        };
+
+        this.commentsService
+            .createComment(comment)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: any) => {
+                    this.comments = comments.sortData.map((item, index) => {
+                        if (index === 0) {
+                            return {
+                                ...item,
+                                id: res.id,
+                            };
+                        }
+                        return item;
+                    });
+                },
+                error: () => {},
+            });
+    }
+
+    public deleteComment(comments: ReviewCommentModal) {
+        this.comments = comments.sortData;
+        this.commentsService
+            .deleteCommentById(comments.data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+    }
+
+    public updateComment(comments: ReviewCommentModal) {
+        this.comments = comments.sortData;
+
+        const comment: UpdateCommentCommand = {
+            id: comments.data.id,
+            commentContent: comments.data.commentContent,
+        };
+
+        this.commentsService
+            .updateComment(comment)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
+    }
+
+    public identity(index: number, item: any): number {
+        return item.id;
     }
 
     ngOnDestroy(): void {
