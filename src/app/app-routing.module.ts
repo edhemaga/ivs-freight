@@ -94,7 +94,7 @@ const routes: Routes = [
             import('./core/components/dispatch/dispatch.module').then(
                 (m) => m.DispatchModule
             ),
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
     },
     {
         path: 'settings',
@@ -264,11 +264,11 @@ const routes: Routes = [
     {
         path: 'tools/miles',
         loadChildren: () =>
-            import(
-                './core/components/miles/miles.module'
-            ).then((m) => m.MilesModule),
+            import('./core/components/miles/miles.module').then(
+                (m) => m.MilesModule
+            ),
         canActivate: [AuthGuard],
-        resolve: { miles: MilesResolverService }
+        resolve: { miles: MilesResolverService },
     },
     {
         path: 'safety/violation',

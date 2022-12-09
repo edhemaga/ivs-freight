@@ -1,5 +1,6 @@
 export interface WorkHistoryModel {
     id?: number;
+    reviewId?: number;
     applicantId?: string;
     employer: string;
     jobDescription: string;

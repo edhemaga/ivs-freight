@@ -141,9 +141,10 @@ export class Step2FormComponent
     public vehicleType: TruckTypeResponse[] = [];
     public trailerType: TrailerTypeResponse[] = [];
     public trailerLengthType: TrailerLengthResponse[] = [];
+    public boxTruckLengthType: EnumValue[] = [];
 
     public filteredTrailerType: TrailerTypeResponse[] = [];
-    public filteredTrailerLength: TrailerLengthResponse[] = [];
+    public filteredLengthType: TrailerLengthResponse[] = [];
 
     private cfrPartRadios: any;
     private fmcsaRadios: any;
@@ -659,11 +660,6 @@ export class Step2FormComponent
                     ...formValue.classesOfEquipment,
                 ];
 
-                console.log(
-                    'lastItemInClassOfEquipmentArray',
-                    lastItemInClassOfEquipmentArray
-                );
-
                 this.workExperienceForm.patchValue({
                     vehicleType: lastItemInClassOfEquipmentArray.vehicleType,
                     trailerType: lastItemInClassOfEquipmentArray.trailerType,
@@ -1066,6 +1062,8 @@ export class Step2FormComponent
                     this.selectedTrailerType = null;
                     this.selectedTrailerLength = null;
 
+                    this.filteredLengthType = this.trailerLengthType;
+
                     this.workExperienceForm
                         .get('vehicleType')
                         .patchValue(event.name);
@@ -1088,9 +1086,12 @@ export class Step2FormComponent
                             this.filteredTrailerType = this.trailerType.filter(
                                 (item) => item.id !== 14
                             );
+
                             break;
                         case 2:
                             this.isBoxTruckSelected = true;
+
+                            this.filteredLengthType = this.boxTruckLengthType;
 
                             this.inputService.changeValidators(
                                 this.classOfEquipmentForm.get('trailerType'),
@@ -1789,6 +1790,7 @@ export class Step2FormComponent
                 });
 
                 this.trailerLengthType = res.trailerLenghts;
+                this.boxTruckLengthType = res.truckLengths;
 
                 this.reasonsForLeaving = res.reasonsForLeave;
             });

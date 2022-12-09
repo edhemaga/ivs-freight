@@ -377,12 +377,7 @@ export class MvrAuthorizationComponent implements OnInit, OnDestroy {
 
         const { dontHaveMvr } = this.dontHaveMvrForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const documents = this.documents.map((item) => item.realFile);
 
         const saveData: any = {
             applicantId: this.applicantId,

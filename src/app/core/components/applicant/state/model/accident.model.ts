@@ -21,7 +21,7 @@ export interface AccidentModel {
     vehicleType: string;
     description: string;
     isEditingAccident: boolean;
-    accidentRecordReview: any;
+    accidentItemReview: any;
 }
 
 export class Accident {

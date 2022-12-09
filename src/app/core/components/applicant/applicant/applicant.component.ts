@@ -20,7 +20,7 @@ import { SelectedMode } from '../state/enum/selected-mode.enum';
 export class ApplicantComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode = SelectedMode.APPLICANT;
+    public selectedMode = SelectedMode.REVIEW;
 
     public menuItems: INavigation[] = [
         {
@@ -138,7 +138,6 @@ export class ApplicantComponent implements OnInit, OnDestroy {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('REEEES', res);
                 res = JSON.parse(JSON.stringify(res));
 
                 if (this.selectedMode === SelectedMode.REVIEW) {
@@ -242,9 +241,11 @@ export class ApplicantComponent implements OnInit, OnDestroy {
 
                                 return {
                                     ...item,
-                                    isReviewed: workExperienceItems
-                                        ? true
-                                        : false,
+                                    isReviewed:
+                                        workExperienceItemsReview &&
+                                        workExperienceItemsReview[0]
+                                            ? true
+                                            : false,
                                     hasIncorrectAnswer: hasIncorrectValue,
                                 };
                             }
@@ -323,6 +324,73 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                                     hasIncorrectAnswer:
                                         hasIncorrectValue ||
                                         cardHasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 3) {
+                                const accidentRecordItems =
+                                    res?.accidentRecords?.accidents;
+
+                                const accidentRecordItemsReview =
+                                    accidentRecordItems?.map(
+                                        (item) => item?.accidentItemReview
+                                    );
+
+                                let filteredAccidentRecordItemsReview = [];
+                                let hasIncorrectValue: boolean;
+
+                                if (accidentRecordItemsReview) {
+                                    if (accidentRecordItemsReview[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i <
+                                            accidentRecordItemsReview?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                accidentRecordItemsReview[i];
+
+                                            delete filteredItem.isPrimary;
+
+                                            filteredAccidentRecordItemsReview =
+                                                [
+                                                    ...filteredAccidentRecordItemsReview,
+                                                    filteredItem,
+                                                ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            hasIncorrectValue = true;
+                                        } else {
+                                            hasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        accidentRecordItemsReview &&
+                                        accidentRecordItemsReview[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
                                 };
                             }
 
@@ -551,8 +619,6 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                                         : false,
                                 };
                             }
-
-                            return item;
                         }
                     );
                 }

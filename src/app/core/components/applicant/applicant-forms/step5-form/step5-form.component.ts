@@ -210,7 +210,10 @@ export class Step5FormComponent
 
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
-            if (formValue.trafficViolationItemReview) {
+            if (
+                formValue.trafficViolationItemReview &&
+                Object.keys(formValue.trafficViolationItemReview).length > 2
+            ) {
                 const {
                     isDateValid,
                     isLocationValid,

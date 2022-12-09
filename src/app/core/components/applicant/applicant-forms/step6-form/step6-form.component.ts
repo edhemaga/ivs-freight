@@ -179,7 +179,10 @@ export class Step6FormComponent
 
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
-            if (formValue.emergencyContactReview) {
+            if (
+                formValue.emergencyContactReview &&
+                Object.keys(formValue.emergencyContactReview).length > 1
+            ) {
                 const {
                     isNameValid,
                     isPhoneValid,

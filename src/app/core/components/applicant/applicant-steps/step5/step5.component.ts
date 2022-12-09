@@ -38,7 +38,7 @@ import {
 export class Step5Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public applicantId: number;
 
@@ -162,7 +162,6 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: TrafficViolationFeedbackResponse): void {
-        console.log('stepValues', stepValues);
         const {
             noViolationsForPastTwelveMonths,
             notBeenConvicted,
@@ -186,14 +185,6 @@ export class Step5Component implements OnInit, OnDestroy {
         this.certifyForm.get('certify').patchValue(certifyViolations);
 
         if (!noViolationsForPastTwelveMonths) {
-            const itemReviewPlaceholder = {
-                isDateValid: true,
-                isLocationValid: true,
-                isDescriptionValid: true,
-                locationMessage: null,
-                descriptionMessage: null,
-            };
-
             const lastItemInViolationsArray =
                 trafficViolationItems[trafficViolationItems.length - 1];
 
@@ -214,7 +205,7 @@ export class Step5Component implements OnInit, OnDestroy {
                         trafficViolationItemReview:
                             item.trafficViolationItemReview
                                 ? item.trafficViolationItemReview
-                                : itemReviewPlaceholder,
+                                : null,
                     };
                 }
             );
@@ -231,15 +222,11 @@ export class Step5Component implements OnInit, OnDestroy {
                 trafficViolationItemReview:
                     lastItemInViolationsArray.trafficViolationItemReview
                         ? lastItemInViolationsArray.trafficViolationItemReview
-                        : itemReviewPlaceholder,
+                        : null,
             };
 
             this.lastViolationsCard = {
-                id: filteredLastItemInViolationsArray.id,
-                date: filteredLastItemInViolationsArray.date,
-                vehicleType: filteredLastItemInViolationsArray.vehicleType,
-                location: filteredLastItemInViolationsArray.location,
-                description: filteredLastItemInViolationsArray.description,
+                ...filteredLastItemInViolationsArray,
             };
 
             this.violationsArray = JSON.parse(
@@ -811,16 +798,22 @@ export class Step5Component implements OnInit, OnDestroy {
 
         const filteredViolationsArray = this.violationsArray.map((item) => {
             return {
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: item.id ? item.id : null,
+                    trafficViolationItemReview: item.trafficViolationItemReview
+                        ? {
+                              ...item.trafficViolationItemReview,
+                              trafficViolationItemId: item.id ? item.id : null,
+                          }
+                        : null,
+                }),
                 date: convertDateToBackend(item.date),
                 vehicleTypeId: this.vehicleType.find(
                     (vehicleItem) => vehicleItem.name === item.vehicleType
                 ).id,
                 location: item.location,
                 description: item.description,
-                ...((this.stepHasValues ||
-                    this.selectedMode === SelectedMode.FEEDBACK) && {
-                    id: item.id ? item.id : null,
-                }),
             };
         });
 
@@ -828,6 +821,22 @@ export class Step5Component implements OnInit, OnDestroy {
 
         if (!noViolationsForPastTwelveMonths) {
             filteredLastViolationsCard = {
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: this.lastViolationsCard.id
+                        ? this.lastViolationsCard.id
+                        : null,
+                    trafficViolationItemReview: this.lastViolationsCard
+                        .trafficViolationItemReview
+                        ? {
+                              ...this.lastViolationsCard
+                                  .trafficViolationItemReview,
+                              trafficViolationItemId: this.lastViolationsCard.id
+                                  ? this.lastViolationsCard.id
+                                  : null,
+                          }
+                        : null,
+                }),
                 date: convertDateToBackend(this.lastViolationsCard.date),
                 vehicleTypeId: this.vehicleType.find(
                     (vehicleItem) =>
@@ -835,12 +844,6 @@ export class Step5Component implements OnInit, OnDestroy {
                 ).id,
                 location: this.lastViolationsCard.location,
                 description: this.lastViolationsCard.description,
-                ...((this.stepHasValues ||
-                    this.selectedMode === SelectedMode.FEEDBACK) && {
-                    id: this.lastViolationsCard.id
-                        ? this.lastViolationsCard.id
-                        : null,
-                }),
             };
         }
 
@@ -871,8 +874,6 @@ export class Step5Component implements OnInit, OnDestroy {
                 };
             }
         );
-
-        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

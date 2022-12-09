@@ -216,7 +216,10 @@ export class Step3FormComponent
 
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
-            if (formValue.licenseReview) {
+            if (
+                formValue.licenseReview &&
+                Object.keys(formValue.licenseReview).length > 2
+            ) {
                 const {
                     isLicenseValid,
                     licenseMessage,

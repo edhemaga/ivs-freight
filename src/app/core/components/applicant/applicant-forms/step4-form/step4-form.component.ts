@@ -271,14 +271,17 @@ export class Step4FormComponent
 
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
-            if (formValue.accidentRecordReview) {
+            if (
+                formValue.accidentItemReview &&
+                Object.keys(formValue.accidentItemReview).length > 2
+            ) {
                 const {
                     isLocationValid,
                     isDateValid,
                     locationDateMessage,
                     isDescriptionValid,
                     descriptionMessage,
-                } = formValue.accidentRecordReview;
+                } = formValue.accidentItemReview;
 
                 this.openAnnotationArray[10] = {
                     ...this.openAnnotationArray[10],
@@ -368,7 +371,7 @@ export class Step4FormComponent
                     location,
                     accidentState,
                     isEditingAccident,
-                    accidentRecordReview,
+                    accidentItemReview,
                     id,
                     ...previousFormValues
                 } = this.formValuesToPatch;

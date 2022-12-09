@@ -65,7 +65,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public subscription: Subscription;
 
@@ -716,8 +716,6 @@ export class Step7Component implements OnInit, OnDestroy {
             intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer,
             certifyInformation: isValidAnotherEmployer,
         };
-
-        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

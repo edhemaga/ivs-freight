@@ -108,7 +108,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public patchStepValues(
         stepValues: MedicalCertificateFeedbackResponse
     ): void {
-        console.log('stepValues', stepValues);
         const { issueDate, expireDate, files, id } = stepValues;
 
         this.medicalCertificateId = id;
@@ -265,12 +264,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
         const { fromDate, toDate } = this.medicalCertificateForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const documents = this.documents.map((item) => item.realFile);
 
         const saveData: any = {
             applicantId: this.applicantId,
@@ -283,8 +277,6 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                 filesForDeleteIds: this.documentsForDeleteIds,
             }),
         };
-
-        console.log('saveData', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (

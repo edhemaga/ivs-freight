@@ -203,13 +203,6 @@ export class Step3Component implements OnInit, OnDestroy {
     public patchStepValues(stepValues: CdlFeedbackResponse): void {
         const { cdlDenied, cdlDeniedExplanation, licences } = stepValues;
 
-        const itemReviewPlaceholder = {
-            isLicenseValid: true,
-            licenseMessage: null,
-            isExpDateValid: true,
-            expDateMessage: null,
-        };
-
         const lastItemInLicenseArray = licences[licences.length - 1];
 
         const restOfTheItemsInLicenseArray = [...licences];
@@ -234,7 +227,7 @@ export class Step3Component implements OnInit, OnDestroy {
                     endorsments: item.cdlEndorsements,
                     licenseReview: item.licenseReview
                         ? item.licenseReview
-                        : itemReviewPlaceholder,
+                        : null,
                 };
             }
         );
@@ -254,18 +247,11 @@ export class Step3Component implements OnInit, OnDestroy {
             endorsments: lastItemInLicenseArray.cdlEndorsements,
             licenseReview: lastItemInLicenseArray.licenseReview
                 ? lastItemInLicenseArray.licenseReview
-                : itemReviewPlaceholder,
+                : null,
         };
 
         this.lastLicenseCard = {
-            id: filteredLastItemInLicenseArray.id,
-            licenseNumber: filteredLastItemInLicenseArray.licenseNumber,
-            country: filteredLastItemInLicenseArray.country,
-            state: filteredLastItemInLicenseArray.state,
-            classType: filteredLastItemInLicenseArray.classType,
-            expDate: filteredLastItemInLicenseArray.expDate,
-            restrictions: filteredLastItemInLicenseArray.restrictions,
-            endorsments: filteredLastItemInLicenseArray.endorsments,
+            ...filteredLastItemInLicenseArray,
         };
 
         this.licenseArray = JSON.parse(JSON.stringify(filteredLicenseArray));
@@ -859,6 +845,16 @@ export class Step3Component implements OnInit, OnDestroy {
                   ).id;
 
             return {
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: item.id ? item.id : null,
+                    licenseReview: item.licenseReview
+                        ? {
+                              ...item.licenseReview,
+                              applicantCdlId: item.id ? item.id : null,
+                          }
+                        : null,
+                }),
                 licenseNumber: item.licenseNumber,
                 country: item.country as CountryType,
                 stateId,
@@ -866,10 +862,6 @@ export class Step3Component implements OnInit, OnDestroy {
                 expDate: convertDateToBackend(item.expDate),
                 restrictions: item.restrictions.map((item) => item.id),
                 endorsements: item.endorsments.map((item) => item.id),
-                ...((this.stepHasValues ||
-                    this.selectedMode === SelectedMode.FEEDBACK) && {
-                    id: item.id ? item.id : null,
-                }),
             };
         });
 
@@ -884,6 +876,18 @@ export class Step3Component implements OnInit, OnDestroy {
               ).id;
 
         const filteredLastLicenseCard = {
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                id: this.lastLicenseCard.id ? this.lastLicenseCard.id : null,
+                licenseReview: this.lastLicenseCard.licenseReview
+                    ? {
+                          ...this.lastLicenseCard.licenseReview,
+                          applicantCdlId: this.lastLicenseCard.id
+                              ? this.lastLicenseCard.id
+                              : null,
+                      }
+                    : null,
+            }),
             licenseNumber: this.lastLicenseCard.licenseNumber,
             country: this.lastLicenseCard.country as CountryType,
             stateId: filteredLastLicenseCardStateId,
@@ -895,10 +899,6 @@ export class Step3Component implements OnInit, OnDestroy {
             endorsements: this.lastLicenseCard.endorsments.map(
                 (item) => item.id
             ),
-            ...((this.stepHasValues ||
-                this.selectedMode === SelectedMode.FEEDBACK) && {
-                id: this.lastLicenseCard.id ? this.lastLicenseCard.id : null,
-            }),
         };
 
         const saveData: any = {

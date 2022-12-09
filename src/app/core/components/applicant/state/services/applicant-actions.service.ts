@@ -57,6 +57,7 @@ import {
     UpdateApplicantCdlInformationCommand,
     CreateApplicantCdlInformationReviewCommand,
     UpdateApplicantCdlInformationReviewCommand,
+    UpdateWorkExperienceReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -81,6 +82,12 @@ export class ApplicantActionsService {
     ): Observable<ApplicantResponse> {
         return this.applicantService.apiApplicantAdminAcceptPost(data);
     }
+
+    /*   public createPersonalInfo(
+        data: UpdatePersonalInfoCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantPersonalPut(data);
+    } */
 
     public createWorkExperience(
         data: CreateWorkExperienceCommand
@@ -366,6 +373,12 @@ export class ApplicantActionsService {
         data: UpdatePersonalInfoReviewCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantPersonalReviewPut(data);
+    }
+
+    public updateWorkExperienceReview(
+        data: UpdateWorkExperienceReviewCommand
+    ): Observable<object> {
+        return this.applicantService.apiApplicantWorkexperienceReviewPut(data);
     }
 
     public updateCdlInformationReview(

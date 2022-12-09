@@ -75,7 +75,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public subscription: Subscription;
 
@@ -86,7 +86,6 @@ export class Step6Component implements OnInit, OnDestroy {
     public markFormInvalid: boolean;
 
     public applicantId: number;
-    public educationId: number;
 
     public stepValues: any;
     public lastItemStepValues: any;
@@ -404,13 +403,6 @@ export class Step6Component implements OnInit, OnDestroy {
         this.selectedGrade = highestGrade - 1;
         this.selectedCollegeGrade = collegeGrade - 1;
 
-        const itemReviewPlaceholder = {
-            isNameValid: true,
-            isPhoneValid: true,
-            isRelationshipValid: true,
-            emergencyContactMessage: null,
-        };
-
         const lastItemInContactsArray =
             emergencyContacts[emergencyContacts.length - 1];
 
@@ -429,7 +421,7 @@ export class Step6Component implements OnInit, OnDestroy {
                     relationship: item.relationship,
                     emergencyContactReview: item.emergencyContactReview
                         ? item.emergencyContactReview
-                        : itemReviewPlaceholder,
+                        : null,
                 };
             }
         );
@@ -444,14 +436,11 @@ export class Step6Component implements OnInit, OnDestroy {
             emergencyContactReview:
                 lastItemInContactsArray.emergencyContactReview
                     ? lastItemInContactsArray.emergencyContactReview
-                    : itemReviewPlaceholder,
+                    : null,
         };
 
         this.lastContactCard = {
-            id: filteredLastItemInContactsArray.id,
-            name: filteredLastItemInContactsArray.name,
-            phone: filteredLastItemInContactsArray.phone,
-            relationship: filteredLastItemInContactsArray.relationship,
+            ...filteredLastItemInContactsArray,
         };
 
         this.contactsArray = JSON.parse(JSON.stringify(filteredContactsArray));
@@ -591,8 +580,6 @@ export class Step6Component implements OnInit, OnDestroy {
 
                 this.stepHasReviewValues = true;
 
-                this.educationId = id;
-
                 this.openAnnotationArray[0] = {
                     ...this.openAnnotationArray[0],
                     lineInputs: [!isSpecialTrainingDescriptionValid],
@@ -721,7 +708,10 @@ export class Step6Component implements OnInit, OnDestroy {
 
                     const inputFieldsArray = JSON.stringify(
                         this.openAnnotationArray
-                            .filter((item) => Object.keys(item).length !== 0)
+                            .filter(
+                                (item, index) =>
+                                    index > 3 && Object.keys(item).length !== 0
+                            )
                             .map((item) => item.lineInputs)
                     );
 
@@ -1501,24 +1491,39 @@ export class Step6Component implements OnInit, OnDestroy {
 
         const filteredContactsArray = this.contactsArray.map((item) => {
             return {
-                name: item.name,
-                phone: item.phone,
-                relationship: item.relationship,
                 ...((this.stepHasValues ||
                     this.selectedMode === SelectedMode.FEEDBACK) && {
                     id: item.id ? item.id : null,
+                    emergencyContactReview: item.emergencyContactReview
+                        ? {
+                              ...item.emergencyContactReview,
+                              emergencyContactId: item.id ? item.id : null,
+                          }
+                        : null,
                 }),
+                name: item.name,
+                phone: item.phone,
+                relationship: item.relationship,
             };
         });
 
         const filteredLastContactCard = {
-            name: this.lastContactCard.name,
-            phone: this.lastContactCard.phone,
-            relationship: this.lastContactCard.relationship,
             ...((this.stepHasValues ||
                 this.selectedMode === SelectedMode.FEEDBACK) && {
                 id: this.lastContactCard.id ? this.lastContactCard.id : null,
+                emergencyContactReview: this.lastContactCard
+                    .emergencyContactReview
+                    ? {
+                          ...this.lastContactCard.emergencyContactReview,
+                          emergencyContactId: this.lastContactCard.id
+                              ? this.lastContactCard.id
+                              : null,
+                      }
+                    : null,
             }),
+            name: this.lastContactCard.name,
+            phone: this.lastContactCard.phone,
+            relationship: this.lastContactCard.relationship,
         };
 
         const saveData: CreateEducationCommand = {
@@ -1660,9 +1665,6 @@ export class Step6Component implements OnInit, OnDestroy {
 
         const saveData: CreateEducationReviewCommand = {
             applicantId: this.applicantId,
-            ...(this.stepHasReviewValues && {
-                id: this.educationId,
-            }),
             isSpecialTrainingDescriptionValid:
                 !this.openAnnotationArray[0].lineInputs[0],
             specialTrainingDescriptionMessage: questionReview1,
