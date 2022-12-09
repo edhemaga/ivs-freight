@@ -121,6 +121,11 @@ export class DriverDetailsItemComponent
         this.activeCdl = this.drivers[0].data.cdls.filter(
             (item) => item.status === 1
         );
+        
+        this.dataMvr = this.drivers[0].data.mvrs;
+        this.dataMedical = this.drivers[0].data.medicals;
+        this.dataTest = this.drivers[0].data.dataTest; 
+
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -452,6 +457,8 @@ export class DriverDetailsItemComponent
             dataForCdl = this.dataCdl;
         }
 
+        console.log('--here---', dataForCdl)
+        console.log('--this.dataMvr---', this.dataMvr)
         setTimeout(() => {
             this.dropDownService.dropActions(
                 any,

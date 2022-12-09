@@ -121,7 +121,7 @@ export class CommonTruckTrailerService {
     ): Observable<any> {
         return this.registrationService.apiRegistrationIdDelete(id).pipe(
             tap(() => {
-                this.updateDataAnimation(tabSelected);
+                this.updateDataAnimation(tabSelected, 'deleteRegistration', id);
             })
         );
     }
@@ -137,7 +137,7 @@ export class CommonTruckTrailerService {
     ): Observable<any> {
         return this.inspectionService.apiInspectionIdDelete(id).pipe(
             tap(() => {
-                this.updateDataAnimation(tabSelected);
+                this.updateDataAnimation(tabSelected, 'deleteInspection', id);
             })
         );
     }
@@ -214,7 +214,7 @@ export class CommonTruckTrailerService {
     public deleteTitleById(id: number, tabSelected?: string): Observable<any> {
         return this.titleService.apiTitleIdDelete(id).pipe(
             tap(() => {
-                this.updateDataAnimation(tabSelected);
+                this.updateDataAnimation(tabSelected, 'deleteTitle', id);
             })
         );
     }
@@ -249,40 +249,6 @@ export class CommonTruckTrailerService {
                         },
                     }); 
 
-                    /*
-                    console.log('--called here--')
-                    const subTruck = this.truckService
-                        .getTruckById(data.truckId)
-                        .subscribe({
-                            next: (truck: TruckResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.truckActiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckActiveStore.add(truck);
-                                } else if (tabSelected === 'inactive') {
-                                    this.truckInactiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckInactiveStore.add(truck);
-                                }
-                                /*
-                                this.tdlStore.update(truck.id, {
-                                    titles: truck.titles,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: truck,
-                                    id: truck.id,
-                                });
-
-                                subTruck.unsubscribe();
-                            },
-                        });
-
-                    */    
                 } else if (data.trailerId) {
 
                     let newTitleId = res?.id;
@@ -359,6 +325,25 @@ export class CommonTruckTrailerService {
                        
                     },
                 });
+            }   else if ( cardUpdated == 'deleteRegistration' ) {
+
+                let indexNum;
+                newData.registrations.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.registrations.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tdlStore.add(newData);
+                this.truckItemStore.set([newData]);
+
             } else if ( cardUpdated == 'inspection' ) {
                 let inspectionApi = this.trailerService.getTrailerInspectionByInspectionId(cardId).subscribe({
                     next: (res: any) => {
@@ -379,6 +364,25 @@ export class CommonTruckTrailerService {
                        
                     },
                 });
+            } else if ( cardUpdated == 'deleteInspection' ) {
+
+                let indexNum;
+                newData.inspections.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.inspections.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tdlStore.add(newData);
+                this.truckItemStore.set([newData]);
+
             } else if ( cardUpdated == 'title' ) {
                 let titleApi = this.trailerService.getTrailerTitleByTitleId(cardId).subscribe({
                     next: (res: any) => {
@@ -399,6 +403,23 @@ export class CommonTruckTrailerService {
                        
                     },
                 });
+            } else if ( cardUpdated == 'deleteTitle' ) {
+                let indexNum;
+                newData.titles.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.titles.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tdlStore.add(newData);
+                this.truckItemStore.set([newData]);
             }
             
         }
@@ -428,6 +449,26 @@ export class CommonTruckTrailerService {
                     },
                 });
                 
+            } else if ( cardUpdated == 'deleteRegistration' ) {
+                
+                let indexNum;
+                newData.registrations.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.registrations.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tadl.add(newData);
+                this.trailerItemStore.set([newData]);
+                
+
             } else if ( cardUpdated == 'inspection' ){
                 let inspectionApi = this.trailerService.getTrailerInspectionByInspectionId(cardId).subscribe({
                     next: (res: any) => {
@@ -448,6 +489,25 @@ export class CommonTruckTrailerService {
                        
                     },
                 });
+            } else if ( cardUpdated == 'deleteInspection' ) {
+
+                let indexNum;
+                newData.inspections.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.inspections.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tadl.add(newData);
+                this.trailerItemStore.set([newData]);
+
             } else if ( cardUpdated == 'title' ) {
                 let titleApi = this.trailerService.getTrailerTitleByTitleId(cardId).subscribe({
                     next: (res: any) => {
@@ -468,48 +528,24 @@ export class CommonTruckTrailerService {
                        
                     },
                 });
+            } else if ( cardUpdated == 'deleteTitle' ) {
+                let indexNum;
+                newData.titles.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.titles.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tadl.add(newData);
+                this.trailerItemStore.set([newData]);
             }
-            
-           
-            /*
-            const subTrailer = this.trailerService
-                .getTrailerById(trailerId)
-                .subscribe({
-                    next: (trailer: TrailerResponse | any) => {
-                        if (tabSelected === 'active') {
-                            this.trailerActiveStore.remove(
-                                ({ id }) => id === trailerId
-                            );
-
-                            this.trailerActiveStore.add(trailer);
-                        } else if (tabSelected === 'inactive') {
-                            this.trailerInactiveStore.remove(
-                                ({ id }) => id === trailerId
-                            );
-
-                            this.trailerInactiveStore.add(trailer);
-                        }
-
-                        this.tadl.update(trailer.id, {
-                            titles: trailer.titles,
-                        });
-                        this.tadl.update(trailer.id, {
-                            registrations: trailer.registrations,
-                        });
-                        this.tadl.update(trailer.id, {
-                            inspections: trailer.inspections,
-                        });
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: trailer,
-                            id: trailer.id,
-                        });
-
-                        subTrailer.unsubscribe();
-                    },
-
-                }); */
         }
     }
 }

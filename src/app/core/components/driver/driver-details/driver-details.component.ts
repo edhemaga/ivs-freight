@@ -409,7 +409,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
 
     public getCdlById(id: number) {
-        console.log('--getCdlById--')
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
