@@ -2,7 +2,7 @@
     class="map-list-card-container"
     [ngClass]="{ 'map-list-card-selected': isSelected }"
     [attr.data-id]="'map-list-card-' + item.id"
-    (click)="selectCard()"
+    (click)="selectCard($event)"
 >
     <div class="map-list-card-info">
         <div class="title-container">
@@ -22,8 +22,10 @@
             <div class="d-flex">
                 <svg-icon
                     class="favorite-svg"
+                    [ngClass]="{ 'active': item?.pinned }"
                     src="assets/svg/detail-cards/favorite.svg"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    (click)="onFavorite($event)"
                     *ngIf="
                         sortCategory.name == 'Favorites' ||
                         sortCategory.name == 'Fuel Price'
@@ -36,6 +38,7 @@
                             ? 'table-dropdown-container active-drop'
                             : 'table-dropdown-container'
                     "
+                    (click)="showMoreOptions($event)"
                 >
                     <app-details-page-dropdown
                         [options]="dropdownActions"
@@ -402,8 +405,8 @@
                 >{{ item.distanceBetween }} mi -
             </span>
             <span class="address-text">
-                {{ address.city }},
-                {{ address.state }}
+                {{ address.city ? address.city : address.county }},
+                {{ address.stateShortName }}
                 {{ address.zipCode }},
                 {{ address.country }}
             </span>
