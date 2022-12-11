@@ -2,6 +2,9 @@
     class="ta-upload-file-container {{ customClassName }}"
     [class.modal]="!customClassName || customClassName == ''"
     [class.keep_open]="t2?.isOpen()"
+    [class.applicant_review]="file?.incorrect"
+    [class.annotation_hover]="annotationHover"
+    [class.applicant_feedback]="reviewMode === 'FEEDBACK_MODE'"
 >
     <!-- File Header Actions -->
 
@@ -59,6 +62,8 @@
         <!-- Review Message -->
         <div
             class="review-feedback-container"
+            (mouseenter)="annotationHover = true"
+            (mouseleave)="annotationHover = false"
             *ngIf="
                 reviewMode === 'REVIEW_MODE' || reviewMode === 'FEEDBACK_MODE'
             "
@@ -80,7 +85,10 @@
 
     <!-- No Review Actions -->
     <div
-        *ngIf="!isFileDelete || (isReview && reviewMode === 'FEEDBACK_MODE')"
+        *ngIf="
+            !isFileDelete &&
+            (!isReview || (isReview && reviewMode === 'FEEDBACK_MODE'))
+        "
         class="ta-upload-file-header"
     >
         <!-- Left Side -->
