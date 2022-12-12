@@ -742,46 +742,8 @@
                             <app-ta-upload-files
                                 [files]="documents"
                                 [size]="'medium'"
+                                [showDropzone]="true"
                                 (onFileEvent)="onFilesEvent($event)"
-                                [hasTag]="true"
-                                [tags]="[
-                                    {
-                                        name: 'No Tag',
-                                        checked: true
-                                    },
-                                    {
-                                        name: 'HOS Agreement',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'Unsafe Driving Agreement',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'Maintenance Agreement',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'Application',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'MVR Auth',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'PSP Auth',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'HOS Rules',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'SPH Auth',
-                                        checked: false
-                                    }
-                                ]"
                             ></app-ta-upload-files>
                         </app-ta-custom-card>
                     </div>
