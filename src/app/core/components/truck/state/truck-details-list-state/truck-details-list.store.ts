@@ -3,7 +3,7 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { TruckResponse } from '../../../../../../../appcoretruckassist/model/truckResponse';
 
 export interface TruckDetailsListState
-    extends EntityState<TruckResponse, number> {}
+    extends EntityState<any, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'truckDetailsList' })
