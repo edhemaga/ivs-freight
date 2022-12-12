@@ -95,6 +95,7 @@ const routes: Routes = [
                 (m) => m.DispatchModule
             ),
         canActivate: [AuthGuard],
+        resolve: { dispatcher: DispatcherResolverService },
     },
     {
         path: 'settings',

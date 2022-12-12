@@ -52,7 +52,7 @@
                 [type]="'fuelStop'"
                 [dropdownActions]="tableOptions.actions"
                 (bodyActions)="onTableBodyActions($event)"
-                (clickedMarker)="selectItem(latlong.id)"
+                (clickedMarker)="selectItem($event)"
                 [ngStyle]="{
                     display:
                         locationFilterOn && latlong?.isShown == false
@@ -69,6 +69,7 @@
             [mapType]="'fuelStop'"
             (callDropDownAction)="onTableBodyActions($event)"
             (updateMapList)="updateMapList($event)"
+            (selectMarker)="selectItem($event)"
         ></app-maps>
     </div>
 </div>

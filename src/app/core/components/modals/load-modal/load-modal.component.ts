@@ -25,7 +25,6 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from '../../../services/form/form.service';
 import { LoadTService } from '../../load/state/load.service';
 import { LoadModalResponse } from '../../../../../../appcoretruckassist';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { CommentsService } from '../../../services/comments/comments.service';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
@@ -39,7 +38,6 @@ import {
 } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
-import { convertTimeFromBackend } from '../../../utils/methods.calculations';
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
@@ -48,10 +46,16 @@ import { convertTimeFromBackend } from '../../../utils/methods.calculations';
     encapsulation: ViewEncapsulation.None,
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
+    private destroy$ = new Subject<void>();
+
     @Input() editData: any;
 
     public loadForm: FormGroup;
     public isFormDirty: boolean;
+
+    public loadModalSize: string = 'modal-container-M';
+
+    public companyUser: SignInResponse = null;
 
     public selectedTab: number = 1;
     public tabs = [
@@ -67,7 +71,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         },
     ];
 
-    public selectedStopTab: number = 3;
+    public selectedExtraStopTab: number[] = [];
     public stopTabs = [
         {
             id: 3,
@@ -81,8 +85,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         },
     ];
 
-    public selectedStopTime: number = 5;
-    public stopTimeTabs = [
+    public selectedStopTimePickup: number = 5;
+    public stopTimeTabsPickup = [
         {
             id: 5,
             name: 'Open',
@@ -90,6 +94,20 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         },
         {
             id: 6,
+            name: 'APPT',
+            checked: false,
+        },
+    ];
+
+    public selectedStopTimeDelivery: number = 5;
+    public stopTimeTabsDelivery = [
+        {
+            id: 7,
+            name: 'Open',
+            checked: true,
+        },
+        {
+            id: 8,
             name: 'APPT',
             checked: false,
         },
@@ -123,11 +141,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public labelsDispatches: any[] = [];
     public originLabelsDispatches: any[] = [];
     public labelsGeneralCommodity: any[] = [];
+
+    // Broker Labels
     public labelsBroker: any[] = [];
     public labelsBrokerContacts: any[] = [];
     public originBrokerContacts: any[] = [];
+
+    // Shipper Labels
     public originShipperContacts: any[] = [];
     public labelsShipperContacts: any[] = [];
+
+    // Requirements LAbels
     public labelsTruckReq: any[] = [];
     public labelsTrailerReq: any[] = [];
     public labelsDoorType: any[] = [];
@@ -141,16 +165,26 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedCompany: any = null;
     public selectedDispatches: any = null;
     public selectedGeneralCommodity: any = null;
+
+    // Broker
     public selectedBroker: any = null;
     public selectedBrokerContact: any = null;
-    public selectedShipperContact: any = null;
+
+    // Pickup Shipper
+    public selectedPickupShipper: any = null;
+    public selectedPickupShipperContact: any = null;
+
+    // Delivery Shipper
+    public selectedDeliveryShipper: any = null;
+    public selectedDeliveryShipperContact: any = null;
+
+    // Requirements
     public selectedTruckReq: any = null;
     public selectedTrailerReq: any = null;
     public selectedDoorType: any = null;
     public selectedSuspension: any = null;
     public selectedTrailerLength: any = null;
     public selectedYear: any = null;
-    public selectedShipper: any = null;
 
     // Load Details Labels
     public labelsloadDetailsUnits: any[] = [];
@@ -167,6 +201,34 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedLoadDetailsStrapChain: any[] = [];
     public selectedLoadDetailsHazardous: any[] = [];
 
+    // Some Inputs Configurations
+    public loadDispatchesTTDInputConfig: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        multipleLabel: {
+            labels: ['Truck', 'Trailer', 'Driver', 'Driver Pay'],
+            customClass: 'load-dispatches-ttd',
+        },
+        isDropdown: true,
+        blackInput: true,
+        textTransform: 'capitalize',
+        dropdownWidthClass: 'w-col-616',
+    };
+
+    public loadBrokerInputConfig: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        multipleLabel: {
+            labels: ['Broker', 'Avail. Credit', 'Loads'],
+            customClass: 'load-broker',
+        },
+        isDropdown: true,
+        isRequired: true,
+        blackInput: true,
+        textTransform: 'capitalize',
+        dropdownWidthClass: 'w-col-432',
+    };
+
     public loadBrokerContactsInputConfig: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
@@ -174,61 +236,89 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             labels: ['Contact', 'Phone'],
             customClass: 'load-broker-contact',
         },
-        textTransform: 'capitalize',
         isDropdown: true,
         isDisabled: true,
-        dropdownWidthClass: 'w-col-344',
-    };
-
-    public loadDispatchesTTDInputConfig: ITaInput = {
-        name: 'Input Dropdown',
-        type: 'text',
-        multipleLabel: {
-            labels: ['Truck', 'Trailer', 'Driver'],
-            customClass: 'load-dispatches-ttd',
-        },
+        blackInput: true,
         textTransform: 'capitalize',
-        isDropdown: true,
-        dropdownWidthClass: 'w-col-616',
+        dropdownWidthClass: 'w-col-330',
     };
 
-    public loadShipperInputConfig: ITaInput = {
+    public loadPickupShipperInputConfig: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
-            labels: ['Shipper', 'Location'],
+            labels: ['Shipper', 'City, State, Zip', 'Loads'],
             customClass: 'load-shipper',
         },
-        textTransform: 'uppercase',
         isDropdown: true,
         isRequired: true,
-        dropdownWidthClass: 'w-col-616',
+        blackInput: true,
+        textTransform: 'uppercase',
+        dropdownWidthClass: 'w-col-606',
     };
 
-    public loadShipperContactsInputConfig: ITaInput = {
+    public loadPickupShipperContactsInputConfig: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
             labels: ['Contact', 'Phone'],
-            customClass: 'load-broker-contact',
+            customClass: 'load-shipper-contact',
         },
-        textTransform: 'capitalize',
         isDropdown: true,
         isDisabled: true,
+        blackInput: true,
+        textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-344',
     };
 
-    public additionalBillingTypes: any[] = [];
+    public loadDeliveryShipperInputConfig: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        multipleLabel: {
+            labels: ['Shipper', 'City, State, Zip', 'Loads'],
+            customClass: 'load-shipper',
+        },
+        isDropdown: true,
+        isRequired: true,
+        blackInput: true,
+        textTransform: 'uppercase',
+        dropdownWidthClass: 'w-col-606',
+    };
 
+    public loadDeliveryShipperContactsInputConfig: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        multipleLabel: {
+            labels: ['Contact', 'Phone'],
+            customClass: 'load-shipper-contact',
+        },
+        isDropdown: true,
+        isDisabled: true,
+        blackInput: true,
+        textTransform: 'capitalize',
+        dropdownWidthClass: 'w-col-344',
+    };
+
+    // Extra Stop Configuration
+    public selectedExtraStopShipper: any[] = [];
+    public selectedExtraStopShipperContact: any[] = [];
+    public loadExtraStopsShipperInputConfig: ITaInput[] = [];
+    public loadExtraStopsShipperContactsInputConfig: ITaInput[] = [];
+
+    // Billing
+    public additionalBillingTypes: any[] = [];
     public isAvailableAdjustedRate: boolean = false;
     public isAvailableAdvanceRate: boolean = false;
 
+    // Documents
     public documents: any[] = [];
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
+    // Comments
     public comments: any[] = [];
 
+    // Map Routes
     public loadStopRoutes: {
         routeColor: string;
         stops: {
@@ -238,18 +328,17 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         }[];
     }[] = [];
 
-    public companyUser: SignInResponse = null;
-
-    public isDateRange: boolean = false;
-
+    // Hazardous Dropdown
     public isHazardousPicked: boolean = false;
     public isHazardousVisible: boolean = false;
 
-    public additionalPartHeight: any;
+    // Pickup Stops
+    public pickupDateRange: boolean = false;
+    public isActivePickupStop: boolean = false;
 
-    public loadModalSize: string = 'modal-container-M';
-
-    private destroy$ = new Subject<void>();
+    // Delivery Stops
+    public deliveryDateRange: boolean = false;
+    public isActiveDeliveryStop: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -258,7 +347,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         private commentsService: CommentsService,
         private routingService: RoutingService,
         private loadService: LoadTService,
-        private notificationService: NotificationService,
         private modalService: ModalService
     ) {}
 
@@ -267,8 +355,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.getLoadDropdowns();
 
-        this.trackBillingPayment();
-        this.trackStopInformation();
+        // this.trackBillingPayment();
     }
 
     private createForm() {
@@ -279,10 +366,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             dispatchId: [null],
             referenceNumber: [null, Validators.required],
             generalCommodity: [null],
-            weight: [null], // convert in number
+            weight: [null],
             brokerId: [null, Validators.required],
             brokerContactId: [null],
-            // loadRequirements
+            // Requirements
             truckTypeId: [null],
             trailerTypeId: [null],
             doorType: [null],
@@ -292,21 +379,39 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             liftgate: [null],
             driverMessage: [null],
             // ----------------
-            shipper: [null, Validators.required],
-            shipperContactId: [null],
-            dateFrom: [null, Validators.required],
-            dateTo: [null],
-            timeFrom: [null, Validators.required],
-            timeTo: [null, Validators.required],
-            baseRate: [null, Validators.required], // convert in number
-            adjustedRate: [null], // convert in number
-            advancePay: [null], // convert in number
+            // Pickup Stop
+            pickupStop: ['Pickup'],
+            pickupShipper: [null, Validators.required],
+            pickupShipperContactId: [null],
+            pickupDateFrom: [null, Validators.required],
+            pickupDateTo: [null],
+            pickupTimeFrom: [null, Validators.required],
+            pickupTimeTo: [null, Validators.required],
+            pickupItems: this.formBuilder.array([]),
+            // -------------
+            // Delivery Stop
+            deliveryStop: ['Delivery'],
+            deliveryShipper: [null, Validators.required],
+            deliveryShipperContactId: [null],
+            deliveryDateFrom: [null, Validators.required],
+            deliveryDateTo: [null],
+            deliveryTimeFrom: [null, Validators.required],
+            deliveryTimeTo: [null, Validators.required],
+            deliveryItems: this.formBuilder.array([]),
+            // -------------
+            // Extra Stops
+            extraStops: this.formBuilder.array([]),
+            // -------------
+            // Billing
+            baseRate: [null, Validators.required],
+            adjustedRate: [null],
+            advancePay: [null],
             layoverRate: [null],
             lumperRate: [null],
             fuelSurchargeRate: [null],
             escortRate: [null],
             detentionRate: [null],
-            stops: this.formBuilder.array([]),
+            // -------------
             note: [null],
             files: [null],
         });
@@ -320,28 +425,45 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onTabChange(event: any, action: string) {
+    public onTabChange(event: any, action: string, indx?: number) {
         switch (action) {
             case 'ftl-ltl': {
                 this.selectedTab = event.id;
                 break;
             }
             case 'stop-tab': {
-                this.selectedStopTab = event.id;
+                this.selectedExtraStopTab[indx] = event.id;
                 break;
             }
-            case 'stop-time': {
-                this.selectedStopTime = event.id;
-                if (this.selectedStopTime === 6) {
+            case 'stop-time-pickup': {
+                this.selectedStopTimePickup = event.id;
+                if (this.selectedStopTimePickup === 6) {
                     this.inputService.changeValidators(
-                        this.loadForm.get('timeTo'),
+                        this.loadForm.get('pickupTimeTo'),
                         false
                     );
                 } else {
                     this.inputService.changeValidators(
-                        this.loadForm.get('timeTo')
+                        this.loadForm.get('pickupTimeTo')
                     );
                 }
+                break;
+            }
+            case 'stop-time-delivery': {
+                this.selectedStopTimeDelivery = event.id;
+                if (this.selectedStopTimePickup === 6) {
+                    this.inputService.changeValidators(
+                        this.loadForm.get('deliveryTimeTo'),
+                        false
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.loadForm.get('deliveryTimeTo')
+                    );
+                }
+                break;
+            }
+            default: {
                 break;
             }
         }
@@ -367,16 +489,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.addLoad();
                     this.modalService.setModalSpinner({
                         action: null,
-                        status: true,
-                    });
-                }
-                break;
-            }
-            case 'delete': {
-                if (this.editData) {
-                    this.deleteLoadById(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
                         status: true,
                     });
                 }
@@ -433,169 +545,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-            case 'broker': {
-                this.selectedBroker = event;
-
-                if (this.selectedBroker) {
-                    this.labelsBrokerContacts = this.originBrokerContacts.map(
-                        (el) => {
-                            return {
-                                ...el,
-                                contacts: el?.contacts?.filter(
-                                    (subEl) =>
-                                        subEl.brokerId ===
-                                        this.selectedBroker.id
-                                ),
-                            };
-                        }
-                    );
-
-                    this.selectedBrokerContact =
-                        this.labelsBrokerContacts[1].contacts[0];
-
-                    this.loadForm
-                        .get('brokerContactId')
-                        .patchValue(this.selectedBrokerContact.fullName);
-
-                    this.loadBrokerContactsInputConfig = {
-                        ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedBrokerContact.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedBrokerContact.phone,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-broker-contact',
-                        },
-                        isDisabled: false,
-                    };
-                } else {
-                    this.labelsBrokerContacts = this.originBrokerContacts;
-                }
-                break;
-            }
-            case 'broker-contact': {
-                if (event) {
-                    this.selectedBrokerContact = {
-                        ...event,
-                        name: event?.name?.concat(' ', event?.phone),
-                    };
-
-                    this.loadBrokerContactsInputConfig = {
-                        ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: event.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: event.phone,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-broker-contact',
-                        },
-                        blackInput: true,
-                        isDisabled: false,
-                    };
-                } else {
-                    this.loadBrokerContactsInputConfig.multipleInputValues =
-                        null;
-                    this.loadBrokerContactsInputConfig = {
-                        ...this.loadBrokerContactsInputConfig,
-                        isDisabled: true,
-                    };
-                }
-                break;
-            }
-            case 'shipper': {
-                if (event) {
-                    // If Load Stops Doesn't exist, but 'delivery' is first picked just return
-                    this.selectedShipper = event;
-
-                    this.labelsShipperContacts = this.originShipperContacts.map(
-                        (el) => {
-                            return {
-                                ...el,
-                                contacts: el?.contacts?.filter(
-                                    (subEl) =>
-                                        subEl.brokerId ===
-                                        this.selectedBroker.id
-                                ),
-                            };
-                        }
-                    );
-
-                    this.selectedShipperContact =
-                        this.labelsShipperContacts[1].contacts[0];
-
-                    this.loadForm
-                        .get('shipperContactId')
-                        .patchValue(this.selectedShipperContact.fullName);
-
-                    this.loadShipperContactsInputConfig = {
-                        ...this.loadShipperContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedShipperContact.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedShipperContact.address,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-broker-contact',
-                        },
-                        isDisabled: false,
-                    };
-                } else {
-                    this.labelsShipperContacts = this.originShipperContacts;
-                }
-                break;
-            }
-            case 'shipper-contact': {
-                if (event) {
-                    this.selectedShipperContact = {
-                        ...event,
-                        name: event?.name?.concat(' ', event?.address),
-                    };
-
-                    this.loadShipperContactsInputConfig = {
-                        ...this.loadShipperContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: event.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: event.address,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass: 'load-broker-contact',
-                        },
-                        blackInput: true,
-                        isDisabled: false,
-                    };
-                } else {
-                    this.loadShipperContactsInputConfig.multipleInputValues =
-                        null;
-                    this.loadShipperContactsInputConfig = {
-                        ...this.loadShipperContactsInputConfig,
-                        isDisabled: true,
-                    };
-                }
-                break;
-            }
             case 'dispatches': {
                 if (event) {
                     this.selectedDispatches = {
@@ -636,11 +585,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                     isSvg: false,
                                     folder: null,
                                     subFolder: null,
-                                    isOwner: true, // event?.driver?.owner,
+                                    isOwner: event?.driver?.owner,
                                     logoType: null,
                                 },
                                 {
-                                    value: 'Fleet Rate',
+                                    value: event?.payType,
                                     logoName: null,
                                     isImg: false,
                                     isSvg: false,
@@ -651,14 +600,400 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ],
                             customClass: 'load-dispatches-ttd',
                         },
-                        blackInput: true,
                     };
                 } else {
-                    this.loadDispatchesTTDInputConfig.multipleInputValues =
-                        null;
+                    this.loadDispatchesTTDInputConfig = {
+                        ...this.loadDispatchesTTDInputConfig,
+                        multipleInputValues: null,
+                    };
+
+                    this.selectedDispatches = null;
                 }
                 break;
             }
+            case 'broker': {
+                this.selectedBroker = event;
+
+                if (this.selectedBroker) {
+                    this.loadBrokerInputConfig = {
+                        ...this.loadBrokerInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: this.selectedBroker.businessName,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedBroker.availableCredit,
+                                    second_value: 10000,
+                                    logoName: null,
+                                    isProgressBar: true,
+                                },
+                                {
+                                    value: this.selectedBroker.loadsCount,
+                                    logoName: null,
+                                    isCounter: true,
+                                },
+                            ],
+                            customClass: 'load-broker',
+                        },
+                    };
+
+                    this.labelsBrokerContacts = this.originBrokerContacts.map(
+                        (el) => {
+                            return {
+                                ...el,
+                                contacts: el?.contacts?.filter(
+                                    (subEl) =>
+                                        subEl.brokerId ===
+                                        this.selectedBroker.id
+                                ),
+                            };
+                        }
+                    );
+
+                    this.selectedBrokerContact =
+                        this.labelsBrokerContacts[1].contacts[0];
+
+                    if (this.selectedBrokerContact) {
+                        this.loadForm
+                            .get('brokerContactId')
+                            .patchValue(this.selectedBrokerContact.fullName);
+
+                        this.loadBrokerContactsInputConfig = {
+                            ...this.loadBrokerContactsInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedBrokerContact.name,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedBrokerContact
+                                            .originalPhone,
+                                        second_value: `#${this.selectedBrokerContact.phoneExtension}`,
+                                        logoName: null,
+                                    },
+                                ],
+                                customClass: 'load-broker-contact',
+                            },
+                            isDisabled: false,
+                            blackInput: false,
+                        };
+                    }
+                }
+                // restart value if clear
+                else {
+                    this.labelsBrokerContacts = this.originBrokerContacts;
+                    this.loadBrokerInputConfig = {
+                        ...this.loadBrokerInputConfig,
+                        multipleInputValues: null,
+                    };
+
+                    this.selectedBrokerContact = null;
+
+                    this.loadForm.get('brokerContactId').patchValue(null);
+
+                    this.loadBrokerContactsInputConfig = {
+                        ...this.loadBrokerContactsInputConfig,
+                        multipleInputValues: null,
+                        isDisabled: true,
+                    };
+                }
+                break;
+            }
+            case 'broker-contact': {
+                if (event) {
+                    this.selectedBrokerContact = {
+                        ...event,
+                        name: event?.name?.concat(' ', event?.phone),
+                    };
+                    this.loadBrokerContactsInputConfig = {
+                        ...this.loadBrokerContactsInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: event.name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: event.originalPhone,
+                                    second_value: `#${event.phoneExtension}`,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass: 'load-broker-contact',
+                        },
+                        isDisabled: false,
+                    };
+                } else {
+                    this.loadBrokerContactsInputConfig = {
+                        ...this.loadBrokerContactsInputConfig,
+                        multipleInputValues: null,
+                    };
+                }
+                break;
+            }
+            case 'shipper-pickup': {
+                this.selectedPickupShipper = event;
+                console.log('selected shipper: ', this.selectedPickupShipper);
+                if (this.selectedPickupShipper) {
+                    this.loadPickupShipperInputConfig = {
+                        ...this.loadPickupShipperInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: this.selectedPickupShipper
+                                        .businessName,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedPickupShipper.address,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedPickupShipper
+                                        .loadsCount,
+                                    logoName: null,
+                                    isCounter: true,
+                                },
+                            ],
+                            customClass: 'load-shipper',
+                        },
+                    };
+
+                    this.labelsShipperContacts = this.originShipperContacts.map(
+                        (el) => {
+                            return {
+                                ...el,
+                                contacts: el?.contacts?.filter(
+                                    (subEl) =>
+                                        subEl.shipperId ===
+                                        this.selectedPickupShipper.id
+                                ),
+                            };
+                        }
+                    );
+
+                    this.selectedPickupShipperContact =
+                        this.labelsShipperContacts[1].contacts[0];
+
+                    console.log(
+                        this.selectedPickupShipper,
+                        this.selectedPickupShipperContact
+                    );
+                    this.loadForm
+                        .get('pickupShipperContactId')
+                        .patchValue(this.selectedPickupShipperContact.fullName);
+
+                    this.loadPickupShipperContactsInputConfig = {
+                        ...this.loadPickupShipperContactsInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: this.selectedPickupShipperContact
+                                        .name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedPickupShipperContact
+                                        .originalPhone,
+                                    second_value: `#${this.selectedPickupShipperContact.phoneExtension}`,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass: 'load-shipper-contact',
+                        },
+                        isDisabled: false,
+                    };
+                }
+                // Restart value if clear
+                else {
+                    this.labelsShipperContacts = this.originShipperContacts;
+
+                    this.loadPickupShipperInputConfig = {
+                        ...this.loadPickupShipperInputConfig,
+                        multipleInputValues: null,
+                    };
+
+                    this.selectedPickupShipperContact = null;
+
+                    this.loadForm
+                        .get('pickupShipperContactId')
+                        .patchValue(null);
+
+                    this.loadPickupShipperContactsInputConfig = {
+                        ...this.loadPickupShipperContactsInputConfig,
+                        multipleInputValues: null,
+                        isDisabled: true,
+                    };
+
+                    console.log(this.loadPickupShipperContactsInputConfig);
+                }
+                break;
+            }
+            case 'shipper-contact-pickup': {
+                if (event) {
+                    this.selectedPickupShipperContact = {
+                        ...event,
+                        name: event?.name?.concat(' ', event?.phone),
+                    };
+
+                    this.loadPickupShipperContactsInputConfig = {
+                        ...this.loadPickupShipperContactsInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: event.name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: event.originalPhone,
+                                    second_value: `#${event.phoneExtension}`,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass: 'load-shipper-contact',
+                        },
+                        isDisabled: false,
+                    };
+                } else {
+                    this.loadPickupShipperContactsInputConfig = {
+                        ...this.loadPickupShipperContactsInputConfig,
+                        multipleInputValues: null,
+                    };
+                }
+                break;
+            }
+
+            case 'shipper-delivery': {
+                this.selectedDeliveryShipper = event;
+                console.log('selected shipper: ', this.selectedDeliveryShipper);
+                if (this.selectedDeliveryShipper) {
+                    this.loadDeliveryShipperInputConfig = {
+                        ...this.loadDeliveryShipperInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: this.selectedDeliveryShipper
+                                        .businessName,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedDeliveryShipper.address,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedDeliveryShipper
+                                        .loadsCount,
+                                    logoName: null,
+                                    isCounter: true,
+                                },
+                            ],
+                            customClass: 'load-shipper',
+                        },
+                    };
+
+                    this.labelsShipperContacts = this.originShipperContacts.map(
+                        (el) => {
+                            return {
+                                ...el,
+                                contacts: el?.contacts?.filter(
+                                    (subEl) =>
+                                        subEl.shipperId ===
+                                        this.selectedDeliveryShipper.id
+                                ),
+                            };
+                        }
+                    );
+
+                    this.selectedDeliveryShipperContact =
+                        this.labelsShipperContacts[1].contacts[0];
+
+                    this.loadForm
+                        .get('deliveryShipperContactId')
+                        .patchValue(
+                            this.selectedDeliveryShipperContact.fullName
+                        );
+
+                    this.loadDeliveryShipperContactsInputConfig = {
+                        ...this.loadDeliveryShipperContactsInputConfig,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: this.selectedDeliveryShipperContact
+                                        .name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedDeliveryShipperContact
+                                        .originalPhone,
+                                    second_value: `#${this.selectedDeliveryShipperContact.phoneExtension}`,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass: 'load-shipper-contact',
+                        },
+                        isDisabled: false,
+                    };
+                }
+                // Restart value if clear
+                else {
+                    this.labelsShipperContacts = this.originShipperContacts;
+
+                    this.loadPickupShipperInputConfig = {
+                        ...this.loadPickupShipperInputConfig,
+                        multipleInputValues: null,
+                    };
+
+                    this.selectedDeliveryShipperContact = null;
+
+                    this.loadForm
+                        .get('deliveryShipperContactId')
+                        .patchValue(null);
+
+                    this.loadDeliveryShipperContactsInputConfig = {
+                        ...this.loadDeliveryShipperContactsInputConfig,
+                        multipleInputValues: null,
+                        isDisabled: true,
+                    };
+                }
+                break;
+            }
+            case 'shipper-contact-delivery': {
+                if (event) {
+                    this.selectedDeliveryShipperContact = {
+                        ...event,
+                        name: event?.name?.concat(' ', event?.phone),
+                    };
+
+                    this.selectedDeliveryShipperContact = {
+                        ...this.selectedDeliveryShipperContact,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: event.name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: event.originalPhone,
+                                    second_value: `#${event.phoneExtension}`,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass: 'load-shipper-contact',
+                        },
+                        isDisabled: false,
+                    };
+                } else {
+                    this.selectedDeliveryShipperContact = {
+                        ...this.selectedDeliveryShipperContact,
+                        multipleInputValues: null,
+                    };
+                }
+                break;
+            }
+
             case 'truck-req': {
                 this.selectedTruckReq = event;
                 break;
@@ -713,6 +1048,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    // Documents
     public onFilesEvent(event: any) {
         this.documents = event.files;
         switch (event.action) {
@@ -739,6 +1075,1066 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    // First Pickup and Last Delivery Stop Toggling
+    public toggleStopActivity(event: boolean, action: string, indx?: number) {
+        switch (action) {
+            case 'first-pickup': {
+                this.isActivePickupStop = event;
+                this.isActiveDeliveryStop = false;
+                break;
+            }
+            case 'first-delivery': {
+                this.isActiveDeliveryStop = event;
+                this.isActivePickupStop = false;
+                break;
+            }
+            case 'extra-stops': {
+                this.selectedExtraStopShipperContact[indx].openClose = event;
+
+                this.closeAllLoadExtraStopExceptActive(
+                    this.loadExtraStops[indx]
+                );
+
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+        this.loadExtraStops().controls.filter((item) => {
+            item.get('openClose').patchValue(false);
+        });
+    }
+
+    // Billing Payment
+    public trackBillingPayment() {
+        this.loadForm
+            .get('baseRate')
+            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .subscribe((value) => {
+                if (!value) {
+                    this.isAvailableAdjustedRate = false;
+                    this.isAvailableAdvanceRate = false;
+
+                    this.loadForm.get('adjustedRate').reset();
+                    this.loadForm.get('advancePay').reset();
+                    this.loadForm.get('layoverRate').reset();
+                    this.loadForm.get('lumperRate').reset();
+                    this.loadForm.get('fuelSurchargeRate').reset();
+                    this.loadForm.get('escortRate').reset();
+                    this.loadForm.get('detentionRate').reset();
+                    this.additionalBillingTypes.filter(
+                        (item) => (item.active = false)
+                    );
+                } else {
+                    this.loadModalBill.baseRate =
+                        convertThousanSepInNumber(value);
+                }
+            });
+
+        this.loadForm
+            .get('adjustedRate')
+            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .subscribe((value) => {
+                if (!this.loadForm.get('baseRate').value || !value) {
+                    return;
+                }
+
+                if (
+                    convertThousanSepInNumber(value) >
+                    convertThousanSepInNumber(
+                        this.loadForm.get('baseRate').value
+                    )
+                ) {
+                    this.loadModalBill.adjusted = 0;
+                    this.loadForm.get('adjustedRate').reset();
+                } else {
+                    this.loadModalBill.adjusted =
+                        convertThousanSepInNumber(value);
+                }
+            });
+
+        this.loadForm
+            .get('advancePay')
+            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .subscribe((value) => {
+                if (!this.loadForm.get('baseRate').value || !value) {
+                    return;
+                }
+
+                if (
+                    convertThousanSepInNumber(value) >
+                    convertThousanSepInNumber(
+                        this.loadForm.get('baseRate').value
+                    )
+                ) {
+                    this.loadModalBill.advance = 0;
+                    this.loadForm.get('advancePay').reset();
+                    return;
+                } else {
+                    this.loadModalBill.advance =
+                        convertThousanSepInNumber(value);
+                }
+            });
+
+        this.loadForm
+            .get('layoverRate')
+            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .subscribe((value) => {
+                this.loadModalBill.layover = convertThousanSepInNumber(value);
+            });
+
+        this.loadForm
+            .get('lumperRate')
+            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .subscribe((value) => {
+                this.loadModalBill.lumper = convertThousanSepInNumber(value);
+            });
+
+        this.loadForm
+            .get('fuelSurchargeRate')
+            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .subscribe((value) => {
+                this.loadModalBill.fuelSurcharge =
+                    convertThousanSepInNumber(value);
+            });
+
+        this.loadForm
+            .get('escortRate')
+            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .subscribe((value) => {
+                this.loadModalBill.escort = convertThousanSepInNumber(value);
+            });
+
+        this.loadForm
+            .get('detentionRate')
+            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .subscribe((value) => {
+                this.loadModalBill.detention = convertThousanSepInNumber(value);
+            });
+    }
+
+    public onSelectAdditionalOption(option: any) {
+        if (!this.loadForm.get('baseRate').value) {
+            return;
+        }
+        option.active = !option.active;
+    }
+
+    // Load Stop
+    public createNewExtraStop() {
+        // 1. Set Config For Shipper in Extra Stop
+        this.loadExtraStopsShipperInputConfig[this.loadExtraStops.length] = {
+            name: 'Input Dropdown',
+            type: 'text',
+            multipleLabel: {
+                labels: ['Shipper', 'City, State, Zip', 'Loads'],
+                customClass: 'load-shipper',
+            },
+            isDropdown: true,
+            isRequired: true,
+            blackInput: true,
+            textTransform: 'uppercase',
+            dropdownWidthClass: 'w-col-606',
+        };
+
+        // 2. Set Config For Shipper Contacts in Extra Stop
+        this.loadExtraStopsShipperContactsInputConfig[
+            this.loadExtraStops.length
+        ] = {
+            name: 'Input Dropdown',
+            type: 'text',
+            multipleLabel: {
+                labels: ['Contact', 'Phone'],
+                customClass: 'load-shipper-contact',
+            },
+            isDropdown: true,
+            isDisabled: true,
+            blackInput: true,
+            textTransform: 'capitalize',
+            dropdownWidthClass: 'w-col-344',
+        };
+
+        // If Load Stop Exist , just return
+        // const existLoadStop = this.loadExtraStops().controls.find(
+        //     (item) =>
+        //         item.get('shipperId').value ===
+        //         this.selectedPickupShipper.id
+        // );
+
+        // if (existLoadStop) {
+        //     this.loadForm
+        //         .get('dateFrom')
+        //         .patchValue(existLoadStop.get('dateFrom').value, {
+        //             emitEvent: false,
+        //         });
+
+        //     this.loadForm
+        //         .get('dateTo')
+        //         .patchValue(existLoadStop.get('dateTo').value, {
+        //             emitEvent: false,
+        //         });
+
+        //     this.loadForm
+        //         .get('timeFrom')
+        //         .patchValue(existLoadStop.get('timeFrom').value, {
+        //             emitEvent: false,
+        //         });
+
+        //     this.loadForm
+        //         .get('timeTo')
+        //         .patchValue(existLoadStop.get('timeTo').value, {
+        //             emitEvent: false,
+        //         });
+
+        //     return;
+        // }
+
+        this.addLoadExtraStop();
+    }
+
+    public addLoadExtraStop() {
+        // if (!this.selectedPickupShipper) {
+        //     return;
+        // }
+
+        this.loadExtraStops().push(this.newLoadExtraStop());
+
+        this.drawStopOnMap();
+
+        this.closeAllLoadExtraStopExceptActive(
+            this.loadExtraStops().controls[this.loadExtraStops().length - 1]
+        );
+
+        if (
+            this.loadForm.get('dateFrom').value ||
+            this.loadForm.get('dateTo').value ||
+            this.loadForm.get('timeFrom').value ||
+            this.loadForm.get('timeTo').value
+        ) {
+            this.loadForm
+                .get('dateFrom')
+                .patchValue(null, { emitEvent: false });
+            this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
+            this.loadForm
+                .get('timeFrom')
+                .patchValue(null, { emitEvent: false });
+            this.loadForm.get('timeTo').patchValue(null, { emitEvent: false });
+        }
+    }
+
+    public newLoadExtraStop(): FormGroup {
+        return this.formBuilder.group({
+            id: [null],
+            stopType: ['Pickup'],
+            stopOrder: [this.loadExtraStops().length + 1],
+            shipperId: [null],
+            dateFrom: [null],
+            dateTo: [null],
+            timeType: [null],
+            timeFrom: [null],
+            timeTo: [null],
+            arrive: [null],
+            depart: [null],
+            longitude: [null], //this.selectedPickupShipper.longitude],
+            latitude: [null], //this.selectedPickupShipper.latitude],
+            // From legs
+            legMiles: [null],
+            legHours: [null],
+            legMinutes: [null],
+            totalLegMiles: [null],
+            totalLegHours: [null],
+            totalLegMinutes: [null],
+            // -----------
+            // Shipper Contact information
+            address: [null],
+            contact: [null],
+            phone: [null],
+            extensionPhone: [null],
+            // -----------
+            items: this.formBuilder.array([]),
+            openClose: [true],
+        });
+    }
+
+    public loadExtraStops(): FormArray {
+        return this.loadForm.get('extraStops') as FormArray;
+    }
+
+    public removeLoadExtraStop(index: number) {
+        this.loadExtraStops().removeAt(index);
+        this.loadStopRoutes[0] = {
+            routeColor: '#919191',
+            stops: this.loadExtraStops()
+                .controls.filter((item) => item)
+                .map((item) => {
+                    return {
+                        lat: item.get('latitude').value,
+                        long: item.get('longitude').value,
+                        empty: true,
+                    };
+                }),
+        };
+    }
+
+    public closeAllLoadExtraStopExceptActive(loadStop: AbstractControl) {
+        this.isActivePickupStop = false;
+        this.isActiveDeliveryStop = false;
+
+        this.loadExtraStops().controls.map((item) => {
+            if (
+                item.get('stopOrder').value === loadStop.get('stopOrder').value
+            ) {
+                item.get('openClose').patchValue(true);
+            } else {
+                item.get('openClose').patchValue(false);
+            }
+        });
+    }
+
+    // Load Stop Details (Items)
+    public addLoadStopDetails(id: number) {
+        this.loadStopsDetails(id).push(this.newLoadStopDetails());
+    }
+
+    public loadStopsDetails(loadStopIndex: number): FormArray {
+        return this.loadExtraStops()
+            .at(loadStopIndex)
+            .get('items') as FormArray;
+    }
+
+    public newLoadStopDetails(): FormGroup {
+        return this.formBuilder.group({
+            id: [null],
+            bolNumber: [null],
+            appointmentNumber: [null],
+            pickupNumber: [null],
+            poNumber: [null],
+            sealNumber: [null],
+            weight: [null],
+            length: [null],
+            height: [null],
+            temperature: [null],
+            description: [null, descriptionValidation],
+            code: [null],
+            quantity: [null],
+            units: [null],
+            secure: [null],
+            tarp: [null],
+            stackable: [null],
+            driverAssist: [null],
+            hazardousMaterialId: [null],
+        });
+    }
+
+    public removeLoadStopDetails(
+        loadStopIndex: number,
+        loadStopDetailsIndex: number
+    ) {
+        this.loadStopsDetails(loadStopIndex).removeAt(loadStopDetailsIndex);
+    }
+
+    // Draw Routes on Map
+    public drawStopOnMap() {
+        this.routingService
+            .apiRoutingGet(
+                this.loadExtraStops().length > 1
+                    ? JSON.stringify(
+                          this.loadExtraStops()
+                              .controls.filter((item) => item)
+                              .map((item) => {
+                                  return {
+                                      longitude: item.get('longitude').value,
+                                      latitude: item.get('latitude').value,
+                                  };
+                              })
+                      )
+                    : JSON.stringify({
+                          longitude: this.selectedPickupShipper.longitude,
+                          latitude: this.selectedPickupShipper.latitude,
+                      })
+            )
+            .pipe(debounceTime(1000), takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: RoutingResponse) => {
+                    // TODO: Populate lat and long with routesPoints
+                    this.loadStopRoutes[0] = {
+                        routeColor: '#919191',
+                        stops: this.loadExtraStops()
+                            .controls.filter((item) => item)
+                            .map((item, index) => {
+                                return {
+                                    lat: item.get('latitude').value,
+                                    long: item.get('longitude').value,
+                                    empty: index === 0,
+                                };
+                            }),
+                    };
+
+                    this.loadExtraStops().controls.forEach(
+                        (element: FormGroup, index: number) => {
+                            if (index === 0) {
+                                element.get('legMiles').patchValue(null);
+                                element.get('legHours').patchValue(null);
+                                element.get('legMinutes').patchValue(null);
+                                return;
+                            }
+                            // index - 1, because firstStop was skipped
+                            element
+                                .get('legMiles')
+                                .patchValue(res.legs[index - 1].miles);
+                            element
+                                .get('legHours')
+                                .patchValue(res.legs[index - 1].hours);
+                            element
+                                .get('legMinutes')
+                                .patchValue(res.legs[index - 1].minutes);
+
+                            if (!element.get('totalLegMiles').value) {
+                                element.get('totalLegMiles').patchValue(
+                                    res.legs
+                                        .map((item) => item.miles)
+                                        .reduce((accumulator, item) => {
+                                            return (accumulator += item);
+                                        }, 0)
+                                );
+
+                                element.get('totalLegHours').patchValue(
+                                    res.legs
+                                        .map((item) => item.hours)
+                                        .reduce((accumulator, item) => {
+                                            return (accumulator += item);
+                                        }, 0)
+                                );
+
+                                element.get('totalLegMinutes').patchValue(
+                                    res.legs
+                                        .map((item) => item.minutes)
+                                        .reduce((accumulator, item) => {
+                                            return (accumulator += item);
+                                        }, 0)
+                                );
+                            }
+                        }
+                    );
+                },
+                error: () => {},
+            });
+    }
+
+    // Toggle Additional Part of Load Visibility
+    public additionalPartVisibility(event: {
+        action: string;
+        isOpen: boolean;
+    }) {
+        this.loadModalSize = event.isOpen
+            ? 'modal-container-load'
+            : 'modal-container-M';
+
+        switch (event.action) {
+            case 'hazardous': {
+                this.isHazardousVisible = event.isOpen;
+                break;
+            }
+            case 'map': {
+                this.isHazardousVisible = false;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    // CRUD OPERATIONS
+    private getLoadDropdowns(id?: number) {
+        this.loadService
+            .getLoadDropdowns(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: LoadModalResponse) => {
+                    console.log('dropdown load: ', res);
+                    this.loadNumber = res.loadNumber;
+
+                    // Dispatcher
+                    this.labelsDispatcher = res.dispatchers.map((item) => {
+                        return {
+                            ...item,
+                            name: item?.fullName,
+                            logoName: item?.avatar,
+                        };
+                    });
+
+                    const initialDispatcher = this.labelsDispatcher.find(
+                        (item) =>
+                            item?.name ===
+                            this.companyUser?.firstName?.concat(
+                                ' ',
+                                this.companyUser?.lastName
+                            )
+                    );
+
+                    this.loadForm
+                        .get('dispatcherId')
+                        .patchValue(initialDispatcher.name);
+
+                    this.selectedDispatcher = initialDispatcher;
+
+                    // Division Companies
+                    this.labelsCompanies = res.companies.map((item) => {
+                        return {
+                            ...item,
+                            name: item?.companyName,
+                        };
+                    });
+
+                    if (this.labelsCompanies.length > 1) {
+                        this.selectedCompany = this.labelsCompanies.find(
+                            (item) => item.name === this.companyUser.companyName
+                        );
+                    }
+
+                    // Dispatches
+                    this.labelsDispatches = this.originLabelsDispatches =
+                        res.dispatches.map((item, index) => {
+                            return {
+                                ...item,
+                                driver: {
+                                    ...item.driver,
+                                    name: item.driver?.firstName?.concat(
+                                        ' ',
+                                        item.driver?.lastName
+                                    ),
+                                    logoName: item.driver?.avatar,
+                                    owner: index === 1 || index === 3,
+                                },
+                                coDriver: {
+                                    ...item.coDriver,
+                                    name: item.coDriver?.firstName?.concat(
+                                        ' ',
+                                        item.coDriver?.lastName
+                                    ),
+                                    logoName: item.coDriver?.avatar,
+                                },
+                                truck: {
+                                    ...item.truck,
+                                    name: item.truck?.truckNumber,
+                                    logoType: item.truck?.truckType?.name,
+                                    logoName: item.truck?.truckType?.logoName,
+                                    folder: 'common',
+                                    subFolder: 'trucks',
+                                },
+                                trailer: {
+                                    ...item.trailer,
+                                    name: item.trailer?.trailerNumber,
+                                    logoType: item.trailer?.trailerType?.name,
+                                    logoName:
+                                        item.trailer?.trailerType?.logoName,
+                                    folder: 'common',
+                                    subFolder: 'trailers',
+                                },
+                                itemIndex: index,
+                                fullName: item.driver?.firstName
+                                    ?.concat(' ', item.driver?.lastName)
+                                    .concat(
+                                        ' ',
+                                        item.coDriver?.firstName?.concat(
+                                            ' ',
+                                            item.coDriver?.lastName
+                                        )
+                                    )
+                                    .concat(' ', item.truck?.truckNumber)
+                                    .concat(' ', item.trailer?.trailerNumber),
+                            };
+                        });
+
+                    this.labelsDispatches = this.labelsDispatches.filter(
+                        (item) =>
+                            item?.dispatcherId === this.selectedDispatcher.id
+                    );
+
+                    // Brokers
+                    this.labelsBroker = res.brokers.map((item) => {
+                        return {
+                            ...item,
+                            name: item?.businessName,
+                            status: item.availableCreditType?.name,
+                            logoName:
+                                item?.dnu || item?.ban
+                                    ? 'ic_load-broker-dnu-ban.svg'
+                                    : item?.status === 0
+                                    ? 'ic_load-broker-closed-business.svg'
+                                    : null,
+                        };
+                    });
+
+                    // Broker Contacts
+                    this.labelsBrokerContacts = this.originBrokerContacts =
+                        res.brokerContacts.map((item) => {
+                            return {
+                                ...item,
+                                contacts: item.contacts.map((item) => {
+                                    return {
+                                        ...item,
+                                        name: item?.contactName,
+                                        phone: item?.phone?.concat(
+                                            ' ',
+                                            item?.extensionPhone
+                                                ? `x${item.extensionPhone}`
+                                                : ''
+                                        ),
+                                        originalPhone: item.phone,
+                                        phoneExtension: item.extensionPhone,
+                                        fullName: item?.contactName.concat(
+                                            ' ',
+                                            item?.phone?.concat(
+                                                ' ',
+                                                item?.extensionPhone
+                                                    ? `x${item.extensionPhone}`
+                                                    : ''
+                                            )
+                                        ),
+                                    };
+                                }),
+                            };
+                        });
+
+                    // Door Type
+                    this.labelsDoorType = res.doorTypes;
+
+                    // General Commmodity
+                    this.labelsGeneralCommodity = res.generalCommodities.map(
+                        (item) => {
+                            if (item.name.toLowerCase() === 'hazardous') {
+                                return {
+                                    ...item,
+                                    logoName: 'ic_hazardous.svg',
+                                    folder: 'common',
+                                    subFolder: 'load',
+                                };
+                            }
+                            return { ...item };
+                        }
+                    );
+
+                    // Labels Suspension
+                    this.labelsSuspension = res.suspensions;
+
+                    // Labels Template
+                    this.labelsTemplate = res.templates;
+
+                    // Trailer Length
+                    this.labelsTrailerLength = res.trailerLengths;
+
+                    // Trailer Req
+                    this.labelsTrailerReq = res.trailerTypes.map((item) => {
+                        return {
+                            ...item,
+                            folder: 'common',
+                            subFolder: 'trailers',
+                        };
+                    });
+
+                    // Truck Req
+                    this.labelsTruckReq = res.truckTypes.map((item) => {
+                        return {
+                            ...item,
+                            folder: 'common',
+                            subFolder: 'trucks',
+                        };
+                    });
+
+                    // Years
+                    this.labelsYear = res.years.map((item, index) => {
+                        return {
+                            id: index + 1,
+                            name: item,
+                        };
+                    });
+
+                    // Shipper
+                    this.labelsShippers = res.shippers.map((item) => {
+                        return {
+                            ...item,
+                            name: item?.businessName,
+                            address: item.address?.city
+                                .concat(', ', item.address?.stateShortName)
+                                .concat(' ', item.address?.zipCode),
+                            logoName:
+                                item.status === 0
+                                    ? 'ic_load-broker-closed-business.svg'
+                                    : null,
+                        };
+                    });
+
+                    // Shipper Contacts
+                    this.labelsShipperContacts = this.originShipperContacts =
+                        res.shipperContacts.map((item) => {
+                            return {
+                                ...item,
+                                contacts: item.contacts.map((item) => {
+                                    return {
+                                        ...item,
+                                        name: item?.contactName,
+                                        phone: item?.phone?.concat(
+                                            ' ',
+                                            item?.extensionPhone
+                                                ? `x${item.extensionPhone}`
+                                                : ''
+                                        ),
+                                        originalPhone: item.phone,
+                                        phoneExtension: item.extensionPhone,
+                                        fullName: item?.contactName.concat(
+                                            ' ',
+                                            item?.phone?.concat(
+                                                ' ',
+                                                item?.extensionPhone
+                                                    ? `x${item.extensionPhone}`
+                                                    : ''
+                                            )
+                                        ),
+                                    };
+                                }),
+                            };
+                        });
+
+                    // Units
+                    this.labelsloadDetailsUnits = res.loadItemUnits;
+
+                    // Stackable
+                    this.labelsLoadDetailsStackable = res.stackable;
+
+                    // Tarps
+                    this.labelsLoadDetailsTarps = res.tarps;
+
+                    // Driver Assis
+                    this.labelsLoadDetailsDriverAssis = res.driverAssist;
+
+                    // Strap/Chain
+                    this.labelsLoadDetailsStrapChain = res.secures;
+
+                    // Hazardous
+                    this.labelsLoadDetailsHazardous =
+                        res.hazardousMaterials.map((item) => {
+                            return {
+                                ...item,
+                                name: item?.description,
+                                logoName: item?.logoName?.includes('explosives')
+                                    ? 'ic_explosives.svg'
+                                    : item.logoName,
+                                folder: 'common',
+                                subFolder: 'load',
+                            };
+                        });
+
+                    // Additional Billing Types
+                    this.additionalBillingTypes =
+                        res.additionalBillingTypes.map((item) => {
+                            return {
+                                id: null,
+                                additionalBillingType: item.id,
+                                name: item.name,
+                                active: false,
+                            };
+                        });
+                },
+                error: () => {},
+            });
+    }
+
+    private getLoadById(id: number) {
+        console.log('id: ', id);
+    }
+
+    private addLoad() {
+        const { ...form } = this.loadForm.value;
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
+        let newData: any = {
+            type: this.tabs.find((item) => item.id === this.selectedTab)
+                .name as any,
+            loadNumber: this.loadNumber,
+            loadTemplateId: this.selectedTemplate
+                ? this.selectedTemplate.id
+                : null,
+            dispatcherId: this.selectedDispatcher
+                ? this.selectedDispatcher.id
+                : null,
+            companyId:
+                this.labelsCompanies.length === 1
+                    ? this.labelsCompanies[0].id
+                    : this.selectedCompany
+                    ? this.selectedCompany.id
+                    : null,
+            dispatchId: this.selectedDispatches
+                ? this.selectedDispatches.id
+                : null,
+            dateCreated: moment(new Date()).toISOString(true),
+            brokerId: this.selectedBroker ? this.selectedBroker.id : null,
+            brokerContactId: this.selectedBrokerContact
+                ? this.selectedBrokerContact.id
+                : null,
+            referenceNumber: form.referenceNumber,
+            generalCommodity: this.selectedGeneralCommodity
+                ? this.selectedGeneralCommodity.id
+                : null,
+            weight: convertThousanSepInNumber(form.weight),
+            loadRequirements: {
+                id: null,
+                truckTypeId: this.selectedTruckReq
+                    ? this.selectedTruckReq.id
+                    : null,
+                trailerTypeId: this.selectedTrailerReq
+                    ? this.selectedTrailerReq.id
+                    : null,
+                doorType: this.selectedDoorType
+                    ? this.selectedDoorType.id
+                    : null,
+                suspension: this.selectedSuspension
+                    ? this.selectedSuspension.id
+                    : null,
+                trailerLengthId: this.selectedTrailerLength
+                    ? this.selectedTrailerLength.id
+                    : null,
+                year: this.selectedYear ? this.selectedYear.name : null,
+                liftgate: form.liftgate,
+            },
+            note: form.note,
+            baseRate: convertThousanSepInNumber(form.baseRate),
+            adjustedRate: convertThousanSepInNumber(form.adjustedRate),
+            advancePay: convertThousanSepInNumber(form.advancePay),
+            additionalBillingRates: this.premmapedAdditionalBillingRate(),
+            stops: this.premmapedStops() as any,
+            files: documents,
+        };
+
+        this.loadService
+            .createLoad(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private updateLoad(id: number) {
+        console.log(id);
+    }
+
+    private saveLoadTemplate() {
+        const { ...form } = this.loadForm.value;
+        const newData: CreateLoadTemplateCommand = {
+            name: '',
+            type: this.tabs.find((item) => item.id === this.selectedTab)
+                .name as any,
+            dispatcherId: this.selectedDispatcher
+                ? this.selectedDispatcher.id
+                : null,
+            companyId:
+                this.labelsCompanies.length === 1
+                    ? this.labelsCompanies[0].id
+                    : this.selectedCompany
+                    ? this.selectedCompany.id
+                    : null,
+            dateCreated: moment(new Date()).toISOString(true),
+            dispatchId: this.selectedDispatches
+                ? this.selectedDispatches.id
+                : null,
+            brokerId: this.selectedBroker ? this.selectedBroker.id : null,
+            brokerContactId: this.selectedBrokerContact
+                ? this.selectedBrokerContact.id
+                : null,
+            referenceNumber: form.referenceNumber,
+            generalCommodity: this.selectedGeneralCommodity
+                ? this.selectedGeneralCommodity.id
+                : null,
+            weight: convertThousanSepInNumber(form.weight),
+            loadRequirements: {
+                id: null,
+                truckTypeId: this.selectedTruckReq
+                    ? this.selectedTruckReq.id
+                    : null,
+                trailerTypeId: this.selectedTrailerReq
+                    ? this.selectedTrailerReq.id
+                    : null,
+                doorType: this.selectedDoorType
+                    ? this.selectedDoorType.id
+                    : null,
+                suspension: this.selectedSuspension
+                    ? this.selectedSuspension.id
+                    : null,
+                trailerLengthId: this.selectedTrailerLength
+                    ? this.selectedTrailerLength.id
+                    : null,
+                year: this.selectedYear ? this.selectedYear.name : null,
+                liftgate: form.liftgate,
+            },
+            note: form.note,
+            baseRate: convertThousanSepInNumber(form.baseRate),
+            adjustedRate: convertThousanSepInNumber(form.adjustedRate),
+            advancePay: convertThousanSepInNumber(form.advancePay),
+            additionalBillingRates: this.premmapedAdditionalBillingRate(),
+            stops: this.premmapedStops() as any,
+        };
+
+        this.loadService
+            .createLoadTemplate(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'load-template',
+                        status: false,
+                    });
+                },
+                error: () => {},
+            });
+    }
+
+    private premmapedAdditionalBillingRate() {
+        return this.additionalBillingTypes.map((item) => {
+            return {
+                id: item.id ? item.id : null,
+                additionalBillingType: item.additionalBillingType,
+                rate:
+                    item.additionalBillingType === 1
+                        ? this.loadForm.get('layoverRate').value
+                            ? convertThousanSepInNumber(
+                                  this.loadForm.get('layoverRate').value
+                              )
+                            : null
+                        : item.additionalBillingType === 2
+                        ? this.loadForm.get('lumperRate').value
+                            ? convertThousanSepInNumber(
+                                  this.loadForm.get('lumperRate').value
+                              )
+                            : null
+                        : item.additionalBillingType === 3
+                        ? this.loadForm.get('fuelSurchargeRate').value
+                            ? convertThousanSepInNumber(
+                                  this.loadForm.get('fuelSurchargeRate').value
+                              )
+                            : null
+                        : item.additionalBillingType === 4
+                        ? this.loadForm.get('escortRate').value
+                            ? convertThousanSepInNumber(
+                                  this.loadForm.get('escortRate').value
+                              )
+                            : null
+                        : item.additionalBillingType === 5
+                        ? this.loadForm.get('detentionRate').value
+                            ? convertThousanSepInNumber(
+                                  this.loadForm.get('detentionRate').value
+                              )
+                            : null
+                        : null,
+            };
+        });
+    }
+
+    private premmapedStops() {
+        const timeTypePicked = null;
+        // this.stopTimeTabs.find(
+        //     (item) => item.id === this.selectedStopTime
+        // ).name;
+        return this.loadExtraStops().controls.map((item, index) => {
+            return {
+                id: null,
+                stopOrder: item.get('stopOrder').value,
+                shipperId: item.get('shipperId').value,
+                dateFrom: convertDateToBackend(item.get('dateFrom').value),
+                dateTo: item.get('dateTo').value
+                    ? convertDateToBackend(item.get('dateTo').value)
+                    : null,
+                timeType:
+                    timeTypePicked === 'APPT' ? 'Appointment' : timeTypePicked,
+                timeFrom: item.get('timeFrom').value,
+                timeTo: item.get('timeTo').value,
+                arrive: null,
+                depart: null,
+                // From legs
+                legMiles: item.get('legMiles').value,
+                legHours: item.get('legHours').value,
+                legMinutes: item.get('legMinutes').value,
+                totalLegMiles: item.get('totalLegMiles').value,
+                totalLegHours: item.get('totalLegHours').value,
+                totalLegMinutes: item.get('totalLegMinutes').value,
+                // -----------
+                // Shipper Contact information
+                // address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
+                // contact: ['A. Djordjevic'],
+                // phone: ['(987) 654-3210'],
+                // extensionPhone: ['444'],
+                // -----------
+                items: this.loadStopsDetails(index).controls.map(
+                    (item, index) => {
+                        return {
+                            id: item.get('id').value,
+                            bolNumber: item.get('bolNumber').value,
+                            appointmentNumber:
+                                item.get('appointmentNumber').value,
+                            pickupNumber: item.get('pickupNumber').value,
+                            poNumber: item.get('poNumber').value,
+                            sealNumber: item.get('sealNumber').value,
+                            weight: item.get('weight').value
+                                ? convertThousanSepInNumber(
+                                      item.get('weight').value
+                                  )
+                                : null,
+                            length: item.get('length').value
+                                ? convertThousanSepInNumber(
+                                      item.get('length').value
+                                  )
+                                : null,
+                            height: item.get('height').value
+                                ? convertThousanSepInNumber(
+                                      item.get('height').value
+                                  )
+                                : null,
+                            temperature: item.get('temperature').value
+                                ? convertThousanSepInNumber(
+                                      item.get('temperature').value
+                                  )
+                                : null,
+                            description: item.get('description').value,
+                            code: item.get('code').value,
+                            quantity: item.get('quantity').value
+                                ? convertThousanSepInNumber(
+                                      item.get('quantity').value
+                                  )
+                                : null,
+                            units: this.selectedLoadDetailsUnits[index]
+                                ? this.selectedLoadDetailsUnits[index].id
+                                : null,
+                            secure: this.selectedLoadDetailsStrapChain[index]
+                                ? this.selectedLoadDetailsStrapChain[index].id
+                                : null,
+                            tarp: this.selectedLoadDetailsTarps[index]
+                                ? this.selectedLoadDetailsTarps[index].id
+                                : null,
+                            stackable: this.selectedLoadDetailsStackable[index]
+                                ? this.selectedLoadDetailsStackable[index].id
+                                : null,
+                            driverAssist: this.selectedLoadDetailsDriverAssis[
+                                index
+                            ]
+                                ? this.selectedLoadDetailsDriverAssis[index].id
+                                : null,
+                            hazardousMaterialId: this
+                                .selectedLoadDetailsHazardous[index]
+                                ? this.selectedLoadDetailsHazardous[index].id
+                                : null,
+                        };
+                    }
+                ),
+            };
+        });
     }
 
     /* Comments */
@@ -849,1097 +2245,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     public identity(index: number, item: any): number {
         return item.id;
-    }
-
-    public onSelectAdditionalOption(option: any) {
-        if (!this.loadForm.get('baseRate').value) {
-            return;
-        }
-        option.active = !option.active;
-    }
-
-    public trackBillingPayment() {
-        this.loadForm
-            .get('baseRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                if (!value) {
-                    this.isAvailableAdjustedRate = false;
-                    this.isAvailableAdvanceRate = false;
-
-                    this.loadForm.get('adjustedRate').reset();
-                    this.loadForm.get('advancePay').reset();
-                    this.loadForm.get('layoverRate').reset();
-                    this.loadForm.get('lumperRate').reset();
-                    this.loadForm.get('fuelSurchargeRate').reset();
-                    this.loadForm.get('escortRate').reset();
-                    this.loadForm.get('detentionRate').reset();
-                    this.additionalBillingTypes.filter(
-                        (item) => (item.active = false)
-                    );
-                } else {
-                    this.loadModalBill.baseRate =
-                        convertThousanSepInNumber(value);
-                }
-            });
-
-        this.loadForm
-            .get('adjustedRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                if (!this.loadForm.get('baseRate').value || !value) {
-                    return;
-                }
-
-                if (
-                    convertThousanSepInNumber(value) >
-                    convertThousanSepInNumber(
-                        this.loadForm.get('baseRate').value
-                    )
-                ) {
-                    this.loadModalBill.adjusted = 0;
-                    this.loadForm.get('adjustedRate').reset();
-                } else {
-                    this.loadModalBill.adjusted =
-                        convertThousanSepInNumber(value);
-                }
-            });
-
-        this.loadForm
-            .get('advancePay')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                if (!this.loadForm.get('baseRate').value || !value) {
-                    return;
-                }
-
-                if (
-                    convertThousanSepInNumber(value) >
-                    convertThousanSepInNumber(
-                        this.loadForm.get('baseRate').value
-                    )
-                ) {
-                    this.loadModalBill.advance = 0;
-                    this.loadForm.get('advancePay').reset();
-                    return;
-                } else {
-                    this.loadModalBill.advance =
-                        convertThousanSepInNumber(value);
-                }
-            });
-
-        this.loadForm
-            .get('layoverRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                this.loadModalBill.layover = convertThousanSepInNumber(value);
-            });
-
-        this.loadForm
-            .get('lumperRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                this.loadModalBill.lumper = convertThousanSepInNumber(value);
-            });
-
-        this.loadForm
-            .get('fuelSurchargeRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                this.loadModalBill.fuelSurcharge =
-                    convertThousanSepInNumber(value);
-            });
-
-        this.loadForm
-            .get('escortRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                this.loadModalBill.escort = convertThousanSepInNumber(value);
-            });
-
-        this.loadForm
-            .get('detentionRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                this.loadModalBill.detention = convertThousanSepInNumber(value);
-            });
-    }
-
-    public trackStopInformation() {
-        this.loadForm
-            .get('dateFrom')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const stop = this.loadStops().controls.find(
-                    (item) =>
-                        item.get('shipperId').value === this.selectedShipper.id
-                );
-
-                if (stop && !stop.get('dateFrom').value) {
-                    stop.get('dateFrom').patchValue(value);
-                }
-            });
-
-        this.loadForm
-            .get('dateTo')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const stop = this.loadStops().controls.find(
-                    (item) =>
-                        item.get('shipperId').value === this.selectedShipper.id
-                );
-                if (stop && !stop.get('dateTo').value) {
-                    stop.get('dateTo').patchValue(value);
-                }
-            });
-
-        this.loadForm
-            .get('timeFrom')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const stop = this.loadStops().controls.find(
-                    (item) =>
-                        item.get('shipperId').value === this.selectedShipper.id
-                );
-                if (stop && !stop.get('timeFrom').value) {
-                    stop.get('timeFrom').patchValue(value);
-                }
-            });
-
-        this.loadForm
-            .get('timeTo')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const stop = this.loadStops().controls.find(
-                    (item) =>
-                        item.get('shipperId').value === this.selectedShipper.id
-                );
-                if (stop && !stop.get('timeTo').value) {
-                    stop.get('timeTo').patchValue(value);
-                }
-            });
-    }
-
-    public closeAllLoadStopExceptActive(loadStop: AbstractControl) {
-        this.loadStops().controls.map((item) => {
-            if (
-                item.get('stopOrder').value === loadStop.get('stopOrder').value
-            ) {
-                item.get('openClose').patchValue(true);
-            } else {
-                item.get('openClose').patchValue(false);
-            }
-        });
-    }
-
-    public toggleLoadStop(loadStop: AbstractControl) {
-        loadStop.get('openClose').patchValue(!loadStop.get('openClose').value);
-
-        if (loadStop.get('openClose').value) {
-            this.closeAllLoadStopExceptActive(loadStop);
-
-            this.selectedShipper = this.labelsShippers.find(
-                (item) => item.id === loadStop.get('shipperId').value
-            );
-            this.loadShipperInputConfig = {
-                ...this.loadShipperInputConfig,
-                multipleInputValues: {
-                    options: [
-                        {
-                            value: this.selectedShipper.name,
-                            logoName: null,
-                        },
-                        {
-                            value: this.selectedShipper.address,
-                            logoName: null,
-                        },
-                    ],
-                    customClass: 'load-shipper',
-                },
-            };
-
-            this.loadForm
-                .get('dateFrom')
-                .patchValue(loadStop.get('dateFrom').value);
-            this.loadForm
-                .get('dateTo')
-                .patchValue(loadStop.get('dateTo').value);
-
-            if (loadStop.get('timeFrom').value) {
-                this.loadForm
-                    .get('timeFrom')
-                    .patchValue(
-                        convertTimeFromBackend(loadStop.get('timeFrom').value)
-                    );
-            }
-            if (loadStop.get('timeTo').value) {
-                this.loadForm
-                    .get('timeTo')
-                    .patchValue(
-                        convertTimeFromBackend(loadStop.get('timeTo').value)
-                    );
-            }
-        } else {
-            this.selectedShipper = null;
-            this.loadShipperInputConfig = {
-                ...this.loadShipperInputConfig,
-                multipleInputValues: {
-                    options: [
-                        {
-                            value: null,
-                            logoName: null,
-                        },
-                        {
-                            value: null,
-                            logoName: null,
-                        },
-                    ],
-                    customClass: 'load-shipper',
-                },
-            };
-            this.loadForm
-                .get('shipperId')
-                .patchValue(null, { emitEvent: false });
-            this.loadForm
-                .get('dateFrom')
-                .patchValue(null, { emitEvent: false });
-            this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
-            this.loadForm
-                .get('timeFrom')
-                .patchValue(null, { emitEvent: false });
-            this.loadForm.get('timeTo').patchValue(null, { emitEvent: false });
-        }
-    }
-
-    public drawStopOnMap() {
-        if (this.loadStops().length > 1) {
-            this.routingService
-                .apiRoutingGet(
-                    JSON.stringify(
-                        this.loadStops()
-                            .controls.filter((item) => item)
-                            .map((item) => {
-                                return {
-                                    longitude: item.get('longitude').value,
-                                    latitude: item.get('latitude').value,
-                                };
-                            })
-                    )
-                )
-                .pipe(debounceTime(1000), takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res: RoutingResponse) => {
-                        // TODO: Populate lat and long with routesPoints
-                        this.loadStopRoutes[0] = {
-                            routeColor: '#919191',
-                            stops: this.loadStops()
-                                .controls.filter((item) => item)
-                                .map((item, index) => {
-                                    return {
-                                        lat: item.get('latitude').value,
-                                        long: item.get('longitude').value,
-                                        empty: index === 0,
-                                    };
-                                }),
-                        };
-
-                        this.loadStops().controls.forEach(
-                            (element: FormGroup, index: number) => {
-                                if (index === 0) {
-                                    element.get('legMiles').patchValue(null);
-                                    element.get('legHours').patchValue(null);
-                                    element.get('legMinutes').patchValue(null);
-                                    return;
-                                }
-                                // index - 1, because firstStop was skipped
-                                element
-                                    .get('legMiles')
-                                    .patchValue(res.legs[index - 1].miles);
-                                element
-                                    .get('legHours')
-                                    .patchValue(res.legs[index - 1].hours);
-                                element
-                                    .get('legMinutes')
-                                    .patchValue(res.legs[index - 1].minutes);
-
-                                if (!element.get('totalLegMiles').value) {
-                                    element.get('totalLegMiles').patchValue(
-                                        res.legs
-                                            .map((item) => item.miles)
-                                            .reduce((accumulator, item) => {
-                                                return (accumulator += item);
-                                            }, 0)
-                                    );
-
-                                    element.get('totalLegHours').patchValue(
-                                        res.legs
-                                            .map((item) => item.hours)
-                                            .reduce((accumulator, item) => {
-                                                return (accumulator += item);
-                                            }, 0)
-                                    );
-
-                                    element.get('totalLegMinutes').patchValue(
-                                        res.legs
-                                            .map((item) => item.minutes)
-                                            .reduce((accumulator, item) => {
-                                                return (accumulator += item);
-                                            }, 0)
-                                    );
-                                }
-                            }
-                        );
-                    },
-                    error: () => {},
-                });
-        }
-    }
-
-    // Load Stop
-    public createNewStop() {
-        if (this.selectedShipper) {
-            this.loadShipperInputConfig = {
-                ...this.loadShipperInputConfig,
-                multipleInputValues: {
-                    options: [
-                        {
-                            value: this.selectedShipper.name,
-                            logoName: null,
-                        },
-                        {
-                            value: this.selectedShipper.address,
-                            logoName: null,
-                        },
-                    ],
-                    customClass: 'load-shipper',
-                },
-            };
-
-            // If Load Stop Exist , just return
-            const existLoadStop = this.loadStops().controls.find(
-                (item) =>
-                    item.get('shipperId').value === this.selectedShipper.id
-            );
-
-            if (existLoadStop) {
-                this.loadForm
-                    .get('dateFrom')
-                    .patchValue(existLoadStop.get('dateFrom').value, {
-                        emitEvent: false,
-                    });
-
-                this.loadForm
-                    .get('dateTo')
-                    .patchValue(existLoadStop.get('dateTo').value, {
-                        emitEvent: false,
-                    });
-
-                this.loadForm
-                    .get('timeFrom')
-                    .patchValue(existLoadStop.get('timeFrom').value, {
-                        emitEvent: false,
-                    });
-
-                this.loadForm
-                    .get('timeTo')
-                    .patchValue(existLoadStop.get('timeTo').value, {
-                        emitEvent: false,
-                    });
-
-                return;
-            }
-
-            this.addLoadStop();
-        }
-    }
-
-    public addLoadStop() {
-        this.loadStops().push(this.newLoadStop());
-        this.drawStopOnMap();
-        this.closeAllLoadStopExceptActive(
-            this.loadStops().controls[this.loadStops().length - 1]
-        );
-
-        if (
-            this.loadForm.get('dateFrom').value ||
-            this.loadForm.get('dateTo').value ||
-            this.loadForm.get('timeFrom').value ||
-            this.loadForm.get('timeTo').value
-        ) {
-            this.loadForm
-                .get('dateFrom')
-                .patchValue(null, { emitEvent: false });
-            this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
-            this.loadForm
-                .get('timeFrom')
-                .patchValue(null, { emitEvent: false });
-            this.loadForm.get('timeTo').patchValue(null, { emitEvent: false });
-        }
-    }
-
-    public newLoadStop(): FormGroup {
-        return this.formBuilder.group({
-            id: [null],
-            stopType: [this.selectedStopTab === 3 ? 'Pickup' : 'Delivery'],
-            stopOrder: [this.loadStops().length + 1],
-            shipperId: [this.selectedShipper.id],
-            dateFrom: [null], // convert for backend
-            dateTo: [null], // convert for backend
-            timeType: [
-                this.stopTimeTabs.find(
-                    (item) => item.id === this.selectedStopTime
-                ).name,
-            ],
-            timeFrom: [null],
-            timeTo: [null],
-            arrive: [null], // null when create mode
-            depart: [null], // null when create mode
-            longitude: [this.selectedShipper.longitude],
-            latitude: [this.selectedShipper.latitude],
-            // From legs
-            legMiles: [null],
-            legHours: [null],
-            legMinutes: [null],
-            totalLegMiles: [null],
-            totalLegHours: [null],
-            totalLegMinutes: [null],
-            // -----------
-            // Shipper Contact information
-            address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
-            contact: ['A. Djordjevic'],
-            phone: ['(987) 654-3210'],
-            extensionPhone: ['444'],
-            // -----------
-            items: this.formBuilder.array([]),
-            openClose: [true],
-        });
-    }
-
-    public loadStops(): FormArray {
-        return this.loadForm.get('stops') as FormArray;
-    }
-
-    public removeLoadStop(index: number) {
-        this.loadStops().removeAt(index);
-        this.loadStopRoutes[0] = {
-            routeColor: '#919191',
-            stops: this.loadStops()
-                .controls.filter((item) => item)
-                .map((item) => {
-                    return {
-                        lat: item.get('latitude').value,
-                        long: item.get('longitude').value,
-                        empty: true,
-                    };
-                }),
-        };
-    }
-
-    // Load Stop Details
-    public addLoadStopDetails(id: number) {
-        this.loadStopsDetails(id).push(this.newLoadStopDetails());
-    }
-
-    public loadStopsDetails(loadStopIndex: number): FormArray {
-        return this.loadStops().at(loadStopIndex).get('items') as FormArray;
-    }
-
-    public newLoadStopDetails(): FormGroup {
-        return this.formBuilder.group({
-            id: [null],
-            bolNumber: [null],
-            appointmentNumber: [null],
-            pickupNumber: [null],
-            poNumber: [null],
-            sealNumber: [null],
-            weight: [null],
-            length: [null],
-            height: [null],
-            temperature: [null],
-            description: [null, descriptionValidation],
-            code: [null],
-            quantity: [null],
-            units: [null],
-            secure: [null],
-            tarp: [null],
-            stackable: [null],
-            driverAssist: [null],
-            hazardousMaterialId: [null],
-        });
-    }
-
-    public removeLoadStopDetails(
-        loadStopIndex: number,
-        loadStopDetailsIndex: number
-    ) {
-        this.loadStopsDetails(loadStopIndex).removeAt(loadStopDetailsIndex);
-    }
-
-    private getLoadDropdowns(id?: number) {
-        this.loadService
-            .getLoadDropdowns(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: LoadModalResponse) => {
-                    this.loadNumber = res.loadNumber;
-
-                    // Brokers
-                    this.labelsBroker = res.brokers.map((item) => {
-                        return {
-                            ...item,
-                            name: item?.businessName,
-                            status: item.availableCreditType?.name,
-                            logoName:
-                                item?.dnu || item?.ban
-                                    ? 'ic_load-broker-dnu-ban.svg'
-                                    : 'ic_load-broker-credit.svg',
-                        };
-                    });
-
-                    // Broker Contacts
-                    this.labelsBrokerContacts = this.originBrokerContacts =
-                        res.brokerContacts.map((item) => {
-                            return {
-                                ...item,
-                                contacts: item.contacts.map((item) => {
-                                    return {
-                                        ...item,
-                                        name: item?.contactName,
-                                        phone: item?.phone?.concat(
-                                            ' ',
-                                            item?.extensionPhone
-                                                ? `x${item.extensionPhone}`
-                                                : ''
-                                        ),
-                                        fullName: item?.contactName.concat(
-                                            ' ',
-                                            item?.phone?.concat(
-                                                ' ',
-                                                item?.extensionPhone
-                                                    ? `x${item.extensionPhone}`
-                                                    : ''
-                                            )
-                                        ),
-                                    };
-                                }),
-                            };
-                        });
-
-                    // Dispatcher
-                    this.labelsDispatcher = res.dispatchers.map((item) => {
-                        return {
-                            ...item,
-                            name: item?.fullName,
-                            logoName: item?.avatar,
-                        };
-                    });
-
-                    const initialDispatcher = this.labelsDispatcher.find(
-                        (item) =>
-                            item?.name ===
-                            this.companyUser?.firstName?.concat(
-                                ' ',
-                                this.companyUser?.lastName
-                            )
-                    );
-
-                    this.loadForm
-                        .get('dispatcherId')
-                        .patchValue(initialDispatcher.name);
-                    this.selectedDispatcher = initialDispatcher;
-
-                    // Division Companies
-                    this.labelsCompanies = res.companies.map((item) => {
-                        return {
-                            ...item,
-                            name: item?.companyName,
-                        };
-                    });
-
-                    if (this.labelsCompanies.length > 1) {
-                        this.selectedCompany = this.labelsCompanies.find(
-                            (item) => item.name === this.companyUser.companyName
-                        );
-                    }
-
-                    // Dispatches
-                    this.labelsDispatches = this.originLabelsDispatches =
-                        res.dispatches.map((item) => {
-                            return {
-                                ...item,
-                                driver: {
-                                    ...item.driver,
-                                    name: item.driver?.firstName?.concat(
-                                        ' ',
-                                        item.driver?.lastName
-                                    ),
-                                    logoName: item.driver?.avatar,
-                                },
-                                coDriver: {
-                                    ...item.coDriver,
-                                    name: item.coDriver?.firstName?.concat(
-                                        ' ',
-                                        item.coDriver?.lastName
-                                    ),
-                                    logoName: item.coDriver?.avatar,
-                                },
-                                truck: {
-                                    ...item.truck,
-                                    name: item.truck?.truckNumber,
-                                    logoType: item.truck?.truckType?.name,
-                                    logoName: item.truck?.truckType?.logoName,
-                                    folder: 'common',
-                                    subFolder: 'trucks',
-                                },
-                                trailer: {
-                                    ...item.trailer,
-                                    name: item.trailer?.trailerNumber,
-                                    logoType: item.trailer?.trailerType?.name,
-                                    logoName:
-                                        item.trailer?.trailerType?.logoName,
-                                    folder: 'common',
-                                    subFolder: 'trailers',
-                                },
-                            };
-                        });
-
-                    this.labelsDispatches = this.labelsDispatches.filter(
-                        (item) =>
-                            item?.dispatcherId === this.selectedDispatcher.id
-                    );
-
-                    // Door Type
-                    this.labelsDoorType = res.doorTypes;
-
-                    // General Commmodity
-                    this.labelsGeneralCommodity = res.generalCommodities.map(
-                        (item) => {
-                            if (item.name.toLowerCase() === 'hazardous') {
-                                return {
-                                    ...item,
-                                    logoName: 'ic_hazardous.svg',
-                                    folder: 'common',
-                                    subFolder: 'load',
-                                };
-                            }
-                            return { ...item };
-                        }
-                    );
-
-                    // Labels Suspension
-                    this.labelsSuspension = res.suspensions;
-
-                    // Labels Template
-                    this.labelsTemplate = res.templates;
-
-                    // Trailer Length
-                    this.labelsTrailerLength = res.trailerLengths;
-
-                    // Trailer Req
-                    this.labelsTrailerReq = res.trailerTypes.map((item) => {
-                        return {
-                            ...item,
-                            folder: 'common',
-                            subFolder: 'trailers',
-                        };
-                    });
-
-                    // Truck Req
-                    this.labelsTruckReq = res.truckTypes.map((item) => {
-                        return {
-                            ...item,
-                            folder: 'common',
-                            subFolder: 'trucks',
-                        };
-                    });
-
-                    // Years
-                    this.labelsYear = res.years.map((item, index) => {
-                        return {
-                            id: index + 1,
-                            name: item,
-                        };
-                    });
-
-                    // Shipper
-                    this.labelsShippers = this.originShipperContacts =
-                        res.shippers.map((item) => {
-                            return {
-                                ...item,
-                                name: item?.businessName,
-                                address: item.address?.address,
-                            };
-                        });
-                    // TODO: zameniti sa ovim kad bude gotovo
-                    //   res.shippers.map((item) => {
-                    //     return {
-                    //         ...item,
-                    //         contacts: item.contacts.map((item) => {
-                    //             return {
-                    //                 ...item,
-                    //                 name: item?.businessName,
-                    //                address: item?.address.address
-                    //             };
-                    //         }),
-                    //     };
-                    // });
-
-                    // Units
-                    this.labelsloadDetailsUnits = res.loadItemUnits;
-
-                    // Stackable
-                    this.labelsLoadDetailsStackable = res.stackable;
-
-                    // Tarps
-                    this.labelsLoadDetailsTarps = res.tarps;
-
-                    // Driver Assis
-                    this.labelsLoadDetailsDriverAssis = res.driverAssist;
-
-                    // Strap/Chain
-                    this.labelsLoadDetailsStrapChain = res.secures;
-
-                    // Hazardous
-                    this.labelsLoadDetailsHazardous =
-                        res.hazardousMaterials.map((item) => {
-                            return {
-                                ...item,
-                                name: item?.description,
-                                logoName: item?.logoName?.includes('explosives')
-                                    ? 'ic_explosives.svg'
-                                    : item.logoName,
-                                folder: 'common',
-                                subFolder: 'load',
-                            };
-                        });
-
-                    // Additional Billing Types
-                    this.additionalBillingTypes =
-                        res.additionalBillingTypes.map((item) => {
-                            return {
-                                id: null,
-                                additionalBillingType: item.id,
-                                name: item.name,
-                                active: false,
-                            };
-                        });
-                },
-                error: (error: any) => {},
-            });
-    }
-
-    private getLoadById(id: number) {}
-
-    private addLoad() {
-        const { ...form } = this.loadForm.value;
-
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
-        let newData: any = {
-            type: this.tabs.find((item) => item.id === this.selectedTab)
-                .name as any,
-            loadNumber: this.loadNumber,
-            loadTemplateId: this.selectedTemplate
-                ? this.selectedTemplate.id
-                : null,
-            dispatcherId: this.selectedDispatcher
-                ? this.selectedDispatcher.id
-                : null,
-            companyId:
-                this.labelsCompanies.length === 1
-                    ? this.labelsCompanies[0].id
-                    : this.selectedCompany
-                    ? this.selectedCompany.id
-                    : null,
-            dispatchId: this.selectedDispatches
-                ? this.selectedDispatches.id
-                : null,
-            dateCreated: moment(new Date()).toISOString(true),
-            brokerId: this.selectedBroker ? this.selectedBroker.id : null,
-            brokerContactId: this.selectedBrokerContact
-                ? this.selectedBrokerContact.id
-                : null,
-            referenceNumber: form.referenceNumber,
-            generalCommodity: this.selectedGeneralCommodity
-                ? this.selectedGeneralCommodity.id
-                : null,
-            weight: convertThousanSepInNumber(form.weight),
-            loadRequirements: {
-                id: null,
-                truckTypeId: this.selectedTruckReq
-                    ? this.selectedTruckReq.id
-                    : null,
-                trailerTypeId: this.selectedTrailerReq
-                    ? this.selectedTrailerReq.id
-                    : null,
-                doorType: this.selectedDoorType
-                    ? this.selectedDoorType.id
-                    : null,
-                suspension: this.selectedSuspension
-                    ? this.selectedSuspension.id
-                    : null,
-                trailerLengthId: this.selectedTrailerLength
-                    ? this.selectedTrailerLength.id
-                    : null,
-                year: this.selectedYear ? this.selectedYear.name : null,
-                liftgate: form.liftgate,
-            },
-            note: form.note,
-            baseRate: convertThousanSepInNumber(form.baseRate),
-            adjustedRate: convertThousanSepInNumber(form.adjustedRate),
-            advancePay: convertThousanSepInNumber(form.advancePay),
-            additionalBillingRates: this.premmapedAdditionalBillingRate(),
-            stops: this.premmapedStops() as any,
-            files: documents,
-        };
-
-        this.loadService
-            .createLoad(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: (error: any) => {},
-            });
-    }
-    private updateLoad(id: number) {}
-
-    private deleteLoadById(id: number) {}
-
-    private saveLoadTemplate() {
-        const { ...form } = this.loadForm.value;
-        const newData: CreateLoadTemplateCommand = {
-            name: '',
-            type: this.tabs.find((item) => item.id === this.selectedTab)
-                .name as any,
-            dispatcherId: this.selectedDispatcher
-                ? this.selectedDispatcher.id
-                : null,
-            companyId:
-                this.labelsCompanies.length === 1
-                    ? this.labelsCompanies[0].id
-                    : this.selectedCompany
-                    ? this.selectedCompany.id
-                    : null,
-            dateCreated: moment(new Date()).toISOString(true),
-            dispatchId: this.selectedDispatches
-                ? this.selectedDispatches.id
-                : null,
-            brokerId: this.selectedBroker ? this.selectedBroker.id : null,
-            brokerContactId: this.selectedBrokerContact
-                ? this.selectedBrokerContact.id
-                : null,
-            referenceNumber: form.referenceNumber,
-            generalCommodity: this.selectedGeneralCommodity
-                ? this.selectedGeneralCommodity.id
-                : null,
-            weight: convertThousanSepInNumber(form.weight),
-            loadRequirements: {
-                id: null,
-                truckTypeId: this.selectedTruckReq
-                    ? this.selectedTruckReq.id
-                    : null,
-                trailerTypeId: this.selectedTrailerReq
-                    ? this.selectedTrailerReq.id
-                    : null,
-                doorType: this.selectedDoorType
-                    ? this.selectedDoorType.id
-                    : null,
-                suspension: this.selectedSuspension
-                    ? this.selectedSuspension.id
-                    : null,
-                trailerLengthId: this.selectedTrailerLength
-                    ? this.selectedTrailerLength.id
-                    : null,
-                year: this.selectedYear ? this.selectedYear.name : null,
-                liftgate: form.liftgate,
-            },
-            note: form.note,
-            baseRate: convertThousanSepInNumber(form.baseRate),
-            adjustedRate: convertThousanSepInNumber(form.adjustedRate),
-            advancePay: convertThousanSepInNumber(form.advancePay),
-            additionalBillingRates: this.premmapedAdditionalBillingRate(),
-            stops: this.premmapedStops() as any,
-        };
-
-        this.loadService
-            .createLoadTemplate(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'load-template',
-                        status: false,
-                    });
-                },
-                error: (error: any) => {},
-            });
-    }
-
-    private premmapedAdditionalBillingRate() {
-        return this.additionalBillingTypes.map((item) => {
-            return {
-                id: item.id ? item.id : null,
-                additionalBillingType: item.additionalBillingType,
-                rate:
-                    item.additionalBillingType === 1
-                        ? this.loadForm.get('layoverRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('layoverRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 2
-                        ? this.loadForm.get('lumperRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('lumperRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 3
-                        ? this.loadForm.get('fuelSurchargeRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('fuelSurchargeRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 4
-                        ? this.loadForm.get('escortRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('escortRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 5
-                        ? this.loadForm.get('detentionRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('detentionRate').value
-                              )
-                            : null
-                        : null,
-            };
-        });
-    }
-
-    private premmapedStops() {
-        const timeTypePicked = this.stopTimeTabs.find(
-            (item) => item.id === this.selectedStopTime
-        ).name;
-        return this.loadStops().controls.map((item, index) => {
-            return {
-                id: null,
-                stopOrder: item.get('stopOrder').value,
-                shipperId: item.get('shipperId').value,
-                dateFrom: convertDateToBackend(item.get('dateFrom').value),
-                dateTo: item.get('dateTo').value
-                    ? convertDateToBackend(item.get('dateTo').value)
-                    : null,
-                timeType:
-                    timeTypePicked === 'APPT' ? 'Appointment' : timeTypePicked,
-                timeFrom: item.get('timeFrom').value,
-                timeTo: item.get('timeTo').value,
-                arrive: null,
-                depart: null,
-                // From legs
-                legMiles: item.get('legMiles').value,
-                legHours: item.get('legHours').value,
-                legMinutes: item.get('legMinutes').value,
-                totalLegMiles: item.get('totalLegMiles').value,
-                totalLegHours: item.get('totalLegHours').value,
-                totalLegMinutes: item.get('totalLegMinutes').value,
-                // -----------
-                // Shipper Contact information
-                // address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
-                // contact: ['A. Djordjevic'],
-                // phone: ['(987) 654-3210'],
-                // extensionPhone: ['444'],
-                // -----------
-                items: this.loadStopsDetails(index).controls.map(
-                    (item, index) => {
-                        return {
-                            id: item.get('id').value,
-                            bolNumber: item.get('bolNumber').value,
-                            appointmentNumber:
-                                item.get('appointmentNumber').value,
-                            pickupNumber: item.get('pickupNumber').value,
-                            poNumber: item.get('poNumber').value,
-                            sealNumber: item.get('sealNumber').value,
-                            weight: item.get('weight').value
-                                ? convertThousanSepInNumber(
-                                      item.get('weight').value
-                                  )
-                                : null,
-                            length: item.get('length').value
-                                ? convertThousanSepInNumber(
-                                      item.get('length').value
-                                  )
-                                : null,
-                            height: item.get('height').value
-                                ? convertThousanSepInNumber(
-                                      item.get('height').value
-                                  )
-                                : null,
-                            temperature: item.get('temperature').value
-                                ? convertThousanSepInNumber(
-                                      item.get('temperature').value
-                                  )
-                                : null,
-                            description: item.get('description').value,
-                            code: item.get('code').value,
-                            quantity: item.get('quantity').value
-                                ? convertThousanSepInNumber(
-                                      item.get('quantity').value
-                                  )
-                                : null,
-                            units: this.selectedLoadDetailsUnits[index]
-                                ? this.selectedLoadDetailsUnits[index].id
-                                : null,
-                            secure: this.selectedLoadDetailsStrapChain[index]
-                                ? this.selectedLoadDetailsStrapChain[index].id
-                                : null,
-                            tarp: this.selectedLoadDetailsTarps[index]
-                                ? this.selectedLoadDetailsTarps[index].id
-                                : null,
-                            stackable: this.selectedLoadDetailsStackable[index]
-                                ? this.selectedLoadDetailsStackable[index].id
-                                : null,
-                            driverAssist: this.selectedLoadDetailsDriverAssis[
-                                index
-                            ]
-                                ? this.selectedLoadDetailsDriverAssis[index].id
-                                : null,
-                            hazardousMaterialId: this
-                                .selectedLoadDetailsHazardous[index]
-                                ? this.selectedLoadDetailsHazardous[index].id
-                                : null,
-                        };
-                    }
-                ),
-            };
-        });
-    }
-
-    public additionalPartVisibility(event: {
-        action: string;
-        isOpen: boolean;
-    }) {
-        this.loadModalSize = event.isOpen
-            ? 'modal-container-load'
-            : 'modal-container-M';
-
-        switch (event.action) {
-            case 'hazardous': {
-                this.isHazardousVisible = event.isOpen;
-                break;
-            }
-            case 'map': {
-                this.isHazardousVisible = false;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
     }
 
     ngOnDestroy(): void {

@@ -24,6 +24,7 @@ export interface UploadFile {
     size?: number | string;
     tag?: string;
     realFile?: File;
+    incorrect?: boolean;
 }
 @Component({
     selector: 'app-ta-upload-file',
@@ -69,6 +70,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
     public isIncorrectMarkHover: boolean = false;
     public fileExtension: string;
+    public annotationHover: boolean = false;
     @ViewChild('t2') t2: any;
 
     @Output() landscapeCheck = new EventEmitter();
@@ -146,10 +148,12 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'mark-incorrect': {
+                this.file.incorrect = true;
                 this.fileAction.emit({ file: this.file, action });
                 break;
             }
             case 'mark-correct': {
+                this.file.incorrect = false;
                 this.fileAction.emit({ file: this.file, action });
                 this.documentReviewInputVisible = false;
                 break;

@@ -68,6 +68,8 @@
                             ? 'assets/svg/common/ic_marker_closed_big.svg'
                             : latlong?.status == 2
                             ? 'assets/svg/common/ic_marker_closed.svg'
+                            : latlong?.pinned
+                            ? 'assets/svg/common/ic_marker_favorite.svg'
                             : latlong?.isSelected
                             ? 'assets/svg/common/ic_marker_selected.svg'
                             : mapType == 'fuelStop'
@@ -103,7 +105,7 @@
                                     'selected-marker': latlong.isSelected,
                                     'fuel-marker': mapType == 'fuelStop'
                                 }"
-                                *ngIf="latlong.status != 2"
+                                *ngIf="latlong.status != 2 && !latlong.pinned"
                             ></svg-icon>
                             <svg-icon
                                 class="marker-icon permanently-closed-icon"
@@ -112,6 +114,14 @@
                                     'selected-marker': latlong.isSelected
                                 }"
                                 *ngIf="latlong.status == 2"
+                            ></svg-icon>
+                            <svg-icon
+                                class="marker-icon"
+                                src="assets/svg/common/ic_marker_favorite.svg"
+                                [ngClass]="{
+                                    'selected-marker': latlong.isSelected
+                                }"
+                                *ngIf="latlong.pinned"
                             ></svg-icon>
                             <div
                                 [ngClass]="{
@@ -424,9 +434,11 @@
                                 "
                                 [type]="'cluster'"
                                 [item]="cluster"
+                                [clusterItems]="cluster.data"
                                 (showClusterItemInfo)="
                                     showClusterItemInfo($event)
                                 "
+                                (loadMoreData)="showMoreData($event)"
                             ></app-map-marker-dropdown>
                             <app-map-marker-dropdown
                                 *ngIf="cluster?.detailedInfo"

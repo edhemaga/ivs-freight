@@ -5,6 +5,8 @@ import {
     Output,
     EventEmitter,
     OnDestroy,
+    ChangeDetectorRef,
+    ElementRef
 } from '@angular/core';
 import { MapsService } from '../../../services/shared/maps.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -26,12 +28,13 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     @Input() index: any = {};
     @Input() type: string = '';
     @Input() dropdownActions: any[] = [];
-    @Output() clickedMarker: EventEmitter<string> = new EventEmitter<string>();
+    @Output() clickedMarker: EventEmitter<any> = new EventEmitter<any>();
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
     public locationFilterOn: boolean = false;
     sortCategory: any = {};
+    clickedOnDots: boolean = false;
 
-    constructor(private mapsService: MapsService) {}
+    constructor(private mapsService: MapsService, private ref: ChangeDetectorRef, public elementRef: ElementRef) {}
 
     ngOnInit(): void {
         this.sortCategory = this.mapsService.sortCategory;
@@ -41,15 +44,26 @@ export class MapListCardComponent implements OnInit, OnDestroy {
             .subscribe((category) => {
                 this.sortCategory = category;
             });
+
+        if ( this.mapsService.selectedMarkerId ) {
+            this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
+            this.item.isSelected = this.mapsService.selectedMarkerId == this.item.id;
+        }
     }
 
-    selectCard() {
-        this.clickedMarker.emit(this.index);
+    selectCard(event) {
+        if ( this.clickedOnDots ) {
+            this.clickedOnDots = false;
+            return false;
+        }
+
+        this.clickedMarker.emit([this.item.id, false]);
     }
 
     showMoreOptions(event) {
-        event.preventDefault();
-        event.stopPropagation();
+        // event.preventDefault();
+        // event.stopPropagation();
+        this.clickedOnDots = true;
     }
 
     callBodyAction(action) {
@@ -81,6 +95,27 @@ export class MapListCardComponent implements OnInit, OnDestroy {
 
     setSortCategory(category) {
         this.sortCategory = category;
+    }
+
+    addRemoveSelection(add) {
+        this.isSelected = add;
+        this.item.isSelected = add;
+
+        if ( add ) {
+            this.elementRef.nativeElement.scrollIntoView({behavior: 'smooth', block: 'center'});
+        }
+
+        this.ref.detectChanges();
+    }
+
+    onFavorite(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.bodyActions.emit({
+            data: this.item,
+            type: 'favorite'
+        });
     }
 
     ngOnDestroy(): void {

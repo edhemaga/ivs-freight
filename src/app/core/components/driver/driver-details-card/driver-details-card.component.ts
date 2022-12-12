@@ -35,6 +35,7 @@ import { ImageBase64Service } from '../../../utils/base64.image';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
+import { DriverResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -398,12 +399,8 @@ export class DriverDetailsCardComponent
             .deleteCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -412,12 +409,8 @@ export class DriverDetailsCardComponent
             .deleteMedicalById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -426,12 +419,8 @@ export class DriverDetailsCardComponent
             .deleteMvrById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -440,12 +429,8 @@ export class DriverDetailsCardComponent
             .deleteTestById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
     /**Function retrun id */
@@ -557,17 +542,17 @@ export class DriverDetailsCardComponent
     }
 
     public getExpireDate(data: any) {
-        this.dataCDl = data?.cdls?.map((ele) => {
-            if (moment(ele.expDate).isBefore(moment())) {
-                this.expDateCard = false;
-            } else {
-                this.expDateCard = true;
-            }
-            return {
-                ...ele,
-                showButton: this.expDateCard,
-            };
-        });
+        // this.dataCDl = data?.cdls?.map((ele) => {
+        //     if (moment(ele.expDate).isBefore(moment())) {
+        //         this.expDateCard = false;
+        //     } else {
+        //         this.expDateCard = true;
+        //     }
+        //     return {
+        //         ...ele,
+        //         showButton: this.expDateCard,
+        //     };
+        // });
     }
 
     public onModalAction(action: string): void {

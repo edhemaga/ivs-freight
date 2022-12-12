@@ -55,7 +55,8 @@
         *ngIf="
             customClassName !== 'driver-details-pdf' &&
             customClassName !== 'landscape-details-view' &&
-            reviewMode !== 'REVIEW_MODE'
+            reviewMode !== 'REVIEW_MODE' &&
+            reviewMode !== 'FEEDBACK_MODE'
         "
         (onFileEvent)="onUploadFiles($event)"
         [isRequired]="isRequired"
