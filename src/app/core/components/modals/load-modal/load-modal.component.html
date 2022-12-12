@@ -349,10 +349,31 @@
                     marginBottom: '12px'
                 }"
             >
+                <!-- Stops Header -->
+                <div class="stops-header-bar">
+                    <p>#</p>
+                    <p>Shipper, LOCATION</p>
+                    <p
+                        *ngIf="
+                            loadForm.get('pickupShipper').value ||
+                            loadForm.get('deliveryShipper').value
+                        "
+                    >
+                        DATE & TIME
+                    </p>
+                    <p
+                        *ngIf="
+                            loadForm.get('pickupShipper').value ||
+                            loadForm.get('deliveryShipper').value
+                        "
+                    >
+                        DETAILS
+                    </p>
+                </div>
                 <!-- Pickup Stop  -->
                 <app-load-stop
                     [firstOrLast]="true"
-                    [stopNumber]="1"
+                    [stopNumber]="loadForm.get('pickupStopOrder').value"
                     [isDelivery]="false"
                     [shipper]="selectedPickupShipper?.name"
                     [shipperAddress]="selectedPickupShipper?.address"
@@ -498,30 +519,42 @@
                             <!-- Extra Stops -->
                             <app-load-stop
                                 *ngIf="loadExtraStops().controls.length"
-                                [stopNumber]="2"
-                                [isDelivery]="true"
+                                [firstOrLast]="false"
+                                [stopNumber]="
+                                    loadExtraStops().at(indx).get('stopOrder')
+                                        .value
+                                "
+                                [isDelivery]="
+                                    selectedExtraStopTab[indx]
+                                        ?.toString()
+                                        ?.startsWith('4')
+                                        ? true
+                                        : false
+                                "
                                 [shipper]="selectedExtraStopShipper[indx]?.name"
                                 [shipperAddress]="
                                     selectedExtraStopShipper[indx]?.address
                                 "
                                 [dateRange]="
-                                    loadExtraStops().controls[indx].get(
-                                        'dateFrom'
-                                    ).value
+                                    loadExtraStops().at(indx).get('dateFrom')
+                                        .value
                                 "
                                 [timeRange]="
-                                    loadExtraStops().controls[indx].get(
-                                        'timeFrom'
-                                    ).value
+                                    loadExtraStops().at(indx).get('timeFrom')
+                                        .value
                                 "
-                                [legMile]="null"
+                                [legMile]="''"
                                 [isEmptyLoad]="false"
                                 [shipperContact]="{
                                     fullName:
                                         selectedExtraStopShipperContact[indx]
                                             ?.name
                                 }"
-                                [isOpen]="false"
+                                [isOpen]="
+                                    loadExtraStops().at(indx).get('openClose')
+                                        .value
+                                "
+                                (delete)="removeLoadExtraStop(indx)"
                                 (toggle)="
                                     toggleStopActivity(
                                         $event,
@@ -530,10 +563,11 @@
                                     )
                                 "
                             >
+                                <!-- Tabs  -->
                                 <div class="row">
                                     <div class="col-12">
                                         <app-ta-tab-switch
-                                            [tabs]="stopTabs"
+                                            [tabs]="stopTabs[indx]"
                                             (switchClicked)="
                                                 onTabChange(
                                                     $event,
@@ -547,6 +581,145 @@
                                         ></app-ta-tab-switch>
                                     </div>
                                 </div>
+                                <!-- Stop Information -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <app-ta-input-dropdown
+                                            formControlName="shipperId"
+                                            [template]="'load-shipper'"
+                                            [inputConfig]="
+                                                loadExtraStopsShipperInputConfig[
+                                                    indx
+                                                ]
+                                            "
+                                            [canAddNew]="true"
+                                            [canOpenModal]="true"
+                                            [options]="labelsShippers"
+                                            [activeItem]="
+                                                selectedExtraStopShipper[indx]
+                                            "
+                                            (selectedItem)="
+                                                onSelectDropdown(
+                                                    $event,
+                                                    'shipper-extra-stops',
+                                                    indx
+                                                )
+                                            "
+                                        ></app-ta-input-dropdown>
+                                    </div>
+                                </div>
+                                <div class="load-shipper-contact-row">
+                                    <app-ta-tab-switch
+                                        [tabs]="stopTimeTabsPickup"
+                                        (switchClicked)="
+                                            onTabChange($event, 'extra-stops')
+                                        "
+                                        [type]="'type2-modal-popup'"
+                                    ></app-ta-tab-switch>
+
+                                    <app-ta-input-dropdown
+                                        formControlName="shipperContactId"
+                                        [template]="'load-broker-contact'"
+                                        [inputConfig]="
+                                            loadExtraStopsShipperContactsInputConfig[
+                                                indx
+                                            ]
+                                        "
+                                        [canAddNew]="true"
+                                        [canOpenModal]="true"
+                                        [options]="labelsShipperContacts"
+                                        [activeItem]="
+                                            selectedExtraStopShipperContact[
+                                                indx
+                                            ]
+                                        "
+                                        (selectedItem)="
+                                            onSelectDropdown(
+                                                $event,
+                                                'shipper-contact-extra-stops',
+                                                indx
+                                            )
+                                        "
+                                    ></app-ta-input-dropdown>
+                                </div>
+                                <div
+                                    class="stop-load-date-time row-no-mb"
+                                    [ngClass]="{
+                                        'date-range-active':
+                                            loadExtraStopsDateRange[indx]
+                                    }"
+                                >
+                                    <app-ta-input
+                                        formControlName="dateFrom"
+                                        [inputConfig]="{
+                                            name: 'datepicker',
+                                            type: 'text',
+                                            isDropdown: true,
+                                            label: loadExtraStopsDateRange[indx]
+                                                ? 'Date From'
+                                                : 'Date',
+                                            placeholderIcon: 'date',
+                                            isRequired: true,
+                                            customClass: 'datetimeclass'
+                                        }"
+                                    ></app-ta-input>
+                                    <div
+                                        *ngIf="!loadExtraStopsDateRange[indx]"
+                                        class="load-plus-button"
+                                        ngbTooltip
+                                        mainTooltip="Date Range"
+                                        tooltipBackground="#B7B7B7"
+                                        position="top"
+                                        (click)="
+                                            loadExtraStopsDateRange[indx] = true
+                                        "
+                                    >
+                                        <svg-icon
+                                            src="assets/svg/common/ic_plus.svg"
+                                        ></svg-icon>
+                                    </div>
+                                    <app-ta-input
+                                        *ngIf="loadExtraStopsDateRange[indx]"
+                                        formControlName="dateTo"
+                                        [inputConfig]="{
+                                            name: 'datepicker',
+                                            type: 'text',
+                                            isDropdown: true,
+                                            label: 'Date To',
+                                            placeholderIcon: 'date',
+                                            customClass: 'datetimeclass'
+                                        }"
+                                    ></app-ta-input>
+
+                                    <!-- Time Picker -->
+                                    <app-ta-input
+                                        formControlName="timeFrom"
+                                        [inputConfig]="{
+                                            name: 'timepicker',
+                                            type: 'text',
+                                            label: 'From',
+                                            placeholderIcon: 'time',
+                                            isDropdown: true,
+                                            isRequired: true,
+                                            customClass: 'datetimeclass'
+                                        }"
+                                    ></app-ta-input>
+                                    <!-- Time Picker -->
+                                    <app-ta-input
+                                        formControlName="timeTo"
+                                        [inputConfig]="{
+                                            name: 'timepicker',
+                                            type: 'text',
+                                            label: 'To',
+                                            placeholderIcon: 'time',
+                                            isDropdown: true,
+                                            isRequired: true,
+                                            isDisabled:
+                                                selectedStopTimePickup === 6,
+                                            customClass: 'datetimeclass'
+                                        }"
+                                    ></app-ta-input>
+                                </div>
                             </app-load-stop>
                         </div>
                     </div>
@@ -555,7 +728,7 @@
                 <!-- Delivery Stop -->
                 <app-load-stop
                     [firstOrLast]="true"
-                    [stopNumber]="1"
+                    [stopNumber]="loadForm.get('deliveryStopOrder').value"
                     [isDelivery]="true"
                     [shipper]="selectedDeliveryShipper?.name"
                     [shipperAddress]="selectedDeliveryShipper?.address"
@@ -683,6 +856,17 @@
                         ></app-ta-input>
                     </div>
                 </app-load-stop>
+                <!-- Stops Footer -->
+                <div class="stops-footer-bar">
+                    <div class="stops-footer-bar-left-side">
+                        <p class="stops-footer-bar-text">LOADED MILES</p>
+                        <span class="loaded-miles-value">78.8 mi</span>
+                    </div>
+                    <div class="stops-footer-bar-right-side">
+                        <p class="stops-footer-bar-text">TOTAL MILES</p>
+                        <span class="total-miles-value">245.5 mi</span>
+                    </div>
+                </div>
             </app-ta-custom-card>
 
             <app-ta-custom-card

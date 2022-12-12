@@ -3,6 +3,7 @@
     height: auto;
     border-radius: 2px;
 
+    // Stop Header
     .load-stop-header-bar {
         background-color: rgb(111, 158, 224, 0.2);
         display: flex;
@@ -42,6 +43,7 @@
         .load-stop-header-content {
             display: grid;
             grid-template-columns: 260px 150px 120px 1fr;
+            grid-template-rows: 20px;
             -moz-column-gap: 4px;
             column-gap: 4px;
             align-items: center;
@@ -148,10 +150,46 @@
                     }
                 }
             }
+
+            &.extra-stop {
+                grid-template-columns: 530px 0px 1fr;
+            }
         }
 
         &.first-or-last {
             margin-bottom: 32px !important;
+        }
+
+        &.origin-destination-no-filled {
+            background-color: #eeeeee;
+
+            .load-stop-header-content {
+                .origin-destination-no-filled-container {
+                    position: relative;
+                    left: 1px;
+                    p {
+                        position: relative;
+                        width: max-content;
+                        margin: 0;
+                        padding: 0;
+                        color: #2f2f2f;
+                        font-size: 14px;
+                        font-weight: 500;
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+                        line-height: 18px;
+
+                        span {
+                            position: absolute;
+                            right: -10px;
+                            top: -1px;
+                            color: #ef5350;
+                        }
+                    }
+                }
+            }
         }
 
         &.not-active-stop {
@@ -167,6 +205,7 @@
         }
     }
 
+    // Stop Body
     .load-stop-body {
         &.innactive {
             height: 0px !important;
@@ -194,41 +233,46 @@
             height: 36px !important;
             padding: 6px !important;
             border-radius: 2px;
-        }
 
-        .load-stop-header-content {
-            .load-stop-inner-content {
-                .load-stop-content-up {
+            .load-stop-header-content {
+                .origin-destination-no-filled-container {
                     p {
                         color: #ffffff !important;
                     }
+                }
+                .load-stop-inner-content {
+                    .load-stop-content-up {
+                        p {
+                            color: #ffffff !important;
+                        }
 
-                    &-deadhead {
+                        &-deadhead {
+                            p {
+                                color: #919191 !important;
+
+                                span {
+                                    color: #ffffff !important;
+                                }
+                            }
+                        }
+                    }
+
+                    .load-stop-content-down {
                         p {
                             color: #919191 !important;
+                        }
 
-                            span {
-                                color: #ffffff !important;
+                        &-deadhead {
+                            p {
+                                color: #919191 !important;
                             }
                         }
                     }
                 }
 
-                .load-stop-content-down {
-                    p {
-                        color: #919191 !important;
-                    }
-
-                    &-deadhead {
-                        p {
-                            color: #919191 !important;
-                        }
-                    }
+                .load-stop-header-remove-btn {
+                    left: 3px !important;
                 }
-            }
-
-            .load-stop-header-remove-btn {
-                left: 3px !important;
             }
         }
     }
