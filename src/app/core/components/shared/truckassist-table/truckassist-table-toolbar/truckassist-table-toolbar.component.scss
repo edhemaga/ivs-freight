@@ -211,7 +211,7 @@
 // Map Style
 .mapToolbarStyle {
     position: relative;
-    width: 100% !important;
+    width: calc(100% + 16px) !important;
     z-index: 2;
 }
 
