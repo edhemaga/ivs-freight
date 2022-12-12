@@ -101,7 +101,7 @@ export class MedicalTService implements OnDestroy {
 
                        
                         newData.medicals.map((reg: any, index: any) => {
-                            if ( reg.id == res.id ) {
+                            if ( reg.id == resp.id ) {
                                 newData.medicals[index] = resp;  
                             }
                         })

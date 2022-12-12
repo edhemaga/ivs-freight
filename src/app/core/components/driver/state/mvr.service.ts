@@ -110,7 +110,7 @@ export class MvrTService implements OnDestroy {
 
                        
                         newData.mvrs.map((reg: any, index: any) => {
-                            if ( reg.id == res.id ) {
+                            if ( reg.id == resp.id ) {
                                 newData.mvrs[index] = resp;  
                             }
                         })

@@ -74,7 +74,7 @@ export class TestTService implements OnDestroy {
 
                        
                         newData.tests.map((reg: any, index: any) => {
-                            if ( reg.id == res.id ) {
+                            if ( reg.id == resp.id ) {
                                 newData.tests[index] = resp;  
                             }
                         })

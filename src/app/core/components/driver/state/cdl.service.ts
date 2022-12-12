@@ -79,7 +79,7 @@ export class CdlTService implements OnDestroy {
 
                        
                         newData.cdls.map((reg: any, index: any) => {
-                            if ( reg.id == res.id ) {
+                            if ( reg.id == resp.id ) {
                                 newData.cdls[index] = resp;  
                             }
                         })
@@ -140,7 +140,7 @@ export class CdlTService implements OnDestroy {
 
                        
                         newData.cdls.map((reg: any, index: any) => {
-                            if ( reg.id == res.id ) {
+                            if ( reg.id == resp.id ) {
                                 newData.cdls[index] = resp;  
                             }
                         })
@@ -172,7 +172,7 @@ export class CdlTService implements OnDestroy {
 
                        
                         newData.cdls.map((reg: any, index: any) => {
-                            if ( reg.id == res.id ) {
+                            if ( reg.id == resp.id ) {
                                 newData.cdls[index] = resp;  
                             }
                         })
@@ -194,7 +194,7 @@ export class CdlTService implements OnDestroy {
     }
     public renewCdlUpdate(data: RenewCdlCommand): Observable<any> {
         return this.cdlService.apiCdlRenewPut(data).pipe(
-            tap(() => {
+            tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
@@ -204,7 +204,7 @@ export class CdlTService implements OnDestroy {
 
                        
                         newData.cdls.map((reg: any, index: any) => {
-                            if ( reg.id == res.id ) {
+                            if ( reg.id == resp.id ) {
                                 newData.cdls[index] = resp;  
                             }
                         })
