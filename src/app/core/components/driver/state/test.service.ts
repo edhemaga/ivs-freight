@@ -64,30 +64,33 @@ export class TestTService implements OnDestroy {
         return this.drugService.apiTestPut().pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
-                const subDriver = this.driverService
-                    .getDriverById(driverId)
-                    .subscribe({
-                        next: (driver: any) => {
-                            // this.driverStore.remove(
-                            //     ({ id }) => id === driverId
-                            // );
-                            // driver = {
-                            //     ...driver,
-                            //     fullName:
-                            //         driver.firstName + ' ' + driver.lastName,
-                            // };
-                            // this.driverStore.add(driver);
-                            // this.dlStore.update(driver.id, {
-                            //     tests: driver.tests,
-                            // });
-                            // this.tableService.sendActionAnimation({
-                            //     animation: 'update',
-                            //     data: driver,
-                            //     id: driverId,
-                            // });
-                            // subDriver.unsubscribe();
-                        },
-                    });
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                
+                let testApi = this.drugService.apiTestIdGet(res.id).subscribe({
+                    next: (resp: any) => {
+
+                       
+                        newData.tests.map((reg: any, index: any) => {
+                            if ( reg.id == res.id ) {
+                                newData.tests[index] = resp;  
+                            }
+                        })
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+                      
+                        testApi.unsubscribe();
+                    },
+                });  
             })
         );
     }

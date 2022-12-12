@@ -34,24 +34,27 @@ export class MvrTService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (driver: any) => {
-                            // this.driverStore.remove(
-                            //     ({ id }) => id === driverId
-                            // );
-                            // driver = {
-                            //     ...driver,
-                            //     fullName:
-                            //         driver.firstName + ' ' + driver.lastName,
-                            // };
-                            // this.driverStore.add(driver);
-                            // this.dlStore.update(driver.id, {
-                            //     mvrs: driver.mvrs,
-                            // });
-                            // this.tableService.sendActionAnimation({
-                            //     animation: 'delete',
-                            //     data: driver,
-                            //     id: driverId,
-                            // });
-                            // subDriver.unsubscribe();
+                            this.driverStore.remove(
+                                ({ id }) => id === driverId
+                            );
+
+                            driver = {
+                                ...driver,
+                                fullName:
+                                    driver.firstName + ' ' + driver.lastName,
+                            };
+
+                            this.driverStore.add(driver);
+                            /*this.dlStore.update(driver.id, {
+                                mvrs: driver.mvrs,
+                            }); */
+                            this.tableService.sendActionAnimation({
+                                animation: 'delete',
+                                data: driver,
+                                id: driverId,
+                            });
+
+                            subDriver.unsubscribe();
                         },
                     });
             })
@@ -66,32 +69,29 @@ export class MvrTService implements OnDestroy {
     public addMvr(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.mvrService.apiMvrPost().pipe(
-            tap(() => {
-                const subDriver = this.driverService
-                    .getDriverById(data.driverId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (driver: any) => {
-                            // this.driverStore.remove(
-                            //     ({ id }) => id === data.driverId
-                            // );
-                            // driver = {
-                            //     ...driver,
-                            //     fullName:
-                            //         driver.firstName + ' ' + driver.lastName,
-                            // };
-                            // this.driverStore.add(driver);
-                            // this.dlStore.update(driver.id, {
-                            //     mvrs: driver.mvrs,
-                            // });
-                            // this.tableService.sendActionAnimation({
-                            //     animation: 'update',
-                            //     data: driver,
-                            //     id: driver.id,
-                            // });
-                            // subDriver.unsubscribe();
+                tap((res: any) => {
+                    let driverId = this.driverItemStore.getValue().ids[0];
+                    const dr = this.driverItemStore.getValue();
+                    const driverData = JSON.parse(JSON.stringify(dr.entities));
+                    let newData = driverData[driverId];
+    
+                    let mvrApi = this.mvrService.apiMvrIdGet(res.id).subscribe({
+                        next: (resp: any) => {
+    
+                            newData.mvrs.push(resp);
+                           
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            
+                            this.dlStore.add(newData);
+                            this.driverItemStore.set([newData]);
+                          
+                            mvrApi.unsubscribe();
                         },
-                    });
+                    });  
             })
         );
     }
@@ -101,31 +101,32 @@ export class MvrTService implements OnDestroy {
         return this.mvrService.apiMvrPut().pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
-                const subDriver = this.driverService
-                    .getDriverById(driverId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (driver: any) => {
-                            // this.driverStore.remove(
-                            //     ({ id }) => id === driverId
-                            // );
-                            // driver = {
-                            //     ...driver,
-                            //     fullName:
-                            //         driver.firstName + ' ' + driver.lastName,
-                            // };
-                            // this.driverStore.add(driver);
-                            // this.dlStore.update(driver.id, {
-                            //     mvrs: driver.mvrs,
-                            // });
-                            // this.tableService.sendActionAnimation({
-                            //     animation: 'update',
-                            //     data: driver,
-                            //     id: driverId,
-                            // });
-                            // subDriver.unsubscribe();
-                        },
-                    });
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                let mvrApi = this.mvrService.apiMvrIdGet(res.id).subscribe({
+                    next: (resp: any) => {
+
+                       
+                        newData.mvrs.map((reg: any, index: any) => {
+                            if ( reg.id == res.id ) {
+                                newData.mvrs[index] = resp;  
+                            }
+                        })
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+                      
+                        mvrApi.unsubscribe();
+                    },
+                });  
             })
         );
     }
