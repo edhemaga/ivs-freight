@@ -268,8 +268,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
     createTitleBasedOnHttpRequest() {
         console.log(this.httpRequest);
-        console.log('---errorData---', this.errorData);
-
+        
         let url = this.httpRequest.url.split('/api/');
         let apiEndPoint = url[1];
 
