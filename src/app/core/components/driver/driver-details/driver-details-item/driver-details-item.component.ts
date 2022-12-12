@@ -124,6 +124,11 @@ export class DriverDetailsItemComponent
         this.activeCdl = this.drivers[0].data.cdls.filter(
             (item) => item.status === 1
         );
+        
+        this.dataMvr = this.drivers[0].data.mvrs;
+        this.dataMedical = this.drivers[0].data.medicals;
+        this.dataTest = this.drivers[0].data.dataTest; 
+
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -153,10 +158,10 @@ export class DriverDetailsItemComponent
                                             {
                                                 id: res.data.driver?.id,
                                                 file_id:
-                                                    res.data.driver.file_id,
+                                                    res.data.driver?.file_id,
                                                 type: 'renew-licence',
                                                 renewData:
-                                                    res.data.driver.renewData,
+                                                    res.data.driver?.renewData,
                                             }
                                         );
                                         clearTimeout(timeout);
@@ -178,7 +183,7 @@ export class DriverDetailsItemComponent
             });
     }
     public getExpireDate() {
-        this.dataCDl = this.drivers[1]?.data?.cdls?.map((ele) => {
+        this.dataCDl = this.drivers[0]?.data?.cdls?.map((ele) => {
             let endDate = moment(ele.expDate);
             if (
                 moment(ele.expDate).isBefore(moment()) ||
@@ -216,27 +221,27 @@ export class DriverDetailsItemComponent
         this.arrayOfRenewCdl = [];
         this.activateShow = [];
         this.expiredCard = [];
-        // data?.cdls?.map((item) => {
-        //     let endDate = moment(item.expDate);
-        //     let daysDiff = endDate.diff(moment(), 'days');
+        data?.cdls?.map((item) => {
+            let endDate = moment(item.expDate);
+            let daysDiff = endDate.diff(moment(), 'days');
 
-        //     if (moment(item.expDate).isBefore(moment())) {
-        //         this.expiredCard.push(true);
-        //     } else {
-        //         this.expiredCard.push(false);
-        //     }
-        //     if (item.dateDeactivated) {
-        //         this.activateShow.push(true);
-        //     } else {
-        //         this.activateShow.push(false);
-        //     }
+            if (moment(item.expDate).isBefore(moment())) {
+                 this.expiredCard.push(true);
+            } else {
+                this.expiredCard.push(false);
+            }
+            if (item.dateDeactivated) {
+                this.activateShow.push(true);
+            } else {
+                this.activateShow.push(false);
+            }
 
-        //     if (daysDiff < -365) {
-        //         this.arrayOfRenewCdl.push(true);
-        //     } else {
-        //         this.arrayOfRenewCdl.push(false);
-        //     }
-        // });
+            if (daysDiff < -365) {
+                this.arrayOfRenewCdl.push(true);
+            } else {
+                this.arrayOfRenewCdl.push(false);
+            }
+        });
 
         this.dataDropDown = {
             disabledMutedStyle: null,
@@ -438,11 +443,22 @@ export class DriverDetailsItemComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.dataTest = item));
     }
+
+    public preloadData(data: any, title?: any){
+        if ( title == 'cdl' ) {
+            this.dataCdl = data;
+        } else if ( title == 'test' ) {
+            this.dataTest = data;
+        } else if ( title == 'med' ) {
+            this.dataMedical = data;
+        } else if ( title == 'mvr' ) {
+            this.dataMvr = data;
+        }
+    }
+
     public optionsEvent(any: any, action: string) {
         const name = dropActionNameDriver(any, action);
         let dataForCdl;
-        console.log('--any---', any);
-
         if (
             (this.activeCdl.length && any.type === 'activate-item') ||
             any.type === 'deactivate-item'
@@ -452,6 +468,8 @@ export class DriverDetailsItemComponent
             dataForCdl = this.dataCdl;
         }
 
+      
+        
         setTimeout(() => {
             this.dropDownService.dropActions(
                 any,

@@ -70,7 +70,7 @@ export class TruckItemResolver implements Resolve<TruckItemState> {
         /*
         if (this.truckDetailsListQuery.hasEntity(trid)) {
             return this.truckDetailsListQuery.selectEntity(trid).pipe(
-                tap((truckResponse: TruckResponse) => {
+                tap((truckResponse: any) => {
                     this.truckDetailsStore.set([truckResponse]);
                 }),
                 take(1)
@@ -81,7 +81,7 @@ export class TruckItemResolver implements Resolve<TruckItemState> {
                     this.router.navigate(['/truck']);
                     return of('No truck data for...' + trid);
                 }),
-                tap((truckResponse: TruckResponse) => {
+                tap((truckResponse: any) => {
                     this.truckDetailsListStore.add(truckResponse);
                     this.truckDetailsStore.set([truckResponse]);
                 })
