@@ -1952,6 +1952,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     if (route.isFocused) {
                         this.focusRoute(routeIndex);
                     }
+                    
+                    this.deleteRouteLine(route);
 
                     route.stops.map((stop) => {
                         if (stop.isSelected) {
@@ -1969,6 +1971,18 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     : event.tabData.field == 'map3'
                     ? 2
                     : 3;
+
+            this.tableData[this.selectedMapIndex].routes.map((item) => {
+                //this.calculateDistanceBetweenStops(index);
+                this.calculateRouteWidth(item);
+                if (item.stops?.length > 1) {
+                    this.decodeRouteShape(item);
+                } else {
+                    this.deleteRouteLine(item);
+                }
+            });
+
+            this.mapToolbar.getSelectedTabTableData();
 
             this.focusedStopIndex = null;
             this.focusedRouteIndex = null;
@@ -2908,15 +2922,22 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     this.tableData[mapIndex].routes.push(newRoute);
                 });
 
-                this.tableData[mapIndex].routes.map((item) => {
-                    //this.calculateDistanceBetweenStops(index);
-                    this.calculateRouteWidth(item);
-                    if (item.stops?.length > 1) {
-                        this.decodeRouteShape(item);
-                    } else {
-                        this.deleteRouteLine(item);
-                    }
-                });
+                if ( this.selectedMapIndex == mapIndex ) {
+                    this.tableData[mapIndex].routes.map((item) => {
+                        //this.calculateDistanceBetweenStops(index);
+                        this.calculateRouteWidth(item);
+                        if (item.stops?.length > 1) {
+                            this.decodeRouteShape(item);
+                        } else {
+                            this.deleteRouteLine(item);
+                        }
+                    });
+                }
+
+                this.tableData[mapIndex].length =
+                    this.tableData[mapIndex].routes.length;
+
+                this.mapToolbar.getSelectedTabTableData();
 
                 this.initAddressFields();
             });
@@ -2943,16 +2964,16 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
         this.getRouteList(mapId, 1, 8);
 
-        this.showHideDuplicate();
+        // this.showHideDuplicate();
 
-        this.calculateRouteWidth(
-            this.tableData[this.selectedMapIndex].routes[
-                this.tableData[this.selectedMapIndex].routes.length - 1
-            ]
-        );
+        // this.calculateRouteWidth(
+        //     this.tableData[this.selectedMapIndex].routes[
+        //         this.tableData[this.selectedMapIndex].routes.length - 1
+        //     ]
+        // );
 
-        this.tableData[this.selectedMapIndex].length =
-            this.tableData[this.selectedMapIndex].routes.length;
+        // this.tableData[this.selectedMapIndex].length =
+        //     this.tableData[this.selectedMapIndex].routes.length;
     }
 
     decodeRouteShape(route) {
