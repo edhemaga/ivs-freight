@@ -51,7 +51,7 @@
                 [locationFilterOn]="locationFilterOn"
                 [dropdownActions]="tableOptions.actions"
                 (bodyActions)="onTableBodyActions($event)"
-                (clickedMarker)="selectItem(latlong.id)"
+                (clickedMarker)="selectItem($event)"
                 [ngStyle]="{
                     display:
                         locationFilterOn && latlong?.isShown == false
@@ -63,11 +63,12 @@
 
         <app-maps
             #mapsComponent
-            [_viewData]="[]"
+            [_viewData]="viewData"
             [dropdownActions]="tableOptions.actions"
             [mapType]="'repairShop'"
             (callDropDownAction)="onTableBodyActions($event)"
             (updateMapList)="updateMapList($event)"
+            (selectMarker)="selectItem($event)"
         ></app-maps>
     </div>
 </div>

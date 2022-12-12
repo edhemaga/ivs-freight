@@ -32,37 +32,38 @@ export class MapsComponent implements OnInit, OnDestroy {
     viewData = [];
     @Input() set _viewData(value) {
         // table data (shippers, repair shops)
-        var previousData = JSON.parse(JSON.stringify(this.viewData));
-        var updatedData = false;
+        
+        var newData = value;
 
-        this.viewData = value;
+        newData.map((data) => {
+            if (data.actionAnimation == 'update') {
+                let markerIndex = this.viewData.findIndex(
+                    (item) => item.id === data.id
+                );
+                if (markerIndex < 0 && !this.clusterDetailedInfo) return false;
 
-        this.viewData.map((data, index) => {
-            var doAnimation = false;
-            if (previousData[index]?.latitude != data.latitude)
-                doAnimation = true;
-
-            if (
-                (data.actionAnimation == 'update' && doAnimation) ||
-                data.actionAnimation == 'add'
-            ) {
-                this.markerAnimations[data.id] = false;
-                this.showMarkerWindow[data.id] = false;
-                updatedData = true;
+                if (this.mapType == 'repairShop') {
+                    this.getRepairShop(data.id, markerIndex);
+                } else if (this.mapType == 'shipper') {
+                    this.getShipper(data.id, markerIndex);
+                } else if (this.mapType == 'fuelStop') {
+                    this.getFuelStop(data.id, markerIndex);
+                }
+                
+                this.getClusters(true, true);
+            } else if ( data.actionAnimation == 'add' || data.actionAnimation == 'delete' ) {
+                setTimeout(() => {
+                    this.getClusters(true, true);
+                }, 1000);
             }
         });
-
-        if (updatedData) {
-            setTimeout(() => {
-                this.markersDropAnimation();
-            }, 1000);
-        }
     }
     @Input() mapType: string = 'shipper'; // shipper, repairShop, fuelStop, accident, inspection, routing
     @Input() routes: any[] = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
     @Input() dropdownActions: any[] = [];
     @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
     @Output() updateMapList: EventEmitter<any> = new EventEmitter();
+    @Output() selectMarker: EventEmitter<any> = new EventEmitter();
 
     public agmMap: any;
     public styles = AppConst.GOOGLE_MAP_STYLES;
@@ -79,7 +80,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     public markerSelected: boolean = false;
     public mapLatitude: number = 41.860119;
     public mapLongitude: number = -87.660156;
-    public sortBy: string = 'nameAsc';
+    public sortBy: string = 'nameDesc';
     public searchValue: string = '';
     public mapMarkers: any[] = [];
     public mapCircle: any = {
@@ -118,6 +119,8 @@ export class MapsComponent implements OnInit, OnDestroy {
 
     public searchText: string = '';
     public firstClusterCall: boolean = true;
+    public clusterDetailedInfo: any = {};
+    public lastClusterCoordinates: any = {};
 
     constructor(
         private ref: ChangeDetectorRef,
@@ -164,6 +167,11 @@ export class MapsComponent implements OnInit, OnDestroy {
             map.addListener('idle', () => {
                 // update the coordinates here
 
+                var mapCenter = map.getCenter();
+
+                this.mapLatitude = mapCenter.lat();
+                this.mapLongitude = mapCenter.lng();
+
                 clearTimeout(this.clustersTimeout);
 
                 this.clustersTimeout = setTimeout(() => {
@@ -203,6 +211,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                         data.isSelected = true;
                     }
 
+                    this.mapsService.selectedMarker(data.id);
+
                     if (
                         this.mapLatitude == data.latitude &&
                         this.mapLongitude == data.longitude
@@ -216,6 +226,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                 } else {
                     this.markerSelected = false;
                     data.isSelected = false;
+                    this.mapsService.selectedMarker(0);
                 }
 
                 document
@@ -246,6 +257,7 @@ export class MapsComponent implements OnInit, OnDestroy {
             if (data.isSelected) {
                 data.isSelected = false;
                 data.isExpanded = false;
+                this.mapsService.selectedMarker(0);
             }
         });
 
@@ -255,6 +267,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                 if (data.detailedInfo) {
                     setTimeout(() => {
                         data.detailedInfo = false;
+                        this.clusterDetailedInfo = false;
+                        this.mapsService.selectedMarker(0);
                     }, 200);
                 }
             }
@@ -387,7 +401,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         }
     }
 
-    callClusters(clustersObj, changedSearchOrSort) {
+    callClusters(clustersObj, changedSearchOrSort, pageIndex?, pageSize?) {
         if (this.mapType == 'repairShop') {
             this.repairShopService
                 .getRepairShopClusters(clustersObj)
@@ -497,10 +511,28 @@ export class MapsComponent implements OnInit, OnDestroy {
                     mapListData.changedSort = changedSearchOrSort;
 
                     this.updateMapList.emit(mapListData);
+                    this.mapsService.searchLoadingChanged.next(false);
                 });
         } else if (this.mapType == 'shipper') {
             this.shipperService
-                .getShipperClusters(clustersObj)
+                .getShipperClusters(
+                    clustersObj.northEastLatitude,
+                    clustersObj.northEastLongitude,
+                    clustersObj.southWestLatitude,
+                    clustersObj.southWestLongitude,
+                    clustersObj.zoomLevel,
+                    null, // shipperLong
+                    null, // shipperLat
+                    null, // shipperDistance
+                    null, // shipperStates
+                    pageIndex,
+                    pageSize,
+                    null, // companyId
+                    null, // sort
+                    null, // search
+                    null, // search1
+                    null  // search2
+                )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((clustersResponse: any) => {
                     var clustersToShow = [];
@@ -584,11 +616,17 @@ export class MapsComponent implements OnInit, OnDestroy {
                     clustersObj.northEastLongitude,
                     clustersObj.southWestLatitude,
                     clustersObj.southWestLongitude,
-                    null,
-                    null,
-                    null,
+                    null, // shipperLong
+                    null, // shipperLat
+                    null, // shipperDistance
+                    null, // shipperStates
+                    null, // pageIndex
+                    null, // pageSize
+                    null, // companyId
                     this.sortBy,
-                    this.searchText
+                    this.searchText,
+                    null, // search1
+                    null  // search2
                 )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((mapListResponse: any) => {
@@ -607,6 +645,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     mapListData.changedSort = changedSearchOrSort;
 
                     this.updateMapList.emit(mapListData);
+                    this.mapsService.searchLoadingChanged.next(false);
                 });
         } else if (this.mapType == 'fuelStop') {
             this.fuelStopService
@@ -726,6 +765,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     mapListData.changedSort = changedSearchOrSort;
 
                     this.updateMapList.emit(mapListData);
+                    this.mapsService.searchLoadingChanged.next(false);
                 });
         }
     }
@@ -738,6 +778,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     data.longitude != cluster.longitude)
             ) {
                 data.isSelected = false;
+                this.mapsService.selectedMarker(0);
             } else if (
                 data.latitude == cluster.latitude &&
                 data.longitude == cluster.longitude
@@ -761,6 +802,8 @@ export class MapsComponent implements OnInit, OnDestroy {
                     }
                 } else if (data.detailedInfo) {
                     data.detailedInfo = false;
+                    this.clusterDetailedInfo = false;
+                    this.mapsService.selectedMarker(0);
                 } else {
                     this.markerSelected = false;
                 }
@@ -798,24 +841,48 @@ export class MapsComponent implements OnInit, OnDestroy {
             .getRepairShopById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res) => {
-                    this.viewData[index] = { ...this.viewData[index], ...res };
-
-                    this.viewData[index].shopRaiting = {
+                next: (res: any) => {
+                    var newData = { ...res };
+                    newData.shopRaiting = {
                         hasLiked: res.currentCompanyUserRating === 1,
                         hasDislike: res.currentCompanyUserRating === -1,
                         likeCount: res?.upCount ? res.upCount : '0',
                         dislikeCount: res?.downCount ? res.downCount : '0',
                     };
 
+                    if (index > -1) {
+                        this.viewData[index] = {
+                            ...this.viewData[index],
+                            ...newData,
+                        };
+                    }
+
+                    if (
+                        this.clusterDetailedInfo &&
+                        this.clusterDetailedInfo.id == id
+                    ) {
+                        this.clusterMarkers.map((cluster) => {
+                            if (
+                                cluster.detailedInfo &&
+                                cluster.detailedInfo.id == id
+                            ) {
+                                cluster.detailedInfo = newData;
+                                this.clusterDetailedInfo = newData;
+                                this.mapsService.selectedMarker(newData.id);
+                            }
+                        });
+                    }
+
                     setTimeout(() => {
-                        this.viewData[index].isSelected = true;
+                        if (index > -1) {
+                            this.viewData[index].isSelected = true;
+                            this.mapsService.selectedMarker(id);
+                        }
+
                         this.ref.detectChanges();
                     }, 200);
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
@@ -824,24 +891,48 @@ export class MapsComponent implements OnInit, OnDestroy {
             .getShipperById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res) => {
-                    this.viewData[index] = { ...this.viewData[index], ...res };
-
-                    this.viewData[index].raiting = {
+                next: (res: any) => {
+                    var newData = { ...res };
+                    newData.raiting = {
                         hasLiked: res.currentCompanyUserRating === 1,
                         hasDislike: res.currentCompanyUserRating === -1,
                         likeCount: res?.upCount ? res.upCount : '0',
                         dislikeCount: res?.downCount ? res.downCount : '0',
                     };
 
+                    if (index > -1) {
+                        this.viewData[index] = {
+                            ...this.viewData[index],
+                            ...newData,
+                        };
+                    }
+
+                    if (
+                        this.clusterDetailedInfo &&
+                        this.clusterDetailedInfo.id == id
+                    ) {
+                        this.clusterMarkers.map((cluster) => {
+                            if (
+                                cluster.detailedInfo &&
+                                cluster.detailedInfo.id == id
+                            ) {
+                                cluster.detailedInfo = newData;
+                                this.clusterDetailedInfo = newData;
+                                this.mapsService.selectedMarker(newData.id);
+                            }
+                        });
+                    }
+
                     setTimeout(() => {
-                        this.viewData[index].isSelected = true;
+                        if (index > -1) {
+                            this.viewData[index].isSelected = true;
+                            this.mapsService.selectedMarker(id);
+                        }
+
                         this.ref.detectChanges();
                     }, 200);
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -850,17 +941,42 @@ export class MapsComponent implements OnInit, OnDestroy {
             .getFuelStopById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res) => {
-                    this.viewData[index] = { ...this.viewData[index], ...res };
+                next: (res: any) => {
+                    var newData = { ...res };
+
+                    if (index > -1) {
+                        this.viewData[index] = {
+                            ...this.viewData[index],
+                            ...newData,
+                        };
+                    }
+
+                    if (
+                        this.clusterDetailedInfo &&
+                        this.clusterDetailedInfo.id == id
+                    ) {
+                        this.clusterMarkers.map((cluster) => {
+                            if (
+                                cluster.detailedInfo &&
+                                cluster.detailedInfo.id == id
+                            ) {
+                                cluster.detailedInfo = newData;
+                                this.clusterDetailedInfo = newData;
+                                this.mapsService.selectedMarker(newData.id);
+                            }
+                        });
+                    }
 
                     setTimeout(() => {
-                        this.viewData[index].isSelected = true;
+                        if (index > -1) {
+                            this.viewData[index].isSelected = true;
+                            this.mapsService.selectedMarker(id);
+                        }
+
                         this.ref.detectChanges();
                     }, 200);
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 
@@ -887,11 +1003,14 @@ export class MapsComponent implements OnInit, OnDestroy {
                             dislikeCount: res?.downCount ? res.downCount : '0',
                         };
 
+                        this.clusterDetailedInfo = cluster.detailedInfo;
+                        this.mapsService.selectedMarker(
+                            cluster.detailedInfo.id
+                        );
+
                         this.ref.detectChanges();
                     },
-                    error: () => {
-                      
-                    },
+                    error: () => {},
                 });
         } else if (this.mapType == 'shipper') {
             this.shipperService
@@ -908,11 +1027,14 @@ export class MapsComponent implements OnInit, OnDestroy {
                             dislikeCount: res?.downCount ? res.downCount : '0',
                         };
 
+                        this.clusterDetailedInfo = cluster.detailedInfo;
+                        this.mapsService.selectedMarker(
+                            cluster.detailedInfo.id
+                        );
+
                         this.ref.detectChanges();
                     },
-                    error: () => {
-                    
-                    },
+                    error: () => {},
                 });
         } else if (this.mapType == 'fuelStop') {
             this.fuelStopService
@@ -922,16 +1044,19 @@ export class MapsComponent implements OnInit, OnDestroy {
                     next: (res) => {
                         cluster.detailedInfo = res;
 
+                        this.clusterDetailedInfo = res;
+                        this.mapsService.selectedMarker(
+                            cluster.detailedInfo.id
+                        );
+
                         this.ref.detectChanges();
                     },
-                    error: () => {
-                      
-                    },
+                    error: () => {},
                 });
         }
     }
 
-    getClusters(changedSearchOrSort?) {
+    getClusters(changedSearchOrSort?, moveMap?) {
         var bounds = this.agmMap.getBounds();
         var ne = bounds.getNorthEast(); // LatLng of the north-east corner
         var sw = bounds.getSouthWest(); // LatLng of the south-west corder
@@ -944,7 +1069,30 @@ export class MapsComponent implements OnInit, OnDestroy {
             zoomLevel: this.mapZoom,
         };
 
+        if ( moveMap ) {
+            this.mapLatitude = this.mapLatitude + 0.000001;
+            this.mapLongitude = this.mapLongitude + 0.000001;
+        }
+        
+        this.lastClusterCoordinates = clustersObject;
+
         this.callClusters(clustersObject, changedSearchOrSort);
+    }
+
+    showMoreData() {
+        var bounds = this.agmMap.getBounds();
+        var ne = bounds.getNorthEast(); // LatLng of the north-east corner
+        var sw = bounds.getSouthWest(); // LatLng of the south-west corder
+
+        var clustersObject = {
+            northEastLatitude: ne.lat(),
+            northEastLongitude: ne.lng(),
+            southWestLatitude: sw.lat(),
+            southWestLongitude: sw.lng(),
+            zoomLevel: this.mapZoom,
+        };
+
+        //this.callClusters(clustersObject, false, 1, 25);
     }
 
     ngOnDestroy(): void {
