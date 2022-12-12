@@ -293,13 +293,12 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
         this.ownerInfoForm
             .get('bank')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe(async (value) => {
-                this.isBankSelected =
-                    await this.bankVerificationService.onSelectBank(
-                        this.selectedBank ? this.selectedBank.name : value,
-                        this.ownerInfoForm.get('routingNumber'),
-                        this.ownerInfoForm.get('accountNumber')
-                    );
+            .subscribe((value) => {
+                this.isBankSelected = this.bankVerificationService.onSelectBank(
+                    this.selectedBank ? this.selectedBank.name : value,
+                    this.ownerInfoForm.get('routingNumber'),
+                    this.ownerInfoForm.get('accountNumber')
+                );
             });
     }
 
@@ -320,7 +319,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                         ...this.banksDropdownList,
                         this.selectedBank,
                     ];
-                }
+                },
             });
     }
 
@@ -366,7 +365,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                                 this.selectedTruckMake = res.truckMake;
                                 this.selectedtruckEngineModelId =
                                     res.engineModel;
-                            }
+                            },
                         });
                 }
             });
@@ -407,7 +406,7 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                                 this.loadingTrailerVinDecoder = false;
 
                                 this.selectedTrailerMake = res.trailerMake;
-                            }
+                            },
                         });
                 }
             });

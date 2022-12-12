@@ -1056,13 +1056,12 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.personalInfoForm
             .get('bankId')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe(async (value) => {
-                this.isBankSelected =
-                    await this.bankVerificationService.onSelectBank(
-                        this.selectedBank ? this.selectedBank.name : value,
-                        this.personalInfoForm.get('routingNumber'),
-                        this.personalInfoForm.get('accountNumber')
-                    );
+            .subscribe((value) => {
+                this.isBankSelected = this.bankVerificationService.onSelectBank(
+                    this.selectedBank ? this.selectedBank.name : value,
+                    this.personalInfoForm.get('routingNumber'),
+                    this.personalInfoForm.get('accountNumber')
+                );
             });
     }
 
@@ -1083,7 +1082,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         ...this.banksDropdownList,
                         this.selectedBank,
                     ];
-                }
+                },
             });
     }
 

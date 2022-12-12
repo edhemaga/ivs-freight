@@ -22,11 +22,11 @@ export class BankVerificationService {
         private bankService: BankService
     ) {}
 
-    public async onSelectBank(
+    public onSelectBank(
         bankValue: string,
         routingControl: AbstractControl,
         accountControl: AbstractControl
-    ): Promise<boolean> {
+    ): boolean {
         if (bankValue) {
             this.inputService.changeValidators(
                 routingControl,
@@ -34,7 +34,7 @@ export class BankVerificationService {
                 routingBankValidation,
                 false
             );
-            await this.routingNumberTyping(routingControl);
+            this.routingNumberTyping(routingControl);
 
             this.inputService.changeValidators(
                 accountControl,
@@ -53,9 +53,9 @@ export class BankVerificationService {
     private async routingNumberTyping(routingControl: AbstractControl) {
         routingControl.valueChanges
             .pipe(distinctUntilChanged())
-            .subscribe(async (value) => {
+            .subscribe((value) => {
                 if (value?.length > 8) {
-                    if (await bankRoutingValidator(value)) {
+                    if (bankRoutingValidator(value)) {
                         routingControl.setErrors(null);
                     } else {
                         routingControl.setErrors({ invalid: true });

@@ -291,13 +291,12 @@ export class UserModalComponent implements OnInit, OnDestroy {
         this.userForm
             .get('bankId')
             .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe(async (value) => {
-                this.isBankSelected =
-                    await this.bankVerificationService.onSelectBank(
-                        this.selectedBank ? this.selectedBank.name : value,
-                        this.userForm.get('routingNumber'),
-                        this.userForm.get('accountNumber')
-                    );
+            .subscribe((value) => {
+                this.isBankSelected = this.bankVerificationService.onSelectBank(
+                    this.selectedBank ? this.selectedBank.name : value,
+                    this.userForm.get('routingNumber'),
+                    this.userForm.get('accountNumber')
+                );
             });
     }
 

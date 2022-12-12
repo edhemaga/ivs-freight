@@ -1440,14 +1440,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .apiRoutingGet(
                 this.loadExtraStops().length > 1
                     ? JSON.stringify(
-                          this.loadExtraStops()
-                              .controls.filter((item) => item)
-                              .map((item) => {
-                                  return {
-                                      longitude: item.get('longitude').value,
-                                      latitude: item.get('latitude').value,
-                                  };
-                              })
+                          this.loadExtraStops().controls.map((item) => {
+                              return {
+                                  longitude: item.get('longitude').value,
+                                  latitude: item.get('latitude').value,
+                              };
+                          })
                       )
                     : JSON.stringify({
                           longitude: this.selectedPickupShipper?.longitude,
