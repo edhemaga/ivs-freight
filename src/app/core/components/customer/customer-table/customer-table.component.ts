@@ -710,6 +710,8 @@ export class CustomerTableComponent
                         return data;
                     });
 
+                    this.ref.detectChanges();
+
                     const inetval = setInterval(() => {
                         this.viewData = closeAnimationAction(
                             false,
@@ -760,6 +762,8 @@ export class CustomerTableComponent
 
             return data;
         });
+        
+        this.ref.detectChanges();
 
         const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
@@ -811,6 +815,57 @@ export class CustomerTableComponent
         this.tableService.sendResetSelectedColumns(true);
     }
 
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+        this.tableService.sendActionAnimation({});
+        this.tableService.sendDeleteSelectedRows([]);
+
+        this.resizeObserver.unobserve(
+            document.querySelector('.table-container')
+        );
+        this.resizeObserver.disconnect();
+    }
+
+    // MAP
+    selectItem(data: any) {
+        this.mapsComponent.clickedMarker(data[0]);
+
+        this.mapListData.map((item) => {
+            if ( item.id == data[0] ) {
+                let itemIndex = this.mapsComponent.viewData.findIndex(
+                    (item2) => item2.id === item.id
+                );
+
+                if ( itemIndex > -1 && this.mapsComponent.viewData[itemIndex].showMarker ) {
+                    item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+                } else {
+                    this.mapsComponent.clusterMarkers.map((cluster) => {
+                        var clusterData = cluster.pagination.data;
+            
+                        let clusterItemIndex = clusterData.findIndex(
+                            (item2) => item2.id === data[0]
+                        );
+            
+                        if ( clusterItemIndex > -1 ) {
+                            if ( !data[1] ) {
+                                if ( !cluster.isSelected || (cluster.isSelected && cluster.detailedInfo?.id == data[0]) ) {
+                                    this.mapsComponent.clickedCluster(cluster);
+                                }
+            
+                                if ( cluster.isSelected ) {
+                                    this.mapsComponent.showClusterItemInfo([cluster, clusterData[clusterItemIndex]]);
+                                }
+                            }
+
+                            item.isSelected = cluster.isSelected;
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     updateMapList(mapListResponse) {
         var newMapList = mapListResponse.pagination.data;
         var listChanged = false;
@@ -849,22 +904,5 @@ export class CustomerTableComponent
             this.tableData[1].length = mapListResponse.pagination.count;
             this.ref.detectChanges();
         }
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-        this.tableService.sendActionAnimation({});
-        this.tableService.sendDeleteSelectedRows([]);
-
-        this.resizeObserver.unobserve(
-            document.querySelector('.table-container')
-        );
-        this.resizeObserver.disconnect();
-    }
-
-    // MAP
-    selectItem(id: any) {
-        this.mapsComponent.clickedMarker(id);
     }
 }

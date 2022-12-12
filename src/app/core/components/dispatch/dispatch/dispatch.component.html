@@ -8,5 +8,17 @@
         [tableContainerWidth]="tableContainerWidth"
     ></app-truckassist-table-toolbar>
 
-    <app-dispatch-table [smallList]="dispatchBoardSmallList | async"></app-dispatch-table>
+    <div class="dispatch-tables">
+        <div
+            class="dipsatch_groups"
+            *ngFor="let item of dispatchTableList | async; let indx = index"
+        >
+            <app-dispatch-table
+                [_dData]="item"
+                [isBoardLocked]="isBoardLocked"
+                [dDataIndx]="indx"
+                [smallList]="dispatchBoardSmallList | async"
+            ></app-dispatch-table>
+        </div>
+    </div>
 </div>

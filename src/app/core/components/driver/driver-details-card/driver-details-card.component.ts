@@ -35,6 +35,7 @@ import { ImageBase64Service } from '../../../utils/base64.image';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
+import { DriverResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-driver-details-card',

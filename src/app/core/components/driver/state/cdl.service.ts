@@ -3,6 +3,7 @@ import {
     CdlResponse,
     CdlService,
     CreateResponse,
+    DriverResponse,
     GetCdlModalResponse,
 } from 'appcoretruckassist';
 import { Observable, Subject, tap } from 'rxjs';

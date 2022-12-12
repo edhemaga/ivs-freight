@@ -43,7 +43,7 @@ export class MapListComponent
     @ContentChildren('listCard') listCards!: QueryList<any>;
     public mapListExpanded: boolean = true;
     public searchForm!: FormGroup;
-    public sortDirection: string = 'asc';
+    public sortDirection: string = 'desc';
     visibleColumns: any[] = [];
     pinedColumns: any[] = [];
     notPinedColumns: any[] = [];
@@ -53,6 +53,7 @@ export class MapListComponent
     activeSortType: any = {};
     searchIsActive: boolean = false;
     searchText: string = '';
+    searchLoading: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -85,6 +86,26 @@ export class MapListComponent
             .subscribe((changes) => {
                 this.searchText = changes.search;
                 this.onSearch();
+            });
+
+        this.mapsService.selectedMarkerChange
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                this.listCards.map((card) => {
+                    if ( card.isSelected && card.item.id != id ) {
+                        card.addRemoveSelection(false);
+                    }
+
+                    if ( card.item.id == id ) {
+                        card.addRemoveSelection(true);
+                    }
+                });
+            });
+
+        this.mapsService.searchLoadingChanged
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((loading) => {
+                this.searchLoading = loading;
             });
 
         this.setVisibleColumns();
@@ -369,11 +390,15 @@ export class MapListComponent
 
             this.highlightSearchedText();
 
+            this.mapsService.searchLoadingChanged.next(true);
+
             this.mapsService.searchTextChanged(this.searchText);
-        } else if (this.searchIsActive && this.searchText.length < 3) {
+        } else if (this.searchIsActive && this.searchText?.length < 3) {
             this.searchIsActive = false;
 
             this.highlightSearchedText();
+
+            this.mapsService.searchLoadingChanged.next(true);
 
             this.mapsService.searchTextChanged('');
         }
@@ -386,11 +411,16 @@ export class MapListComponent
             )
             .forEach((title: HTMLElement) => {
                 var text = title.textContent;
+                var addressElement = title.classList.contains('address-text');
 
                 const regex = new RegExp(this.searchText, 'gi');
                 const newText = text.replace(regex, (match: string) => {
                     if (match.length >= 3) {
-                        return `<mark class='highlighted-text'>${match}</mark>`;
+                        var addressClass = addressElement
+                            ? 'regular-weight'
+                            : '';
+
+                        return `<mark class='highlighted-text ${addressClass}'>${match}</mark>`;
                     } else {
                         return match;
                     }
@@ -402,6 +432,12 @@ export class MapListComponent
 
                 title.innerHTML = sanitzed;
             });
+    }
+
+    clearSearchInput() {
+        this.searchForm.get('search').patchValue('');
+        this.searchText = '';
+        this.mapsService.searchTextChanged('');
     }
 
     deleteAnimation(id) {

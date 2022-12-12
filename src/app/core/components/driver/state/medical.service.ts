@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { MedicalResponse, MedicalService } from 'appcoretruckassist';
+import { DriverResponse, MedicalResponse, MedicalService } from 'appcoretruckassist';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
