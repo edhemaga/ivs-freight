@@ -373,12 +373,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.driverForm
             .get('bankId')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                this.isBankSelected = this.bankVerificationService.onSelectBank(
-                    this.selectedBank ? this.selectedBank.name : value,
-                    this.driverForm.get('routing'),
-                    this.driverForm.get('account')
-                );
+            .subscribe(() => {
+                const timeout = setTimeout(async () => {
+                    this.isBankSelected =
+                        await this.bankVerificationService.onSelectBank(
+                            this.selectedBank ? this.selectedBank.name : null,
+                            this.driverForm.get('routing'),
+                            this.driverForm.get('account')
+                        );
+                    clearTimeout(timeout);
+                }, 100);
             });
     }
 
