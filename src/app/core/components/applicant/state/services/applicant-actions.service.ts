@@ -58,6 +58,9 @@ import {
     CreateApplicantCdlInformationReviewCommand,
     UpdateApplicantCdlInformationReviewCommand,
     UpdateWorkExperienceReviewCommand,
+    CreatePspAuthReviewCommand,
+    CreateMedicalCertificateReviewCommand,
+    CreateCdlCardReviewCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -335,6 +338,26 @@ export class ApplicantActionsService {
         data: CreateAuthorizationReviewCommand
     ): Observable<object> {
         return this.applicantService.apiApplicantAuthorizationReviewPost(data);
+    }
+
+    public createMedicalCertificateReview(
+        data: CreateMedicalCertificateReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantMedicalcertificateReviewPost(
+            data
+        );
+    }
+
+    public createPspAuthorizationReview(
+        data: CreatePspAuthReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantPspReviewPost(data);
+    }
+
+    public createCdlCardReview(
+        data: CreateCdlCardReviewCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantCdlcardReviewPost(data);
     }
 
     public invitePreviousEmployerSphForm(

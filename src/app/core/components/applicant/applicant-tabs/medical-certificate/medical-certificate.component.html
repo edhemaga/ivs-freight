@@ -39,6 +39,7 @@
                                     placeholderIcon: 'date',
                                     isRequired: true,
                                     customClass: 'datetimeclass',
+                                    isDisabled: selectedMode === 'REVIEW_MODE',
                                     incorrectInput:
                                         selectedMode === 'REVIEW_MODE'
                                 }"
@@ -58,6 +59,7 @@
                                     placeholderIcon: 'date',
                                     isRequired: true,
                                     customClass: 'datetimeclass',
+                                    isDisabled: selectedMode === 'REVIEW_MODE',
                                     incorrectInput:
                                         selectedMode === 'REVIEW_MODE'
                                 }"
@@ -125,22 +127,18 @@
 
                     <div class="line-container">
                         <app-ta-upload-files
-                            *ngIf="
-                                selectedMode === 'APPLICANT_MODE' ||
-                                selectedMode === 'FEEDBACK_MODE'
-                            "
                             [files]="documents"
                             [size]="'medium'"
                             [hasNumberOfPages]="true"
                             [isRequired]="true"
                             [showRequired]="displayDocumentsRequiredNote"
+                            [isReview]="selectedMode === 'REVIEW_MODE'"
+                            [reviewMode]="'REVIEW_MODE'"
                             (onFileEvent)="onFilesAction($event)"
+                            (documentsReviewInputEvent)="
+                                onFilesReviewAction($event)
+                            "
                         ></app-ta-upload-files>
-
-                        <div
-                            class="d-flex review-documents-container"
-                            *ngIf="selectedMode === 'REVIEW_MODE'"
-                        ></div>
 
                         <!-- REVIEW AND FEEDBACK -->
 

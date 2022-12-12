@@ -20,8 +20,10 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
     ApplicantResponse,
+    CreateMedicalCertificateReviewCommand,
     MedicalCertificateFeedbackResponse,
 } from 'appcoretruckassist';
+import { UploadFile } from '../../../shared/ta-upload-files/ta-upload-file/ta-upload-file.component';
 
 @Component({
     selector: 'app-medical-certificate',
@@ -31,7 +33,7 @@ import {
 export class MedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public medicalCertificateForm: FormGroup;
 
@@ -152,6 +154,13 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         }
     }
 
+    public onFilesReviewAction(event: {
+        file: UploadFile;
+        message: string;
+    }): void {
+        console.log('reviewEvent', event);
+    }
+
     public incorrectInput(
         event: any,
         inputIndex: number,
@@ -222,12 +231,14 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         if (event.type === 'open') {
             this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
                 false;
+
             this.openAnnotationArray[
                 event.lineIndex
             ].displayAnnotationTextArea = true;
         } else {
             this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
                 true;
+
             this.openAnnotationArray[
                 event.lineIndex
             ].displayAnnotationTextArea = false;
@@ -328,7 +339,18 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSubmitReview(): void {}
+    public onSubmitReview(): void {
+        const saveData: CreateMedicalCertificateReviewCommand = {
+            applicantId: this.applicantId,
+            isIssueDateValid: !this.openAnnotationArray[0].lineInputs[0],
+            isExpireDateValid: !this.openAnnotationArray[0].lineInputs[1],
+            dateMessage:
+                this.medicalCertificateForm.get('firstRowReview').value,
+            filesReview: [],
+        };
+
+        console.log('saveData', saveData);
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

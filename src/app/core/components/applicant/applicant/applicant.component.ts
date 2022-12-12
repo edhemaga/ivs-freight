@@ -140,6 +140,107 @@ export class ApplicantComponent implements OnInit, OnDestroy {
             .subscribe((res) => {
                 res = JSON.parse(JSON.stringify(res));
 
+                if (this.selectedMode === SelectedMode.APPLICANT) {
+                    this.isStepCompletedArray = this.isStepCompletedArray.map(
+                        (item, index) => {
+                            if (index === 0) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.personalInfo
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 1) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.workExperience
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 2) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.cdlInformation
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 3) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.accidentRecords
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 4) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.trafficViolation
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 5) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.education ? true : false,
+                                };
+                            }
+
+                            if (index === 6) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.sevenDaysHos
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 7) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.drugAndAlcohol
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 8) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.driverRight ? true : false,
+                                };
+                            }
+
+                            if (index === 9) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.disclosureRelease
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 10) {
+                                return {
+                                    ...item,
+                                    isCompleted: res.authorization
+                                        ? true
+                                        : false,
+                                };
+                            }
+                        }
+                    );
+                }
+
                 if (this.selectedMode === SelectedMode.REVIEW) {
                     this.isStepReviewedArray = this.isStepReviewedArray.map(
                         (item, index) => {
@@ -615,107 +716,6 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                                 return {
                                     ...item,
                                     isReviewed: autorizationReview
-                                        ? true
-                                        : false,
-                                };
-                            }
-                        }
-                    );
-                }
-
-                if (this.selectedMode === SelectedMode.APPLICANT) {
-                    this.isStepCompletedArray = this.isStepCompletedArray.map(
-                        (item, index) => {
-                            if (index === 0) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.personalInfo
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 1) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.workExperience
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 2) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.cdlInformation
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 3) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.accidentRecords
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 4) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.trafficViolation
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 5) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.education ? true : false,
-                                };
-                            }
-
-                            if (index === 6) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.sevenDaysHos
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 7) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.drugAndAlcohol
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 8) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.driverRight ? true : false,
-                                };
-                            }
-
-                            if (index === 9) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.disclosureRelease
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 10) {
-                                return {
-                                    ...item,
-                                    isCompleted: res.authorization
                                         ? true
                                         : false,
                                 };
