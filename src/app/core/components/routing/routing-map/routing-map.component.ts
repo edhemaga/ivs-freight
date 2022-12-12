@@ -48,7 +48,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @ViewChild('mapToolbar') mapToolbar: any;
     @ViewChild('t2') t2: any;
-    @ViewChild('inputAddress') inputAddress: any;
+    @ViewChildren('inputAddress') inputAddress: any;
     @ViewChildren('dropdownElement') dropdownElement: any;
     dropdownWidth: string = 'w-col-229';
 
@@ -78,11 +78,13 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         } else if (key === 27) {
             this.insertBeforeActive = -1;
 
-            if (this.inputAddress?.addressExpanded) {
-                this.inputAddress.inputDropdown?.inputRef?.input.nativeElement.blur();
-                this.inputAddress.addressExpanded = false;
+            const focusedInput = this.inputAddress.find((input) => input.addressExpanded);
+
+            if (focusedInput) {
+                focusedInput.inputDropdown?.inputRef?.input.nativeElement.blur();
+                focusedInput.addressExpanded = false;
                 setTimeout(() => {
-                    this.inputAddress.inputDropdown.inputRef.focusInput = false;
+                    focusedInput.inputDropdown.inputRef.focusInput = false;
                 }, 500);
             } else if (this.focusedRouteIndex != null) {
                 /* Remove focus from Add new stop input */
@@ -103,9 +105,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         } else if (key === 40 || key === 38) {
             /* Up and Down arrow */
             event.preventDefault();
+
+            const focusedInput = this.inputAddress.find((input) => input.addressExpanded);
+
             if (
                 this.focusedRouteIndex != null &&
-                !this.inputAddress?.addressExpanded
+                !focusedInput
             ) {
                 this.onUpAndDownArrow(event);
             }
@@ -167,9 +172,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
             if (this.focusedRouteIndex != null) {
                 var inputInFocus = this.checkInputFocus(this.focusedRouteIndex);
+                
+                const focusedInput = this.inputAddress.find((input) => input.addressExpanded);
 
                 if (
-                    this.inputAddress?.addressExpanded ||
+                    focusedInput ||
                     inputInFocus ||
                     this.stopPickerLocation?.lat
                 ) {
@@ -2751,45 +2758,21 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             this.focusRoute(routeIndex);
         }
 
-        if (blur) {
-            this.inputAddress.inputDropdown?.inputRef?.input.nativeElement.blur();
-            this.inputAddress.addressExpanded = false;
-            setTimeout(() => {
-                this.inputAddress.inputDropdown.inputRef.focusInput = false;
-            }, 500);
-        } else {
-            this.inputAddress.addressExpand();
-            this.inputAddress.inputDropdown?.inputRef?.input.nativeElement.focus();
-            setTimeout(() => {
-                this.inputAddress.inputDropdown.inputRef.focusInput = true;
-            }, 500);
-        }
-
-        // var clickedElement = '';
-
-        // if (event) {
-        //   event.stopPropagation();
-        //   event.preventDefault();
-        //   clickedElement = event.target.tagName;
-        // }
-
-        // var checkInputFocus = this.checkInputFocus(routeIndex);
-
-        // if (clickedElement != 'INPUT' && !checkInputFocus) {
-        //   let route = this.tableData[this.selectedMapIndex].routes[routeIndex];
-
-        //   const inputContainerElement: HTMLElement = document.querySelector(
-        //     '[data-id="newStop' + route.id + '"]'
-        //   );
-
-        //   const inputElement = inputContainerElement.querySelector('input');
-
-        //   if (blur) {
-        //     inputElement.blur();
-        //   } else {
-        //     inputElement.focus();
-        //   }
-        // }
+        this.inputAddress.map((addressInput, inputIndex) => {
+            if ( inputIndex == routeIndex && !blur ) {
+                addressInput.addressExpand();
+                addressInput.inputDropdown?.inputRef?.input.nativeElement.focus();
+                setTimeout(() => {
+                    addressInput.inputDropdown.inputRef.focusInput = true;
+                }, 500);
+            } else {
+                addressInput.inputDropdown?.inputRef?.input.nativeElement.blur();
+                addressInput.addressExpanded = false;
+                setTimeout(() => {
+                    addressInput.inputDropdown.inputRef.focusInput = false;
+                }, 500);
+            }
+        });
     }
 
     checkInputFocus(routeIndex) {
@@ -2810,7 +2793,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             : true;
         this.addressFlag = this.addressFlag == 'Empty' ? 'Loaded' : 'Empty';
 
-        this.inputAddress.changeStopType();
+        this.inputAddress.map((addressInput) => {
+            addressInput.changeStopType();
+        });
 
         if (event) {
             this.addNewStop(event);
