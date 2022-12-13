@@ -76,6 +76,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
+    public addNewAfterSave: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -241,6 +243,19 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                         }
                     }
                 }
+                break;
+            }
+            case 'save and add new': {
+                if (this.ownerForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.ownerForm);
+                    return;
+                }
+                this.addOwner();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
                 break;
             }
             case 'save': {
@@ -439,6 +454,26 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    }
+
+                    if (this.addNewAfterSave) {
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                        });
+                        this.formService.resetForm(this.ownerForm);
+
+                        this.selectedAddress = null;
+                        this.selectedBank = null;
+                        this.selectedTab = 1;
+                        this.tabs = this.tabs.map((item, index) => {
+                            return {
+                                ...item,
+                                checked: index === 0,
+                            };
+                        });
+
+                        this.addNewAfterSave = false;
                     }
                 },
                 error: () => {},

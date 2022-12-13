@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { flatMap, Observable } from 'rxjs';
 import { TodoStore } from './todo.store';
 import { FormDataService } from '../../../services/formData/form-data.service';
+import { tap } from 'rxjs/operators';
 import {
     TodoModalResponse,
     TodoResponse,
@@ -59,30 +60,22 @@ export class TodoTService {
 
     public updateTodo(data: any) {
         this.formDataService.extractFormDataFromFunction(data);
-        return this.todoService
-            .apiTodoPut()
-            .pipe(
-                flatMap((param) => {
-                    return this.getTodoById(data.id);
-                })
-            )
-            .subscribe((todo) => {
-                this.updateTodoList = todo;
-            });
+        return this.todoService.apiTodoPut().pipe(
+            flatMap((param) => {
+                return this.getTodoById(data.id);
+            }),
+            tap((todo) => (this.updateTodoList = todo))
+        );
     }
 
     public addTodo(data: any) {
         this.formDataService.extractFormDataFromFunction(data);
-        return this.todoService
-            .apiTodoPost()
-            .pipe(
-                flatMap((param) => {
-                    return this.getTodoById(param.id);
-                })
-            )
-            .subscribe((todo) => {
-                this.updateTodoList = todo;
-            });
+        return this.todoService.apiTodoPost().pipe(
+            flatMap((param) => {
+                return this.getTodoById(param.id);
+            }),
+            tap((todo) => (this.updateTodoList = todo))
+        );
     }
 
     public deleteTodoById(id: number): Observable<any> {

@@ -3,6 +3,7 @@
     [editData]="editData"
     [editName]="editData?.data?.name"
     [isModalValid]="ownerForm.valid && isFormDirty"
+    [saveAndAddNew]="editData?.type !== 'edit'"
     (action)="onModalAction($event)"
 >
     <div origin>
