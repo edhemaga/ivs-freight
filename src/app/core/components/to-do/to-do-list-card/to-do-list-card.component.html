@@ -220,6 +220,9 @@
                                 <div class="list-top-holder">
                                     <div class="list-items-frame">
                                         <div class="list-title">
+                                          <svg-icon *ngIf="item.status?.name == 'Done'"
+                                              src="/assets/svg/applicant/check.svg"
+                                          ></svg-icon>
                                             {{ item.title }}
                                         </div>
                                         <div class="icons-frame">
