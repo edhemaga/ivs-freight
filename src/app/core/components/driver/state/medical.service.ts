@@ -26,36 +26,28 @@ export class MedicalTService implements OnDestroy {
     public deleteMedicalById(id: number): Observable<any> {
         return this.medicalService.apiMedicalIdDelete(id).pipe(
             tap((res: any) => {
-                let driverId = this.driverItemStore.getValue().ids[0];
-                const subDriver = this.driverService
-                    .getDriverById(driverId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (driver: any) => {
-                            // this.driverStore.remove(
-                            //     ({ id }) => id === driverId
-                            // );
-                            // this.driverItemStore.remove(
-                            //     ({ id }) => id === driverId
-                            // );
-                            // driver = {
-                            //     ...driver,
-                            //     fullName:
-                            //         driver.firstName + ' ' + driver.lastName,
-                            // };
-                            // this.driverStore.add(driver);
-                            // this.driverItemStore.add(driver);
-                            // this.dlStore.update(driver.id, {
-                            //     medicals: driver.medicals,
-                            // });
-                            // this.tableService.sendActionAnimation({
-                            //     animation: 'delete',
-                            //     data: driver,
-                            //     id: driverId,
-                            // });
-                            // subDriver.unsubscribe();
-                        },
-                    });
+                let driverId = this.driverItemStore.getValue().ids[0]; 
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                let indexNum;
+                newData.medicals.map((reg: any, index: any) => {
+                    if ( reg.id == id ) {
+                        indexNum = index;
+                    }
+                })
+
+                newData.medicals.splice(indexNum, 1);
+
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                
+                this.dlStore.add(newData);
+                this.driverItemStore.set([newData]);
             })
         );
     }
@@ -69,31 +61,28 @@ export class MedicalTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.medicalService.apiMedicalPost().pipe(
             tap((res: any) => {
-                const subDriver = this.driverService
-                    .getDriverById(data.driverId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (driver: any) => {
-                            // this.driverStore.remove(
-                            //     ({ id }) => id === data.driverId
-                            // );
-                            // driver = {
-                            //     ...driver,
-                            //     fullName:
-                            //         driver.firstName + ' ' + driver.lastName,
-                            // };
-                            // this.driverStore.add(driver);
-                            // this.dlStore.update(driver.id, {
-                            //     medicals: driver.medicals,
-                            // });
-                            // this.tableService.sendActionAnimation({
-                            //     animation: 'update',
-                            //     data: driver,
-                            //     id: driver.id,
-                            // });
-                            // subDriver.unsubscribe();
-                        },
-                    });
+                let driverId = this.driverItemStore.getValue().ids[0];
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                let medicalApi = this.medicalService.apiMedicalIdGet(res.id).subscribe({
+                    next: (resp: any) => {
+
+                        newData.medicals.push(resp);
+                       
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+                      
+                        medicalApi.unsubscribe();
+                    },
+                }); 
             })
         );
     }
@@ -103,31 +92,32 @@ export class MedicalTService implements OnDestroy {
         return this.medicalService.apiMedicalPut().pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
-                const subDriver = this.driverService
-                    .getDriverById(driverId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (driver: any) => {
-                            // this.driverStore.remove(
-                            //     ({ id }) => id === driverId
-                            // );
-                            // driver = {
-                            //     ...driver,
-                            //     fullName:
-                            //         driver.firstName + ' ' + driver.lastName,
-                            // };
-                            // this.driverStore.add(driver);
-                            // this.dlStore.update(driver.id, {
-                            //     medicals: driver.medicals,
-                            // });
-                            // this.tableService.sendActionAnimation({
-                            //     animation: 'update',
-                            //     data: driver,
-                            //     id: driverId,
-                            // });
-                            // subDriver.unsubscribe();
-                        },
-                    });
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                let medicalApi = this.medicalService.apiMedicalIdGet(res.id).subscribe({
+                    next: (resp: any) => {
+
+                       
+                        newData.medicals.map((reg: any, index: any) => {
+                            if ( reg.id == resp.id ) {
+                                newData.medicals[index] = resp;  
+                            }
+                        })
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+                      
+                        medicalApi.unsubscribe();
+                    },
+                });  
             })
         );
     }

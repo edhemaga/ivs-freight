@@ -52,7 +52,7 @@ export class TrailerTService implements OnDestroy {
                 const subTrailer = this.getTrailerById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (trailer: TrailerResponse | any) => {
+                        next: (trailer: any) => {
                             this.trailerActiveStore.add(trailer);
                             this.trailerMinimalStore.add(trailer);
                             const trailerCount = JSON.parse(
@@ -187,7 +187,7 @@ export class TrailerTService implements OnDestroy {
                 const subTrailer = this.getTrailerById(this.trailerId, true)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (trailer: TrailerResponse | any) => {
+                        next: (trailer: any) => {
                             this.tableService.sendActionAnimation({
                                 animation: 'delete',
                                 data: trailer,
@@ -332,7 +332,7 @@ export class TrailerTService implements OnDestroy {
                     const subTrailer = this.getTrailerById(trailerId)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
-                            next: (trailer: TrailerResponse | any) => {
+                            next: (trailer: any) => {
                                 /* Get Table Tab Count */
                                 const trailerCount = JSON.parse(
                                     localStorage.getItem('trailerTableCount')

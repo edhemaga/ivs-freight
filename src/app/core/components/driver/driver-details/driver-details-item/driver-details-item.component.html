@@ -23,6 +23,7 @@
                     "
                     [statusActive]="cdl.status"
                     (dataDropDopwn)="getCdlById(cdl.id)"
+                    (preloadData)="preloadData(cdl, 'cdl')"
                     (resizePage)="toggleResizePage(i, 'cdl')"
                     [cardNameCommon]="cdl?.cdlNumber"
                     [expDateClose]="cdl?.expDate | formatDateP"
@@ -286,6 +287,7 @@
                     [optionsId]="test.id"
                     [testDate]="test?.testingDate | formatDateP"
                     (dataDropDopwn)="getTestById(test.id)"
+                    (preloadData)="preloadData(test, 'test')"
                     (clickedCard)="getNameForDrop($event)"
                     [cardDocumentCounter]="
                         test?.files?.length ? test.files.length : 0
@@ -424,6 +426,7 @@
                     [expDateClose]="med?.expDate | formatDateP"
                     [optionsId]="med.id"
                     (dataDropDopwn)="getMedicalById(med.id)"
+                    (preloadData)="preloadData(med, 'med')"
                     (clickedCard)="getNameForDrop($event)"
                     [cardNameCurrent]="'medical'"
                     [noteIcons]="
@@ -549,6 +552,7 @@
                     [cardNameCurrent]="'mvr'"
                     (clickedCard)="getNameForDrop($event)"
                     (dataDropDopwn)="getMvrById(mvr.id)"
+                    (preloadData)="preloadData(mvr, 'mvr')"
                     [cardDocumentCounter]="
                         mvr?.files?.length ? mvr.files.length : 0
                     "

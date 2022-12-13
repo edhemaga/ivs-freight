@@ -550,7 +550,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .getTrailerById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: TrailerResponse) => {
+                next: (res: any) => {
                     this.trailerForm.patchValue({
                         companyOwned: res.companyOwned,
                         trailerNumber: res.trailerNumber,

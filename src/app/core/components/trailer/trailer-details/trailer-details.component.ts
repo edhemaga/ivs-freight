@@ -121,50 +121,49 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     }
 
     trailerConf(data: any) {
-        //console.log('--data--', data);
         this.DetailsDataService.setNewData(data);
         this.trailerDetailsConfig = [
-            // {
-            //     id: 0,
-            //     name: 'Trailer Details',
-            //     template: 'general',
-            //     data: data,
-            //     status: data?.status == 0 ? true : false,
-            // },
-            // {
-            //     id: 1,
-            //     name: 'Registration',
-            //     template: 'registration',
-            //     data: data.registrations,
-            //     length: data?.registrations?.length
-            //         ? data.registrations.length
-            //         : 0,
-            //     status: data?.status == 0 ? true : false,
-            // },
-            // {
-            //     id: 2,
-            //     name: 'FHWA Inspection',
-            //     template: 'fhwa-insepction',
-            //     data: data.inspections,
-            //     length: data?.inspections?.length ? data.inspections.length : 0,
-            //     status: data?.status == 0 ? true : false,
-            // },
-            // {
-            //     id: 3,
-            //     name: 'Title',
-            //     template: 'title',
-            //     data: data.titles,
-            //     length: data?.titles?.length ? data.titles.length : 0,
-            //     status: data?.status == 0 ? true : false,
-            // },
-            // {
-            //     id: 4,
-            //     name: 'Lease / Purchase',
-            //     template: 'lease-purchase',
-            //     length: 1,
-            //     data: data,
-            //     status: data?.status == 0 ? true : false,
-            // },
+            {
+                id: 0,
+                name: 'Trailer Details',
+                template: 'general',
+                data: data,
+                status: data?.status == 0 ? true : false,
+            },
+            {
+                id: 1,
+                name: 'Registration',
+                template: 'registration',
+                data: data.registrations,
+                length: data?.registrations?.length
+                    ? data.registrations.length
+                    : 0,
+                status: data?.status == 0 ? true : false,
+            },
+            {
+                id: 2,
+                name: 'FHWA Inspection',
+                template: 'fhwa-insepction',
+                data: data.inspections,
+                length: data?.inspections?.length ? data.inspections.length : 0,
+                status: data?.status == 0 ? true : false,
+            },
+            {
+                id: 3,
+                name: 'Title',
+                template: 'title',
+                data: data.titles,
+                length: data?.titles?.length ? data.titles.length : 0,
+                status: data?.status == 0 ? true : false,
+            },
+            {
+                id: 4,
+                name: 'Lease / Purchase',
+                template: 'lease-purchase',
+                length: 1,
+                data: data,
+                status: data?.status == 0 ? true : false,
+            },
         ];
 
         this.trailerId = data?.id ? data.id : 0;

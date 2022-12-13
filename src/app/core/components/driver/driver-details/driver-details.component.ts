@@ -24,6 +24,7 @@ import { DriversDetailsListQuery } from '../state/driver-details-list-state/driv
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
 import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
+import moment from 'moment';
 
 @Component({
     selector: 'app-driver-details',
@@ -182,54 +183,54 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         }
 
         this.driverDetailsConfig = [
-            // {
-            //     id: 0,
-            //     name: 'Driver Details',
-            //     template: 'general',
-            //     data: dataDriver,
-            // },
-            // {
-            //     id: 1,
-            //     name: 'CDL',
-            //     template: 'cdl',
-            //     req: false,
-            //     status: this.statusDriver,
-            //     hasDanger: this.hasDangerCDL,
-            //     length: dataDriver?.cdls?.length ? dataDriver.cdls.length : 0,
-            //     data: dataDriver,
-            // },
-            // {
-            //     id: 2,
-            //     name: 'Drug & Alcohol Test',
-            //     template: 'drug-alcohol',
-            //     req: true,
-            //     status: this.statusDriver,
-            //     hasDanger: false,
-            //     length: dataDriver?.tests?.length ? dataDriver.tests.length : 0,
-            //     data: dataDriver.tests,
-            // },
-            // {
-            //     id: 3,
-            //     name: 'Medical',
-            //     template: 'medical',
-            //     req: false,
-            //     status: this.statusDriver,
-            //     hasDanger: this.hasDangerMedical,
-            //     length: dataDriver?.medicals?.length
-            //         ? dataDriver.medicals.length
-            //         : 0,
-            //     data: dataDriver.medicals,
-            // },
-            // {
-            //     id: 4,
-            //     name: 'MVR',
-            //     template: 'mvr',
-            //     req: true,
-            //     status: this.statusDriver,
-            //     hasDanger: this.hasDangerMvr,
-            //     length: dataDriver?.mvrs?.length ? dataDriver.mvrs.length : 0,
-            //     data: dataDriver.mvrs,
-            // },
+            {
+                id: 0,
+                name: 'Driver Details',
+                template: 'general',
+                data: dataDriver,
+            },
+            {
+                id: 1,
+                name: 'CDL',
+                template: 'cdl',
+                req: false,
+                status: this.statusDriver,
+                hasDanger: this.hasDangerCDL,
+                length: dataDriver?.cdls?.length ? dataDriver.cdls.length : 0,
+                data: dataDriver,
+            },
+            {
+                id: 2,
+                name: 'Drug & Alcohol Test',
+                template: 'drug-alcohol',
+                req: true,
+                status: this.statusDriver,
+                hasDanger: false,
+                length: dataDriver?.tests?.length ? dataDriver.tests.length : 0,
+                data: dataDriver.tests,
+            },
+            {
+                id: 3,
+                name: 'Medical',
+                template: 'medical',
+                req: false,
+                status: this.statusDriver,
+                hasDanger: this.hasDangerMedical,
+                length: dataDriver?.medicals?.length
+                    ? dataDriver.medicals.length
+                    : 0,
+                data: dataDriver.medicals,
+            },
+            {
+                id: 4,
+                name: 'MVR',
+                template: 'mvr',
+                req: true,
+                status: this.statusDriver,
+                hasDanger: this.hasDangerMvr,
+                length: dataDriver?.mvrs?.length ? dataDriver.mvrs.length : 0,
+                data: dataDriver.mvrs,
+            },
         ];
         this.driverId = dataDriver?.id ? dataDriver.id : null;
     }
@@ -241,34 +242,34 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.arrayMedical = [];
         this.arrayMvrs = [];
 
-        // data?.cdls?.map((el) => {
-        //     if (moment(el.expDate).isAfter(moment())) {
-        //         this.arrayCDL.push(false);
-        //     }
-        //     if (moment(el.expDate).isBefore(moment())) {
-        //         this.arrayCDL.push(true);
-        //     }
-        // });
+        data?.cdls?.map((el) => {
+            if (moment(el.expDate).isAfter(moment())) {
+                this.arrayCDL.push(false);
+            }
+            if (moment(el.expDate).isBefore(moment())) {
+                this.arrayCDL.push(true);
+            }
+        });
 
-        // data?.medicals?.map((el) => {
-        //     if (moment(el.expDate).isAfter(moment())) {
-        //         this.arrayMedical.push(false);
-        //     }
-        //     if (moment(el.expDate).isBefore(moment())) {
-        //         this.arrayMedical.push(true);
-        //     }
-        // });
+        data?.medicals?.map((el) => {
+            if (moment(el.expDate).isAfter(moment())) {
+                this.arrayMedical.push(false);
+            }
+            if (moment(el.expDate).isBefore(moment())) {
+                this.arrayMedical.push(true);
+            }
+        });
 
-        // if(data.mvrs.length>0){
-        //   data?.mvrs.map((el)=>{
-        //     if(moment(el.issueDate).isAfter(moment())){
-        //       this.arrayMedical.push(false)
-        //     }
-        //     if(moment(el.issueDate).isBefore(moment())){
-        //       this.arrayMedical.push(true)
-        //     }
-        //   })
-        // }
+        if(data.mvrs.length>0){
+        data?.mvrs.map((el)=>{
+            if(moment(el.issueDate).isAfter(moment())){
+            this.arrayMedical.push(false)
+            }
+           if(moment(el.issueDate).isBefore(moment())){
+                    this.arrayMedical.push(true)
+             }
+            })
+        }
         if (this.arrayCDL.includes(false)) {
             this.hasDangerCDL = false;
         } else {
@@ -286,16 +287,16 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.arrayActiveCdl = [];
         this.isActiveCdl = false;
         this.cdlActiveId = 0;
-        // data?.cdls?.map((item) => {
-        //     if (item.status == 1) {
-        //         this.cdlActiveId = item.id;
-        //         this.arrayActiveCdl.push(true);
-        //         this.isActiveCdl = true;
-        //     } else {
-        //         this.arrayActiveCdl.push(false);
-        //         this.isActiveCdl = false;
-        //     }
-        // });
+        data?.cdls?.map((item) => {
+           if (item.status == 1) {
+                this.cdlActiveId = item.id;
+                this.arrayActiveCdl.push(true);
+                this.isActiveCdl = true;
+            } else {
+                this.arrayActiveCdl.push(false);
+                this.isActiveCdl = false;
+            }
+        });
         this.dataTest = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -408,7 +409,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
 
     public getCdlById(id: number) {
-        console.log('--getCdlById--');
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))

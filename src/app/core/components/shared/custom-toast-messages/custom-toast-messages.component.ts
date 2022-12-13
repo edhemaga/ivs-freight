@@ -268,7 +268,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
     createTitleBasedOnHttpRequest() {
         console.log(this.httpRequest);
-
+        
         let url = this.httpRequest.url.split('/api/');
         let apiEndPoint = url[1];
 
@@ -311,6 +311,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.actionTitle =
                     this.toastrType == 'toast-error' ? 'DELETE' : 'DELETED';
                 break;
+        }
+
+
+        if ( this.errorData?.error?.error ) {
+            this.message = this.errorData.error.error;
+            return false;
         }
 
         switch (this.actionType) {
@@ -462,9 +468,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     : this.DetailsDataService.mainData?.firstName.toUpperCase() +
                       ' ' +
                       this.DetailsDataService.mainData?.lastName.toUpperCase();
-                if (this.httpRequest.body) {
-                    let cdlNum = this.httpRequest.body.getAll('CdlNumber')[0]
-                        ? this.httpRequest.body.getAll('CdlNumber')[0]
+                    let cdlNum = this.httpRequest.body.getAll('cdlNumber')[0]
+                        ? this.httpRequest.body.getAll('cdlNumber')[0]
                         : this.DetailsDataService.cardMainTitle;
 
                     if (!this.httpRequest.body?.cdlNumber) {
@@ -500,8 +505,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     this.actionType = 'CDL - ' + driverFullName;
                     this.wideMessage = true;
                     this.message = cdlNum;
-                }
-
                 break;
             case 'MVR':
             case 'MEDICAL':
@@ -511,7 +514,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                       ' ' +
                       this.DetailsDataService.mainData?.lastName.toUpperCase();
 
-                let dateFromData = this.httpRequest.body.getAll('IssueDate')[0];
+                let dateFromData = this.httpRequest.body.getAll('issueDate')[0];
                 let issuedDate = dateFromData
                     ? moment(dateFromData).format('MM/DD/YY')
                     : '';
@@ -650,7 +653,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                         );
                     }
                 }
-                this.message = trailerNum;
+                this.message = trailerNum; 
                 break;
             case 'COMPANY':
                 let compName = this.httpRequest.body?.companyName ? this.httpRequest.body.companyName : '';
