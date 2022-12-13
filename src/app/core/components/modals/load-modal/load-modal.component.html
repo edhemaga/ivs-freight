@@ -333,14 +333,21 @@
                     </div>
                 </div>
             </app-ta-custom-card>
-            <!-- selectedPickupShipper
-                        ? 'assets/svg/common/ic_plus.svg'
-                        : null -->
+            <!-- Stops -->
             <app-ta-custom-card
                 [cardName]="'Stops'"
+                [capsulaText]="
+                    loadExtraStops().length
+                        ? loadExtraStops().length + ' ' + 'EXTRA'
+                        : null
+                "
                 [isCardOpen]="true"
                 [hasCounter]="2"
-                [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                [hasActionSvg]="
+                    selectedPickupShipper
+                        ? 'assets/svg/common/ic_plus.svg'
+                        : null
+                "
                 [isCardOpen]="true"
                 [hasBodyData]="true"
                 (onActionEvent)="createNewExtraStop()"
@@ -437,7 +444,7 @@
                         ></app-ta-input-dropdown>
                     </div>
                     <div
-                        class="stop-load-date-time row-no-mb"
+                        class="stop-load-date-time"
                         [ngClass]="{ 'date-range-active': pickupDateRange }"
                     >
                         <app-ta-input
@@ -506,8 +513,26 @@
                             }"
                         ></app-ta-input>
                     </div>
+                    <div class="stop-items-wrapper">
+                        <app-ta-custom-card
+                            [cardName]="'Item'"
+                            [isCardOpen]="true"
+                            [hasCounter]="2"
+                            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                            [isCardOpen]="true"
+                            [hasBodyData]="true"
+                            (onActionEvent)="createNewRowInStopItems('pickup')"
+                            [animationMarginParams]="{
+                                marginTop: '10px',
+                                marginBottom: '12px'
+                            }"
+                        >
+                            Tabel Pickup Component - Boki
+                        </app-ta-custom-card>
+                    </div>
                 </app-load-stop>
 
+                <!-- Extra Stops -->
                 <div formArrayName="extraStops">
                     <div
                         *ngFor="
@@ -525,7 +550,7 @@
                                         .value
                                 "
                                 [isDelivery]="
-                                    selectedExtraStopTab[indx]
+                                    selectExtraStopType[indx]
                                         ?.toString()
                                         ?.startsWith('4')
                                         ? true
@@ -535,13 +560,21 @@
                                 [shipperAddress]="
                                     selectedExtraStopShipper[indx]?.address
                                 "
-                                [dateRange]="
-                                    loadExtraStops().at(indx).get('dateFrom')
-                                        .value
-                                "
                                 [timeRange]="
                                     loadExtraStops().at(indx).get('timeFrom')
                                         .value
+                                        | loadDatetimeRange
+                                            : loadExtraStops()
+                                                  .at(indx)
+                                                  .get('timeTo').value
+                                "
+                                [dateRange]="
+                                    loadExtraStops().at(indx).get('dateFrom')
+                                        .value
+                                        | loadDatetimeRange
+                                            : loadExtraStops()
+                                                  .at(indx)
+                                                  .get('dateTo').value
                                 "
                                 [legMile]="''"
                                 [isEmptyLoad]="false"
@@ -567,7 +600,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <app-ta-tab-switch
-                                            [tabs]="stopTabs[indx]"
+                                            [tabs]="typeOfExtraStops[indx]"
                                             (switchClicked)="
                                                 onTabChange(
                                                     $event,
@@ -610,9 +643,13 @@
                                 </div>
                                 <div class="load-shipper-contact-row">
                                     <app-ta-tab-switch
-                                        [tabs]="stopTimeTabsPickup"
+                                        [tabs]="stopTimeTabsExtraStops[indx]"
                                         (switchClicked)="
-                                            onTabChange($event, 'extra-stops')
+                                            onTabChange(
+                                                $event,
+                                                'extra-stops-time',
+                                                indx
+                                            )
                                         "
                                         [type]="'type2-modal-popup'"
                                     ></app-ta-tab-switch>
@@ -643,7 +680,7 @@
                                     ></app-ta-input-dropdown>
                                 </div>
                                 <div
-                                    class="stop-load-date-time row-no-mb"
+                                    class="stop-load-date-time"
                                     [ngClass]="{
                                         'date-range-active':
                                             loadExtraStopsDateRange[indx]
@@ -714,11 +751,37 @@
                                             placeholderIcon: 'time',
                                             isDropdown: true,
                                             isRequired: true,
-                                            isDisabled:
-                                                selectedStopTimePickup === 6,
+                                            isDisabled: selectedExtraStopTime[
+                                                indx
+                                            ]
+                                                ?.toString()
+                                                ?.startsWith('9'),
                                             customClass: 'datetimeclass'
                                         }"
                                     ></app-ta-input>
+                                </div>
+                                <div class="stop-items-wrapper">
+                                    <app-ta-custom-card
+                                        [cardName]="'Item'"
+                                        [isCardOpen]="true"
+                                        [hasCounter]="2"
+                                        [hasActionSvg]="
+                                            'assets/svg/common/ic_plus.svg'
+                                        "
+                                        [isCardOpen]="true"
+                                        [hasBodyData]="true"
+                                        (onActionEvent)="
+                                            createNewRowInStopItems(
+                                                'delivery'.indx
+                                            )
+                                        "
+                                        [animationMarginParams]="{
+                                            marginTop: '10px',
+                                            marginBottom: '12px'
+                                        }"
+                                    >
+                                        Tabel Extra Stop Component - Boki
+                                    </app-ta-custom-card>
                                 </div>
                             </app-load-stop>
                         </div>
@@ -850,12 +913,32 @@
                                 placeholderIcon: 'time',
                                 isDropdown: true,
                                 isRequired: true,
-                                isDisabled: selectedStopTimeDelivery === 6,
+                                isDisabled: selectedStopTimeDelivery === 8,
                                 customClass: 'datetimeclass'
                             }"
                         ></app-ta-input>
                     </div>
+                    <div class="stop-items-wrapper">
+                        <app-ta-custom-card
+                            [cardName]="'Item'"
+                            [isCardOpen]="true"
+                            [hasCounter]="2"
+                            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                            [isCardOpen]="true"
+                            [hasBodyData]="true"
+                            (onActionEvent)="
+                                createNewRowInStopItems('delivery')
+                            "
+                            [animationMarginParams]="{
+                                marginTop: '10px',
+                                marginBottom: '12px'
+                            }"
+                        >
+                            Tabel Delivery Component - Boki
+                        </app-ta-custom-card>
+                    </div>
                 </app-load-stop>
+
                 <!-- Stops Footer -->
                 <div class="stops-footer-bar">
                     <div class="stops-footer-bar-left-side">

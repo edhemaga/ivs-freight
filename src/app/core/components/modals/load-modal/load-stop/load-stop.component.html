@@ -33,16 +33,19 @@
                     <span>*</span>
                 </p>
             </div>
-            <div *ngIf="shipper" class="load-stop-inner-content">
-                <div class="load-stop-content-up load-stop-content-up-name">
+            <div class="load-stop-inner-content">
+                <div
+                    *ngIf="shipper"
+                    class="load-stop-content-up load-stop-content-up-name"
+                >
                     <p>{{ shipper }}</p>
                 </div>
-                <div class="load-stop-content-down">
+                <div *ngIf="shipperAddress" class="load-stop-content-down">
                     <p>{{ shipperAddress }}</p>
                 </div>
             </div>
 
-            <div *ngIf="dateRange || timeRange" class="load-stop-inner-content">
+            <div class="load-stop-inner-content">
                 <div
                     *ngIf="dateRange"
                     class="load-stop-content-up load-stop-content-up-datetime"
@@ -54,10 +57,7 @@
                 </div>
             </div>
 
-            <div
-                *ngIf="shipperContact || legMile"
-                class="load-stop-inner-content"
-            >
+            <div class="load-stop-inner-content">
                 <div
                     *ngIf="legMile"
                     class="load-stop-content-up load-stop-content-up-deadhead"

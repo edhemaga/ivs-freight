@@ -5,8 +5,6 @@ import {
     Output,
     EventEmitter,
     ViewEncapsulation,
-    SimpleChanges,
-    OnChanges,
 } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
@@ -15,15 +13,15 @@ import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
     selector: 'app-ta-custom-card',
     templateUrl: './ta-custom-card.component.html',
     styleUrls: ['./ta-custom-card.component.scss'],
-    animations: [card_modal_animation('showHideCardBody')], 
+    animations: [card_modal_animation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
 })
-export class TaCustomCardComponent implements OnChanges {
+export class TaCustomCardComponent {
     @Input() animationsDisabled = true;
     @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
     @Input() cardName: string = null;
     @Input() customClassHeaderSvg: boolean = false;
-
+    @Input() capsulaText: string = null;
     @Input() hasCounter: number = -1;
     @Input() hasArrow: boolean = true;
     @Input() headerSvgEnabled: boolean = false;
@@ -78,8 +76,6 @@ export class TaCustomCardComponent implements OnChanges {
     public isHeaderHover: boolean = false;
 
     constructor(private uploadFileService: TaUploadFileService) {}
-
-    ngOnChanges(changes: SimpleChanges): void {}
 
     public isCardOpenEvent(event: any) {
         if (!this.disabledCard) {
