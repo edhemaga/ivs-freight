@@ -734,6 +734,7 @@ export class TaInputDropdownComponent
     public commandEvent(event: { data: any; action: string; mode: string }) {
         if (event.action === 'Edit Input') {
             this.selectedLabelMode.emit('Color');
+            this.inputConfig.dropdownLabelNew = false;
         }
         if (event.action === 'Toggle Dropdown') {
             this.popoverRef.toggle();
@@ -742,12 +743,12 @@ export class TaInputDropdownComponent
             this.addNewItem();
         }
 
-        if (event.action === 'Placeholder Icon Event') {
-            this.placeholderIconEvent.emit(true);
-        }
-
         if (event.action === 'confirm' && event.mode === 'edit') {
             this.updateItem();
+        }
+
+        if (event.action === 'Placeholder Icon Event') {
+            this.placeholderIconEvent.emit(true);
         }
 
         if (event.action === 'cancel') {

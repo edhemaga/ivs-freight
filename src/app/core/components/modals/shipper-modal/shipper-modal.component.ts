@@ -563,10 +563,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: ShipperResponse) => {
-                    console.log(
-                        convertTimeFromBackend(res.receivingTo),
-                        '-------'
-                    );
                     this.shipperForm.patchValue({
                         businessName: res.businessName,
                         phone: res.phone,
