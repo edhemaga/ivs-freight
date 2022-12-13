@@ -45,6 +45,7 @@ export class FuelTService {
         fuelTransactionSpecParamsCostTo?: number,
         fuelTransactionSpecParamsPpgFrom?: number,
         fuelTransactionSpecParamsPpgTo?: number,
+        fuelTransactionSpecParamsTruckId?: number,
         fuelTransactionSpecParamsPageIndex?: number,
         fuelTransactionSpecParamsPageSize?: number,
         fuelTransactionSpecParamsCompanyId?: number,
@@ -53,30 +54,30 @@ export class FuelTService {
         fuelTransactionSpecParamsSearch1?: string,
         fuelTransactionSpecParamsSearch2?: string
     ): Observable<FuelTransactionListResponse> {
-        // return this.fuelService.apiFuelTransactionListGet(
-        //     fuelTransactionSpecParamsFuelStopStoreIds,
-        //     fuelTransactionSpecParamsTruckIds,
-        //     fuelTransactionSpecParamsCategoryIds,
-        //     fuelTransactionSpecParamsDateFrom,
-        //     fuelTransactionSpecParamsDateTo,
-        //     fuelTransactionSpecParamsLong,
-        //     fuelTransactionSpecParamsLat,
-        //     fuelTransactionSpecParamsDistance,
-        //     fuelTransactionSpecParamsLastFrom,
-        //     fuelTransactionSpecParamsLastTo,
-        //     fuelTransactionSpecParamsCostFrom,
-        //     fuelTransactionSpecParamsCostTo,
-        //     fuelTransactionSpecParamsPpgFrom,
-        //     fuelTransactionSpecParamsPpgTo,
-        //     fuelTransactionSpecParamsPageIndex,
-        //     fuelTransactionSpecParamsPageSize,
-        //     fuelTransactionSpecParamsCompanyId,
-        //     fuelTransactionSpecParamsSort,
-        //     fuelTransactionSpecParamsSearch,
-        //     fuelTransactionSpecParamsSearch1,
-        //     fuelTransactionSpecParamsSearch2
-        // );
-        return of();
+        return this.fuelService.apiFuelTransactionListGet(
+            fuelTransactionSpecParamsFuelStopStoreIds,
+            fuelTransactionSpecParamsTruckIds,
+            fuelTransactionSpecParamsCategoryIds,
+            fuelTransactionSpecParamsDateFrom,
+            fuelTransactionSpecParamsDateTo,
+            fuelTransactionSpecParamsLong,
+            fuelTransactionSpecParamsLat,
+            fuelTransactionSpecParamsDistance,
+            fuelTransactionSpecParamsLastFrom,
+            fuelTransactionSpecParamsLastTo,
+            fuelTransactionSpecParamsCostFrom,
+            fuelTransactionSpecParamsCostTo,
+            fuelTransactionSpecParamsPpgFrom,
+            fuelTransactionSpecParamsPpgTo,
+            fuelTransactionSpecParamsTruckId,
+            fuelTransactionSpecParamsPageIndex,
+            fuelTransactionSpecParamsPageSize,
+            fuelTransactionSpecParamsCompanyId,
+            fuelTransactionSpecParamsSort,
+            fuelTransactionSpecParamsSearch,
+            fuelTransactionSpecParamsSearch1,
+            fuelTransactionSpecParamsSearch2
+        );
     }
 
     set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {

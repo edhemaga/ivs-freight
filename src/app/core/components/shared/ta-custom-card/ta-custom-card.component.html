@@ -40,6 +40,12 @@
                 [countTextBottomPosition]="textBottomPossiton"
             ></app-ta-counter>
 
+            <!-- Capsula Text -->
+
+            <div *ngIf="capsulaText" class="capsula-wrapper">
+                <p class="capsula-text">{{ capsulaText }}</p>
+            </div>
+
             <!-- Svg near name -->
             <div
                 *ngIf="
@@ -162,7 +168,11 @@
             </div>
 
             <!-- Weekly status -->
-            <div *ngIf="hasWeeklyStatus" class="weekly-status" [class.disabledWeeklyStatus]="disabledCard">
+            <div
+                *ngIf="hasWeeklyStatus"
+                class="weekly-status"
+                [class.disabledWeeklyStatus]="disabledCard"
+            >
                 <div class="weekly-status-value">
                     {{ hasWeeklyStatus }}
                 </div>

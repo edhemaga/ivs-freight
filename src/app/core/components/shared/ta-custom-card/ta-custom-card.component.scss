@@ -31,6 +31,22 @@
                 line-height: 18px;
             }
 
+            .capsula-wrapper {
+                width: max-content;
+                background-color: #424242;
+                border-radius: 11px;
+                padding: 4px 8px;
+
+                .capsula-text {
+                    margin: 0;
+                    padding: 0;
+                    font-size: 11px;
+                    font-weight: 700;
+                    line-height: 14px;
+                    color: white;
+                }
+            }
+
             // LEFT SIDE NEAR NAME SVG
             .header-svg {
                 margin-left: 6px;

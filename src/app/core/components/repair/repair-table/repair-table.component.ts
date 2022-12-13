@@ -67,6 +67,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         pmTruckTitles: undefined,
         pmTrailerTitles: undefined,
         isOrder: undefined,
+        truckId: undefined,
         pageIndex: 1,
         pageSize: 25,
         companyId: undefined,
@@ -616,6 +617,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             pmTruckTitles: Array<string>;
             pmTrailerTitles: Array<string>;
             isOrder: boolean;
+            truckId: number;
             pageIndex: number;
             pageSize: number;
             companyId: number;
@@ -638,6 +640,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter.pmTruckTitles,
                 filter.pmTrailerTitles,
                 filter.isOrder,
+                filter.truckId,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,

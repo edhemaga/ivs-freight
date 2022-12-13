@@ -18,6 +18,7 @@ api/companyContactLabel.service.ts
 api/companyOffice.service.ts
 api/companyUser.service.ts
 api/dashboard.service.ts
+api/department.service.ts
 api/dispatch.service.ts
 api/driver.service.ts
 api/employmentHistory.service.ts
@@ -247,6 +248,7 @@ model/createWorkExperienceReviewCommand.ts
 model/dayOfWeek.ts
 model/deleteMultipleApplicationsCommand.ts
 model/departmentContactResponse.ts
+model/departmentFilterResponse.ts
 model/departmentResponse.ts
 model/disclosureReleaseFeedbackResponse.ts
 model/dispatchBoardListResponse.ts
@@ -268,6 +270,9 @@ model/dispatchShortResponse.ts
 model/dispatchStatus.ts
 model/dispatchStatusResponse.ts
 model/driverAccidentResponse.ts
+model/driverFilterListResponse.ts
+model/driverFilterResponse.ts
+model/driverFilterResponsePagination.ts
 model/driverForgotPasswordCommand.ts
 model/driverListResponse.ts
 model/driverMinimalListResponse.ts

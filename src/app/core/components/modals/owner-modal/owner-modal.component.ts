@@ -312,13 +312,16 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.ownerForm
             .get('bankId')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe(async (value) => {
-                this.isBankSelected =
-                    await this.bankVerificationService.onSelectBank(
-                        this.selectedBank ? this.selectedBank.name : value,
-                        this.ownerForm.get('routingNumber'),
-                        this.ownerForm.get('accountNumber')
-                    );
+            .subscribe(() => {
+                const timeout = setTimeout(async () => {
+                    this.isBankSelected =
+                        await this.bankVerificationService.onSelectBank(
+                            this.selectedBank ? this.selectedBank.name : null,
+                            this.ownerForm.get('routingNumber'),
+                            this.ownerForm.get('accountNumber')
+                        );
+                    clearTimeout(timeout);
+                }, 100);
             });
     }
 
