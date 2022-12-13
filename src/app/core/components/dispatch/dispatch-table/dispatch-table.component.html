@@ -27,7 +27,10 @@
                         [class.addNew]="!item.truck && truckList.length"
                         [class.filled]="item.truck"
                     >
-                        <div class="padding-inside">
+                        <div
+                            class="padding-inside"
+                            *ngIf="openedTruckDropdown != rowIndex"
+                        >
                             <div
                                 *ngIf="
                                     openedTruckDropdown != rowIndex &&
@@ -448,14 +451,13 @@
 
             <tr>
                 <td class="truck-field">
-                    <div
-                        class="main_inside addNew"
-                    >
-                        <div class="padding-inside">
+                    <div class="main_inside addNew">
+                        <div
+                            class="padding-inside"
+                            *ngIf="openedTruckDropdown != -2"
+                        >
                             <div
-                                *ngIf="
-                                    openedTruckDropdown != -2
-                                "
+                                *ngIf="openedTruckDropdown != -2"
                                 class="add_new"
                                 (click)="showTruckDropdown(-2)"
                             >
@@ -496,18 +498,14 @@
                     </div>
                 </td>
                 <td class="trailer-field">
-                    <div
-                        class="main_inside addNew"
-                    >
+                    <div class="main_inside addNew">
                         <div
                             class="padding-inside"
                             *ngIf="openedTrailerDropdown != -2"
                         >
                             <div
                                 class="add_new"
-                                *ngIf="
-                                    openedTrailerDropdown != -2
-                                "
+                                *ngIf="openedTrailerDropdown != -2"
                                 (click)="showTrailerDropdown(-2)"
                             >
                                 <div class="text">Add</div>
@@ -547,9 +545,7 @@
                     </div>
                 </td>
                 <td class="driver-field">
-                    <div
-                        class="main_inside addNew"
-                    >
+                    <div class="main_inside addNew">
                         <div
                             class="padding-inside"
                             *ngIf="openedDriverDropdown != -2"

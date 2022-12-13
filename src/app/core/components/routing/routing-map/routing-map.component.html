@@ -286,7 +286,7 @@
                             cdkDropList
                             [cdkDropListDisabled]="route.stops.length < 2"
                             (cdkDropListDropped)="
-                                dropStops($event, route.stops, i)
+                                dropStops($event, route.stops, route)
                             "
                         >
                             <div
@@ -924,7 +924,7 @@
                             cdkDropList
                             [cdkDropListDisabled]="route.stops.length < 2"
                             (cdkDropListDropped)="
-                                dropStops($event, route.stops, i)
+                                dropStops($event, route.stops, route)
                             "
                         >
                             <div
@@ -1470,7 +1470,7 @@
                                                     }"
                                                 />
                                                 <text
-                                                    y="-10%"
+                                                    y="-3,315px"
                                                     dominant-baseline="middle"
                                                     text-anchor="middle"
                                                     id="_1"
@@ -1795,7 +1795,7 @@
                                         font-family="Montserrat-Bold, Montserrat"
                                         font-weight="700"
                                     >
-                                        <tspan y="-4">
+                                        <tspan y="-3">
                                             {{
                                                 stopPickerLocation.editIndex !=
                                                 null

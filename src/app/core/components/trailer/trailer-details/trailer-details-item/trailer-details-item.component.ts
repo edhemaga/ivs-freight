@@ -58,7 +58,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
     @ViewChildren('registrationUpload') registrationUpload: any;
     @ViewChildren('titleUpload') titleUpload: any;
     private destroy$ = new Subject<void>();
-    @Input() trailer: TrailerResponse | any = null;
+    @Input() trailer: any = null;
     public note: FormControl = new FormControl();
     public registrationNote: FormControl = new FormControl();
     public fhwaNote: FormControl = new FormControl();

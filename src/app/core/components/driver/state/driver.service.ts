@@ -423,7 +423,7 @@ export class DriverTService {
                     const subDriver = this.getDriverById(driverId)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
-                            next: (driver: DriverResponse | any) => {
+                            next: (driver: any) => {
                                 driver = {
                                     ...driver,
                                     fullName:

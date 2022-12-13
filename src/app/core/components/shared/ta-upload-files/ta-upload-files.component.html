@@ -52,12 +52,7 @@
         </div>
     </app-ta-upload-files-carousel>
     <app-ta-upload-dropzone
-        *ngIf="
-            customClassName !== 'driver-details-pdf' &&
-            customClassName !== 'landscape-details-view' &&
-            reviewMode !== 'REVIEW_MODE' &&
-            reviewMode !== 'FEEDBACK_MODE'
-        "
+        *ngIf="showDropzone"
         (onFileEvent)="onUploadFiles($event)"
         [isRequired]="isRequired"
         [showRequired]="showRequired"
