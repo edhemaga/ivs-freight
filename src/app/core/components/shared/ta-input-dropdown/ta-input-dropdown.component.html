@@ -105,8 +105,7 @@
                 !inputConfig.isDisabled) ||
             ((inputConfig.name == 'Address' ||
                 inputConfig.name == 'RoutingAddress') &&
-                !inputConfig.isDisabled &&
-                getSuperControl.value?.length)
+                !inputConfig.isDisabled && options?.length)
         "
         class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
         [ngClass]="{
