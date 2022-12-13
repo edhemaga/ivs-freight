@@ -8,3 +8,81 @@
     height: 100%;
     padding: 0px;
 }
+
+.stops-header-bar {
+    display: grid;
+    grid-template-columns: 25px 263px 218px 1fr;
+    align-items: center;
+    padding: 0 18px;
+
+    p {
+        margin: 0;
+        padding: 0;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 14px;
+        color: #919191;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        pointer-events: none;
+    }
+}
+
+.stop-items-wrapper {
+    ::ng-deep {
+        .divider {
+            width: 606px !important;
+        }
+    }
+}
+
+.stops-footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 18px;
+    padding: 0px 10px;
+    padding-top: 10px;
+
+    &-left-side,
+    &-right-side {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .stops-footer-bar-text {
+            margin: 0;
+            padding: 0;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 14;
+            color: #919191;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .loaded-miles-value,
+        .total-miles-value {
+            margin: 0;
+            padding: 0;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 14;
+            color: #2f2f2f;
+            height: 100%;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .total-miles-value {
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+}

@@ -125,8 +125,10 @@ export class ShipperTService implements OnDestroy {
 
     // Get Shipper List
     public getShippersList(
-        ban?: number,
-        dnu?: number,
+        stateIds?: Array<number>,
+        long?: number,
+        lat?: number,
+        distance?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -135,18 +137,19 @@ export class ShipperTService implements OnDestroy {
         search1?: string,
         search2?: string
     ): Observable<ShipperListResponse> {
-        // return this.shipperService.apiShipperListGet(
-        //     ban,
-        //     dnu,
-        //     pageIndex
-        //     // pageSize,
-        //     // companyId,
-        //     // sort,
-        //     // search,
-        //     // search1,
-        //     // search2
-        // );
-        return of();
+        return this.shipperService.apiShipperListGet(
+            stateIds,
+            long,
+            lat,
+            distance,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
     }
 
     // Get Shipper By Id

@@ -32,7 +32,6 @@ import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.p
 import { HideAccountPipe } from './driver-hide-account.pipe';
 import { formatTimePipe } from './formatTime.pipe';
 import { FormControlPipe } from '../components/shared/ta-input/form-control.pipe';
-import { LoadStopTimeDatePipe } from '../components/modals/load-modal/load-stop-time-date.pipe';
 import { ActiveLoadStatusPipe } from '../components/modals/load-modal/load-modal-statuses/activeLoadStatus.pipe';
 import { UrlExtensionPipe } from './url-extension.pipe';
 import { ByteConvertPipe } from './byte-convert.pipe';
@@ -72,7 +71,6 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/load-date
         LogoSliderPipe,
         HideAccountPipe,
         FormControlPipe,
-        LoadStopTimeDatePipe,
         ActiveLoadStatusPipe,
         UrlExtensionPipe,
         ByteConvertPipe,
@@ -112,7 +110,6 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/load-date
         setFutureYear,
         LogoSliderPipe,
         FormControlPipe,
-        LoadStopTimeDatePipe,
         ActiveLoadStatusPipe,
         UrlExtensionPipe,
         ByteConvertPipe,
