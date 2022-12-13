@@ -41,6 +41,7 @@ export class TaUserReviewComponent implements OnChanges {
 
     private user: SignInResponse = JSON.parse(localStorage.getItem('user'));
     valueChanged: boolean = false;
+    doubleClick: boolean = false;
 
     constructor(
         private reviewSortPipe: ReviewsSortPipe,
@@ -222,5 +223,16 @@ export class TaUserReviewComponent implements OnChanges {
 
     public identity(index: number, item: any): number {
         return item.id;
+    }
+
+    public openComment(data: any, ind: number) {
+        if(!this.doubleClick) {
+            this.doubleClick = true;
+            setTimeout(()=>{
+                this.doubleClick = false;
+            }, 250);
+        } else {
+            this.onAction(data, 'edit', ind);
+        }
     }
 }
