@@ -9,12 +9,17 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ColorFinderPipe } from './pipes/color-finder.pipe';
+import { HosFilterPipe } from './pipes/hos-filter.pipe';
+import { TooltipWidthPipe } from './pipes/tooltip-width.pipe';
+import { TaNoteModule } from '../shared/ta-note/ta-note.module';
 
 @NgModule({
   declarations: [
     DispatchComponent,
     DispatchTableComponent,
-    ColorFinderPipe
+    ColorFinderPipe,
+    HosFilterPipe,
+    TooltipWidthPipe
   ],
   imports: [
     AngularSvgIconModule,
@@ -23,7 +28,8 @@ import { ColorFinderPipe } from './pipes/color-finder.pipe';
     TruckassistTableModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    TaNoteModule
   ]
 })
 export class DispatchModule { }
