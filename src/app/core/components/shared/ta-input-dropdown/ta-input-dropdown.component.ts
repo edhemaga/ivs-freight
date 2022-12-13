@@ -46,8 +46,8 @@ export class TaInputDropdownComponent
     @Input() multiselectTemplate: string;
 
     @Input() inputConfig: ITaInput;
-    @Input() canAddNew: boolean; // add new item in options
-    @Input() canOpenModal: boolean; // open modal with Add New button
+    @Input() canAddNew: boolean; // ADD NEW item in options
+    @Input() canOpenModal: boolean; // open modal with ADD NEW button
     @Input() sort: string; // sort-template for different options
 
     @Input() activeItem: any; // currently active item
@@ -135,7 +135,7 @@ export class TaInputDropdownComponent
                     ) {
                         this.options.unshift({
                             id: 7655,
-                            name: 'Add New',
+                            name: 'ADD NEW',
                         });
                     }
                     this.originalOptions = this.options;
@@ -354,8 +354,8 @@ export class TaInputDropdownComponent
                     ) {
                         selectedItem = this.options[0].name;
                     }
-                    // Add New Option
-                    if (selectedItem === 'Add New') {
+                    // ADD NEW Option
+                    if (selectedItem === 'ADD NEW') {
                         this.addNewConfig();
                     }
                     // Normal Pick Dropdown
@@ -459,9 +459,12 @@ export class TaInputDropdownComponent
     private search(searchText: string): void {
         // Single Dropdown
         if (
-            !['groups', 'load-broker-contact', 'fuel-franchise'].includes(
-                this.template
-            )
+            ![
+                'groups',
+                'load-broker-contact',
+                'fuel-franchise',
+                'load-dispatches-ttd',
+            ].includes(this.template)
         ) {
             if (
                 searchText?.length &&
@@ -567,6 +570,21 @@ export class TaInputDropdownComponent
                     });
                 }
 
+                if (this.template === 'load-dispatches-ttd') {
+                    this.options = this.originalOptions.filter((item) =>
+                        item.name
+                            ? item.name
+                                  .toLowerCase()
+                                  .includes(searchText.toLowerCase())
+                            : item.code
+                            ? item.code
+                                  .concat(' - ', item.description)
+                                  .toLowerCase()
+                                  .includes(searchText.toLowerCase())
+                            : searchText.toLowerCase()
+                    );
+                }
+
                 if (!this.options.length) {
                     this.options.push({
                         groups: [
@@ -600,7 +618,7 @@ export class TaInputDropdownComponent
         if (option.id === 7654) {
             return;
         }
-        // Add New
+        // ADD NEW
         else if (option.id === 7655) {
             if (this.canOpenModal) {
                 this.selectedItem.emit({ ...option, canOpenModal: true });
@@ -680,7 +698,7 @@ export class TaInputDropdownComponent
                             blackInput: false,
                         };
                         clearTimeout(timeout);
-                    }, 200);
+                    }, 300);
                 }
             }
         }

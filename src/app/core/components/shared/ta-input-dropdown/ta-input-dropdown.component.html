@@ -105,8 +105,7 @@
                 !inputConfig.isDisabled) ||
             ((inputConfig.name == 'Address' ||
                 inputConfig.name == 'RoutingAddress') &&
-                !inputConfig.isDisabled &&
-                getSuperControl.value?.length)
+                !inputConfig.isDisabled && options?.length)
         "
         class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
         [ngClass]="{
@@ -128,7 +127,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id
                     }"
                     (click)="onActiveItem(option)"
@@ -170,7 +169,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id,
                         trailerContainer: option.name === 'Container',
                         lowboyrgn: option.name === 'Low Boy / RGN'
@@ -289,12 +288,6 @@
                         }"
                         (click)="onActiveItem(item)"
                     >
-                        <img
-                            *ngIf="item.svg"
-                            class="dropdown-subgroup-image"
-                            [src]="item.svg"
-                            [alt]="item.name"
-                        />
                         <div
                             class="dropdown-subgroup-text"
                             [ngClass]="{
@@ -354,7 +347,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         'active-label':
                             option.id === activeItem?.id &&
                             labelMode === 'Label'
@@ -362,7 +355,7 @@
                     (click)="onActiveItem(option)"
                 >
                     <div
-                        *ngIf="!['No Results', 'Add New'].includes(option.name)"
+                        *ngIf="!['No Results', 'ADD NEW'].includes(option.name)"
                         class="labels-template-left-side"
                     >
                         <svg-icon
@@ -384,7 +377,7 @@
                         <div
                             class="labels-template-text"
                             [ngClass]="{
-                                'add-new': option.name === 'Add New'
+                                'add-new': option.name === 'ADD NEW'
                             }"
                             [innerHtml]="
                                 option.name
@@ -399,7 +392,7 @@
                         ></div>
                         <div
                             *ngIf="
-                                !['No Results', 'Add New'].includes(option.name)
+                                !['No Results', 'ADD NEW'].includes(option.name)
                             "
                             class="labels-template-counter"
                         >
@@ -432,7 +425,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id,
                         'active-repair-truck-trailer': option?.status === 1
                     }"
@@ -500,7 +493,11 @@
             <!--------------------------- Load Combine Truck-Trailer-Driver Template --------------------------->
             <div *ngSwitchCase="'load-dispatches-ttd'">
                 <div
-                    *ngFor="let option of options; trackBy: identity"
+                    *ngFor="
+                        let option of options;
+                        trackBy: identity;
+                        let indx = index
+                    "
                     class="dropdown-option load-dispatches-ttd-template"
                     [ngClass]="{
                         disabled: option?.disabled,
@@ -538,6 +535,17 @@
                                           ]
                             "
                         ></div>
+                        <!-- Percentage is driver owner -->
+                        <span
+                            *ngIf="option.driver?.owner"
+                            class="load-dispatch-driver-rate"
+                            [ngClass]="{
+                                'driver-owner': option.driver?.owner,
+                                active: indx === activeItem?.itemIndex
+                            }"
+                        >
+                            {{ option?.payType }}
+                        </span>
                     </div>
 
                     <!-- Trailer -->
@@ -578,7 +586,10 @@
                                 active:
                                     option.driver.id === activeItem?.driver?.id
                             }"
-                            [ngStyle]="{ position: 'relative', bottom: '1px' }"
+                            [ngStyle]="{
+                                position: 'relative',
+                                bottom: '1px'
+                            }"
                             [src]="
                                 this.imageBase64Service.sanitizer(
                                     option.driver.logoName
@@ -589,7 +600,10 @@
                         <div
                             *ngIf="!option.driver.logoName"
                             class="no-profile-image"
-                            [ngStyle]="{ position: 'relative', bottom: '1px' }"
+                            [ngStyle]="{
+                                position: 'relative',
+                                bottom: '1px'
+                            }"
                         >
                             <app-profile-images
                                 [indx]="0"
@@ -612,58 +626,91 @@
                             "
                         ></div>
                         <svg-icon
+                            *ngIf="option.driver?.owner"
+                            class="load-dipstaches-owner-flag"
                             src="assets/svg/common/load/ic_load_driver_owner.svg"
                         ></svg-icon>
                     </div>
-                    <span class="load-dispatch-driver-rate">
-                        <!-- {{option.driver?.rate}} -->
-                        Flat Rate
+                    <!-- Percentage is not driver owner -->
+                    <span
+                        *ngIf="!option.driver?.owner"
+                        class="load-dispatch-driver-rate"
+                        [ngClass]="{
+                            active: indx === activeItem?.itemIndex
+                        }"
+                    >
+                        {{ option?.payType }}
                     </span>
                 </div>
             </div>
             <!--------------------------- Load Broker Template --------------------------->
             <div *ngSwitchCase="'load-broker'">
                 <div
-                    *ngFor="let option of options; trackBy: identity"
+                    *ngFor="
+                        let option of options;
+                        trackBy: identity;
+                        let indx = index
+                    "
                     class="dropdown-option load-broker-template"
                     [ngClass]="{
                         disabled: option?.disabled || option.dnu || option.ban,
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id
                     }"
                     (click)="onActiveItem(option)"
                 >
-                    <svg-icon
-                        *ngIf="option.name !== 'Add New'"
-                        class="load-broker-status"
-                        [src]="option.logoName"
-                        [ngClass]="{
-                            'dnu-status': option.dnu,
-                            'low-status':
-                                option?.status?.toLowerCase() === 'low' &&
-                                !option.dnu &&
-                                !option.ban,
-                            'medium-status':
-                                option?.status?.toLowerCase() === 'medium' &&
-                                !option.dnu &&
-                                !option.ban
-                        }"
-                    ></svg-icon>
+                    <div class="load-broker-status-text">
+                        <svg-icon
+                            *ngIf="option.name !== 'ADD NEW' && option.logoName"
+                            class="load-broker-status"
+                            [src]="option.logoName"
+                            [ngClass]="{
+                                'dnu-status': option.dnu
+                            }"
+                        ></svg-icon>
+
+                        <div
+                            class="load-broker-text"
+                            [ngStyle]="{
+                                overflow: 'hidden',
+                                'text-overflow': 'ellipsis',
+                                'white-space': 'nowrap'
+                            }"
+                            [innerHtml]="
+                                option.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+                    </div>
+                    <div *ngIf="indx !== 0" class="load-broker-progress-status">
+                        <app-load-modal-progress-bar
+                            [totalAmount]="10000"
+                            [availableCredit]="
+                                option.availableCredit
+                                    ? option.availableCredit
+                                    : 0
+                            "
+                            [disable]="
+                                option.dnu || option.ban || option.status === 0
+                            "
+                        ></app-load-modal-progress-bar>
+                    </div>
                     <div
-                        [innerHtml]="
-                            option.name
-                                | taHighlight
-                                    : [
-                                          {
-                                              index: 45632,
-                                              text: getSuperControl.value
-                                          }
-                                      ]
-                        "
-                    ></div>
+                        *ngIf="indx !== 0"
+                        class="load-broker-load-counter"
+                        [ngClass]="{ active: option.id === activeItem?.id }"
+                    >
+                        {{ option.loadsCount }}
+                    </div>
                 </div>
             </div>
 
@@ -675,7 +722,7 @@
                         trackBy: identity;
                         let i = index
                     "
-                    class="dropdown-groups load-broker-contact-groups"
+                    class="load-broker-contact-groups"
                     [ngClass]="{ 'last-group': i === options.length - 1 }"
                 >
                     <p
@@ -685,17 +732,22 @@
                         "
                         class="dropdown-group-header"
                         [ngClass]="{
-                            'add-new': option.name === 'Add New'
+                            'add-new': option.name === 'ADD NEW'
                         }"
+                        (click)="onActiveItem(item)"
                     >
                         {{
-                            option.name === 'Add New'
+                            option.name === 'ADD NEW'
                                 ? option.name
                                 : option?.department?.name
                         }}
                     </p>
                     <div
-                        *ngFor="let item of option?.contacts; trackBy: identity"
+                        *ngFor="
+                            let item of option?.contacts;
+                            trackBy: identity;
+                            let indx = index
+                        "
                         class="dropdown-subgroup-options"
                         [ngClass]="{
                             'no-result':
@@ -704,14 +756,14 @@
                         }"
                         (click)="onActiveItem(item)"
                     >
+                        <!-- Left Side -->
                         <div
                             class="dropdown-subgroup-text"
                             [ngClass]="{
                                 'no-result':
                                     options.length === 1 &&
                                     item.name === 'No Results',
-                                'active-without-check':
-                                    item.id === activeItem?.id
+                                active: item.id === activeItem?.id
                             }"
                             [innerHtml]="
                                 item.name
@@ -724,7 +776,7 @@
                                           ]
                             "
                         ></div>
-
+                        <!-- Right Side -->
                         <div
                             class="dropdown-subgroup-text dropdown-subgroup-additional-text"
                             [ngClass]="{
@@ -748,32 +800,50 @@
             <!--------------------------- Load Shipper Template --------------------------->
             <div *ngSwitchCase="'load-shipper'">
                 <div
-                    *ngFor="let option of options; trackBy: identity"
+                    *ngFor="
+                        let option of options;
+                        trackBy: identity;
+                        let indx = index
+                    "
                     class="dropdown-option load-shipper-template"
                     [ngClass]="{
-                        disabled: option?.disabled,
+                        disabled: option?.disabled || option.status === 0,
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active: option.id === activeItem?.id
                     }"
                     (click)="onActiveItem(option)"
                 >
+                    <div class="load-shipper-status-text">
+                        <svg-icon
+                            *ngIf="option.name !== 'ADD NEW' && option.logoName"
+                            class="load-shipper-status"
+                            [src]="option.logoName"
+                        ></svg-icon>
+                        <div
+                            class="load-shipper-text"
+                            [ngStyle]="{
+                                overflow: 'hidden',
+                                'text-overflow': 'ellipsis',
+                                'white-space': 'nowrap'
+                            }"
+                            [innerHtml]="
+                                option.name
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                        ></div>
+                    </div>
                     <div
-                        [innerHtml]="
-                            option.name
-                                | taHighlight
-                                    : [
-                                          {
-                                              index: 45632,
-                                              text: getSuperControl.value
-                                          }
-                                      ]
-                        "
-                    ></div>
-
-                    <div
+                        *ngIf="indx !== 0"
+                        [ngClass]="{ active: option.id === activeItem?.id }"
                         [innerHtml]="
                             option.address
                                 | taHighlight
@@ -785,6 +855,14 @@
                                       ]
                         "
                     ></div>
+
+                    <div
+                        *ngIf="indx !== 0"
+                        class="load-shipper-load-counter"
+                        [ngClass]="{ active: option.id === activeItem?.id }"
+                    >
+                        {{ option.loadsCount }}
+                    </div>
                 </div>
             </div>
             <!--------------------------- Template Text - Counter --------------------------->
@@ -797,7 +875,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active:
                             option.id ===
                             (activeItem?.duplicateId
@@ -821,7 +899,7 @@
                     </span>
                     <span
                         *ngIf="
-                            option.name !== 'Add New' &&
+                            option.name !== 'ADD NEW' &&
                             option.name !== 'No Results'
                         "
                         class="option-counter"
@@ -876,7 +954,7 @@
                         >
                             <span
                                 *ngIf="
-                                    option.name !== 'Add New' &&
+                                    option.name !== 'ADD NEW' &&
                                     option.name !== 'No Results'
                                 "
                                 class="option-counter"
@@ -948,7 +1026,7 @@
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'Add New',
+                        'add-new': option.name === 'ADD NEW',
                         active:
                             option.id ===
                             (activeItem?.duplicateId

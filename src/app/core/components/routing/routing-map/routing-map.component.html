@@ -286,7 +286,7 @@
                             cdkDropList
                             [cdkDropListDisabled]="route.stops.length < 2"
                             (cdkDropListDropped)="
-                                dropStops($event, route.stops, i)
+                                dropStops($event, route.stops, route)
                             "
                         >
                             <div
@@ -908,34 +908,23 @@
                                     ></svg-icon>
                                 </div>
                             </div>
-                            <div
-                                #t2="ngbPopover"
+                            <app-details-page-dropdown
+                                #dropdownElement
                                 (click)="toggleDropdown($event, t2, route)"
-                                [autoClose]="true"
-                                [ngbPopover]="dropdownPopover"
                                 [placement]="'right-top right-bottom'"
-                                class="show-more table-dropdown-container"
-                                [ngClass]="{
-                                    'active-drop':
-                                        dropDownActive === route.id &&
-                                        t2.isOpen()
-                                }"
-                                [container]="'body'"
-                                popoverClass="table-dropdown-popover drop-down-route"
-                                triggers="manual"
+                                [hasVericalDots]="true"
+                                [options]="dropdownActions"
+                                [id]="route.id"
+                                (dropDownActions)="callDropDownAction($event)"
                             >
-                                <svg-icon
-                                    class="dropdown-dots"
-                                    src="assets/svg/common/ic_horizontal_dots_details.svg"
-                                ></svg-icon>
-                            </div>
+                            </app-details-page-dropdown>
                         </div>
                         <div
                             class="route-card-content"
                             cdkDropList
                             [cdkDropListDisabled]="route.stops.length < 2"
                             (cdkDropListDropped)="
-                                dropStops($event, route.stops, i)
+                                dropStops($event, route.stops, route)
                             "
                         >
                             <div
@@ -946,7 +935,14 @@
                                 [ngClass]="{ 'focused-route': route.isFocused }"
                                 [ngStyle]="{
                                     cursor:
-                                        route.stops.length == 1 ? 'pointer' : ''
+                                        route.stops.length == 1
+                                            ? 'pointer'
+                                            : '',
+                                    order:
+                                        insertBeforeActive > -1 &&
+                                        insertBeforeActive >= b
+                                            ? b + 2
+                                            : b + 1
                                 }"
                                 (click)="focusStop($event, i, b)"
                             >
@@ -1117,28 +1113,24 @@
                                 </div>
 
                                 <div
-                                    *ngIf="!stop.empty && b > 0"
+                                    *ngIf="stop.showLoaded"
                                     class="loaded-stop-background"
                                     [ngStyle]="{
                                         height:
                                             b >= route.stops.length - 1 ||
                                             !route.stops[b + 1] ||
                                             route.stops[b + 1].empty
-                                                ? '22px'
+                                                ? '18px'
                                                 : '24px',
                                         background: route.isFocused
                                             ? '#ffffff4d'
                                             : route.color + '33',
                                         'border-top-left-radius':
-                                            b == 1 ||
-                                            !route.stops[b - 1] ||
-                                            route.stops[b - 1].empty
+                                            b == 0 || stop.empty
                                                 ? '2px'
                                                 : '0px',
                                         'border-top-right-radius':
-                                            b == 1 ||
-                                            !route.stops[b - 1] ||
-                                            route.stops[b - 1].empty
+                                            b == 0 || stop.empty
                                                 ? '2px'
                                                 : '0px',
                                         'border-bottom-right-radius':
@@ -1161,10 +1153,16 @@
                                 [ngClass]="{
                                     'focused-route': route.isFocused,
                                     'disable-hover':
-                                        inputAddress?.inputDropdown?.inputRef
-                                            ?.focusInput
+                                        inputAddress?.addressExpanded
                                 }"
                                 (click)="focusOnInput(i, false, $event)"
+                                [attr.data-id]="'newStop' + route.id"
+                                [ngStyle]="{
+                                    order:
+                                        insertBeforeActive > -1
+                                            ? insertBeforeActive + 1
+                                            : route.stops.length + 1
+                                }"
                             >
                                 <div
                                     class="focused-route-number-background"
@@ -1179,7 +1177,10 @@
                                         'height.px': 14,
                                         fill: route.isFocused
                                             ? '#fff'
-                                            : route.color
+                                            : route.color,
+                                        opacity: inputAddress?.addressExpanded
+                                            ? '0'
+                                            : '1'
                                     }"
                                 ></svg-icon>
                                 <div
@@ -1196,6 +1197,7 @@
                                 >
                                     <!-- Add New Stop -->
                                     <app-input-address-dropdown
+                                        #inputAddress
                                         formControlName="address"
                                         [inputConfig]="{
                                             name: 'RoutingAddress',
@@ -1250,6 +1252,7 @@
                                             }
                                         }"
                                         [isRouting]="true"
+                                        [hideEmptyLoaded]="!route.stops.length"
                                         (changeFlag)="
                                             $event === true
                                                 ? (addressFlag = 'Loaded')
@@ -1273,7 +1276,6 @@
                             *ngIf="
                                 !route.hidden &&
                                 route.hover &&
-                                !t2.isOpen() &&
                                 (route.stops.length ||
                                     route.truckId ||
                                     route.stopTime ||
@@ -1468,7 +1470,7 @@
                                                     }"
                                                 />
                                                 <text
-                                                    y="-10%"
+                                                    y="-3,315px"
                                                     dominant-baseline="middle"
                                                     text-anchor="middle"
                                                     id="_1"
@@ -1793,7 +1795,7 @@
                                         font-family="Montserrat-Bold, Montserrat"
                                         font-weight="700"
                                     >
-                                        <tspan y="-4">
+                                        <tspan y="-3">
                                             {{
                                                 stopPickerLocation.editIndex !=
                                                 null

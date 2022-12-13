@@ -111,19 +111,16 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                         this.trailerConf(res);
                         this.initTableOptions(res);
                         this.router.navigate([`/trailer/${res.id}/details`]);
-                       
+
                         this.cdRef.detectChanges();
                     },
-                    error: () => {
-                        
-                    },
+                    error: () => {},
                 });
             });
         this.trailerConf(trailerData);
     }
 
     trailerConf(data: any) {
-        //console.log('--data--', data);
         this.DetailsDataService.setNewData(data);
         this.trailerDetailsConfig = [
             {
@@ -197,7 +194,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                     disabled: data.status == 0 ? true : false,
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'border',
@@ -207,7 +204,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     show: true,
-                    iconName: 'view-details'
+                    iconName: 'view-details',
                 },
                 {
                     title: 'Add New',
@@ -222,7 +219,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                         { subName: 'Title', actionName: 'Title' },
                         { subName: 'Lease / Rent', actionName: 'Lease / Rent' },
                     ],
-                    iconName: 'add-new'
+                    iconName: 'add-new',
                 },
                 {
                     title: 'border',
@@ -232,14 +229,14 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share'
+                    iconName: 'share',
                 },
                 {
                     title: 'Print',
                     name: 'print-truck',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
-                    iconName: 'print'
+                    iconName: 'print',
                 },
                 {
                     title: 'border',
@@ -253,7 +250,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     show: data.status == 1 || data.status == 0 ? true : false,
                     redIcon: data.status == 1 ? true : false,
                     blueIcon: data.status == 0 ? true : false,
-                    iconName: 'activate-item'
+                    iconName: 'activate-item',
                 },
                 {
                     title: 'Delete',
@@ -263,13 +260,13 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete'
+                    iconName: 'delete',
                 },
             ],
             export: true,
         };
     }
-    public getTrailerById(id: number) { 
+    public getTrailerById(id: number) {
         this.trailerService
             .getTrailerById(id, true)
             .subscribe((item) => (this.trailerObject = item));
@@ -299,7 +296,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                             }/details`,
                         ]);
                     }
-                   
                 },
                 error: () => {
                     this.router.navigate(['/trailer']);
@@ -312,12 +308,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             .changeTrailerStatus(id, status)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                 
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
     public onTrailerActions(event: any) {

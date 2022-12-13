@@ -26,10 +26,13 @@
 
 .marker-business-name {
     font-size: 16px;
-    font-weight: 700;
-    color: $bw6-2;
+    //font-weight: 700;
+    font-weight: 900;
+    //color: $bw6-2;
+    color: #2F2F2F;
     text-transform: uppercase;
-    line-height: 22px;
+    //line-height: 22px;
+    line-height: 19px;
 }
 
 .marker-expanded-view {
@@ -44,18 +47,18 @@
 
 .marker-title {
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 900;
     line-height: 18px;
-    color: $bw6-2;
+    color: #424242;
     margin-top: 6px;
 
     &::-moz-selection {
-        color: $bw6-2;
-        background: #6c6c6c33;
+        color: #424242;
+        background: #42424233;
     }
     &::selection {
-        color: $bw6-2;
-        background: #6c6c6c33;
+        color: #424242;
+        background: #42424233;
     }
 }
 
@@ -66,7 +69,7 @@
     display: inline-block;
     width: 50%;
 
-    padding: 0px 4px 0px 4px;
+    padding: 0px 4px 0px 0px;
 
     .load-text {
         &::-moz-selection {
@@ -78,6 +81,11 @@
             background: #6c6c6c33;
         }
     }
+}
+
+.align-center {
+    display: inline-flex;
+    align-items: center;
 }
 
 .marker-container-expand {
@@ -367,7 +375,7 @@
     padding: 6px 2px 6px 6px;
     background: #fff;
     border-radius: 3px;
-    box-shadow: 0px 0px 4px #00000026;
+    box-shadow: 0px 0px 4px #0000004D;
     //pointer-events: all;
 
     .cluster-list-header {
@@ -376,25 +384,29 @@
         .header-content {
             display: flex;
             align-items: center;
-            padding: 1px 1px 5px 1px;
+            padding: 2px 2px 10px 2px;
 
             .cluster-count {
                 display: flex;
                 justify-content: center;
                 align-items: center;
 
-                width: 24px;
-                height: 24px;
-                background: #f3f3f3;
-                border-radius: 2px;
+                width: 22px;
+                height: 22px;
+                background: #424242;
+                border-radius: 50%;
                 user-select: none;
+
+                .header-text {
+                    color: #fff;
+                }
             }
 
             .header-text {
                 font-size: 14px;
                 line-height: 18px;
-                font-weight: 800;
-                color: #6c6c6c;
+                font-weight: 900;
+                color: #424242;
 
                 &::-moz-selection {
                     color: #6c6c6c;
@@ -409,16 +421,16 @@
 
         .divider {
             width: 100%;
-            height: 2px;
+            height: 1px;
 
-            background: #f3f3f3;
-            border-radius: 1px;
+            background: #DADADA;
+            border-radius: 0.5px;
         }
     }
 
     .cluster-list-content {
         max-height: 216px;
-        padding-top: 8px;
+        padding-top: 4px;
         overflow-y: scroll;
 
         &::-webkit-scrollbar {
@@ -438,10 +450,12 @@
 
         .cluster-list-item {
             width: 100%;
+            height: 26px;
             padding: 4px 6px;
+            margin-bottom: 4px;
             border-radius: 2px;
 
-            color: #6c6c6c;
+            color: #2F2F2F;
             font-weight: 400;
             text-transform: uppercase;
 
@@ -449,13 +463,17 @@
             white-space: nowrap;
             overflow: hidden;
 
+            &:last-child {
+                margin-bottom: 0px;
+            }
+
             &::-moz-selection {
-                color: #6c6c6c;
-                background: #6c6c6c33;
+                color: #2F2F2F;
+                background: #2F2F2F33;
             }
             &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c33;
+                color: #2F2F2F;
+                background: #2F2F2F33;
             }
 
             &:hover {
@@ -468,7 +486,7 @@
 }
 
 .text-ellipsis {
-    margin-right: 10px;
+    margin-right: 6px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -485,4 +503,20 @@
     font-weight: 900;
     line-height: 16px;
     text-transform: uppercase;
+}
+
+.favorite-svg {
+    position: relative;
+    display: flex;
+    height: 18px;
+    margin-left: 6px;
+    margin-right: 10px;
+
+    &.active {
+        svg {
+            path {
+                fill: #6d82c7;
+            }
+        }
+    }
 }

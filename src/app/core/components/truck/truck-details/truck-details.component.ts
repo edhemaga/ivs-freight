@@ -338,25 +338,24 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     }
 
     public truckConf(data: any) {
-        //console.log('---data---', data);
         this.DetailsDataService.setNewData(data);
         this.truckDetailsConfig = [
             {
-                id: 0,
-                name: 'Truck Details',
-                template: 'general',
-                data: data,
-                status: data?.status == 0 ? true : false,
-            },
+                 id: 0,
+                 name: 'Truck Details',
+                 template: 'general',
+                 data: data,
+                 status: data?.status == 0 ? true : false,
+             },
             {
-                id: 1,
-                name: 'Registration',
-                template: 'registration',
-                length: data?.registrations?.length
-                    ? data.registrations.length
-                    : 0,
-                data: data.registrations,
-                status: data?.status == 0 ? true : false,
+                 id: 1,
+                 name: 'Registration',
+                 template: 'registration',
+                 length: data?.registrations?.length
+                     ? data.registrations.length
+                     : 0,
+                 data: data.registrations,
+                 status: data?.status == 0 ? true : false,
             },
             {
                 id: 2,

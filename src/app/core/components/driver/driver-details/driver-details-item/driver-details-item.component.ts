@@ -40,27 +40,30 @@ import {
     templateUrl: './driver-details-item.component.html',
     styleUrls: ['./driver-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody'), trigger('cardAnimation', [
-        state('in', style({ opacity: 1, 'max-height': '0px'})),
-        transition(':enter', [
-            animate(
-                5100,
-                keyframes([
-                    style({ opacity: 0, 'max-height': '0px' }),
-                    style({ opacity: 1, 'max-height' : '600px' }),
-                ])
-            ),
+    animations: [
+        card_component_animation('showHideCardBody'),
+        trigger('cardAnimation', [
+            state('in', style({ opacity: 1, 'max-height': '0px' })),
+            transition(':enter', [
+                animate(
+                    5100,
+                    keyframes([
+                        style({ opacity: 0, 'max-height': '0px' }),
+                        style({ opacity: 1, 'max-height': '600px' }),
+                    ])
+                ),
+            ]),
+            transition(':leave', [
+                animate(
+                    5100,
+                    keyframes([
+                        style({ opacity: 1, 'max-height': '600px' }),
+                        style({ opacity: 0, 'max-height': '0px' }),
+                    ])
+                ),
+            ]),
         ]),
-        transition(':leave', [
-            animate(
-                5100,
-                keyframes([
-                    style({ opacity: 1, 'max-height' : '600px' }),
-                    style({ opacity: 0, 'max-height' : '0px' }),
-                ])
-            ),
-        ]),
-    ]),],
+    ],
 })
 export class DriverDetailsItemComponent
     implements OnInit, OnDestroy, OnChanges
@@ -121,6 +124,11 @@ export class DriverDetailsItemComponent
         this.activeCdl = this.drivers[0].data.cdls.filter(
             (item) => item.status === 1
         );
+        
+        this.dataMvr = this.drivers[0].data.mvrs;
+        this.dataMedical = this.drivers[0].data.medicals;
+        this.dataTest = this.drivers[0].data.dataTest; 
+
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -150,10 +158,10 @@ export class DriverDetailsItemComponent
                                             {
                                                 id: res.data.driver?.id,
                                                 file_id:
-                                                    res.data.driver.file_id,
+                                                    res.data.driver?.file_id,
                                                 type: 'renew-licence',
                                                 renewData:
-                                                    res.data.driver.renewData,
+                                                    res.data.driver?.renewData,
                                             }
                                         );
                                         clearTimeout(timeout);
@@ -175,8 +183,7 @@ export class DriverDetailsItemComponent
             });
     }
     public getExpireDate() {
-        this.dataCDl = this.drivers[1]?.data?.cdls?.map((ele) => {
-          
+        this.dataCDl = this.drivers[0]?.data?.cdls?.map((ele) => {
             let endDate = moment(ele.expDate);
             if (
                 moment(ele.expDate).isBefore(moment()) ||
@@ -198,7 +205,6 @@ export class DriverDetailsItemComponent
                 inactiveCdl: this.inactiveCdl,
             };
         });
-
     }
     public getNameForDrop(name: string, cdlId?: number) {
         this.templateName = name === 'cdl' ? false : true;
@@ -215,13 +221,12 @@ export class DriverDetailsItemComponent
         this.arrayOfRenewCdl = [];
         this.activateShow = [];
         this.expiredCard = [];
-        
         data?.cdls?.map((item) => {
             let endDate = moment(item.expDate);
             let daysDiff = endDate.diff(moment(), 'days');
 
             if (moment(item.expDate).isBefore(moment())) {
-                this.expiredCard.push(true);
+                 this.expiredCard.push(true);
             } else {
                 this.expiredCard.push(false);
             }
@@ -237,7 +242,7 @@ export class DriverDetailsItemComponent
                 this.arrayOfRenewCdl.push(false);
             }
         });
-        
+
         this.dataDropDown = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -254,8 +259,8 @@ export class DriverDetailsItemComponent
                 {
                     title: 'Edit',
                     name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',                  
-                    iconName: "edit",
+                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    iconName: 'edit',
                     show: true,
                 },
                 {
@@ -265,14 +270,14 @@ export class DriverDetailsItemComponent
                     title: 'View Details',
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    iconName: "view-details",
+                    iconName: 'view-details',
                     show: true,
                 },
                 {
                     title: 'Renew',
                     name: 'renew',
                     svg: 'assets/svg/common/ic_reload_renew.svg',
-                    iconName: "renew",
+                    iconName: 'renew',
                     disabled: this.arrayOfRenewCdl[this.currentIndex],
                 },
                 {
@@ -416,7 +421,7 @@ export class DriverDetailsItemComponent
     }
 
     public getMedicalById(id: number) {
-        console.log('--here--getMedicalById')
+        console.log('--here--getMedicalById');
         this.medicalService
             .getMedicalById(id)
             .pipe(takeUntil(this.destroy$))
@@ -424,7 +429,7 @@ export class DriverDetailsItemComponent
     }
 
     public getMvrById(id: number) {
-        console.log('--here--getMvrById')
+        console.log('--here--getMvrById');
         this.mvrService
             .getMvrById(id)
             .pipe(takeUntil(this.destroy$))
@@ -432,17 +437,28 @@ export class DriverDetailsItemComponent
     }
 
     public getTestById(id: number) {
-        console.log('--here--getTestById')
+        console.log('--here--getTestById');
         this.testService
             .getTestById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.dataTest = item));
     }
+
+    public preloadData(data: any, title?: any){
+        if ( title == 'cdl' ) {
+            this.dataCdl = data;
+        } else if ( title == 'test' ) {
+            this.dataTest = data;
+        } else if ( title == 'med' ) {
+            this.dataMedical = data;
+        } else if ( title == 'mvr' ) {
+            this.dataMvr = data;
+        }
+    }
+
     public optionsEvent(any: any, action: string) {
         const name = dropActionNameDriver(any, action);
         let dataForCdl;
-        console.log('--any---',any);
-
         if (
             (this.activeCdl.length && any.type === 'activate-item') ||
             any.type === 'deactivate-item'
@@ -452,6 +468,8 @@ export class DriverDetailsItemComponent
             dataForCdl = this.dataCdl;
         }
 
+      
+        
         setTimeout(() => {
             this.dropDownService.dropActions(
                 any,
@@ -531,12 +549,8 @@ export class DriverDetailsItemComponent
             .deleteCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -545,12 +559,8 @@ export class DriverDetailsItemComponent
             .deleteMedicalById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -559,12 +569,8 @@ export class DriverDetailsItemComponent
             .deleteMvrById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -573,12 +579,8 @@ export class DriverDetailsItemComponent
             .deleteTestById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
     public onShowDetails(componentData: any) {

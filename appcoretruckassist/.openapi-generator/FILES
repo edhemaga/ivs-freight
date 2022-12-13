@@ -17,6 +17,7 @@ api/companyContact.service.ts
 api/companyContactLabel.service.ts
 api/companyOffice.service.ts
 api/companyUser.service.ts
+api/dashboard.service.ts
 api/dispatch.service.ts
 api/driver.service.ts
 api/employmentHistory.service.ts
@@ -24,6 +25,7 @@ api/event.service.ts
 api/fuel.service.ts
 api/geolocation.service.ts
 api/inspection.service.ts
+api/integration.service.ts
 api/load.service.ts
 api/map.service.ts
 api/medical.service.ts
@@ -59,13 +61,14 @@ encoder.ts
 git_push.sh
 index.ts
 model/acceptApplicationCommand.ts
+model/accidentItemResponse.ts
+model/accidentItemReviewResponse.ts
 model/accidentListResponse.ts
 model/accidentMinimalListResponse.ts
 model/accidentMinimalResponse.ts
 model/accidentMinimalResponsePagination.ts
 model/accidentModalResponse.ts
 model/accidentRecordFeedbackResponse.ts
-model/accidentRecordItemResponse.ts
 model/accidentResponse.ts
 model/accidentShortResponse.ts
 model/accidentShortResponsePagination.ts
@@ -73,6 +76,7 @@ model/accountColorResponse.ts
 model/activateDeactivateEFSFuelCard.ts
 model/addApplicantToFavouriteCommand.ts
 model/addFuelCardCommand.ts
+model/addIntegrationCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
@@ -107,6 +111,7 @@ model/brokerContactGroupResponse.ts
 model/brokerContactResponse.ts
 model/brokerContactShortResponse.ts
 model/brokerInvoiceAgeingResponse.ts
+model/brokerLoadModalResponse.ts
 model/brokerLoadsResponse.ts
 model/brokerMinimalListResponse.ts
 model/brokerMinimalResponse.ts
@@ -147,6 +152,9 @@ model/companyContactLabelResponse.ts
 model/companyContactModalResponse.ts
 model/companyContactResponse.ts
 model/companyContactResponsePagination.ts
+model/companyIntegrationProviderListResponse.ts
+model/companyIntegrationResponse.ts
+model/companyIntegrationResponsePagination.ts
 model/companyModalResponse.ts
 model/companyOfficeDepartmentContactCommand.ts
 model/companyOfficeDepartmentContactResponse.ts
@@ -163,7 +171,6 @@ model/companyUserModalResponse.ts
 model/companyUserResponse.ts
 model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
-model/connectEFSCommand.ts
 model/contactColorResponse.ts
 model/contactEmailResponse.ts
 model/contactEmailType.ts
@@ -210,6 +217,7 @@ model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
 model/createMvrAuthReviewCommand.ts
 model/createParkingCommand.ts
+model/createPersonalInfoCommand.ts
 model/createPersonalInfoReviewCommand.ts
 model/createPreviousAddressCommand.ts
 model/createPreviousAddressReviewCommand.ts
@@ -252,6 +260,7 @@ model/dispatchHistoryResponsePagination.ts
 model/dispatchHosCommand.ts
 model/dispatchHosFlag.ts
 model/dispatchHosResponse.ts
+model/dispatchLoadModalResponse.ts
 model/dispatchModalResponse.ts
 model/dispatchResponse.ts
 model/dispatchResponsePagination.ts
@@ -271,6 +280,7 @@ model/driverShortResponsePagination.ts
 model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
 model/editFuelCardCommand.ts
+model/editIntegrationCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
 model/emergencyContactResponse.ts
@@ -341,6 +351,7 @@ model/getTransactionModalFranchiseStopResponse.ts
 model/getTransactionModalFranchiseStopResponsePagination.ts
 model/getTruckModalResponse.ts
 model/gpsMotionStatus.ts
+model/gpsType.ts
 model/hazardousMaterialResponse.ts
 model/hireApplicantCommand.ts
 model/hosResponse.ts
@@ -350,6 +361,13 @@ model/insurancePolicyAddonResponse.ts
 model/insurancePolicyModalResponse.ts
 model/insurancePolicyResponse.ts
 model/insuranceTypeResponse.ts
+model/integrationConectedResponse.ts
+model/integrationConnectDisconnectCommand.ts
+model/integrationListResponse.ts
+model/integrationModalResponse.ts
+model/integrationProviderCommand.ts
+model/integrationProviderResponse.ts
+model/integrationProviderResponsePagination.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
@@ -358,7 +376,9 @@ model/liveTrackingHistoryItemResponse.ts
 model/liveTrackingHistoryMotionTimeResponse.ts
 model/liveTrackingHistoryResponse.ts
 model/liveTrackingHistoryStopItemResponse.ts
+model/liveTrackingItemLiteResponse.ts
 model/liveTrackingItemResponse.ts
+model/liveTrackingLiteResponse.ts
 model/liveTrackingLoadStopResponse.ts
 model/liveTrackingResponse.ts
 model/liveTrackingSignalItemResponse.ts
@@ -507,14 +527,16 @@ model/routingResponse.ts
 model/selectCompanyCommand.ts
 model/selectCompanyResponse.ts
 model/serviceTypeResponse.ts
-model/setConnectStatusEFSCommand.ts
 model/setNewPasswordCommand.ts
 model/sevenDaysHosFeedbackResponse.ts
 model/sevenDaysHosReviewResponse.ts
+model/shipperContactGroupResponse.ts
 model/shipperContactResponse.ts
+model/shipperContactShortResponse.ts
 model/shipperListResponse.ts
 model/shipperLoadDetailsResponse.ts
 model/shipperLoadDetailsResponsePagination.ts
+model/shipperLoadModalResponse.ts
 model/shipperLoadsResponse.ts
 model/shipperMinimalListResponse.ts
 model/shipperMinimalResponse.ts
@@ -648,6 +670,7 @@ model/updatePMTruckUnitListCommand.ts
 model/updateParkingCommand.ts
 model/updatePersonalInfoCommand.ts
 model/updatePersonalInfoReviewCommand.ts
+model/updatePreviousAddressCommand.ts
 model/updatePreviousAddressReviewCommand.ts
 model/updatePreviousEmployerAccidentHistoryCommand.ts
 model/updatePreviousEmployerDrugAndAlcoholCommand.ts

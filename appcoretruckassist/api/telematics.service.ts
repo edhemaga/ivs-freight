@@ -25,6 +25,8 @@ import { AssignGpsDevicesToTrailerCommand } from '../model/assignGpsDevicesToTra
 // @ts-ignore
 import { AssignGpsDevicesToTruckCommand } from '../model/assignGpsDevicesToTruckCommand';
 // @ts-ignore
+import { GpsType } from '../model/gpsType';
+// @ts-ignore
 import { LiveTrackingHistoryResponse } from '../model/liveTrackingHistoryResponse';
 // @ts-ignore
 import { LiveTrackingItemResponse } from '../model/liveTrackingItemResponse';
@@ -334,16 +336,64 @@ export class TelematicsService {
     }
 
     /**
-     * @param request 
+     * @param unassigned 
+     * @param deviceId 
+     * @param type 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTelematicsDataAllGet(request: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LiveTrackingResponse>;
-    public apiTelematicsDataAllGet(request: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LiveTrackingResponse>>;
-    public apiTelematicsDataAllGet(request: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LiveTrackingResponse>>;
-    public apiTelematicsDataAllGet(request: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-        if (request === null || request === undefined) {
-            throw new Error('Required parameter request was null or undefined when calling apiTelematicsDataAllGet.');
+    public apiTelematicsDataAllGet(unassigned?: boolean, deviceId?: string, type?: GpsType, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LiveTrackingResponse>;
+    public apiTelematicsDataAllGet(unassigned?: boolean, deviceId?: string, type?: GpsType, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LiveTrackingResponse>>;
+    public apiTelematicsDataAllGet(unassigned?: boolean, deviceId?: string, type?: GpsType, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LiveTrackingResponse>>;
+    public apiTelematicsDataAllGet(unassigned?: boolean, deviceId?: string, type?: GpsType, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (unassigned !== undefined && unassigned !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>unassigned, 'Unassigned');
+        }
+        if (deviceId !== undefined && deviceId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>deviceId, 'DeviceId');
+        }
+        if (type !== undefined && type !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>type, 'Type');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -390,6 +440,7 @@ export class TelematicsService {
         return this.httpClient.request<LiveTrackingResponse>('get', `${this.gpsPath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

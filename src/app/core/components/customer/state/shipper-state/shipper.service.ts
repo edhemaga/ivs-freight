@@ -135,17 +135,18 @@ export class ShipperTService implements OnDestroy {
         search1?: string,
         search2?: string
     ): Observable<ShipperListResponse> {
-        return this.shipperService.apiShipperListGet(
-            ban,
-            dnu,
-            pageIndex
-            // pageSize,
-            // companyId,
-            // sort,
-            // search,
-            // search1,
-            // search2
-        );
+        // return this.shipperService.apiShipperListGet(
+        //     ban,
+        //     dnu,
+        //     pageIndex
+        //     // pageSize,
+        //     // companyId,
+        //     // sort,
+        //     // search,
+        //     // search1,
+        //     // search2
+        // );
+        return of();
     }
 
     // Get Shipper By Id
@@ -268,14 +269,40 @@ export class ShipperTService implements OnDestroy {
     }
 
     public getShipperClusters(
-        clustersQuery: GetRepairShopClustersQuery
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        zoomLevel?: number,
+        shipperLong?: number,
+        shipperLat?: number,
+        shipperDistance?: number,
+        shipperStates?: Array<string>,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
     ): Observable<Array<ClusterResponse>> {
         return this.shipperService.apiShipperClustersGet(
-            clustersQuery.northEastLatitude,
-            clustersQuery.northEastLongitude,
-            clustersQuery.southWestLatitude,
-            clustersQuery.southWestLongitude,
-            clustersQuery.zoomLevel
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            zoomLevel,
+            shipperLong,
+            shipperLat,
+            shipperDistance,
+            shipperStates,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
         );
     }
 
@@ -284,6 +311,10 @@ export class ShipperTService implements OnDestroy {
         northEastLongitude?: number,
         southWestLatitude?: number,
         southWestLongitude?: number,
+        shipperLong?: number,
+        shipperLat?: number,
+        shipperDistance?: number,
+        shipperStates?: Array<string>,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -297,6 +328,10 @@ export class ShipperTService implements OnDestroy {
             northEastLongitude,
             southWestLatitude,
             southWestLongitude,
+            shipperLong,
+            shipperLat,
+            shipperDistance,
+            shipperStates,
             pageIndex,
             pageSize,
             companyId,

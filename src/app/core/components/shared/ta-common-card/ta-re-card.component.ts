@@ -107,6 +107,7 @@ export class TaReCardComponent implements OnInit {
     @Input() paddingDots: string = '11px 8px 0 12px';
     @Output() clickedCard = new EventEmitter<any>();
     @Output() dataDropDopwn = new EventEmitter<any>();
+    @Output() preloadData = new EventEmitter<any>();
     @Input() hasToggler: boolean;
     @Input() public testDate: any;
     @Input() public mainData: any;
@@ -140,6 +141,9 @@ export class TaReCardComponent implements OnInit {
         this.DetailsDataService.setCardMainTitle(this.cardNameCommon);
         // api start after every click
         //this.dataDropDopwn.emit(data);
+        if ( this.preloadData ) {
+            this.preloadData.emit(data);
+        }
     }
     public toggleCard(event: any) {
         event.preventDefault();
