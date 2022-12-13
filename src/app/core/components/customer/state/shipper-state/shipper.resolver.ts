@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { ShipperListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ShipperTService } from './shipper.service';
 import { ShipperState, ShipperStore } from './shipper.store';

@@ -8,7 +8,7 @@
             <img
                 *ngIf="data.companyUser?.avatar"
                 class="ta-user-image"
-                [src]="imageBase64Service.sanitizer(data.companyUser.avatar)"
+                [src]=" data.companyUser.avatar !='assets/svg/common/ic_profile.svg' ? imageBase64Service.sanitizer(data.companyUser.avatar) : data.companyUser.avatar "
                 [alt]="data.companyUser.fullName.substring(0, 1)"
             />
 

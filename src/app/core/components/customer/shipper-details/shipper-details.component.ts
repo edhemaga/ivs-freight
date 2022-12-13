@@ -219,6 +219,23 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             );
         }, 100);
     }
+
+    public onModalAction(event: any){
+        let eventObject = {
+            data: undefined,
+            id: this.shipperObject.id,
+            type: 'edit',
+            openedTab: event,
+        }
+        setTimeout(() => {
+            this.dropDownService.dropActionsHeaderShipperBroker(
+                eventObject,
+                this.shipperObject,
+                'shipper'
+            );
+        }, 100);
+    }
+
     /**Function for dots in cards */
     public initTableOptions(): void {
         this.shipperDrop = {
