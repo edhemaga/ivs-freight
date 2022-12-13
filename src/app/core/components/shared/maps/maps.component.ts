@@ -1069,10 +1069,10 @@ export class MapsComponent implements OnInit, OnDestroy {
             zoomLevel: this.mapZoom,
         };
 
-        if ( moveMap ) {
-            this.mapLatitude = this.mapLatitude + 0.000001;
-            this.mapLongitude = this.mapLongitude + 0.000001;
-        }
+        // if ( moveMap ) {
+        //     this.mapLatitude = this.mapLatitude + 0.000001;
+        //     this.mapLongitude = this.mapLongitude + 0.000001;
+        // }
         
         this.lastClusterCoordinates = clustersObject;
 
