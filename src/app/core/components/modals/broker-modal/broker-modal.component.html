@@ -3,6 +3,7 @@
     [editData]="editData"
     [editName]="editData?.data?.businessName"
     [isModalValid]="brokerForm.valid && isFormDirty"
+    [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
     (action)="onModalAction($event)"
 >
@@ -126,15 +127,11 @@
 
                     <!-- Physical address -->
                     <div
-                        *ngIf="
-                            selectedPhysicalAddressTab?.name.toLowerCase() ===
-                            'physical address'
-                        "
+                        *ngIf="selectedPhysicalAddressTab === 3"
                         class="animation-checkbox-card-tabs"
                         [ngClass]="{
                             'fade-checkbox-inputs':
-                                selectedPhysicalAddressTab?.name.toLowerCase() ===
-                                'physical address'
+                                selectedPhysicalAddressTab === 3
                         }"
                     >
                         <div class="row first-row last-row">
@@ -179,15 +176,11 @@
                     </div>
                     <!-- Physical PO Box -->
                     <div
-                        *ngIf="
-                            selectedPhysicalAddressTab?.name.toLowerCase() ===
-                            'po box physical'
-                        "
+                        *ngIf="selectedPhysicalAddressTab === 4"
                         class="animation-checkbox-card-tabs"
                         [ngClass]="{
                             'fade-checkbox-inputs':
-                                selectedPhysicalAddressTab?.name.toLowerCase() ===
-                                'po box physical'
+                                selectedPhysicalAddressTab === 4
                         }"
                     >
                         <div class="row first-row last-row">
@@ -252,15 +245,11 @@
 
                         <!-- Billing address -->
                         <div
-                            *ngIf="
-                                selectedBillingAddressTab?.name.toLowerCase() ===
-                                'billing address'
-                            "
+                            *ngIf="selectedBillingAddressTab === 5"
                             class="animation-checkbox-card-tabs"
                             [ngClass]="{
                                 'fade-checkbox-inputs':
-                                    selectedBillingAddressTab?.name.toLowerCase() ===
-                                    'billing address'
+                                    selectedBillingAddressTab === 5
                             }"
                         >
                             <div class="row first-row last-row">
@@ -305,15 +294,11 @@
                         </div>
                         <!-- Billing PO Box -->
                         <div
-                            *ngIf="
-                                selectedBillingAddressTab?.name.toLowerCase() ===
-                                'po box billing'
-                            "
+                            *ngIf="selectedBillingAddressTab === 6"
                             class="animation-checkbox-card-tabs"
                             [ngClass]="{
                                 'fade-checkbox-inputs':
-                                    selectedBillingAddressTab?.name.toLowerCase() ===
-                                    'po box billing'
+                                    selectedBillingAddressTab === 6
                             }"
                         >
                             <div class="row first-row last-row">
