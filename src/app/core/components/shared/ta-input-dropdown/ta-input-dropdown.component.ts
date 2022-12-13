@@ -146,23 +146,19 @@ export class TaInputDropdownComponent
 
         // MultiSelect Selected Items From Backend
         if (
-            changes.preloadMultiselectItems?.currentValue?.length &&
-            this.inputConfig.multiselectDropdown
+            this.inputConfig.multiselectDropdown &&
+            changes.preloadMultiselectItems?.previousValue?.length !==
+                changes.preloadMultiselectItems?.currentValue?.length
         ) {
-            if (changes.preloadMultiselectItems?.currentValue?.length) {
-                if (!changes.preloadMultiselectItems?.currentValue?.length) {
-                    return;
-                }
-                changes.preloadMultiselectItems?.currentValue?.forEach(
-                    (item) => {
-                        this.onMultiselectSelect(item);
-                    }
-                );
-            } else {
+            if (!changes.preloadMultiselectItems?.currentValue?.length) {
                 this.deleteAllMultiSelectItems(
                     changes.inputConfig?.currentValue?.label
                 );
+                return;
             }
+            changes.preloadMultiselectItems?.currentValue?.forEach((item) => {
+                this.onMultiselectSelect(item);
+            });
         }
 
         // Details Pages
