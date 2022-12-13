@@ -206,10 +206,15 @@
                 >
                     <div class="common-fake-table-label">
                         <p></p>
-                        <p>DESCRIPTION</p>
+                        <p>
+                            DESCRIPTION
+                            <span *ngIf="headerTabs[1].checked">*</span>
+                        </p>
                         <p>PM</p>
-                        <p *ngIf="selectedHeaderTab === 2">PRICE</p>
-                        <p>QTY</p>
+                        <p *ngIf="selectedHeaderTab === 2">
+                            PRICE <span>*</span>
+                        </p>
+                        <p>QTY <span *ngIf="headerTabs[1].checked">*</span></p>
                         <p *ngIf="selectedHeaderTab === 2">SUBTOTAL</p>
                     </div>
                     <div class="common-fake-table-body">
@@ -400,7 +405,7 @@
                 </div>
             </div>
         </app-ta-custom-card>
-        <div class="ta-card-body-overflow-none">
+        <div *ngIf="selectedHeaderTab === 2" class="ta-card-body-overflow-none">
             <app-ta-custom-card
                 [hasCounter]="documents.length ? documents.length : 0"
                 [cardName]="'Documents'"
@@ -408,9 +413,10 @@
             >
                 <app-ta-upload-files
                     [files]="documents"
-                    [size]="'medium'"
-                    (onFileEvent)="onFilesEvent($event)"
+                    [size]="'large'"
+                    [showDropzone]="true"
                     [customClassName]="'modals'"
+                    (onFileEvent)="onFilesEvent($event)"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
         </div>

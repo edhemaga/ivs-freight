@@ -6,10 +6,10 @@ import {
     RegistrationService,
     TitleResponse,
     TitleService,
-    TruckResponse,
-    TrailerResponse,
     RegistrationModalResponse,
     TitleModalResponse,
+    TruckResponse,
+    TrailerResponse,
 } from 'appcoretruckassist';
 
 import { Observable, tap } from 'rxjs';
@@ -52,71 +52,50 @@ export class CommonTruckTrailerService {
     public addRegistration(data: any, tabSelected?: string): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.registrationService.apiRegistrationPost().pipe(
-            tap(() => {
+            tap((res: any) => {
                 // Truck Add Registration
                 if (data.truckId) {
-                    const subTruck = this.truckService
-                        .getTruckById(data.truckId)
-                        .subscribe({
-                            next: (truck: TruckResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.truckActiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
+                    let newRegId = res?.id;
+                    const tr = this.truckItemStore.getValue();
+                    const truckData = JSON.parse(JSON.stringify(tr.entities));
+                    let newData = truckData[data.truckId];
 
-                                    this.truckActiveStore.add(truck);
-                                } else if (tabSelected === 'inactive') {
-                                    this.truckInactiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckInactiveStore.add(truck);
-                                }
-                                this.tdlStore.update(truck.id, {
-                                    registrations: truck.registrations,
-                                });
-
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: truck,
-                                    id: truck.id,
-                                });
-
-                                subTruck.unsubscribe();
-                            },
-                        });
+                    let regApi = this.trailerService.getTrailerRegistrationByRegistrationId(newRegId).subscribe({
+                        next: (resp: any) => {
+                            
+                            newData.registrations.push(resp);  
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tdlStore.add(newData);
+                            this.truckItemStore.set([newData]);
+                            regApi.unsubscribe();
+                        },
+                    });   
                 }
                 // Trailer Add Registration
                 else if (data.trailerId) {
-                    const subTrailer = this.trailerService
-                        .getTrailerById(data.trailerId)
-                        .subscribe({
-                            next: (trailer: TrailerResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.trailerActiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerActiveStore.add(trailer);
-                                } else if (tabSelected === 'inactive') {
-                                    this.trailerInactiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerInactiveStore.add(trailer);
-                                }
-                                this.tadl.update(trailer.id, {
-                                    registrations: trailer.registrations,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: trailer,
-                                    id: trailer.id,
-                                });
-
-                                subTrailer.unsubscribe();
-                            },
-                        });
+                    let newRegId = res?.id;
+                    const tr = this.trailerItemStore.getValue();
+                    const trailerData = JSON.parse(JSON.stringify(tr.entities));
+                    let newData = trailerData[data.trailerId];
+                    
+                    let regApi = this.trailerService.getTrailerRegistrationByRegistrationId(newRegId).subscribe({
+                        next: (resp: any) => {
+                            
+                            newData.registrations.push(resp);  
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tadl.add(newData);
+                            this.trailerItemStore.set([newData]);
+                            regApi.unsubscribe();
+                        },
+                    }); 
                 }
             })
         );
@@ -128,8 +107,12 @@ export class CommonTruckTrailerService {
     ): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.registrationService.apiRegistrationPut().pipe(
-            tap(() => {
-                this.updateDataAnimation(tabSelected);
+            tap((res: any) => {
+                this.updateDataAnimation(
+                    tabSelected,
+                    'registration',
+                    res['id']
+                );
             })
         );
     }
@@ -144,7 +127,7 @@ export class CommonTruckTrailerService {
     ): Observable<any> {
         return this.registrationService.apiRegistrationIdDelete(id).pipe(
             tap(() => {
-                this.updateDataAnimation(tabSelected);
+                this.updateDataAnimation(tabSelected, 'deleteRegistration', id);
             })
         );
     }
@@ -160,7 +143,7 @@ export class CommonTruckTrailerService {
     ): Observable<any> {
         return this.inspectionService.apiInspectionIdDelete(id).pipe(
             tap(() => {
-                this.updateDataAnimation(tabSelected);
+                this.updateDataAnimation(tabSelected, 'deleteInspection', id);
             })
         );
     }
@@ -172,68 +155,50 @@ export class CommonTruckTrailerService {
     public addInspection(data: any, tabSelected?: string): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.inspectionService.apiInspectionPost().pipe(
-            tap(() => {
+            tap((res: any) => {
                 // Truck Add Inspection
                 if (data.truckId) {
-                    const subTruck = this.truckService
-                        .getTruckById(data.truckId)
-                        .subscribe({
-                            next: (truck: TruckResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.truckActiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckActiveStore.add(truck);
-                                } else if (tabSelected === 'inactive') {
-                                    this.truckInactiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckInactiveStore.add(truck);
-                                }
-                                this.tdlStore.update(truck.id, {
-                                    inspections: truck.inspections,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: truck,
-                                    id: truck.id,
-                                });
-
-                                subTruck.unsubscribe();
-                            },
-                        });
+                    let newInspId = res?.id;
+                    const tr = this.truckItemStore.getValue();
+                    const truckData = JSON.parse(JSON.stringify(tr.entities));
+                    let newData = truckData[data.truckId];
+                    
+                    let inspApi = this.trailerService.getTrailerInspectionByInspectionId(newInspId).subscribe({
+                        next: (resp: any) => {   
+                            newData.inspections.push(resp);  
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tdlStore.add(newData);
+                            this.truckItemStore.set([newData]);
+                           
+                            
+                            inspApi.unsubscribe();
+                        },
+                    }); 
                 } else if (data.trailerId) {
-                    const subTrailer = this.trailerService
-                        .getTrailerById(data.trailerId)
-                        .subscribe({
-                            next: (trailer: TrailerResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.trailerActiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerActiveStore.add(trailer);
-                                } else if (tabSelected === 'inactive') {
-                                    this.trailerInactiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerInactiveStore.add(trailer);
-                                }
-                                this.tadl.update(trailer.id, {
-                                    inspections: trailer.inspections,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: trailer,
-                                    id: trailer.id,
-                                });
-
-                                subTrailer.unsubscribe();
-                            },
-                        });
+                    let newInspId = res?.id;
+                    const tr = this.trailerItemStore.getValue();
+                    const trailerData = JSON.parse(JSON.stringify(tr.entities));
+                    let newData = trailerData[data.trailerId];
+                    
+                    let inspApi = this.trailerService.getTrailerInspectionByInspectionId(newInspId).subscribe({
+                        next: (resp: any) => {   
+                            newData.inspections.push(resp);  
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tadl.add(newData);
+                            this.trailerItemStore.set([newData]);
+                           
+                            
+                            inspApi.unsubscribe();
+                        },
+                    }); 
                 }
             })
         );
@@ -246,7 +211,7 @@ export class CommonTruckTrailerService {
         this.formDataService.extractFormDataFromFunction(data);
         return this.inspectionService.apiInspectionPut().pipe(
             tap(() => {
-                this.updateDataAnimation(tabSelected);
+                this.updateDataAnimation(tabSelected, 'inspection', data.id);
             })
         );
     }
@@ -255,7 +220,7 @@ export class CommonTruckTrailerService {
     public deleteTitleById(id: number, tabSelected?: string): Observable<any> {
         return this.titleService.apiTitleIdDelete(id).pipe(
             tap(() => {
-                this.updateDataAnimation(tabSelected);
+                this.updateDataAnimation(tabSelected, 'deleteTitle', id);
             })
         );
     }
@@ -267,68 +232,48 @@ export class CommonTruckTrailerService {
     public addTitle(data: any, tabSelected?: string): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.titleService.apiTitlePost().pipe(
-            tap(() => {
+            tap((res: any) => {
                 // Truck Add Inspection
                 if (data.truckId) {
-                    const subTruck = this.truckService
-                        .getTruckById(data.truckId)
+                    let newTitleId = res?.id;
+                    const tr = this.truckItemStore.getValue();
+                    const truckData = JSON.parse(JSON.stringify(tr.entities));
+                    let newData = truckData[data.truckId];
+
+                    let titleApi = this.trailerService
+                        .getTrailerTitleByTitleId(newTitleId)
                         .subscribe({
-                            next: (truck: TruckResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.truckActiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckActiveStore.add(truck);
-                                } else if (tabSelected === 'inactive') {
-                                    this.truckInactiveStore.remove(
-                                        ({ id }) => id === data.truckId
-                                    );
-
-                                    this.truckInactiveStore.add(truck);
-                                }
-                                this.tdlStore.update(truck.id, {
-                                    titles: truck.titles,
-                                });
+                            next: (resp: any) => {
+                                newData.titles.push(resp);
                                 this.tableService.sendActionAnimation({
                                     animation: 'update',
-                                    data: truck,
-                                    id: truck.id,
+                                    data: newData,
+                                    id: newData.id,
                                 });
-
-                                subTruck.unsubscribe();
+                                this.tdlStore.add(newData);
+                                this.truckItemStore.set([newData]);
+                                titleApi.unsubscribe();
                             },
                         });
                 } else if (data.trailerId) {
-                    const subTrailer = this.trailerService
-                        .getTrailerById(data.trailerId)
-                        .subscribe({
-                            next: (trailer: TrailerResponse | any) => {
-                                if (tabSelected === 'active') {
-                                    this.trailerActiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerActiveStore.add(trailer);
-                                } else if (tabSelected === 'inactive') {
-                                    this.trailerInactiveStore.remove(
-                                        ({ id }) => id === data.trailerId
-                                    );
-
-                                    this.trailerInactiveStore.add(trailer);
-                                }
-                                this.tadl.update(trailer.id, {
-                                    titles: trailer.titles,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: trailer,
-                                    id: trailer.id,
-                                });
-
-                                subTrailer.unsubscribe();
-                            },
-                        });
+                    let newTitleId = res?.id;
+                    const tr = this.trailerItemStore.getValue();
+                    const trailerData = JSON.parse(JSON.stringify(tr.entities));
+                    let newData = trailerData[data.trailerId];
+    
+                    let titleApi = this.trailerService.getTrailerTitleByTitleId(newTitleId).subscribe({
+                        next: (resp: any) => {  
+                            newData.titles.push(resp);  
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tadl.add(newData);
+                            this.trailerItemStore.set([newData]);
+                            titleApi.unsubscribe();
+                        },
+                    }); 
                 }
             })
         );
@@ -338,7 +283,7 @@ export class CommonTruckTrailerService {
         this.formDataService.extractFormDataFromFunction(data);
         return this.titleService.apiTitlePut().pipe(
             tap(() => {
-                this.updateDataAnimation(tabSelected);
+                this.updateDataAnimation(tabSelected, 'title', data.id);
             })
         );
     }
@@ -347,7 +292,11 @@ export class CommonTruckTrailerService {
         return this.titleService.apiTitleModalGet();
     }
 
-    public updateDataAnimation(tabSelected?: string) {
+    public updateDataAnimation(
+        tabSelected?: string,
+        cardUpdated?: string,
+        cardId?: any
+    ) {
         let val = window.location.pathname.includes('truck');
         let truckId;
         let trailerId;
@@ -358,76 +307,254 @@ export class CommonTruckTrailerService {
             trailerId = this.trailerItemStore.getValue().ids[0];
         }
         if (truckId) {
-            const subTruck = this.truckService.getTruckById(truckId).subscribe({
-                next: (truck: TruckResponse | any) => {
-                    if (tabSelected === 'active') {
-                        this.truckActiveStore.remove(
-                            ({ id }) => id === truckId
-                        );
+            const tr = this.truckItemStore.getValue();
+            const truckData = JSON.parse(JSON.stringify(tr.entities));
+            let newData = truckData[truckId];
 
-                        this.truckActiveStore.add(truck);
-                    } else if (tabSelected === 'inactive') {
-                        this.truckInactiveStore.remove(
-                            ({ id }) => id === truckId
-                        );
+            if ( cardUpdated == 'registration' ) {
 
-                        this.truckInactiveStore.add(truck);
-                    }
-                    this.tdlStore.update(truck.id, { titles: truck.titles });
-                    this.tdlStore.update(truck.id, {
-                        registrations: truck.registrations,
-                    });
-                    this.tdlStore.update(truck.id, {
-                        inspections: truck.inspections,
-                    });
-                    this.tableService.sendActionAnimation({
-                        animation: 'update',
-                        data: truck,
-                        id: truck.id,
-                    });
-
-                    subTruck.unsubscribe();
-                },
-            });
-        }
-        if (trailerId) {
-            const subTrailer = this.trailerService
-                .getTrailerById(trailerId)
-                .subscribe({
-                    next: (trailer: TrailerResponse | any) => {
-                        if (tabSelected === 'active') {
-                            this.trailerActiveStore.remove(
-                                ({ id }) => id === trailerId
-                            );
-
-                            this.trailerActiveStore.add(trailer);
-                        } else if (tabSelected === 'inactive') {
-                            this.trailerInactiveStore.remove(
-                                ({ id }) => id === trailerId
-                            );
-
-                            this.trailerInactiveStore.add(trailer);
-                        }
-
-                        this.tadl.update(trailer.id, {
-                            titles: trailer.titles,
-                        });
-                        this.tadl.update(trailer.id, {
-                            registrations: trailer.registrations,
-                        });
-                        this.tadl.update(trailer.id, {
-                            inspections: trailer.inspections,
-                        });
+                let regApi = this.truckService.getTruckRegistrationByRegistrationId(cardId).subscribe({
+                    next: (res: any) => {
+                        newData.registrations.map((reg: any, index: any) => {
+                            if ( reg.id == res.id ) {
+                                newData.registrations[index] = res;  
+                            }
+                        })
 
                         this.tableService.sendActionAnimation({
                             animation: 'update',
-                            data: trailer,
-                            id: trailer.id,
+                            data: newData,
+                            id: newData.id,
                         });
 
-                        subTrailer.unsubscribe();
+                        this.tdlStore.add(newData);
+                        this.truckItemStore.set([newData]);
+                        regApi.unsubscribe();
+                       
                     },
                 });
+            }   else if ( cardUpdated == 'deleteRegistration' ) {
+
+                let indexNum;
+                newData.registrations.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.registrations.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tdlStore.add(newData);
+                this.truckItemStore.set([newData]);
+
+            } else if ( cardUpdated == 'inspection' ) {
+                let inspectionApi = this.trailerService.getTrailerInspectionByInspectionId(cardId).subscribe({
+                    next: (res: any) => {
+                        newData.inspections.map((insp: any, index: any) => {
+                            if ( insp.id == res.id ) {
+                                newData.inspections[index] = res;  
+                            }
+                        })
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        this.tdlStore.add(newData);
+                        this.truckItemStore.set([newData]);
+                        inspectionApi.unsubscribe();
+                       
+                    },
+                });
+            } else if ( cardUpdated == 'deleteInspection' ) {
+
+                let indexNum;
+                newData.inspections.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.inspections.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tdlStore.add(newData);
+                this.truckItemStore.set([newData]);
+
+            } else if ( cardUpdated == 'title' ) {
+                let titleApi = this.trailerService.getTrailerTitleByTitleId(cardId).subscribe({
+                    next: (res: any) => {
+                        newData.titles.map((insp: any, index: any) => {
+                            if ( insp.id == res.id ) {
+                                newData.titles[index] = res;  
+                            }
+                        })
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        this.tdlStore.add(newData);
+                        this.truckItemStore.set([newData]);
+                        titleApi.unsubscribe();
+                       
+                    },
+                });
+            } else if ( cardUpdated == 'deleteTitle' ) {
+                let indexNum;
+                newData.titles.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.titles.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tdlStore.add(newData);
+                this.truckItemStore.set([newData]);
+            }
+        }
+        if (trailerId) {
+            const tr = this.trailerItemStore.getValue();
+            const trailerData = JSON.parse(JSON.stringify(tr.entities));
+            let newData = trailerData[trailerId];
+            if (cardUpdated == 'registration') {
+                let regApi = this.trailerService
+                    .getTrailerRegistrationByRegistrationId(cardId)
+                    .subscribe({
+                        next: (res: any) => {
+                            newData.registrations.map(
+                                (reg: any, index: any) => {
+                                    if (reg.id == res.id) {
+                                        newData.registrations[index] = res;
+                                    }
+                                }
+                            );
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        this.tadl.add(newData);
+                        this.trailerItemStore.set([newData]);
+                        regApi.unsubscribe();
+                       
+                    },
+                });
+                
+            } else if ( cardUpdated == 'deleteRegistration' ) {
+                
+                let indexNum;
+                newData.registrations.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.registrations.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tadl.add(newData);
+                this.trailerItemStore.set([newData]);
+                
+
+            } else if ( cardUpdated == 'inspection' ){
+                let inspectionApi = this.trailerService.getTrailerInspectionByInspectionId(cardId).subscribe({
+                    next: (res: any) => {
+                        newData.inspections.map((insp: any, index: any) => {
+                            if ( insp.id == res.id ) {
+                                newData.inspections[index] = res;  
+                            }
+                        })
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        this.tadl.add(newData);
+                        this.trailerItemStore.set([newData]);
+                        inspectionApi.unsubscribe();
+                       
+                    },
+                });
+            } else if ( cardUpdated == 'deleteInspection' ) {
+
+                let indexNum;
+                newData.inspections.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.inspections.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tadl.add(newData);
+                this.trailerItemStore.set([newData]);
+
+            } else if ( cardUpdated == 'title' ) {
+                let titleApi = this.trailerService.getTrailerTitleByTitleId(cardId).subscribe({
+                    next: (res: any) => {
+                        newData.titles.map((insp: any, index: any) => {
+                            if ( insp.id == res.id ) {
+                                newData.titles[index] = res;  
+                            }
+                        })
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+                        this.tadl.add(newData);
+                        this.trailerItemStore.set([newData]);
+                        titleApi.unsubscribe();
+                       
+                    },
+                });
+            } else if ( cardUpdated == 'deleteTitle' ) {
+                let indexNum;
+                newData.titles.map((reg: any, index: any) => {
+                    if ( reg.id == cardId ) {
+                        indexNum = index;
+                    }
+                })
+               
+                newData.titles.splice(indexNum, 1);
+                
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+                this.tadl.add(newData);
+                this.trailerItemStore.set([newData]);
+            }
         }
     }
 }

@@ -565,30 +565,50 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...data,
             isSelected: false,
             isOwner: data?.owner ? data.owner : false,
-            textAddress: data.address.address ? data.address.address : '',
             textShortName: this.nameInitialsPipe.transform(data.fullName),
             avatarColor: this.getAvatarColors(),
             avatarImg: data?.avatar
                 ? this.imageBase64Service.sanitizer(data.avatar)
                 : '',
-            textDOB: data.dateOfBirth
+            tableAddress: data.address.address ? data.address.address : '',
+            tableDOB: data.dateOfBirth
                 ? this.datePipe.transform(data.dateOfBirth, 'MM/dd/yy')
                 : '',
-            textHired: data.hired
-                ? this.datePipe.transform(data.hired, 'MM/dd/yy')
+            tableAssignedUnitTruck: 'Nema podatak sa back-a',
+            tableAssignedUnitTruckType: 'Nema podatak sa back-a',
+            tableAssignedUnitTrailer: 'Nema podatak sa back-a',
+            tableAssignedUnitTrailerType: 'Nema podatak sa back-a',
+            tablePayrollDetailType: data?.payType?.name
+                ? data.payType.name
                 : '',
-            textCDL: data?.cdlNumber
+            tableBankDetailBankName: data?.bank?.name ? data.bank.name : '',
+            tableBankDetailRouting: data.routing ? data.routing : '',
+            tableOwnerDetailsType: data?.owner?.ownerType?.name
+                ? data.owner.ownerType.name
+                : '',
+            tableOwnerDetailsBusinesName: data?.owner?.name
+                ? data.owner.name
+                : '',
+            tableOwnerDetailsEin: data?.owner?.ssnEin ? data.owner.ssnEin : '',
+            tableOffDutyLocation: 'Nema podatak sa back-a',
+            tableEmergContact: data?.emergencyContactPhone
+                ? data.emergencyContactPhone
+                : '',
+            tableTwicExp: 'Nema podatak sa back-a',
+            tableFuelCardDetailNumber: data?.fuelCard ? data.fuelCard : '',
+            tableFuelCardDetailType: 'Nema podatak sa back-a',
+            tableFuelCardDetailAccount: 'Nema podatak sa back-a',
+            tableCdlDetailNumber: data?.cdlNumber
                 ? data.cdlNumber
                 : data?.cdls?.length
                 ? data.cdls[0].cdlNumber
                 : '',
-            textState: data.address.stateShortName
+            tableCdlDetailState: data.address.stateShortName
                 ? data.address.stateShortName
                 : '',
-            textBank: data?.bank?.name ? data.bank.name : '',
-            textAccount: data.account ? data.account : '',
-            textRouting: data.routing ? data.routing : '',
-            tableCDLData: {
+            tableCdlDetailEndorsment: 'Nema podatak sa back-a',
+            tableCdlDetailRestriction: 'Nema podatak sa back-a',
+            tableCdlDetailExpiration: {
                 expirationDays: data?.cdlExpirationDays
                     ? this.thousandSeparator.transform(data.cdlExpirationDays)
                     : null,
@@ -597,6 +617,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.cdlPercentage
                         : null,
             },
+            tableTestDetailsType: 'Nema podatak sa back-a',
+            tableTestDetailsReason: 'Nema podatak sa back-a',
+            tableTestDetailsIssued: 'Nema podatak sa back-a',
+            tableTestDetailsResult: 'Nema podatak sa back-a',
             tableMedicalData: {
                 expirationDays: data?.medicalExpirationDays
                     ? this.thousandSeparator.transform(
@@ -608,7 +632,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.medicalPercentage
                         : null,
             },
-            tableMvrData: {
+            tableMvrDetailsExpiration: {
                 expirationDays: data?.mvrExpirationDays
                     ? this.thousandSeparator.transform(data.mvrExpirationDays)
                     : null,
@@ -617,75 +641,23 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.mvrPercentage
                         : null,
             },
-            tableDrugOrAlcoholTest: null,
-            textPayType: data?.payType?.name ? data.payType.name : '',
-            textTeam: [
-                {
-                    title: 'Loaded',
-                    value: data?.team?.loadedMile
-                        ? '$' +
-                          this.thousandSeparator.transform(data.team.loadedMile)
-                        : null,
-                },
-                {
-                    title: 'Empty',
-                    value: data?.team?.emptyMile
-                        ? '$' +
-                          this.thousandSeparator.transform(data.team.emptyMile)
-                        : null,
-                },
-                {
-                    title: 'Per Stop',
-                    value: data?.team?.perStop
-                        ? '$' +
-                          this.thousandSeparator.transform(data.team.perStop)
-                        : null,
-                },
-            ],
-            textSolo: [
-                {
-                    title: 'Loaded',
-                    value: data?.solo?.loadedMile
-                        ? '$' +
-                          this.thousandSeparator.transform(data.solo.loadedMile)
-                        : null,
-                },
-                {
-                    title: 'Empty',
-                    value: data?.solo?.emptyMile
-                        ? '$' +
-                          this.thousandSeparator.transform(data.solo.emptyMile)
-                        : null,
-                },
-                {
-                    title: 'Per Stop',
-                    value: data?.solo?.perStop
-                        ? '$' +
-                          this.thousandSeparator.transform(data.solo.perStop)
-                        : null,
-                },
-            ],
-            textFuelCard: data?.fuelCard ? data.fuelCard : '',
-            textEmergencyContact: [
-                {
-                    title: 'First Name',
-                    value: data?.emergencyContactName
-                        ? data.emergencyContactName
-                        : null,
-                },
-                {
-                    title: 'Phone',
-                    value: data?.emergencyContactPhone
-                        ? data.emergencyContactPhone
-                        : null,
-                },
-                {
-                    title: 'Relationship',
-                    value: data?.emergencyContactRelationship
-                        ? data.emergencyContactRelationship
-                        : null,
-                },
-            ],
+
+            tabelNotificationGeneral: `${
+                data?.general?.mailNotification ? 'Email•' : ''
+            }${data?.general?.pushNotification ? 'Push•' : ''}${
+                data?.general?.smsNotification ? 'SMS' : ''
+            }`,
+            tabelNotificationPayroll: `${
+                data?.payroll?.mailNotification ? 'Email•' : ''
+            }${data?.payroll?.pushNotification ? 'Push•' : ''}${
+                data?.payroll?.smsNotification ? 'SMS' : ''
+            }`,
+            tabelHired: data.hired
+                ? this.datePipe.transform(data.hired, 'MM/dd/yy')
+                : '',
+            tableTerminated: 'Nema podatak sa back-a',
+            tableAdded: 'Nema podatak sa back-a',
+            tableEdited: 'Nema podatak sa back-a',
             tableAttachments: data?.files ? data.files : [],
         };
     }
@@ -1068,12 +1040,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .changeDriverStatus(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                 
-                },
-                error: () => {
-                  
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -1102,9 +1070,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(inetval);
                     }, 900);
                 },
-                error: () => {
-                  
-                },
+                error: () => {},
             });
     }
 

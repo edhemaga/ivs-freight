@@ -86,6 +86,7 @@
             >
                 <app-ta-upload-files
                     [files]="documents"
+                    [showDropzone]="true"
                     (onFileEvent)="onFilesEvent($event)"
                     [customClassName]="'modals'"
                 ></app-ta-upload-files>

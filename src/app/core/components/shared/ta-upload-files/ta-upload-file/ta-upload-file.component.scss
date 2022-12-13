@@ -17,6 +17,62 @@
     &:hover {
         transition: all 0.3s ease-in-out;
         background-color: #f3f3f3;
+
+        .ta-upload-file-header-review {
+            .ta-upload-action-download-review,
+            .ta-upload-action-mark-incorrect,
+            .ta-upload-action-mark-correct {
+                opacity: 1 !important;
+                pointer-events: all !important;
+            }
+        }
+    }
+
+    &.applicant_review {
+        overflow: visible;
+
+        .ta-upload-file-header-review {
+            .ta-upload-action-mark-incorrect {
+                opacity: 1 !important;
+                pointer-events: all !important;
+            }
+        }
+    }
+
+    &.annotation_hover {
+        .ta-upload-file-header-review {
+            .ta-upload-action-download-review {
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
+        }
+    }
+
+    &.applicant_feedback {
+        overflow: visible;
+
+        .ta-upload-file-header {
+            display: flex;
+
+            .ta-upload-file-action-rightside {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .ta-upload-action-feedback-incorrect-mark {
+                opacity: 1 !important;
+                pointer-events: all !important;
+            }
+        }
+
+        &:hover {
+            .ta-upload-file-header {
+                .ta-upload-file-action-rightside {
+                    opacity: 1 !important;
+                    pointer-events: all !important;
+                }
+            }
+        }
     }
 
     // ----------------- File Header Actions Review ----------
@@ -52,6 +108,8 @@
             right: 38px;
             transition: all 0.3s ease-in-out;
             cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
 
             svg {
                 height: 18px;
@@ -260,6 +318,8 @@
             background-color: rgb(239, 83, 80, 0.9);
             cursor: pointer;
             transition: all 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
 
             svg-icon {
                 width: 18px;

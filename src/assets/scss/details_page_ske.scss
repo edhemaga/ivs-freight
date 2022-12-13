@@ -1084,16 +1084,16 @@ p {
 }
 
 .note-details-holder{
-    padding-right: 4px;
+    padding-right: 6px;
     padding-left: 4px;
 
     .note-container {
         .note-header {
             .note-label{
-                color: #919191 !important;
+                //color: #919191 !important;
 
                 &:hover{
-                    color: #6c6c6c !important;
+                    //color: #6c6c6c !important;
                 }
             }
 
@@ -1101,6 +1101,23 @@ p {
                 .note-label{
                     color: #6c6c6c !important;
                 }
+            }
+
+            .note_upper_hold{
+                svg {
+                    path {
+                        fill: #919191;
+                    }
+                }
+
+                .rotate{
+                    svg {
+                        path {
+                            fill: #aaaaaa;
+                        }
+                    }
+                }
+
             }
         }
     }

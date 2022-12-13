@@ -1,0 +1,416 @@
+@import 'src/theme/variables';
+
+.dispatch-table {
+    table {
+        width: 100%;
+
+        th.pick-delivery {
+            display: flex;
+            div {
+                flex: 1;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        th {
+            height: 34px;
+            padding-left: 10px;
+
+            color: #2f2f2f;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        td {
+            padding: 1px;
+            .main_inside {
+                height: 34px;
+                background-color: #f7f7f7;
+                border-radius: 3px;
+
+                .padding-inside {
+                    position: relative;
+
+                    height: 100%;
+
+                    &:not(.status-inside) {
+                        padding: 4px;
+                    }
+
+                    .add_new {
+                        height: 100%;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding-left: 6px;
+                        padding-right: 6px;
+
+                        .text {
+                            color: #ffffff;
+                            font-size: 14px;
+                        }
+
+                        svg-icon {
+                            display: flex;
+
+                            svg {
+                                path {
+                                    fill: #fff;
+                                }
+                            }
+                        }
+                    }
+
+                    .info-item {
+                        position: relative;
+                        display: flex;
+                        padding: 0 6px;
+                        height: 100%;
+                        align-items: center;
+                        border-radius: 2px;
+
+                        svg-icon {
+                            display: flex;
+                            &.truck-trailer-image {
+                                display: none;
+                                padding-left: 6px;
+                                path {
+                                    fill: #fff;
+                                }
+                            }
+                        }
+
+                        span {
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #2f2f2f;
+
+                            &:not(.dr-span-left) {
+                                padding-left: 6px;
+                            }
+
+                            .copy_divs{
+                                font-size: 14px;
+                                color: #2F2F2F;
+                                font-weight: 400;
+                            }
+
+                            &.dr-span {
+                                svg-icon {
+                                    svg {
+                                        g {
+                                            stroke: #3074d3;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .driver-buttons {
+                            display: none;
+                            position: absolute;
+                            right: 0;
+                            top: 0;
+                            z-index: 11;
+
+                            span {
+                                width: 26px;
+                                height: 26px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                padding-left: inherit;
+
+                                &:hover {
+                                    background-color: #3074d333;
+                                    border-radius: 2px;
+                                    cursor: pointer;
+                                    svg-icon {
+                                        path {
+                                            fill: #3074d3;
+                                        }
+                                    }
+                                }
+
+                                &.only_active_icon{
+                                    svg-icon{
+                                        svg{
+                                            path{
+                                                fill: #ffffff33;
+                                            }
+                                        }
+                                    }
+                                }
+                                &.active-icon{
+                                    svg-icon{
+                                        svg{
+                                            path{
+                                                fill: #ffffff;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .location-field {
+                            display: flex;
+
+                            .location-f-city,
+                            .location-f-st {
+                                font-size: 14px;
+                                color: #2f2f2f;
+
+                                &.location-f-city {
+                                    white-space: nowrap;
+                                    width: 70%;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                }
+                            }
+                        }
+                        .no-delpickup {
+                            font-size: 11px;
+                            color: #919191;
+                            font-weight: 500;
+                            text-transform: uppercase;
+                        }
+
+
+                        .driver-copy{
+                            position: absolute;
+                            display: flex;
+                            align-items: center;
+                            padding-left: 6px;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background-color: $ta-blue-5;
+                            color: #fff;
+                            font-weight: 700;
+                            font-size: 11px;
+                            border-radius: 2px;
+                            z-index: 10;
+                        }
+                    }
+
+                    .circles-holder {
+                        position: relative;
+                        display: flex;
+                        height: 100%;
+                        align-items: center;
+                        border-radius: 2px;
+
+                        svg-icon {
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            left: 6px;
+                            z-index: 300;
+                            display: flex;
+                        }
+
+                        .info-item {
+                            flex: 1;
+                            padding-left: 16px;
+                        }
+                    }
+                }
+
+                &.addNew {
+                    background-color: #98b9ea;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: #3074d3;
+                    }
+                }
+
+                &.filled {
+                    background-color: #fff;
+
+                    .padding-inside {
+                        &:hover {
+                            .info-item {
+                                background-color: #eeeeee;
+
+                                .driver-buttons {
+                                    display: flex;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        th,
+        td {
+            &.empty,
+            &.box-item {
+                min-width: 34px;
+                max-width: 34px;
+                width: 34px;
+
+                &.box-item {
+                    min-width: 36px;
+                    max-width: 36px;
+                    width: 36px;
+                }
+            }
+
+            &.truck-field,
+            &.trailer-field {
+                min-width: 120px;
+                max-width: 120px;
+                width: 120px;
+            }
+
+            &.driver-field {
+                min-width: 230px;
+                max-width: 230px;
+                width: 230px;
+            }
+
+            &.location-field {
+                min-width: 160px;
+                max-width: 160px;
+                width: 160px;
+            }
+
+            &.status-field {
+                min-width: 140px;
+                max-width: 140px;
+                width: 140px;
+            }
+
+            &.pickup-delivery-field {
+                min-width: 340px;
+                max-width: 340px;
+                width: 340px;
+            }
+
+            &.progress-field {
+                min-width: 226px;
+                max-width: 226px;
+                width: 226px;
+            }
+
+            &.parking-field {
+                min-width: 130px;
+                max-width: 130px;
+                width: 130px;
+            }
+
+            &.note-field {
+                min-width: 240px;
+                max-width: 240px;
+                width: 240px;
+            }
+
+            .drop-item {
+                app-ta-input-dropdown {
+                    input {
+                        height: 34px !important;
+                    }
+                }
+            }
+        }
+    }
+
+    &.locked {
+        table {
+            tr {
+                td {
+                    .main_inside {
+                        .circles-holder {
+                            @each $truck_col in $truck_colors {
+                                &.truck_#{$truck_col} {
+                                    &:hover {
+                                        .info-item {
+                                            background-color: unquote(
+                                                '#' + $truck_col + '33'
+                                            );
+                                        }
+                                    }
+                                    svg-icon {
+                                        svg {
+                                            circle {
+                                                fill: unquote('#' + $truck_col);
+                                            }
+                                        }
+
+                                        &:hover {
+                                            & ~ .info-item {
+                                                background-color: unquote(
+                                                    '#' + $truck_col
+                                                );
+
+                                                svg-icon {
+                                                    display: flex;
+                                                }
+                                                span {
+                                                    display: none;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            @each $trailer_col in $trailer_colors {
+                                &.trailer_#{$trailer_col} {
+                                    &:hover {
+                                        .info-item {
+                                            background-color: unquote(
+                                                '#' + $trailer_col + '33'
+                                            );
+                                        }
+                                    }
+                                    svg-icon {
+                                        svg {
+                                            pointer-events: none;
+                                            circle {
+                                                pointer-events: none;
+                                                fill: unquote(
+                                                    '#' + $trailer_col
+                                                );
+                                            }
+                                        }
+
+                                        &:hover {
+                                            & ~ .info-item {
+                                                background-color: unquote(
+                                                    '#' + $trailer_col
+                                                );
+
+                                                svg-icon {
+                                                    display: flex;
+                                                }
+                                                span {
+                                                    display: none;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            svg-icon {
+                                &:hover {
+                                    svg {
+                                        circle {
+                                            fill: #fff;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -725,9 +725,9 @@ body:not(.modal-open) {
         top: 0;
         width: 100%;
         background-color: #fff;
-        border-radius: 2px;
-        box-shadow: $box-shadow !important;
-        padding: 2px;
+        border-radius: 3px;
+        //box-shadow: $box-shadow !important;
+        padding: 4px;
 
         &.popover-wraper {
             background-color: #424242;
@@ -756,7 +756,7 @@ body:not(.modal-open) {
         .switch_statuses {
             position: relative;
             display: flex;
-            height: 28px;
+            height: 26px;
             justify-content: center;
             align-items: center;
 
@@ -764,7 +764,7 @@ body:not(.modal-open) {
 
             font-family: 'Montserrat', sans-serif !important;
             font-weight: 900;
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             cursor: pointer;
             -webkit-user-select: none;
@@ -781,11 +781,11 @@ body:not(.modal-open) {
             .time_ago {
                 display: none;
                 position: absolute;
-                bottom: -3px;
+                bottom: 0px;
                 width: 100%;
 
-                font-size: 10px;
-                font-weight: 700;
+                font-size: 11px;
+                font-weight: 400;
                 color: #b7b7b7b3;
                 text-align: center;
                 text-transform: lowercase;
@@ -827,11 +827,11 @@ body:not(.modal-open) {
 
         .switch_statuses.withAgo {
             &:hover {
-                padding-bottom: 10px;
+                padding-bottom: 14px;
 
                 .time_ago {
                     display: block;
-                    bottom: 2px;
+                    bottom: 0px;
                 }
             }
         }
@@ -840,7 +840,7 @@ body:not(.modal-open) {
 
 .status_change_popover {
     .ta_status_main_holder {
-        width: 110px;
+        width: 140px;
     }
 }
 

@@ -554,7 +554,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .getTruckById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: TruckResponse) => {
+                next: (res: any) => {
                     this.truckForm.patchValue({
                         // Basic Tab
                         companyOwned: res.companyOwned,

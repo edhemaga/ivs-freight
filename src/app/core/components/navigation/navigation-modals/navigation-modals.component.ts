@@ -163,7 +163,7 @@ export class NavigationModalsComponent {
                 });
                 break;
             }
-            case 'purchase': {
+            case 'transaction': {
                 this.modalService.openModal(FuelPurchaseModalComponent, {
                     size: 'small',
                 });

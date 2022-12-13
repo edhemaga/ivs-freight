@@ -11,6 +11,7 @@
  */
 import { UpdateClassOfEquipmentCommand } from './updateClassOfEquipmentCommand';
 import { AddressEntity } from './addressEntity';
+import { UpdateWorkExperienceItemReviewCommand } from './updateWorkExperienceItemReviewCommand';
 
 
 export interface UpdateWorkExperienceItemCommand { 
@@ -29,5 +30,6 @@ export interface UpdateWorkExperienceItemCommand {
     reasonForLeaving?: number;
     accountForPeriodBetween?: string | null;
     classesOfEquipment?: Array<UpdateClassOfEquipmentCommand> | null;
+    workExperienceItemReview?: UpdateWorkExperienceItemReviewCommand;
 }
 

@@ -11,7 +11,6 @@
  */
 import { LiveTrackingHistoryStopItemResponse } from './liveTrackingHistoryStopItemResponse';
 import { LiveTrackingHistoryItemResponse } from './liveTrackingHistoryItemResponse';
-import { RepairUnitType } from './repairUnitType';
 import { LiveTrackingHistoryMotionTimeResponse } from './liveTrackingHistoryMotionTimeResponse';
 
 
@@ -20,8 +19,8 @@ export interface LiveTrackingHistoryResponse {
     stops?: Array<LiveTrackingHistoryStopItemResponse> | null;
     historyData?: Array<LiveTrackingHistoryItemResponse> | null;
     driver?: string | null;
-    unitNumber?: string | null;
-    unitType?: RepairUnitType;
+    truckNumber?: string | null;
+    trailerNumber?: string | null;
     motion?: LiveTrackingHistoryMotionTimeResponse;
 }
 

@@ -15,7 +15,6 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../services/form/form.service';
 import { RoadsideService } from '../../safety/violation/state/roadside.service';
-import { NotificationService } from '../../../services/notification/notification.service';
 import {
     convertDateFromBackend,
     convertTimeFromBackend,
@@ -23,6 +22,7 @@ import {
 import { AccidentTService } from '../../safety/accident/state/accident.service';
 import { AccidentModalResponse } from '../../../../../../appcoretruckassist/model/accidentModalResponse';
 import { RoadsideInspectionResponse } from '../../../../../../appcoretruckassist/model/roadsideInspectionResponse';
+import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
 @Component({
     selector: 'app-violation-modal',
@@ -124,10 +124,42 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     public labelsCounty: any[] = [];
 
     public documents: any[] = [];
+    public fileModified: boolean = false;
+    public filesForDelete: any[] = [];
 
     public isFormDirty: boolean;
 
     public violationModalName: string = null;
+
+    public truckTypeConfig: ITaInput = {
+        name: 'Truck Type',
+        type: 'text',
+        label: 'Type',
+        isDisabled: true,
+        dropdownImageInput: {
+            withText: true,
+            svg: true,
+            image: false,
+            url: null,
+            template: 'truck',
+            class: null,
+        },
+    };
+
+    public trailerTypeConfig: ITaInput = {
+        name: 'Trailer Type',
+        type: 'text',
+        label: 'Type',
+        isDisabled: true,
+        dropdownImageInput: {
+            withText: true,
+            svg: true,
+            image: false,
+            url: null,
+            template: 'trailer',
+            class: null,
+        },
+    };
 
     constructor(
         private formBuilder: FormBuilder,
@@ -135,8 +167,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private formService: FormService,
         private roadsideService: RoadsideService,
-        private accidentTService: AccidentTService,
-        private notificationService: NotificationService
+        private accidentTService: AccidentTService
     ) {}
 
     ngOnInit() {
@@ -200,6 +231,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             customer: [null],
             boL: [null],
             cargo: [null],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.violationForm);
@@ -319,8 +351,32 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onFilesEvent(event) {
+    public onFilesEvent(event: any) {
         this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.violationForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.violationForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     public pickedSpecialChecks() {
@@ -333,6 +389,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     private updateViolation(id: number) {
         const { ...form } = this.violationForm.value;
+
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
 
         const newData: any = {
             id: id,
@@ -355,8 +418,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             boL: form.boL,
             cargo: form.cargo,
             specialChecks: this.premmapedSpecialChecks(),
-            files: [],
-            filesForDeleteIds: [],
+            files: documents ? documents : this.violationForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.roadsideService
@@ -370,7 +433,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .getRoadsideById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any /*RoadsideInspectionResponse*/) => {
+                next: (res: RoadsideInspectionResponse) => {
+                    console.log('get violation id: ', res);
                     this.violationForm.patchValue({
                         report: res.report,
                         categoryReport: res.violationCategory?.name
@@ -480,6 +544,39 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     this.selectedViolationCustomer = res.broker;
 
                     this.violationModalName = res.report;
+                    this.documents = res.files;
+
+                    this.truckTypeConfig = {
+                        ...this.truckTypeConfig,
+                        dropdownImageInput: {
+                            ...this.truckTypeConfig.dropdownImageInput,
+                            url: res.truck?.truckType?.logoName
+                                ? res.truck?.truckType?.logoName
+                                : null,
+                            class: res.truck?.truckType?.name
+                                ? res.truck?.truckType?.name
+                                      ?.trim()
+                                      .replace(' ', '')
+                                      .toLowerCase()
+                                : null,
+                        },
+                    };
+
+                    this.trailerTypeConfig = {
+                        ...this.trailerTypeConfig,
+                        dropdownImageInput: {
+                            ...this.trailerTypeConfig.dropdownImageInput,
+                            url: res.trailer?.trailerType?.logoName
+                                ? res.trailer?.trailerType?.logoName
+                                : null,
+                            class: res.trailer?.trailerType?.name
+                                ? res.trailer?.trailerType?.name
+                                      ?.trim()
+                                      .replace(' ', '')
+                                      .toLowerCase()
+                                : null,
+                        },
+                    };
 
                     if (res.violations.length) {
                         for (let i = 0; i < res.violations.length; i++) {
@@ -511,13 +608,15 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     }
 
                     if (res.specialChecks.length) {
-                        this.specialChecks = res.specialChecks.map((item) => {
-                            return {
-                                id: item.specialChecks.id,
-                                name: item.specialChecks.name,
-                                active: item.active,
-                            };
-                        });
+                        this.specialChecks = res.specialChecks.map(
+                            (item, index) => {
+                                return {
+                                    id: item.specialChecks.id,
+                                    name: this.specialChecks[index].name,
+                                    active: item.active,
+                                };
+                            }
+                        );
                     }
                 },
                 error: () => {},

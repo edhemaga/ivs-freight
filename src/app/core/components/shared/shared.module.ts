@@ -116,6 +116,8 @@ import { MapRouteModalComponent } from '../modals/map-route-modal/map-route-moda
 import { ObserversModule } from '@angular/cdk/observers';
 import { PayrollStatusesComponent } from './payroll-statuses/payroll-statuses.component';
 import { TaCheckboxCardComponent } from './ta-checkbox-card/ta-checkbox-card.component';
+import { LoadModalProgressBarComponent } from '../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
+import { LoadStopComponent } from '../modals/load-modal/load-stop/load-stop.component';
 
 export function playerFactory() {
     return import('lottie-web');
@@ -193,6 +195,8 @@ export function playerFactory() {
         ProfileUpdateModalComponent,
         LoadModalComponent,
         LoadModalHazardousComponent,
+        LoadModalProgressBarComponent,
+        LoadStopComponent,
         TtTitleModalComponent,
         ConfirmationModalComponent,
         LoadModalStatusesComponent,
@@ -361,6 +365,8 @@ export function playerFactory() {
         ProfileUpdateModalComponent,
         LoadModalComponent,
         LoadModalHazardousComponent,
+        LoadModalProgressBarComponent,
+        LoadStopComponent,
         TtTitleModalComponent,
         ConfirmationModalComponent,
         LoadModalStatusesComponent,

@@ -6,11 +6,10 @@ import { ModalService } from './../../shared/ta-modal/modal.service';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
-import { DriverResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import moment from 'moment';
+
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import {
     Confirmation,
@@ -23,6 +22,9 @@ import { CdlTService } from '../state/cdl.service';
 import { Subject, take, takeUntil } from 'rxjs';
 import { DriversDetailsListQuery } from '../state/driver-details-list-state/driver-details-list.query';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
+import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
+import moment from 'moment';
 
 @Component({
     selector: 'app-driver-details',
@@ -66,16 +68,22 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private dropDownService: DropDownService,
         private driverDQuery: DriversDetailsListQuery,
         private cdlService: CdlTService,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private DriversDetailsListStore: DriversDetailsListStore,
+        private DriversItemStore: DriversItemStore
     ) {}
 
     ngOnInit() {
+        let dataId = this.activated_route.snapshot.params.id;
+        let driverData = {
+            ...this.DriversItemStore?.getValue()?.entities[dataId],
+        };
+
         this.currentIndex = this.driversList.findIndex(
-            (driver) =>
-                driver.id === this.activated_route.snapshot.data.driver.id
+            (driver) => driver.id === driverData.id
         );
 
-        this.detailCongif(this.activated_route.snapshot.data.driver);
+        this.detailCongif(driverData);
         if (this.cdlActiveId > 0) {
             this.getCdlById(this.cdlActiveId);
         }
@@ -138,7 +146,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     query = this.driverService.getDriverById(id);
                 }
                 query.subscribe({
-                    next: (res: DriverResponse) => {
+                    next: (res: any) => {
                         this.currentIndex = this.driversList.findIndex(
                             (driver) => driver.id === res.id
                         );
@@ -151,18 +159,16 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         if (this.router.url.includes('details')) {
                             this.router.navigate([`/driver/${res.id}/details`]);
                         }
-         
+
                         this.cdRef.detectChanges();
                     },
-                    error: () => {
-                     
-                    },
+                    error: () => {},
                 });
             });
     }
 
     /**Function template and names for header and other options in header */
-    public detailCongif(dataDriver: DriverResponse) {
+    public detailCongif(dataDriver: any) {
         this.DetailsDataService.setNewData(dataDriver);
         this.driverObject = dataDriver;
         this.initTableOptions(dataDriver);
@@ -227,9 +233,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             },
         ];
         this.driverId = dataDriver?.id ? dataDriver.id : null;
-        console.log('--driverDetailsConfig---', this.driverDetailsConfig);
     }
-    checkExpiration(data: DriverResponse) {
+    checkExpiration(data: any) {
         this.hasDangerCDL = false;
         this.hasDangerMedical = false;
         this.hasDangerMvr = false;
@@ -255,16 +260,16 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             }
         });
 
-        // if(data.mvrs.length>0){
-        //   data?.mvrs.map((el)=>{
-        //     if(moment(el.issueDate).isAfter(moment())){
-        //       this.arrayMedical.push(false)
-        //     }
-        //     if(moment(el.issueDate).isBefore(moment())){
-        //       this.arrayMedical.push(true)
-        //     }
-        //   })
-        // }
+        if(data.mvrs.length>0){
+        data?.mvrs.map((el)=>{
+            if(moment(el.issueDate).isAfter(moment())){
+            this.arrayMedical.push(false)
+            }
+           if(moment(el.issueDate).isBefore(moment())){
+                    this.arrayMedical.push(true)
+             }
+            })
+        }
         if (this.arrayCDL.includes(false)) {
             this.hasDangerCDL = false;
         } else {
@@ -278,12 +283,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
 
     /**Function for dots in cards */
-    public initTableOptions(data: DriverResponse): void {
+    public initTableOptions(data: any): void {
         this.arrayActiveCdl = [];
         this.isActiveCdl = false;
         this.cdlActiveId = 0;
         data?.cdls?.map((item) => {
-            if (item.status == 1) {
+           if (item.status == 1) {
                 this.cdlActiveId = item.id;
                 this.arrayActiveCdl.push(true);
                 this.isActiveCdl = true;
@@ -310,7 +315,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     disabled: data.status == 0 ? true : false,
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'border',
@@ -404,7 +409,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     }
 
     public getCdlById(id: number) {
-        console.log('--getCdlById--')
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
@@ -424,12 +428,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .changeDriverStatus(id, status)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                  
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -458,7 +458,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             }/details`,
                         ]);
                     }
-                  
                 },
                 error: () => {
                     this.router.navigate(['/driver']);
@@ -470,12 +469,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .deactivateCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -484,12 +479,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .activateCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-               
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
     public onModalAction(action: string): void {

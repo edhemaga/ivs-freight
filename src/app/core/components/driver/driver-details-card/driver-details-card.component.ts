@@ -14,7 +14,6 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DriverResponse } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../../modals/driver-modal/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../../modals/driver-modal/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
@@ -36,6 +35,7 @@ import { ImageBase64Service } from '../../../utils/base64.image';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
+import { DriverResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -399,12 +399,8 @@ export class DriverDetailsCardComponent
             .deleteCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -413,12 +409,8 @@ export class DriverDetailsCardComponent
             .deleteMedicalById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -427,12 +419,8 @@ export class DriverDetailsCardComponent
             .deleteMvrById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -441,12 +429,8 @@ export class DriverDetailsCardComponent
             .deleteTestById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                   
-                },
-                error: () => {
-                    
-                },
+                next: () => {},
+                error: () => {},
             });
     }
     /**Function retrun id */
@@ -502,7 +486,7 @@ export class DriverDetailsCardComponent
     }
 
     /**Function for dots in cards */
-    public initTableOptionsCard(data: DriverResponse): void {
+    public initTableOptionsCard(data: any): void {
         this.dropData = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -557,7 +541,7 @@ export class DriverDetailsCardComponent
         };
     }
 
-    public getExpireDate(data: DriverResponse) {
+    public getExpireDate(data: any) {
         this.dataCDl = data?.cdls?.map((ele) => {
             if (moment(ele.expDate).isBefore(moment())) {
                 this.expDateCard = false;

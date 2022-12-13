@@ -246,12 +246,7 @@
                             ></app-ta-input>
                             <app-ta-input
                                 formControlName="truck_Type"
-                                [inputConfig]="{
-                                    name: 'Truck Type',
-                                    type: 'text',
-                                    label: 'Type',
-                                    isDisabled: true
-                                }"
+                                [inputConfig]="truckTypeConfig"
                             ></app-ta-input>
                             <app-ta-input
                                 formControlName="truck_Make"
@@ -314,12 +309,7 @@
                             ></app-ta-input>
                             <app-ta-input
                                 formControlName="trailer_Type"
-                                [inputConfig]="{
-                                    name: 'Trailer Type',
-                                    type: 'text',
-                                    label: 'Type',
-                                    isDisabled: true
-                                }"
+                                [inputConfig]="trailerTypeConfig"
                             ></app-ta-input>
                             <app-ta-input
                                 formControlName="trailer_Make"
@@ -492,6 +482,7 @@
                         <app-ta-upload-files
                             [files]="documents"
                             [size]="'large'"
+                            [showDropzone]="true"
                             (onFileEvent)="onFilesEvent($event)"
                             [customClassName]="'modals'"
                         ></app-ta-upload-files>

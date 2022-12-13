@@ -81,6 +81,10 @@
       "iconPath": "/assets/svg/common/colors/ic_color.svg"
     },
     {
+      "iconName": "ic_circle.svg",
+      "iconPath": "/assets/svg/common/colors/ic_circle.svg"
+    },
+    {
       "iconName": "ic_ac_compressor.svg",
       "iconPath": "/assets/svg/common/repair-pm/ic_ac_compressor.svg"
     },
@@ -487,10 +491,6 @@
       "iconPath": "assets/svg/common/load/ic_load-broker-dnu-ban.svg"
     },
     {
-      "iconName": "ic_load-broker-credit.svg",
-      "iconPath": "assets/svg/common/load/ic_load-broker-credit.svg"
-    },
-    {
       "iconName": "edit",
       "iconPath": "assets/svg/truckassist-table/dropdown/content/edit.svg"
     },
@@ -585,6 +585,14 @@
     {
       "iconName": "mark-as-to-do",
       "iconPath": "assets/svg/common/ic_time.svg"
+    },
+    {
+      "iconName": "ic_load-broker-dnu-ban.svg",
+      "iconPath": "assets/svg/common/load/ic_load-broker-dnu-ban.svg"
+    },
+    {
+      "iconName": "ic_load-broker-closed-business.svg",
+      "iconPath": "assets/svg/common/load/ic_load-broker-closed-business.svg"
     }
 
   ],

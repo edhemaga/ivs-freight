@@ -734,14 +734,15 @@
                     <div class="ta-card-body-overflow-none">
                         <app-ta-custom-card
                             [hasCounter]="
-                                documents.length ? documents.length : 0
+                                documents?.length ? documents.length : 0
                             "
                             [cardName]="'Document'"
-                            [isCardOpen]="documents.length > 0"
+                            [isCardOpen]="documents?.length > 0"
                         >
                             <app-ta-upload-files
                                 [files]="documents"
                                 [size]="'medium'"
+                                [showDropzone]="true"
                                 (onFileEvent)="onFilesEvent($event)"
                                 [customClassName]="'modals'"
                                 [hasTagsDropdown]="true"

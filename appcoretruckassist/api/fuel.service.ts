@@ -25,8 +25,6 @@ import { AddFuelCardCommand } from '../model/addFuelCardCommand';
 // @ts-ignore
 import { ClusterResponse } from '../model/clusterResponse';
 // @ts-ignore
-import { ConnectEFSCommand } from '../model/connectEFSCommand';
-// @ts-ignore
 import { CreateFuelItemCommand } from '../model/createFuelItemCommand';
 // @ts-ignore
 import { CreateResponse } from '../model/createResponse';
@@ -70,10 +68,6 @@ import { GetModalFuelStopFranchiseByIdResponse } from '../model/getModalFuelStop
 import { GetModalFuelStopFranchiseResponse } from '../model/getModalFuelStopFranchiseResponse';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
-// @ts-ignore
-import { SetConnectStatusEFSCommand } from '../model/setConnectStatusEFSCommand';
-// @ts-ignore
-import { UpdateFuelStopCommand } from '../model/updateFuelStopCommand';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -164,13 +158,24 @@ export class FuelService {
      * @param southWestLatitude 
      * @param southWestLongitude 
      * @param zoomLevel 
+     * @param shipperLong 
+     * @param shipperLat 
+     * @param shipperDistance 
+     * @param shipperStates 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<ClusterResponse>>;
-    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<ClusterResponse>>>;
-    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<ClusterResponse>>>;
-    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<ClusterResponse>>;
+    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<ClusterResponse>>>;
+    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<ClusterResponse>>>;
+    public apiFuelClustersGet(northEastLatitude?: number, northEastLongitude?: number, southWestLatitude?: number, southWestLongitude?: number, zoomLevel?: number, shipperLong?: number, shipperLat?: number, shipperDistance?: number, shipperStates?: Array<string>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (northEastLatitude !== undefined && northEastLatitude !== null) {
@@ -192,6 +197,52 @@ export class FuelService {
         if (zoomLevel !== undefined && zoomLevel !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>zoomLevel, 'ZoomLevel');
+        }
+        if (shipperLong !== undefined && shipperLong !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>shipperLong, 'ShipperLong');
+        }
+        if (shipperLat !== undefined && shipperLat !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>shipperLat, 'ShipperLat');
+        }
+        if (shipperDistance !== undefined && shipperDistance !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>shipperDistance, 'ShipperDistance');
+        }
+        if (shipperStates) {
+            shipperStates.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'ShipperStates');
+            })
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -389,156 +440,6 @@ export class FuelService {
             {
                 context: localVarHttpContext,
                 body: activateDeactivateEFSFuelCard,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param connectEFSCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiFuelEFSConnectPost(connectEFSCommand?: ConnectEFSCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<string>;
-    public apiFuelEFSConnectPost(connectEFSCommand?: ConnectEFSCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<string>>;
-    public apiFuelEFSConnectPost(connectEFSCommand?: ConnectEFSCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<string>>;
-    public apiFuelEFSConnectPost(connectEFSCommand?: ConnectEFSCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/fuel/EFS/connect`;
-        return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: connectEFSCommand,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param setConnectStatusEFSCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiFuelEFSConnectstatusPost(setConnectStatusEFSCommand?: SetConnectStatusEFSCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<string>;
-    public apiFuelEFSConnectstatusPost(setConnectStatusEFSCommand?: SetConnectStatusEFSCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<string>>;
-    public apiFuelEFSConnectstatusPost(setConnectStatusEFSCommand?: SetConnectStatusEFSCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<string>>;
-    public apiFuelEFSConnectstatusPost(setConnectStatusEFSCommand?: SetConnectStatusEFSCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/fuel/EFS/connectstatus`;
-        return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: setConnectStatusEFSCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -2140,14 +2041,33 @@ export class FuelService {
     }
 
     /**
-     * @param updateFuelStopCommand 
+     * @param id 
+     * @param businessName 
+     * @param fuelStopFranchiseId 
+     * @param store 
+     * @param phone 
+     * @param fax 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param favourite 
+     * @param note 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelFuelstopUpdatePut(updateFuelStopCommand?: UpdateFuelStopCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiFuelFuelstopUpdatePut(updateFuelStopCommand?: UpdateFuelStopCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiFuelFuelstopUpdatePut(updateFuelStopCommand?: UpdateFuelStopCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiFuelFuelstopUpdatePut(updateFuelStopCommand?: UpdateFuelStopCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiFuelFuelstopUpdatePut(id?: number, businessName?: string, fuelStopFranchiseId?: number, store?: string, phone?: string, fax?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, favourite?: boolean, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -2177,16 +2097,88 @@ export class FuelService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (businessName !== undefined) {
+            localVarFormParams = localVarFormParams.append('BusinessName', <any>businessName) as any || localVarFormParams;
+        }
+        if (fuelStopFranchiseId !== undefined) {
+            localVarFormParams = localVarFormParams.append('FuelStopFranchiseId', <any>fuelStopFranchiseId) as any || localVarFormParams;
+        }
+        if (store !== undefined) {
+            localVarFormParams = localVarFormParams.append('Store', <any>store) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (fax !== undefined) {
+            localVarFormParams = localVarFormParams.append('Fax', <any>fax) as any || localVarFormParams;
+        }
+        if (addressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
+        }
+        if (addressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.State', <any>addressState) as any || localVarFormParams;
+        }
+        if (addressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.County', <any>addressCounty) as any || localVarFormParams;
+        }
+        if (addressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Address', <any>addressAddress) as any || localVarFormParams;
+        }
+        if (addressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Street', <any>addressStreet) as any || localVarFormParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || localVarFormParams;
+        }
+        if (addressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Country', <any>addressCountry) as any || localVarFormParams;
+        }
+        if (addressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.ZipCode', <any>addressZipCode) as any || localVarFormParams;
+        }
+        if (addressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StateShortName', <any>addressStateShortName) as any || localVarFormParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
+        }
+        if (favourite !== undefined) {
+            localVarFormParams = localVarFormParams.append('Favourite', <any>favourite) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -2201,10 +2193,10 @@ export class FuelService {
         }
 
         let localVarPath = `/api/fuel/fuelstop/update`;
-        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateFuelStopCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -2778,6 +2770,7 @@ export class FuelService {
      * @param fuelTransactionSpecParamsCostTo 
      * @param fuelTransactionSpecParamsPpgFrom 
      * @param fuelTransactionSpecParamsPpgTo 
+     * @param fuelTransactionSpecParamsTruckId 
      * @param fuelTransactionSpecParamsPageIndex 
      * @param fuelTransactionSpecParamsPageSize 
      * @param fuelTransactionSpecParamsCompanyId 
@@ -2788,10 +2781,10 @@ export class FuelService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<FuelTransactionListResponse>;
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<FuelTransactionListResponse>>;
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<FuelTransactionListResponse>>;
-    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsTruckId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<FuelTransactionListResponse>;
+    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsTruckId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<FuelTransactionListResponse>>;
+    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsTruckId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<FuelTransactionListResponse>>;
+    public apiFuelTransactionListGet(fuelTransactionSpecParamsFuelStopStoreIds?: Array<number>, fuelTransactionSpecParamsTruckIds?: Array<number>, fuelTransactionSpecParamsCategoryIds?: Array<number>, fuelTransactionSpecParamsDateFrom?: string, fuelTransactionSpecParamsDateTo?: string, fuelTransactionSpecParamsLong?: number, fuelTransactionSpecParamsLat?: number, fuelTransactionSpecParamsDistance?: number, fuelTransactionSpecParamsLastFrom?: number, fuelTransactionSpecParamsLastTo?: number, fuelTransactionSpecParamsCostFrom?: number, fuelTransactionSpecParamsCostTo?: number, fuelTransactionSpecParamsPpgFrom?: number, fuelTransactionSpecParamsPpgTo?: number, fuelTransactionSpecParamsTruckId?: number, fuelTransactionSpecParamsPageIndex?: number, fuelTransactionSpecParamsPageSize?: number, fuelTransactionSpecParamsCompanyId?: number, fuelTransactionSpecParamsSort?: string, fuelTransactionSpecParamsSearch?: string, fuelTransactionSpecParamsSearch1?: string, fuelTransactionSpecParamsSearch2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (fuelTransactionSpecParamsFuelStopStoreIds) {
@@ -2855,6 +2848,10 @@ export class FuelService {
         if (fuelTransactionSpecParamsPpgTo !== undefined && fuelTransactionSpecParamsPpgTo !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>fuelTransactionSpecParamsPpgTo, 'FuelTransactionSpecParams.PpgTo');
+        }
+        if (fuelTransactionSpecParamsTruckId !== undefined && fuelTransactionSpecParamsTruckId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>fuelTransactionSpecParamsTruckId, 'FuelTransactionSpecParams.TruckId');
         }
         if (fuelTransactionSpecParamsPageIndex !== undefined && fuelTransactionSpecParamsPageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

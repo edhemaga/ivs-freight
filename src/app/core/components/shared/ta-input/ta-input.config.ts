@@ -1,5 +1,6 @@
 export interface IMultipleInput {
-    value: string;
+    value: string | number;
+    second_value?: string | number;
     logoName?: string;
     isImg?: boolean;
     isSvg?: boolean;
@@ -7,6 +8,8 @@ export interface IMultipleInput {
     subFolder?: string;
     logoType?: string;
     isOwner?: boolean;
+    isProgressBar?: boolean;
+    isCounter?: boolean;
 }
 
 export interface ITaInput {
@@ -24,8 +27,11 @@ export interface ITaInput {
     };
     placeholder?: string; // only for dropdown, otherwise placeholder is label !!!
     placeholderIcon?: string;
+    placeholderIconRightSide?: string;
     placeholderText?: string;
     placeholderInsteadOfLabel?: boolean;
+    hideDropdownArrow?: boolean;
+    connectDropdown?: boolean;
     isRequired?: boolean;
     isDisabled?: boolean;
     pattern?: string;

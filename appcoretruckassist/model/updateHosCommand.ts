@@ -12,7 +12,7 @@
 
 
 export interface UpdateHosCommand { 
-    id?: number;
+    id?: number | null;
     hours?: number;
     date?: string;
 }

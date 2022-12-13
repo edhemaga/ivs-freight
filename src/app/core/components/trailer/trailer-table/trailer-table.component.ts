@@ -415,43 +415,71 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return {
             ...data,
             isSelected: false,
-            textMake: data?.trailerMake?.name ? data.trailerMake.name : '',
-            textAxies: data?.axles ? data?.axles : '',
-            textTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-            textReeferUnit: data?.reeferUnit?.name ? data.reeferUnit.name : '',
-            textInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
-            trailerTypeIcon: data.trailerType.logoName,
-            trailerTypeClass: data.trailerType.logoName.replace('.svg', ''),
-            textEmptyWeight: data?.emptyWeight
-                ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
-                : '',
-            textMileage: data?.mileage
-                ? this.thousandSeparator.transform(data.mileage) + ' mi'
-                : '',
-            textModel: data?.model ? data?.model : '',
-            ownerName: data?.owner?.name ? data.owner.name : '',
-            textColor: data?.color?.code ? data.color.code : '',
+            tableTrailerTypeIcon: data.trailerType.logoName,
+            tableTrailerTypeClass: data.trailerType.logoName.replace('.svg', ''),
+            tableMake: data?.trailerMake?.name ? data.trailerMake.name : '',
+            tableModel: data?.model ? data?.model : '',
+            tableColor: data?.color?.code ? data.color.code : '',
             colorName: data?.color?.name ? data.color.name : '',
-            svgIcon: data?.trailerType?.name
-                ? data.trailerType.name
-                : '' /* Treba da bude svg ne text */,
-            textLength: data?.trailerLength?.name
+            tabelLength: data?.trailerLength?.name
                 ? data.trailerLength.name
                 : '',
-            textLicPlate: data?.licensePlate
-                ? data.licensePlate
-                : data?.registrations?.length
-                ? data.registrations[0].licensePlate
-                : '',
-            textInspectionData: {
-                start: data?.fhwaInspection
-                    ? data.fhwaInspection
-                    : data?.inspections?.length
-                    ? data.inspections[0].issueDate
-                    : null,
-                end: null,
-            },
+            tableDriver: 'Nije Povezano',
+            tableTruck: 'Nije Povezano',
+            tableTruckType: 'Nije Povezano',
+            tableOwner: 'Nije Povezano',
+            tableWeightEmpty: 'Nije Povezano',
+            tableWeightVolume: 'Nije Povezano',
+            tableAxle: 'Nije Povezano',
+            tableSuspension: 'Nije Povezano',
+            tableTireSize: 'Nije Povezano',
+            tableReeferUnit: 'Nije Povezano',
+            tableDoorType: 'Nije Povezano',
+            tableInsPolicy: 'Nije Povezano',
+            tableMileage: 'Nije Povezano',
+            tableLicencePlateDetailNumber: 'Nije Povezano',
+            tableLicencePlateDetailST: 'Nije Povezano',
+            tableLicencePlateDetailExpiration: 'Nije Povezano',
+            tableFHWAInspectionTerm: 'Nije Povezano',
+            tableFHWAInspectionExpiration: 'Nije Povezano',
+            tableTitleNumber: 'Nije Povezano',
+            tableTitleST: 'Nije Povezano',
+            tableTitlePurchase: 'Nije Povezano',
+            tableTitleIssued: 'Nije Povezano',
+            tablePurchaseDate: 'Nije Povezano',
+            tablePurchasePrice: 'Nije Povezano',
+            tableTerminated: 'Nije Povezano',
+            tableAdded: 'Nije Povezano',
+            tableEdited: 'Nije Povezano',
             tableAttachments: data?.files ? data.files : [],
+
+            // textAxies: data?.axles ? data?.axles : '',
+            // textTireSize: data?.tireSize?.name ? data.tireSize.name : '',
+            // textReeferUnit: data?.reeferUnit?.name ? data.reeferUnit.name : '',
+            // textInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
+            // textEmptyWeight: data?.emptyWeight
+            //     ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
+            //     : '',
+            // textMileage: data?.mileage
+            //     ? this.thousandSeparator.transform(data.mileage) + ' mi'
+            //     : '',
+            // ownerName: data?.owner?.name ? data.owner.name : '',
+            // svgIcon: data?.trailerType?.name
+            //     ? data.trailerType.name
+            //     : '' /* Treba da bude svg ne text */,
+            // textLicPlate: data?.licensePlate
+            //     ? data.licensePlate
+            //     : data?.registrations?.length
+            //     ? data.registrations[0].licensePlate
+            //     : '',
+            // textInspectionData: {
+            //     start: data?.fhwaInspection
+            //         ? data.fhwaInspection
+            //         : data?.inspections?.length
+            //         ? data.inspections[0].issueDate
+            //         : null,
+            //     end: null,
+            // },
         };
     }
 
@@ -649,12 +677,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .changeTrailerStatus(id, this.selectedTab)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                  
-                },
-                error: () => {
-                   
-                },
+                next: () => {},
+                error: () => {},
             });
     }
 
@@ -664,8 +688,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                   
-
                     this.viewData = this.viewData.map((trailer: any) => {
                         if (trailer.id === id) {
                             trailer.actionAnimation = 'delete';
@@ -685,9 +707,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(inetval);
                     }, 900);
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 

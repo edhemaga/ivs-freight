@@ -34,6 +34,7 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() isRequired: boolean = false;
     @Input() showRequired: boolean = false;
     @Input() hasLandscapeOption: boolean = false;
+    @Input() showDropzone: boolean = false;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[] | UploadFile | any;

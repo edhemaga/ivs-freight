@@ -24,6 +24,7 @@ export interface UpdateEducationCommand {
     from?: string | null;
     to?: string | null;
     unableForJob?: boolean;
+    unableForJobDescription?: string | null;
     emergencyContacts?: Array<UpdateEmergencyContactCommand> | null;
     applicantId?: number;
 }

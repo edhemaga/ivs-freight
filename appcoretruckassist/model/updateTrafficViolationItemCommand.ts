@@ -9,14 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UpdateTrafficViolationItemReviewCommand } from './updateTrafficViolationItemReviewCommand';
 import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateTrafficViolationItemCommand { 
-    id?: number;
+    id?: number | null;
     date?: string;
     vehicleTypeId?: number;
     location?: AddressEntity;
     description?: string | null;
+    trafficViolationItemReview?: UpdateTrafficViolationItemReviewCommand;
 }
 
