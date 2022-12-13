@@ -1537,9 +1537,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         } else if (actionName === 'clear-route-stops') {
             this.clearRouteStops(currentId);
         } else if (actionName === 'delete') {
+            let route = this.getRouteById(currentId);
+
             var routeObj = {
                 id: currentId,
                 type: 'delete-item',
+                data: route
             };
 
             this.modalService.openModal(
