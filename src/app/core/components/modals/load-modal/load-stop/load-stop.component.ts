@@ -38,11 +38,18 @@ export class LoadStopComponent {
     @Output('toggle') toggleEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
 
+    @Output('delete') deleteEvent: EventEmitter<void> =
+        new EventEmitter<void>();
+
     public toggleStop() {
         const oldNoActive = this.noActive;
         this.noActive = '';
         this._isCardOpen =
             oldNoActive == 'innactive' ? true : !this._isCardOpen;
         this.toggleEvent.emit(this._isCardOpen);
+    }
+
+    public deleteStop() {
+        this.deleteEvent.emit();
     }
 }

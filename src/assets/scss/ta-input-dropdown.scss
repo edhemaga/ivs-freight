@@ -312,6 +312,11 @@
                             font-size: 14px;
                             font-weight: 400;
                             line-height: 18px;
+                            color: #cccccc;
+
+                            &.add-new {
+                                color: #3074d3;
+                            }
                         }
 
                         .labels-template-counter {
@@ -329,7 +334,7 @@
 
                     &:hover {
                         .labels-template-text {
-                            color: #aaaaaa;
+                            color: #ffffff;
 
                             &.add-new {
                                 color: #3074d3;

@@ -979,12 +979,7 @@
 
                         <div
                             #t1="ngbPopover"
-                            (click)="
-                                toggleHos(t1, item.hoursOfService, item.id)
-                            "
-                            (hidden)="
-                                saveHosData(item.hoursOfService, rowIndex)
-                            "
+                    
                             [class.statusOpened]="statusOpenedIndex > -1"
                             [class.empty-box-field]="true"
                             [ngbPopover]="hos"

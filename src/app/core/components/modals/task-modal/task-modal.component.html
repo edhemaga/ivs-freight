@@ -3,6 +3,7 @@
     [editName]="taskName"
     [editData]="editData"
     [isModalValid]="taskForm.valid && isFormDirty"
+    [saveAndAddNew]="editData?.type !== 'edit'"
     (action)="onModalAction($event)"
 >
     <form
@@ -79,7 +80,6 @@
                         name: 'Input Dropdown Department',
                         type: 'text',
                         label: 'Department',
-                        isRequired: true,
                         isDropdown: true,
                         textTransform: 'capitalize',
                         multiselectDropdown: true,

@@ -3,6 +3,7 @@
     [editData]="editData"
     [editName]="editData?.data?.name"
     [isModalValid]="contactForm.valid && isFormDirty"
+    [saveAndAddNew]="editData?.type !== 'edit'"
     [dropZoneConfig]="dropZoneConfig"
     (action)="onModalAction($event)"
 >
@@ -226,7 +227,7 @@
                                     [activeItem]="selectedContactPhone[ind]"
                                     [options]="labelsContactPhones"
                                     (selectedItem)="
-                                        onSelectDropDown(
+                                        onSelectDropdown(
                                             $event,
                                             'contact-phone',
                                             ind
@@ -340,7 +341,7 @@
                                     [activeItem]="selectedContactEmail[ind]"
                                     [options]="labelsContactEmails"
                                     (selectedItem)="
-                                        onSelectDropDown(
+                                        onSelectDropdown(
                                             $event,
                                             'contact-email',
                                             ind

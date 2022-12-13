@@ -58,9 +58,29 @@ export class CustomerTableComponent
     activeViewMode: string = 'List';
     tableContainerWidth: number = 0;
     resizeObserver: ResizeObserver;
-    backFilterQuery = {
+    backBrokerFilterQuery = {
         ban: null,
         dnu: null,
+        invoiceAgeingFrom: undefined,
+        invoiceAgeingTo: undefined,
+        availableCreditFrom: undefined,
+        availableCreditTo: undefined,
+        revenueFrom: undefined,
+        revenueTo: undefined,
+        pageIndex: 1,
+        pageSize: 25,
+        companyId: undefined,
+        sort: undefined,
+        searchOne: undefined,
+        searchTwo: undefined,
+        searchThree: undefined,
+    };
+
+    backShipperFilterQuery = {
+        stateIds: undefined,
+        long: undefined,
+        lat: undefined,
+        distance: undefined,
         pageIndex: 1,
         pageSize: 25,
         companyId: undefined,
@@ -233,18 +253,20 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res) {
-                    this.backFilterQuery.pageIndex = 1;
+                    if (this.selectedTab === 'active') {
+                        this.backBrokerFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                        const searchEvent = tableSearch(
+                            res,
+                            this.backBrokerFilterQuery
+                        );
 
-                    if (searchEvent) {
-                        if (searchEvent.action === 'api') {
-                            this.brokerAndShipperBackFilter(
-                                searchEvent.query,
-                                true
-                            );
-                        } else if (searchEvent.action === 'store') {
-                            this.sendCustomerData();
+                        if (searchEvent) {
+                            if (searchEvent.action === 'api') {
+                                this.brokerBackFilter(searchEvent.query, true);
+                            } else if (searchEvent.action === 'store') {
+                                this.sendCustomerData();
+                            }
                         }
                     }
                 }
@@ -476,11 +498,17 @@ export class CustomerTableComponent
         this.tableData[1].length = brokerShipperCount.shipper;
     }
 
-    // Broker And Shipper Back Filter Query
-    brokerAndShipperBackFilter(
+    // Broker Back Filter Query
+    brokerBackFilter(
         filter: {
             ban: number | undefined;
             dnu: number | undefined;
+            invoiceAgeingFrom: number | undefined;
+            invoiceAgeingTo: number | undefined;
+            availableCreditFrom: number | undefined;
+            availableCreditTo: number | undefined;
+            revenueFrom: number | undefined;
+            revenueTo: number | undefined;
             pageIndex: number;
             pageSize: number;
             companyId: number | undefined;
@@ -492,81 +520,102 @@ export class CustomerTableComponent
         isSearch?: boolean,
         isShowMore?: boolean
     ) {
-        // Broker Api Call
-        if (this.selectedTab === 'active') {
-            this.brokerService
-                .getBrokerList(
-                    filter.ban,
-                    filter.dnu,
-                    filter.pageIndex,
-                    filter.pageSize,
-                    filter.companyId,
-                    filter.sort,
-                    filter.searchOne,
-                    filter.searchTwo,
-                    filter.searchThree
-                )
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((brokers: GetBrokerListResponse) => {
-                    if (!isShowMore) {
-                        this.viewData = brokers.pagination.data;
+        this.brokerService
+            .getBrokerList(
+                filter.ban,
+                filter.dnu,
+                filter.invoiceAgeingFrom,
+                filter.invoiceAgeingTo,
+                filter.availableCreditFrom,
+                filter.availableCreditTo,
+                filter.revenueFrom,
+                filter.revenueTo,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((brokers: GetBrokerListResponse) => {
+                if (!isShowMore) {
+                    this.viewData = brokers.pagination.data;
 
-                        this.viewData = this.viewData.map((data: any) => {
-                            return this.mapBrokerData(data);
-                        });
+                    this.viewData = this.viewData.map((data: any) => {
+                        return this.mapBrokerData(data);
+                    });
 
-                        if (isSearch) {
-                            this.tableData[0].length = brokers.pagination.count;
-                        }
-                    } else {
-                        let newData = [...this.viewData];
-
-                        brokers.pagination.data.map((data: any) => {
-                            newData.push(this.mapBrokerData(data));
-                        });
-
-                        this.viewData = [...newData];
+                    if (isSearch) {
+                        this.tableData[0].length = brokers.pagination.count;
                     }
-                });
-        }
-        // Shipper Api Call
-        else {
-            this.shipperService
-                .getShippersList(
-                    filter.ban,
-                    filter.dnu,
-                    filter.pageIndex,
-                    filter.pageSize,
-                    filter.companyId,
-                    filter.sort,
-                    filter.searchOne,
-                    filter.searchTwo,
-                    filter.searchThree
-                )
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((shippers: ShipperListResponse) => {
-                    if (!isShowMore) {
-                        this.viewData = shippers.pagination.data;
+                } else {
+                    let newData = [...this.viewData];
 
-                        this.viewData = this.viewData.map((data: any) => {
-                            return this.mapShipperData(data);
-                        });
+                    brokers.pagination.data.map((data: any) => {
+                        newData.push(this.mapBrokerData(data));
+                    });
 
-                        if (isSearch) {
-                            this.tableData[1].length =
-                                shippers.pagination.count;
-                        }
-                    } else {
-                        let newData = [...this.viewData];
+                    this.viewData = [...newData];
+                }
+            });
+    }
 
-                        shippers.pagination.data.map((data: any) => {
-                            newData.push(this.mapBrokerData(data));
-                        });
+    // Shipper Back Filter Query
+    shipperBackFilter(
+        filter: {
+            stateIds?: Array<number> | undefined;
+            long: number | undefined;
+            lat: number | undefined;
+            distance: number | undefined;
+            pageIndex: number;
+            pageSize: number;
+            companyId: number | undefined;
+            sort: string | undefined;
+            searchOne: string | undefined;
+            searchTwo: string | undefined;
+            searchThree: string | undefined;
+        },
+        isSearch?: boolean,
+        isShowMore?: boolean
+    ) {
+        this.shipperService
+            .getShippersList(
+                filter.stateIds,
+                filter.long,
+                filter.lat,
+                filter.distance,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((shippers: ShipperListResponse) => {
+                if (!isShowMore) {
+                    this.viewData = shippers.pagination.data;
 
-                        this.viewData = [...newData];
+                    this.viewData = this.viewData.map((data: any) => {
+                        return this.mapShipperData(data);
+                    });
+
+                    if (isSearch) {
+                        this.tableData[1].length = shippers.pagination.count;
                     }
-                });
-        }
+                } else {
+                    let newData = [...this.viewData];
+
+                    shippers.pagination.data.map((data: any) => {
+                        newData.push(this.mapShipperData(data));
+                    });
+
+                    this.viewData = [...newData];
+                }
+            });
     }
 
     // Toolbar Actions
@@ -590,7 +639,8 @@ export class CustomerTableComponent
         else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
 
-            this.backFilterQuery.pageIndex = 1;
+            this.backBrokerFilterQuery.pageIndex = 1;
+            this.backShipperFilterQuery.pageIndex = 1;
 
             this.sendCustomerData();
         } else if (event.action === 'view-mode') {
@@ -602,11 +652,19 @@ export class CustomerTableComponent
     onTableHeadActions(event: any) {
         if (event.action === 'sort') {
             if (event.direction) {
-                this.backFilterQuery.sort = event.direction;
+                if (this.selectedTab === 'active') {
+                    this.backBrokerFilterQuery.sort = event.direction;
 
-                this.backFilterQuery.pageIndex = 1;
+                    this.backBrokerFilterQuery.pageIndex = 1;
 
-                this.brokerAndShipperBackFilter(this.backFilterQuery);
+                    this.brokerBackFilter(this.backBrokerFilterQuery);
+                } else {
+                    this.backShipperFilterQuery.sort = event.direction;
+
+                    this.backShipperFilterQuery.pageIndex = 1;
+
+                    this.shipperBackFilter(this.backShipperFilterQuery);
+                }
             } else {
                 this.sendCustomerData();
             }
@@ -619,9 +677,19 @@ export class CustomerTableComponent
         this.DetailsDataService.setNewData(event.data);
         // Edit Call
         if (event.type === 'show-more') {
-            this.backFilterQuery.pageIndex++;
+            if (this.selectedTab === 'active') {
+                this.backBrokerFilterQuery.pageIndex++;
 
-            this.brokerAndShipperBackFilter(this.backFilterQuery, false, true);
+                this.brokerBackFilter(this.backBrokerFilterQuery, false, true);
+            } else {
+                this.backShipperFilterQuery.pageIndex++;
+
+                this.shipperBackFilter(
+                    this.backShipperFilterQuery,
+                    false,
+                    true
+                );
+            }
         } else if (event.type === 'edit-cutomer-or-shipper') {
             // Edit Broker Call Modal
             if (this.selectedTab === 'active') {
@@ -661,8 +729,7 @@ export class CustomerTableComponent
                         next: () => {
                             this.deleteDataById(event.id);
                         },
-                        error: () => {
-                        },
+                        error: () => {},
                     });
             }
             // Delete Shipper Call
@@ -676,8 +743,7 @@ export class CustomerTableComponent
                         next: () => {
                             this.deleteDataById(event.id);
                         },
-                        error: () => {
-                        },
+                        error: () => {},
                     });
             }
         }
@@ -762,7 +828,7 @@ export class CustomerTableComponent
 
             return data;
         });
-        
+
         this.ref.detectChanges();
 
         const inetval = setInterval(() => {
@@ -832,29 +898,40 @@ export class CustomerTableComponent
         this.mapsComponent.clickedMarker(data[0]);
 
         this.mapListData.map((item) => {
-            if ( item.id == data[0] ) {
+            if (item.id == data[0]) {
                 let itemIndex = this.mapsComponent.viewData.findIndex(
                     (item2) => item2.id === item.id
                 );
 
-                if ( itemIndex > -1 && this.mapsComponent.viewData[itemIndex].showMarker ) {
-                    item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+                if (
+                    itemIndex > -1 &&
+                    this.mapsComponent.viewData[itemIndex].showMarker
+                ) {
+                    item.isSelected =
+                        this.mapsComponent.viewData[itemIndex].isSelected;
                 } else {
                     this.mapsComponent.clusterMarkers.map((cluster) => {
                         var clusterData = cluster.pagination.data;
-            
+
                         let clusterItemIndex = clusterData.findIndex(
                             (item2) => item2.id === data[0]
                         );
-            
-                        if ( clusterItemIndex > -1 ) {
-                            if ( !data[1] ) {
-                                if ( !cluster.isSelected || (cluster.isSelected && cluster.detailedInfo?.id == data[0]) ) {
+
+                        if (clusterItemIndex > -1) {
+                            if (!data[1]) {
+                                if (
+                                    !cluster.isSelected ||
+                                    (cluster.isSelected &&
+                                        cluster.detailedInfo?.id == data[0])
+                                ) {
                                     this.mapsComponent.clickedCluster(cluster);
                                 }
-            
-                                if ( cluster.isSelected ) {
-                                    this.mapsComponent.showClusterItemInfo([cluster, clusterData[clusterItemIndex]]);
+
+                                if (cluster.isSelected) {
+                                    this.mapsComponent.showClusterItemInfo([
+                                        cluster,
+                                        clusterData[clusterItemIndex],
+                                    ]);
                                 }
                             }
 

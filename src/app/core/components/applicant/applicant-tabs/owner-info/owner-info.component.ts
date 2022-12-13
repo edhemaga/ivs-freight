@@ -289,13 +289,16 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
         this.ownerInfoForm
             .get('bank')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe(async (value) => {
-                this.isBankSelected =
-                    await this.bankVerificationService.onSelectBank(
-                        this.selectedBank ? this.selectedBank.name : value,
-                        this.ownerInfoForm.get('routingNumber'),
-                        this.ownerInfoForm.get('accountNumber')
-                    );
+            .subscribe(() => {
+                const timeout = setTimeout(async () => {
+                    this.isBankSelected =
+                        await this.bankVerificationService.onSelectBank(
+                            this.selectedBank ? this.selectedBank.name : null,
+                            this.ownerInfoForm.get('routingNumber'),
+                            this.ownerInfoForm.get('accountNumber')
+                        );
+                    clearTimeout(timeout);
+                }, 100);
             });
     }
 
