@@ -1,0 +1,100 @@
+.gps-progress-holder{
+    height: 26px;
+    padding: 2px;
+    align-items: center;
+    .gps-progress-img{
+        svg-icon{
+            svg{
+                width: 22px;
+                height: 22px;
+                path{
+                    fill: #3074D3;
+                }
+            }
+        }
+    }
+
+    .gps-progress-text{
+        height: 26px;
+        padding: 0 10px 0 8px;
+        flex: 1;
+        .mileage-gps{
+            height: 12px;
+            
+            justify-content: space-between;
+
+            &:last-child{
+                align-items: center;
+            }
+        
+            .mileages, .mileage-normal{
+                font-size: 11px;
+                color: #2F2F2F;
+                font-weight: 400;
+
+                &.mileages{
+                    font-weight: 600;
+                }
+            }
+
+            .gps-timeline{
+                position: relative;
+                margin-right: 12px;
+                flex: 1;
+                height: 2px;
+                background-color: #DADADA;
+
+
+                .gps-stop{
+                    position: absolute;
+                    top: 50%;
+                    width: 4px;
+                    height: 6px;
+                    border-radius: 1px;
+                    background-color: #AAAAAA;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+
+                    &.pickup-stop{
+                        background-color: #80CBBA;
+                    }
+
+                    &.delivery-stop{
+                        background-color: #EF5350;
+                    }
+                }
+
+                .current-pos{
+                    position: absolute;
+                    top: 50%;
+                    left: 0%;
+
+                    transform: translateY(-50%);
+                    cursor: pointer;
+
+                    svg-icon{
+                        svg{
+                            width: 10px;
+                            height: 10px;
+                            rect:first-child{
+                                fill: #EF5350;
+                            }
+
+                            rect:last-child{
+                                fill: #ffffff;
+                            }
+                        }
+                    }
+                }
+
+                .gps-timeline-active{
+                    position: absolute;
+                    height: 2px;
+                    left: 0;
+                    width: 0%;
+                    background-color: #6C6C6C;
+                }
+            }
+        }
+    }
+}

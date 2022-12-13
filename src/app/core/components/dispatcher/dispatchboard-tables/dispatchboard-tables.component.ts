@@ -640,6 +640,7 @@ export class DispatchboardTablesComponent implements OnInit {
 
     tooltip: any;
     toggleHos(tooltip: NgbTooltip, data: any, id: number) {
+        console.log(data);
         this.hosHelper.hos = [];
         if (!data.hos || data.hos.length === 0) {
             data = {

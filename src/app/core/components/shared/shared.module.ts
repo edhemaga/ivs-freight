@@ -118,6 +118,7 @@ import { PayrollStatusesComponent } from './payroll-statuses/payroll-statuses.co
 import { TaCheckboxCardComponent } from './ta-checkbox-card/ta-checkbox-card.component';
 import { LoadModalProgressBarComponent } from '../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
 import { LoadStopComponent } from '../modals/load-modal/load-stop/load-stop.component';
+import { GpsProgressbarComponent } from './gps-progressbar/gps-progressbar.component';
 
 export function playerFactory() {
     return import('lottie-web');
@@ -221,6 +222,7 @@ export function playerFactory() {
         TaCustomCardV2Component,
         PayrollStatusesComponent,
         TaCheckboxCardComponent,
+        GpsProgressbarComponent,
     ],
     imports: [
         CommonModule,
@@ -305,6 +307,7 @@ export function playerFactory() {
         TaUploadDropzoneComponent,
         TaInputArrowsComponent,
         CustomScrollbarComponent,
+        GpsProgressbarComponent,
 
         DetailsDropdownComponent,
         TaReCardComponent,
