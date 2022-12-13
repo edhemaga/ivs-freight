@@ -693,7 +693,7 @@
                     </div>
                     <div *ngIf="indx !== 0" class="load-broker-progress-status">
                         <app-load-modal-progress-bar
-                            [totalAmount]="10000"
+                            [totalAmount]="option.creditLimit"
                             [availableCredit]="
                                 option.availableCredit
                                     ? option.availableCredit

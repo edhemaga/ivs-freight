@@ -80,7 +80,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         },
         {
             id: 'poboxphysical',
-            name: 'PO Box Physical',
+            name: 'PO Box',
             checked: false,
         },
     ];
@@ -93,7 +93,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         },
         {
             id: 'poboxbilling',
-            name: 'PO Box Billing',
+            name: 'PO Box',
             checked: false,
         },
     ];
