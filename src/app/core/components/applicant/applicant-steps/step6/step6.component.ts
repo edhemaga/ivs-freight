@@ -18,6 +18,8 @@ import {
     isFormValueNotEqual,
     isAnyRadioInArrayUnChecked,
     filterUnceckedRadiosId,
+    isAnyValueInArrayFalse,
+    isEveryValueInArrayTrue,
 } from '../../state/utils/utils';
 
 import {
@@ -75,7 +77,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.FEEDBACK;
 
     public subscription: Subscription;
 
@@ -88,7 +90,6 @@ export class Step6Component implements OnInit, OnDestroy {
     public applicantId: number;
 
     public stepValues: any;
-    public lastItemStepValues: any;
     public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
@@ -575,7 +576,6 @@ export class Step6Component implements OnInit, OnDestroy {
                     datesMessage,
                     isUnableToPreformJobDescriptionValid,
                     unableToPreformJobDescriptionMessage,
-                    id,
                 } = stepValues.educationReview;
 
                 this.stepHasReviewValues = true;
@@ -736,32 +736,30 @@ export class Step6Component implements OnInit, OnDestroy {
                 };
             }
 
-            const lastContactsItem =
-                emergencyContacts[emergencyContacts.length - 1];
+            const contactItems = [...emergencyContacts];
 
-            console.log('lastContactsItem', lastContactsItem);
-
-            const lastContactsItemReview =
-                lastContactsItem.emergencyContactReview;
-
-            console.log('lastContactsItemReview', lastContactsItemReview);
+            const contactItemsReview = contactItems.map(
+                (item) => item.emergencyContactReview
+            );
 
             this.stepFeedbackValues = {
                 ...this.stepFeedbackValues,
-                lastContactsItemReview: {
-                    isNameValid: lastContactsItemReview
-                        ? lastContactsItemReview?.isNameValid
-                        : true,
-                    isPhoneValid: lastContactsItemReview
-                        ? lastContactsItemReview?.isPhoneValid
-                        : true,
-                    isRelationshipValid: lastContactsItemReview
-                        ? lastContactsItemReview?.isRelationshipValid
-                        : true,
-                    emergencyContactMessage: lastContactsItemReview
-                        ? lastContactsItemReview.emergencyContactMessage
-                        : null,
-                },
+                contactItemsReview: contactItemsReview.map((item, index) => {
+                    return {
+                        isNameValid: item.isNameValid,
+                        isPhoneValid: item.isPhoneValid,
+                        isRelationshipValid: item.isRelationshipValid,
+                        emergencyContactMessage:
+                            index === contactItemsReview.length - 1
+                                ? item.emergencyContactMessage
+                                : item.commonMessage,
+                        hasIncorrectValue: isAnyValueInArrayFalse([
+                            item.isNameValid,
+                            item.isPhoneValid,
+                            item.isRelationshipValid,
+                        ]),
+                    };
+                }),
             };
 
             const hasIncorrectValue = isAnyPropertyInObjectFalse(
@@ -772,10 +770,7 @@ export class Step6Component implements OnInit, OnDestroy {
                 this.startUpperFormFeedbackValueChangesMonitoring();
             }
 
-            console.log('this.stepFeedbackValues', this.stepFeedbackValues);
-
             this.stepValues = stepValues;
-            this.lastItemStepValues = lastContactsItem;
         }
     }
 
@@ -1331,63 +1326,99 @@ export class Step6Component implements OnInit, OnDestroy {
 
     public startBottomFormFeedbackValueChangesMonitoring(): void {
         if (this.stepFeedbackValues) {
-            const filteredContactIncorrectValues = Object.keys(
-                this.stepFeedbackValues?.lastContactsItemReview
-            ).reduce((o, key) => {
-                this.stepFeedbackValues.lastContactsItemReview[key] === false &&
-                    (o[key] =
-                        this.stepFeedbackValues?.lastContactsItemReview[key]);
+            let incorrectValuesArray = [];
 
-                return o;
-            }, {});
+            for (
+                let i = 0;
+                i < this.stepFeedbackValues.contactItemsReview.length;
+                i++
+            ) {
+                const filteredContactIncorrectValues = Object.keys(
+                    this.stepFeedbackValues?.contactItemsReview[i]
+                ).reduce((o, key) => {
+                    this.stepFeedbackValues.contactItemsReview[i][key] ===
+                        false &&
+                        (o[key] =
+                            this.stepFeedbackValues?.contactItemsReview[i][
+                                key
+                            ]);
 
-            const contactHasIncorrectValues = Object.keys(
-                filteredContactIncorrectValues
-            ).length;
+                    return o;
+                }, {});
 
-            if (contactHasIncorrectValues) {
-                const filteredFieldsWithIncorrectValues = Object.keys(
+                const contactHasIncorrectValues = Object.keys(
                     filteredContactIncorrectValues
-                ).reduce((o, key) => {
-                    const keyName = key
-                        .replace('Valid', '')
-                        .replace('is', '')
-                        .trim()
-                        .toLowerCase();
+                ).length;
 
-                    const match = Object.keys(this.lastItemStepValues)
-                        .filter((item) => item.toLowerCase().includes(keyName))
-                        .pop();
+                if (contactHasIncorrectValues) {
+                    const filteredFieldsWithIncorrectValues = Object.keys(
+                        filteredContactIncorrectValues
+                    ).reduce((o, key) => {
+                        const keyName = key
+                            .replace('Valid', '')
+                            .replace('is', '')
+                            .trim()
+                            .toLowerCase();
 
-                    o[keyName] = this.lastItemStepValues[match];
+                        const match = Object.keys(
+                            this.stepValues.emergencyContacts[i]
+                        )
+                            .filter((item) =>
+                                item.toLowerCase().includes(keyName)
+                            )
+                            .pop();
 
-                    return o;
-                }, {});
+                        o[keyName] =
+                            this.stepValues.emergencyContacts[i][match];
 
-                const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
-                    filteredFieldsWithIncorrectValues
-                ).reduce((o, key) => {
-                    const keyName = key;
+                        return o;
+                    }, {});
 
-                    const match = Object.keys(this.lastItemStepValues)
-                        .filter((item) => item.toLowerCase().includes(keyName))
-                        .pop();
+                    const filteredUpdatedFieldsWithIncorrectValues =
+                        Object.keys(filteredFieldsWithIncorrectValues).reduce(
+                            (o, key) => {
+                                const keyName = key;
 
-                    o[keyName] = this.lastContactCard[match];
+                                const match = Object.keys(
+                                    this.stepValues.emergencyContacts[i]
+                                )
+                                    .filter((item) =>
+                                        item.toLowerCase().includes(keyName)
+                                    )
+                                    .pop();
 
-                    return o;
-                }, {});
+                                o[keyName] =
+                                    i ===
+                                    this.stepFeedbackValues.contactItemsReview
+                                        .length -
+                                        1
+                                        ? this.lastContactCard[match]
+                                        : this.contactsArray[i][match];
 
-                const isFormNotEqual = isFormValueNotEqual(
-                    filteredFieldsWithIncorrectValues,
-                    filteredUpdatedFieldsWithIncorrectValues
-                );
+                                return o;
+                            },
+                            {}
+                        );
 
-                if (isFormNotEqual) {
-                    this.isBottomFormFeedbackValueUpdated = true;
-                } else {
-                    this.isBottomFormFeedbackValueUpdated = false;
+                    const isFormNotEqual = isFormValueNotEqual(
+                        filteredFieldsWithIncorrectValues,
+                        filteredUpdatedFieldsWithIncorrectValues
+                    );
+
+                    incorrectValuesArray = [
+                        ...incorrectValuesArray,
+                        isFormNotEqual,
+                    ];
                 }
+            }
+
+            const isCardsValueUpdated =
+                isEveryValueInArrayTrue(incorrectValuesArray);
+
+            if (isCardsValueUpdated) {
+                this.isBottomFormFeedbackValueUpdated = true;
+            } else {
+                this.isBottomFormFeedbackValueUpdated = false;
             }
         }
     }

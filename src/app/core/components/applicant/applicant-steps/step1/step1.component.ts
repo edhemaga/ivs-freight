@@ -41,7 +41,6 @@ import {
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
@@ -69,7 +68,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public personalInfoRadios: any;
 
@@ -89,6 +88,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     public subscription: Subscription;
 
     public stepValues: any;
+    public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
     public companyName: string;
@@ -377,7 +377,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         private inputService: TaInputService,
         private applicantActionsService: ApplicantActionsService,
         private bankVerificationService: BankVerificationService,
-        private notificationService: NotificationService,
         private applicantStore: ApplicantStore,
         private applicantQuery: ApplicantQuery
     ) {}
@@ -457,7 +456,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
                 this.applicantId = res.id;
 
-                this.patchStepValues(res.personalInfo);
+                if (res.personalInfo) {
+                    this.patchStepValues(res.personalInfo);
+
+                    this.stepHasValues = true;
+                }
             });
     }
 
@@ -495,7 +498,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             isAgreement: isAgreed,
             firstName,
             lastName,
-            dateOfBirth: convertDateFromBackend(doB),
+            dateOfBirth: doB ? convertDateFromBackend(doB) : null,
             phone,
             email,
             ssn,
@@ -719,7 +722,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
                     this.previousAddressesReviewId = [
                         ...this.previousAddressesReviewId,
-                        selectedPreviousAddressReview.id,
+                        selectedPreviousAddressReview?.id,
                     ];
 
                     let isPreviousAddressValid: any = true;
@@ -1788,9 +1791,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                           )
                           .map((item, index) => {
                               return {
-                                  id: stepPreviousAddresses[index]?.id
-                                      ? stepPreviousAddresses[index]?.id
-                                      : null,
+                                  ...((this.stepHasValues ||
+                                      this.selectedMode ===
+                                          SelectedMode.FEEDBACK) && {
+                                      id: stepPreviousAddresses[index]?.id
+                                          ? stepPreviousAddresses[index]?.id
+                                          : null,
+                                      previousAddressReview:
+                                          stepPreviousAddresses[index]
+                                              ?.previousAddressReview
+                                              ? stepPreviousAddresses[index]
+                                                    ?.previousAddressReview
+                                              : null,
+                                  }),
                                   address: {
                                       ...item,
                                   },
@@ -1814,15 +1827,38 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             .filter((_, index) => index !== this.selectedAddresses.length - 1)
             .map((item, index) => {
                 return {
-                    id: stepPreviousAddresses[index]?.id,
+                    ...((this.stepHasValues ||
+                        this.selectedMode === SelectedMode.FEEDBACK) && {
+                        id: stepPreviousAddresses[index]?.id,
+                        previousAddressReview:
+                            stepPreviousAddresses[index]?.previousAddressReview,
+                    }),
                     address: item,
-                    previousAddressReview:
-                        stepPreviousAddresses[index]?.previousAddressReview,
                 };
             });
 
-        this.applicantActionsService
-            .updatePersonalInfo(saveData)
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.APPLICANT &&
+                !this.stepHasValues
+            ) {
+                return this.applicantActionsService.createPersonalInfo(
+                    saveData
+                );
+            }
+
+            if (
+                (this.selectedMode === SelectedMode.APPLICANT &&
+                    this.stepHasValues) ||
+                this.selectedMode === SelectedMode.FEEDBACK
+            ) {
+                return this.applicantActionsService.updatePersonalInfo(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {

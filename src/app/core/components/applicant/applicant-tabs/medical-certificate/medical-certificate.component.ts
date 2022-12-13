@@ -33,7 +33,7 @@ import { UploadFile } from '../../../shared/ta-upload-files/ta-upload-file/ta-up
 export class MedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public medicalCertificateForm: FormGroup;
 

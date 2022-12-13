@@ -57,7 +57,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.FEEDBACK;
 
     public drugTestRadios: any;
 
@@ -316,6 +316,12 @@ export class Step8Component implements OnInit, OnDestroy {
                 sapAddressUnit: sapAddress.addressUnit,
                 isAgreement: certifyInformation,
             });
+
+            /*  this.drugAlcoholStatementForm
+            .get('motorCarrier')
+            .setErrors({ invalid: true });
+
+        console.log(this.drugAlcoholStatementForm.get('motorCarrier').errors); */
 
             this.selectedAddress = address;
             this.selectedSapAddress = sapAddress;
@@ -612,6 +618,8 @@ export class Step8Component implements OnInit, OnDestroy {
             ).length;
 
             if (hasIncorrectValues) {
+                console.log('filteredIncorrectValues', filteredIncorrectValues);
+
                 this.subscription = this.drugAlcoholStatementForm.valueChanges
                     .pipe(takeUntil(this.destroy$))
                     .subscribe((updatedFormValues) => {

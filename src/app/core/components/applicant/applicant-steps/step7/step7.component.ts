@@ -65,7 +65,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.FEEDBACK;
 
     public subscription: Subscription;
 
@@ -336,6 +336,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
             const anotherEmployerValue =
                 this.sevenDaysHosForm.get('anotherEmployer').value;
+
             const intendToWorkAnotherEmployerValue = this.sevenDaysHosForm.get(
                 'intendToWorkAnotherEmployer'
             ).value;

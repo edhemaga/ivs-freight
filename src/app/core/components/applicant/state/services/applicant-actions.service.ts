@@ -61,6 +61,7 @@ import {
     CreatePspAuthReviewCommand,
     CreateMedicalCertificateReviewCommand,
     CreateCdlCardReviewCommand,
+    CreatePersonalInfoCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -86,11 +87,11 @@ export class ApplicantActionsService {
         return this.applicantService.apiApplicantAdminAcceptPost(data);
     }
 
-    /*   public createPersonalInfo(
-        data: UpdatePersonalInfoCommand
-    ): Observable<object> {
-        return this.applicantService.apiApplicantPersonalPut(data);
-    } */
+    public createPersonalInfo(
+        data: CreatePersonalInfoCommand
+    ): Observable<CreateResponse> {
+        return this.applicantService.apiApplicantPersonalPost(data);
+    }
 
     public createWorkExperience(
         data: CreateWorkExperienceCommand

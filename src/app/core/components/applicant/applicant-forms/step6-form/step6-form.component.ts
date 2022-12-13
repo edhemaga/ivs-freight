@@ -160,7 +160,10 @@ export class Step6FormComponent
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
 
-                if (this.selectedMode === SelectedMode.APPLICANT) {
+                if (
+                    this.selectedMode === SelectedMode.APPLICANT ||
+                    this.selectedMode === SelectedMode.FEEDBACK
+                ) {
                     this.startValueChangesMonitoring();
                 }
             }, 50);
