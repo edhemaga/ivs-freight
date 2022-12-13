@@ -1,8 +1,8 @@
 export const environment = {
-    API_ENDPOINT: 'https://localhost:7226',
+    API_ENDPOINT: 'https://api-stage.carrierassist.io',
     APPLICANT_API_ENDPOINT: 'https://applicants-api.truckassist.io/api',
     GPS_ENDPOINT: 'https://apiex.truckassist.io',
-    production: false,
+    staging: true,
     perPage: 1000,
     page: 1,
     dateFormat: {
