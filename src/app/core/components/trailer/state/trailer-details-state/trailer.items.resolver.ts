@@ -73,7 +73,7 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
         if (this.trailerDetailListQuery.hasEntity(trid)) {
             console.log("-iffff--")
             return this.trailerDetailListQuery.selectEntity(trid).pipe(
-                tap((trailerResponse: TrailerResponse) => {
+                tap((trailerResponse: any) => {
                     console.log('trailerResponse---', trailerResponse);
                     this.trailerDetailListStore.add(trailerResponse);
                     this.trailerDetailStore.set([trailerResponse]);
@@ -88,7 +88,7 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
                     console.log('--here-----')
                     return of('No trailer data for...' + trailer_id);
                 }),
-                tap((trailerReponse: TrailerResponse) => {
+                tap((trailerReponse: any) => {
                     console.log('--here-----')
                     this.trailerDetailListStore.add(trailerReponse);
                     this.trailerDetailStore.set([trailerReponse]);

@@ -338,48 +338,47 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     }
 
     public truckConf(data: any) {
-        //console.log('---data---', data);
         this.DetailsDataService.setNewData(data);
         this.truckDetailsConfig = [
-            // {
-            //     id: 0,
-            //     name: 'Truck Details',
-            //     template: 'general',
-            //     data: data,
-            //     status: data?.status == 0 ? true : false,
-            // },
-            // {
-            //     id: 1,
-            //     name: 'Registration',
-            //     template: 'registration',
-            //     length: data?.registrations?.length
-            //         ? data.registrations.length
-            //         : 0,
-            //     data: data.registrations,
-            //     status: data?.status == 0 ? true : false,
-            // },
-            // {
-            //     id: 2,
-            //     name: 'FHWA Inspection',
-            //     template: 'fhwa-insepction',
-            //     length: data?.inspections?.length ? data.inspections.length : 0,
-            //     data: data.inspections,
-            //     status: data?.status == 0 ? true : false,
-            // },
-            // {
-            //     id: 3,
-            //     name: 'Title',
-            //     template: 'title',
-            //     length: data?.titles?.length ? data.titles.length : 0,
-            //     data: data.titles,
-            //     status: data?.status == 0 ? true : false,
-            // },
-            // {
-            //     id: 4,
-            //     name: 'Lease / Purchase',
-            //     template: 'lease-purchase',
-            //     length: 1,
-            // },
+            {
+                 id: 0,
+                 name: 'Truck Details',
+                 template: 'general',
+                 data: data,
+                 status: data?.status == 0 ? true : false,
+             },
+            {
+                 id: 1,
+                 name: 'Registration',
+                 template: 'registration',
+                 length: data?.registrations?.length
+                     ? data.registrations.length
+                     : 0,
+                 data: data.registrations,
+                 status: data?.status == 0 ? true : false,
+            },
+            {
+                id: 2,
+                name: 'FHWA Inspection',
+                template: 'fhwa-insepction',
+                length: data?.inspections?.length ? data.inspections.length : 0,
+                data: data.inspections,
+                status: data?.status == 0 ? true : false,
+            },
+            {
+                id: 3,
+                name: 'Title',
+                template: 'title',
+                length: data?.titles?.length ? data.titles.length : 0,
+                data: data.titles,
+                status: data?.status == 0 ? true : false,
+            },
+            {
+                id: 4,
+                name: 'Lease / Purchase',
+                template: 'lease-purchase',
+                length: 1,
+            },
         ];
         this.truckId = data?.id ? data.id : null;
     }

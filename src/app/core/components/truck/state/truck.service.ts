@@ -179,7 +179,7 @@ export class TruckTService implements OnDestroy {
                 const subTruck = this.getTruckById(this.truckId, true)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (truck: TruckResponse | any) => {
+                        next: (truck: any) => {
                             this.tableService.sendActionAnimation({
                                 animation: 'delete',
                                 data: truck,
