@@ -12,13 +12,7 @@ import {
     Validators,
     AbstractControl,
 } from '@angular/forms';
-import {
-    Component,
-    Input,
-    OnDestroy,
-    OnInit,
-    ViewEncapsulation,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 
@@ -32,10 +26,7 @@ import { ITaInput } from '../../shared/ta-input/ta-input.config';
 import { Subject, takeUntil } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
-import {
-    convertDateToBackend,
-    convertThousanSepInNumber,
-} from '../../../utils/methods.calculations';
+import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
 @Component({
@@ -43,7 +34,6 @@ import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/
     templateUrl: './load-modal.component.html',
     styleUrls: ['./load-modal.component.scss'],
     providers: [ModalService, FormService],
-    encapsulation: ViewEncapsulation.None,
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -71,18 +61,20 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         },
     ];
 
-    public selectedExtraStopTab: number[] = [];
-    public stopTabs = [
-        {
-            id: 3,
-            name: 'Pickup',
-            checked: true,
-        },
-        {
-            id: 4,
-            name: 'Delivery',
-            checked: false,
-        },
+    public selectExtraStopType: number[] = [];
+    public typeOfExtraStops = [
+        [
+            {
+                id: 3000,
+                name: 'Pickup',
+                checked: true,
+            },
+            {
+                id: 4000,
+                name: 'Delivery',
+                checked: false,
+            },
+        ],
     ];
 
     public selectedStopTimePickup: number = 5;
@@ -99,7 +91,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         },
     ];
 
-    public selectedStopTimeDelivery: number = 5;
+    public selectedStopTimeDelivery: number = 7;
     public stopTimeTabsDelivery = [
         {
             id: 7,
@@ -111,6 +103,21 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             name: 'APPT',
             checked: false,
         },
+    ];
+
+    public stopTimeTabsExtraStops = [
+        [
+            {
+                id: 7900,
+                name: 'Open',
+                checked: true,
+            },
+            {
+                id: 9000,
+                name: 'APPT',
+                checked: false,
+            },
+        ],
     ];
 
     public loadNumber: string;
@@ -148,8 +155,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public originBrokerContacts: any[] = [];
 
     // Shipper Labels
-    public originShipperContacts: any[] = [];
     public labelsShipperContacts: any[] = [];
+    public originShipperContacts: any[] = [];
 
     // Requirements LAbels
     public labelsTruckReq: any[] = [];
@@ -186,7 +193,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedTrailerLength: any = null;
     public selectedYear: any = null;
 
-    // Load Details Labels
+    // Load Stop Items Details Labels
     public labelsloadDetailsUnits: any[] = [];
     public labelsLoadDetailsStackable: any[] = [];
     public labelsLoadDetailsTarps: any[] = [];
@@ -304,6 +311,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedExtraStopShipperContact: any[] = [];
     public loadExtraStopsShipperInputConfig: ITaInput[] = [];
     public loadExtraStopsShipperContactsInputConfig: ITaInput[] = [];
+    public loadExtraStopsDateRange: any[] = [];
+    public selectedExtraStopTime: any[] = [];
 
     // Billing
     public additionalBillingTypes: any[] = [];
@@ -381,6 +390,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             // ----------------
             // Pickup Stop
             pickupStop: ['Pickup'],
+            pickupStopOrder: [1],
             pickupShipper: [null, Validators.required],
             pickupShipperContactId: [null],
             pickupDateFrom: [null, Validators.required],
@@ -391,6 +401,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             // -------------
             // Delivery Stop
             deliveryStop: ['Delivery'],
+            deliveryStopOrder: [1],
             deliveryShipper: [null, Validators.required],
             deliveryShipperContactId: [null],
             deliveryDateFrom: [null, Validators.required],
@@ -432,7 +443,33 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'stop-tab': {
-                this.selectedExtraStopTab[indx] = event.id;
+                this.selectExtraStopType[indx] = event.id;
+                this.loadExtraStops()
+                    .at(indx)
+                    .get('stopType')
+                    .patchValue(
+                        event.id.toString().startsWith('4')
+                            ? 'Delivery'
+                            : 'Pickup'
+                    );
+
+                const obj = this.numberOfLoadExtraStops();
+
+                if (event.id.toString().startsWith('4')) {
+                    this.loadExtraStops()
+                        .at(indx)
+                        .get('stopOrder')
+                        .patchValue(obj.numberOfDeliveries);
+                    this.loadForm
+                        .get('deliveryStopOrder')
+                        .patchValue(obj.numberOfDeliveries + 1);
+                } else {
+                    this.loadExtraStops()
+                        .at(indx)
+                        .get('stopOrder')
+                        .patchValue(obj.numberOfPickups);
+                }
+
                 break;
             }
             case 'stop-time-pickup': {
@@ -451,7 +488,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'stop-time-delivery': {
                 this.selectedStopTimeDelivery = event.id;
-                if (this.selectedStopTimePickup === 6) {
+                if (this.selectedStopTimePickup === 8) {
                     this.inputService.changeValidators(
                         this.loadForm.get('deliveryTimeTo'),
                         false
@@ -461,6 +498,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         this.loadForm.get('deliveryTimeTo')
                     );
                 }
+                break;
+            }
+            case 'extra-stops-time': {
+                this.selectedExtraStopTime[indx] = event.id;
+                console.log(this.selectedExtraStopTime[indx]);
                 break;
             }
             default: {
@@ -625,7 +667,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                                 },
                                 {
                                     value: this.selectedBroker.availableCredit,
-                                    second_value: 10000,
+                                    second_value:
+                                        this.selectedBroker.creditLimit,
                                     logoName: null,
                                     isProgressBar: true,
                                 },
@@ -736,7 +779,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'shipper-pickup': {
                 this.selectedPickupShipper = event;
-                console.log('selected shipper: ', this.selectedPickupShipper);
                 if (this.selectedPickupShipper) {
                     this.loadPickupShipperInputConfig = {
                         ...this.loadPickupShipperInputConfig,
@@ -778,10 +820,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.selectedPickupShipperContact =
                         this.labelsShipperContacts[1].contacts[0];
 
-                    console.log(
-                        this.selectedPickupShipper,
-                        this.selectedPickupShipperContact
-                    );
                     this.loadForm
                         .get('pickupShipperContactId')
                         .patchValue(this.selectedPickupShipperContact.fullName);
@@ -827,8 +865,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         multipleInputValues: null,
                         isDisabled: true,
                     };
-
-                    console.log(this.loadPickupShipperContactsInputConfig);
                 }
                 break;
             }
@@ -865,10 +901,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
-
             case 'shipper-delivery': {
                 this.selectedDeliveryShipper = event;
-                console.log('selected shipper: ', this.selectedDeliveryShipper);
                 if (this.selectedDeliveryShipper) {
                     this.loadDeliveryShipperInputConfig = {
                         ...this.loadDeliveryShipperInputConfig,
@@ -993,7 +1027,181 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
+            case 'shipper-extra-stops': {
+                this.selectedExtraStopShipper[index] = event;
 
+                // 4. If Load Stop Exist (shipper), just return
+                const existLoadStop = this.selectedExtraStopShipper.find(
+                    (item) => {
+                        console.log('exist item: ', item);
+                        return (
+                            item?.id === this.selectedPickupShipper?.id ||
+                            item.get('shipperId').value ===
+                                this.selectedDeliveryShipper?.id
+                        );
+                    }
+                );
+                console.log(existLoadStop);
+                if (existLoadStop) {
+                    setTimeout(() => {
+                        this.loadExtraStops()
+                            .at(index)
+                            .get('shipperId')
+                            .patchValue(null);
+                        this.selectedExtraStopShipper[index] = null;
+
+                        this.loadExtraStopsShipperInputConfig[index] = {
+                            ...this.loadExtraStopsShipperInputConfig[index],
+                            multipleInputValues: null,
+                        };
+                        return;
+                    }, 30);
+                }
+
+                setTimeout(() => {
+                    // Select Extra Stop Shipper
+                    if (this.selectedExtraStopShipper[index]) {
+                        console.log('nastavio je dalje');
+                        this.loadExtraStopsShipperInputConfig[index] = {
+                            ...this.loadExtraStopsShipperInputConfig[index],
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedExtraStopShipper[
+                                            index
+                                        ].businessName,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedExtraStopShipper[
+                                            index
+                                        ].address,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedExtraStopShipper[
+                                            index
+                                        ].loadsCount,
+                                        logoName: null,
+                                        isCounter: true,
+                                    },
+                                ],
+                                customClass: 'load-shipper',
+                            },
+                        };
+
+                        this.labelsShipperContacts =
+                            this.originShipperContacts.map((el) => {
+                                return {
+                                    ...el,
+                                    contacts: el?.contacts?.filter(
+                                        (subEl) =>
+                                            subEl.shipperId ===
+                                            this.selectedExtraStopShipper[index]
+                                                .id
+                                    ),
+                                };
+                            });
+
+                        this.selectedExtraStopShipperContact[index] =
+                            this.labelsShipperContacts[1].contacts[0];
+
+                        this.loadExtraStops()
+                            .at(index)
+                            .get('shipperContactId')
+                            .patchValue(
+                                this.selectedExtraStopShipperContact[index]
+                                    ?.fullName
+                            );
+
+                        this.loadExtraStopsShipperContactsInputConfig[index] = {
+                            ...this.loadExtraStopsShipperContactsInputConfig[
+                                index
+                            ],
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this
+                                            .selectedExtraStopShipperContact[
+                                            index
+                                        ].name,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this
+                                            .selectedExtraStopShipperContact[
+                                            index
+                                        ].originalPhone,
+                                        second_value: `#${this.selectedExtraStopShipperContact[index].phoneExtension}`,
+                                        logoName: null,
+                                    },
+                                ],
+                                customClass: 'load-shipper-contact',
+                            },
+                            isDisabled: false,
+                        };
+                    }
+                    // Restart value if clear
+                    else {
+                        this.labelsShipperContacts = this.originShipperContacts;
+
+                        this.loadExtraStopsShipperInputConfig[index] = {
+                            ...this.loadExtraStopsShipperInputConfig[index],
+                            multipleInputValues: null,
+                        };
+
+                        this.selectedExtraStopShipperContact[index] = null;
+
+                        this.loadExtraStops()
+                            .at(index)
+                            .get('shipperContactId')
+                            .patchValue(null);
+
+                        this.loadExtraStopsShipperContactsInputConfig[index] = {
+                            ...this.loadExtraStopsShipperContactsInputConfig[
+                                index
+                            ],
+                            multipleInputValues: null,
+                            isDisabled: true,
+                        };
+                    }
+                }, 50);
+
+                break;
+            }
+            case 'shipper-contact-extra-stops': {
+                if (event) {
+                    this.selectedExtraStopShipperContact[index] = {
+                        ...event,
+                        name: event?.name?.concat(' ', event?.phone),
+                    };
+                    console.log(event);
+                    this.selectedExtraStopShipperContact[index] = {
+                        ...this.selectedExtraStopShipperContact[index],
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: event.name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: event.originalPhone,
+                                    second_value: `#${event.phoneExtension}`,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass: 'load-shipper-contact',
+                        },
+                        isDisabled: false,
+                    };
+                } else {
+                    this.selectedExtraStopShipperContact[index] = {
+                        ...this.selectedExtraStopShipperContact[index],
+                        multipleInputValues: null,
+                    };
+                }
+                break;
+            }
             case 'truck-req': {
                 this.selectedTruckReq = event;
                 break;
@@ -1083,18 +1291,22 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             case 'first-pickup': {
                 this.isActivePickupStop = event;
                 this.isActiveDeliveryStop = false;
+                this.loadExtraStops().controls.filter((item) => {
+                    item.get('openClose').patchValue(false);
+                });
                 break;
             }
             case 'first-delivery': {
                 this.isActiveDeliveryStop = event;
                 this.isActivePickupStop = false;
+                this.loadExtraStops().controls.filter((item) => {
+                    item.get('openClose').patchValue(false);
+                });
                 break;
             }
             case 'extra-stops': {
-                this.selectedExtraStopShipperContact[indx].openClose = event;
-
                 this.closeAllLoadExtraStopExceptActive(
-                    this.loadExtraStops[indx]
+                    this.loadExtraStops().at(indx)
                 );
 
                 break;
@@ -1103,10 +1315,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
-
-        this.loadExtraStops().controls.filter((item) => {
-            item.get('openClose').patchValue(false);
-        });
     }
 
     // Billing Payment
@@ -1227,7 +1435,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     // Load Stop
     public createNewExtraStop() {
         // 1. Set Config For Shipper in Extra Stop
-        this.loadExtraStopsShipperInputConfig[this.loadExtraStops.length] = {
+        this.loadExtraStopsShipperInputConfig.push({
+            id: `${this.loadExtraStops().length}-extra-stop-shipper`,
             name: 'Input Dropdown',
             type: 'text',
             multipleLabel: {
@@ -1239,12 +1448,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             blackInput: true,
             textTransform: 'uppercase',
             dropdownWidthClass: 'w-col-606',
-        };
+        });
 
         // 2. Set Config For Shipper Contacts in Extra Stop
-        this.loadExtraStopsShipperContactsInputConfig[
-            this.loadExtraStops.length
-        ] = {
+        this.loadExtraStopsShipperContactsInputConfig.push({
+            id: `${this.loadExtraStops().length}-extra-stop-shipper-contact`,
             name: 'Input Dropdown',
             type: 'text',
             multipleLabel: {
@@ -1256,82 +1464,76 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             blackInput: true,
             textTransform: 'capitalize',
             dropdownWidthClass: 'w-col-344',
-        };
+        });
 
-        // If Load Stop Exist , just return
-        // const existLoadStop = this.loadExtraStops().controls.find(
-        //     (item) =>
-        //         item.get('shipperId').value ===
-        //         this.selectedPickupShipper.id
-        // );
+        // 3. Selected arrays
+        this.selectedExtraStopShipper.push(null);
+        this.selectedExtraStopShipperContact.push(null);
+        this.selectExtraStopType.push(null);
+        this.loadExtraStopsDateRange.push(false);
+        this.selectedExtraStopTime.push(false);
 
-        // if (existLoadStop) {
-        //     this.loadForm
-        //         .get('dateFrom')
-        //         .patchValue(existLoadStop.get('dateFrom').value, {
-        //             emitEvent: false,
-        //         });
-
-        //     this.loadForm
-        //         .get('dateTo')
-        //         .patchValue(existLoadStop.get('dateTo').value, {
-        //             emitEvent: false,
-        //         });
-
-        //     this.loadForm
-        //         .get('timeFrom')
-        //         .patchValue(existLoadStop.get('timeFrom').value, {
-        //             emitEvent: false,
-        //         });
-
-        //     this.loadForm
-        //         .get('timeTo')
-        //         .patchValue(existLoadStop.get('timeTo').value, {
-        //             emitEvent: false,
-        //         });
-
-        //     return;
-        // }
+        if (!this.selectedPickupShipper) {
+            return;
+        }
 
         this.addLoadExtraStop();
     }
 
     public addLoadExtraStop() {
-        // if (!this.selectedPickupShipper) {
-        //     return;
-        // }
-
         this.loadExtraStops().push(this.newLoadExtraStop());
 
-        this.drawStopOnMap();
+        // this.drawStopOnMap();
 
         this.closeAllLoadExtraStopExceptActive(
             this.loadExtraStops().controls[this.loadExtraStops().length - 1]
         );
 
-        if (
-            this.loadForm.get('dateFrom').value ||
-            this.loadForm.get('dateTo').value ||
-            this.loadForm.get('timeFrom').value ||
-            this.loadForm.get('timeTo').value
-        ) {
-            this.loadForm
-                .get('dateFrom')
-                .patchValue(null, { emitEvent: false });
-            this.loadForm.get('dateTo').patchValue(null, { emitEvent: false });
-            this.loadForm
-                .get('timeFrom')
-                .patchValue(null, { emitEvent: false });
-            this.loadForm.get('timeTo').patchValue(null, { emitEvent: false });
-        }
+        setTimeout(() => {
+            const obj = this.numberOfLoadExtraStops();
+
+            this.loadExtraStops()
+                .at(this.loadExtraStops().length - 1)
+                .get('stopOrder')
+                .patchValue(obj.numberOfPickups);
+
+            if (this.loadExtraStops().length > 1) {
+                this.typeOfExtraStops.push([
+                    {
+                        id: 3000 + this.loadExtraStops().length,
+                        name: 'Pickup',
+                        checked: true,
+                    },
+                    {
+                        id: 4000 + this.loadExtraStops().length,
+                        name: 'Delivery',
+                        checked: false,
+                    },
+                ]);
+
+                this.stopTimeTabsExtraStops.push([
+                    {
+                        id: 7900 + this.loadExtraStops().length,
+                        name: 'Open',
+                        checked: true,
+                    },
+                    {
+                        id: 9000 + this.loadExtraStops().length,
+                        name: 'APPT',
+                        checked: false,
+                    },
+                ]);
+            }
+        }, 100);
     }
 
     public newLoadExtraStop(): FormGroup {
         return this.formBuilder.group({
             id: [null],
             stopType: ['Pickup'],
-            stopOrder: [this.loadExtraStops().length + 1],
+            stopOrder: [null],
             shipperId: [null],
+            shipperContactId: [null],
             dateFrom: [null],
             dateTo: [null],
             timeType: [null],
@@ -1341,7 +1543,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             depart: [null],
             longitude: [null], //this.selectedPickupShipper.longitude],
             latitude: [null], //this.selectedPickupShipper.latitude],
-            // From legs
             legMiles: [null],
             legHours: [null],
             legMinutes: [null],
@@ -1349,15 +1550,30 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             totalLegHours: [null],
             totalLegMinutes: [null],
             // -----------
-            // Shipper Contact information
-            address: [null],
-            contact: [null],
-            phone: [null],
-            extensionPhone: [null],
-            // -----------
             items: this.formBuilder.array([]),
             openClose: [true],
         });
+    }
+
+    public numberOfLoadExtraStops(): {
+        numberOfPickups: number;
+        numberOfDeliveries: number;
+    } {
+        let pickups: number = 1;
+        let deliveries: number = 0;
+
+        this.loadExtraStops().controls.forEach((item) => {
+            if (item.get('stopType').value === 'Pickup') {
+                pickups++;
+            } else {
+                deliveries++;
+            }
+        });
+
+        return {
+            numberOfPickups: pickups,
+            numberOfDeliveries: deliveries,
+        };
     }
 
     public loadExtraStops(): FormArray {
@@ -1366,6 +1582,19 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     public removeLoadExtraStop(index: number) {
         this.loadExtraStops().removeAt(index);
+        // 1. Set Config For Shipper in Extra Stop
+        this.loadExtraStopsShipperInputConfig.splice(index, 1);
+
+        // 2. Set Config For Shipper Contacts in Extra Stop
+        this.loadExtraStopsShipperContactsInputConfig.splice(index, 1);
+
+        // 3. Selected arrays
+        this.selectedExtraStopShipper.splice(index, 1);
+        this.selectedExtraStopShipperContact.splice(index, 1);
+        this.selectExtraStopType.splice(index, 1);
+        this.loadExtraStopsDateRange.splice(index, 1);
+        this.selectedExtraStopTime.splice(index, 1);
+
         this.loadStopRoutes[0] = {
             routeColor: '#919191',
             stops: this.loadExtraStops()
@@ -1383,30 +1612,86 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public closeAllLoadExtraStopExceptActive(loadStop: AbstractControl) {
         this.isActivePickupStop = false;
         this.isActiveDeliveryStop = false;
+        if (this.loadExtraStops().length) {
+            this.loadExtraStops().controls.map((item) => {
+                if (
+                    item.get('stopOrder').value ===
+                    loadStop.get('stopOrder').value
+                ) {
+                    item.get('openClose').patchValue(true);
+                } else {
+                    item.get('openClose').patchValue(false);
+                }
+            });
+        }
+    }
 
-        this.loadExtraStops().controls.map((item) => {
-            if (
-                item.get('stopOrder').value === loadStop.get('stopOrder').value
-            ) {
-                item.get('openClose').patchValue(true);
-            } else {
-                item.get('openClose').patchValue(false);
+    // ********************** Load Stop Items **********************
+
+    public createNewRowInStopItems(action: string, loadStopIndex?: number) {
+        switch (action) {
+            case 'pickup': {
+                this.loadPickupStopItems().push(this.newLoadStopItems());
+                break;
             }
-        });
+            case 'delivery': {
+                this.loadDeliveryStopItems().push(this.newLoadStopItems());
+                break;
+            }
+            case 'extra-stop': {
+                this.loadExtraStopItems(loadStopIndex).push(
+                    this.newLoadStopItems()
+                );
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
-    // Load Stop Details (Items)
-    public addLoadStopDetails(id: number) {
-        this.loadStopsDetails(id).push(this.newLoadStopDetails());
+    public loadPickupStopItems(): FormArray {
+        return this.loadForm.get('pickupItems') as FormArray;
     }
 
-    public loadStopsDetails(loadStopIndex: number): FormArray {
+    public loadDeliveryStopItems(): FormArray {
+        return this.loadForm.get('deliveryItems') as FormArray;
+    }
+
+    public loadExtraStopItems(loadStopIndex: number): FormArray {
         return this.loadExtraStops()
             .at(loadStopIndex)
             .get('items') as FormArray;
     }
 
-    public newLoadStopDetails(): FormGroup {
+    public removeLoadStopItem(
+        action: string,
+        loadStopIndex?: number,
+        loadStopItemIndex?: number
+    ) {
+        switch (action) {
+            case 'pickup': {
+                this.loadPickupStopItems().removeAt(loadStopIndex);
+                break;
+            }
+            case 'delivery': {
+                this.loadDeliveryStopItems().removeAt(loadStopIndex);
+                break;
+            }
+            case 'extra-stop': {
+                this.loadExtraStopItems(loadStopIndex).removeAt(
+                    loadStopItemIndex
+                );
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    // Common fields
+    public newLoadStopItems(): FormGroup {
         return this.formBuilder.group({
             id: [null],
             bolNumber: [null],
@@ -1430,31 +1715,25 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public removeLoadStopDetails(
-        loadStopIndex: number,
-        loadStopDetailsIndex: number
-    ) {
-        this.loadStopsDetails(loadStopIndex).removeAt(loadStopDetailsIndex);
-    }
+    // ********************** end **********************
 
     // Draw Routes on Map
     public drawStopOnMap() {
+        console.log('selected shipper: ', this.selectedPickupShipper);
         this.routingService
             .apiRoutingGet(
                 this.loadExtraStops().length > 1
                     ? JSON.stringify(
-                          this.loadExtraStops()
-                              .controls.filter((item) => item)
-                              .map((item) => {
-                                  return {
-                                      longitude: item.get('longitude').value,
-                                      latitude: item.get('latitude').value,
-                                  };
-                              })
+                          this.loadExtraStops().controls.map((item) => {
+                              return {
+                                  longitude: item.get('longitude').value,
+                                  latitude: item.get('latitude').value,
+                              };
+                          })
                       )
                     : JSON.stringify({
-                          longitude: this.selectedPickupShipper.longitude,
-                          latitude: this.selectedPickupShipper.latitude,
+                          longitude: this.selectedPickupShipper?.longitude,
+                          latitude: this.selectedPickupShipper?.latitude,
                       })
             )
             .pipe(debounceTime(1000), takeUntil(this.destroy$))
@@ -1556,7 +1835,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
-                    console.log('dropdown load: ', res);
                     this.loadNumber = res.loadNumber;
 
                     // Dispatcher
@@ -1761,8 +2039,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ...item,
                             name: item?.businessName,
                             address: item.address?.city
-                                .concat(', ', item.address?.stateShortName)
-                                .concat(' ', item.address?.zipCode),
+                                ?.concat(', ', item.address?.stateShortName)
+                                ?.concat(' ', item.address?.zipCode),
                             logoName:
                                 item.status === 0
                                     ? 'ic_load-broker-closed-business.svg'
@@ -1845,9 +2123,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getLoadById(id: number) {
-        console.log('id: ', id);
-    }
+    private getLoadById(id: number) {}
 
     private addLoad() {
         const { ...form } = this.loadForm.value;
@@ -1923,9 +2199,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private updateLoad(id: number) {
-        console.log(id);
-    }
+    private updateLoad(id: number) {}
 
     private saveLoadTemplate() {
         const { ...form } = this.loadForm.value;
@@ -2039,102 +2313,102 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
 
     private premmapedStops() {
-        const timeTypePicked = null;
-        // this.stopTimeTabs.find(
-        //     (item) => item.id === this.selectedStopTime
-        // ).name;
-        return this.loadExtraStops().controls.map((item, index) => {
-            return {
-                id: null,
-                stopOrder: item.get('stopOrder').value,
-                shipperId: item.get('shipperId').value,
-                dateFrom: convertDateToBackend(item.get('dateFrom').value),
-                dateTo: item.get('dateTo').value
-                    ? convertDateToBackend(item.get('dateTo').value)
-                    : null,
-                timeType:
-                    timeTypePicked === 'APPT' ? 'Appointment' : timeTypePicked,
-                timeFrom: item.get('timeFrom').value,
-                timeTo: item.get('timeTo').value,
-                arrive: null,
-                depart: null,
-                // From legs
-                legMiles: item.get('legMiles').value,
-                legHours: item.get('legHours').value,
-                legMinutes: item.get('legMinutes').value,
-                totalLegMiles: item.get('totalLegMiles').value,
-                totalLegHours: item.get('totalLegHours').value,
-                totalLegMinutes: item.get('totalLegMinutes').value,
-                // -----------
-                // Shipper Contact information
-                // address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
-                // contact: ['A. Djordjevic'],
-                // phone: ['(987) 654-3210'],
-                // extensionPhone: ['444'],
-                // -----------
-                items: this.loadStopsDetails(index).controls.map(
-                    (item, index) => {
-                        return {
-                            id: item.get('id').value,
-                            bolNumber: item.get('bolNumber').value,
-                            appointmentNumber:
-                                item.get('appointmentNumber').value,
-                            pickupNumber: item.get('pickupNumber').value,
-                            poNumber: item.get('poNumber').value,
-                            sealNumber: item.get('sealNumber').value,
-                            weight: item.get('weight').value
-                                ? convertThousanSepInNumber(
-                                      item.get('weight').value
-                                  )
-                                : null,
-                            length: item.get('length').value
-                                ? convertThousanSepInNumber(
-                                      item.get('length').value
-                                  )
-                                : null,
-                            height: item.get('height').value
-                                ? convertThousanSepInNumber(
-                                      item.get('height').value
-                                  )
-                                : null,
-                            temperature: item.get('temperature').value
-                                ? convertThousanSepInNumber(
-                                      item.get('temperature').value
-                                  )
-                                : null,
-                            description: item.get('description').value,
-                            code: item.get('code').value,
-                            quantity: item.get('quantity').value
-                                ? convertThousanSepInNumber(
-                                      item.get('quantity').value
-                                  )
-                                : null,
-                            units: this.selectedLoadDetailsUnits[index]
-                                ? this.selectedLoadDetailsUnits[index].id
-                                : null,
-                            secure: this.selectedLoadDetailsStrapChain[index]
-                                ? this.selectedLoadDetailsStrapChain[index].id
-                                : null,
-                            tarp: this.selectedLoadDetailsTarps[index]
-                                ? this.selectedLoadDetailsTarps[index].id
-                                : null,
-                            stackable: this.selectedLoadDetailsStackable[index]
-                                ? this.selectedLoadDetailsStackable[index].id
-                                : null,
-                            driverAssist: this.selectedLoadDetailsDriverAssis[
-                                index
-                            ]
-                                ? this.selectedLoadDetailsDriverAssis[index].id
-                                : null,
-                            hazardousMaterialId: this
-                                .selectedLoadDetailsHazardous[index]
-                                ? this.selectedLoadDetailsHazardous[index].id
-                                : null,
-                        };
-                    }
-                ),
-            };
-        });
+        // const timeTypePicked = null;
+        // // this.stopTimeTabs.find(
+        // //     (item) => item.id === this.selectedStopTime
+        // // ).name;
+        // return this.loadExtraStops().controls.map((item, index) => {
+        //     return {
+        //         id: null,
+        //         stopOrder: item.get('stopOrder').value,
+        //         shipperId: item.get('shipperId').value,
+        //         dateFrom: convertDateToBackend(item.get('dateFrom').value),
+        //         dateTo: item.get('dateTo').value
+        //             ? convertDateToBackend(item.get('dateTo').value)
+        //             : null,
+        //         timeType:
+        //             timeTypePicked === 'APPT' ? 'Appointment' : timeTypePicked,
+        //         timeFrom: item.get('timeFrom').value,
+        //         timeTo: item.get('timeTo').value,
+        //         arrive: null,
+        //         depart: null,
+        //         // From legs
+        //         legMiles: item.get('legMiles').value,
+        //         legHours: item.get('legHours').value,
+        //         legMinutes: item.get('legMinutes').value,
+        //         totalLegMiles: item.get('totalLegMiles').value,
+        //         totalLegHours: item.get('totalLegHours').value,
+        //         totalLegMinutes: item.get('totalLegMinutes').value,
+        //         // -----------
+        //         // Shipper Contact information
+        //         // address: ['3905 Elliot Ave, Springdale, GA 72762, USA'],
+        //         // contact: ['A. Djordjevic'],
+        //         // phone: ['(987) 654-3210'],
+        //         // extensionPhone: ['444'],
+        //         // -----------
+        //         items: this.loadStopsDetails(index).controls.map(
+        //             (item, index) => {
+        //                 return {
+        //                     id: item.get('id').value,
+        //                     bolNumber: item.get('bolNumber').value,
+        //                     appointmentNumber:
+        //                         item.get('appointmentNumber').value,
+        //                     pickupNumber: item.get('pickupNumber').value,
+        //                     poNumber: item.get('poNumber').value,
+        //                     sealNumber: item.get('sealNumber').value,
+        //                     weight: item.get('weight').value
+        //                         ? convertThousanSepInNumber(
+        //                               item.get('weight').value
+        //                           )
+        //                         : null,
+        //                     length: item.get('length').value
+        //                         ? convertThousanSepInNumber(
+        //                               item.get('length').value
+        //                           )
+        //                         : null,
+        //                     height: item.get('height').value
+        //                         ? convertThousanSepInNumber(
+        //                               item.get('height').value
+        //                           )
+        //                         : null,
+        //                     temperature: item.get('temperature').value
+        //                         ? convertThousanSepInNumber(
+        //                               item.get('temperature').value
+        //                           )
+        //                         : null,
+        //                     description: item.get('description').value,
+        //                     code: item.get('code').value,
+        //                     quantity: item.get('quantity').value
+        //                         ? convertThousanSepInNumber(
+        //                               item.get('quantity').value
+        //                           )
+        //                         : null,
+        //                     units: this.selectedLoadDetailsUnits[index]
+        //                         ? this.selectedLoadDetailsUnits[index].id
+        //                         : null,
+        //                     secure: this.selectedLoadDetailsStrapChain[index]
+        //                         ? this.selectedLoadDetailsStrapChain[index].id
+        //                         : null,
+        //                     tarp: this.selectedLoadDetailsTarps[index]
+        //                         ? this.selectedLoadDetailsTarps[index].id
+        //                         : null,
+        //                     stackable: this.selectedLoadDetailsStackable[index]
+        //                         ? this.selectedLoadDetailsStackable[index].id
+        //                         : null,
+        //                     driverAssist: this.selectedLoadDetailsDriverAssis[
+        //                         index
+        //                     ]
+        //                         ? this.selectedLoadDetailsDriverAssis[index].id
+        //                         : null,
+        //                     hazardousMaterialId: this
+        //                         .selectedLoadDetailsHazardous[index]
+        //                         ? this.selectedLoadDetailsHazardous[index].id
+        //                         : null,
+        //                 };
+        //             }
+        //         ),
+        //     };
+        // });
     }
 
     /* Comments */
@@ -2220,10 +2494,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.commentsService
             .deleteCommentById(comments.data)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     public updateComment(comments: ReviewCommentModal) {
@@ -2237,10 +2508,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.commentsService
             .updateComment(comment)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     public identity(index: number, item: any): number {

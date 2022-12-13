@@ -8,8 +8,6 @@ export class LoadDatetimeRangePipe implements PipeTransform {
         if (secondValue) {
             return `${value} - ${secondValue}`;
         }
-
         return value;
-        return null;
     }
 }

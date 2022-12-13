@@ -364,7 +364,7 @@
         display: grid;
         grid-template-columns: 229px 115px 48px;
         align-items: center;
-        padding-top: 6px;
+        height: 24px;
 
         span {
             &:nth-child(1) {
@@ -381,6 +381,8 @@
             &:nth-child(3) {
                 .multiple-input-text {
                     &.counter {
+                        max-width: -webkit-max-content;
+                        max-width: -moz-max-content;
                         max-width: max-content;
                         height: 18px;
                         border-radius: 30px;
@@ -405,11 +407,16 @@
 
     &.load-broker-contact,
     &.load-shipper-contact {
-        grid-template-columns: 143px 144px;
+        grid-template-columns: 148px 131px;
         align-items: center;
         grid-column-gap: 10px;
         -moz-column-gap: 10px;
         column-gap: 10px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        height: 25px;
 
         span {
             span {
@@ -425,6 +432,11 @@
         -moz-column-gap: 2px;
         column-gap: 2px;
         padding-right: 25px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        height: 25px;
 
         span {
             &:nth-child(2),
@@ -445,6 +457,8 @@
             &:nth-child(3) {
                 .multiple-input-text {
                     &.counter {
+                        max-width: -webkit-max-content;
+                        max-width: -moz-max-content;
                         max-width: max-content;
                         height: 18px;
                         border-radius: 30px;
@@ -454,6 +468,8 @@
                         color: #919191;
                         background-color: rgb(145, 145, 145, 0.2);
                         padding: 1px 6px;
+                        position: relative;
+                        bottom: 1px;
 
                         &.counter-focus {
                             color: #6f9ee0;

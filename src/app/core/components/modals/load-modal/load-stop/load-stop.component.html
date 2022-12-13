@@ -3,6 +3,7 @@
         class="load-stop-header-bar"
         [ngClass]="{
             'first-or-last': firstOrLast && _isCardOpen,
+            'origin-destination-no-filled': !shipper,
             'not-active-stop': !_isCardOpen
         }"
         (click)="toggleStop()"
@@ -13,7 +14,25 @@
         >
             <p>{{ stopNumber }}</p>
         </div>
-        <div class="load-stop-header-content">
+        <div
+            class="load-stop-header-content"
+            [ngClass]="{ 'extra-stop': !firstOrLast && !shipper }"
+        >
+            <div
+                *ngIf="!shipper"
+                class="origin-destination-no-filled-container"
+            >
+                <p>
+                    {{
+                        firstOrLast
+                            ? isDelivery
+                                ? 'DESTINATION'
+                                : 'ORIGIN'
+                            : 'EXTRA STOP'
+                    }}
+                    <span>*</span>
+                </p>
+            </div>
             <div class="load-stop-inner-content">
                 <div
                     *ngIf="shipper"
@@ -61,11 +80,19 @@
                 </div>
             </div>
 
-            <svg-icon
+            <div
                 *ngIf="!firstOrLast"
                 class="load-stop-header-remove-btn"
-                [src]="'assets/svg/common/load/ic_load_stop_delete.svg'"
-            ></svg-icon>
+                ngbTooltip
+                mainTooltip="Delete"
+                position="top"
+                tooltipBackground="#EF5350"
+                (click)="deleteStop()"
+            >
+                <svg-icon
+                    [src]="'assets/svg/common/load/ic_load_stop_delete.svg'"
+                ></svg-icon>
+            </div>
         </div>
     </div>
     <div
