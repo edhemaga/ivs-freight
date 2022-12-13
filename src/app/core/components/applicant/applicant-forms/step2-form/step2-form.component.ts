@@ -773,6 +773,7 @@ export class Step2FormComponent
             .subscribe((updatedFormValues) => {
                 const {
                     id,
+                    reviewId,
                     employerAddress,
                     applicantId,
                     isEditingWorkHistory,

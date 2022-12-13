@@ -312,8 +312,9 @@ export class Step6Component implements OnInit, OnDestroy {
     public previousFormValuesOnReview: any;
 
     public stepFeedbackValues: any;
-    public isUpperFormFeedbackValueUpdated: boolean = true;
-    public isBottomFormFeedbackValueUpdated: boolean = true;
+    public feedbackValuesToPatch: any;
+    public isUpperFormFeedbackValueUpdated: boolean = false;
+    public isBottomFormFeedbackValueUpdated: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -736,9 +737,7 @@ export class Step6Component implements OnInit, OnDestroy {
                 };
             }
 
-            const contactItems = [...emergencyContacts];
-
-            const contactItemsReview = contactItems.map(
+            const contactItemsReview = emergencyContacts.map(
                 (item) => item.emergencyContactReview
             );
 
@@ -771,6 +770,11 @@ export class Step6Component implements OnInit, OnDestroy {
             }
 
             this.stepValues = stepValues;
+
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues.contactItemsReview[
+                    this.stepFeedbackValues?.contactItemsReview.length - 1
+                ];
         }
     }
 
@@ -908,6 +912,13 @@ export class Step6Component implements OnInit, OnDestroy {
         }
 
         this.formValuesToPatch = selectedContact;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues.contactItemsReview[
+                    this.selectedContactIndex
+                ];
+        }
     }
 
     public getContactFormValues(event: any): void {
@@ -948,6 +959,13 @@ export class Step6Component implements OnInit, OnDestroy {
         this.selectedContactIndex = -1;
 
         this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues.contactItemsReview[
+                    this.stepFeedbackValues.contactItemsReview.length - 1
+                ];
+        }
     }
 
     public saveEditedContact(event: any): void {
@@ -963,6 +981,13 @@ export class Step6Component implements OnInit, OnDestroy {
         this.selectedContactIndex = -1;
 
         this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues.contactItemsReview[
+                    this.stepFeedbackValues.contactItemsReview.length - 1
+                ];
+        }
     }
 
     public onGetFormStatus(status: string): void {
@@ -1320,6 +1345,8 @@ export class Step6Component implements OnInit, OnDestroy {
                             this.isUpperFormFeedbackValueUpdated = false;
                         }
                     });
+            } else {
+                this.isUpperFormFeedbackValueUpdated = true;
             }
         }
     }
@@ -1335,22 +1362,24 @@ export class Step6Component implements OnInit, OnDestroy {
             ) {
                 const filteredContactIncorrectValues = Object.keys(
                     this.stepFeedbackValues?.contactItemsReview[i]
-                ).reduce((o, key) => {
-                    this.stepFeedbackValues.contactItemsReview[i][key] ===
-                        false &&
-                        (o[key] =
-                            this.stepFeedbackValues?.contactItemsReview[i][
-                                key
-                            ]);
+                )
+                    .filter((item) => item !== 'hasIncorrectValue')
+                    .reduce((o, key) => {
+                        this.stepFeedbackValues.contactItemsReview[i][key] ===
+                            false &&
+                            (o[key] =
+                                this.stepFeedbackValues?.contactItemsReview[i][
+                                    key
+                                ]);
 
-                    return o;
-                }, {});
+                        return o;
+                    }, {});
 
-                const contactHasIncorrectValues = Object.keys(
+                const hasIncorrectValues = Object.keys(
                     filteredContactIncorrectValues
                 ).length;
 
-                if (contactHasIncorrectValues) {
+                if (hasIncorrectValues) {
                     const filteredFieldsWithIncorrectValues = Object.keys(
                         filteredContactIncorrectValues
                     ).reduce((o, key) => {

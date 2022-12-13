@@ -247,6 +247,7 @@ export class Step6FormComponent
             .subscribe((updatedFormValues) => {
                 const {
                     id,
+                    reviewId,
                     isEditingContact,
                     emergencyContactReview,
                     ...previousFormValues

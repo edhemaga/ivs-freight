@@ -854,12 +854,7 @@
                             [isEditing]="isEditing"
                             [formValuesToPatch]="formValuesToPatch"
                             [isReviewingCard]="isReviewingCard"
-                            [stepFeedbackValues]="
-                                stepFeedbackValues?.contactItemsReview[
-                                    stepFeedbackValues?.contactItemsReview
-                                        .length - 1
-                                ]
-                            "
+                            [stepFeedbackValues]="feedbackValuesToPatch"
                             (formValuesEmitter)="getContactFormValues($event)"
                             (cancelFormEditingEmitter)="
                                 cancelContactEditing($event)
@@ -891,11 +886,7 @@
                     [markFormInvalid]="markFormInvalid"
                     [formValuesToPatch]="formValuesToPatch"
                     [isReviewingCard]="isReviewingCard"
-                    [stepFeedbackValues]="
-                        stepFeedbackValues?.contactItemsReview[
-                            stepFeedbackValues?.contactItemsReview.length - 1
-                        ]
-                    "
+                    [stepFeedbackValues]="feedbackValuesToPatch"
                     (formValuesEmitter)="getContactFormValues($event)"
                     (formStatusEmitter)="onGetFormStatus($event)"
                     (markInvalidEmitter)="onMarkInvalidEmit($event)"

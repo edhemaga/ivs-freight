@@ -327,6 +327,7 @@ export class Step3FormComponent
                     licenseReview,
                     expDate,
                     id,
+                    reviewId,
                     ...previousFormValues
                 } = this.formValuesToPatch;
 

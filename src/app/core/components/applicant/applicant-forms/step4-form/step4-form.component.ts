@@ -63,6 +63,7 @@ export class Step4FormComponent
     @Input() isReviewingCard: boolean;
     @Input() displayRadioRequiredNote: boolean = false;
     @Input() checkIsHazmatSpillNotChecked: boolean;
+    @Input() stepFeedbackValues?: any;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -159,7 +160,10 @@ export class Step4FormComponent
     ngAfterViewInit(): void {
         this.hazmatSpillRadios = this.component.buttons;
 
-        if (this.selectedMode === SelectedMode.APPLICANT) {
+        if (
+            this.selectedMode === SelectedMode.APPLICANT ||
+            this.selectedMode === SelectedMode.FEEDBACK
+        ) {
             this.accidentForm.statusChanges
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
@@ -202,10 +206,7 @@ export class Step4FormComponent
             this.selectedMode = changes.mode?.currentValue;
         }
 
-        if (
-            this.selectedMode === SelectedMode.APPLICANT ||
-            this.selectedMode === SelectedMode.FEEDBACK
-        ) {
+        if (this.selectedMode === SelectedMode.APPLICANT) {
             if (
                 changes.markFormInvalid?.previousValue !==
                 changes.markFormInvalid?.currentValue
@@ -233,21 +234,19 @@ export class Step4FormComponent
         }
 
         if (
-            this.selectedMode === SelectedMode.REVIEW ||
-            this.selectedMode === SelectedMode.APPLICANT
+            changes.formValuesToPatch?.previousValue !==
+            changes.formValuesToPatch?.currentValue
         ) {
-            if (
-                changes.formValuesToPatch?.previousValue !==
-                changes.formValuesToPatch?.currentValue
-            ) {
-                setTimeout(() => {
-                    this.patchForm(changes.formValuesToPatch.currentValue);
+            setTimeout(() => {
+                this.patchForm(changes.formValuesToPatch.currentValue);
 
-                    if (this.selectedMode === SelectedMode.APPLICANT) {
-                        this.startValueChangesMonitoring();
-                    }
-                }, 50);
-            }
+                if (
+                    this.selectedMode === SelectedMode.APPLICANT ||
+                    this.selectedMode === SelectedMode.FEEDBACK
+                ) {
+                    this.startValueChangesMonitoring();
+                }
+            }, 50);
         }
     }
 
@@ -373,6 +372,7 @@ export class Step4FormComponent
                     isEditingAccident,
                     accidentItemReview,
                     id,
+                    reviewId,
                     ...previousFormValues
                 } = this.formValuesToPatch;
 

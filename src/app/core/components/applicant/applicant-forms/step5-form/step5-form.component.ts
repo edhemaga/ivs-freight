@@ -55,6 +55,7 @@ export class Step5FormComponent
     @Input() formValuesToPatch?: any;
     @Input() markFormInvalid?: boolean;
     @Input() isReviewingCard: boolean;
+    @Input() stepFeedbackValues?: any;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -129,7 +130,10 @@ export class Step5FormComponent
     }
 
     ngAfterViewInit(): void {
-        if (this.selectedMode === SelectedMode.APPLICANT) {
+        if (
+            this.selectedMode === SelectedMode.APPLICANT ||
+            this.selectedMode === SelectedMode.FEEDBACK
+        ) {
             this.violationsForm.statusChanges
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
@@ -175,21 +179,19 @@ export class Step5FormComponent
         }
 
         if (
-            this.selectedMode === SelectedMode.REVIEW ||
-            this.selectedMode === SelectedMode.APPLICANT
+            changes.formValuesToPatch?.previousValue !==
+            changes.formValuesToPatch?.currentValue
         ) {
-            if (
-                changes.formValuesToPatch?.previousValue !==
-                changes.formValuesToPatch?.currentValue
-            ) {
-                setTimeout(() => {
-                    this.patchForm(changes.formValuesToPatch.currentValue);
+            setTimeout(() => {
+                this.patchForm(changes.formValuesToPatch.currentValue);
 
-                    if (this.selectedMode === SelectedMode.APPLICANT) {
-                        this.startValueChangesMonitoring();
-                    }
-                }, 50);
-            }
+                if (
+                    this.selectedMode === SelectedMode.APPLICANT ||
+                    this.selectedMode === SelectedMode.FEEDBACK
+                ) {
+                    this.startValueChangesMonitoring();
+                }
+            }, 50);
         }
     }
 
@@ -288,6 +290,7 @@ export class Step5FormComponent
             .subscribe((updatedFormValues) => {
                 const {
                     id,
+                    reviewId,
                     date,
                     location,
                     isEditingViolation,

@@ -4,7 +4,12 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+    anyInputInLineIncorrect,
+    isAnyValueInArrayFalse,
+    isEveryValueInArrayTrue,
+    isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import {
     convertDateToBackend,
@@ -35,7 +40,7 @@ import {
 export class Step4Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.FEEDBACK;
 
     public accidentForm: FormGroup;
 
@@ -44,6 +49,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
     public accidentArray: AccidentModel[] = [];
 
+    public stepValues: any;
     public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
@@ -74,6 +80,10 @@ export class Step4Component implements OnInit, OnDestroy {
     public hasIncorrectFields: boolean = false;
     public cardsWithIncorrectFields: boolean = false;
     public previousFormValuesOnReview: any;
+
+    public stepFeedbackValues: any;
+    public feedbackValuesToPatch: any;
+    public isFeedbackValueUpdated: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -308,6 +318,33 @@ export class Step4Component implements OnInit, OnDestroy {
                 }
             }
         }
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            const accidentRecordItemsReview = accidents.map(
+                (item) => item.accidentItemReview
+            );
+
+            this.stepFeedbackValues = accidentRecordItemsReview.map((item) => {
+                return {
+                    isLocationValid: item.isLocationValid,
+                    isDateValid: item.isDateValid,
+                    locationDateMessage: item.locationDateMessage,
+                    isDescriptionValid: item.isDescriptionValid,
+                    descriptionMessage: item.descriptionMessage,
+                    commonMessage: item.commonMessage,
+                    hasIncorrectValue: isAnyValueInArrayFalse([
+                        item.isLocationValid,
+                        item.isDateValid,
+                        item.isDescriptionValid,
+                    ]),
+                };
+            });
+
+            this.stepValues = stepValues.accidents;
+
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues?.length - 1];
+        }
     }
 
     private hasNoAccidents(): void {
@@ -374,6 +411,11 @@ export class Step4Component implements OnInit, OnDestroy {
         }
 
         this.formValuesToPatch = selectedAccident;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.selectedAccidentIndex];
+        }
     }
 
     public getAccidentFormValues(event: any): void {
@@ -415,6 +457,11 @@ export class Step4Component implements OnInit, OnDestroy {
         this.selectedAccidentIndex = -1;
 
         this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
     }
 
     public saveEditedAccident(event: any): void {
@@ -431,6 +478,11 @@ export class Step4Component implements OnInit, OnDestroy {
         this.selectedAccidentIndex = -1;
 
         this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
     }
 
     public onGetFormStatus(status: string): void {
@@ -448,6 +500,12 @@ export class Step4Component implements OnInit, OnDestroy {
             ...this.lastAccidentCard,
             ...event,
         };
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (event) {
+                this.startFeedbackValueChangesMonitoring();
+            }
+        }
     }
 
     public onHasIncorrectFields(event: any): void {
@@ -649,6 +707,122 @@ export class Step4Component implements OnInit, OnDestroy {
         const selectedAccident = this.accidentArray[index];
 
         this.formValuesToPatch = selectedAccident;
+    }
+
+    public startFeedbackValueChangesMonitoring(): void {
+        if (this.stepFeedbackValues) {
+            let incorrectValuesArray = [];
+
+            for (let i = 0; i < this.stepFeedbackValues.length; i++) {
+                const filteredAccidentRecordIncorrectValues = Object.keys(
+                    this.stepFeedbackValues[i]
+                )
+                    .filter((item) => item !== 'hasIncorrectValue')
+                    .reduce((o, key) => {
+                        this.stepFeedbackValues[i][key] === false &&
+                            (o[key] = this.stepFeedbackValues[i][key]);
+
+                        return o;
+                    }, {});
+
+                const hasIncorrectValues = Object.keys(
+                    filteredAccidentRecordIncorrectValues
+                ).length;
+
+                if (hasIncorrectValues) {
+                    const filteredFieldsWithIncorrectValues = Object.keys(
+                        filteredAccidentRecordIncorrectValues
+                    ).reduce((o, key) => {
+                        const keyName = key
+                            .replace('Valid', '')
+                            .replace('is', '')
+                            .trim()
+                            .toLowerCase();
+
+                        const match = Object.keys(this.stepValues[i])
+                            .filter((item) =>
+                                item.toLowerCase().includes(keyName)
+                            )
+                            .pop();
+
+                        o[keyName] = this.stepValues[i][match];
+
+                        if (keyName === 'date') {
+                            o['date'] = convertDateFromBackend(
+                                this.stepValues[i].date
+                            );
+                        }
+
+                        if (keyName === 'location') {
+                            o['location'] = JSON.stringify({
+                                location: this.stepValues[i].location.address,
+                            });
+                        }
+
+                        return o;
+                    }, {});
+
+                    const filteredUpdatedFieldsWithIncorrectValues =
+                        Object.keys(filteredFieldsWithIncorrectValues).reduce(
+                            (o, key) => {
+                                const keyName = key;
+
+                                const match = Object.keys(this.stepValues[i])
+                                    .filter((item) =>
+                                        item.toLowerCase().includes(keyName)
+                                    )
+                                    .pop();
+
+                                o[keyName] =
+                                    i === this.stepFeedbackValues.length - 1
+                                        ? this.lastAccidentCard[match]
+                                        : this.accidentArray[i][match];
+
+                                if (keyName === 'date') {
+                                    o['date'] =
+                                        i === this.stepFeedbackValues.length - 1
+                                            ? this.lastAccidentCard?.date
+                                            : this.accidentArray[i].date;
+                                }
+
+                                if (keyName === 'location') {
+                                    o['location'] = JSON.stringify({
+                                        location:
+                                            i ===
+                                            this.stepFeedbackValues.length - 1
+                                                ? this.lastAccidentCard.location
+                                                      ?.address
+                                                : this.accidentArray[i].location
+                                                      .address,
+                                    });
+                                }
+
+                                return o;
+                            },
+                            {}
+                        );
+
+                    const isFormNotEqual = isFormValueNotEqual(
+                        filteredFieldsWithIncorrectValues,
+                        filteredUpdatedFieldsWithIncorrectValues
+                    );
+
+                    incorrectValuesArray = [
+                        ...incorrectValuesArray,
+                        isFormNotEqual,
+                    ];
+                }
+            }
+
+            const isCardsValueUpdated =
+                isEveryValueInArrayTrue(incorrectValuesArray);
+
+            if (isCardsValueUpdated) {
+                this.isFeedbackValueUpdated = true;
+            } else {
+                this.isFeedbackValueUpdated = false;
+            }
+        }
     }
 
     public onStepAction(event: any): void {
