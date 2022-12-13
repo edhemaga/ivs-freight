@@ -303,7 +303,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Assigned To Truck Type',
             field: 'tableTruckType',
             name: 'Assigned To TruckType',
@@ -603,7 +603,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Licence Plate Detail ST',
             field: 'tableLicencePlateDetailST',
             name: 'Licence Plate Detail ST',
@@ -628,7 +628,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Licence Plate Detail Expiration',
             field: 'tableLicencePlateDetailExpiration',
             name: 'Licence Plate Detail Expiration',
@@ -728,7 +728,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Title ST',
             field: 'tableTitleST',
             name: 'Title ST',
@@ -753,7 +753,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Title Purchase',
             field: 'tableTitlePurchase',
             name: 'Title Purchase',
@@ -778,7 +778,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Title Issued',
             field: 'tableTitleIssued',
             name: 'Title Issued',
@@ -803,7 +803,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Purchase Date',
             field: 'tablePurchaseDate',
             name: 'Purchase Date',
@@ -828,7 +828,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Purchase Price',
             field: 'tablePurchasePrice',
             name: 'Purchase Price',
@@ -853,7 +853,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Terminated',
             field: 'tableTerminated',
             name: 'Terminated',
@@ -878,7 +878,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Added',
             field: 'tableAdded',
             name: 'Added',
@@ -903,7 +903,7 @@ export function getTrailerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: '',
+            ngTemplate: 'text',
             title: 'Edited',
             field: 'tableEdited',
             name: 'Edited',

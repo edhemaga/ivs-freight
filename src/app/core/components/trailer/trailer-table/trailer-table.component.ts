@@ -23,6 +23,7 @@ import {
     Confirmation,
     ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-trailer-table',
@@ -60,7 +61,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private trailerActiveQuery: TrailerActiveQuery,
         private trailerInactiveQuery: TrailerInactiveQuery,
         private trailerService: TrailerTService,
-        private notificationService: NotificationService,
+        public datePipe: DatePipe,
         private thousandSeparator: TaThousandSeparatorPipe,
         private confirmationService: ConfirmationService
     ) {}
@@ -384,6 +385,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
+        console.log('Trailer Data');
+        console.log(this.tableData[0].data);
+
         this.setTrailerData(td);
     }
 
@@ -416,7 +420,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...data,
             isSelected: false,
             tableTrailerTypeIcon: data.trailerType.logoName,
-            tableTrailerTypeClass: data.trailerType.logoName.replace('.svg', ''),
+            tableTrailerTypeClass: data.trailerType.logoName.replace(
+                '.svg',
+                ''
+            ),
             tableMake: data?.trailerMake?.name ? data.trailerMake.name : '',
             tableModel: data?.model ? data?.model : '',
             tableColor: data?.color?.code ? data.color.code : '',
@@ -424,62 +431,49 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tabelLength: data?.trailerLength?.name
                 ? data.trailerLength.name
                 : '',
-            tableDriver: 'Nije Povezano',
-            tableTruck: 'Nije Povezano',
-            tableTruckType: 'Nije Povezano',
-            tableOwner: 'Nije Povezano',
-            tableWeightEmpty: 'Nije Povezano',
-            tableWeightVolume: 'Nije Povezano',
-            tableAxle: 'Nije Povezano',
-            tableSuspension: 'Nije Povezano',
-            tableTireSize: 'Nije Povezano',
-            tableReeferUnit: 'Nije Povezano',
-            tableDoorType: 'Nije Povezano',
-            tableInsPolicy: 'Nije Povezano',
-            tableMileage: 'Nije Povezano',
-            tableLicencePlateDetailNumber: 'Nije Povezano',
-            tableLicencePlateDetailST: 'Nije Povezano',
-            tableLicencePlateDetailExpiration: 'Nije Povezano',
-            tableFHWAInspectionTerm: 'Nije Povezano',
-            tableFHWAInspectionExpiration: 'Nije Povezano',
-            tableTitleNumber: 'Nije Povezano',
-            tableTitleST: 'Nije Povezano',
-            tableTitlePurchase: 'Nije Povezano',
-            tableTitleIssued: 'Nije Povezano',
-            tablePurchaseDate: 'Nije Povezano',
-            tablePurchasePrice: 'Nije Povezano',
-            tableTerminated: 'Nije Povezano',
-            tableAdded: 'Nije Povezano',
-            tableEdited: 'Nije Povezano',
-            tableAttachments: data?.files ? data.files : [],
+            tableDriver: 'Nema taj podatak sa back-a',
+            tableTruck: 'Nema taj podatak sa back-a',
+            tableTruckType: 'Nema taj podatak sa back-a',
+            tableOwner: data?.owner?.name ? data.owner.name : '',
+            tableWeightEmpty: data?.emptyWeight
+                ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
+                : '',
+            tableWeightVolume: 'Nema taj podatak sa back-a',
+            tableAxle: data?.axles ? data?.axles : '',
+            tableSuspension: data?.suspension?.name ? data.suspension.name : '',
+            tableTireSize: data?.tireSize?.name ? data.tireSize.name : '',
+            tableReeferUnit: data?.reeferUnit?.name ? data.reeferUnit.name : '',
+            tableDoorType: data?.doorType?.name ? data.doorType.name : '',
+            tableInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
+            tableMileage: data?.mileage
+                ? this.thousandSeparator.transform(data.mileage)
+                : '',
+            tableLicencePlateDetailNumber: 'Nema taj podatak sa back-a',
+            tableLicencePlateDetailST: 'Nema taj podatak sa back-a',
+            tableLicencePlateDetailExpiration: 'Nema taj podatak sa back-a',
+            tableFHWAInspectionTerm: data?.fhwaExp
+                ? data?.fhwaExp + ' months'
+                : '',
+            tableFHWAInspectionExpiration: 'Nema taj podatak sa back-a',
+            tableTitleNumber: 'Nema taj podatak sa back-a',
+            tableTitleST: 'Nema taj podatak sa back-a',
+            tableTitlePurchase: 'Nema taj podatak sa back-a',
+            tableTitleIssued: 'Nema taj podatak sa back-a',
+            tablePurchaseDate: data.purchaseDate
+                ? this.datePipe.transform(data.purchaseDate, 'MM/dd/yy')
+                : '',
+            tablePurchasePrice: data?.purchasePrice
+            ? '$' + this.thousandSeparator.transform(data.purchasePrice)
+            : '',
+            tableTerminated: 'Nema taj podatak sa back-a',
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                : '',
 
-            // textAxies: data?.axles ? data?.axles : '',
-            // textTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-            // textReeferUnit: data?.reeferUnit?.name ? data.reeferUnit.name : '',
-            // textInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
-            // textEmptyWeight: data?.emptyWeight
-            //     ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
-            //     : '',
-            // textMileage: data?.mileage
-            //     ? this.thousandSeparator.transform(data.mileage) + ' mi'
-            //     : '',
-            // ownerName: data?.owner?.name ? data.owner.name : '',
-            // svgIcon: data?.trailerType?.name
-            //     ? data.trailerType.name
-            //     : '' /* Treba da bude svg ne text */,
-            // textLicPlate: data?.licensePlate
-            //     ? data.licensePlate
-            //     : data?.registrations?.length
-            //     ? data.registrations[0].licensePlate
-            //     : '',
-            // textInspectionData: {
-            //     start: data?.fhwaInspection
-            //         ? data.fhwaInspection
-            //         : data?.inspections?.length
-            //         ? data.inspections[0].issueDate
-            //         : null,
-            //     end: null,
-            // },
+            tableAttachments: data?.files ? data.files : [],
         };
     }
 
