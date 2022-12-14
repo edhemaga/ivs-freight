@@ -40,8 +40,9 @@
         <div
             class="review-feedback-container"
             *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
+                (selectedMode === 'REVIEW_MODE' ||
+                    selectedMode === 'FEEDBACK_MODE') &&
+                !isReviewingCard
             "
         >
             <app-applicant-review-feedback
@@ -125,8 +126,9 @@
         <div
             class="review-feedback-container"
             *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
+                (selectedMode === 'REVIEW_MODE' ||
+                    selectedMode === 'FEEDBACK_MODE') &&
+                !isReviewingCard
             "
         >
             <app-applicant-review-feedback

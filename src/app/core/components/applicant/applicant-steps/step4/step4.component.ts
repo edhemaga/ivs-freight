@@ -4,7 +4,12 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+    anyInputInLineIncorrect,
+    isAnyValueInArrayFalse,
+    isEveryValueInArrayTrue,
+    isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import {
     convertDateToBackend,
@@ -35,7 +40,7 @@ import {
 export class Step4Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.FEEDBACK;
 
     public accidentForm: FormGroup;
 
@@ -44,7 +49,9 @@ export class Step4Component implements OnInit, OnDestroy {
 
     public accidentArray: AccidentModel[] = [];
 
+    public stepValues: any;
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
 
     public lastAccidentCard: any;
 
@@ -73,6 +80,10 @@ export class Step4Component implements OnInit, OnDestroy {
     public hasIncorrectFields: boolean = false;
     public cardsWithIncorrectFields: boolean = false;
     public previousFormValuesOnReview: any;
+
+    public stepFeedbackValues: any;
+    public feedbackValuesToPatch: any;
+    public isFeedbackValueUpdated: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -126,7 +137,6 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: AccidentRecordFeedbackResponse): void {
-        console.log('stepValues', stepValues);
         const { noAccidentInThreeYears, accidents } = stepValues;
 
         this.accidentForm
@@ -145,6 +155,8 @@ export class Step4Component implements OnInit, OnDestroy {
             const filteredAccidentArray = restOfTheItemsInAccidenteArray.map(
                 (item) => {
                     return {
+                        id: item.id,
+                        reviewId: item.accidentItemReview?.id,
                         isEditingAccident: false,
                         location: item.location,
                         accidentState: item.location.stateShortName,
@@ -157,15 +169,16 @@ export class Step4Component implements OnInit, OnDestroy {
                         injuries: item.injuries,
                         vehicleType: item.vehicleType.name,
                         description: item.description,
-                        // accidentRecordReview: item.accidentRecordReview
-                        //     ? item.accidentRecordReview
-                        //     : null,
+                        accidentItemReview: item.accidentItemReview
+                            ? item.accidentItemReview
+                            : null,
                     };
                 }
             );
 
             const filteredLastItemInAccidentArray = {
                 id: lastItemInAccidentArray.id,
+                reviewId: lastItemInAccidentArray.accidentItemReview?.id,
                 isEditingAccident: false,
                 location: lastItemInAccidentArray.location,
                 accidentState: lastItemInAccidentArray.location.stateShortName,
@@ -177,10 +190,13 @@ export class Step4Component implements OnInit, OnDestroy {
                 injuries: lastItemInAccidentArray.injuries,
                 vehicleType: lastItemInAccidentArray.vehicleType.name,
                 description: lastItemInAccidentArray.description,
-                // accidentRecordReview:
-                //     lastItemInAccidentArray.accidentRecordReview
-                //         ? lastItemInAccidentArray.accidentRecordReview
-                //         : null,
+                accidentItemReview: lastItemInAccidentArray.accidentItemReview
+                    ? lastItemInAccidentArray.accidentItemReview
+                    : null,
+            };
+
+            this.lastAccidentCard = {
+                ...filteredLastItemInAccidentArray,
             };
 
             this.accidentArray = JSON.parse(
@@ -218,6 +234,116 @@ export class Step4Component implements OnInit, OnDestroy {
                     displayAnnotationTextArea: false,
                 };
             }
+        }
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            const accidentItemsReview = accidents.map(
+                (item) => item.accidentItemReview
+            );
+
+            if (accidentItemsReview[0]) {
+                this.stepHasReviewValues = true;
+
+                accidentItemsReview.pop();
+
+                for (let i = 0; i < accidentItemsReview.length; i++) {
+                    const firstEmptyObjectInList =
+                        this.openAnnotationArray.find(
+                            (item) => Object.keys(item).length === 0
+                        );
+
+                    const indexOfFirstEmptyObjectInList =
+                        this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        );
+
+                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                        lineIndex: this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        ),
+                        lineInputs: [false],
+                        displayAnnotationButton: false,
+                        displayAnnotationTextArea: false,
+                    };
+
+                    const accidentItemReview = {
+                        ...accidentItemsReview[i],
+                    };
+
+                    delete accidentItemReview.isPrimary;
+
+                    let hasIncorrectValue: boolean;
+
+                    if (accidentItemsReview[0]) {
+                        hasIncorrectValue =
+                            Object.values(accidentItemReview).includes(false);
+                    }
+
+                    const incorrectMessage = accidentItemReview?.commonMessage;
+
+                    if (
+                        hasIncorrectValue === null ||
+                        hasIncorrectValue == undefined
+                    ) {
+                        hasIncorrectValue = false;
+                    }
+
+                    this.openAnnotationArray[i] = {
+                        ...this.openAnnotationArray[i],
+                        lineInputs: [hasIncorrectValue],
+                        displayAnnotationButton:
+                            hasIncorrectValue && !incorrectMessage
+                                ? true
+                                : false,
+                        displayAnnotationTextArea: incorrectMessage
+                            ? true
+                            : false,
+                    };
+
+                    const inputFieldsArray = JSON.stringify(
+                        this.openAnnotationArray
+                            .filter((item) => Object.keys(item).length !== 0)
+                            .map((item) => item.lineInputs)
+                    );
+
+                    if (inputFieldsArray.includes('true')) {
+                        this.cardsWithIncorrectFields = true;
+                    } else {
+                        this.cardsWithIncorrectFields = false;
+                    }
+
+                    this.accidentForm
+                        .get(`cardReview${i + 1}`)
+                        .patchValue(incorrectMessage ? incorrectMessage : null);
+                }
+            }
+        }
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            const accidentRecordItemsReview = accidents.map(
+                (item) => item.accidentItemReview
+            );
+
+            this.stepFeedbackValues = accidentRecordItemsReview.map((item) => {
+                return {
+                    isLocationValid: item.isLocationValid,
+                    isDateValid: item.isDateValid,
+                    locationDateMessage: item.locationDateMessage,
+                    isDescriptionValid: item.isDescriptionValid,
+                    descriptionMessage: item.descriptionMessage,
+                    commonMessage: item.commonMessage,
+                    hasIncorrectValue: isAnyValueInArrayFalse([
+                        item.isLocationValid,
+                        item.isDateValid,
+                        item.isDescriptionValid,
+                    ]),
+                };
+            });
+
+            this.stepValues = stepValues.accidents;
+
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues?.length - 1];
         }
     }
 
@@ -285,10 +411,24 @@ export class Step4Component implements OnInit, OnDestroy {
         }
 
         this.formValuesToPatch = selectedAccident;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.selectedAccidentIndex];
+        }
     }
 
     public getAccidentFormValues(event: any): void {
         this.accidentArray = [...this.accidentArray, event];
+
+        if (this.lastAccidentCard.id) {
+            this.accidentArray[this.accidentArray.length - 1].id =
+                this.lastAccidentCard.id;
+
+            this.lastAccidentCard.id = null;
+        } else {
+            this.accidentArray[this.accidentArray.length - 1].id = null;
+        }
 
         this.helperIndex = 2;
 
@@ -317,6 +457,11 @@ export class Step4Component implements OnInit, OnDestroy {
         this.selectedAccidentIndex = -1;
 
         this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
     }
 
     public saveEditedAccident(event: any): void {
@@ -324,12 +469,20 @@ export class Step4Component implements OnInit, OnDestroy {
         this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
             false;
 
-        this.accidentArray[this.selectedAccidentIndex] = event;
+        this.accidentArray[this.selectedAccidentIndex] = {
+            ...this.accidentArray[this.selectedAccidentIndex],
+            ...event,
+        };
 
         this.helperIndex = 2;
         this.selectedAccidentIndex = -1;
 
         this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
     }
 
     public onGetFormStatus(status: string): void {
@@ -343,7 +496,16 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public onGetLastFormValues(event: any): void {
-        this.lastAccidentCard = event;
+        this.lastAccidentCard = {
+            ...this.lastAccidentCard,
+            ...event,
+        };
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (event) {
+                this.startFeedbackValueChangesMonitoring();
+            }
+        }
     }
 
     public onHasIncorrectFields(event: any): void {
@@ -355,7 +517,7 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public onGetOpenAnnotationArrayValues(event: any): void {
-        this.previousFormValuesOnReview.accidentRecordReview = {
+        this.previousFormValuesOnReview.accidentItemReview = {
             isLocationValid: !event[0].lineInputs[0],
             isDateValid: !event[0].lineInputs[1],
             isDescriptionValid: !event[1].lineInputs[1],
@@ -368,20 +530,25 @@ export class Step4Component implements OnInit, OnDestroy {
         this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
             false;
 
-        this.accidentArray[this.selectedAccidentIndex].accidentRecordReview = {
+        this.accidentArray[this.selectedAccidentIndex].accidentItemReview = {
             isLocationValid: !event[0].lineInputs[0],
             isDateValid: !event[0].lineInputs[1],
             isDescriptionValid: !event[1].lineInputs[1],
         };
 
         const hasInvalidFields = JSON.stringify(
-            this.accidentArray[this.selectedAccidentIndex].accidentRecordReview
+            this.accidentArray[this.selectedAccidentIndex].accidentItemReview
         );
 
         if (hasInvalidFields.includes('false')) {
-            this.openAnnotationArray[
-                this.selectedAccidentIndex
-            ].displayAnnotationButton = true;
+            if (
+                !this.openAnnotationArray[this.selectedAccidentIndex]
+                    .displayAnnotationTextArea
+            ) {
+                this.openAnnotationArray[
+                    this.selectedAccidentIndex
+                ].displayAnnotationButton = true;
+            }
 
             this.openAnnotationArray[this.selectedAccidentIndex].lineInputs[0] =
                 true;
@@ -397,6 +564,12 @@ export class Step4Component implements OnInit, OnDestroy {
 
         this.helperIndex = 2;
         this.selectedAccidentIndex = -1;
+
+        this.previousFormValuesOnReview.accidentItemReview = {
+            ...this.previousFormValuesOnReview.accidentItemReview,
+            locationDateMessage: this.lastAccidentCard.firstRowReview,
+            descriptionMessage: this.lastAccidentCard.secondRowReview,
+        };
 
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
@@ -417,6 +590,12 @@ export class Step4Component implements OnInit, OnDestroy {
 
         this.helperIndex = 2;
         this.selectedAccidentIndex = -1;
+
+        this.previousFormValuesOnReview.accidentItemReview = {
+            ...this.previousFormValuesOnReview.accidentItemReview,
+            locationDateMessage: this.lastAccidentCard.firstRowReview,
+            descriptionMessage: this.lastAccidentCard.secondRowReview,
+        };
 
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
@@ -440,8 +619,9 @@ export class Step4Component implements OnInit, OnDestroy {
         );
 
         if (type === 'card') {
+            selectedInputsLine.lineInputs[inputIndex] = false;
+
             if (selectedInputsLine.displayAnnotationButton) {
-                selectedInputsLine.lineInputs[inputIndex] = false;
                 selectedInputsLine.displayAnnotationButton = false;
             }
 
@@ -450,10 +630,14 @@ export class Step4Component implements OnInit, OnDestroy {
                 selectedInputsLine.displayAnnotationTextArea = false;
             }
 
+            this.accidentForm
+                .get(`cardReview${lineIndex + 1}`)
+                .patchValue(null);
+
             Object.keys(
-                this.accidentArray[lineIndex].accidentRecordReview
+                this.accidentArray[lineIndex].accidentItemReview
             ).forEach((key) => {
-                this.accidentArray[lineIndex].accidentRecordReview[key] = true;
+                this.accidentArray[lineIndex].accidentItemReview[key] = true;
             });
 
             const inputFieldsArray = JSON.stringify(
@@ -525,6 +709,122 @@ export class Step4Component implements OnInit, OnDestroy {
         this.formValuesToPatch = selectedAccident;
     }
 
+    public startFeedbackValueChangesMonitoring(): void {
+        if (this.stepFeedbackValues) {
+            let incorrectValuesArray = [];
+
+            for (let i = 0; i < this.stepFeedbackValues.length; i++) {
+                const filteredAccidentRecordIncorrectValues = Object.keys(
+                    this.stepFeedbackValues[i]
+                )
+                    .filter((item) => item !== 'hasIncorrectValue')
+                    .reduce((o, key) => {
+                        this.stepFeedbackValues[i][key] === false &&
+                            (o[key] = this.stepFeedbackValues[i][key]);
+
+                        return o;
+                    }, {});
+
+                const hasIncorrectValues = Object.keys(
+                    filteredAccidentRecordIncorrectValues
+                ).length;
+
+                if (hasIncorrectValues) {
+                    const filteredFieldsWithIncorrectValues = Object.keys(
+                        filteredAccidentRecordIncorrectValues
+                    ).reduce((o, key) => {
+                        const keyName = key
+                            .replace('Valid', '')
+                            .replace('is', '')
+                            .trim()
+                            .toLowerCase();
+
+                        const match = Object.keys(this.stepValues[i])
+                            .filter((item) =>
+                                item.toLowerCase().includes(keyName)
+                            )
+                            .pop();
+
+                        o[keyName] = this.stepValues[i][match];
+
+                        if (keyName === 'date') {
+                            o['date'] = convertDateFromBackend(
+                                this.stepValues[i].date
+                            );
+                        }
+
+                        if (keyName === 'location') {
+                            o['location'] = JSON.stringify({
+                                location: this.stepValues[i].location.address,
+                            });
+                        }
+
+                        return o;
+                    }, {});
+
+                    const filteredUpdatedFieldsWithIncorrectValues =
+                        Object.keys(filteredFieldsWithIncorrectValues).reduce(
+                            (o, key) => {
+                                const keyName = key;
+
+                                const match = Object.keys(this.stepValues[i])
+                                    .filter((item) =>
+                                        item.toLowerCase().includes(keyName)
+                                    )
+                                    .pop();
+
+                                o[keyName] =
+                                    i === this.stepFeedbackValues.length - 1
+                                        ? this.lastAccidentCard[match]
+                                        : this.accidentArray[i][match];
+
+                                if (keyName === 'date') {
+                                    o['date'] =
+                                        i === this.stepFeedbackValues.length - 1
+                                            ? this.lastAccidentCard?.date
+                                            : this.accidentArray[i].date;
+                                }
+
+                                if (keyName === 'location') {
+                                    o['location'] = JSON.stringify({
+                                        location:
+                                            i ===
+                                            this.stepFeedbackValues.length - 1
+                                                ? this.lastAccidentCard.location
+                                                      ?.address
+                                                : this.accidentArray[i].location
+                                                      .address,
+                                    });
+                                }
+
+                                return o;
+                            },
+                            {}
+                        );
+
+                    const isFormNotEqual = isFormValueNotEqual(
+                        filteredFieldsWithIncorrectValues,
+                        filteredUpdatedFieldsWithIncorrectValues
+                    );
+
+                    incorrectValuesArray = [
+                        ...incorrectValuesArray,
+                        isFormNotEqual,
+                    ];
+                }
+            }
+
+            const isCardsValueUpdated =
+                isEveryValueInArrayTrue(incorrectValuesArray);
+
+            if (isCardsValueUpdated) {
+                this.isFeedbackValueUpdated = true;
+            } else {
+                this.isFeedbackValueUpdated = false;
+            }
+        }
+    }
+
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
             if (
@@ -559,6 +859,16 @@ export class Step4Component implements OnInit, OnDestroy {
 
         const filteredAccidentArray = this.accidentArray.map((item) => {
             return {
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: item.id ? item.id : null,
+                    accidentItemReview: item.accidentItemReview
+                        ? {
+                              ...item.accidentItemReview,
+                              accidentItemId: item.id ? item.id : null,
+                          }
+                        : null,
+                }),
                 location: item.location,
                 date: convertDateToBackend(item.date),
                 fatalities: item.fatalities,
@@ -575,6 +885,20 @@ export class Step4Component implements OnInit, OnDestroy {
 
         if (!hasPastAccident) {
             filteredLastAccidentCard = {
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: this.lastAccidentCard.id
+                        ? this.lastAccidentCard.id
+                        : null,
+                    accidentItemReview: this.lastAccidentCard.accidentItemReview
+                        ? {
+                              ...this.lastAccidentCard.accidentItemReview,
+                              accidentItemId: this.lastAccidentCard.id
+                                  ? this.lastAccidentCard.id
+                                  : null,
+                          }
+                        : null,
+                }),
                 location: this.lastAccidentCard.location,
                 date: convertDateToBackend(this.lastAccidentCard.date),
                 fatalities: this.lastAccidentCard.fatalities,
@@ -659,15 +983,38 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
-        const lastItemReview =
-            this.previousFormValuesOnReview.accidentRecordReview;
+        const accidentArrayReview = this.accidentArray.map((item, index) => {
+            const itemReview = item.accidentItemReview;
 
+            return {
+                ...(this.stepHasReviewValues && {
+                    id: item.reviewId,
+                }),
+                accidentItemId: item.id,
+                isPrimary: false,
+                commonMessage: this.accidentForm.get(`cardReview${index + 1}`)
+                    .value,
+                isLocationValid: itemReview ? itemReview.isLocationValid : true,
+                isDateValid: itemReview ? itemReview.isDateValid : true,
+                locationDateMessage: null,
+                isDescriptionValid: itemReview
+                    ? itemReview.isDescriptionValid
+                    : true,
+                descriptionMessage: null,
+            };
+        });
+
+        const lastItemReview =
+            this.previousFormValuesOnReview.accidentItemReview;
+
+        const lastItemReviewId = this.previousFormValuesOnReview.reviewId;
         const lastItemId = this.previousFormValuesOnReview.id;
 
-        console.log('lastItemId', lastItemId);
-
         const lastReviewedItemInAccidentArray = {
-            itemId: lastItemId,
+            ...(this.stepHasReviewValues && {
+                id: lastItemReviewId,
+            }),
+            accidentItemId: lastItemId,
             isPrimary: true,
             commonMessage: null,
             isLocationValid: lastItemReview
@@ -683,15 +1030,33 @@ export class Step4Component implements OnInit, OnDestroy {
 
         const saveData: CreateAccidentRecordReviewCommand = {
             applicantId: this.applicantId,
-            accidentReviews: [lastReviewedItemInAccidentArray],
+            accidentReviews: [
+                ...accidentArrayReview,
+                lastReviewedItemInAccidentArray,
+            ],
         };
 
-        console.log('saveData', saveData);
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createAccidentRecordReview(
+                    saveData
+                );
+            }
 
-        console.log('store', this.applicantStore);
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateAccidentRecordReview(
+                    saveData
+                );
+            }
+        };
 
-        this.applicantActionsService
-            .createAccidentRecordReview(saveData)
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -699,17 +1064,56 @@ export class Step4Component implements OnInit, OnDestroy {
                         `/application/${this.applicantId}/5`,
                     ]);
 
-                    /*   this.applicantStore.update(store => {
-            return {
-              ...store,
-              applicant: {
-                ...store.applicant,
-                accidentRecords : {
-                  ...store.applicant.accidentRecords,
-                }
-              }
-            }
-          }) */
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                accidentRecords: {
+                                    ...store.applicant.accidentRecords,
+                                    accidents:
+                                        store.applicant.accidentRecords.accidents.map(
+                                            (item, index) => {
+                                                if (
+                                                    index ===
+                                                    store.applicant
+                                                        .accidentRecords
+                                                        .accidents.length -
+                                                        1
+                                                ) {
+                                                    return {
+                                                        ...item,
+                                                        accidentItemReview: {
+                                                            ...item.accidentItemReview,
+                                                            isLocationValid:
+                                                                lastReviewedItemInAccidentArray.isLocationValid,
+                                                            isDateValid:
+                                                                lastReviewedItemInAccidentArray.isDateValid,
+                                                            locationDateMessage:
+                                                                lastReviewedItemInAccidentArray.locationDateMessage,
+                                                            isDescriptionValid:
+                                                                lastReviewedItemInAccidentArray.isDescriptionValid,
+                                                            descriptionMessage:
+                                                                lastReviewedItemInAccidentArray.descriptionMessage,
+                                                        },
+                                                    };
+                                                }
+
+                                                return {
+                                                    ...item,
+                                                    accidentItemReview: {
+                                                        ...item.accidentItemReview,
+                                                        ...accidentArrayReview[
+                                                            index
+                                                        ],
+                                                    },
+                                                };
+                                            }
+                                        ),
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);

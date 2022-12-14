@@ -36,7 +36,6 @@ import {
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';
 import { convertTimeFromBackend } from '../../../utils/methods.calculations';
@@ -98,12 +97,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
+    public addNewAfterSave: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private shipperModalService: ShipperTService,
         private modalService: ModalService,
-        private notificationService: NotificationService,
         private taLikeDislikeService: TaLikeDislikeService,
         private reviewRatingService: ReviewsRatingService,
         private formService: FormService
@@ -167,6 +167,19 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }) {
         if (data.action === 'close') {
             return;
+        }
+        // Save And Add New
+        else if (data.action === 'save and add new') {
+            if (this.shipperForm.invalid || !this.isFormDirty) {
+                this.inputService.markInvalid(this.shipperForm);
+                return;
+            }
+            this.addShipper();
+            this.modalService.setModalSpinner({
+                action: 'save and add new',
+                status: true,
+            });
+            this.addNewAfterSave = true;
         } else {
             // Save & Update
             if (data.action === 'save') {
@@ -447,7 +460,47 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.shipperModalService
             .addShipper(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    if (this.addNewAfterSave) {
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                        });
+
+                        this.formService.resetForm(this.shipperForm);
+
+                        this.selectedAddress = null;
+                        this.selectedContractDepartmentFormArray = [];
+
+                        this.shipperContacts.controls = [];
+
+                        this.isPhoneExtExist = false;
+
+                        this.shipperForm
+                            .get('shippingHoursSameReceiving')
+                            .patchValue(true);
+
+                        this.selectedTab = 1;
+                        this.tabs = this.tabs.map((item, index) => {
+                            return {
+                                ...item,
+                                checked: index === 0,
+                            };
+                        });
+
+                        this.isAppointmentShipping = false;
+                        this.isAppointmentReceiving = false;
+
+                        this.documents = [];
+                        this.fileModified = false;
+                        this.filesForDelete = [];
+
+                        this.addNewAfterSave = false;
+                    }
+                },
+                error: () => {},
+            });
     }
 
     private updateShipper(id: number) {
@@ -509,9 +562,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .getShipperById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                
                 next: (res: any) => {
-                    console.log(convertTimeFromBackend(res.receivingTo), "-------");
                     this.shipperForm.patchValue({
                         businessName: res.businessName,
                         phone: res.phone,

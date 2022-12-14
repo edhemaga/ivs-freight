@@ -43,6 +43,14 @@ export const isAnyValueInArrayTrue = (values: boolean[]) => {
     return values.some((item: boolean) => item);
 };
 
+export const isAnyValueInArrayFalse = (values: boolean[]) => {
+    return values.some((item: boolean) => !item);
+};
+
+export const isEveryValueInArrayTrue = (values: boolean[]) => {
+    return values.every((item: boolean) => item);
+};
+
 export const isAnyPropertyInObjectFalse = (selectedObject: object) => {
     return JSON.stringify(Object.values(selectedObject)).includes('false');
 };

@@ -86,7 +86,7 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     /**
      * SAVE LABEL NAME
      */
-    public onSaveLabel(event: any) {
+    public onSaveLabel(event: { data: any; action: string }) {
         if (event.action === 'cancel') {
             this.getSuperControl.reset();
         }
@@ -105,6 +105,4 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     public identity(index: number, item: any): number {
         return item.id;
     }
-
-    ngOnDestroy() {}
 }

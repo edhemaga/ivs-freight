@@ -20,7 +20,6 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
 
 import { ApplicantStore } from '../../state/store/applicant.store';
@@ -58,7 +57,6 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
     public selectedBank: any = null;
     public selectedTruckType: any = null;
     public selectedTruckMake: any = null;
-    public selectedtruckEngineModelId: any = null;
     public selectedTruckColor: any = null;
     public selectedTrailerType: any = null;
     public selectedTrailerMake: any = null;
@@ -156,7 +154,6 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private applicantActionsService: ApplicantActionsService,
         private bankVerificationService: BankVerificationService,
-        private notificationService: NotificationService,
         private vinDecoderService: VinDecoderService,
         private applicantStore: ApplicantStore,
         private applicantQuery: ApplicantQuery
@@ -190,7 +187,6 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                 null,
                 [Validators.required, ...truckTrailerModelValidation],
             ],
-            truckEngineModelId: [null],
             truckYear: [
                 null,
                 [Validators.required, ...yearValidation, yearValidRegex],
@@ -359,16 +355,11 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
                                     truckMake: res.truckMake
                                         ? res.truckMake.name
                                         : null,
-                                    truckEngineModelId: res.engineModel?.name
-                                        ? res.engineModel.name
-                                        : null,
                                 });
 
                                 this.loadingTruckVinDecoder = false;
 
                                 this.selectedTruckMake = res.truckMake;
-                                this.selectedtruckEngineModelId =
-                                    res.engineModel;
                             },
                         });
                 }

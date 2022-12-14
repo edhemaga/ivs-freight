@@ -95,7 +95,7 @@ const routes: Routes = [
                 (m) => m.DispatchModule
             ),
         canActivate: [AuthGuard],
-        resolve: { dispatcher: DispatcherResolverService }
+        resolve: { dispatcher: DispatcherResolverService },
     },
     {
         path: 'settings',
@@ -265,11 +265,11 @@ const routes: Routes = [
     {
         path: 'tools/miles',
         loadChildren: () =>
-            import(
-                './core/components/miles/miles.module'
-            ).then((m) => m.MilesModule),
+            import('./core/components/miles/miles.module').then(
+                (m) => m.MilesModule
+            ),
         canActivate: [AuthGuard],
-        resolve: { miles: MilesResolverService }
+        resolve: { miles: MilesResolverService },
     },
     {
         path: 'safety/violation',
@@ -378,7 +378,7 @@ const routes: Routes = [
             ).then((m) => m.SphFormModule),
 
         canActivate: [AuthGuard],
-        /* resolve: { applicantSphForm: ApplicantSphFormResolver }, */
+        resolve: { applicantSphForm: ApplicantSphFormResolver },
     },
     {
         path: 'sph-form-end',

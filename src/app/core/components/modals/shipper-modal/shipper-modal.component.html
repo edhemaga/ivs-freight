@@ -3,6 +3,7 @@
     [editData]="editData"
     [editName]="editData?.data?.businessName"
     [isModalValid]="shipperForm.valid && isFormDirty"
+    [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
     (action)="onModalAction($event)"
 >
@@ -215,6 +216,9 @@
                     ></app-ta-checkbox>
 
                     <app-ta-custom-card
+                        *ngIf="
+                            !shipperForm.get('shippingHoursSameReceiving').value
+                        "
                         [cardName]="'Shipping Hours'"
                         [isCardOpen]="
                             !shipperForm.get('shippingHoursSameReceiving').value
