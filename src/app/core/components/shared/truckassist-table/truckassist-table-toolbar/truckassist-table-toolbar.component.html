@@ -252,7 +252,8 @@
                         <div class="group-columns-title">
                             <div class="checkbox">
                                 <input
-                                    [checked]="false"
+                                    [checked]="column.areAllActive"
+                                    (click)="onToaggleAllInGroup(column)"
                                     class="columns-options-checkbox"
                                     id="checkbox{{ i }}"
                                     type="checkbox"

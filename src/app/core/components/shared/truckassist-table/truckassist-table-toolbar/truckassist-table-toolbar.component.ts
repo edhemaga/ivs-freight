@@ -11,6 +11,7 @@ import {
 import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-truckassist-table-toolbar',
@@ -80,6 +81,7 @@ export class TruckassistTableToolbarComponent
     maxToolbarWidth: number = 0;
     inactiveTimeOutInterval: any;
     timeOutToaggleColumn: any;
+    timeOutToaggleGroupColumn: any;
     columnsOptions: any[] = [];
     columnsOptionsWithGroups: any[] = [];
     isMapShowning: boolean = false;
@@ -237,14 +239,13 @@ export class TruckassistTableToolbarComponent
 
     // Set Columns Options Groups
     setColumnsOptionsGroups() {
-        console.log(this.optionsPopupOpen)
         if (!this.optionsPopupOpen || this.tableReseting) {
             this.columnsOptionsWithGroups = [];
 
             let curentGroupName = '',
                 index = null;
 
-            this.columnsOptions.map((column, i) => {
+            this.columnsOptions.map((column) => {
                 if (
                     column?.groupName &&
                     curentGroupName !== column?.groupName
@@ -258,6 +259,7 @@ export class TruckassistTableToolbarComponent
                         this.columnsOptionsWithGroups.push({
                             isOpen: false,
                             isGroup: true,
+                            areAllActive: false,
                             optionsGroupName: curentGroupName,
                             group: [],
                         });
@@ -417,14 +419,16 @@ export class TruckassistTableToolbarComponent
             !this.columnsOptionsWithGroups[index].isOpen;
     }
 
-    // Toaggle Group Column
-    onToaggleGroupColumn(columnGroup: any, index: number) {
-        if (!columnGroup.isPined) {
-            columnGroup.hidden = !columnGroup.hidden;
+    // Toaggle All In Group
+    onToaggleAllInGroup(columnGroup: any) {
+        columnGroup.areAllActive = !columnGroup.areAllActive;
 
-            this.columns.filter((column) => {
-                if (column.title === columnGroup.title) {
-                    column.hidden = !column.hidden;
+        columnGroup.group.map((c) => {
+            c.hidden = columnGroup.areAllActive ? false : true;
+
+            this.columns.filter((column, index) => {
+                if (column.title === c.title) {
+                    column.hidden = columnGroup.areAllActive ? false : true;
 
                     localStorage.setItem(
                         `table-${this.tableConfigurationType}-Configuration`,
@@ -435,9 +439,43 @@ export class TruckassistTableToolbarComponent
                         column: column,
                         index: index,
                     });
+
+                    this.getActiveTableData();
                 }
             });
-        }
+        });
+
+        console.log('onToaggleAllInGroup');
+        console.log(columnGroup);
+    }
+
+    // Toaggle Group Column
+    onToaggleGroupColumn(columnGroup: any, index: number) {
+        clearTimeout(this.timeOutToaggleGroupColumn);
+
+        this.timeOutToaggleGroupColumn = setTimeout(() => {
+            if (!columnGroup.isPined) {
+                columnGroup.hidden = !columnGroup.hidden;
+
+                this.columns.filter((column) => {
+                    if (column.title === columnGroup.title) {
+                        column.hidden = !column.hidden;
+
+                        localStorage.setItem(
+                            `table-${this.tableConfigurationType}-Configuration`,
+                            JSON.stringify(this.columns)
+                        );
+
+                        this.tableService.sendToaggleColumn({
+                            column: column,
+                            index: index,
+                        });
+
+                        this.getActiveTableData();
+                    }
+                });
+            }
+        }, 10);
     }
 
     // --------------------------------ON DESTROY---------------------------------
