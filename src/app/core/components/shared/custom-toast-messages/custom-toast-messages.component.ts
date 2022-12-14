@@ -118,8 +118,28 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'LABEL'
         },
         {
+            api: 'companyaccountlabel',
+            value: 'LABEL'
+        },
+        {
+            api: 'companyaccount',
+            value: 'ACCOUNT',
+        },
+        {
             api: 'companycontact',
             value: 'CONTACT',
+        },
+        {
+            api: 'companyuser',
+            value: 'USER'
+        },
+        {
+            api: 'factoringcompany',
+            value: 'FACTORING COMPANY',
+        },
+        {
+            api: 'companyoffice',
+            value: 'OFFICE',
         },
         {
             api: 'company',
@@ -140,10 +160,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'rating',
             value: 'RATE',
-        },
-        {
-            api: 'companyaccount',
-            value: 'ACCOUNT',
         },
         {
             api: 'repairshop',
@@ -213,17 +229,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'insurancepolicy',
             value: 'INSURANCE POLICY',
         },
-        {
-            api: 'factoringcompany',
-            value: 'FACTORING COMPANY',
-        },
+        
         {
             api: 'parking',
             value: 'PARKING',
-        },
-        {
-            api: 'companyoffice',
-            value: 'OFFICE',
         },
         {
             api: 'terminal',
@@ -337,15 +346,20 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = accName;
                 this.wideMessage = true;
                 break;
+            case 'USER':
+                let userName = this.httpRequest.body.firstName + ' ' + this.httpRequest.body.lastName;
+                this.message = userName;
+                break;    
             case 'DRIVER':
-                let bodyName = this.httpRequest.body?.firstName
-                    ? this.httpRequest.body?.firstName
+                
+                let bodyName = this.httpRequest.body.getAll('firstName')[0]
+                    ? this.httpRequest.body.getAll('firstName')[0]
                     : '';
-                let bodyLastName = this.httpRequest.body?.lastName
-                    ? this.httpRequest.body?.lastName
+                let bodyLastName = this.httpRequest.body.getAll('lastName')[0]
+                    ? this.httpRequest.body.getAll('lastName')[0]
                     : '';
                 let driverNameFull = '';
-
+              
                 if (bodyName && bodyLastName) {
                     driverNameFull = bodyName + ' ' + bodyLastName;
                 }
@@ -702,8 +716,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = truckNum;
                 break;
             case 'OWNER':
-                let name = this.httpRequest.body?.name
-                    ? this.httpRequest.body.name
+                let name = this.httpRequest.body.getAll('name')[0]
+                    ? this.httpRequest.body.getAll('name')[0]
                     : '';
                 if (!name) {
                     name = this.DetailsDataService.mainData?.name;
