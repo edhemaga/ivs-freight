@@ -264,19 +264,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
     ngOnInit(): void {
         this.createTitleBasedOnHttpRequest();
-
-        this.DetailsDataService.leftSideMenuChanges
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
-                if (
-                    this.actionType != 'LOGIN' &&
-                    this.actionType != 'LOGGED IN'
-                ) {
-                    setTimeout(() => {
-                        this.leftSideMove = response;
-                    }, 50);
-                }
-            });
     }
 
     createTitleBasedOnHttpRequest() {
