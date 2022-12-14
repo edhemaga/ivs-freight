@@ -295,6 +295,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .get('includeInPayroll')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
+                console.log('payroll: ', value);
                 if (value) {
                     this.inputService.changeValidators(
                         this.userForm.get('salary')
@@ -347,6 +348,17 @@ export class UserModalComponent implements OnInit, OnDestroy {
                         this.userForm.get('bankId'),
                         false
                     );
+                    this.inputService.changeValidators(
+                        this.userForm.get('routingNumber'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('accountNumber'),
+                        false
+                    );
+
+                    this.selectedBank = null;
+                    this.selectedPayment = null;
                 }
             });
     }
