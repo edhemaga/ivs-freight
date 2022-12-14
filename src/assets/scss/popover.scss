@@ -348,7 +348,7 @@
                 height: -moz-fit-content;
                 height: fit-content;
                 border-radius: 3px;
-                background: white;
+                background: #2f2f2f;
                 box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%);
                 position: absolute;
                 left: -198px;
@@ -360,19 +360,12 @@
                 .columns-container {
                     width: 100%;
                     height: fit-content;
-                    max-height: 500px;
+                    max-height: 495px;
                     overflow-x: hidden;
                     overflow-y: scroll;
 
-                    .column {
-                        display: flex;
-                        width: 100%;
-                        height: 26px;
-                        margin: 0;
-                        padding-left: 7px;
-                        justify-content: unset !important;
-                        border-radius: 2px;
-
+                    .column,
+                    .group-columns-container {
                         .checkbox {
                             width: -webkit-fit-content;
                             width: -moz-fit-content;
@@ -392,7 +385,7 @@
                             .columns-options-label {
                                 width: 14px;
                                 height: 14px;
-                                background-color: #dadada;
+                                background-color: #6c6c6c;
                                 margin-bottom: 0;
                                 border-radius: 1px;
                                 cursor: pointer;
@@ -404,7 +397,7 @@
 
                             .columns-options-checkbox:checked
                                 + .columns-options-label {
-                                background-color: #91a4c7;
+                                background-color: #6f9ee0;
                                 background-image: url('../../assets/svg/truckassist-table/check-new.svg');
                                 background-repeat: no-repeat;
                                 background-position: center;
@@ -435,7 +428,7 @@
                         .column-text {
                             font-size: 12px;
                             font-weight: 400;
-                            color: #b7b7b7;
+                            color: #ffffff;
                             justify-content: unset !important;
                             align-self: center;
                             width: -webkit-fit-content;
@@ -450,24 +443,84 @@
                             margin: 0;
                             max-width: 161px;
                         }
+                    }
+
+                    .column {
+                        display: flex;
+                        width: 100%;
+                        height: 26px;
+                        margin: 0;
+                        padding: 0 6px;
+                        justify-content: unset !important;
+                        border-radius: 2px;
 
                         &:hover {
-                            background: #f7f7f7;
+                            background: #aaaaaa20;
                             transition: 0.25s;
+                        }
+                    }
 
-                            .column-text {
-                                color: #919191;
-                                transition: 0.25s;
+                    .group-columns-active {
+                        background: #aaaaaa20;
+
+                        .group-columns {
+                            padding: 0 10px 4px 10px;
+                            max-height: 400px !important;
+                            transition: 0.2s !important;
+                        }
+                    }
+
+                    .group-columns-container {
+                        height: fit-content;
+                        border-radius: 2px;
+
+                        .group-columns-title {
+                            display: flex;
+                            width: 100%;
+                            height: 26px;
+                            padding: 0 6px;
+                            justify-content: unset !important;
+                            border-radius: 2px;
+
+                            .group-columns-arrow {
+                                display: flex;
+                                width: 13px;
+                                flex-grow: 1;
+                                height: 100%;
+                                align-items: center;
+                                justify-content: flex-end;
+                                cursor: pointer;
+
+                                svg-icon {
+                                    display: flex;
+                                    transform: rotate(90deg);
+                                }
                             }
 
-                            .checkbox {
-                                .columns-options-checkbox:checked
-                                    + .columns-options-label {
-                                    background: #5673aa;
-                                    background-image: url('../../assets/svg/truckassist-table/check-new.svg');
-                                    background-repeat: no-repeat;
-                                    background-position: center;
-                                    transition: background-color 0.25s;
+                            &:hover {
+                                background: #aaaaaa20;
+                                transition: 0.25s;
+                            }
+                        }
+
+                        .group-columns {
+                            overflow: hidden;
+                            width: 100%;
+                            height: fit-content;
+                            max-height: 0px;
+                            transition: 0.2s;
+
+                            .group-column {
+                                display: flex;
+                                width: 100%;
+                                height: 26px;
+                                padding: 4px;
+                                justify-content: unset !important;
+                                border-radius: 2px;
+
+                                &:hover {
+                                    background: #aaaaaa20;
+                                    transition: 0.25s;
                                 }
                             }
                         }

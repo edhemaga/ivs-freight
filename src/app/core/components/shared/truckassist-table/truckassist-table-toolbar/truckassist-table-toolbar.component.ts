@@ -85,6 +85,7 @@ export class TruckassistTableToolbarComponent
     isMapShowning: boolean = false;
     tableConfigurationType: TableType;
     showResetOption: boolean;
+    tableReseting: boolean;
 
     constructor(private tableService: TruckassistTableService) {}
 
@@ -180,10 +181,6 @@ export class TruckassistTableToolbarComponent
         this.maxToolbarWidth = tableContainer.clientWidth;
 
         this.setToolbarWidth();
-
-        /* if (!this.tableLocked) {
-      this.resetInactivityTimer();
-    } */
     }
 
     // Set Toolbar Width
@@ -213,7 +210,7 @@ export class TruckassistTableToolbarComponent
             }
 
             if (c.minWidth) {
-                hasMinWidth = true; 
+                hasMinWidth = true;
             }
 
             if (
@@ -239,30 +236,53 @@ export class TruckassistTableToolbarComponent
     }
 
     // Set Columns Options Groups
-    setColumnsOptionsGroups(){
-        this.columnsOptionsWithGroups = [];
-        let curentGroupName = '', index = null;
+    setColumnsOptionsGroups() {
+        console.log(this.optionsPopupOpen)
+        if (!this.optionsPopupOpen || this.tableReseting) {
+            this.columnsOptionsWithGroups = [];
 
+            let curentGroupName = '',
+                index = null;
 
-        this.columnsOptions.map((column, i) => {
-            if(column?.groupName && curentGroupName !== column?.groupName){
-                index = i;
-                curentGroupName = column.groupName;
-            }
-
-            if(curentGroupName === column?.groupName){
-                if(!this.columnsOptionsWithGroups[index]){
-                    this.columnsOptionsWithGroups[index] = [];
+            this.columnsOptions.map((column, i) => {
+                if (
+                    column?.groupName &&
+                    curentGroupName !== column?.groupName
+                ) {
+                    index = this.columnsOptionsWithGroups.length;
+                    curentGroupName = column.groupName;
                 }
 
-                this.columnsOptionsWithGroups[index].push(column);
-            }else{
-                this.columnsOptionsWithGroups.push(column)
-            }
-        })
+                if (curentGroupName === column?.groupName) {
+                    if (!this.columnsOptionsWithGroups[index]) {
+                        this.columnsOptionsWithGroups.push({
+                            isOpen: false,
+                            isGroup: true,
+                            optionsGroupName: curentGroupName,
+                            group: [],
+                        });
+                    }
 
-        console.log('columnsOptionsData');
-        console.log(this.columnsOptionsWithGroups);
+                    this.columnsOptionsWithGroups[index].group.push({
+                        ...column,
+                        groupColumnTitle: column.title.replace(
+                            curentGroupName,
+                            ''
+                        ),
+                    });
+                } else {
+                    this.columnsOptionsWithGroups.push({
+                        ...column,
+                        isGroup: false,
+                    });
+                }
+            });
+
+            this.tableReseting = false;
+
+            console.log('columnsOptionsData');
+            console.log(this.columnsOptionsWithGroups);
+        }
     }
 
     // Select Tab
@@ -352,6 +372,8 @@ export class TruckassistTableToolbarComponent
         } else if (action.text === 'Columns') {
             action.active = !action.active;
         } else if (action.text === 'Reset Columns') {
+            this.tableReseting = true;
+
             localStorage.removeItem(
                 `table-${this.tableConfigurationType}-Configuration`
             );
@@ -387,6 +409,35 @@ export class TruckassistTableToolbarComponent
                 this.getActiveTableData();
             }
         }, 10);
+    }
+
+    // Open Column Grop Dropdown
+    openColumnsGroupDropdown(index: number) {
+        this.columnsOptionsWithGroups[index].isOpen =
+            !this.columnsOptionsWithGroups[index].isOpen;
+    }
+
+    // Toaggle Group Column
+    onToaggleGroupColumn(columnGroup: any, index: number) {
+        if (!columnGroup.isPined) {
+            columnGroup.hidden = !columnGroup.hidden;
+
+            this.columns.filter((column) => {
+                if (column.title === columnGroup.title) {
+                    column.hidden = !column.hidden;
+
+                    localStorage.setItem(
+                        `table-${this.tableConfigurationType}-Configuration`,
+                        JSON.stringify(this.columns)
+                    );
+
+                    this.tableService.sendToaggleColumn({
+                        column: column,
+                        index: index,
+                    });
+                }
+            });
+        }
     }
 
     // --------------------------------ON DESTROY---------------------------------
