@@ -45,7 +45,7 @@ import {
                 'margin-left': '16px',
                 'margin-right': '10px',
                 'padding-bottom': '11px',
-                'padding-top': '11px',
+                'padding-top': '0px',
             })
         ),
         state(
