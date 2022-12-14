@@ -14,7 +14,6 @@ import { AccidentShortResponsePagination } from './accidentShortResponsePaginati
 
 export interface AccidentListResponse { 
     pagination?: AccidentShortResponsePagination;
-    count?: number;
     active?: number;
     inactive?: number;
     nonReportableCount?: number;

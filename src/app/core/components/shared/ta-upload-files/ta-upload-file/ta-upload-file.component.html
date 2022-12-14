@@ -92,7 +92,9 @@
         class="ta-upload-file-header"
     >
         <!-- Left Side -->
+        <div class="rightside_bar" *ngIf="customClassName == 'company-documents'"></div>
         <div
+            *ngIf="customClassName != 'company-documents'"
             class="ta-upload-file-action-leftside"
             [ngClass]="{ 'no-action-tag': !hasTagsDropdown, active: t2?.isOpen() }"
             #t2="ngbPopover"
@@ -119,9 +121,29 @@
             class="ta-upload-file-action-rightside"
             [ngClass]="{
                 'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
-                small: type == 'details' || type == 'todo' || reviewMode == 'REVIEW_MODE'
+                small: type == 'details' || type == 'todo' || reviewMode == 'REVIEW_MODE',
+                'vertical-mode': customClassName == 'company-documents'
             }"
         >
+            <div
+                *ngIf="customClassName == 'company-documents'"
+                #t2="ngbPopover"
+                [ngbPopover]="tagsPopover"
+                [popoverClass]="'tags_popover_vertical'"
+                [placement]="'bottom-left'"
+                autoclose="outside"
+                [container]="'body'"
+                triggers="'manual'"
+                ngbTooltip
+                mainTooltip="Tag"
+                tooltipBackground="#2F2F2F"
+                position="top"
+                class="ta-upload-action-tag"
+                [ngClass]="{ active: t2?.isOpen() }"
+                (click)="onAction('tag')"
+            >
+                <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
+            </div>
             <div
                 ngbTooltip
                 mainTooltip="Download"

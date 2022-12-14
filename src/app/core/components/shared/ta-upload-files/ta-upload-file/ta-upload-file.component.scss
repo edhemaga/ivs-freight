@@ -249,6 +249,12 @@
             background-color: rgb(108, 108, 108, 0.9);
             cursor: pointer;
 
+            &.vertical-mode {
+                display: block;
+                width: 30px;
+                height: 90px;
+            }
+
             .ta-upload-action-download,
             .ta-upload-action-delete,
             .ta-upload-action-tag {
@@ -280,12 +286,14 @@
                 }
 
                 &.active {
-                    background-color: #536bc2e6;
+                    transition: all 0.1s ease-in-out;
+                    background-color: #424242;
+                    
                     svg {
                         path {
                             fill: #ffffff;
                         }
-                    } 
+                    }
                 }
 
                 &.no-action-tag {
@@ -470,7 +478,8 @@
         &.todo-details,
         &.company-details-pdf,
         &.modals,
-        &.table-details {
+        &.table-details,
+        &.company-documents {
             position: relative;
 
             .ng2-pdf-viewer-container {
@@ -507,6 +516,23 @@
                     max-width: 304px !important;
                     max-height: 304px !important;
                     min-width: 229px;
+                }
+            }
+        }
+
+        &.company-documents {
+            width: 302px;
+            height: 332px;
+            .ng2-pdf-viewer-container {
+                width: 294px !important;
+                height: 294px !important;
+                .canvasWrapper,
+                .pdfViewer,
+                .pdfViewer .page,
+                canvas {
+                    max-width: 294px !important;
+                    max-height: 294px !important;
+                    min-width: 228px;
                 }
             }
         }
@@ -822,7 +848,8 @@
     &.todo-details,
     &.company-details-pdf,
     &.modals,
-    &.table-details {
+    &.table-details,
+    &.company-documents {
         .ta-upload-file-footer {
             opacity: 0;
             border-radius: 2px;
@@ -920,7 +947,8 @@
         }
     }
 
-    &.modals {
+    &.modals,
+    &.company-documents {
         background-color: #eeeeee !important;
         .ta-upload-file-footer {
             opacity: 1;
@@ -970,6 +998,38 @@
         .ta-upload-file-delete-template {
             width: 304px;
             height: 304px;
+        }
+    }
+
+    &.company-documents {
+        width: 302px;
+        height: 332px;
+        grid-template-rows: 332px;
+
+        background-color: #DADADA !important;
+
+        &:hover {
+            background-color: #CCCCCC !important;
+        }
+
+        .ta-upload-file-footer {
+            bottom: 37px;
+            right: -4px;
+
+            width: 294px;
+
+            .ta-upload-file-name {
+                max-width: 294px;
+            }
+        }
+
+        .ta-upload-file-tag {
+            top: 4px;
+        }
+
+        .ta-upload-file-delete-template {
+            width: 294px;
+            height: 294px;
         }
     }
 

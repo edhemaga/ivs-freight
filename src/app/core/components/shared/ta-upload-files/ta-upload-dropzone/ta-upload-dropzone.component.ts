@@ -45,6 +45,7 @@ export class TaUploadDropzoneComponent {
 
     @Input() isRequired: boolean = false;
     @Input() showRequired: boolean = false;
+    @Input() dropzoneClose: boolean = false;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[];
@@ -55,6 +56,8 @@ export class TaUploadDropzoneComponent {
         action: string;
         value: boolean;
     }>();
+
+    @Output() closeDropzone = new EventEmitter<{}>();
 
     public textChangeOverModal: boolean = false;
 
@@ -187,5 +190,9 @@ export class TaUploadDropzoneComponent {
 
     private isImageFile(file: File): boolean {
         return file.type.search(/^image\//i) === 0;
+    }
+
+    public dropZoneClose() {
+        this.closeDropzone.emit();
     }
 }

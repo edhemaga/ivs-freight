@@ -4,6 +4,12 @@
     *ngIf="!unSupporetedType"
     [class.required]="isRequired && showRequired && !textChangeOverModal"
 >
+    <svg-icon
+        *ngIf="dropzoneClose"
+        class="ta-upload-dropzone-close"
+        [src]="'/assets/svg/common/ic_x.svg'"
+        (click)="dropZoneClose()"
+    ></svg-icon>
     <label
         for="pdf"
         class="ta-upload-dropzone-label"

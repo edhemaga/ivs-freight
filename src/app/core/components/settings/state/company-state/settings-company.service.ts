@@ -336,6 +336,16 @@ export class SettingsCompanyService implements OnDestroy {
             })
         );
     }
+
+    public getCompanyDocuments(): Observable<any> {
+        return this.settingService.apiCompanyDocumentsGet();
+    }
+
+    public addCompanyDocuments(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.settingService.apiCompanyDocumentsPost();
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

@@ -1,1 +1,13 @@
-<p>settings-document works!</p>
+<app-ta-upload-files
+    [files]="documents"
+    [size]="'large'"
+    [showDropzone]="showDropzone"
+    [dontUseSlider]="true"
+    (onFileEvent)="onFilesEvent($event)"
+    (closeDropzone)="showDropzone = false"
+    [customClassName]="'company-documents'"
+    [hasTagsDropdown]="true"
+    [tags]="[{
+        tagName: 'IFTA Licence'
+    }]"
+></app-ta-upload-files>

@@ -35,6 +35,7 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() showRequired: boolean = false;
     @Input() hasLandscapeOption: boolean = false;
     @Input() showDropzone: boolean = false;
+    @Input() dontUseSlider: boolean = false;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[] | UploadFile | any;
@@ -56,6 +57,8 @@ export class TaUploadFilesComponent implements OnInit {
     }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
     @Input() slideWidth: number = 180;
     @Input() categoryTag: string;
+
+    @Output() closeDropzone = new EventEmitter<{}>();
 
     public currentSlide: number = 0;
 
@@ -257,6 +260,10 @@ export class TaUploadFilesComponent implements OnInit {
         if (landscape) {
             this.customClassName = 'landscape-details-view';
         }
+    }
+
+    public dropZoneClose() {
+        this.closeDropzone.emit();
     }
 
     ngOnDestroy(): void {

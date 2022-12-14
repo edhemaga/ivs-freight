@@ -864,10 +864,20 @@
 }
 
 .tags_popover {
+    background-color: transparent !important;
     .popover-body {
         position: relative;
         top: 4px;
         right: 4px;
+    }
+}
+
+.tags_popover_vertical {
+    background-color: transparent !important;
+    .popover-body {
+        position: relative;
+        top: 2px;
+        right: 2px;
     }
 }
 

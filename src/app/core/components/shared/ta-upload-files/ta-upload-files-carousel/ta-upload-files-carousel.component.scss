@@ -110,6 +110,14 @@
         }
     }
 
+    &.company-documents {
+        grid-template-rows: 332px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 332px;
+        }
+    }
+
     &.driver-card-pdf {
         grid-template-rows: 428px;
 
@@ -138,7 +146,8 @@
     &.driver-details-pdf,
     &.driver-card-pdf,
     &.company-details-pdf,
-    &.landscape-details-view {
+    &.landscape-details-view,
+    &.company-documents {
         .ta-upload-carousel-control-bg {
             &.prev {
                 left: 4px;

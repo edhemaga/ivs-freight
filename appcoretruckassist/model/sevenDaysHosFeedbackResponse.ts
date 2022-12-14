@@ -22,7 +22,7 @@ export interface SevenDaysHosFeedbackResponse {
     location?: AddressEntity;
     workingForAnotherEmployer?: boolean;
     intendToWorkForAnotherEmployer?: boolean;
-    certifyInfomation?: boolean;
+    certifyInformation?: boolean;
     reviewed?: boolean | null;
     approved?: boolean | null;
     sevenDaysHosReview?: SevenDaysHosReviewResponse;
