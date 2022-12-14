@@ -626,7 +626,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
                 break;
             case 'TRAILER':
-                console.log('--this.httpRequest---', this.httpRequest);
                 let trailerNum = this.httpRequest.body?.trailerNumber
                     ? this.httpRequest.body.trailerNumber
                     : '';
@@ -749,8 +748,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = contactName;
                 break;
             case 'REPAIR SHOP':
-                let shopName = this.httpRequest.body?.name
-                    ? this.httpRequest.body.name
+                let shopName = this.httpRequest.body.getAll('name')[0]
+                    ? this.httpRequest.body.getAll('name')[0]
                     : '';
                 if (!shopName) {
                     shopName = this.DetailsDataService.mainData?.name;
@@ -761,14 +760,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'REGISTRATION':
             case 'TITLE':
                 let messageText = '';
-
-                if (this.DetailsDataService.mainData?.truckNumber) {
-                    let repairTruckNum =
-                        this.DetailsDataService.mainData?.truckNumber;
+                console.log('this.DetailsDataService.mainData', this.DetailsDataService.mainData);
+                if (this.httpRequest.body.getAll('unitType')[0] == 'Truck') {
+                    let repairTruckNum = this.DetailsDataService.mainData?.truckNumber ? this.DetailsDataService.mainData?.truckNumber : '';
                     messageText = 'Truck - ' + repairTruckNum;
-                } else if (this.DetailsDataService.mainData?.trailerNumber) {
-                    let repairTrailerNum =
-                        this.DetailsDataService.mainData?.trailerNumber;
+                } else if (this.httpRequest.body.getAll('unitType')[0] == 'Trailer' ) {
+                    let repairTrailerNum = this.DetailsDataService.mainData?.trailerNumber ? this.DetailsDataService.mainData?.trailerNumber : '';
                     messageText = 'Trailer - ' + repairTrailerNum;
                 }
 
