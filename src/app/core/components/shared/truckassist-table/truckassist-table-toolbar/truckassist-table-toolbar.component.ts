@@ -81,6 +81,7 @@ export class TruckassistTableToolbarComponent
     inactiveTimeOutInterval: any;
     timeOutToaggleColumn: any;
     columnsOptions: any[] = [];
+    columnsOptionsWithGroups: any[] = [];
     isMapShowning: boolean = false;
     tableConfigurationType: TableType;
     showResetOption: boolean;
@@ -212,7 +213,7 @@ export class TruckassistTableToolbarComponent
             }
 
             if (c.minWidth) {
-                hasMinWidth = true;
+                hasMinWidth = true; 
             }
 
             if (
@@ -230,9 +231,38 @@ export class TruckassistTableToolbarComponent
             }
         });
 
+        this.setColumnsOptionsGroups();
+
         this.toolbarWidth = hasMinWidth
             ? columnsSumWidth + 12 + 'px'
             : 100 + '%';
+    }
+
+    // Set Columns Options Groups
+    setColumnsOptionsGroups(){
+        this.columnsOptionsWithGroups = [];
+        let curentGroupName = '', index = null;
+
+
+        this.columnsOptions.map((column, i) => {
+            if(column?.groupName && curentGroupName !== column?.groupName){
+                index = i;
+                curentGroupName = column.groupName;
+            }
+
+            if(curentGroupName === column?.groupName){
+                if(!this.columnsOptionsWithGroups[index]){
+                    this.columnsOptionsWithGroups[index] = [];
+                }
+
+                this.columnsOptionsWithGroups[index].push(column);
+            }else{
+                this.columnsOptionsWithGroups.push(column)
+            }
+        })
+
+        console.log('columnsOptionsData');
+        console.log(this.columnsOptionsWithGroups);
     }
 
     // Select Tab

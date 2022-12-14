@@ -385,9 +385,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-        console.log('Trailer Data');
-        console.log(this.tableData[0].data);
-
         this.setTrailerData(td);
     }
 
