@@ -470,9 +470,9 @@ export class DriverTService {
         return this.MedicalService.apiMedicalListGet(driverId);
     }
 
-    public getDriverMvrsById(
+    public getDriverMvrsByDriverId(
         driverId: number
     ){
-        return this.MvrService.apiMvrModalDriverIdGet(driverId);
+        return this.MvrService.apiMvrListGet(driverId);
     }
 }

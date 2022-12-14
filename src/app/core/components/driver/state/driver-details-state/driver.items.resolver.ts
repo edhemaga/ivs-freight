@@ -44,7 +44,7 @@ export class DriverItemResolver implements Resolve<any[]> {
             drid,
         );
 
-        const driverMvr$ = this.driverService.getDriverMvrsById(
+        const driverMvr$ = this.driverService.getDriverMvrsByDriverId(
             drid,
         );
 
