@@ -60,6 +60,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     public taskName: string = null;
 
+    public addNewAfterSave: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -77,7 +79,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
         // -------------- DEVELOP MODE --------------------
         this.companyUser = JSON.parse(localStorage.getItem('user'));
-
+        console.log(this.editData);
         if (this.editData?.type === 'edit') {
             this.editTask(this.editData.id);
         }
@@ -114,6 +116,19 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
             case 'close': {
+                break;
+            }
+            case 'save and add new': {
+                if (this.taskForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.taskForm);
+                    return;
+                }
+                this.addTask();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
                 break;
             }
             case 'save': {
@@ -337,7 +352,27 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             files: documents,
         };
 
-        this.todoService.addTodo(newData);
+        this.todoService.addTodo(newData).subscribe({
+            next: () => {
+                if (this.addNewAfterSave) {
+                    this.modalService.setModalSpinner({
+                        action: 'save and add new',
+                        status: false,
+                    });
+
+                    this.formService.resetForm(this.taskForm);
+
+                    this.selectedCompanyUsers = [];
+                    this.selectedDepartments = [];
+                    this.documents = [];
+                    this.fileModified = false;
+                    this.filesForDelete = [];
+
+                    this.addNewAfterSave = false;
+                }
+            },
+            error: () => {},
+        });
     }
 
     private deleteTaskById(id: number) {
@@ -445,7 +480,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
                 this.taskForm
                     .get('departmentIdsHelper')
-                    .patchValue(JSON.stringify(this.selectedDepartments));
+                    .patchValue(
+                        this.selectedDepartments.length
+                            ? JSON.stringify(this.selectedDepartments)
+                            : null
+                    );
 
                 if (this.selectedDepartments?.length) {
                     this.resCompanyUsers = [...usersForDepartment];
@@ -458,7 +497,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                 this.selectedCompanyUsers = [...event];
                 this.taskForm
                     .get('companyUserIdsHeleper')
-                    .patchValue(JSON.stringify(this.selectedCompanyUsers));
+                    .patchValue(
+                        this.selectedCompanyUsers.length
+                            ? JSON.stringify(this.selectedCompanyUsers)
+                            : null
+                    );
 
                 break;
             }

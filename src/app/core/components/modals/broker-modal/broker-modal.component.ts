@@ -36,7 +36,6 @@ import {
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
 import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validations';
@@ -72,43 +71,33 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         },
     ];
 
+    public selectedPhysicalAddressTab: any = 3;
     public physicalAddressTabs: any[] = [
         {
-            id: 'physicaladdress',
+            id: 3,
             name: 'Physical Address',
             checked: true,
         },
         {
-            id: 'poboxphysical',
-            name: 'PO Box Physical',
+            id: 4,
+            name: 'PO Box',
             checked: false,
         },
     ];
 
+    public selectedBillingAddressTab: number = 5;
     public billingAddressTabs: any[] = [
         {
-            id: 'billingaddress',
+            id: 5,
             name: 'Billing Address',
             checked: true,
         },
         {
-            id: 'poboxbilling',
-            name: 'PO Box Billing',
+            id: 6,
+            name: 'PO Box',
             checked: false,
         },
     ];
-
-    public selectedPhysicalAddressTab: any = {
-        id: 'physicaladdress',
-        name: 'Physical Address',
-        checked: true,
-    };
-
-    public selectedBillingAddressTab: any = {
-        id: 'billingaddress',
-        name: 'Billing Address',
-        checked: true,
-    };
 
     public animationObject = {
         value: this.selectedTab,
@@ -157,12 +146,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
+    public addNewAfterSave: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private brokerModalService: BrokerTService,
-        private notificationService: NotificationService,
         private reviewRatingService: ReviewsRatingService,
         private taLikeDislikeService: TaLikeDislikeService,
         private formService: FormService
@@ -338,6 +328,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         } else {
             if (data.action === 'close') {
                 return;
+            }
+            // Save And Add New
+            else if (data.action === 'save and add new') {
+                if (this.brokerForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.brokerForm);
+                    return;
+                }
+                this.addBroker();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
             } else {
                 // Save & Update
                 if (data.action === 'save') {
@@ -383,12 +386,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
 
     public tabPhysicalAddressChange(event: any): void {
-        this.selectedPhysicalAddressTab = event;
+        this.selectedPhysicalAddressTab = event.id;
 
-        if (
-            this.selectedPhysicalAddressTab?.id.toLowerCase() ===
-            'physicaladdress'
-        ) {
+        if (this.selectedPhysicalAddressTab === 3) {
             this.inputService.changeValidators(
                 this.brokerForm.get('physicalAddress')
             );
@@ -417,17 +417,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.physicalAddressTabs = this.physicalAddressTabs.map((item) => {
             return {
                 ...item,
-                checked:
-                    item.id ===
-                    this.selectedPhysicalAddressTab?.id.toLowerCase(),
+                checked: item.id === this.selectedPhysicalAddressTab,
             };
         });
     }
 
     public tabBillingAddressChange(event: any): void {
-        this.selectedBillingAddressTab = event;
+        this.selectedBillingAddressTab = event.id;
 
-        if (this.selectedBillingAddressTab?.id === 'billingaddress') {
+        if (this.selectedBillingAddressTab === 5) {
             this.inputService.changeValidators(
                 this.brokerForm.get('billingAddress')
             );
@@ -456,9 +454,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.billingAddressTabs = this.billingAddressTabs.map((item) => {
             return {
                 ...item,
-                checked:
-                    item.id ===
-                    this.selectedBillingAddressTab?.id.toLowerCase(),
+                checked: item.id === this.selectedBillingAddressTab,
             };
         });
     }
@@ -744,7 +740,76 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerModalService
             .addBroker(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    if (this.addNewAfterSave) {
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                        });
+
+                        this.formService.resetForm(this.brokerForm);
+
+                        this.selectedBillingAddress = null;
+                        this.selectedBillingPoBox = null;
+                        this.selectedContractDepartmentFormArray = [];
+                        this.selectedPayTerm = null;
+                        this.selectedPhysicalAddress = null;
+                        this.selectedPhysicalPoBox = null;
+
+                        this.brokerContacts.controls = [];
+
+                        this.brokerForm
+                            .get('isCheckedBillingAddress')
+                            .patchValue(true);
+
+                        this.documents = [];
+                        this.fileModified = false;
+                        this.filesForDelete = [];
+
+                        this.selectedTab = 1;
+                        this.tabs = this.tabs.map((item, index) => {
+                            return {
+                                ...item,
+                                checked: index === 0,
+                            };
+                        });
+
+                        this.selectedBillingAddressTab = 5;
+                        this.billingAddressTabs = this.billingAddressTabs.map(
+                            (item, index) => {
+                                return {
+                                    ...item,
+                                    checked: index === 0,
+                                };
+                            }
+                        );
+
+                        this.selectedPhysicalAddressTab = 3;
+                        this.physicalAddressTabs = this.physicalAddressTabs.map(
+                            (item, index) => {
+                                return {
+                                    ...item,
+                                    checked: index === 0,
+                                };
+                            }
+                        );
+
+                        this.brokerForm.get('creditType').patchValue('Custom');
+                        this.billingCredit = this.billingCredit.map(
+                            (item, index) => {
+                                return {
+                                    ...item,
+                                    checked: index === 0,
+                                };
+                            }
+                        );
+
+                        this.addNewAfterSave = false;
+                    }
+                },
+                error: () => {},
+            });
     }
 
     private updateBroker(id: number): void {
@@ -969,9 +1034,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                   checked: false,
                               }
                     );
-
+                    // TODO: Check after Bojan fixes
                     this.tabBillingAddressChange(
-                        this.selectedBillingAddressTab.address ||
+                        this.selectedBillingAddressTab === 5 ||
                             reasponse.mainAddress.address ===
                                 reasponse.billingAddress.address
                             ? {
@@ -1011,9 +1076,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         false
                     );
                 } else {
-                    if (
-                        this.selectedBillingAddressTab?.id === 'billingaddress'
-                    ) {
+                    if (this.selectedBillingAddressTab === 5) {
                         this.inputService.changeValidators(
                             this.brokerForm.get('billingAddress')
                         );
@@ -1054,7 +1117,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         // If same billing address
         if (this.brokerForm.get('isCheckedBillingAddress').value) {
-            if (this.selectedPhysicalAddressTab.id === 'physicaladdress') {
+            if (this.selectedPhysicalAddressTab === 3) {
                 mainAddress = {
                     address: this.selectedPhysicalAddress
                         ? this.selectedPhysicalAddress.address
@@ -1203,7 +1266,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         }
         // if not same
         else {
-            if (this.selectedPhysicalAddressTab.id === 'physicaladdress') {
+            if (this.selectedPhysicalAddressTab === 3) {
                 mainAddress = {
                     address: this.selectedPhysicalAddress
                         ? this.selectedPhysicalAddress.address
@@ -1251,7 +1314,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 };
             }
 
-            if (this.selectedBillingAddressTab.id === 'billingaddress') {
+            if (this.selectedBillingAddressTab === 5) {
                 billingAddress = {
                     address: this.brokerForm.get('isCheckedBillingAddress')
                         .value

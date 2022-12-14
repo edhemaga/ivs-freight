@@ -18,6 +18,7 @@
     [tabChangePosition]="'right'"
     [disableDelete]="editData?.type?.includes('edit-fo')"
     [customClass]="'modal-container-L'"
+    [saveAndAddNew]="editData?.type !== 'edit'"
     (onTabHeaderChange)="onModalHeaderTabChange($event)"
     (action)="onModalAction($event)"
 >

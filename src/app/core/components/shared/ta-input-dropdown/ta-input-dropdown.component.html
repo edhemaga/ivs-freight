@@ -105,8 +105,7 @@
                 !inputConfig.isDisabled) ||
             ((inputConfig.name == 'Address' ||
                 inputConfig.name == 'RoutingAddress') &&
-                !inputConfig.isDisabled &&
-                getSuperControl.value?.length)
+                !inputConfig.isDisabled && options?.length)
         "
         class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
         [ngClass]="{
@@ -694,7 +693,7 @@
                     </div>
                     <div *ngIf="indx !== 0" class="load-broker-progress-status">
                         <app-load-modal-progress-bar
-                            [totalAmount]="10000"
+                            [totalAmount]="option.creditLimit"
                             [availableCredit]="
                                 option.availableCredit
                                     ? option.availableCredit

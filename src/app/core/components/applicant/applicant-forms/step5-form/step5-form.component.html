@@ -10,7 +10,10 @@
                     placeholderIcon: 'date',
                     isRequired: true,
                     customClass: 'datetimeclass',
-                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    isDisabled:
+                        selectedMode === 'REVIEW_MODE' ||
+                        (selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.isDateValid),
                     incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
                 [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
@@ -27,8 +30,10 @@
                     label: 'Vehicle type',
                     isRequired: true,
                     isDropdown: true,
-                    isDisabled: selectedMode === 'REVIEW_MODE',
-                    dropdownWidthClass: 'w-col-192',
+                    isDisabled:
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE',
+                    dropdownWidthClass: 'w-col-210',
                     dropdownImageInput: {
                         withText: true,
                         svg: true,
@@ -60,7 +65,10 @@
                     dropdownWidthClass: 'w-col-242',
                     minLength: 12,
                     maxLength: 256,
-                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    isDisabled:
+                        selectedMode === 'REVIEW_MODE' ||
+                        (selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.isLocationValid),
                     incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
                 [placeholderType]="'shortAddress'"
@@ -76,24 +84,32 @@
         <div
             class="review-feedback-container"
             *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
+                (selectedMode === 'REVIEW_MODE' ||
+                    selectedMode === 'FEEDBACK_MODE') &&
+                !isReviewingCard
             "
         >
             <app-applicant-review-feedback
                 formControlName="firstRowReview"
                 [displayAnnotationButton]="
+                    selectedMode === 'REVIEW_MODE' &&
                     openAnnotationArray[10].displayAnnotationButton
                 "
                 [displayAnnotationTextArea]="
+                    selectedMode === 'REVIEW_MODE' &&
                     openAnnotationArray[10].displayAnnotationTextArea
                 "
                 [lineIndex]="10"
                 [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                 [feedbackText]="
-                    'Check the routing number one more time (one number missing)!!!'
+                    selectedMode === 'FEEDBACK_MODE' &&
+                    (stepFeedbackValues?.commonMessage ??
+                        stepFeedbackValues?.locationMessage)
                 "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                (annotationBtnClickEvent)="
+                    selectedMode === 'REVIEW_MODE' &&
+                        getAnnotationBtnClickValue($event)
+                "
             ></app-applicant-review-feedback>
         </div>
     </div>
@@ -110,7 +126,10 @@
                     maxLength: 160,
                     isRequired: true,
                     textTransform: 'capitalize',
-                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    isDisabled:
+                        selectedMode === 'REVIEW_MODE' ||
+                        (selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.isDescriptionValid),
                     incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
                 [incorrectValue]="openAnnotationArray[11].lineInputs[0]"
@@ -123,24 +142,31 @@
         <div
             class="review-feedback-container"
             *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
+                (selectedMode === 'REVIEW_MODE' ||
+                    selectedMode === 'FEEDBACK_MODE') &&
+                !isReviewingCard
             "
         >
             <app-applicant-review-feedback
                 formControlName="secondRowReview"
                 [displayAnnotationButton]="
+                    selectedMode === 'REVIEW_MODE' &&
                     openAnnotationArray[11].displayAnnotationButton
                 "
                 [displayAnnotationTextArea]="
+                    selectedMode === 'REVIEW_MODE' &&
                     openAnnotationArray[11].displayAnnotationTextArea
                 "
                 [lineIndex]="11"
                 [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                 [feedbackText]="
-                    'Check the routing number one more time (one number missing)!!!'
+                    selectedMode === 'FEEDBACK_MODE' &&
+                    stepFeedbackValues?.descriptionMessage
                 "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                (annotationBtnClickEvent)="
+                    selectedMode === 'REVIEW_MODE' &&
+                        getAnnotationBtnClickValue($event)
+                "
             ></app-applicant-review-feedback>
         </div>
     </div>

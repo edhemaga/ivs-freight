@@ -65,17 +65,21 @@ export class Step7Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.FEEDBACK;
 
     public subscription: Subscription;
 
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
     public stepValues: any;
 
     public sevenDaysHosForm: FormGroup;
 
-    public applicantId: number;
     public applicantInviteDate: string;
+
+    public applicantId: number;
+    public sevenDaysHosId: number | null = null;
+    public hosIds: number[] = [];
 
     public selectedAddress: AddressEntity = null;
 
@@ -203,7 +207,7 @@ export class Step7Component implements OnInit, OnDestroy {
         return this.sevenDaysHosForm.get('hosArray') as FormArray;
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     public createForm(): void {
         this.sevenDaysHosForm = this.formBuilder.group({
@@ -243,8 +247,7 @@ export class Step7Component implements OnInit, OnDestroy {
             location,
             workingForAnotherEmployer,
             intendToWorkForAnotherEmployer,
-            // certifyInfomation,
-            id,
+            certifyInformation,
             sevenDaysHosReview,
         } = stepValues;
 
@@ -254,7 +257,13 @@ export class Step7Component implements OnInit, OnDestroy {
                     isReleaseDateValid,
                     isLocationValid,
                     releaseDateLocationMessage,
+                    id,
                 } = stepValues.sevenDaysHosReview;
+
+                this.stepHasReviewValues = true;
+
+                this.sevenDaysHosId = id;
+
                 this.openAnnotationArray[0] = {
                     ...this.openAnnotationArray[0],
                     lineInputs: [!isReleaseDateValid, !isLocationValid],
@@ -310,13 +319,16 @@ export class Step7Component implements OnInit, OnDestroy {
                 hos[i].date
             );
         }
+
+        this.hosIds = hos.map((item) => item.id);
+
         this.sevenDaysHosForm.patchValue({
             isValidHos: releasedFromWork,
             startDate: convertDateFromBackend(releasedDate),
             address: location.address,
             anotherEmployer: workingForAnotherEmployer,
             intendToWorkAnotherEmployer: intendToWorkForAnotherEmployer,
-            // isValidAnotherEmployer: certifyInfomation,
+            isValidAnotherEmployer: certifyInformation,
         });
 
         setTimeout(() => {
@@ -324,6 +336,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
             const anotherEmployerValue =
                 this.sevenDaysHosForm.get('anotherEmployer').value;
+
             const intendToWorkAnotherEmployerValue = this.sevenDaysHosForm.get(
                 'intendToWorkAnotherEmployer'
             ).value;
@@ -637,8 +650,6 @@ export class Step7Component implements OnInit, OnDestroy {
             anotherEmployer,
             intendToWorkAnotherEmployer,
             isValidAnotherEmployer,
-            firstRowReview,
-            ...sevenDaysHosForm
         } = this.sevenDaysHosForm.value;
 
         const radioButtons = [
@@ -679,6 +690,10 @@ export class Step7Component implements OnInit, OnDestroy {
         const filteredHosArray: { hours: number; date: string }[] =
             hosArray.map((item: { hos: string | number }, index: number) => {
                 return {
+                    ...((this.stepHasValues ||
+                        this.selectedMode === SelectedMode.FEEDBACK) && {
+                        id: this.hosIds[index],
+                    }),
                     hours: +item.hos,
                     date: convertDateToBackend(
                         this.sevenDaysHosDateData[index + 1]
@@ -693,7 +708,6 @@ export class Step7Component implements OnInit, OnDestroy {
         };
 
         const saveData: CreateSevenDaysHosCommand = {
-            ...sevenDaysHosForm,
             applicantId: this.applicantId,
             hos: [...filteredHosArray],
             releasedFromWork: isValidHos,
@@ -701,7 +715,7 @@ export class Step7Component implements OnInit, OnDestroy {
             location: selectedAddress,
             workingForAnotherEmployer: anotherEmployer,
             intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer,
-            certifyInfomation: isValidAnotherEmployer,
+            certifyInformation: isValidAnotherEmployer,
         };
 
         const selectMatchingBackendMethod = () => {
@@ -748,8 +762,8 @@ export class Step7Component implements OnInit, OnDestroy {
                                         saveData.workingForAnotherEmployer,
                                     intendToWorkForAnotherEmployer:
                                         saveData.intendToWorkForAnotherEmployer,
-                                    // certifyInfomation:
-                                    //     saveData.certifyInfomation,
+                                    certifyInformation:
+                                        saveData.certifyInformation,
                                 },
                             },
                         };
@@ -770,14 +784,36 @@ export class Step7Component implements OnInit, OnDestroy {
     public onSubmitReview(): void {
         const saveData: CreateSevenDaysHosReviewCommand = {
             applicantId: this.applicantId,
+            ...(this.stepHasReviewValues && {
+                id: this.sevenDaysHosId,
+            }),
             isReleaseDateValid: !this.openAnnotationArray[0].lineInputs[0],
             isLocationValid: !this.openAnnotationArray[0].lineInputs[1],
             releaseDateLocationMessage:
                 this.sevenDaysHosForm.get('firstRowReview').value,
         };
 
-        this.applicantActionsService
-            .createSevenDaysHosReview(saveData)
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createSevenDaysHosReview(
+                    saveData
+                );
+            }
+
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateSevenDaysHosReview(
+                    saveData
+                );
+            }
+        };
+
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {

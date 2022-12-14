@@ -106,8 +106,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
         isOpen: boolean;
     }> = new EventEmitter<{ action: string; isOpen: boolean }>();
 
-    private timeout = null;
-
     public saveSpinnerVisibility: boolean = false;
     public saveAddNewSpinnerVisibility: boolean = false;
     public deleteSpinnerVisibility: boolean = false;
@@ -208,7 +206,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                             data.action
                         )
                     ) {
-                        const timeout = setTimeout(
+                        setTimeout(
                             () => {
                                 $('.pac-container').remove();
                                 this.ngbActiveModal.close();
@@ -216,7 +214,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
                                     false
                                 );
                                 this.uploadFileService.uploadFiles(null);
-                                clearTimeout(timeout);
                             },
                             data?.setFasterTimeout ? 1000 : 2000
                         );
@@ -241,17 +238,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
         $(document).on('dragleave', '.modal', (event) => {
             event.preventDefault();
             event.stopPropagation();
-            if (this.timeout) {
-                clearTimeout(this.timeout);
-            }
-            this.timeout = setTimeout(() => {
+
+            setTimeout(() => {
                 this.dropZoneCounter--;
                 if (this.dropZoneCounter < 1) {
                     this.isDropZoneVisible = false;
                     this.dropZoneCounter = 0;
                     this.isLeaveZone = false;
                 }
-                clearTimeout(this.timeout);
             }, 150);
         });
     }
@@ -260,15 +254,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
         $(document).on('drop', '.modal', (event) => {
             event.preventDefault();
             event.stopPropagation();
-            if (this.timeout) {
-                clearTimeout(this.timeout);
-            }
-            this.timeout = setTimeout(() => {
+
+            setTimeout(() => {
                 this.dropZoneCounter = 0;
                 this.isDropZoneVisible = false;
                 this.isLeaveZone = false;
-
-                clearTimeout(this.timeout);
             }, 150);
         });
     }
@@ -371,13 +361,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         switch (event.action) {
             case 'dragleave': {
                 this.hoverZone = false;
-                if (this.timeout) {
-                    clearTimeout(this.timeout);
-                }
-                this.timeout = setTimeout(() => {
+
+                setTimeout(() => {
                     this.dropZoneCounter = 1;
                     this.isLeaveZone = true;
-                    clearTimeout(this.timeout);
                 }, 40);
 
                 break;
@@ -435,6 +422,5 @@ export class TaModalComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
-        clearTimeout(this.timeout);
     }
 }

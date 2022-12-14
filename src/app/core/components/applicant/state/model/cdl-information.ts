@@ -1,5 +1,6 @@
 export interface LicenseModel {
     id?: number | null;
+    reviewId: number;
     licenseNumber: string | null;
     country: string;
     state: string;

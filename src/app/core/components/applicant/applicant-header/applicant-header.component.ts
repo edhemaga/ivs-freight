@@ -88,7 +88,11 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         { id: 8, isCompleted: false },
     ];
 
-    reviewStoreArr = [
+    public isTabReviewedArray: {
+        id: number;
+        isReviewed: boolean;
+        hasIncorrectAnswer: boolean;
+    }[] = [
         { id: 0, isReviewed: false, hasIncorrectAnswer: false },
         { id: 1, isReviewed: false, hasIncorrectAnswer: false },
         { id: 2, isReviewed: false, hasIncorrectAnswer: false },
@@ -124,12 +128,13 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
         }
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantResponse) => {
+                console.log('RES', res);
                 this.applicantId = res.id;
 
                 if (this.selectedMode === SelectedMode.APPLICANT) {
@@ -209,6 +214,26 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                                     isCompleted: res.cdlCard ? true : false,
                                 };
                             }
+                        }
+                    );
+                }
+
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    this.isTabReviewedArray = this.isTabReviewedArray.map(
+                        (item, index) => {
+                            if (index === 4) {
+                                /*  const pspAutorizationReview =
+                                    res?.pspAuth?.reviewed;
+
+                                return {
+                                    ...item,
+                                    isReviewed: pspAutorizationReview
+                                        ? true
+                                        : false,
+                                }; */
+                            }
+
+                            return item;
                         }
                     );
                 }

@@ -88,6 +88,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         },
     };
 
+    public addNewAfterSave: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -220,6 +222,19 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
             case 'close': {
+                break;
+            }
+            case 'save and add new': {
+                if (this.contactForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.contactForm);
+                    return;
+                }
+                this.addCompanyContact();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
                 break;
             }
             case 'save': {
@@ -406,7 +421,34 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         this.contactService
             .addCompanyContact(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    if (this.addNewAfterSave) {
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                        });
+
+                        this.formService.resetForm(this.contactForm);
+
+                        this.selectedAddress = null;
+                        this.selectedContactColor = null;
+                        this.selectedContactEmail = [];
+                        this.selectedContactLabel = null;
+                        this.selectedContactPhone = [];
+                        this.isContactPhoneExtExist = [];
+                        this.selectedSharedDepartment = null;
+
+                        this.contactForm.get('shared').patchValue(true);
+
+                        this.contactPhones.controls = [];
+                        this.contactEmails.controls = [];
+
+                        this.addNewAfterSave = false;
+                    }
+                },
+                error: () => {},
+            });
     }
 
     private updateCompanyContact(id: number): void {

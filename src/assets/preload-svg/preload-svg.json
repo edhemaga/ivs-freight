@@ -329,6 +329,10 @@
       "iconPath": "/assets/svg/common/trucks/ic_truck_tow-truck.svg"
     },
     {
+      "iconName": "ic_truck_car-hauler.svg",
+      "iconPath": "/assets/svg/common/trucks/ic_truck_car-hauler.svg"
+    },
+    {
       "iconName": "ic_truck_bus.svg",
       "iconPath": "/assets/svg/common/trucks/ic_truck_bus.svg"
     },
