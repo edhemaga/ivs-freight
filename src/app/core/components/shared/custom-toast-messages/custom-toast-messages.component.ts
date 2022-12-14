@@ -238,6 +238,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'terminal',
             value: 'TERMINAL',
         },
+        {
+            api: 'load',
+            value: 'LOAD'
+        }
     ];
     constructor(
         protected toastrService: ToastrService,
@@ -346,6 +350,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = accName;
                 this.wideMessage = true;
                 break;
+            case 'LOAD':
+                    let loadNum = this.httpRequest.body.getAll('referenceNumber')[0] ? this.httpRequest.body.getAll('referenceNumber')[0] : ''; 
+                    this.message = loadNum;
+                break;    
             case 'USER':
                 let userName = this.httpRequest.body.firstName + ' ' + this.httpRequest.body.lastName;
                 this.message = userName;
@@ -548,9 +556,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'BROKER':
                 let messageValue = '';
                 if (this.httpRequest.body) {
-                    messageValue = this.httpRequest.body.dbaName
-                        ? this.httpRequest.body.dbaName
-                        : this.httpRequest.body.businessName;
+                    messageValue = this.httpRequest.body.getAll('dbaName')[0]
+                        ? this.httpRequest.body.getAll('dbaName')[0]
+                        : this.httpRequest.body.getAll('businessName')[0];  
                 }
 
                 if (!messageValue) {
