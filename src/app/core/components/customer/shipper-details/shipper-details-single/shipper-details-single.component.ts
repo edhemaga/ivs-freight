@@ -15,7 +15,7 @@ import { ShipperResponse } from 'appcoretruckassist';
     encapsulation: ViewEncapsulation.None,
 })
 export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
-    @Input() shipper: ShipperResponse | any = null;
+    @Input() shipper: any = null;
     public shipperContacts: any;
     public shipperLikes: number;
     public shipperDislike: number;

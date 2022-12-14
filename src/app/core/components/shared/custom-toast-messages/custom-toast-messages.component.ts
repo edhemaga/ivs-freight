@@ -122,6 +122,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'CONTACT',
         },
         {
+            api: 'companyuser',
+            value: 'USER'
+        },
+        {
             api: 'company',
             value: 'COMPANY',
         },
@@ -337,6 +341,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = accName;
                 this.wideMessage = true;
                 break;
+            case 'USER':
+                let userName = this.httpRequest.body.firstName + ' ' + this.httpRequest.body.lastName;
+                this.message = userName;
+                break;    
             case 'DRIVER':
                 let bodyName = this.httpRequest.body?.firstName
                     ? this.httpRequest.body?.firstName

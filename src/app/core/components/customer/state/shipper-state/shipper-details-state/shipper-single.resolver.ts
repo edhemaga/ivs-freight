@@ -3,7 +3,7 @@ import { ShipperResponse } from './../../../../../../../../appcoretruckassist/mo
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { ShipperTService } from '../shipper.service';
 import { ShipperDetailsListQuery } from './shipper-details-list-state/shipper-details-list.query';
@@ -12,7 +12,7 @@ import { ShipperDetailsListStore } from './shipper-details-list-state/shipper-de
 @Injectable({
     providedIn: 'root',
 })
-export class ShipperSingleResolver implements Resolve<ShipperResponse[]> {
+export class ShipperSingleResolver implements Resolve<any[]> {
     constructor(
         private shipperService: ShipperTService,
         private shipperDetailsStore: ShipperItemStore,
@@ -25,6 +25,26 @@ export class ShipperSingleResolver implements Resolve<ShipperResponse[]> {
     ): Observable<ShipperResponse[]> | Observable<any> {
         const shipper_id = route.paramMap.get('id');
         let ids = parseInt(shipper_id);
+        
+        const shipperData$ = this.shipperService.getShipperById(
+            ids,
+        );
+        
+        const shipperLoads$ = this.shipperService.getShipperLoads(ids);
+        
+        return forkJoin({
+            shipperData: shipperData$,
+            shipperLoads: shipperLoads$,
+        }).pipe(
+            tap((data) => {
+                let shipperData = data.shipperData;
+                let loadData = data.shipperLoads.data;
+                shipperData.loadStops = loadData ? loadData : [];
+                this.sls.add(shipperData);
+                this.shipperDetailsStore.set([shipperData]);
+            })
+        );   
+        /*
         if (this.slq.hasEntity(ids)) {
             return this.slq.selectEntity(ids).pipe(
                 tap((shipperResponse: ShipperResponse) => {
@@ -44,5 +64,6 @@ export class ShipperSingleResolver implements Resolve<ShipperResponse[]> {
                 })
             );
         }
+        */
     }
 }

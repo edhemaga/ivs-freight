@@ -53,11 +53,11 @@ import {
             transition(':enter', [
                 style({ height: '10px', overflow: 'hidden' }),
                 animate(
-                    '300ms ease',
+                    '150ms ease',
                     style({ height: '26px', overflow: 'auto' })
                 ),
             ]),
-            transition(':leave', [animate('300ms ease', style({ height: 0 }))]),
+            transition(':leave', [animate('150ms ease', style({ height: 0 }))]),
         ]),
         trigger('borderShowAnimation', [
             transition(':enter', [
