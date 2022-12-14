@@ -20,19 +20,18 @@
     <!-- MID SECTION -->
 
     <div
-        class="d-flex judtify-content-center text-center mid-section"
+        class="d-flex justify-content-center text-center mid-section"
         [formGroup]="accidentForm"
     >
         <app-ta-checkbox
             formControlName="hasPastAccident"
             [name]="'hasPastAccident'"
             [label]="'No accidents for past 3 years'"
-            [customClass]="
+            [customClass]="'bold-12'"
+            [disabledStillCheckMark]="
+                selectedMode === 'REVIEW_MODE' ||
                 selectedMode === 'FEEDBACK_MODE'
-                    ? 'applicant-feedback'
-                    : 'bold-12'
             "
-            [disabledStillCheckMark]="selectedMode === 'REVIEW_MODE'"
         ></app-ta-checkbox>
     </div>
 
@@ -160,42 +159,62 @@
                             [ngClass]="{
                                 active: selectedMode === 'REVIEW_MODE'
                             }"
+                            [ngStyle]="{
+                                'margin-left':
+                                    selectedMode === 'FEEDBACK_MODE'
+                                        ? '18px'
+                                        : 0
+                            }"
                         >
-                            <div
-                                ngbTooltip
-                                mainTooltip="Edit"
-                                tooltipBackground="#6C6C6C"
-                                position="top"
+                            <ng-container
+                                *ngIf="
+                                    selectedMode === 'APPLICANT_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues[i].hasIncorrectValue)
+                                "
                             >
-                                <svg-icon
-                                    class="edit-icon"
-                                    src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                    (click)="onEditAccident(i)"
-                                ></svg-icon>
-                            </div>
+                                <div
+                                    ngbTooltip
+                                    mainTooltip="Edit"
+                                    tooltipBackground="#6C6C6C"
+                                    position="top"
+                                >
+                                    <svg-icon
+                                        class="edit-icon"
+                                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                        (click)="onEditAccident(i)"
+                                    ></svg-icon>
+                                </div>
+                            </ng-container>
 
-                            <div
-                                ngbTooltip
-                                mainTooltip="Delete"
-                                tooltipBackground="#EF5350"
-                                position="top"
+                            <ng-container
+                                *ngIf="selectedMode === 'APPLICANT_MODE'"
                             >
-                                <svg-icon
-                                    class="delete-icon"
-                                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                                    [svgStyle]="{
-                                        'width.px': 18,
-                                        'height.px': 18
-                                    }"
-                                    (click)="onDeleteAccident(i)"
-                                ></svg-icon>
-                            </div>
+                                <div
+                                    ngbTooltip
+                                    mainTooltip="Delete"
+                                    tooltipBackground="#EF5350"
+                                    position="top"
+                                >
+                                    <svg-icon
+                                        class="delete-icon"
+                                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                        (click)="onDeleteAccident(i)"
+                                    ></svg-icon>
+                                </div>
+                            </ng-container>
 
-                            <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                            <ng-container
+                                *ngIf="selectedMode === 'REVIEW_MODE'"
+                            >
                                 <div
                                     class="review-icon-box"
                                     ngbTooltip
@@ -229,9 +248,14 @@
                                         "
                                     ></svg-icon>
                                 </div>
-                            </div>
+                            </ng-container>
 
-                            <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
+                            <ng-container
+                                *ngIf="
+                                    selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues[i].hasIncorrectValue
+                                "
+                            >
                                 <div
                                     class="feedback-icon-box"
                                     ngbTooltip
@@ -248,7 +272,7 @@
                                         }"
                                     ></svg-icon>
                                 </div>
-                            </div>
+                            </ng-container>
                         </div>
                     </div>
 
@@ -264,19 +288,25 @@
                         <app-applicant-review-feedback
                             [formControlName]="'cardReview' + (i + 1)"
                             [displayAnnotationButton]="
+                                selectedMode === 'REVIEW_MODE' &&
                                 openAnnotationArray[i].displayAnnotationButton
                             "
                             [displayAnnotationTextArea]="
+                                selectedMode === 'REVIEW_MODE' &&
                                 openAnnotationArray[i].displayAnnotationTextArea
                             "
                             [lineIndex]="i"
-                            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                            [feedbackText]="'Check the number'"
                             [cardsLength]="accidentArray.length"
                             [cardsType]="'accidentRecord'"
                             [cardIndex]="i"
+                            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                            [feedbackText]="
+                                selectedMode === 'FEEDBACK_MODE' &&
+                                stepFeedbackValues[i].commonMessage
+                            "
                             (annotationBtnClickEvent)="
-                                getAnnotationBtnClickValue($event)
+                                selectedMode === 'REVIEW_MODE' &&
+                                    getAnnotationBtnClickValue($event)
                             "
                         ></app-applicant-review-feedback>
                     </div>
@@ -299,6 +329,7 @@
                         [checkIsHazmatSpillNotChecked]="
                             checkIsHazmatSpillNotChecked
                         "
+                        [stepFeedbackValues]="feedbackValuesToPatch"
                         (cancelFormEditingEmitter)="
                             cancelAccidentEditing($event)
                         "
@@ -322,7 +353,9 @@
 
         <form
             *ngIf="
-                (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
+                ((selectedMode === 'APPLICANT_MODE' ||
+                    selectedMode === 'FEEDBACK_MODE') &&
+                    !isEditing) ||
                 (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
             "
         >
@@ -334,6 +367,7 @@
                 [isReviewingCard]="isReviewingCard"
                 [displayRadioRequiredNote]="displayRadioRequiredNote"
                 [checkIsHazmatSpillNotChecked]="checkIsHazmatSpillNotChecked"
+                [stepFeedbackValues]="feedbackValuesToPatch"
                 (formValuesEmitter)="getAccidentFormValues($event)"
                 (formStatusEmitter)="onGetFormStatus($event)"
                 (markInvalidEmitter)="onMarkInvalidEmit($event)"
@@ -356,9 +390,10 @@
     <app-applicant-next-back-btn
         [nextStep]="true"
         [filledCorrectly]="
-            selectedMode === 'APPLICANT_MODE' &&
             formStatus === 'VALID' &&
-            !isEditing
+            !isEditing &&
+            (selectedMode === 'APPLICANT_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
         "
         [hasIncorrectFields]="
             selectedMode === 'REVIEW_MODE' &&

@@ -20,7 +20,7 @@ import { SelectedMode } from '../state/enum/selected-mode.enum';
 export class ApplicantComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode = SelectedMode.APPLICANT;
+    public selectedMode = SelectedMode.REVIEW;
 
     public menuItems: INavigation[] = [
         {
@@ -132,206 +132,13 @@ export class ApplicantComponent implements OnInit, OnDestroy {
         this.getStepValuesFromStore();
     }
 
-    public trackByIdentity = (index: number, item: any): number => index;
+    public trackByIdentity = (index: number, _: any): number => index;
 
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 res = JSON.parse(JSON.stringify(res));
-
-                if (this.selectedMode === SelectedMode.REVIEW) {
-                    this.isStepReviewedArray = this.isStepReviewedArray.map(
-                        (item, index) => {
-                            if (index === 0) {
-                                const personalInfoReview =
-                                    res?.personalInfo?.personalInfoReview;
-
-                                const previousAddresses =
-                                    res?.personalInfo?.previousAddresses;
-
-                                const previousAddressesReviews =
-                                    previousAddresses.map(
-                                        (item) => item?.previousAddressReview
-                                    );
-
-                                let hasIncorrectValue: boolean;
-                                let cardHasIncorrectValue: boolean;
-
-                                if (personalInfoReview) {
-                                    hasIncorrectValue =
-                                        isAnyPropertyInObjectFalse(
-                                            personalInfoReview
-                                        );
-                                }
-
-                                if (previousAddresses) {
-                                    cardHasIncorrectValue =
-                                        isAnyPropertyInObjectFalse(
-                                            previousAddressesReviews
-                                        );
-                                }
-
-                                return {
-                                    ...item,
-                                    isReviewed: personalInfoReview
-                                        ? true
-                                        : false,
-                                    hasIncorrectAnswer:
-                                        hasIncorrectValue ||
-                                        cardHasIncorrectValue,
-                                };
-                            }
-
-                            if (index === 1) {
-                                const workExperienceItems =
-                                    res?.workExperience?.workExperienceItems;
-
-                                const workExperienceItemsReview =
-                                    workExperienceItems?.map(
-                                        (item) => item?.workExperienceItemReview
-                                    );
-
-                                let filteredWorkExperienceItemsReview = [];
-                                let hasIncorrectValue: boolean;
-
-                                if (workExperienceItemsReview) {
-                                    if (workExperienceItemsReview[0]) {
-                                        let incorrectValuesArray = [];
-
-                                        for (
-                                            let i = 0;
-                                            i <
-                                            workExperienceItemsReview?.length;
-                                            i++
-                                        ) {
-                                            const filteredItem =
-                                                workExperienceItemsReview[i];
-
-                                            delete filteredItem.isPrimary;
-
-                                            filteredWorkExperienceItemsReview =
-                                                [
-                                                    ...filteredWorkExperienceItemsReview,
-                                                    filteredItem,
-                                                ];
-
-                                            const objectHasIncorrectValue =
-                                                isAnyPropertyInObjectFalse(
-                                                    workExperienceItemsReview[i]
-                                                );
-
-                                            incorrectValuesArray = [
-                                                ...incorrectValuesArray,
-                                                objectHasIncorrectValue,
-                                            ];
-                                        }
-
-                                        if (
-                                            isAnyValueInArrayTrue(
-                                                incorrectValuesArray
-                                            )
-                                        ) {
-                                            hasIncorrectValue = true;
-                                        } else {
-                                            hasIncorrectValue = false;
-                                        }
-                                    }
-                                }
-
-                                return {
-                                    ...item,
-                                    isReviewed: workExperienceItems
-                                        ? true
-                                        : false,
-                                    hasIncorrectAnswer: hasIncorrectValue,
-                                };
-                            }
-
-                            if (index === 6) {
-                                const sevenDaysHosReview =
-                                    res?.sevenDaysHos?.sevenDaysHosReview;
-
-                                let hasIncorrectValue: boolean;
-
-                                if (sevenDaysHosReview) {
-                                    hasIncorrectValue =
-                                        isAnyPropertyInObjectFalse(
-                                            sevenDaysHosReview
-                                        );
-                                }
-
-                                return {
-                                    ...item,
-                                    isReviewed: sevenDaysHosReview
-                                        ? true
-                                        : false,
-                                    hasIncorrectAnswer: hasIncorrectValue,
-                                };
-                            }
-
-                            if (index === 7) {
-                                const drugAndAlcoholReview =
-                                    res?.drugAndAlcohol?.drugAndAlcoholReview;
-
-                                let hasIncorrectValue: boolean;
-
-                                if (drugAndAlcoholReview) {
-                                    hasIncorrectValue =
-                                        isAnyPropertyInObjectFalse(
-                                            drugAndAlcoholReview
-                                        );
-                                }
-
-                                return {
-                                    ...item,
-                                    isReviewed: drugAndAlcoholReview
-                                        ? true
-                                        : false,
-                                    hasIncorrectAnswer: hasIncorrectValue,
-                                };
-                            }
-
-                            if (index === 8) {
-                                const driverRightsReview =
-                                    res?.driverRight?.reviewed;
-
-                                return {
-                                    ...item,
-                                    isReviewed: driverRightsReview
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 9) {
-                                const disclosureAndReleaseReview =
-                                    res?.disclosureRelease?.reviewed;
-
-                                return {
-                                    ...item,
-                                    isReviewed: disclosureAndReleaseReview
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            if (index === 10) {
-                                const autorizationReview =
-                                    res?.authorization?.reviewed;
-
-                                return {
-                                    ...item,
-                                    isReviewed: autorizationReview
-                                        ? true
-                                        : false,
-                                };
-                            }
-
-                            return item;
-                        }
-                    );
-                }
 
                 if (this.selectedMode === SelectedMode.APPLICANT) {
                     this.isStepCompletedArray = this.isStepCompletedArray.map(
@@ -426,6 +233,489 @@ export class ApplicantComponent implements OnInit, OnDestroy {
                                 return {
                                     ...item,
                                     isCompleted: res.authorization
+                                        ? true
+                                        : false,
+                                };
+                            }
+                        }
+                    );
+                }
+
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    this.isStepReviewedArray = this.isStepReviewedArray.map(
+                        (item, index) => {
+                            if (index === 0) {
+                                const personalInfoReview =
+                                    res?.personalInfo?.personalInfoReview;
+
+                                const previousAddresses =
+                                    res?.personalInfo?.previousAddresses;
+
+                                const previousAddressesReviews =
+                                    previousAddresses.map(
+                                        (item) => item?.previousAddressReview
+                                    );
+
+                                let hasIncorrectValue: boolean;
+                                let cardHasIncorrectValue: boolean;
+
+                                if (personalInfoReview) {
+                                    hasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            personalInfoReview
+                                        );
+                                }
+
+                                if (previousAddresses) {
+                                    cardHasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            previousAddressesReviews
+                                        );
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed: personalInfoReview
+                                        ? true
+                                        : false,
+                                    hasIncorrectAnswer:
+                                        hasIncorrectValue ||
+                                        cardHasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 1) {
+                                const workExperienceItems =
+                                    res?.workExperience?.workExperienceItems;
+
+                                const workExperienceItemsReview =
+                                    workExperienceItems?.map(
+                                        (item) => item?.workExperienceItemReview
+                                    );
+
+                                let filteredWorkExperienceItemsReview = [];
+                                let hasIncorrectValue: boolean;
+
+                                if (workExperienceItemsReview) {
+                                    if (workExperienceItemsReview[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i <
+                                            workExperienceItemsReview?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                workExperienceItemsReview[i];
+
+                                            delete filteredItem.isPrimary;
+
+                                            filteredWorkExperienceItemsReview =
+                                                [
+                                                    ...filteredWorkExperienceItemsReview,
+                                                    filteredItem,
+                                                ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            hasIncorrectValue = true;
+                                        } else {
+                                            hasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        workExperienceItemsReview &&
+                                        workExperienceItemsReview[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 2) {
+                                const cdlInformationReview =
+                                    res?.cdlInformation?.cdlInformationReview;
+
+                                const licenseItems =
+                                    res?.cdlInformation?.licences;
+
+                                const licensetemsReview = licenseItems?.map(
+                                    (item) => item?.licenseReview
+                                );
+
+                                let hasIncorrectValue: boolean;
+                                let cardHasIncorrectValue: boolean;
+                                let filteredLicenseItemsReview = [];
+
+                                if (cdlInformationReview) {
+                                    hasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            cdlInformationReview
+                                        );
+                                }
+
+                                if (licensetemsReview) {
+                                    if (licensetemsReview[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i < licensetemsReview?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                licensetemsReview[i];
+
+                                            delete filteredItem.isPrimary;
+
+                                            filteredLicenseItemsReview = [
+                                                ...filteredLicenseItemsReview,
+                                                filteredItem,
+                                            ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            cardHasIncorrectValue = true;
+                                        } else {
+                                            cardHasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        licensetemsReview &&
+                                        licensetemsReview[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer:
+                                        hasIncorrectValue ||
+                                        cardHasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 3) {
+                                const accidentRecordItems =
+                                    res?.accidentRecords?.accidents;
+
+                                const accidentRecordItemsReview =
+                                    accidentRecordItems?.map(
+                                        (item) => item?.accidentItemReview
+                                    );
+
+                                let filteredAccidentRecordItemsReview = [];
+                                let hasIncorrectValue: boolean;
+
+                                if (accidentRecordItemsReview) {
+                                    if (accidentRecordItemsReview[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i <
+                                            accidentRecordItemsReview?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                accidentRecordItemsReview[i];
+
+                                            delete filteredItem.isPrimary;
+
+                                            filteredAccidentRecordItemsReview =
+                                                [
+                                                    ...filteredAccidentRecordItemsReview,
+                                                    filteredItem,
+                                                ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            hasIncorrectValue = true;
+                                        } else {
+                                            hasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        accidentRecordItemsReview &&
+                                        accidentRecordItemsReview[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 4) {
+                                const trafficViolationItems =
+                                    res?.trafficViolation
+                                        ?.trafficViolationItems;
+
+                                const trafficViolationItemsReview =
+                                    trafficViolationItems?.map(
+                                        (item) =>
+                                            item?.trafficViolationItemReview
+                                    );
+
+                                let filteredTrafficViolationItemsReview = [];
+                                let hasIncorrectValue: boolean;
+
+                                if (trafficViolationItemsReview) {
+                                    if (trafficViolationItemsReview[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i <
+                                            trafficViolationItemsReview?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                trafficViolationItemsReview[i];
+
+                                            delete filteredItem.isPrimary;
+
+                                            filteredTrafficViolationItemsReview =
+                                                [
+                                                    ...filteredTrafficViolationItemsReview,
+                                                    filteredItem,
+                                                ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            hasIncorrectValue = true;
+                                        } else {
+                                            hasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        trafficViolationItemsReview &&
+                                        trafficViolationItemsReview[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 5) {
+                                const educationReview =
+                                    res?.education?.educationReview;
+
+                                const educationItems =
+                                    res?.education?.emergencyContacts;
+
+                                const educationtemsReview = educationItems?.map(
+                                    (item) => item?.emergencyContactReview
+                                );
+
+                                let cardHasIncorrectValue: boolean;
+                                let hasIncorrectValue: boolean;
+                                let filteredEducationItemsReview = [];
+
+                                if (educationReview) {
+                                    hasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            educationReview
+                                        );
+                                }
+
+                                if (educationtemsReview) {
+                                    if (educationtemsReview[0]) {
+                                        let incorrectValuesArray = [];
+
+                                        for (
+                                            let i = 0;
+                                            i < educationtemsReview?.length;
+                                            i++
+                                        ) {
+                                            const filteredItem =
+                                                educationtemsReview[i];
+
+                                            delete filteredItem.isPrimary;
+
+                                            filteredEducationItemsReview = [
+                                                ...filteredEducationItemsReview,
+                                                filteredItem,
+                                            ];
+
+                                            const objectHasIncorrectValue =
+                                                isAnyPropertyInObjectFalse(
+                                                    filteredItem
+                                                );
+
+                                            incorrectValuesArray = [
+                                                ...incorrectValuesArray,
+                                                objectHasIncorrectValue,
+                                            ];
+                                        }
+
+                                        if (
+                                            isAnyValueInArrayTrue(
+                                                incorrectValuesArray
+                                            )
+                                        ) {
+                                            cardHasIncorrectValue = true;
+                                        } else {
+                                            cardHasIncorrectValue = false;
+                                        }
+                                    }
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed:
+                                        educationtemsReview &&
+                                        educationtemsReview[0]
+                                            ? true
+                                            : false,
+                                    hasIncorrectAnswer:
+                                        hasIncorrectValue ||
+                                        cardHasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 6) {
+                                const sevenDaysHosReview =
+                                    res?.sevenDaysHos?.sevenDaysHosReview;
+
+                                let hasIncorrectValue: boolean;
+
+                                if (sevenDaysHosReview) {
+                                    hasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            sevenDaysHosReview
+                                        );
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed: sevenDaysHosReview
+                                        ? true
+                                        : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 7) {
+                                const drugAndAlcoholReview =
+                                    res?.drugAndAlcohol?.drugAndAlcoholReview;
+
+                                let hasIncorrectValue: boolean;
+
+                                if (drugAndAlcoholReview) {
+                                    hasIncorrectValue =
+                                        isAnyPropertyInObjectFalse(
+                                            drugAndAlcoholReview
+                                        );
+                                }
+
+                                return {
+                                    ...item,
+                                    isReviewed: drugAndAlcoholReview
+                                        ? true
+                                        : false,
+                                    hasIncorrectAnswer: hasIncorrectValue,
+                                };
+                            }
+
+                            if (index === 8) {
+                                const driverRightsReview =
+                                    res?.driverRight?.reviewed;
+
+                                return {
+                                    ...item,
+                                    isReviewed: driverRightsReview
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 9) {
+                                const disclosureAndReleaseReview =
+                                    res?.disclosureRelease?.reviewed;
+
+                                return {
+                                    ...item,
+                                    isReviewed: disclosureAndReleaseReview
+                                        ? true
+                                        : false,
+                                };
+                            }
+
+                            if (index === 10) {
+                                const autorizationReview =
+                                    res?.authorization?.reviewed;
+
+                                return {
+                                    ...item,
+                                    isReviewed: autorizationReview
                                         ? true
                                         : false,
                                 };

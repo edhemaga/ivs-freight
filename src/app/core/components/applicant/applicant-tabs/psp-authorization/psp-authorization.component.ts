@@ -30,7 +30,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class PspAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public pspAuthorizationForm: FormGroup;
 

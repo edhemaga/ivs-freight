@@ -59,6 +59,8 @@
                             [files]="documents"
                             [size]="'medium'"
                             [hasNumberOfPages]="true"
+                            [isRequired]="true"
+                            [showRequired]="displayDocumentsRequiredNote"
                             (onFileEvent)="onFilesAction($event)"
                         ></app-ta-upload-files>
 

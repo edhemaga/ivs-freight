@@ -346,7 +346,7 @@
                             isDisabled: selectedMode === 'REVIEW_MODE',
                             incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                        [incorrectValue]="false"
+                        [incorrectValue]="openAnnotationArray[14].lineInputs[0]"
                         (incorrectEvent)="incorrectInput($event, 0, 14)"
                     ></app-ta-input>
                 </div>
@@ -369,7 +369,6 @@
                             openAnnotationArray[14].displayAnnotationTextArea
                         "
                         [lineIndex]="14"
-                        d
                         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                         [feedbackText]="
                             'Check the routing number one more time (one number missing)!!!'
@@ -399,7 +398,9 @@
         "
         [hasIncorrectFields]="
             selectedMode === 'REVIEW_MODE' &&
-            (hasIncorrectFields || cardsWithIncorrectFields)
+            (questionsHaveIncorrectFields ||
+                hasIncorrectFields ||
+                cardsWithIncorrectFields)
         "
         [mode]="selectedMode"
         (stepEvent)="onStepAction($event)"
