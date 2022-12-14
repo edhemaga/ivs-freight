@@ -463,6 +463,15 @@
                     .group-columns-active {
                         background: #aaaaaa20;
 
+                        .group-columns-title{
+                            .group-columns-arrow{
+                                svg-icon {
+                                    transform: rotate(90deg) !important;
+                                    transition: 0.2s;
+                                }
+                            }
+                        }
+
                         .group-columns {
                             padding: 0 10px 4px 10px;
                             max-height: 400px !important;
@@ -493,7 +502,8 @@
 
                                 svg-icon {
                                     display: flex;
-                                    transform: rotate(90deg);
+                                    transform: rotate(-90deg);
+                                    transition: 0.2s;
                                 }
                             }
 

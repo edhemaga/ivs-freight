@@ -117,6 +117,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             c.title ===
                             response.columns[response.event.index].title
                         ) {
+                            console.log('Radi resize')
                             c.width = response.event.width;
                         }
 

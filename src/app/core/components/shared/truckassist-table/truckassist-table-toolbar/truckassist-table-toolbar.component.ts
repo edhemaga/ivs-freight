@@ -272,6 +272,10 @@ export class TruckassistTableToolbarComponent
                             ''
                         ),
                     });
+
+                    if(!column.hidden){
+                        this.columnsOptionsWithGroups[index].isOpen = true;
+                    }
                 } else {
                     this.columnsOptionsWithGroups.push({
                         ...column,
@@ -281,9 +285,6 @@ export class TruckassistTableToolbarComponent
             });
 
             this.tableReseting = false;
-
-            console.log('columnsOptionsData');
-            console.log(this.columnsOptionsWithGroups);
         }
     }
 
@@ -424,29 +425,28 @@ export class TruckassistTableToolbarComponent
         columnGroup.areAllActive = !columnGroup.areAllActive;
 
         columnGroup.group.map((c) => {
-            c.hidden = columnGroup.areAllActive ? false : true;
+            if (!c.isPined) {
+                c.hidden = columnGroup.areAllActive ? false : true;
 
-            this.columns.filter((column, index) => {
-                if (column.title === c.title) {
-                    column.hidden = columnGroup.areAllActive ? false : true;
+                this.columns.filter((column, index) => {
+                    if (column.title === c.title) {
+                        column.hidden = columnGroup.areAllActive ? false : true;
 
-                    localStorage.setItem(
-                        `table-${this.tableConfigurationType}-Configuration`,
-                        JSON.stringify(this.columns)
-                    );
+                        localStorage.setItem(
+                            `table-${this.tableConfigurationType}-Configuration`,
+                            JSON.stringify(this.columns)
+                        );
 
-                    this.tableService.sendToaggleColumn({
-                        column: column,
-                        index: index,
-                    });
+                        this.tableService.sendToaggleColumn({
+                            column: column,
+                            index: index,
+                        });
 
-                    this.getActiveTableData();
-                }
-            });
+                        this.getActiveTableData();
+                    }
+                });
+            }
         });
-
-        console.log('onToaggleAllInGroup');
-        console.log(columnGroup);
     }
 
     // Toaggle Group Column
