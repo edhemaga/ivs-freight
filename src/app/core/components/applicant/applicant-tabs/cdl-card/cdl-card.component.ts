@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+    convertDateFromBackend,
+    convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
@@ -30,10 +33,13 @@ export class CdlCardComponent implements OnInit, OnDestroy {
     public cdlCardForm: FormGroup;
 
     public applicantId: number;
+    public cdlCardId: number | null = null;
 
     public stepHasValues: boolean = false;
 
     public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -97,16 +103,24 @@ export class CdlCardComponent implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: CdlCardFeedbackResponse): void {
-        // console.log('stepValues', stepValues);
-        // const { issueDate, expireDate } = stepValues;
-        // this.cdlCardForm.patchValue({
-        //     fromDate: convertDateFromBackend(issueDate),
-        //     toDate: convertDateFromBackend(expireDate),
-        // });
+        console.log('stepValues', stepValues);
+        const { issueDate, /* expireDate, */ files, id } = stepValues;
+
+        this.cdlCardId = id;
+
+        this.cdlCardForm.patchValue({
+            fromDate: convertDateFromBackend(issueDate),
+            /*     toDate: convertDateFromBackend(expireDate), */
+            files: JSON.stringify(files),
+        });
+
+        this.documents = files;
     }
 
     public onFilesAction(event: any): void {
         this.documents = event.files;
+
+        this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
             case 'add':
@@ -121,6 +135,11 @@ export class CdlCardComponent implements OnInit, OnDestroy {
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
+
+                this.documentsForDeleteIds = [
+                    ...this.documentsForDeleteIds,
+                    event.deleteId,
+                ];
 
                 break;
 
@@ -227,24 +246,31 @@ export class CdlCardComponent implements OnInit, OnDestroy {
     public onSubmit(): void {
         if (this.cdlCardForm.invalid) {
             this.inputService.markInvalid(this.cdlCardForm);
+
+            if (!this.documents.length) {
+                this.displayDocumentsRequiredNote = true;
+            }
+
             return;
         }
 
         const { fromDate, toDate } = this.cdlCardForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const documents = this.documents.map((item) => item.realFile);
 
         const saveData: any = {
             applicantId: this.applicantId,
             issueDate: convertDateToBackend(fromDate),
             expireDate: convertDateToBackend(toDate),
             files: documents,
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                id: this.cdlCardId,
+                filesForDeleteIds: this.documentsForDeleteIds,
+            }),
         };
+
+        console.log('saveDAta', saveData);
 
         const selectMatchingBackendMethod = () => {
             if (
@@ -278,6 +304,7 @@ export class CdlCardComponent implements OnInit, OnDestroy {
                                     ...store.applicant.medicalCertificate,
                                     issueDate: saveData.issueDate,
                                     expireDate: saveData.expireDate,
+                                    files: saveData.files,
                                 },
                             },
                         };

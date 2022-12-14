@@ -44,12 +44,12 @@
         }
 
         .not-been-convicted-container {
-            margin-bottom: 22px;
+            width: 616px;
+            margin: 0 auto 22px auto;
 
             p {
                 font-size: 12px;
-                margin-left: -80px !important;
-                cursor: pointer;
+                margin-top: -5px !important;
                 user-select: none;
             }
         }
@@ -507,19 +507,14 @@
         }
 
         .certify-container {
-            margin: 0 auto;
-            width: 600px;
-
-            .ta-checkbox-label {
-                font-size: 12px !important;
-                font-weight: bold !important;
-            }
+            width: 616px;
+            margin: 0 auto 22px auto;
 
             p {
+                width: 450px;
                 font-size: 12px;
-                margin-left: -6px !important;
+                margin-top: -5px !important;
                 user-select: none;
-                cursor: pointer;
             }
         }
     }
