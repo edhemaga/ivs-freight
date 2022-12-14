@@ -52,7 +52,9 @@ api/test.service.ts
 api/title.service.ts
 api/todo.service.ts
 api/trailer.service.ts
+api/trailerType.service.ts
 api/truck.service.ts
+api/truckType.service.ts
 api/user.service.ts
 api/vinDecode.service.ts
 api/violation.service.ts
@@ -606,6 +608,7 @@ model/trailerMinimalResponsePagination.ts
 model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
+model/trailerTypeFilterResponse.ts
 model/trailerTypeResponse.ts
 model/transponderGroup.ts
 model/truckAccidentResponse.ts
@@ -622,6 +625,7 @@ model/truckMinimalResponsePagination.ts
 model/truckResponse.ts
 model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
+model/truckTypeFilterResponse.ts
 model/truckTypeResponse.ts
 model/updateAccidentItemCommand.ts
 model/updateAccidentItemReviewCommand.ts
