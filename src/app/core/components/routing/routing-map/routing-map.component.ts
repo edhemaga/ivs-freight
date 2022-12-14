@@ -657,7 +657,20 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             stop.address.state +
                             ' ' +
                             (stop.address.zipCode ? stop.address.zipCode : '');
+                        stop.lat = stop.latitude;
+                        stop.long = stop.longitude;
                     });
+
+                    if (
+                        this.tableData[this.selectedMapIndex].routes[routeIndex]
+                            .stops?.length > 1
+                    ) {
+                        this.decodeRouteShape(
+                            this.tableData[this.selectedMapIndex].routes[
+                                routeIndex
+                            ]
+                        );
+                    }
 
                     // this.getRouteList(
                     //     this.tableData[this.selectedMapIndex].id,
@@ -2811,7 +2824,19 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.addressFlag = this.addressFlag == 'Empty' ? 'Loaded' : 'Empty';
 
         this.inputAddress.map((addressInput) => {
-            addressInput.changeStopType();
+            if (addressInput.addressExpanded) {
+                addressInput.changeStopType();
+            } else {
+                let flag = false;
+                if (addressInput.stopType == 'EMPTY') {
+                    addressInput.stopType = 'LOADED';
+                    flag = true;
+                } else {
+                    addressInput.stopType = 'EMPTY';
+                }
+
+                addressInput.changeFlag.emit(flag);
+            }
         });
 
         if (event) {
@@ -3022,15 +3047,18 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             var stopLatitude = stop.lat ? stop.lat : stop.latitude;
             var stopLongitude = stop.long ? stop.long : stop.longitude;
 
-            stopsLatLong.push({ latitude: stopLatitude, longitude: stopLongitude });
+            stopsLatLong.push({
+                latitude: stopLatitude,
+                longitude: stopLongitude,
+            });
 
             var stopObj = <any>{
                 id: stop.id ? stop.id : 0,
                 address: stop.address,
                 leg: 0,
                 total: 0,
-                longitude: stopLatitude,
-                latitude: stopLongitude,
+                longitude: stopLongitude,
+                latitude: stopLatitude,
                 orderNumber: stop.orderNumber
                     ? stop.orderNumber
                     : stopIndex + 1,

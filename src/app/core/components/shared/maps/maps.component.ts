@@ -32,7 +32,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     viewData = [];
     @Input() set _viewData(value) {
         // table data (shippers, repair shops)
-        
+
         var newData = value;
 
         newData.map((data) => {
@@ -49,9 +49,11 @@ export class MapsComponent implements OnInit, OnDestroy {
                 } else if (this.mapType == 'fuelStop') {
                     this.getFuelStop(data.id, markerIndex);
                 }
-                
                 this.getClusters(true, true);
-            } else if ( data.actionAnimation == 'add' || data.actionAnimation == 'delete' ) {
+            } else if (
+                data.actionAnimation == 'add' ||
+                data.actionAnimation == 'delete'
+            ) {
                 setTimeout(() => {
                     this.getClusters(true, true);
                 }, 1000);
@@ -401,7 +403,12 @@ export class MapsComponent implements OnInit, OnDestroy {
         }
     }
 
-    callClusters(clustersObj, changedSearchOrSort, pageIndex?, pageSize?) {
+    callClusters(clustersObj, changedSearchOrSort, clusterPagination?) {
+        var pageIndex = clusterPagination
+            ? clusterPagination.pagination.pageIndex
+            : 1;
+        var pageSize = 25;
+
         if (this.mapType == 'repairShop') {
             this.repairShopService
                 .getRepairShopClusters(clustersObj)
@@ -412,29 +419,47 @@ export class MapsComponent implements OnInit, OnDestroy {
                     var newMarkersAdded = false;
 
                     clustersResponse.map((clusterItem) => {
-                        if (clusterItem.count > 1) {
-                            let clusterIndex = this.clusterMarkers.findIndex(
-                                (item) =>
-                                    item.latitude === clusterItem.latitude &&
-                                    item.longitude === clusterItem.longitude
-                            );
-
-                            if (clusterIndex == -1) {
-                                this.clusterMarkers.push(clusterItem);
+                        if (clusterPagination) {
+                            if (
+                                clusterItem.latitude ==
+                                    clusterPagination.latitude &&
+                                clusterItem.longitude ==
+                                    clusterPagination.longitude
+                            ) {
+                                clusterItem.pagination.data.map((marker) => {
+                                    clusterPagination.pagination.data.push(
+                                        marker
+                                    );
+                                });
                             }
-
-                            clustersToShow.push(clusterItem.latitude);
                         } else {
-                            let markerIndex = this.viewData.findIndex(
-                                (item) => item.id === clusterItem.id
-                            );
+                            if (clusterItem.count > 1) {
+                                let clusterIndex =
+                                    this.clusterMarkers.findIndex(
+                                        (item) =>
+                                            item.latitude ===
+                                                clusterItem.latitude &&
+                                            item.longitude ===
+                                                clusterItem.longitude
+                                    );
 
-                            if (markerIndex == -1) {
-                                this.viewData.push(clusterItem);
-                                newMarkersAdded = true;
+                                if (clusterIndex == -1) {
+                                    this.clusterMarkers.push(clusterItem);
+                                }
+
+                                clustersToShow.push(clusterItem.latitude);
+                            } else {
+                                let markerIndex = this.viewData.findIndex(
+                                    (item) => item.id === clusterItem.id
+                                );
+
+                                if (markerIndex == -1) {
+                                    this.viewData.push(clusterItem);
+                                    newMarkersAdded = true;
+                                }
+
+                                markersToShow.push(clusterItem.id);
                             }
-
-                            markersToShow.push(clusterItem.id);
                         }
                     });
 
@@ -531,7 +556,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     null, // sort
                     null, // search
                     null, // search1
-                    null  // search2
+                    null // search2
                 )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((clustersResponse: any) => {
@@ -540,29 +565,49 @@ export class MapsComponent implements OnInit, OnDestroy {
                     var newMarkersAdded = false;
 
                     clustersResponse.map((clusterItem) => {
-                        if (clusterItem.count > 1) {
-                            let clusterIndex = this.clusterMarkers.findIndex(
-                                (item) =>
-                                    item.latitude === clusterItem.latitude &&
-                                    item.longitude === clusterItem.longitude
-                            );
+                        if (clusterPagination) {
+                            if (
+                                clusterItem.latitude ==
+                                    clusterPagination.latitude &&
+                                clusterItem.longitude ==
+                                    clusterPagination.longitude
+                            ) {
+                                clusterItem.pagination.data.map((marker) => {
+                                    clusterPagination.pagination.data.push(
+                                        marker
+                                    );
+                                });
 
-                            if (clusterIndex == -1) {
-                                this.clusterMarkers.push(clusterItem);
+                                clustersToShow.push(clusterItem.latitude);
                             }
-
-                            clustersToShow.push(clusterItem.latitude);
                         } else {
-                            let markerIndex = this.viewData.findIndex(
-                                (item) => item.id === clusterItem.id
-                            );
+                            if (clusterItem.count > 1) {
+                                let clusterIndex =
+                                    this.clusterMarkers.findIndex(
+                                        (item) =>
+                                            item.latitude ===
+                                                clusterItem.latitude &&
+                                            item.longitude ===
+                                                clusterItem.longitude
+                                    );
 
-                            if (markerIndex == -1) {
-                                this.viewData.push(clusterItem);
-                                newMarkersAdded = true;
+                                if (clusterIndex == -1) {
+                                    this.clusterMarkers.push(clusterItem);
+                                }
+
+                                clustersToShow.push(clusterItem.latitude);
+                            } else {
+                                let markerIndex = this.viewData.findIndex(
+                                    (item) => item.id === clusterItem.id
+                                );
+
+                                if (markerIndex == -1) {
+                                    this.viewData.push(clusterItem);
+                                    newMarkersAdded = true;
+                                }
+
+                                markersToShow.push(clusterItem.id);
                             }
-
-                            markersToShow.push(clusterItem.id);
                         }
                     });
 
@@ -626,7 +671,7 @@ export class MapsComponent implements OnInit, OnDestroy {
                     this.sortBy,
                     this.searchText,
                     null, // search1
-                    null  // search2
+                    null // search2
                 )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((mapListResponse: any) => {
@@ -1073,13 +1118,13 @@ export class MapsComponent implements OnInit, OnDestroy {
         //     this.mapLatitude = this.mapLatitude + 0.000001;
         //     this.mapLongitude = this.mapLongitude + 0.000001;
         // }
-        
+
         this.lastClusterCoordinates = clustersObject;
 
         this.callClusters(clustersObject, changedSearchOrSort);
     }
 
-    showMoreData() {
+    showMoreData(item) {
         var bounds = this.agmMap.getBounds();
         var ne = bounds.getNorthEast(); // LatLng of the north-east corner
         var sw = bounds.getSouthWest(); // LatLng of the south-west corder
@@ -1092,7 +1137,10 @@ export class MapsComponent implements OnInit, OnDestroy {
             zoomLevel: this.mapZoom,
         };
 
-        //this.callClusters(clustersObject, false, 1, 25);
+        if (item.count / item.pagination.pageIndex > 25) {
+            item.pagination.pageIndex++;
+            this.callClusters(clustersObject, false, item);
+        }
     }
 
     ngOnDestroy(): void {
