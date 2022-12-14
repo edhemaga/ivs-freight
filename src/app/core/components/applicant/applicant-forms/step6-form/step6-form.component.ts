@@ -160,7 +160,10 @@ export class Step6FormComponent
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
 
-                if (this.selectedMode === SelectedMode.APPLICANT) {
+                if (
+                    this.selectedMode === SelectedMode.APPLICANT ||
+                    this.selectedMode === SelectedMode.FEEDBACK
+                ) {
                     this.startValueChangesMonitoring();
                 }
             }, 50);
@@ -179,7 +182,10 @@ export class Step6FormComponent
 
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
-            if (formValue.emergencyContactReview) {
+            if (
+                formValue.emergencyContactReview &&
+                Object.keys(formValue.emergencyContactReview).length > 1
+            ) {
                 const {
                     isNameValid,
                     isPhoneValid,
@@ -241,6 +247,7 @@ export class Step6FormComponent
             .subscribe((updatedFormValues) => {
                 const {
                     id,
+                    reviewId,
                     isEditingContact,
                     emergencyContactReview,
                     ...previousFormValues

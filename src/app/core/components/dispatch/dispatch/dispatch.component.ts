@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DispatcherQuery } from '../../dispatcher/state/dispatcher.query';
 
@@ -7,7 +7,7 @@ import { DispatcherQuery } from '../../dispatcher/state/dispatcher.query';
     templateUrl: './dispatch.component.html',
     styleUrls: ['./dispatch.component.scss'],
 })
-export class DispatchComponent implements OnInit {
+export class DispatchComponent implements OnInit, AfterViewInit {
     tableOptions: any = {};
     tableData: any[] = [];
     selectedTab = 'active';
@@ -15,6 +15,7 @@ export class DispatchComponent implements OnInit {
     tableContainerWidth: number = 0;
     dispatchBoardSmallList: Observable<any>;
     dispatchTableList: Observable<number[]>;
+    resizeObserver: ResizeObserver;
     
     constructor(private dispatcherQuery: DispatcherQuery) {}
 
@@ -35,6 +36,22 @@ export class DispatchComponent implements OnInit {
                 hideOpenModalButton: true,
             },
         };
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    observTableContainer() {
+        this.resizeObserver = new ResizeObserver((entries) => {
+            entries.forEach((entry) => {
+                this.tableContainerWidth = entry.contentRect.width;
+            });
+        });
+
+        this.resizeObserver.observe(document.querySelector('.table-container'));
     }
 
     sendDispatchData() {

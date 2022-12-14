@@ -120,6 +120,12 @@ export class BrokerTService implements OnDestroy {
     public getBrokerList(
         ban?: number,
         dnu?: number,
+        invoiceAgeingFrom?: number,
+        invoiceAgeingTo?: number,
+        availableCreditFrom?: number,
+        availableCreditTo?: number,
+        revenueFrom?: number,
+        revenueTo?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -128,18 +134,23 @@ export class BrokerTService implements OnDestroy {
         search1?: string,
         search2?: string
     ): Observable<GetBrokerListResponse> {
-        // return this.brokerService.apiBrokerListGet(
-        //     ban,
-        //     dnu,
-        //     pageIndex,
-        //     pageSize,
-        //     companyId,
-        //     sort,
-        //     search,
-        //     search1,
-        //     search2
-        // );
-        return of();
+        return this.brokerService.apiBrokerListGet(
+            ban,
+            dnu,
+            invoiceAgeingFrom,
+            invoiceAgeingTo,
+            availableCreditFrom,
+            availableCreditTo,
+            revenueFrom,
+            revenueTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
     }
 
     // Get Broker By ID

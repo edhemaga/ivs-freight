@@ -34,6 +34,10 @@
 
                     height: 100%;
 
+                    .hos-column{
+                        height: 100%;
+                    }
+
                     &:not(.status-inside) {
                         padding: 4px;
                     }
@@ -156,6 +160,7 @@
 
                         .location-field {
                             display: flex;
+                            width: 100%;
 
                             .location-f-city,
                             .location-f-st {
@@ -164,7 +169,7 @@
 
                                 &.location-f-city {
                                     white-space: nowrap;
-                                    width: 70%;
+                                    max-width: 80%;
                                     overflow: hidden;
                                     text-overflow: ellipsis;
                                 }
@@ -194,6 +199,25 @@
                             border-radius: 2px;
                             z-index: 10;
                         }
+
+                        app-gps-progressbar{
+                            width: 100%;
+                        }
+
+                        .parking-field{
+                            svg-icon{
+                                margin-right: 6px;
+                                svg{
+                                    path{
+                                        fill: #42A4F4;
+                                    }
+                                }
+                            }
+                            .parking-number{
+                                font-size: 11px;
+                                color: #919191;
+                            }
+                        }
                     }
 
                     .circles-holder {
@@ -215,6 +239,33 @@
                         .info-item {
                             flex: 1;
                             padding-left: 16px;
+                        }
+                    }
+
+                    .dispatcher-table-cell-container {
+                        display: flex;
+                        height: 26px;
+                        align-items: center;
+                        line-height: 1;
+        
+                        &.note-container {
+                            display: block;
+        
+                            //background-color: #F7F7F7;
+                            border-radius: 3px;
+                            padding-left: 6px;
+                        }
+        
+                        .dispatcher-table-cell-holder {
+                            display: flex;
+                            height: 28px;
+                            width: 100%;
+                            align-items: center;
+                            padding-left: 6px;
+        
+                            &:hover {
+                                // background-color: #f7f7f7;
+                            }
                         }
                     }
                 }
@@ -409,6 +460,60 @@
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+
+.new_load_dispatch_hold {
+    width: 26px;
+    height: 26px;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+.new_load_dispatch {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 3px;
+    background-color: #fff;
+    margin: 0 0 0 auto;
+    
+    svg-icon{
+        display: flex;
+    }
+
+    svg {
+        path {
+            transition: none !important;
+            fill: #b7b7b7;
+        }
+    }
+
+    &:hover {
+        background-color: #f7f7f7;
+
+        svg {
+            path {
+                fill: #6d82c7;
+            }
+        }
+    }
+
+    &[disabled] {
+        background-color: rgba(255, 255, 255, 0.3);
+        cursor: default;
+
+        &:hover {
+            svg {
+                path {
+                    fill: #cfcfcf;
                 }
             }
         }

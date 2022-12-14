@@ -1,10 +1,17 @@
+/* eslint-disable no-unused-vars */
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+    anyInputInLineIncorrect,
+    isAnyValueInArrayFalse,
+    isEveryValueInArrayTrue,
+    isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import {
     convertDateToBackend,
@@ -18,6 +25,7 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 import { ApplicantQuery } from '../../state/store/applicant.query';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { ViolationModel } from '../../state/model/violations.model';
 import {
     ApplicantModalResponse,
@@ -36,7 +44,7 @@ import {
 export class Step5Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.FEEDBACK;
 
     public applicantId: number;
 
@@ -51,7 +59,9 @@ export class Step5Component implements OnInit, OnDestroy {
 
     public violationsArray: ViolationModel[] = [];
 
+    public stepValues: any;
     public stepHasValues: boolean = false;
+    public stepHasReviewValues: boolean = false;
 
     public lastValidLicense: any;
 
@@ -77,6 +87,10 @@ export class Step5Component implements OnInit, OnDestroy {
     public hasIncorrectFields: boolean = false;
     public cardsWithIncorrectFields: boolean = false;
     public previousFormValuesOnReview: any;
+
+    public stepFeedbackValues: any;
+    public feedbackValuesToPatch: any;
+    public isFeedbackValueUpdated: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -182,7 +196,6 @@ export class Step5Component implements OnInit, OnDestroy {
         this.certifyForm.get('certify').patchValue(certifyViolations);
 
         if (!noViolationsForPastTwelveMonths) {
-            console.log('stepValues', stepValues);
             const lastItemInViolationsArray =
                 trafficViolationItems[trafficViolationItems.length - 1];
 
@@ -192,33 +205,12 @@ export class Step5Component implements OnInit, OnDestroy {
 
             const filteredViolationsArray = restOfTheItemsInViolationsArray.map(
                 (item) => {
-                    const itemVehicleTypeName = item.vehicleType.name;
-
-                    const itemVehicleType = {
-                        ...item.vehicleType,
-                    };
-
-                    switch (itemVehicleTypeName) {
-                        case 'Tow Truck Heavy':
-                            itemVehicleType.name = 'Tow Truck';
-                            break;
-
-                        case 'Car Hauler - Semi Truck':
-                            itemVehicleType.name = 'Car Hauler';
-                            break;
-
-                        case 'Semi Truck w Sleeper':
-                            itemVehicleType.name = 'Semi w/Sleeper';
-                            break;
-
-                        default:
-                            break;
-                    }
-
                     return {
+                        id: item.id,
+                        reviewId: item.trafficViolationItemReview?.id,
                         isEditingViolation: false,
                         date: convertDateFromBackend(item.date),
-                        vehicleType: itemVehicleType.name,
+                        vehicleType: item.vehicleType.name,
                         location: item.location,
                         description: item.description,
                         trafficViolationItemReview:
@@ -229,41 +221,23 @@ export class Step5Component implements OnInit, OnDestroy {
                 }
             );
 
-            const lastItemInViolationsArrayVehicleTypeName =
-                lastItemInViolationsArray.vehicleType.name;
-
-            const lastItemVehicleType = {
-                ...lastItemInViolationsArray.vehicleType,
-            };
-
-            switch (lastItemInViolationsArrayVehicleTypeName) {
-                case 'Tow Truck Heavy':
-                    lastItemVehicleType.name = 'Tow Truck';
-                    break;
-
-                case 'Car Hauler - Semi Truck':
-                    lastItemVehicleType.name = 'Car Hauler';
-                    break;
-
-                case 'Semi Truck w Sleeper':
-                    lastItemVehicleType.name = 'Semi w/Sleeper';
-                    break;
-
-                default:
-                    break;
-            }
-
             const filteredLastItemInViolationsArray = {
                 id: lastItemInViolationsArray.id,
+                reviewId:
+                    lastItemInViolationsArray.trafficViolationItemReview?.id,
                 isEditingViolation: false,
                 date: convertDateFromBackend(lastItemInViolationsArray.date),
-                vehicleType: lastItemVehicleType.name,
+                vehicleType: lastItemInViolationsArray.vehicleType.name,
                 location: lastItemInViolationsArray.location,
                 description: lastItemInViolationsArray.description,
                 trafficViolationItemReview:
                     lastItemInViolationsArray.trafficViolationItemReview
                         ? lastItemInViolationsArray.trafficViolationItemReview
                         : null,
+            };
+
+            this.lastViolationsCard = {
+                ...filteredLastItemInViolationsArray,
             };
 
             this.violationsArray = JSON.parse(
@@ -313,6 +287,118 @@ export class Step5Component implements OnInit, OnDestroy {
             );
 
             this.formStatus = 'VALID';
+        }
+
+        if (this.selectedMode === SelectedMode.REVIEW) {
+            const violationItemsReview = trafficViolationItems.map(
+                (item) => item.trafficViolationItemReview
+            );
+
+            if (violationItemsReview[0]) {
+                this.stepHasReviewValues = true;
+
+                violationItemsReview.pop();
+
+                for (let i = 0; i < violationItemsReview.length; i++) {
+                    const firstEmptyObjectInList =
+                        this.openAnnotationArray.find(
+                            (item) => Object.keys(item).length === 0
+                        );
+
+                    const indexOfFirstEmptyObjectInList =
+                        this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        );
+
+                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                        lineIndex: this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        ),
+                        lineInputs: [false],
+                        displayAnnotationButton: false,
+                        displayAnnotationTextArea: false,
+                    };
+
+                    const violationItemReview = {
+                        ...violationItemsReview[i],
+                    };
+
+                    delete violationItemReview.isPrimary;
+
+                    let hasIncorrectValue: boolean;
+
+                    if (violationItemsReview[0]) {
+                        hasIncorrectValue =
+                            Object.values(violationItemReview).includes(false);
+                    }
+
+                    const incorrectMessage = violationItemReview?.commonMessage;
+
+                    if (
+                        hasIncorrectValue === null ||
+                        hasIncorrectValue == undefined
+                    ) {
+                        hasIncorrectValue = false;
+                    }
+
+                    this.openAnnotationArray[i] = {
+                        ...this.openAnnotationArray[i],
+                        lineInputs: [hasIncorrectValue],
+                        displayAnnotationButton:
+                            hasIncorrectValue && !incorrectMessage
+                                ? true
+                                : false,
+                        displayAnnotationTextArea: incorrectMessage
+                            ? true
+                            : false,
+                    };
+
+                    const inputFieldsArray = JSON.stringify(
+                        this.openAnnotationArray
+                            .filter((item) => Object.keys(item).length !== 0)
+                            .map((item) => item.lineInputs)
+                    );
+
+                    if (inputFieldsArray.includes('true')) {
+                        this.cardsWithIncorrectFields = true;
+                    } else {
+                        this.cardsWithIncorrectFields = false;
+                    }
+
+                    this.violationsForm
+                        .get(`cardReview${i + 1}`)
+                        .patchValue(incorrectMessage ? incorrectMessage : null);
+                }
+            }
+        }
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            const trafficViolationItemsReview = trafficViolationItems.map(
+                (item) => item.trafficViolationItemReview
+            );
+
+            this.stepFeedbackValues = trafficViolationItemsReview.map(
+                (item) => {
+                    return {
+                        isDateValid: item.isDateValid,
+                        isLocationValid: item.isLocationValid,
+                        locationMessage: item.locationMessage,
+                        isDescriptionValid: item.isDescriptionValid,
+                        descriptionMessage: item.descriptionMessage,
+                        commonMessage: item.commonMessage,
+                        hasIncorrectValue: isAnyValueInArrayFalse([
+                            item.isDateValid,
+                            item.isLocationValid,
+                            item.isDescriptionValid,
+                        ]),
+                    };
+                }
+            );
+
+            this.stepValues = stepValues.trafficViolationItems;
+
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues?.length - 1];
         }
     }
 
@@ -369,14 +455,14 @@ export class Step5Component implements OnInit, OnDestroy {
             return;
         }
 
-        if (type === 'notBeenConvicted') {
+        if (type === InputSwitchActions.NOT_BEEN_CONVICTED) {
             this.notBeenConvictedForm.patchValue({
                 notBeenConvicted:
                     !this.notBeenConvictedForm.get('notBeenConvicted').value,
             });
         }
 
-        if (type === 'certify') {
+        if (type === InputSwitchActions.CERTIFY) {
             this.certifyForm.patchValue({
                 certify: !this.certifyForm.get('certify').value,
             });
@@ -420,10 +506,24 @@ export class Step5Component implements OnInit, OnDestroy {
         }
 
         this.formValuesToPatch = selectedViolation;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.selectedViolationIndex];
+        }
     }
 
     public getViolationFormValues(event: any): void {
         this.violationsArray = [...this.violationsArray, event];
+
+        if (this.lastViolationsCard.id) {
+            this.violationsArray[this.violationsArray.length - 1].id =
+                this.lastViolationsCard.id;
+
+            this.lastViolationsCard.id = null;
+        } else {
+            this.violationsArray[this.violationsArray.length - 1].id = null;
+        }
 
         this.helperIndex = 2;
 
@@ -448,12 +548,20 @@ export class Step5Component implements OnInit, OnDestroy {
         this.violationsArray[this.selectedViolationIndex].isEditingViolation =
             false;
 
-        this.violationsArray[this.selectedViolationIndex] = event;
+        this.violationsArray[this.selectedViolationIndex] = {
+            ...this.violationsArray[this.selectedViolationIndex],
+            ...event,
+        };
 
         this.helperIndex = 2;
         this.selectedViolationIndex = -1;
 
         this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
     }
 
     public cancelViolationEditing(_: any): void {
@@ -465,6 +573,11 @@ export class Step5Component implements OnInit, OnDestroy {
         this.selectedViolationIndex = -1;
 
         this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
     }
 
     public onGetFormStatus(status: string): void {
@@ -478,7 +591,16 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public onGetLastFormValues(event: any): void {
-        this.lastViolationsCard = event;
+        this.lastViolationsCard = {
+            ...this.lastViolationsCard,
+            ...event,
+        };
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (event) {
+                this.startFeedbackValueChangesMonitoring();
+            }
+        }
     }
 
     public onHasIncorrectFields(event: any): void {
@@ -517,9 +639,14 @@ export class Step5Component implements OnInit, OnDestroy {
         );
 
         if (hasInvalidFields.includes('false')) {
-            this.openAnnotationArray[
-                this.selectedViolationIndex
-            ].displayAnnotationButton = true;
+            if (
+                !this.openAnnotationArray[this.selectedViolationIndex]
+                    .displayAnnotationTextArea
+            ) {
+                this.openAnnotationArray[
+                    this.selectedViolationIndex
+                ].displayAnnotationButton = true;
+            }
 
             this.openAnnotationArray[
                 this.selectedViolationIndex
@@ -537,6 +664,12 @@ export class Step5Component implements OnInit, OnDestroy {
         this.helperIndex = 2;
         this.selectedViolationIndex = -1;
 
+        this.previousFormValuesOnReview.trafficViolationItemReview = {
+            ...this.previousFormValuesOnReview.trafficViolationItemReview,
+            locationMessage: this.lastViolationsCard.firstRowReview,
+            descriptionMessage: this.lastViolationsCard.secondRowReview,
+        };
+
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
 
@@ -548,6 +681,12 @@ export class Step5Component implements OnInit, OnDestroy {
 
         this.helperIndex = 2;
         this.selectedViolationIndex = -1;
+
+        this.previousFormValuesOnReview.trafficViolationItemReview = {
+            ...this.previousFormValuesOnReview.trafficViolationItemReview,
+            locationMessage: this.lastViolationsCard.firstRowReview,
+            descriptionMessage: this.lastViolationsCard.secondRowReview,
+        };
 
         this.formValuesToPatch = this.previousFormValuesOnReview;
     }
@@ -571,8 +710,9 @@ export class Step5Component implements OnInit, OnDestroy {
         );
 
         if (type === 'card') {
+            selectedInputsLine.lineInputs[inputIndex] = false;
+
             if (selectedInputsLine.displayAnnotationButton) {
-                selectedInputsLine.lineInputs[inputIndex] = false;
                 selectedInputsLine.displayAnnotationButton = false;
             }
 
@@ -580,6 +720,10 @@ export class Step5Component implements OnInit, OnDestroy {
                 selectedInputsLine.displayAnnotationButton = false;
                 selectedInputsLine.displayAnnotationTextArea = false;
             }
+
+            this.violationsForm
+                .get(`cardReview${lineIndex + 1}`)
+                .patchValue(null);
 
             Object.keys(
                 this.violationsArray[lineIndex].trafficViolationItemReview
@@ -658,6 +802,122 @@ export class Step5Component implements OnInit, OnDestroy {
         this.formValuesToPatch = selectedViolation;
     }
 
+    public startFeedbackValueChangesMonitoring(): void {
+        if (this.stepFeedbackValues) {
+            let incorrectValuesArray = [];
+
+            for (let i = 0; i < this.stepFeedbackValues.length; i++) {
+                const filteredTrafficViolationIncorrectValues = Object.keys(
+                    this.stepFeedbackValues[i]
+                )
+                    .filter((item) => item !== 'hasIncorrectValue')
+                    .reduce((o, key) => {
+                        this.stepFeedbackValues[i][key] === false &&
+                            (o[key] = this.stepFeedbackValues[i][key]);
+
+                        return o;
+                    }, {});
+
+                const hasIncorrectValues = Object.keys(
+                    filteredTrafficViolationIncorrectValues
+                ).length;
+
+                if (hasIncorrectValues) {
+                    const filteredFieldsWithIncorrectValues = Object.keys(
+                        filteredTrafficViolationIncorrectValues
+                    ).reduce((o, key) => {
+                        const keyName = key
+                            .replace('Valid', '')
+                            .replace('is', '')
+                            .trim()
+                            .toLowerCase();
+
+                        const match = Object.keys(this.stepValues[i])
+                            .filter((item) =>
+                                item.toLowerCase().includes(keyName)
+                            )
+                            .pop();
+
+                        o[keyName] = this.stepValues[i][match];
+
+                        if (keyName === 'date') {
+                            o['date'] = convertDateFromBackend(
+                                this.stepValues[i].date
+                            );
+                        }
+
+                        if (keyName === 'location') {
+                            o['location'] = JSON.stringify({
+                                location: this.stepValues[i].location.address,
+                            });
+                        }
+
+                        return o;
+                    }, {});
+
+                    const filteredUpdatedFieldsWithIncorrectValues =
+                        Object.keys(filteredFieldsWithIncorrectValues).reduce(
+                            (o, key) => {
+                                const keyName = key;
+
+                                const match = Object.keys(this.stepValues[i])
+                                    .filter((item) =>
+                                        item.toLowerCase().includes(keyName)
+                                    )
+                                    .pop();
+
+                                o[keyName] =
+                                    i === this.stepFeedbackValues.length - 1
+                                        ? this.lastViolationsCard[match]
+                                        : this.violationsArray[i][match];
+
+                                if (keyName === 'date') {
+                                    o['date'] =
+                                        i === this.stepFeedbackValues.length - 1
+                                            ? this.lastViolationsCard?.date
+                                            : this.violationsArray[i].date;
+                                }
+
+                                if (keyName === 'location') {
+                                    o['location'] = JSON.stringify({
+                                        location:
+                                            i ===
+                                            this.stepFeedbackValues.length - 1
+                                                ? this.lastViolationsCard
+                                                      .location?.address
+                                                : this.violationsArray[i]
+                                                      .location.address,
+                                    });
+                                }
+
+                                return o;
+                            },
+                            {}
+                        );
+
+                    const isFormNotEqual = isFormValueNotEqual(
+                        filteredFieldsWithIncorrectValues,
+                        filteredUpdatedFieldsWithIncorrectValues
+                    );
+
+                    incorrectValuesArray = [
+                        ...incorrectValuesArray,
+                        isFormNotEqual,
+                    ];
+                }
+            }
+
+            const isCardsValueUpdated =
+                isEveryValueInArrayTrue(incorrectValuesArray);
+
+            if (isCardsValueUpdated) {
+                this.isFeedbackValueUpdated = true;
+            } else {
+                this.isFeedbackValueUpdated = false;
+            }
+        }
+    }
+
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
             if (
@@ -714,26 +974,17 @@ export class Step5Component implements OnInit, OnDestroy {
         const { certify } = this.certifyForm.value;
 
         const filteredViolationsArray = this.violationsArray.map((item) => {
-            const itemVehicleType = item.vehicleType;
-
-            switch (itemVehicleType) {
-                case 'Tow Truck':
-                    item.vehicleType = 'Tow Truck Heavy';
-                    break;
-
-                case 'Car Hauler':
-                    item.vehicleType = 'Car Hauler - Semi Truck';
-                    break;
-
-                case 'Semi w/Sleeper':
-                    item.vehicleType = 'Semi Truck w Sleeper';
-                    break;
-
-                default:
-                    break;
-            }
-
             return {
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: item.id ? item.id : null,
+                    trafficViolationItemReview: item.trafficViolationItemReview
+                        ? {
+                              ...item.trafficViolationItemReview,
+                              trafficViolationItemId: item.id ? item.id : null,
+                          }
+                        : null,
+                }),
                 date: convertDateToBackend(item.date),
                 vehicleTypeId: this.vehicleType.find(
                     (vehicleItem) => vehicleItem.name === item.vehicleType
@@ -743,30 +994,26 @@ export class Step5Component implements OnInit, OnDestroy {
             };
         });
 
-        const lastViolationsCardVehicleType =
-            this.lastViolationsCard?.vehicleType;
-
-        switch (lastViolationsCardVehicleType) {
-            case 'Tow Truck':
-                this.lastViolationsCard.vehicleType = 'Tow Truck Heavy';
-                break;
-
-            case 'Car Hauler':
-                this.lastViolationsCard.vehicleType = 'Car Hauler - Semi Truck';
-                break;
-
-            case 'Semi w/Sleeper':
-                this.lastViolationsCard.vehicleType = 'Semi Truck w Sleeper';
-                break;
-
-            default:
-                break;
-        }
-
         let filteredLastViolationsCard: any;
 
         if (!noViolationsForPastTwelveMonths) {
             filteredLastViolationsCard = {
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: this.lastViolationsCard.id
+                        ? this.lastViolationsCard.id
+                        : null,
+                    trafficViolationItemReview: this.lastViolationsCard
+                        .trafficViolationItemReview
+                        ? {
+                              ...this.lastViolationsCard
+                                  .trafficViolationItemReview,
+                              trafficViolationItemId: this.lastViolationsCard.id
+                                  ? this.lastViolationsCard.id
+                                  : null,
+                          }
+                        : null,
+                }),
                 date: convertDateToBackend(this.lastViolationsCard.date),
                 vehicleTypeId: this.vehicleType.find(
                     (vehicleItem) =>
@@ -870,21 +1117,50 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public onSubmitReview(): void {
+        const violationsArrayReview = this.violationsArray.map(
+            (item, index) => {
+                const itemReview = item.trafficViolationItemReview;
+
+                return {
+                    ...(this.stepHasReviewValues && {
+                        id: item.reviewId,
+                    }),
+                    trafficViolationItemId: item.id,
+                    isPrimary: false,
+                    commonMessage: this.violationsForm.get(
+                        `cardReview${index + 1}`
+                    ).value,
+                    isDateValid: itemReview ? itemReview.isDateValid : true,
+                    isLocationValid: itemReview
+                        ? itemReview.isLocationValid
+                        : true,
+                    locationMessage: null,
+                    isDescriptionValid: itemReview
+                        ? itemReview.isDescriptionValid
+                        : true,
+                    descriptionMessage: null,
+                };
+            }
+        );
+
         const lastItemReview =
             this.previousFormValuesOnReview.trafficViolationItemReview;
 
+        const lastItemReviewId = this.previousFormValuesOnReview.reviewId;
         const lastItemId = this.previousFormValuesOnReview.id;
 
         const lastReviewedItemIViolationsArray = {
-            itemId: lastItemId,
+            ...(this.stepHasReviewValues && {
+                id: lastItemReviewId,
+            }),
+            trafficViolationItemId: lastItemId,
             isPrimary: true,
             commonMessage: null,
             isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
-            isVehicleTypeValid: true,
             isLocationValid: lastItemReview
                 ? lastItemReview.isLocationValid
                 : true,
-            vehicleTypeLocationMessage: this.lastViolationsCard.firstRowReview,
+            locationMessage: this.lastViolationsCard.firstRowReview,
             isDescriptionValid: lastItemReview
                 ? lastItemReview.isDescriptionValid
                 : true,
@@ -893,15 +1169,33 @@ export class Step5Component implements OnInit, OnDestroy {
 
         const saveData: CreateTrafficViolationReviewCommand = {
             applicantId: this.applicantId,
-            trafficViolationReviews: [lastReviewedItemIViolationsArray],
+            trafficViolationReviews: [
+                ...violationsArrayReview,
+                lastReviewedItemIViolationsArray,
+            ],
         };
 
-        console.log('saveData', saveData.trafficViolationReviews[0]);
+        const selectMatchingBackendMethod = () => {
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                !this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.createTrafficViolationsReview(
+                    saveData
+                );
+            }
 
-        console.log('store', this.applicantStore);
+            if (
+                this.selectedMode === SelectedMode.REVIEW &&
+                this.stepHasReviewValues
+            ) {
+                return this.applicantActionsService.updateTrafficViolationsReview(
+                    saveData
+                );
+            }
+        };
 
-        this.applicantActionsService
-            .createTrafficViolationsReview(saveData)
+        selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -909,17 +1203,59 @@ export class Step5Component implements OnInit, OnDestroy {
                         `/application/${this.applicantId}/6`,
                     ]);
 
-                    /*   this.applicantStore.update(store => {
-            return {
-              ...store,
-              applicant: {
-                ...store.applicant,
-                trafficViolation : {
-                  ...store.applicant.trafficViolation,
-                }
-              }
-            }
-          }) */
+                    this.applicantStore.update((store) => {
+                        return {
+                            ...store,
+                            applicant: {
+                                ...store.applicant,
+                                trafficViolation: {
+                                    ...store.applicant.trafficViolation,
+                                    trafficViolationItems:
+                                        store.applicant.trafficViolation.trafficViolationItems.map(
+                                            (item, index) => {
+                                                if (
+                                                    index ===
+                                                    store.applicant
+                                                        .trafficViolation
+                                                        .trafficViolationItems
+                                                        .length -
+                                                        1
+                                                ) {
+                                                    return {
+                                                        ...item,
+                                                        trafficViolationItemReview:
+                                                            {
+                                                                ...item.trafficViolationItemReview,
+                                                                isDateValid:
+                                                                    lastReviewedItemIViolationsArray.isDateValid,
+                                                                isLocationValid:
+                                                                    lastReviewedItemIViolationsArray.isLocationValid,
+                                                                locationMessage:
+                                                                    lastReviewedItemIViolationsArray.locationMessage,
+                                                                isDescriptionValid:
+                                                                    lastReviewedItemIViolationsArray.isDescriptionValid,
+                                                                descriptionMessage:
+                                                                    lastReviewedItemIViolationsArray.descriptionMessage,
+                                                            },
+                                                    };
+                                                }
+
+                                                return {
+                                                    ...item,
+                                                    trafficViolationItemReview:
+                                                        {
+                                                            ...item.trafficViolationItemReview,
+                                                            ...violationsArrayReview[
+                                                                index
+                                                            ],
+                                                        },
+                                                };
+                                            }
+                                        ),
+                                },
+                            },
+                        };
+                    });
                 },
                 error: (err) => {
                     console.log(err);

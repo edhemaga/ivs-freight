@@ -1008,15 +1008,11 @@
                                 (selectedMode === 'APPLICANT_MODE' &&
                                     !isBankSelected) ||
                                 selectedMode === 'REVIEW_MODE' ||
-                                (selectedMode === 'FEEDBACK_MODE' &&
-                                    stepFeedbackValues?.isRoutingNumberValid),
+                                selectedMode === 'FEEDBACK_MODE',
                             isRequired: isBankSelected,
                             minLength: 9,
-                            maxLength: 9,
-                            incorrectInput: selectedMode === 'REVIEW_MODE'
+                            maxLength: 9
                         }"
-                        [incorrectValue]="openAnnotationArray[8].lineInputs[1]"
-                        (incorrectEvent)="incorrectInput($event, 1, 8)"
                     ></app-ta-input>
                 </div>
 
@@ -1043,7 +1039,7 @@
                         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                         [feedbackText]="
                             selectedMode === 'FEEDBACK_MODE' &&
-                            stepFeedbackValues?.accountRoutingMessage
+                            stepFeedbackValues?.accountNumberMessage
                         "
                         (annotationBtnClickEvent)="
                             selectedMode === 'REVIEW_MODE' &&
@@ -1146,10 +1142,8 @@
                                     isDisabled:
                                         selectedMode === 'REVIEW_MODE' ||
                                         (selectedMode === 'FEEDBACK_MODE' &&
-                                            ((i === 1 &&
-                                                stepFeedbackValues?.isLegalWorkValid) ||
-                                                (i === 2 &&
-                                                    stepFeedbackValues?.isAnotherNameValid) ||
+                                            ((i === 2 &&
+                                                stepFeedbackValues?.isAnotherNameValid) ||
                                                 (i === 3 &&
                                                     stepFeedbackValues?.isInMilitaryValid) ||
                                                 (i === 4 &&
@@ -1194,9 +1188,7 @@
                                 [lineIndex]="i + 9"
                                 [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                                 [feedbackText]="
-                                    selectedMode === 'FEEDBACK_MODE' && i === 1
-                                        ? stepFeedbackValues?.legalWorkMessage
-                                        : i === 2
+                                    selectedMode === 'FEEDBACK_MODE' && i === 2
                                         ? stepFeedbackValues?.anotherNameMessage
                                         : i === 3
                                         ? stepFeedbackValues?.inMilitaryMessage

@@ -20,8 +20,10 @@ import { ApplicantStore } from '../../state/store/applicant.store';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import {
     ApplicantResponse,
+    CreateMedicalCertificateReviewCommand,
     MedicalCertificateFeedbackResponse,
 } from 'appcoretruckassist';
+import { UploadFile } from '../../../shared/ta-upload-files/ta-upload-file/ta-upload-file.component';
 
 @Component({
     selector: 'app-medical-certificate',
@@ -36,10 +38,13 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public medicalCertificateForm: FormGroup;
 
     public applicantId: number;
+    public medicalCertificateId: number | null = null;
 
     public stepHasValues: boolean = false;
 
     public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -105,17 +110,23 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     public patchStepValues(
         stepValues: MedicalCertificateFeedbackResponse
     ): void {
-        console.log('stepValues', stepValues);
-        const { issueDate, expireDate } = stepValues;
+        const { issueDate, expireDate, files, id } = stepValues;
+
+        this.medicalCertificateId = id;
 
         this.medicalCertificateForm.patchValue({
             fromDate: convertDateFromBackend(issueDate),
             toDate: convertDateFromBackend(expireDate),
+            files: JSON.stringify(files),
         });
+
+        this.documents = files;
     }
 
     public onFilesAction(event: any): void {
         this.documents = event.files;
+
+        this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
             case 'add':
@@ -131,11 +142,23 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                         event.files.length ? JSON.stringify(event.files) : null
                     );
 
+                this.documentsForDeleteIds = [
+                    ...this.documentsForDeleteIds,
+                    event.deleteId,
+                ];
+
                 break;
 
             default:
                 break;
         }
+    }
+
+    public onFilesReviewAction(event: {
+        file: UploadFile;
+        message: string;
+    }): void {
+        console.log('reviewEvent', event);
     }
 
     public incorrectInput(
@@ -208,12 +231,14 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
         if (event.type === 'open') {
             this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
                 false;
+
             this.openAnnotationArray[
                 event.lineIndex
             ].displayAnnotationTextArea = true;
         } else {
             this.openAnnotationArray[event.lineIndex].displayAnnotationButton =
                 true;
+
             this.openAnnotationArray[
                 event.lineIndex
             ].displayAnnotationTextArea = false;
@@ -237,24 +262,31 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
 
     public onSubmit(): void {
         if (this.medicalCertificateForm.invalid) {
-            this.inputService.markInvalid(this.medicalCertificateForm);
+            if (this.medicalCertificateForm.invalid) {
+                this.inputService.markInvalid(this.medicalCertificateForm);
+            }
+
+            if (!this.documents.length) {
+                this.displayDocumentsRequiredNote = true;
+            }
+
             return;
         }
 
         const { fromDate, toDate } = this.medicalCertificateForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const documents = this.documents.map((item) => item.realFile);
 
         const saveData: any = {
             applicantId: this.applicantId,
             issueDate: convertDateToBackend(fromDate),
             expireDate: convertDateToBackend(toDate),
             files: documents,
+            ...((this.stepHasValues ||
+                this.selectedMode === SelectedMode.FEEDBACK) && {
+                id: this.medicalCertificateId,
+                filesForDeleteIds: this.documentsForDeleteIds,
+            }),
         };
 
         const selectMatchingBackendMethod = () => {
@@ -295,6 +327,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
                                     ...store.applicant.medicalCertificate,
                                     issueDate: saveData.issueDate,
                                     expireDate: saveData.expireDate,
+                                    files: saveData.files,
                                 },
                             },
                         };
@@ -306,7 +339,18 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSubmitReview(): void {}
+    public onSubmitReview(): void {
+        const saveData: CreateMedicalCertificateReviewCommand = {
+            applicantId: this.applicantId,
+            isIssueDateValid: !this.openAnnotationArray[0].lineInputs[0],
+            isExpireDateValid: !this.openAnnotationArray[0].lineInputs[1],
+            dateMessage:
+                this.medicalCertificateForm.get('firstRowReview').value,
+            filesReview: [],
+        };
+
+        console.log('saveData', saveData);
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();
