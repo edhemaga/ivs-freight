@@ -7,6 +7,8 @@ import {
     EventEmitter,
     ChangeDetectorRef,
     ViewEncapsulation,
+    OnChanges,
+    SimpleChanges
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
@@ -17,6 +19,8 @@ import { ShipperTService } from '../../customer/state/shipper-state/shipper.serv
 import { FuelTService } from '../../fuel/state/fuel.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { MapRouteModel } from '../model/map-route';
+import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
 
 @Component({
     selector: 'app-maps',
@@ -27,7 +31,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
     ],
     encapsulation: ViewEncapsulation.None,
 })
-export class MapsComponent implements OnInit, OnDestroy {
+export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     private destroy$ = new Subject<void>();
     viewData = [];
     @Input() set _viewData(value) {
@@ -49,19 +53,19 @@ export class MapsComponent implements OnInit, OnDestroy {
                 } else if (this.mapType == 'fuelStop') {
                     this.getFuelStop(data.id, markerIndex);
                 }
-                this.getClusters(true, true);
+                this.getClusters(true);
             } else if (
                 data.actionAnimation == 'add' ||
                 data.actionAnimation == 'delete'
             ) {
                 setTimeout(() => {
-                    this.getClusters(true, true);
+                    this.getClusters(true);
                 }, 1000);
             }
         });
     }
     @Input() mapType: string = 'shipper'; // shipper, repairShop, fuelStop, accident, inspection, routing
-    @Input() routes: any[] = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
+    @Input() routes: Array<MapRouteModel> = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
     @Input() dropdownActions: any[] = [];
     @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
     @Output() updateMapList: EventEmitter<any> = new EventEmitter();
@@ -132,7 +136,8 @@ export class MapsComponent implements OnInit, OnDestroy {
         private repairShopService: RepairTService,
         private shipperService: ShipperTService,
         private fuelStopService: FuelTService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private routingService: RoutingStateService
     ) {}
 
     ngOnInit(): void {
@@ -140,6 +145,12 @@ export class MapsComponent implements OnInit, OnDestroy {
         this.markersDropAnimation();
 
         this.addMapListSearchListener();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if ( changes.routes ) {
+            //console.log('ngOnChanges changes', changes);
+        }
     }
 
     addMapListSearchListener() {
@@ -1101,7 +1112,7 @@ export class MapsComponent implements OnInit, OnDestroy {
         }
     }
 
-    getClusters(changedSearchOrSort?, moveMap?) {
+    getClusters(changedSearchOrSort?) {
         var bounds = this.agmMap.getBounds();
         var ne = bounds.getNorthEast(); // LatLng of the north-east corner
         var sw = bounds.getSouthWest(); // LatLng of the south-west corder
@@ -1141,6 +1152,20 @@ export class MapsComponent implements OnInit, OnDestroy {
             item.pagination.pageIndex++;
             this.callClusters(clustersObject, false, item);
         }
+    }
+
+    decodeRouteShape(route) {
+        this.routingService
+            .decodeRouteShape(route.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    console.log('decodeRouteShape', res);
+                },
+                error: () => {
+                    console.log('decodeRouteShape error');
+                },
+            });
     }
 
     ngOnDestroy(): void {
