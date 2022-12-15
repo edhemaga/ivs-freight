@@ -8,7 +8,7 @@ import {
     ChangeDetectorRef,
     ViewEncapsulation,
     OnChanges,
-    SimpleChanges
+    SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
@@ -21,6 +21,12 @@ import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { MapRouteModel } from '../model/map-route';
 import { RoutingStateService } from '../../routing/state/routing-state/routing-state.service';
+import {
+    Confirmation,
+    ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ModalService } from './../../shared/ta-modal/modal.service';
 
 @Component({
     selector: 'app-maps',
@@ -53,13 +59,13 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 } else if (this.mapType == 'fuelStop') {
                     this.getFuelStop(data.id, markerIndex);
                 }
-                this.getClusters(true);
+                this.getClusters(true, true);
             } else if (
                 data.actionAnimation == 'add' ||
                 data.actionAnimation == 'delete'
             ) {
                 setTimeout(() => {
-                    this.getClusters(true);
+                    this.getClusters(true, true);
                 }, 1000);
             }
         });
@@ -137,7 +143,9 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         private shipperService: ShipperTService,
         private fuelStopService: FuelTService,
         private notificationService: NotificationService,
-        private routingService: RoutingStateService
+        private routingService: RoutingStateService,
+        private modalService: ModalService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit(): void {
@@ -145,10 +153,11 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         this.markersDropAnimation();
 
         this.addMapListSearchListener();
+        this.addDeleteListener();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if ( changes.routes ) {
+        if (changes.routes) {
             //console.log('ngOnChanges changes', changes);
         }
     }
@@ -365,7 +374,31 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     dropDownActionCall(action) {
-        this.callDropDownAction.emit(action);
+        if (action.type == 'delete') {
+            var shipperData = {
+                id: action.id,
+                type: 'delete-item',
+                data: {
+                    ...action.data,
+                    name: action.data.businessName,
+                },
+            };
+
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    ...shipperData,
+                    template:
+                        this.mapType == 'repairShop'
+                            ? 'repair shop'
+                            : 'shipper',
+                    type: 'delete',
+                }
+            );
+        } else {
+            this.callDropDownAction.emit(action);
+        }
     }
 
     setLocationRange(value) {
@@ -1112,7 +1145,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    getClusters(changedSearchOrSort?) {
+    getClusters(changedSearchOrSort?, moveMap?) {
         var bounds = this.agmMap.getBounds();
         var ne = bounds.getNorthEast(); // LatLng of the north-east corner
         var sw = bounds.getSouthWest(); // LatLng of the south-west corder
@@ -1125,10 +1158,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             zoomLevel: this.mapZoom,
         };
 
-        // if ( moveMap ) {
-        //     this.mapLatitude = this.mapLatitude + 0.000001;
-        //     this.mapLongitude = this.mapLongitude + 0.000001;
-        // }
+        if (moveMap) {
+            this.mapLatitude = this.mapLatitude + 0.000001;
+            this.mapLongitude = this.mapLongitude + 0.000001;
+        }
 
         this.lastClusterCoordinates = clustersObject;
 
@@ -1164,6 +1197,40 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 },
                 error: () => {
                     console.log('decodeRouteShape error');
+                },
+            });
+    }
+
+    addDeleteListener() {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: Confirmation) => {
+                    switch (res.type) {
+                        case 'delete': {
+                            if (
+                                res.template === 'shipper' ||
+                                res.template === 'repair shop'
+                            ) {
+                                console.log('delete modal');
+                                this.callDropDownAction.emit(res);
+
+                                var cluster = this.clusterMarkers.find(
+                                    (item) => item.detailedInfo?.id == res.id
+                                );
+
+                                if (cluster) {
+                                    cluster.detailedInfo = false;
+                                    this.getClusters(true);
+                                    this.ref.detectChanges();
+                                }
+                            }
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
                 },
             });
     }

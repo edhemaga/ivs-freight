@@ -54,11 +54,6 @@ export class NotificationService {
             return false;
         }
 
-        let currentUrl = this.activated_route.snapshot['_routerState']['url'];
-        if (currentUrl.indexOf('auth') > -1) {
-            notificationOptions.positionClass = 'toast-bottom-left-login';
-        }
-
         this.toastr.error('', '', {
             ...notificationOptions,
             payload: { httpRequest, next, error },
@@ -77,11 +72,6 @@ export class NotificationService {
             httpRequest.url.indexOf('tableconfig') > -1
         ) {
             return false;
-        }
-
-        let currentUrl = this.activated_route.snapshot['_routerState']['url'];
-        if (currentUrl.indexOf('auth') > -1) {
-            notificationOptions.positionClass = 'toast-bottom-left-login';
         }
 
         this.toastr.success('', '', {
