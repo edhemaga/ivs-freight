@@ -383,6 +383,9 @@ export class CustomerTableComponent
             },
         ];
 
+        console.log('Shipper Data');
+        console.log(this.tableData[1].data);
+
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setCustomerData(td);
@@ -473,9 +476,7 @@ export class CustomerTableComponent
                 ? data.shipperContacts.length
                 : 0,
             textDbaName: '',
-            textAddress: data?.address
-                ? data.address.city + ', ' + data.address.state
-                : '',
+            textAddress: data?.address?.address ? data.address.address : '',
             mcNumber: '',
             loadCount: '',
             total: '',
