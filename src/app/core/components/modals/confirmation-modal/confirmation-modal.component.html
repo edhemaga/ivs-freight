@@ -249,6 +249,16 @@
                     }}</span>
                 </p>
             </div>
+            <!-- Route -->
+            <div
+                *ngIf="['route'].includes(editData?.template)"
+                class="confirmation-info"
+            >
+                <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
+                <p class="confirmation-text-2">
+                    {{ editData?.data?.routeType }}
+                </p>
+            </div>
         </div>
 
         <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->

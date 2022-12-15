@@ -475,6 +475,18 @@ export class MapListComponent
         }
     }
 
+    mapListScroll(event) {
+        var element = event.target;
+        if (
+            Math.abs(
+                element.scrollHeight - element.scrollTop - element.clientHeight
+            ) <= 3.0
+        ) {
+            console.log('mapListScroll');
+            //this.loadMoreData.emit(this.item);
+        }
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
