@@ -26,6 +26,8 @@ export class companySettingsResolver implements Resolve<CompanyResponse[]> {
                         numberOfCompany: companyResponse.divisions.length,
                     })
                 );
+                console.log("WHAT IS COMPANY RESPONSE");
+                console.log(companyResponse);
                 this.companyStore.set([companyResponse]);
             })
         );
