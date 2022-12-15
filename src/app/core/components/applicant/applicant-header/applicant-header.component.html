@@ -10,12 +10,12 @@
                 class="d-flex align-items-center tab"
                 [routerLinkActive]="
                     selectedMode === 'REVIEW_MODE' &&
-                    isTabCompletedArray[i].isReviewed &&
-                    !reviewStoreArr[i].hasIncorrectAnswer
+                    isTabReviewedArray[i].isReviewed &&
+                    !isTabReviewedArray[i].hasIncorrectAnswer
                         ? 'tab-active'
                         : selectedMode === 'REVIEW_MODE' &&
-                          reviewStoreArr[i].isReviewed &&
-                          reviewStoreArr[i].hasIncorrectAnswer
+                          isTabReviewedArray[i].isReviewed &&
+                          isTabReviewedArray[i].hasIncorrectAnswer
                         ? 'tab-active-review-incorrect'
                         : selectedMode === 'FEEDBACK_MODE' &&
                           feedbackStoreArr[i].hasIncorrectAnswer
@@ -27,12 +27,12 @@
                         (selectedMode === 'APPLICANT_MODE' &&
                             isTabCompletedArray[i].isCompleted) ||
                         (selectedMode === 'REVIEW_MODE' &&
-                            reviewStoreArr[i].isReviewed &&
-                            !reviewStoreArr[i].hasIncorrectAnswer),
+                            isTabReviewedArray[i].isReviewed &&
+                            !isTabReviewedArray[i].hasIncorrectAnswer),
                     'reviewed-incorrect-answer':
                         selectedMode === 'REVIEW_MODE' &&
-                        reviewStoreArr[i].isReviewed &&
-                        reviewStoreArr[i].hasIncorrectAnswer,
+                        isTabReviewedArray[i].isReviewed &&
+                        isTabReviewedArray[i].hasIncorrectAnswer,
                     'feedback-incorrect-answer':
                         selectedMode === 'FEEDBACK_MODE' &&
                         feedbackStoreArr[i].hasIncorrectAnswer

@@ -48,6 +48,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
 
+    public addNewAfterSave: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -102,6 +104,19 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
             case 'close': {
+                break;
+            }
+            case 'save and add new': {
+                if (this.accountForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.accountForm);
+                    return;
+                }
+                this.addCompanyAccount();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
                 break;
             }
             case 'save': {
@@ -200,7 +215,23 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         this.accountService
             .addCompanyAccount(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    if (this.addNewAfterSave) {
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                        });
+                        this.formService.resetForm(this.accountForm);
+
+                        this.selectedAccountColor = null;
+                        this.selectedAccountLabel = null;
+
+                        this.addNewAfterSave = false;
+                    }
+                },
+                error: () => {},
+            });
     }
 
     private updateCompanyAccount(id: number): void {

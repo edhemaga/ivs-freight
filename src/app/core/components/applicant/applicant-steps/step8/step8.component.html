@@ -426,11 +426,7 @@
                         [label]="
                             'I certify that the information provided on this document is true and correct.'
                         "
-                        [customClass]="
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'applicant-feedback'
-                                : 'bold-12'
-                        "
+                        [customClass]="'bold-12'"
                         [disabledStillCheckMark]="
                             selectedMode === 'REVIEW_MODE' ||
                             selectedMode === 'FEEDBACK_MODE'

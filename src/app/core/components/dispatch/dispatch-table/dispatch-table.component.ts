@@ -1,3 +1,4 @@
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -7,11 +8,14 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import {
     CreateDispatchCommand,
     DispatchStatus,
+    SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
+import { LabelType, Options } from 'ng5-slider';
 import { catchError, of } from 'rxjs';
 import { ColorFinderPipe } from '../../dispatcher/pipes/color-finder.pipe';
 import { DispatchBoardLocalResponse } from '../../dispatcher/state/dispatcher.model';
@@ -30,10 +34,14 @@ export class DispatchTableComponent implements OnInit {
     checkForEmpty: string = '';
     dData: DispatchBoardLocalResponse = {};
     truckFormControll: FormControl = new FormControl();
+    truckAddress: FormControl = new FormControl(null);
     truckList: any[];
     trailerList: any[];
     driverList: any[];
     copyIndex: number = -1;
+    testTimeout: any;
+    startIndexTrailer: number;
+    startIndexDriver: number;
     @Input() set smallList(value) {
         const newTruckList = JSON.parse(JSON.stringify(value.trucks));
         this.truckList = newTruckList.map((item) => {
@@ -95,6 +103,44 @@ export class DispatchTableComponent implements OnInit {
         this.__isBoardLocked = isLocked;
     }
 
+    hosHelper = {
+        hos: [],
+    };
+
+    openedHosData = {
+        hos: [],
+    };
+
+    tooltip: any;
+
+    options: Options = {
+        floor: 0,
+        ceil: 1440,
+        showSelectionBar: false,
+        noSwitching: true,
+        hideLimitLabels: true,
+        animate: false,
+        maxLimit: new Date().getHours() * 60 + new Date().getMinutes(),
+        translate: (value: number, label: LabelType): string => {
+            const minutes = value;
+            const m = minutes % 60;
+            const h = (minutes - m) / 60;
+            const suffix = h >= 12 ? 'PM' : 'AM';
+            const formatedH = h > 12 ? h - 12 : h;
+            return `${formatedH.toString()}:${
+                m < 10 ? '0' : ''
+            }${m.toString()}`;
+            return (
+                formatedH.toString() +
+                ':' +
+                (m < 10 ? '0' : '') +
+                m.toString() +
+                ' ' +
+                suffix
+            );
+        },
+    };
+
     constructor(
         private dss: DispatcherStoreService,
         private chd: ChangeDetectorRef,
@@ -105,13 +151,8 @@ export class DispatchTableComponent implements OnInit {
 
     public onSelectDropdown(event: any, action: string, test: string) {
         console.log('WHAT IS EVENT', event, test);
-        switch (action) {
-            case 'color': {
-                this.selectedColor = event;
-                break;
-            }
-        }
 
+        this.selectedColor = event;
         switch (test) {
             case 'truck':
                 this.openedTruckDropdown = -1;
@@ -320,7 +361,6 @@ export class DispatchTableComponent implements OnInit {
     }
 
     setMouseOver(txt: string, indx: number) {
-        console.log(txt, indx);
         this.driverHover = {
             indx: indx,
             txt: txt,
@@ -332,5 +372,225 @@ export class DispatchTableComponent implements OnInit {
             indx: -1,
             txt: '',
         };
+    }
+
+    toggleHos(tooltip: NgbTooltip, data: any, id: number) {
+        console.log(data);
+        this.hosHelper.hos = [];
+        if (!data.hos || data.hos.length === 0) {
+            data = {
+                hos: [
+                    {
+                        start: 0,
+                        end:
+                            new Date().getHours() * 60 +
+                            new Date().getMinutes(),
+                        flag: 'off',
+                        indx: 0,
+                    },
+                ],
+            };
+        }
+
+        this.tooltip = tooltip;
+
+        this.openedHosData = data;
+
+        if (tooltip.isOpen()) {
+            tooltip.close();
+        } else {
+            tooltip.open();
+        }
+    }
+
+    saveHosData(hos, indx) {
+        this.updateOrAddDispatchBoardAndSend(
+            'hourOfService',
+            this.openedHosData,
+            indx
+        );
+    }
+
+    userChangeEnd(event, item) {
+        const index = item.indx;
+        const nextHos = index + 1;
+        if (this.openedHosData.hos[nextHos]) {
+            clearTimeout(this.testTimeout);
+            this.testTimeout = setTimeout(() => {
+                this.changeHosDataPositions(event, index);
+            }, 0);
+        }
+    }
+
+    changeHosDataPositions(event, index) {
+        const nextHos = index + 1;
+        if (this.openedHosData.hos[nextHos]) {
+            this.openedHosData.hos[nextHos].start =
+                this.openedHosData.hos[index].end;
+        }
+    }
+
+    addHOS(hosType) {
+        this.openedHosData.hos = [...this.openedHosData.hos];
+        this.openedHosData.hos.push({
+            start: this.openedHosData.hos[this.openedHosData.hos.length - 1]
+                .end,
+            end: new Date().getHours() * 60 + new Date().getMinutes(),
+            flag: hosType,
+            indx: this.openedHosData.hos.length,
+        });
+    }
+
+    removeHos(item) {
+        this.openedHosData.hos = this.openedHosData.hos.filter(
+            (it) => it.indx !== item.indx
+        );
+    }
+
+    saveNoteValue(item: any) {
+        this.updateOrAddDispatchBoardAndSend(
+            'note',
+            item.note,
+            item.dispatchIndex
+        );
+    }
+
+    // CDL DRAG AND DROP
+
+    dropList(event) {
+        moveItemInArray(
+            this.dData.dispatches,
+            event.previousIndex,
+            event.currentIndex
+        );
+
+        this.__change_in_proggress = true;
+        this.dss
+            .reorderDispatchboard({
+                dispatchBoardId: this.dData.id,
+                dispatches: [
+                    {
+                        id: this.dData.dispatches[event.currentIndex].id,
+                        order: this.dData.dispatches[event.previousIndex].order,
+                    },
+                    {
+                        id: this.dData.dispatches[event.previousIndex].id,
+                        order: this.dData.dispatches[event.currentIndex].order,
+                    },
+                ],
+            })
+            .subscribe((res) => {
+                this.__change_in_proggress = false;
+            });
+    }
+
+    dropTrailer(event, finalIndx) {
+        if (finalIndx === this.startIndexTrailer) return;
+        const finalIndexData = this.getDataForUpdate(
+            this.dData.dispatches[finalIndx]
+        );
+        const startingIndexData = this.getDataForUpdate(
+            this.dData.dispatches[this.startIndexTrailer]
+        );
+
+        this.__change_in_proggress = true;
+        this.dss
+            .switchDispathboard({
+                dispatchBoardId: this.dData.id,
+                firstDispatch: {
+                    ...startingIndexData,
+                    id: this.dData.dispatches[this.startIndexTrailer].id,
+                    trailerId: this.dData.dispatches[finalIndx]?.trailer?.id,
+                },
+                secondDispatch: {
+                    ...finalIndexData,
+                    id: this.dData.dispatches[finalIndx].id,
+                    trailerId:
+                        this.dData.dispatches[this.startIndexTrailer]?.trailer
+                            ?.id,
+                },
+            })
+            .subscribe((res) => {
+                this.dss
+                    .updateDispatchboardRowById(
+                        this.dData.dispatches[this.startIndexTrailer].id,
+                        this.dData.id
+                    )
+                    .subscribe((res) => {
+                        this.__change_in_proggress = false;
+                    });
+                this.dss
+                    .updateDispatchboardRowById(
+                        this.dData.dispatches[finalIndx].id,
+                        this.dData.id
+                    )
+                    .subscribe((res) => {
+                        this.__change_in_proggress = false;
+                    });
+            });
+    }
+
+    dropDriver(event, finalIndx) {
+        if (finalIndx === this.startIndexDriver) return;
+        const finalIndexData = this.getDataForUpdate(
+            this.dData.dispatches[finalIndx]
+        );
+        const startingIndexData = this.getDataForUpdate(
+            this.dData.dispatches[this.startIndexDriver]
+        );
+
+        this.__change_in_proggress = true;
+        this.dss
+            .switchDispathboard({
+                dispatchBoardId: this.dData.id,
+                firstDispatch: {
+                    ...startingIndexData,
+                    id: this.dData.dispatches[this.startIndexDriver].id,
+                    driverId: this.dData.dispatches[finalIndx]?.driver?.id,
+                },
+                secondDispatch: {
+                    ...finalIndexData,
+                    id: this.dData.dispatches[finalIndx].id,
+                    driverId:
+                        this.dData.dispatches[this.startIndexDriver]?.driver
+                            ?.id,
+                },
+            })
+            .subscribe((res) => {
+                this.dss
+                    .updateDispatchboardRowById(
+                        this.dData.dispatches[this.startIndexDriver].id,
+                        this.dData.id
+                    )
+                    .subscribe((res) => {
+                        this.__change_in_proggress = false;
+                    });
+                this.dss
+                    .updateDispatchboardRowById(
+                        this.dData.dispatches[finalIndx].id,
+                        this.dData.id
+                    )
+                    .subscribe((res) => {
+                        this.__change_in_proggress = false;
+                    });
+            });
+    }
+
+    getDataForUpdate(oldData): SwitchDispatchCommand {
+        return {
+            truckId: oldData.truck ? oldData.truck?.id : null,
+            trailerId: oldData.trailer ? oldData.trailer?.id : null,
+            driverId: oldData.driver ? oldData.driver?.id : null,
+            coDriverId: oldData.coDriver ? oldData.coDriver?.id : null,
+            location: oldData.location?.address ? oldData.location : null,
+        };
+    }
+
+    cdkDragStartedTrailer(event, indx) {
+        this.startIndexTrailer = indx;
+    }
+
+    cdkDragStartedDriver(event, indx) {
+        this.startIndexDriver = indx;
     }
 }

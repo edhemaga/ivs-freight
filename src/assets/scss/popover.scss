@@ -248,16 +248,14 @@
         height: fit-content !important;
 
         .options-container {
-            width: 130px !important;
-            height: -webkit-fit-content !important;
+            width: fit-content !important;
+            min-width: 130px !important;
             height: -moz-fit-content !important;
             height: fit-content !important;
-            box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
-            padding: 2px;
+            padding: 4px;
             border-radius: 3px;
-            background: #ffffff;
+            background: #2f2f2f;
             display: unset !important;
-            /* position: relative; */
             position: absolute;
             right: -3px;
 
@@ -266,203 +264,309 @@
                 width: 100%;
                 height: 26px;
                 border-radius: 2px;
+                padding: 0 6px;
                 margin: 0 !important;
                 display: flex;
                 align-items: center !important;
                 justify-content: unset !important;
 
                 &:hover {
-                    background: #f7f7f7;
+                    background: #aaaaaa20;
                     transition: 0.25s;
-                    .icon {
-                        svg-icon {
+                }
+
+                .back-to-list-icon {
+                    margin-right: 6px;
+                    svg-icon {
+                        display: flex;
+                    }
+                }
+
+                .text {
+                    flex: 1;
+                    width: -webkit-fit-content !important;
+                    width: -moz-fit-content !important;
+                    width: fit-content !important;
+                    justify-content: unset !important;
+                    font-size: 12px;
+                    font-weight: 400;
+                    color: #ffffff;
+                    transition: font-weight 0.25s;
+                }
+
+                .icon {
+                    width: 26px;
+                    display: flex;
+                    justify-content: flex-end !important;
+                    align-items: center !important;
+
+                    .option-icon,
+                    .columns-active-icon {
+                        display: flex;
+                    }
+
+                    .option-icon {
+                        svg {
+                            path {
+                                transition: 0.25s;
+                            }
+                        }
+                    }
+
+                    .columns-active-icon {
+                        cursor: pointer;
+                        svg {
+                            path {
+                                fill: #aaaaaa40;
+                                transition: 0.25s;
+                            }
+                        }
+
+                        &:hover {
                             svg {
-                                path,
-                                rect {
-                                    fill: #b7b7b7;
+                                path {
+                                    fill: #dadada;
                                     transition: 0.25s;
                                 }
                             }
                         }
                     }
-
-                    .text {
-                        color: #919191;
-                        transition: 0.25s;
-                    }
-                }
-
-                .icon,
-                .additional-drop-icon {
-                    width: 26px;
-                    display: flex;
-                    justify-content: center !important;
-                    align-items: center !important;
-
-                    svg-icon {
-                        display: flex;
-                    }
-                }
-
-                .additional-drop-icon {
-                    width: 6px !important;
-                    margin-left: auto;
-                    margin-right: 4px;
-                }
-
-                .text {
-                    width: -webkit-fit-content !important;
-                    width: -moz-fit-content !important;
-                    width: fit-content !important;
-                    /* height: 26px !important; */
-                    justify-content: unset !important;
-                    font-size: 12px;
-                    font-weight: 400;
-                    color: #b7b7b7;
                 }
             }
 
             .active-option {
-                background: #f7f7f7 !important;
+                .text {
+                    font-weight: bold;
+                    transition: 0.25s;
+                }
 
                 .icon {
-                    svg-icon {
+                    .option-icon {
                         svg {
-                            path,
-                            rect {
-                                fill: #b7b7b7 !important;
+                            path {
+                                fill: #6f9ee0 !important;
+                                transition: 0.25s;
                             }
+                        }
+                    }
+                }
+            }
+
+            .inactiv-option {
+                .option-icon {
+                    svg {
+                        path,
+                        rect {
+                            fill: #aaaaaa40 !important;
                         }
                     }
                 }
 
                 .text {
-                    color: #b7b7b7 !important;
+                    color: #6c6c6c !important;
+                }
+            }
+
+            .options-border-container {
+                width: 100%;
+                height: fit-content;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 4px 0;
+
+                .options-border {
+                    width: 190px;
+                    height: 1px;
+                    background: #aaaaaa20;
+                    border-radius: 1px;
                 }
             }
 
             .columns-options {
-                top: 105px;
-                width: 246px;
-                height: -webkit-fit-content;
+                width: 196px;
                 height: -moz-fit-content;
                 height: fit-content;
-                border-radius: 3px;
-                background: white;
-                box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%);
-                position: absolute;
-                left: -250px;
-                padding: 2px;
+                background: #2f2f2f;
                 display: grid;
                 justify-content: unset !important;
                 align-items: unset !important;
-                grid-template-columns: 120px 120px;
-                grid-gap: 1px 2px;
 
-                .column {
-                    display: flex;
-                    width: 120px;
-                    height: 26px;
-                    margin: 0;
-                    padding-left: 7px;
-                    justify-content: unset !important;
-                    border-radius: 2px;
+                .columns-container {
+                    width: 100%;
+                    height: fit-content;
+                    // max-height: 495px;
+                    // overflow-x: hidden;
+                    // overflow-y: scroll;
 
-                    .checkbox {
-                        width: -webkit-fit-content;
-                        width: -moz-fit-content;
-                        width: fit-content;
-                        height: -webkit-fit-content;
-                        height: -moz-fit-content;
-                        height: fit-content;
-                        margin: 0 6px 0 0;
-                        display: flex;
-                        justify-content: center;
-                        align-self: center;
-
-                        .columns-options-checkbox {
-                            display: none;
-                        }
-
-                        .columns-options-label {
-                            width: 14px;
-                            height: 14px;
-                            background-color: #dadada;
-                            margin-bottom: 0;
-                            border-radius: 1px;
-                            cursor: pointer;
-
-                            &:hover {
-                                background-color: #b7b7b7;
-                            }
-                        }
-
-                        .columns-options-checkbox:checked
-                            + .columns-options-label {
-                            background-color: #91a4c7;
-                            background-image: url('../../assets/svg/truckassist-table/check-new.svg');
-                            background-repeat: no-repeat;
-                            background-position: center;
-                            transition: background-color 0.25s;
-
-                            &:hover {
-                                background-color: #5673aa;
-                            }
-                        }
-                    }
-
-                    .not-allowed-action {
-                        width: 14px !important;
-                        margin-right: 6px !important;
-                        display: flex;
-                        justify-content: center;
-                        align-self: center;
-
-                        svg-icon {
-                            display: flex;
-                        }
-                    }
-
-                    .selectable-text {
-                        cursor: pointer;
-                    }
-
-                    .column-text {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: #b7b7b7;
-                        justify-content: unset !important;
-                        align-self: center;
-                        width: -webkit-fit-content;
-                        width: -moz-fit-content;
-                        width: fit-content;
-                        height: -webkit-fit-content;
-                        height: -moz-fit-content;
-                        height: fit-content;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        margin: 0;
-                        max-width: 100px;
-                    }
-
-                    &:hover {
-                        background: #f7f7f7;
-                        transition: 0.25s;
-
-                        .column-text {
-                            color: #919191;
-                            transition: 0.25s;
-                        }
-
+                    .column,
+                    .group-columns-container {
                         .checkbox {
+                            width: -webkit-fit-content;
+                            width: -moz-fit-content;
+                            width: fit-content;
+                            height: -webkit-fit-content;
+                            height: -moz-fit-content;
+                            height: fit-content;
+                            margin: 0 6px 0 0;
+                            display: flex;
+                            justify-content: center;
+                            align-self: center;
+
+                            .columns-options-checkbox {
+                                display: none;
+                            }
+
+                            .columns-options-label {
+                                width: 14px;
+                                height: 14px;
+                                background-color: #6c6c6c;
+                                margin-bottom: 0;
+                                border-radius: 1px;
+                                cursor: pointer;
+
+                                &:hover {
+                                    background-color: #b7b7b7;
+                                }
+                            }
+
                             .columns-options-checkbox:checked
                                 + .columns-options-label {
-                                background: #5673aa;
+                                background-color: #6f9ee0;
                                 background-image: url('../../assets/svg/truckassist-table/check-new.svg');
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 transition: background-color 0.25s;
+
+                                &:hover {
+                                    background-color: #5673aa;
+                                }
+                            }
+                        }
+
+                        .not-allowed-action {
+                            width: 14px !important;
+                            margin-right: 6px !important;
+                            display: flex;
+                            justify-content: center;
+                            align-self: center;
+
+                            svg-icon {
+                                display: flex;
+                            }
+                        }
+
+                        .selectable-text {
+                            cursor: pointer;
+                        }
+
+                        .column-text {
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: #ffffff;
+                            justify-content: unset !important;
+                            align-self: center;
+                            width: -webkit-fit-content;
+                            width: -moz-fit-content;
+                            width: fit-content;
+                            height: -webkit-fit-content;
+                            height: -moz-fit-content;
+                            height: fit-content;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            margin: 0;
+                            max-width: 161px;
+                        }
+                    }
+
+                    .column {
+                        display: flex;
+                        width: 100%;
+                        height: 26px;
+                        margin: 0;
+                        padding: 0 6px;
+                        justify-content: unset !important;
+                        border-radius: 2px;
+
+                        &:hover {
+                            background: #aaaaaa20;
+                            transition: 0.25s;
+                        }
+                    }
+
+                    .group-columns-active {
+                        background: #aaaaaa20;
+
+                        .group-columns-title {
+                            .group-columns-arrow {
+                                svg-icon {
+                                    transform: rotate(90deg) !important;
+                                    transition: 0.2s;
+                                }
+                            }
+                        }
+
+                        .group-columns {
+                            padding: 0 10px 4px 10px;
+                            max-height: 400px !important;
+                            transition: 0.2s !important;
+                        }
+                    }
+
+                    .group-columns-container {
+                        height: fit-content;
+                        border-radius: 2px;
+
+                        .group-columns-title {
+                            display: flex;
+                            width: 100%;
+                            height: 26px;
+                            padding: 0 6px;
+                            justify-content: unset !important;
+                            border-radius: 2px;
+
+                            .group-columns-arrow {
+                                display: flex;
+                                width: 13px;
+                                flex-grow: 1;
+                                height: 100%;
+                                align-items: center;
+                                justify-content: flex-end;
+                                cursor: pointer;
+
+                                svg-icon {
+                                    display: flex;
+                                    transform: rotate(-90deg);
+                                    transition: 0.2s;
+                                }
+                            }
+
+                            &:hover {
+                                background: #aaaaaa20;
+                                transition: 0.25s;
+                            }
+                        }
+
+                        .group-columns {
+                            overflow: hidden;
+                            width: 100%;
+                            height: fit-content;
+                            max-height: 0px;
+                            transition: 0.2s;
+
+                            .group-column {
+                                display: flex;
+                                width: 100%;
+                                height: 26px;
+                                padding: 4px;
+                                justify-content: unset !important;
+                                border-radius: 2px;
+
+                                &:hover {
+                                    background: #aaaaaa20;
+                                    transition: 0.25s;
+                                }
                             }
                         }
                     }
@@ -1079,9 +1183,9 @@
 .map-list-card-dropdown {
     //margin: 3px 0px 0px 16px;
 
-    &.marker-dropdown-popover {
-        //margin: 11px 0px 0px 12px;
-    }
+    // &.marker-dropdown-popover {
+    //     //margin: 11px 0px 0px 12px;
+    // }
 
     .svg-text-dropdown {
         padding-right: 10px;

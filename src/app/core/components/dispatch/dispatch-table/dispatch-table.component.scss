@@ -34,6 +34,10 @@
 
                     height: 100%;
 
+                    .hos-column {
+                        height: 100%;
+                    }
+
                     &:not(.status-inside) {
                         padding: 4px;
                     }
@@ -90,9 +94,9 @@
                                 padding-left: 6px;
                             }
 
-                            .copy_divs{
+                            .copy_divs {
                                 font-size: 14px;
-                                color: #2F2F2F;
+                                color: #2f2f2f;
                                 font-weight: 400;
                             }
 
@@ -133,19 +137,19 @@
                                     }
                                 }
 
-                                &.only_active_icon{
-                                    svg-icon{
-                                        svg{
-                                            path{
+                                &.only_active_icon {
+                                    svg-icon {
+                                        svg {
+                                            path {
                                                 fill: #ffffff33;
                                             }
                                         }
                                     }
                                 }
-                                &.active-icon{
-                                    svg-icon{
-                                        svg{
-                                            path{
+                                &.active-icon {
+                                    svg-icon {
+                                        svg {
+                                            path {
                                                 fill: #ffffff;
                                             }
                                         }
@@ -156,6 +160,7 @@
 
                         .location-field {
                             display: flex;
+                            width: 100%;
 
                             .location-f-city,
                             .location-f-st {
@@ -164,7 +169,7 @@
 
                                 &.location-f-city {
                                     white-space: nowrap;
-                                    width: 70%;
+                                    max-width: 80%;
                                     overflow: hidden;
                                     text-overflow: ellipsis;
                                 }
@@ -177,8 +182,7 @@
                             text-transform: uppercase;
                         }
 
-
-                        .driver-copy{
+                        .driver-copy {
                             position: absolute;
                             display: flex;
                             align-items: center;
@@ -193,6 +197,25 @@
                             font-size: 11px;
                             border-radius: 2px;
                             z-index: 10;
+                        }
+
+                        app-gps-progressbar {
+                            width: 100%;
+                        }
+
+                        .parking-field {
+                            svg-icon {
+                                margin-right: 6px;
+                                svg {
+                                    path {
+                                        fill: #42a4f4;
+                                    }
+                                }
+                            }
+                            .parking-number {
+                                font-size: 11px;
+                                color: #919191;
+                            }
                         }
                     }
 
@@ -215,6 +238,33 @@
                         .info-item {
                             flex: 1;
                             padding-left: 16px;
+                        }
+                    }
+
+                    .dispatcher-table-cell-container {
+                        display: flex;
+                        height: 26px;
+                        align-items: center;
+                        line-height: 1;
+
+                        &.note-container {
+                            display: block;
+
+                            //background-color: #F7F7F7;
+                            border-radius: 3px;
+                            padding-left: 6px;
+                        }
+
+                        .dispatcher-table-cell-holder {
+                            display: flex;
+                            height: 28px;
+                            width: 100%;
+                            align-items: center;
+                            padding-left: 6px;
+
+                            &:hover {
+                                // background-color: #f7f7f7;
+                            }
                         }
                     }
                 }
@@ -242,6 +292,10 @@
                             }
                         }
                     }
+                }
+
+                .drag-hold-between {
+                    height: 100%;
                 }
             }
         }
@@ -325,7 +379,8 @@
             tr {
                 td {
                     .main_inside {
-                        .circles-holder {
+                        .circles-holder,
+                        .cdk-drag {
                             @each $truck_col in $truck_colors {
                                 &.truck_#{$truck_col} {
                                     &:hover {
@@ -362,6 +417,37 @@
 
                             @each $trailer_col in $trailer_colors {
                                 &.trailer_#{$trailer_col} {
+                                    &.cdk-drag {
+                                        background-color: unquote(
+                                            '#' + $trailer_col
+                                        );
+                                        border-radius: 2px;
+
+                                        svg-icon {
+                                            display: none;
+                                        }
+                                        .info-item {
+                                            padding-left: 0;
+                                            span {
+                                                color: #fff !important;
+                                            }
+                                        }
+
+                                        &:after{
+                                            content: "";
+                                            width: 18px;
+                                            height: 18px;
+                                            position: absolute;
+                                            right: 10px;
+                                            top: 50%;
+
+                                            transform: translateY(-50%);
+                                            background-image: url('../../../../../assets/svg/common/ic_dragging_arrows.svg');
+                                            background-size: 20px 17px;
+                                            background-repeat: no-repeat;
+                                            background-position: center;
+                                        }
+                                    }
                                     &:hover {
                                         .info-item {
                                             background-color: unquote(
@@ -413,4 +499,105 @@
             }
         }
     }
+}
+
+.new_load_dispatch_hold {
+    width: 26px;
+    height: 26px;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+.new_load_dispatch {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 3px;
+    background-color: #fff;
+    margin: 0 0 0 auto;
+
+    svg-icon {
+        display: flex;
+    }
+
+    svg {
+        path {
+            transition: none !important;
+            fill: #b7b7b7;
+        }
+    }
+
+    &:hover {
+        background-color: #eeeeee;
+
+        svg {
+            path {
+                fill: #6d82c7;
+            }
+        }
+    }
+
+    &[disabled] {
+        background-color: rgba(255, 255, 255, 0.3);
+        cursor: default;
+
+        &:hover {
+            svg {
+                path {
+                    fill: #cfcfcf;
+                }
+            }
+        }
+    }
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.dispatch-table.cdk-drop-list-dragging .reorder-row:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+
+.cdk-drag{
+    position: relative;
+}
+
+
+//.assets/svg/common/ic_dragging_arrows.svg
+
+.reorder-row.cdk-drag-preview {
+    background-color: #2f2f2f;
+    border-radius: 3px;
+    .main_inside {
+        background-color: transparent !important;
+
+        *:not(.switch_statuses) {
+            color: #fff !important;
+        }
+    }
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.custom-dispatch-placeholder {
+    position: relative;
+    height: 32px;
+    width: 100%;
+    border-radius: 3px;
+    opacity: 1 !important;
+    background-color: #eee;
+    cursor: grabbing !important;
+    &:hover {
+        background-color: #dadada;
+    }
+
+    box-shadow: 0 0 12px inset #707070;
+    z-index: 10;
 }

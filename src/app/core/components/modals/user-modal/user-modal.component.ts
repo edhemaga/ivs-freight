@@ -169,6 +169,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
         if (this.editData) {
             this.getUserById(this.editData.id);
         }
+
+        this.trackUserPayroll();
     }
 
     private createForm() {
@@ -189,6 +191,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             phone: [null, [phoneFaxRegex]],
             extensionPhone: [null, [...phoneExtension]],
             email: [null, [Validators.required]],
+            //  Payroll part
             includeInPayroll: [false],
             paymentType: [null],
             salary: [null, salaryValidation],
@@ -287,17 +290,93 @@ export class UserModalComponent implements OnInit, OnDestroy {
         if (event.valid) this.selectedAddress = event.address;
     }
 
+    private trackUserPayroll() {
+        this.userForm
+            .get('includeInPayroll')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                console.log('payroll: ', value);
+                if (value) {
+                    this.inputService.changeValidators(
+                        this.userForm.get('salary')
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('startDate')
+                    );
+                    if (
+                        ['Dispatch', 'Manager'].includes(
+                            this.selectedDepartment?.name
+                        )
+                    ) {
+                        this.isPaymentTypeAvailable = true;
+                        this.inputService.changeValidators(
+                            this.userForm.get('paymentType')
+                        );
+                        this.paymentOptions =
+                            this.selectedDepartment.name === 'Dispatch'
+                                ? this.heleperForDispatchers
+                                : this.helperForManagers;
+                    } else {
+                        this.isPaymentTypeAvailable = false;
+                        this.paymentOptions = [];
+                        this.allowOnlyCommission = false;
+                        this.allowPairCommissionBase = false;
+                        this.inputService.changeValidators(
+                            this.userForm.get('paymentType'),
+                            false
+                        );
+                        this.selectedPayment = null;
+                    }
+
+                    this.inputService.changeValidators(
+                        this.userForm.get('bankId')
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.userForm.get('salary'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('base'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('startDate'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('bankId'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('routingNumber'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('accountNumber'),
+                        false
+                    );
+
+                    this.selectedBank = null;
+                    this.selectedPayment = null;
+                }
+            });
+    }
+
     private onBankSelected(): void {
         this.userForm
             .get('bankId')
             .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe(async (value) => {
-                this.isBankSelected =
-                    await this.bankVerificationService.onSelectBank(
-                        this.selectedBank ? this.selectedBank.name : value,
-                        this.userForm.get('routingNumber'),
-                        this.userForm.get('accountNumber')
-                    );
+            .subscribe(() => {
+                const timeout = setTimeout(async () => {
+                    this.isBankSelected =
+                        await this.bankVerificationService.onSelectBank(
+                            this.selectedBank ? this.selectedBank.name : null,
+                            this.userForm.get('routingNumber'),
+                            this.userForm.get('accountNumber')
+                        );
+                    clearTimeout(timeout);
+                }, 100);
             });
     }
 
@@ -340,25 +419,45 @@ export class UserModalComponent implements OnInit, OnDestroy {
             case 'department': {
                 this.selectedDepartment = event;
 
-                if (
-                    ['Dispatch', 'Manager'].includes(
-                        this.selectedDepartment?.name
-                    )
-                ) {
-                    this.isPaymentTypeAvailable = true;
-
-                    this.paymentOptions =
-                        this.selectedDepartment.name === 'Dispatch'
-                            ? this.heleperForDispatchers
-                            : this.helperForManagers;
-                } else {
-                    this.isPaymentTypeAvailable = false;
-                    this.paymentOptions = [];
-                    this.allowOnlyCommission = false;
-                    this.allowPairCommissionBase = false;
-                    this.userForm.get('paymentType').reset();
-                    this.selectedPayment = null;
+                if (this.userForm.get('includeInPayroll').value) {
+                    this.inputService.changeValidators(
+                        this.userForm.get('salary'),
+                        true,
+                        [],
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('startDate'),
+                        true,
+                        [],
+                        false
+                    );
+                    if (
+                        ['Dispatch', 'Manager'].includes(
+                            this.selectedDepartment?.name
+                        )
+                    ) {
+                        this.isPaymentTypeAvailable = true;
+                        this.inputService.changeValidators(
+                            this.userForm.get('paymentType')
+                        );
+                        this.paymentOptions =
+                            this.selectedDepartment.name === 'Dispatch'
+                                ? this.heleperForDispatchers
+                                : this.helperForManagers;
+                    } else {
+                        this.isPaymentTypeAvailable = false;
+                        this.paymentOptions = [];
+                        this.allowOnlyCommission = false;
+                        this.allowPairCommissionBase = false;
+                        this.inputService.changeValidators(
+                            this.userForm.get('paymentType'),
+                            false
+                        );
+                        this.selectedPayment = null;
+                    }
                 }
+
                 break;
             }
             case 'office': {
@@ -399,7 +498,35 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     'Base + Revenue %',
                 ].includes(this.selectedPayment?.name);
 
-                this.userForm.get('paymentType').reset();
+                if (this.allowPairCommissionBase) {
+                    this.inputService.changeValidators(
+                        this.userForm.get('base')
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('salary'),
+                        false
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.userForm.get('base'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('salary'),
+                        true
+                    );
+                }
+
+                if (this.allowOnlyCommission) {
+                    this.inputService.changeValidators(
+                        this.userForm.get('salary'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('base'),
+                        false
+                    );
+                }
 
                 break;
             }

@@ -76,6 +76,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
+    public addNewAfterSave: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -243,6 +245,19 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                 }
                 break;
             }
+            case 'save and add new': {
+                if (this.ownerForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.ownerForm);
+                    return;
+                }
+                this.addOwner();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
+                break;
+            }
             case 'save': {
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
@@ -312,13 +327,16 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         this.ownerForm
             .get('bankId')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe(async (value) => {
-                this.isBankSelected =
-                    await this.bankVerificationService.onSelectBank(
-                        this.selectedBank ? this.selectedBank.name : value,
-                        this.ownerForm.get('routingNumber'),
-                        this.ownerForm.get('accountNumber')
-                    );
+            .subscribe(() => {
+                const timeout = setTimeout(async () => {
+                    this.isBankSelected =
+                        await this.bankVerificationService.onSelectBank(
+                            this.selectedBank ? this.selectedBank.name : null,
+                            this.ownerForm.get('routingNumber'),
+                            this.ownerForm.get('accountNumber')
+                        );
+                    clearTimeout(timeout);
+                }, 100);
             });
     }
 
@@ -436,6 +454,26 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
+                    }
+
+                    if (this.addNewAfterSave) {
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                        });
+                        this.formService.resetForm(this.ownerForm);
+
+                        this.selectedAddress = null;
+                        this.selectedBank = null;
+                        this.selectedTab = 1;
+                        this.tabs = this.tabs.map((item, index) => {
+                            return {
+                                ...item,
+                                checked: index === 0,
+                            };
+                        });
+
+                        this.addNewAfterSave = false;
                     }
                 },
                 error: () => {},

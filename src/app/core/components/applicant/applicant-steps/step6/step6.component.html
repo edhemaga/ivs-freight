@@ -678,42 +678,64 @@
                                 [ngClass]="{
                                     active: selectedMode === 'REVIEW_MODE'
                                 }"
+                                [ngStyle]="{
+                                    'margin-left':
+                                        selectedMode === 'FEEDBACK_MODE'
+                                            ? '18px'
+                                            : 0
+                                }"
                             >
-                                <div
-                                    ngbTooltip
-                                    mainTooltip="Edit"
-                                    tooltipBackground="#6C6C6C"
-                                    position="top"
+                                <ng-container
+                                    *ngIf="
+                                        selectedMode === 'APPLICANT_MODE' ||
+                                        (selectedMode === 'FEEDBACK_MODE' &&
+                                            stepFeedbackValues
+                                                ?.contactItemsReview[i]
+                                                .hasIncorrectValue)
+                                    "
                                 >
-                                    <svg-icon
-                                        class="edit-icon"
-                                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                                        [svgStyle]="{
-                                            'width.px': 18,
-                                            'height.px': 18
-                                        }"
-                                        (click)="onEditContact(i)"
-                                    ></svg-icon>
-                                </div>
+                                    <div
+                                        ngbTooltip
+                                        mainTooltip="Edit"
+                                        tooltipBackground="#6C6C6C"
+                                        position="top"
+                                    >
+                                        <svg-icon
+                                            class="edit-icon"
+                                            src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                            (click)="onEditContact(i)"
+                                        ></svg-icon>
+                                    </div>
+                                </ng-container>
 
-                                <div
-                                    ngbTooltip
-                                    mainTooltip="Delete"
-                                    tooltipBackground="#EF5350"
-                                    position="top"
+                                <ng-container
+                                    *ngIf="selectedMode === 'APPLICANT_MODE'"
                                 >
-                                    <svg-icon
-                                        class="delete-icon"
-                                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                                        [svgStyle]="{
-                                            'width.px': 18,
-                                            'height.px': 18
-                                        }"
-                                        (click)="onDeleteContact(i)"
-                                    ></svg-icon>
-                                </div>
+                                    <div
+                                        ngbTooltip
+                                        mainTooltip="Delete"
+                                        tooltipBackground="#EF5350"
+                                        position="top"
+                                    >
+                                        <svg-icon
+                                            class="delete-icon"
+                                            src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                            (click)="onDeleteContact(i)"
+                                        ></svg-icon>
+                                    </div>
+                                </ng-container>
 
-                                <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                                <ng-container
+                                    *ngIf="selectedMode === 'REVIEW_MODE'"
+                                >
                                     <div
                                         class="review-icon-box"
                                         ngbTooltip
@@ -748,9 +770,16 @@
                                             "
                                         ></svg-icon>
                                     </div>
-                                </div>
+                                </ng-container>
 
-                                <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
+                                <ng-container
+                                    *ngIf="
+                                        selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.contactItemsReview[
+                                            i
+                                        ].hasIncorrectValue
+                                    "
+                                >
                                     <div
                                         class="feedback-icon-box"
                                         ngbTooltip
@@ -767,7 +796,7 @@
                                             }"
                                         ></svg-icon>
                                     </div>
-                                </div>
+                                </ng-container>
                             </div>
                         </div>
 
@@ -783,21 +812,28 @@
                             <app-applicant-review-feedback
                                 [formControlName]="'cardReview' + (i + 1)"
                                 [displayAnnotationButton]="
+                                    selectedMode === 'REVIEW_MODE' &&
                                     openAnnotationArray[i + 4]
                                         .displayAnnotationButton
                                 "
                                 [displayAnnotationTextArea]="
+                                    selectedMode === 'REVIEW_MODE' &&
                                     openAnnotationArray[i + 4]
                                         .displayAnnotationTextArea
                                 "
                                 [lineIndex]="i + 4"
-                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                                [feedbackText]="'Check the number'"
                                 [cardsLength]="contactsArray.length"
                                 [cardsType]="'educationContacts'"
                                 [cardIndex]="i"
+                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                                [feedbackText]="
+                                    selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.contactItemsReview[i]
+                                        .emergencyContactMessage
+                                "
                                 (annotationBtnClickEvent)="
-                                    getAnnotationBtnClickValue($event)
+                                    selectedMode === 'REVIEW_MODE' &&
+                                        getAnnotationBtnClickValue($event)
                                 "
                             ></app-applicant-review-feedback>
                         </div>
@@ -818,9 +854,7 @@
                             [isEditing]="isEditing"
                             [formValuesToPatch]="formValuesToPatch"
                             [isReviewingCard]="isReviewingCard"
-                            [stepFeedbackValues]="
-                                stepFeedbackValues?.lastContactsItemReview
-                            "
+                            [stepFeedbackValues]="feedbackValuesToPatch"
                             (formValuesEmitter)="getContactFormValues($event)"
                             (cancelFormEditingEmitter)="
                                 cancelContactEditing($event)
@@ -852,9 +886,7 @@
                     [markFormInvalid]="markFormInvalid"
                     [formValuesToPatch]="formValuesToPatch"
                     [isReviewingCard]="isReviewingCard"
-                    [stepFeedbackValues]="
-                        stepFeedbackValues?.lastContactsItemReview
-                    "
+                    [stepFeedbackValues]="feedbackValuesToPatch"
                     (formValuesEmitter)="getContactFormValues($event)"
                     (formStatusEmitter)="onGetFormStatus($event)"
                     (markInvalidEmitter)="onMarkInvalidEmit($event)"

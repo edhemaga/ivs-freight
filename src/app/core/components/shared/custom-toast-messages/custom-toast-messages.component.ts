@@ -118,8 +118,28 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'LABEL'
         },
         {
+            api: 'companyaccountlabel',
+            value: 'LABEL'
+        },
+        {
+            api: 'companyaccount',
+            value: 'ACCOUNT',
+        },
+        {
             api: 'companycontact',
             value: 'CONTACT',
+        },
+        {
+            api: 'companyuser',
+            value: 'USER'
+        },
+        {
+            api: 'factoringcompany',
+            value: 'FACTORING COMPANY',
+        },
+        {
+            api: 'companyoffice',
+            value: 'OFFICE',
         },
         {
             api: 'company',
@@ -140,10 +160,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'rating',
             value: 'RATE',
-        },
-        {
-            api: 'companyaccount',
-            value: 'ACCOUNT',
         },
         {
             api: 'repairshop',
@@ -213,22 +229,19 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'insurancepolicy',
             value: 'INSURANCE POLICY',
         },
-        {
-            api: 'factoringcompany',
-            value: 'FACTORING COMPANY',
-        },
+        
         {
             api: 'parking',
             value: 'PARKING',
         },
         {
-            api: 'companyoffice',
-            value: 'OFFICE',
-        },
-        {
             api: 'terminal',
             value: 'TERMINAL',
         },
+        {
+            api: 'load',
+            value: 'LOAD'
+        }
     ];
     constructor(
         protected toastrService: ToastrService,
@@ -251,19 +264,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
     ngOnInit(): void {
         this.createTitleBasedOnHttpRequest();
-
-        this.DetailsDataService.leftSideMenuChanges
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: boolean) => {
-                if (
-                    this.actionType != 'LOGIN' &&
-                    this.actionType != 'LOGGED IN'
-                ) {
-                    setTimeout(() => {
-                        this.leftSideMove = response;
-                    }, 50);
-                }
-            });
     }
 
     createTitleBasedOnHttpRequest() {
@@ -337,15 +337,24 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = accName;
                 this.wideMessage = true;
                 break;
+            case 'LOAD':
+                    let loadNum = this.httpRequest.body.getAll('referenceNumber')[0] ? this.httpRequest.body.getAll('referenceNumber')[0] : ''; 
+                    this.message = loadNum;
+                break;    
+            case 'USER':
+                let userName = this.httpRequest.body.firstName + ' ' + this.httpRequest.body.lastName;
+                this.message = userName;
+                break;    
             case 'DRIVER':
-                let bodyName = this.httpRequest.body?.firstName
-                    ? this.httpRequest.body?.firstName
+                
+                let bodyName = this.httpRequest.body.getAll('firstName')[0]
+                    ? this.httpRequest.body.getAll('firstName')[0]
                     : '';
-                let bodyLastName = this.httpRequest.body?.lastName
-                    ? this.httpRequest.body?.lastName
+                let bodyLastName = this.httpRequest.body.getAll('lastName')[0]
+                    ? this.httpRequest.body.getAll('lastName')[0]
                     : '';
                 let driverNameFull = '';
-
+              
                 if (bodyName && bodyLastName) {
                     driverNameFull = bodyName + ' ' + bodyLastName;
                 }
@@ -534,9 +543,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'BROKER':
                 let messageValue = '';
                 if (this.httpRequest.body) {
-                    messageValue = this.httpRequest.body.dbaName
-                        ? this.httpRequest.body.dbaName
-                        : this.httpRequest.body.businessName;
+                    messageValue = this.httpRequest.body.getAll('dbaName')[0]
+                        ? this.httpRequest.body.getAll('dbaName')[0]
+                        : this.httpRequest.body.getAll('businessName')[0];  
                 }
 
                 if (!messageValue) {
@@ -617,7 +626,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
                 break;
             case 'TRAILER':
-                console.log('--this.httpRequest---', this.httpRequest);
                 let trailerNum = this.httpRequest.body?.trailerNumber
                     ? this.httpRequest.body.trailerNumber
                     : '';
@@ -702,8 +710,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = truckNum;
                 break;
             case 'OWNER':
-                let name = this.httpRequest.body?.name
-                    ? this.httpRequest.body.name
+                let name = this.httpRequest.body.getAll('name')[0]
+                    ? this.httpRequest.body.getAll('name')[0]
                     : '';
                 if (!name) {
                     name = this.DetailsDataService.mainData?.name;
@@ -740,8 +748,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = contactName;
                 break;
             case 'REPAIR SHOP':
-                let shopName = this.httpRequest.body?.name
-                    ? this.httpRequest.body.name
+                let shopName = this.httpRequest.body.getAll('name')[0]
+                    ? this.httpRequest.body.getAll('name')[0]
                     : '';
                 if (!shopName) {
                     shopName = this.DetailsDataService.mainData?.name;
@@ -752,14 +760,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'REGISTRATION':
             case 'TITLE':
                 let messageText = '';
-
-                if (this.DetailsDataService.mainData?.truckNumber) {
-                    let repairTruckNum =
-                        this.DetailsDataService.mainData?.truckNumber;
+                console.log('this.DetailsDataService.mainData', this.DetailsDataService.mainData);
+                if (this.httpRequest.body.getAll('unitType')[0] == 'Truck') {
+                    let repairTruckNum = this.DetailsDataService.mainData?.truckNumber ? this.DetailsDataService.mainData?.truckNumber : '';
                     messageText = 'Truck - ' + repairTruckNum;
-                } else if (this.DetailsDataService.mainData?.trailerNumber) {
-                    let repairTrailerNum =
-                        this.DetailsDataService.mainData?.trailerNumber;
+                } else if (this.httpRequest.body.getAll('unitType')[0] == 'Trailer' ) {
+                    let repairTrailerNum = this.DetailsDataService.mainData?.trailerNumber ? this.DetailsDataService.mainData?.trailerNumber : '';
                     messageText = 'Trailer - ' + repairTrailerNum;
                 }
 

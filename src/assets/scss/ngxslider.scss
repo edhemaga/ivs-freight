@@ -91,8 +91,9 @@
             margin: 0 !important;
         }
     }
-    //-------------- Truck Modal --------------
-    &.custom-truck-modal {
+    //-------------- Truck Modal, User Modal --------------
+    &.custom-truck-modal,
+    &.custom-user-modal {
         display: grid;
         grid-template-columns: auto 1fr;
         align-items: center;
@@ -102,6 +103,11 @@
         .custom-slider-text {
             margin: 0 !important;
         }
+    }
+
+    &.custom-user-modal {
+        position: relative;
+        top: 5px;
     }
 
     //-------------- Logo Change --------------

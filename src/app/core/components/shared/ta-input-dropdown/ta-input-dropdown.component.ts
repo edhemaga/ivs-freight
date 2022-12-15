@@ -146,23 +146,19 @@ export class TaInputDropdownComponent
 
         // MultiSelect Selected Items From Backend
         if (
-            changes.preloadMultiselectItems?.currentValue?.length &&
-            this.inputConfig.multiselectDropdown
+            this.inputConfig.multiselectDropdown &&
+            changes.preloadMultiselectItems?.previousValue?.length !==
+                changes.preloadMultiselectItems?.currentValue?.length
         ) {
-            if (changes.preloadMultiselectItems?.currentValue?.length) {
-                if (!changes.preloadMultiselectItems?.currentValue?.length) {
-                    return;
-                }
-                changes.preloadMultiselectItems?.currentValue?.forEach(
-                    (item) => {
-                        this.onMultiselectSelect(item);
-                    }
-                );
-            } else {
+            if (!changes.preloadMultiselectItems?.currentValue?.length) {
                 this.deleteAllMultiSelectItems(
                     changes.inputConfig?.currentValue?.label
                 );
+                return;
             }
+            changes.preloadMultiselectItems?.currentValue?.forEach((item) => {
+                this.onMultiselectSelect(item);
+            });
         }
 
         // Details Pages
@@ -734,6 +730,7 @@ export class TaInputDropdownComponent
     public commandEvent(event: { data: any; action: string; mode: string }) {
         if (event.action === 'Edit Input') {
             this.selectedLabelMode.emit('Color');
+            this.inputConfig.dropdownLabelNew = false;
         }
         if (event.action === 'Toggle Dropdown') {
             this.popoverRef.toggle();
@@ -742,12 +739,12 @@ export class TaInputDropdownComponent
             this.addNewItem();
         }
 
-        if (event.action === 'Placeholder Icon Event') {
-            this.placeholderIconEvent.emit(true);
-        }
-
         if (event.action === 'confirm' && event.mode === 'edit') {
             this.updateItem();
+        }
+
+        if (event.action === 'Placeholder Icon Event') {
+            this.placeholderIconEvent.emit(true);
         }
 
         if (event.action === 'cancel') {
