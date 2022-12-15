@@ -208,7 +208,7 @@ export class TruckassistTableToolbarComponent
                     c.ngTemplate !== 'note' &&
                     c.ngTemplate !== 'actions'
                 ) {
-                    columnsSumWidth += 22;
+                    columnsSumWidth += 6;
                 }
             }
 
