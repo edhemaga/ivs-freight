@@ -938,6 +938,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         brokerContacts: [],
                     });
 
+                    console.log(reasponse);
+
                     this.modalService.changeModalStatus({
                         name: 'dnu',
                         status: reasponse.dnu,

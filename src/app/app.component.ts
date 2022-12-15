@@ -44,7 +44,9 @@ export class AppComponent implements OnInit {
             )
             .subscribe((event: any) => {
                 this.currentPage = event?.title?.toLowerCase();
-                this.titleService.setTitle('CarrierAssist' + ' | ' + event.title);
+                this.titleService.setTitle(
+                    'CarrierAssist' + ' | ' + event.title
+                );
             });
     }
 

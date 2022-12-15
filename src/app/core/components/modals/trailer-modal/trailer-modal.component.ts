@@ -12,7 +12,6 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import {
     CreateTrailerCommand,
     GetTrailerModalResponse,
-    TrailerResponse,
     UpdateTrailerCommand,
     VinDecodeResponse,
 } from 'appcoretruckassist';

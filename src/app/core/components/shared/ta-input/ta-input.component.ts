@@ -125,12 +125,10 @@ export class TaInputComponent
     }
 
     ngOnInit(): void {
-        
         if (
             this.inputConfig.name === 'datepicker' ||
             this.inputConfig.name === 'timepicker'
         ) {
-            
             this.calendarService.dateChanged
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((date) => {
@@ -141,31 +139,44 @@ export class TaInputComponent
                 });
         }
 
-        // Dropdown add mode
+        // Dropdown select add mode
         if (
             (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) &&
             !this.inputConfig.isDisabled
         ) {
             this.inputService.dropDownAddMode$
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((action) => {
-                    if (action) {
-                        this.dropdownToggler = false;
+                .subscribe(
+                    (res: { action: boolean; inputConfig: ITaInput }) => {
+                        if (res.action) {
+                            this.dropdownToggler = false;
 
-                        this.setInputCursorAtTheEnd(this.input.nativeElement);
+                            this.inputConfig = res.inputConfig;
+                            this.getSuperControl.patchValue(null);
+                            this.onEditInput();
+                        }
                     }
-                });
+                );
 
             // Dropdown select item with enter
             this.inputService.dropDownItemSelectedOnEnter$
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((action) => {
-                    if (action) {
-                        this.dropdownToggler = false;
-                        this.input.nativeElement.blur();
-                        this.blurOnDropDownArrow();
+                .subscribe(
+                    (data: { action: boolean; selectedItem: string }) => {
+                        if (data.action) {
+                            this.dropdownToggler = false;
+                            this.input.nativeElement.blur();
+                            this.blurOnDropDownArrow();
+
+                            if (data.selectedItem === 'ADD NEW') {
+                                setTimeout(() => {
+                                    this.getSuperControl.patchValue(null);
+                                    this.onEditInput();
+                                }, 150);
+                            }
+                        }
                     }
-                });
+                );
         }
 
         // Auto Focus First Input
@@ -218,9 +229,12 @@ export class TaInputComponent
             text = moment(new Date(date)).format('MM/DD/YY');
             dateFormat = text.split('/');
         } else {
-            date = date instanceof Date ? date : new Date(moment().format("MM/DD/YYYY") + " " + date);
+            date =
+                date instanceof Date
+                    ? date
+                    : new Date(moment().format('MM/DD/YYYY') + ' ' + date);
             text = moment(new Date(date)).format('HH:mm');
-            
+
             timeFormat = moment(new Date(date)).format('hh/mm/A');
             dateFormat = timeFormat.split('/');
         }
@@ -391,6 +405,11 @@ export class TaInputComponent
 
         this.inputService.onFocusOutInput$.next(true);
         this.touchedInput = true;
+
+        // commands
+        if (this.editInputMode) {
+            this.getSuperControl.setErrors({ required: true });
+        }
     }
 
     private blurOnPassword() {
@@ -548,10 +567,58 @@ export class TaInputComponent
             this.inputConfig.name == 'Address'
         ) {
             if (event.keyCode === 40 || event.keyCode === 38) {
-                this.inputService.dropDownKeyNavigation$.next(event.keyCode);
+                this.inputService.dropDownKeyNavigation$.next({
+                    keyCode: event.keyCode,
+                    obj: null,
+                });
             }
             if (event.keyCode === 13) {
-                this.inputService.dropDownKeyNavigation$.next(event.keyCode);
+                // On Enter Dropdown Label
+                if (
+                    this.inputConfig.name === 'Input Dropdown Label' &&
+                    this.editInputMode &&
+                    this.inputConfig.commands.active
+                ) {
+                    this.inputService.dropDownKeyNavigation$.next({
+                        keyCode: event.keyCode,
+                        obj: {
+                            data: this.getSuperControl.value,
+                            action: 'confirm',
+                            mode: !this.inputConfig.dropdownLabelNew
+                                ? 'edit'
+                                : 'new',
+                        },
+                    });
+                    this.getSuperControl.setErrors(null);
+                    this.editInputMode = false;
+                    this.inputConfig.commands.active = false;
+                    this.onBlur();
+                }
+                // Bank Enter Event..
+                else if (
+                    this.inputConfig.name.includes(
+                        'Input Dropdown Bank Name'
+                    ) &&
+                    this.editInputMode &&
+                    this.inputConfig.commands.active
+                ) {
+                    this.inputService.dropDownKeyNavigation$.next({
+                        keyCode: event.keyCode,
+                        obj: this.getSuperControl.value,
+                    });
+                    this.getSuperControl.setErrors(null);
+                    this.editInputMode = false;
+                    this.inputConfig.commands.active = false;
+                    this.onBlur();
+                }
+                // Navigation through dropdown
+                else {
+                    this.inputService.dropDownKeyNavigation$.next({
+                        keyCode: event.keyCode,
+                        obj: null,
+                    });
+                }
+
                 if (this.inputConfig.name == 'Address') {
                     this.input.nativeElement.blur();
                 }
@@ -563,7 +630,10 @@ export class TaInputComponent
             if (event.keyCode === 9) {
                 this.onFocus();
                 this.input.nativeElement.focus();
-                this.inputService.dropDownKeyNavigation$.next(event.keyCode);
+                this.inputService.dropDownKeyNavigation$.next({
+                    keyCode: event.keyCode,
+                    obj: null,
+                });
             }
         }
 
@@ -619,9 +689,26 @@ export class TaInputComponent
         }
 
         if (this.inputConfig.thousandSeparator && this.getSuperControl.value) {
-            this.getSuperControl.patchValue(
-                this.thousandSeparatorPipe.transform(this.getSuperControl.value)
-            );
+            if (
+                this.getSuperControl.value
+                    .toString()
+                    .split('')
+                    .every((value) => {
+                        console.log('every value: ', value);
+                        return value === '0';
+                    }) &&
+                this.getSuperControl.value.split('').length > 0
+            ) {
+                this.getSuperControl.patchValue('0');
+                return;
+            }
+
+            if (this.getSuperControl.value.toString())
+                this.getSuperControl.patchValue(
+                    this.thousandSeparatorPipe.transform(
+                        this.getSuperControl.value
+                    )
+                );
         }
 
         /**
@@ -664,15 +751,16 @@ export class TaInputComponent
         }
     }
 
-    public onEditInput(event: Event) {
-        event.preventDefault();
-        event.stopPropagation();
+    public onEditInput(event?: Event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
 
         this.editInputMode = true;
         this.inputConfig.commands.active = true;
         this.focusInput = true;
         this.setInputCursorAtTheEnd(this.input.nativeElement);
-        this.getSuperControl.setErrors({ required: true });
         this.commandEvent.emit({
             data: this.getSuperControl.value,
             action: 'Edit Input',
@@ -766,7 +854,6 @@ export class TaInputComponent
                 }
                 this.getSuperControl.setErrors(null);
                 this.editInputMode = false;
-                this.inputConfig.dropdownLabelNew;
                 this.inputConfig.commands.active = false;
                 this.onBlur();
                 break;
@@ -913,7 +1000,7 @@ export class TaInputComponent
                 'detention-rate',
                 'fuel per miles',
                 'fuel price map',
-            ].includes(this.inputConfig.name.toLowerCase())
+            ].includes(this.inputConfig.name.toString().toLowerCase())
         ) {
             if (
                 this.inputService

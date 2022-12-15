@@ -327,17 +327,17 @@ export class TaInputDropdownComponent
     private dropDownKeyboardNavigationEvent() {
         this.inputService.dropDownKeyNavigation$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((keyCode) => {
+            .subscribe((res: { keyCode: number; obj: any }) => {
                 // Navigate down
-                if (keyCode === 40) {
+                if (res.keyCode === 40) {
                     this.dropdownNavigation(1);
                 }
                 // Navigate up
-                if (keyCode === 38) {
+                if (res.keyCode === 38) {
                     this.dropdownNavigation(-1);
                 }
                 // Press 'enter'
-                if (keyCode === 13) {
+                if (res.keyCode === 13) {
                     let selectedItem = $('.dropdown-option-hovered')
                         .text()
                         .trim();
@@ -350,9 +350,33 @@ export class TaInputDropdownComponent
                     ) {
                         selectedItem = this.options[0].name;
                     }
+
+                    // Dropdown Label
+                    if (
+                        this.inputConfig.name === 'Input Dropdown Label' &&
+                        !selectedItem
+                    ) {
+                        this.commandEvent(res.obj);
+                        return;
+                    }
+
+                    if (
+                        this.inputConfig.name === 'Input Dropdown Bank Name' &&
+                        res.obj
+                    ) {
+                        console.log('after pick: ', res);
+                        this.addNewItem();
+                        this.inputConfig.blackInput = false;
+                        return;
+                    }
+
                     // ADD NEW Option
                     if (selectedItem === 'ADD NEW') {
                         this.addNewConfig();
+                        this.inputService.dropDownItemSelectedOnEnter$.next({
+                            action: true,
+                            selectedItem,
+                        });
                     }
                     // Normal Pick Dropdown
                     else {
@@ -428,8 +452,9 @@ export class TaInputDropdownComponent
                             this.getSuperControl.setValue(existItem?.name);
                             this.selectedItem.emit(existItem);
                             this.activeItem = existItem;
+
                             this.inputService.dropDownItemSelectedOnEnter$.next(
-                                true
+                                { action: true, selectedItem }
                             );
 
                             if (this.inputConfig.name !== 'RoutingAddress') {
@@ -446,7 +471,7 @@ export class TaInputDropdownComponent
                     }
                 }
 
-                if (keyCode === 9) {
+                if (res.keyCode === 9) {
                     this.popoverRef.open();
                 }
             });
@@ -748,10 +773,6 @@ export class TaInputDropdownComponent
         }
 
         if (event.action === 'cancel') {
-            this.saveItem.emit({
-                data: this.activeItem,
-                action: 'cancel',
-            });
             this.selectedLabelMode.emit('Label');
         }
     }
@@ -761,7 +782,7 @@ export class TaInputDropdownComponent
             id: uuidv4(),
             name: this.getSuperControl.value,
         };
-
+        console.log('active item: ', this.activeItem);
         this.saveItem.emit({ data: this.activeItem, action: 'new' });
 
         if (this.inputConfig.dropdownLabel) {
@@ -796,7 +817,7 @@ export class TaInputDropdownComponent
         this.inputConfig = {
             ...this.inputConfig,
             commands: {
-                active: true,
+                active: false,
                 type: 'confirm-cancel',
                 firstCommand: {
                     popup: {
@@ -819,7 +840,10 @@ export class TaInputDropdownComponent
         };
 
         this.inputConfig.dropdownLabelNew = true; // share this config with label
-        this.inputService.dropDownAddMode$.next(true);
+        this.inputService.dropDownAddMode$.next({
+            action: true,
+            inputConfig: this.inputConfig,
+        });
         this.popoverRef.close();
 
         this.isInAddMode = true;

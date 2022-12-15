@@ -92,11 +92,13 @@
         color: $input-text-color-normal-focus;
 
         &::-moz-selection {
-            background-color: $input-background-selection-normal-focus !important;
+            background-color: $input-background-selection-normal !important;
+            color: $input-text-selection-normal !important;
         }
 
         &::selection {
-            background-color: $input-background-selection-normal-focus !important;
+            background-color: $input-background-selection-normal !important;
+            color: $input-text-selection-normal !important;
         }
     }
 
