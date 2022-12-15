@@ -671,7 +671,6 @@
                                             </p>
                                         </div>
                                     </div>
-
                                     <div
                                         class="d-flex align-items-center btn-container"
                                         [ngClass]="{
@@ -1223,6 +1222,7 @@
         [mode]="selectedMode"
         [filledCorrectly]="
             personalInfoForm.valid &&
+            helperIndex === 2 &&
             (selectedMode === 'APPLICANT_MODE' ||
                 (selectedMode === 'FEEDBACK_MODE' && isFeedbackValueUpdated))
         "

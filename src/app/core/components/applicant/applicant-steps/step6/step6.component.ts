@@ -77,7 +77,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.FEEDBACK;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public subscription: Subscription;
 
@@ -656,25 +656,6 @@ export class Step6Component implements OnInit, OnDestroy {
                 emergencyContactItemsReview.pop();
 
                 for (let i = 0; i < emergencyContactItemsReview.length; i++) {
-                    const firstEmptyObjectInList =
-                        this.openAnnotationArray.find(
-                            (item) => Object.keys(item).length === 0
-                        );
-
-                    const indexOfFirstEmptyObjectInList =
-                        this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        );
-
-                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                        lineIndex: this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        ),
-                        lineInputs: [false],
-                        displayAnnotationButton: false,
-                        displayAnnotationTextArea: false,
-                    };
-
                     const emergencyContactItemReview: any = {
                         ...emergencyContactItemsReview[i],
                     };
@@ -1667,6 +1648,12 @@ export class Step6Component implements OnInit, OnDestroy {
                             },
                         };
                     });
+
+                    if (this.selectedMode === SelectedMode.FEEDBACK) {
+                        if (this.subscription) {
+                            this.subscription.unsubscribe();
+                        }
+                    }
                 },
                 error: (err) => {
                     console.log(err);
@@ -1715,11 +1702,9 @@ export class Step6Component implements OnInit, OnDestroy {
             emergencyContactId: lastItemId,
             isPrimary: true,
             commonMessage: null,
-            isNameValid: lastItemReview ? lastItemReview.isNameValid : true,
-            isPhoneValid: lastItemReview ? lastItemReview.isPhoneValid : true,
-            isRelationshipValid: lastItemReview
-                ? lastItemReview.isRelationshipValid
-                : true,
+            isNameValid: lastItemReview.isNameValid ?? true,
+            isPhoneValid: lastItemReview.isPhoneValid ?? true,
+            isRelationshipValid: lastItemReview.isRelationshipValid ?? true,
             emergencyContactMessage: this.lastContactCard.firstRowReview,
         };
 

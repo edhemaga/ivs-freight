@@ -6,7 +6,11 @@ import { Router } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { isFormValueNotEqual } from '../../state/utils/utils';
+import {
+    isAnyValueInArrayFalse,
+    isEveryValueInArrayTrue,
+    isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import {
     convertDateToBackend,
@@ -39,7 +43,7 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.FEEDBACK;
 
     public applicantId: number;
 
@@ -52,6 +56,7 @@ export class Step2Component implements OnInit, OnDestroy {
 
     public workExperienceArray: WorkHistoryModel[] = [];
 
+    public stepValues: any;
     public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
@@ -93,9 +98,8 @@ export class Step2Component implements OnInit, OnDestroy {
     public cardsWithIncorrectFields: boolean = false;
     public previousFormValuesOnReview: any;
 
-    public lastItemStepValues: any;
-
     public stepFeedbackValues: any;
+    public feedbackValuesToPatch: any;
     public isFeedbackValueUpdated: boolean = false;
 
     constructor(
@@ -313,6 +317,24 @@ export class Step2Component implements OnInit, OnDestroy {
                       reasonForLeaving: null,
                       accountForPeriod: null,
                   };
+
+            for (let i = 0; i < filteredWorkExperienceArray.length; i++) {
+                const firstEmptyObjectInList = this.openAnnotationArray.find(
+                    (item) => Object.keys(item).length === 0
+                );
+
+                const indexOfFirstEmptyObjectInList =
+                    this.openAnnotationArray.indexOf(firstEmptyObjectInList);
+
+                this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                    lineIndex: this.openAnnotationArray.indexOf(
+                        firstEmptyObjectInList
+                    ),
+                    lineInputs: [false],
+                    displayAnnotationButton: false,
+                    displayAnnotationTextArea: false,
+                };
+            }
         } else {
             this.formStatus = 'VALID';
         }
@@ -328,25 +350,6 @@ export class Step2Component implements OnInit, OnDestroy {
                 workExperienceItemsReview.pop();
 
                 for (let i = 0; i < workExperienceItemsReview.length; i++) {
-                    const firstEmptyObjectInList =
-                        this.openAnnotationArray.find(
-                            (item) => Object.keys(item).length === 0
-                        );
-
-                    const indexOfFirstEmptyObjectInList =
-                        this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        );
-
-                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                        lineIndex: this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        ),
-                        lineInputs: [false],
-                        displayAnnotationButton: false,
-                        displayAnnotationTextArea: false,
-                    };
-
                     const workExperienceItemReview = {
                         ...workExperienceItemsReview[i],
                     };
@@ -403,28 +406,49 @@ export class Step2Component implements OnInit, OnDestroy {
         }
 
         if (this.selectedMode === SelectedMode.FEEDBACK) {
-            const lastWorkExperienceItem =
-                workExperienceItems[workExperienceItems.length - 1];
+            const workExperienceItemsReview = workExperienceItems.map(
+                (item) => item.workExperienceItemReview
+            );
 
-            const lastWorkExperienceItemReview =
-                lastWorkExperienceItem.workExperienceItemReview;
+            this.stepFeedbackValues = workExperienceItemsReview.map((item) => {
+                return {
+                    isEmployerValid: item.isEmployerValid,
+                    employerMessage: item.employerMessage,
+                    isJobDescriptionValid: item.isJobDescriptionValid,
+                    isFromValid: item.isFromValid,
+                    isToValid: item.isToValid,
+                    jobDescriptionMessage: item.jobDescriptionMessage,
+                    isPhoneValid: item.isPhoneValid,
+                    isEmailValid: item.isEmailValid,
+                    isFaxValid: item.isFaxValid,
+                    contactMessage: item.contactMessage,
+                    isAddressValid: item.isAddressValid,
+                    isAddressUnitValid: item.isAddressUnitValid,
+                    addressMessage: item.addressMessage,
+                    isAccountForPeriodBetweenValid:
+                        item.isAccountForPeriodBetweenValid,
+                    accountForPeriodBetweenMessage:
+                        item.accountForPeriodBetweenMessage,
+                    commonMessage: item.commonMessage,
+                    hasIncorrectValue: isAnyValueInArrayFalse([
+                        item.isEmployerValid,
+                        item.isJobDescriptionValid,
+                        item.isFromValid,
+                        item.isToValid,
+                        item.isPhoneValid,
+                        item.isEmailValid,
+                        item.isFaxValid,
+                        item.isAddressValid,
+                        item.isAddressUnitValid,
+                        item.isAccountForPeriodBetweenValid,
+                    ]),
+                };
+            });
 
-            if (lastWorkExperienceItemReview) {
-                this.stepFeedbackValues = lastWorkExperienceItemReview;
+            this.stepValues = stepValues.workExperienceItems;
 
-                this.lastItemStepValues = lastWorkExperienceItem;
-
-                console.log('this.lastItemStepValues', this.lastItemStepValues);
-                console.log('this.stepFeedbackValues', this.stepFeedbackValues);
-            }
-
-            /*      if (drugAndAlcoholReview) {
-        this.stepFeedbackValues = drugAndAlcoholReview;
-      }
-
-      this.stepValues = stepValues;
-
-      this.startFeedbackValueChangesMonitoring(); */
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues?.length - 1];
         }
     }
 
@@ -525,6 +549,50 @@ export class Step2Component implements OnInit, OnDestroy {
         }
 
         this.formValuesToPatch = selectedWorkExperience;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.selectedWorkExperienceIndex];
+        }
+    }
+
+    public cancelWorkExperienceEditing(_: any): void {
+        this.isEditing = false;
+        this.workExperienceArray[
+            this.selectedWorkExperienceIndex
+        ].isEditingWorkHistory = false;
+
+        this.helperIndex = 2;
+        this.selectedWorkExperienceIndex = -1;
+
+        this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
+    }
+
+    public saveEditedWorkExperience(event: any): void {
+        this.isEditing = false;
+        this.workExperienceArray[
+            this.selectedWorkExperienceIndex
+        ].isEditingWorkHistory = false;
+
+        this.workExperienceArray[this.selectedWorkExperienceIndex] = {
+            ...this.workExperienceArray[this.selectedWorkExperienceIndex],
+            ...event,
+        };
+
+        this.helperIndex = 2;
+        this.selectedWorkExperienceIndex = -1;
+
+        this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
     }
 
     public getWorkExperienceFormValues(event: any): void {
@@ -556,35 +624,6 @@ export class Step2Component implements OnInit, OnDestroy {
             displayAnnotationButton: false,
             displayAnnotationTextArea: false,
         };
-    }
-
-    public cancelWorkExperienceEditing(_: any): void {
-        this.isEditing = false;
-        this.workExperienceArray[
-            this.selectedWorkExperienceIndex
-        ].isEditingWorkHistory = false;
-
-        this.helperIndex = 2;
-        this.selectedWorkExperienceIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
-    }
-
-    public saveEditedWorkExperience(event: any): void {
-        this.isEditing = false;
-        this.workExperienceArray[
-            this.selectedWorkExperienceIndex
-        ].isEditingWorkHistory = false;
-
-        this.workExperienceArray[this.selectedWorkExperienceIndex] = {
-            ...this.workExperienceArray[this.selectedWorkExperienceIndex],
-            ...event,
-        };
-
-        this.helperIndex = 2;
-        this.selectedWorkExperienceIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
     }
 
     public onGetFormStatus(status: string): void {
@@ -862,129 +901,178 @@ export class Step2Component implements OnInit, OnDestroy {
 
     public startFeedbackValueChangesMonitoring(): void {
         if (this.stepFeedbackValues) {
-            const filteredIncorrectValues = Object.keys(
-                this.stepFeedbackValues
-            ).reduce((o, key) => {
-                this.stepFeedbackValues[key] === false &&
-                    (o[key] = this.stepFeedbackValues[key]);
+            let incorrectValuesArray = [];
 
-                return o;
-            }, {});
+            for (let i = 0; i < this.stepFeedbackValues.length; i++) {
+                const filteredWorkExperienceIncorrectValues = Object.keys(
+                    this.stepFeedbackValues[i]
+                )
+                    .filter((item) => item !== 'hasIncorrectValue')
+                    .reduce((o, key) => {
+                        this.stepFeedbackValues[i][key] === false &&
+                            (o[key] = this.stepFeedbackValues[i][key]);
 
-            const hasIncorrectValues = Object.keys(
-                filteredIncorrectValues
-            ).length;
+                        return o;
+                    }, {});
 
-            if (hasIncorrectValues) {
-                const filteredFieldsWithIncorrectValues = Object.keys(
-                    filteredIncorrectValues
-                ).reduce((o, key) => {
-                    const keyName = key
-                        .replace('Valid', '')
-                        .replace('is', '')
-                        .trim()
-                        .toLowerCase();
+                const hasIncorrectValues = Object.keys(
+                    filteredWorkExperienceIncorrectValues
+                ).length;
 
-                    const match = Object.keys(this.lastItemStepValues)
-                        .filter((item) => item.toLowerCase().includes(keyName))
-                        .pop();
+                if (hasIncorrectValues) {
+                    const filteredFieldsWithIncorrectValues = Object.keys(
+                        filteredWorkExperienceIncorrectValues
+                    ).reduce((o, key) => {
+                        const keyName = key
+                            .replace('Valid', '')
+                            .replace('is', '')
+                            .trim()
+                            .toLowerCase();
 
-                    o[keyName] = this.lastItemStepValues[match];
+                        const match = Object.keys(this.stepValues[i])
+                            .filter((item) =>
+                                item.toLowerCase().includes(keyName)
+                            )
+                            .pop();
 
-                    if (keyName === 'from') {
-                        o['from'] = convertDateFromBackend(o['from']);
-                    }
+                        o[keyName] = this.stepValues[i][match];
 
-                    if (keyName === 'to') {
-                        o['to'] = convertDateFromBackend(o['to']);
-                    }
+                        if (keyName === 'from') {
+                            o['from'] = convertDateFromBackend(o['from']);
+                        }
 
-                    if (keyName === 'address') {
-                        o['address'] = JSON.stringify({
-                            address: this.lastItemStepValues.address.address,
-                        });
-                    }
+                        if (keyName === 'to') {
+                            o['to'] = convertDateFromBackend(o['to']);
+                        }
 
-                    if (keyName === 'addressunit') {
-                        o['addressunit'] =
-                            this.lastItemStepValues.address.addressUnit;
-                    }
+                        if (keyName === 'address') {
+                            o['address'] = JSON.stringify({
+                                address: this.stepValues[i].address.address,
+                            });
+                        }
 
-                    return o;
-                }, {});
+                        if (keyName === 'addressunit') {
+                            o['addressunit'] =
+                                this.stepValues[i].address.addressUnit;
+                        }
 
-                const filteredUpdatedFieldsWithIncorrectValues = Object.keys(
-                    filteredFieldsWithIncorrectValues
-                ).reduce((o, key) => {
-                    const keyName = key;
+                        return o;
+                    }, {});
 
-                    const match = Object.keys(this.lastItemStepValues)
-                        .filter((item) => item.toLowerCase().includes(keyName))
-                        .pop();
+                    const filteredUpdatedFieldsWithIncorrectValues =
+                        Object.keys(filteredFieldsWithIncorrectValues).reduce(
+                            (o, key) => {
+                                const keyName = key;
 
-                    o[keyName] = this.lastWorkExperienceCard[match];
+                                const match = Object.keys(this.stepValues[i])
+                                    .filter((item) =>
+                                        item.toLowerCase().includes(keyName)
+                                    )
+                                    .pop();
 
-                    if (keyName === 'from') {
-                        o['from'] = this.lastWorkExperienceCard.fromDate;
-                    }
+                                o[keyName] =
+                                    i === this.stepFeedbackValues.length - 1
+                                        ? this.lastWorkExperienceCard[match]
+                                        : this.workExperienceArray[i][match];
 
-                    if (keyName === 'to') {
-                        o['to'] = this.lastWorkExperienceCard.toDate;
-                    }
+                                if (keyName === 'from') {
+                                    o['from'] =
+                                        i === this.stepFeedbackValues.length - 1
+                                            ? this.lastWorkExperienceCard
+                                                  .fromDate
+                                            : this.workExperienceArray[i]
+                                                  .fromDate;
+                                }
 
-                    if (keyName === 'phone') {
-                        o['phone'] = this.lastWorkExperienceCard.employerPhone;
-                    }
+                                if (keyName === 'to') {
+                                    o['to'] =
+                                        i === this.stepFeedbackValues.length - 1
+                                            ? this.lastWorkExperienceCard.toDate
+                                            : this.workExperienceArray[i]
+                                                  .toDate;
+                                }
 
-                    if (keyName === 'fax') {
-                        o['fax'] = this.lastWorkExperienceCard.employerFax;
-                    }
+                                if (keyName === 'phone') {
+                                    o['phone'] =
+                                        i === this.stepFeedbackValues.length - 1
+                                            ? this.lastWorkExperienceCard
+                                                  .employerPhone
+                                            : this.workExperienceArray[i]
+                                                  .employerPhone;
+                                }
 
-                    if (keyName === 'email') {
-                        o['email'] = this.lastWorkExperienceCard.employerEmail;
-                    }
+                                if (keyName === 'fax') {
+                                    o['fax'] =
+                                        i === this.stepFeedbackValues.length - 1
+                                            ? this.lastWorkExperienceCard
+                                                  .employerFax
+                                            : this.workExperienceArray[i]
+                                                  .employerFax;
+                                }
 
-                    if (keyName === 'address') {
-                        o['address'] = JSON.stringify({
-                            address:
-                                this.lastWorkExperienceCard.employerAddress
-                                    ?.address,
-                        });
-                    }
+                                if (keyName === 'email') {
+                                    o['email'] =
+                                        i === this.stepFeedbackValues.length - 1
+                                            ? this.lastWorkExperienceCard
+                                                  .employerEmail
+                                            : this.workExperienceArray[i]
+                                                  .employerEmail;
+                                }
 
-                    if (keyName === 'addressunit') {
-                        o['addressunit'] =
-                            this.lastWorkExperienceCard.employerAddressUnit;
-                    }
+                                if (keyName === 'address') {
+                                    o['address'] = JSON.stringify({
+                                        address:
+                                            i ===
+                                            this.stepFeedbackValues.length - 1
+                                                ? this.lastWorkExperienceCard
+                                                      .employerAddress?.address
+                                                : this.workExperienceArray[i]
+                                                      .employerAddress?.address,
+                                    });
+                                }
 
-                    if (keyName === 'accountforperiodbetween') {
-                        o['accountforperiodbetween'] =
-                            this.lastWorkExperienceCard.accountForPeriod;
-                    }
+                                if (keyName === 'addressunit') {
+                                    o['addressunit'] =
+                                        i === this.stepFeedbackValues.length - 1
+                                            ? this.lastWorkExperienceCard
+                                                  .employerAddressUnit
+                                            : this.workExperienceArray[i]
+                                                  .employerAddressUnit;
+                                }
 
-                    return o;
-                }, {});
+                                if (keyName === 'accountforperiodbetween') {
+                                    o['accountforperiodbetween'] =
+                                        i === this.stepFeedbackValues.length - 1
+                                            ? this.lastWorkExperienceCard
+                                                  .accountForPeriod
+                                            : this.workExperienceArray[i]
+                                                  .accountForPeriod;
+                                }
 
-                console.log(
-                    'filteredFieldsWithIncorrectValues',
-                    filteredFieldsWithIncorrectValues
-                );
+                                return o;
+                            },
+                            {}
+                        );
 
-                console.log(
-                    'filteredUpdatedFieldsWithIncorrectValues',
-                    filteredUpdatedFieldsWithIncorrectValues
-                );
+                    const isFormNotEqual = isFormValueNotEqual(
+                        filteredFieldsWithIncorrectValues,
+                        filteredUpdatedFieldsWithIncorrectValues
+                    );
 
-                const isFormNotEqual = isFormValueNotEqual(
-                    filteredFieldsWithIncorrectValues,
-                    filteredUpdatedFieldsWithIncorrectValues
-                );
-
-                if (isFormNotEqual) {
-                    this.isFeedbackValueUpdated = true;
-                } else {
-                    this.isFeedbackValueUpdated = false;
+                    incorrectValuesArray = [
+                        ...incorrectValuesArray,
+                        isFormNotEqual,
+                    ];
                 }
+            }
+
+            const isCardsValueUpdated =
+                isEveryValueInArrayTrue(incorrectValuesArray);
+
+            if (isCardsValueUpdated) {
+                this.isFeedbackValueUpdated = true;
+            } else {
+                this.isFeedbackValueUpdated = false;
             }
         }
     }
@@ -1009,6 +1097,12 @@ export class Step2Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (!this.isFeedbackValueUpdated) {
+                return;
+            }
+        }
+
         this.checkIsHazmatSpillNotChecked = true;
 
         if (
@@ -1312,7 +1406,6 @@ export class Step2Component implements OnInit, OnDestroy {
                         ? itemReview.isAddressUnitValid
                         : true,
                     addressMessage: null,
-                    reasonForLeavingMessage: null,
                     isAccountForPeriodBetweenValid: itemReview
                         ? itemReview.isAccountForPeriodBetweenValid
                         : true,
@@ -1334,31 +1427,21 @@ export class Step2Component implements OnInit, OnDestroy {
             workExperienceItemId: lastItemId,
             isPrimary: true,
             commonMessage: null,
-            isEmployerValid: lastItemReview
-                ? lastItemReview.isEmployerValid
-                : true,
+            isEmployerValid: lastItemReview.isEmployerValid ?? true,
             employerMessage: this.lastWorkExperienceCard.firstRowReview,
-            isJobDescriptionValid: lastItemReview
-                ? lastItemReview.isJobDescriptionValid
-                : true,
-            isFromValid: lastItemReview ? lastItemReview.isFromValid : true,
-            isToValid: lastItemReview ? lastItemReview.isToValid : true,
+            isJobDescriptionValid: lastItemReview.isJobDescriptionValid ?? true,
+            isFromValid: lastItemReview.isFromValid ?? true,
+            isToValid: lastItemReview.isToValid ?? true,
             jobDescriptionMessage: this.lastWorkExperienceCard.secondRowReview,
-            isPhoneValid: lastItemReview ? lastItemReview.isPhoneValid : true,
-            isFaxValid: lastItemReview ? lastItemReview.isFaxValid : true,
-            isEmailValid: lastItemReview ? lastItemReview.isEmailValid : true,
+            isPhoneValid: lastItemReview.isPhoneValid ?? true,
+            isFaxValid: lastItemReview.isFaxValid ?? true,
+            isEmailValid: lastItemReview.isEmailValid ?? true,
             contactMessage: this.lastWorkExperienceCard.thirdRowReview,
-            isAddressValid: lastItemReview
-                ? lastItemReview.isAddressValid
-                : true,
-            isAddressUnitValid: lastItemReview
-                ? lastItemReview.isAddressUnitValid
-                : true,
+            isAddressValid: lastItemReview.isAddressValid ?? true,
+            isAddressUnitValid: lastItemReview.isAddressUnitValid ?? true,
             addressMessage: this.lastWorkExperienceCard.fourthRowReview,
-            reasonForLeavingMessage: this.lastWorkExperienceCard.sixthRowReview,
-            isAccountForPeriodBetweenValid: lastItemReview
-                ? lastItemReview.isAccountForPeriodBetweenValid
-                : true,
+            isAccountForPeriodBetweenValid:
+                lastItemReview.isAccountForPeriodBetweenValid ?? true,
             accountForPeriodBetweenMessage:
                 this.lastWorkExperienceCard.seventhRowReview,
         };

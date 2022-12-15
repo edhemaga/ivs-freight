@@ -19,6 +19,7 @@ import {
     isFormValueNotEqual,
     isAnyRadioInArrayUnChecked,
     filterUnceckedRadiosId,
+    isAnyValueInArrayFalse,
 } from '../../state/utils/utils';
 
 import {
@@ -68,7 +69,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public personalInfoRadios: any;
 
@@ -533,7 +534,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             this.selectedBank = this.banksDropdownList.find(
                 (item) => item.id === bankId
             );
-
             const isAgreementValue =
                 this.personalInfoForm.get('isAgreement').value;
 
@@ -562,6 +562,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
                 if (anotherName) {
                     this.personalInfoRadios[2].buttons[0].checked = true;
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('anotherNameExplain')
+                    );
                 } else {
                     this.personalInfoRadios[2].buttons[1].checked = true;
 
@@ -569,10 +573,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.personalInfoRadios[2].buttons[0].checked = false;
                         this.personalInfoRadios[2].buttons[1].checked = false;
                     }
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('anotherNameExplain'),
+                        false
+                    );
                 }
 
                 if (inMilitary) {
                     this.personalInfoRadios[3].buttons[0].checked = true;
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('inMilitaryExplain')
+                    );
                 } else {
                     this.personalInfoRadios[3].buttons[1].checked = true;
 
@@ -580,10 +593,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.personalInfoRadios[3].buttons[0].checked = false;
                         this.personalInfoRadios[3].buttons[1].checked = false;
                     }
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('inMilitaryExplain'),
+                        false
+                    );
                 }
 
                 if (felony) {
                     this.personalInfoRadios[4].buttons[0].checked = true;
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('felonyExplain')
+                    );
                 } else {
                     this.personalInfoRadios[4].buttons[1].checked = true;
 
@@ -591,10 +613,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.personalInfoRadios[4].buttons[0].checked = false;
                         this.personalInfoRadios[4].buttons[1].checked = false;
                     }
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('felonyExplain'),
+                        false
+                    );
                 }
 
                 if (misdemeanor) {
                     this.personalInfoRadios[5].buttons[0].checked = true;
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('misdemeanorExplain')
+                    );
                 } else {
                     this.personalInfoRadios[5].buttons[1].checked = true;
 
@@ -602,10 +633,19 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.personalInfoRadios[5].buttons[0].checked = false;
                         this.personalInfoRadios[5].buttons[1].checked = false;
                     }
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('misdemeanorExplain'),
+                        false
+                    );
                 }
 
                 if (drunkDriving) {
                     this.personalInfoRadios[6].buttons[0].checked = true;
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('drunkDrivingExplain')
+                    );
                 } else {
                     this.personalInfoRadios[6].buttons[1].checked = true;
 
@@ -613,6 +653,11 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                         this.personalInfoRadios[6].buttons[0].checked = false;
                         this.personalInfoRadios[6].buttons[1].checked = false;
                     }
+
+                    this.inputService.changeValidators(
+                        this.personalInfoForm.get('drunkDrivingExplain'),
+                        false
+                    );
                 }
             }
         }, 150);
@@ -1467,11 +1512,17 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                 return o;
             }, {});
 
+            const previousAddressesHasIncorrectValue = isAnyValueInArrayFalse(
+                this.stepFeedbackValues.previousAddressesReview.map(
+                    (item) => item.isPreviousAddressValid
+                )
+            );
+
             const hasIncorrectValues = Object.keys(
                 filteredIncorrectValues
             ).length;
 
-            if (hasIncorrectValues) {
+            if (hasIncorrectValues || previousAddressesHasIncorrectValue) {
                 this.subscription = this.personalInfoForm.valueChanges
                     .pipe(takeUntil(this.destroy$))
                     .subscribe((updatedFormValues) => {
@@ -1592,7 +1643,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                                 .map((item) => {
                                     return {
                                         address: item.address,
-                                        addressUnit: item.addressUnit,
                                     };
                                 });
 
@@ -1621,7 +1671,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                                 .map((item) => {
                                     return {
                                         address: item.address,
-                                        addressUnit: item.addressUnit,
                                     };
                                 });
 

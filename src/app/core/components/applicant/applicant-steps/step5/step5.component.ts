@@ -300,25 +300,6 @@ export class Step5Component implements OnInit, OnDestroy {
                 violationItemsReview.pop();
 
                 for (let i = 0; i < violationItemsReview.length; i++) {
-                    const firstEmptyObjectInList =
-                        this.openAnnotationArray.find(
-                            (item) => Object.keys(item).length === 0
-                        );
-
-                    const indexOfFirstEmptyObjectInList =
-                        this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        );
-
-                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                        lineIndex: this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        ),
-                        lineInputs: [false],
-                        displayAnnotationButton: false,
-                        displayAnnotationTextArea: false,
-                    };
-
                     const violationItemReview = {
                         ...violationItemsReview[i],
                     };
@@ -513,36 +494,6 @@ export class Step5Component implements OnInit, OnDestroy {
         }
     }
 
-    public getViolationFormValues(event: any): void {
-        this.violationsArray = [...this.violationsArray, event];
-
-        if (this.lastViolationsCard.id) {
-            this.violationsArray[this.violationsArray.length - 1].id =
-                this.lastViolationsCard.id;
-
-            this.lastViolationsCard.id = null;
-        } else {
-            this.violationsArray[this.violationsArray.length - 1].id = null;
-        }
-
-        this.helperIndex = 2;
-
-        const firstEmptyObjectInList = this.openAnnotationArray.find(
-            (item) => Object.keys(item).length === 0
-        );
-
-        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
-            firstEmptyObjectInList
-        );
-
-        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        };
-    }
-
     public saveEditedViolation(event: any): void {
         this.isEditing = false;
         this.violationsArray[this.selectedViolationIndex].isEditingViolation =
@@ -578,6 +529,36 @@ export class Step5Component implements OnInit, OnDestroy {
             this.feedbackValuesToPatch =
                 this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
         }
+    }
+
+    public getViolationFormValues(event: any): void {
+        this.violationsArray = [...this.violationsArray, event];
+
+        if (this.lastViolationsCard.id) {
+            this.violationsArray[this.violationsArray.length - 1].id =
+                this.lastViolationsCard.id;
+
+            this.lastViolationsCard.id = null;
+        } else {
+            this.violationsArray[this.violationsArray.length - 1].id = null;
+        }
+
+        this.helperIndex = 2;
+
+        const firstEmptyObjectInList = this.openAnnotationArray.find(
+            (item) => Object.keys(item).length === 0
+        );
+
+        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+            firstEmptyObjectInList
+        );
+
+        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
+        };
     }
 
     public onGetFormStatus(status: string): void {
@@ -938,6 +919,12 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (!this.isFeedbackValueUpdated) {
+                return;
+            }
+        }
+
         if (
             this.notBeenConvictedForm.invalid ||
             this.onlyOneHoldLicenseForm.invalid ||
@@ -1156,14 +1143,10 @@ export class Step5Component implements OnInit, OnDestroy {
             trafficViolationItemId: lastItemId,
             isPrimary: true,
             commonMessage: null,
-            isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
-            isLocationValid: lastItemReview
-                ? lastItemReview.isLocationValid
-                : true,
+            isDateValid: lastItemReview.isDateValid ?? true,
+            isLocationValid: lastItemReview.isLocationValid ?? true,
             locationMessage: this.lastViolationsCard.firstRowReview,
-            isDescriptionValid: lastItemReview
-                ? lastItemReview.isDescriptionValid
-                : true,
+            isDescriptionValid: lastItemReview.isDescriptionValid ?? true,
             descriptionMessage: this.lastViolationsCard.secondRowReview,
         };
 

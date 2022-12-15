@@ -79,12 +79,12 @@ export class Step2FormComponent
     @Input() markFormInvalid?: boolean;
     @Input() markInnerFormInvalid?: boolean;
     @Input() isReviewingCard: boolean;
-    @Input() stepFeedbackValues?: any;
     @Input() displayRadioRequiredNoteArray: {
         id: number;
         displayRadioRequiredNote: boolean;
     };
     @Input() checkIsHazmatSpillNotChecked: boolean;
+    @Input() stepFeedbackValues?: any;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() classOfEquipmentformValuesEmitter = new EventEmitter<any>();
@@ -378,10 +378,7 @@ export class Step2FormComponent
             this.selectedMode = changes.mode?.currentValue;
         }
 
-        if (
-            this.selectedMode === SelectedMode.APPLICANT ||
-            this.selectedMode === SelectedMode.FEEDBACK
-        ) {
+        if (this.selectedMode === SelectedMode.APPLICANT) {
             if (
                 changes.markFormInvalid?.previousValue !==
                 changes.markFormInvalid?.currentValue
@@ -435,7 +432,10 @@ export class Step2FormComponent
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
 
-                if (this.selectedMode === SelectedMode.APPLICANT) {
+                if (
+                    this.selectedMode === SelectedMode.APPLICANT ||
+                    this.selectedMode === SelectedMode.FEEDBACK
+                ) {
                     this.startValueChangesMonitoring();
 
                     if (!this.isWorkExperienceClassOfEquipmentEdited) {
@@ -510,7 +510,10 @@ export class Step2FormComponent
 
     public patchForm(formValue: any): void {
         if (this.selectedMode === SelectedMode.REVIEW) {
-            if (formValue.workExperienceItemReview) {
+            if (
+                formValue.workExperienceItemReview &&
+                Object.keys(formValue.workExperienceItemReview).length > 5
+            ) {
                 const {
                     isEmployerValid,
                     employerMessage,
@@ -1053,8 +1056,6 @@ export class Step2FormComponent
                 break;
             case InputSwitchActions.TRUCK_TYPE:
                 this.selectedVehicleType = event;
-
-                console.log('event', event);
 
                 if (event) {
                     this.isTruckSelected = true;

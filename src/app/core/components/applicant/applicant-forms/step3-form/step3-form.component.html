@@ -10,7 +10,10 @@
                     isRequired: true,
                     textTransform: 'capitalize',
                     autoFocus: selectedMode === 'APPLICANT_MODE',
-                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    isDisabled:
+                        selectedMode === 'REVIEW_MODE' ||
+                        (selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.isLicenseValid),
                     incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
                 [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
@@ -27,7 +30,9 @@
                     isRequired: true,
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-234',
-                    isDisabled: selectedMode === 'REVIEW_MODE'
+                    isDisabled:
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
                 }"
                 [activeItem]="selectedCountryType"
                 [options]="countryTypes"
@@ -48,17 +53,24 @@
             <app-applicant-review-feedback
                 formControlName="firstRowReview"
                 [displayAnnotationButton]="
+                    selectedMode === 'REVIEW_MODE' &&
                     openAnnotationArray[10].displayAnnotationButton
                 "
                 [displayAnnotationTextArea]="
+                    selectedMode === 'REVIEW_MODE' &&
                     openAnnotationArray[10].displayAnnotationTextArea
                 "
                 [lineIndex]="10"
                 [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                 [feedbackText]="
-                    'Check the routing number one more time (one number missing)!!!'
+                    selectedMode === 'FEEDBACK_MODE' &&
+                    (stepFeedbackValues?.commonMessage ??
+                        stepFeedbackValues?.licenseMessage)
                 "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                (annotationBtnClickEvent)="
+                    selectedMode === 'REVIEW_MODE' &&
+                        getAnnotationBtnClickValue($event)
+                "
             ></app-applicant-review-feedback>
         </div>
     </div>
@@ -77,7 +89,8 @@
                     isDisabled:
                         (selectedMode === 'APPLICANT_MODE' &&
                             !licenseForm.get('country').value) ||
-                        selectedMode === 'REVIEW_MODE',
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-246'
                 }"
@@ -96,7 +109,9 @@
                     isRequired: true,
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-174',
-                    isDisabled: selectedMode === 'REVIEW_MODE'
+                    isDisabled:
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
                 }"
                 [activeItem]="selectedClassType"
                 [options]="classTypes"
@@ -113,7 +128,10 @@
                     placeholderIcon: 'date',
                     isRequired: true,
                     customClass: 'datetimeclass',
-                    isDisabled: selectedMode === 'REVIEW_MODE',
+                    isDisabled:
+                        selectedMode === 'REVIEW_MODE' ||
+                        (selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.isExpDateValid),
                     incorrectInput: selectedMode === 'REVIEW_MODE'
                 }"
                 [incorrectValue]="openAnnotationArray[11].lineInputs[2]"
@@ -134,17 +152,23 @@
             <app-applicant-review-feedback
                 formControlName="secondRowReview"
                 [displayAnnotationButton]="
+                    selectedMode === 'REVIEW_MODE' &&
                     openAnnotationArray[11].displayAnnotationButton
                 "
                 [displayAnnotationTextArea]="
+                    selectedMode === 'REVIEW_MODE' &&
                     openAnnotationArray[11].displayAnnotationTextArea
                 "
                 [lineIndex]="11"
                 [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                 [feedbackText]="
-                    'Check the routing number one more time (one number missing)!!!'
+                    selectedMode === 'FEEDBACK_MODE' &&
+                    stepFeedbackValues?.expDateMessage
                 "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                (annotationBtnClickEvent)="
+                    selectedMode === 'REVIEW_MODE' &&
+                        getAnnotationBtnClickValue($event)
+                "
             ></app-applicant-review-feedback>
         </div>
     </div>
@@ -164,7 +188,9 @@
                     isDropdown: true,
                     multiselectDropdown: true,
                     dropdownWidthClass: 'w-col-616',
-                    isDisabled: selectedMode === 'REVIEW_MODE'
+                    isDisabled:
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
                 }"
                 [options]="restrictionsList"
                 [preloadMultiselectItems]="selectedRestrictions"
@@ -188,7 +214,9 @@
                     isDropdown: true,
                     multiselectDropdown: true,
                     dropdownWidthClass: 'w-col-616',
-                    isDisabled: selectedMode === 'REVIEW_MODE'
+                    isDisabled:
+                        selectedMode === 'REVIEW_MODE' ||
+                        selectedMode === 'FEEDBACK_MODE'
                 }"
                 [options]="endorsmentsList"
                 [preloadMultiselectItems]="selectedEndorsments"

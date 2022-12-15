@@ -10,9 +10,14 @@ import {
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+    anyInputInLineIncorrect,
+    isAnyValueInArrayFalse,
+    isEveryValueInArrayTrue,
+    isFormValueNotEqual,
+} from '../../state/utils/utils';
 
 import {
     convertDateFromBackend,
@@ -58,7 +63,9 @@ export class Step3Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
+
+    public subscription: Subscription;
 
     public permitForm: FormGroup;
     public licenseForm: FormGroup;
@@ -68,6 +75,7 @@ export class Step3Component implements OnInit, OnDestroy {
 
     public licenseArray: LicenseModel[] = [];
 
+    public stepValues: any;
     public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
@@ -146,6 +154,11 @@ export class Step3Component implements OnInit, OnDestroy {
     public cardsWithIncorrectFields: boolean = false;
     public previousFormValuesOnReview: any;
 
+    public stepFeedbackValues: any;
+    public feedbackValuesToPatch: any;
+    public isUpperFormFeedbackValueUpdated: boolean = false;
+    public isBottomFormFeedbackValueUpdated: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -201,7 +214,12 @@ export class Step3Component implements OnInit, OnDestroy {
     }
 
     public patchStepValues(stepValues: CdlFeedbackResponse): void {
-        const { cdlDenied, cdlDeniedExplanation, licences } = stepValues;
+        const {
+            cdlDenied,
+            cdlDeniedExplanation,
+            cdlInformationReview,
+            licences,
+        } = stepValues;
 
         const lastItemInLicenseArray = licences[licences.length - 1];
 
@@ -296,8 +314,17 @@ export class Step3Component implements OnInit, OnDestroy {
 
             if (permitValue) {
                 this.permitRadios[0].checked = true;
+
+                this.inputService.changeValidators(
+                    this.permitForm.get('permitExplain')
+                );
             } else {
                 this.permitRadios[1].checked = true;
+
+                this.inputService.changeValidators(
+                    this.permitForm.get('permitExplain'),
+                    false
+                );
             }
         }, 50);
 
@@ -350,25 +377,6 @@ export class Step3Component implements OnInit, OnDestroy {
                 licenseItemsReview.pop();
 
                 for (let i = 0; i < licenseItemsReview.length; i++) {
-                    const firstEmptyObjectInList =
-                        this.openAnnotationArray.find(
-                            (item) => Object.keys(item).length === 0
-                        );
-
-                    const indexOfFirstEmptyObjectInList =
-                        this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        );
-
-                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                        lineIndex: this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        ),
-                        lineInputs: [false],
-                        displayAnnotationButton: false,
-                        displayAnnotationTextArea: false,
-                    };
-
                     const licenseItemReview: any = {
                         ...licenseItemsReview[i],
                     };
@@ -416,6 +424,52 @@ export class Step3Component implements OnInit, OnDestroy {
                         .patchValue(incorrectMessage ? incorrectMessage : null);
                 }
             }
+        }
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (cdlInformationReview) {
+                this.stepFeedbackValues = {
+                    ...this.stepFeedbackValues,
+                    ...cdlInformationReview,
+                };
+            }
+
+            const licenseItemsReview = licences.map(
+                (item) => item.licenseReview
+            );
+
+            this.stepFeedbackValues = {
+                ...this.stepFeedbackValues,
+                licenseItemsReview: licenseItemsReview.map((item) => {
+                    return {
+                        isLicenseValid: item.isLicenseValid,
+                        licenseMessage: item.licenseMessage,
+                        isExpDateValid: item.isExpDateValid,
+                        expDateMessage: item.expDateMessage,
+                        commonMessage: item.commonMessage,
+                        hasIncorrectValue: isAnyValueInArrayFalse([
+                            item.isLicenseValid,
+                            item.isExpDateValid,
+                        ]),
+                    };
+                }),
+            };
+
+            const hasIncorrectValue =
+                !this.stepFeedbackValues.isCdlDeniedExplanationValid;
+
+            if (hasIncorrectValue) {
+                this.startBottomFormFeedbackValueChangesMonitoring();
+            } else {
+                this.isBottomFormFeedbackValueUpdated = true;
+            }
+
+            this.stepValues = stepValues;
+
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues.licenseItemsReview[
+                    this.stepFeedbackValues?.licenseItemsReview.length - 1
+                ];
         }
     }
 
@@ -488,6 +542,52 @@ export class Step3Component implements OnInit, OnDestroy {
         }
 
         this.formValuesToPatch = selectedLicense;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues.licenseItemsReview[
+                    this.selectedLicenseIndex
+                ];
+        }
+    }
+
+    public cancelLicenseEditing(_: any): void {
+        this.isEditing = false;
+        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+        this.helperIndex = 2;
+        this.selectedLicenseIndex = -1;
+
+        this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues.licenseItemsReview[
+                    this.stepFeedbackValues.licenseItemsReview.length - 1
+                ];
+        }
+    }
+
+    public saveEditedLicense(event: any): void {
+        this.isEditing = false;
+        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+        this.licenseArray[this.selectedLicenseIndex] = {
+            ...this.licenseArray[this.selectedLicenseIndex],
+            ...event,
+        };
+
+        this.helperIndex = 2;
+        this.selectedLicenseIndex = -1;
+
+        this.formValuesToPatch = this.previousFormValuesOnEdit;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues.licenseItemsReview[
+                    this.stepFeedbackValues.licenseItemsReview.length - 1
+                ];
+        }
     }
 
     public getLicenseFormValues(event: any): void {
@@ -520,31 +620,6 @@ export class Step3Component implements OnInit, OnDestroy {
         };
     }
 
-    public cancelLicenseEditing(_: any): void {
-        this.isEditing = false;
-        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
-
-        this.helperIndex = 2;
-        this.selectedLicenseIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
-    }
-
-    public saveEditedLicense(event: any): void {
-        this.isEditing = false;
-        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
-
-        this.licenseArray[this.selectedLicenseIndex] = {
-            ...this.licenseArray[this.selectedLicenseIndex],
-            ...event,
-        };
-
-        this.helperIndex = 2;
-        this.selectedLicenseIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
-    }
-
     public onGetFormStatus(status: string): void {
         this.formStatus = status;
     }
@@ -560,6 +635,12 @@ export class Step3Component implements OnInit, OnDestroy {
             ...this.lastLicenseCard,
             ...event,
         };
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (event) {
+                this.startUpperFormFeedbackValueChangesMonitoring();
+            }
+        }
     }
 
     public onHasIncorrectFields(event: any): void {
@@ -790,6 +871,130 @@ export class Step3Component implements OnInit, OnDestroy {
         this.formValuesToPatch = selectedLicense;
     }
 
+    public startUpperFormFeedbackValueChangesMonitoring(): void {
+        if (this.stepFeedbackValues) {
+            let incorrectValuesArray = [];
+
+            for (
+                let i = 0;
+                i < this.stepFeedbackValues.licenseItemsReview.length;
+                i++
+            ) {
+                const filteredLicenseIncorrectValues = Object.keys(
+                    this.stepFeedbackValues?.licenseItemsReview[i]
+                )
+                    .filter((item) => item !== 'hasIncorrectValue')
+                    .reduce((o, key) => {
+                        this.stepFeedbackValues.licenseItemsReview[i][key] ===
+                            false &&
+                            (o[key] =
+                                this.stepFeedbackValues?.licenseItemsReview[i][
+                                    key
+                                ]);
+
+                        return o;
+                    }, {});
+
+                const hasIncorrectValues = Object.keys(
+                    filteredLicenseIncorrectValues
+                ).length;
+
+                if (hasIncorrectValues) {
+                    const filteredFieldsWithIncorrectValues = Object.keys(
+                        filteredLicenseIncorrectValues
+                    ).reduce((o, key) => {
+                        const keyName = key
+                            .replace('Valid', '')
+                            .replace('is', '')
+                            .trim()
+                            .toLowerCase();
+
+                        if (keyName === 'expdate') {
+                            o['expdate'] = convertDateFromBackend(
+                                this.stepValues.licences[i].expDate
+                            );
+                        }
+
+                        if (keyName === 'license') {
+                            o['licensenumber'] =
+                                this.stepValues.licences[i].licenseNumber;
+                        }
+
+                        return o;
+                    }, {});
+
+                    const filteredUpdatedFieldsWithIncorrectValues =
+                        Object.keys(filteredFieldsWithIncorrectValues).reduce(
+                            (o, key) => {
+                                const keyName = key;
+
+                                if (keyName === 'expdate') {
+                                    o['expdate'] =
+                                        i ===
+                                        this.stepFeedbackValues
+                                            .licenseItemsReview.length -
+                                            1
+                                            ? this.lastLicenseCard?.expDate
+                                            : this.licenseArray[i].expDate;
+                                }
+
+                                if (keyName === 'licensenumber') {
+                                    o['licensenumber'] =
+                                        i ===
+                                        this.stepFeedbackValues
+                                            .licenseItemsReview.length -
+                                            1
+                                            ? this.lastLicenseCard
+                                                  ?.licenseNumber
+                                            : this.licenseArray[i]
+                                                  .licenseNumber;
+                                }
+
+                                return o;
+                            },
+                            {}
+                        );
+
+                    const isFormNotEqual = isFormValueNotEqual(
+                        filteredFieldsWithIncorrectValues,
+                        filteredUpdatedFieldsWithIncorrectValues
+                    );
+
+                    incorrectValuesArray = [
+                        ...incorrectValuesArray,
+                        isFormNotEqual,
+                    ];
+                }
+            }
+
+            const isCardsValueUpdated =
+                isEveryValueInArrayTrue(incorrectValuesArray);
+
+            if (isCardsValueUpdated) {
+                this.isUpperFormFeedbackValueUpdated = true;
+            } else {
+                this.isUpperFormFeedbackValueUpdated = false;
+            }
+        }
+    }
+
+    public startBottomFormFeedbackValueChangesMonitoring(): void {
+        if (this.stepFeedbackValues) {
+            this.subscription = this.permitForm
+                .get('permitExplain')
+                .valueChanges.pipe(takeUntil(this.destroy$))
+                .subscribe((updatedValue) => {
+                    const previousValue = this.stepValues.cdlDeniedExplanation;
+
+                    if (previousValue !== updatedValue) {
+                        this.isBottomFormFeedbackValueUpdated = true;
+                    } else {
+                        this.isBottomFormFeedbackValueUpdated = false;
+                    }
+                });
+        }
+    }
+
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
             if (
@@ -810,6 +1015,15 @@ export class Step3Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (
+                !this.isUpperFormFeedbackValueUpdated ||
+                !this.isBottomFormFeedbackValueUpdated
+            ) {
+                return;
+            }
+        }
+
         const { permit, permitExplain } = this.permitForm.value;
 
         if (
@@ -989,6 +1203,12 @@ export class Step3Component implements OnInit, OnDestroy {
                             },
                         };
                     });
+
+                    if (this.selectedMode === SelectedMode.FEEDBACK) {
+                        if (this.subscription) {
+                            this.subscription.unsubscribe();
+                        }
+                    }
                 },
                 error: (err) => {
                     console.log(err);
@@ -1027,13 +1247,9 @@ export class Step3Component implements OnInit, OnDestroy {
             applicantCdlId: lastItemId,
             isPrimary: true,
             commonMessage: null,
-            isLicenseValid: lastItemReview
-                ? lastItemReview.isLicenseValid
-                : true,
+            isLicenseValid: lastItemReview.isLicenseValid ?? true,
             licenseMessage: this.lastLicenseCard.firstRowReview,
-            isExpDateValid: lastItemReview
-                ? lastItemReview.isExpDateValid
-                : true,
+            isExpDateValid: lastItemReview.isExpDateValid ?? true,
             expDateMessage: this.lastLicenseCard.secondRowReview,
         };
 

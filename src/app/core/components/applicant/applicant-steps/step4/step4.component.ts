@@ -40,7 +40,7 @@ import {
 export class Step4Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.FEEDBACK;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public accidentForm: FormGroup;
 
@@ -247,25 +247,6 @@ export class Step4Component implements OnInit, OnDestroy {
                 accidentItemsReview.pop();
 
                 for (let i = 0; i < accidentItemsReview.length; i++) {
-                    const firstEmptyObjectInList =
-                        this.openAnnotationArray.find(
-                            (item) => Object.keys(item).length === 0
-                        );
-
-                    const indexOfFirstEmptyObjectInList =
-                        this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        );
-
-                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                        lineIndex: this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        ),
-                        lineInputs: [false],
-                        displayAnnotationButton: false,
-                        displayAnnotationTextArea: false,
-                    };
-
                     const accidentItemReview = {
                         ...accidentItemsReview[i],
                     };
@@ -845,6 +826,12 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            if (!this.isFeedbackValueUpdated) {
+                return;
+            }
+        }
+
         this.checkIsHazmatSpillNotChecked = true;
 
         if (this.formStatus === 'INVALID' || this.isEditing) {
@@ -1017,14 +1004,10 @@ export class Step4Component implements OnInit, OnDestroy {
             accidentItemId: lastItemId,
             isPrimary: true,
             commonMessage: null,
-            isLocationValid: lastItemReview
-                ? lastItemReview.isLocationValid
-                : true,
-            isDateValid: lastItemReview ? lastItemReview.isDateValid : true,
+            isLocationValid: lastItemReview.isLocationValid ?? true,
+            isDateValid: lastItemReview.isDateValid ?? true,
             locationDateMessage: this.lastAccidentCard.firstRowReview,
-            isDescriptionValid: lastItemReview
-                ? lastItemReview.isDescriptionValid
-                : true,
+            isDescriptionValid: lastItemReview.isDescriptionValid ?? true,
             descriptionMessage: this.lastAccidentCard.secondRowReview,
         };
 

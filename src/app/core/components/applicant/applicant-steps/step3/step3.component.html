@@ -100,47 +100,63 @@
                             </p>
                         </div>
                     </div>
+
                     <div
                         class="d-flex align-items-center btn-container"
                         [ngClass]="{
                             active: selectedMode === 'REVIEW_MODE'
                         }"
+                        [ngStyle]="{
+                            'margin-left':
+                                selectedMode === 'FEEDBACK_MODE' ? '18px' : 0
+                        }"
                     >
-                        <div
-                            ngbTooltip
-                            mainTooltip="Edit"
-                            tooltipBackground="#6C6C6C"
-                            position="top"
+                        <ng-container
+                            *ngIf="
+                                selectedMode === 'APPLICANT_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.licenseItemsReview[i]
+                                        .hasIncorrectValue)
+                            "
                         >
-                            <svg-icon
-                                class="edit-icon"
-                                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                (click)="onEditLicense(i)"
-                            ></svg-icon>
-                        </div>
+                            <div
+                                ngbTooltip
+                                mainTooltip="Edit"
+                                tooltipBackground="#6C6C6C"
+                                position="top"
+                            >
+                                <svg-icon
+                                    class="edit-icon"
+                                    src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    (click)="onEditLicense(i)"
+                                ></svg-icon>
+                            </div>
+                        </ng-container>
 
-                        <div
-                            ngbTooltip
-                            mainTooltip="Delete"
-                            tooltipBackground="#EF5350"
-                            position="top"
-                        >
-                            <svg-icon
-                                class="delete-icon"
-                                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                (click)="onDeleteLicense(i)"
-                            ></svg-icon>
-                        </div>
+                        <ng-container *ngIf="selectedMode === 'APPLICANT_MODE'">
+                            <div
+                                ngbTooltip
+                                mainTooltip="Delete"
+                                tooltipBackground="#EF5350"
+                                position="top"
+                            >
+                                <svg-icon
+                                    class="delete-icon"
+                                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    (click)="onDeleteLicense(i)"
+                                ></svg-icon>
+                            </div>
+                        </ng-container>
 
-                        <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                        <ng-container *ngIf="selectedMode === 'REVIEW_MODE'">
                             <div
                                 class="review-icon-box"
                                 ngbTooltip
@@ -174,9 +190,15 @@
                                     "
                                 ></svg-icon>
                             </div>
-                        </div>
+                        </ng-container>
 
-                        <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
+                        <ng-container
+                            *ngIf="
+                                selectedMode === 'FEEDBACK_MODE' &&
+                                stepFeedbackValues?.licenseItemsReview[i]
+                                    .hasIncorrectValue
+                            "
+                        >
                             <div
                                 class="feedback-icon-box"
                                 ngbTooltip
@@ -193,7 +215,7 @@
                                     }"
                                 ></svg-icon>
                             </div>
-                        </div>
+                        </ng-container>
                     </div>
                 </div>
 
@@ -209,19 +231,26 @@
                     <app-applicant-review-feedback
                         [formControlName]="'cardReview' + (i + 1)"
                         [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
                             openAnnotationArray[i].displayAnnotationButton
                         "
                         [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
                             openAnnotationArray[i].displayAnnotationTextArea
                         "
                         [lineIndex]="i"
-                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                        [feedbackText]="'Check the number'"
                         [cardsLength]="licenseArray.length"
                         [cardsType]="'cdlInformation'"
                         [cardIndex]="i"
+                        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                        [feedbackText]="
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.licenseItemsReview[i]
+                                .commonMessage
+                        "
                         (annotationBtnClickEvent)="
-                            getAnnotationBtnClickValue($event)
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
                         "
                     ></app-applicant-review-feedback>
                 </div>
@@ -239,6 +268,7 @@
                     [isEditing]="isEditing"
                     [formValuesToPatch]="formValuesToPatch"
                     [isReviewingCard]="isReviewingCard"
+                    [stepFeedbackValues]="feedbackValuesToPatch"
                     (formValuesEmitter)="getLicenseFormValues($event)"
                     (cancelFormEditingEmitter)="cancelLicenseEditing($event)"
                     (saveFormEditingEmitter)="saveEditedLicense($event)"
@@ -259,7 +289,9 @@
     >
         <form
             *ngIf="
-                (selectedMode === 'APPLICANT_MODE' && !isEditing) ||
+                ((selectedMode === 'APPLICANT_MODE' ||
+                    selectedMode === 'FEEDBACK_MODE') &&
+                    !isEditing) ||
                 (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
             "
         >
@@ -269,6 +301,7 @@
                 [formValuesToPatch]="formValuesToPatch"
                 [markFormInvalid]="markFormInvalid"
                 [isReviewingCard]="isReviewingCard"
+                [stepFeedbackValues]="feedbackValuesToPatch"
                 (formValuesEmitter)="getLicenseFormValues($event)"
                 (formStatusEmitter)="onGetFormStatus($event)"
                 (markInvalidEmitter)="onMarkInvalidEmit($event)"
@@ -319,7 +352,10 @@
                     <app-ta-input-radiobuttons
                         #cmp
                         [buttons]="answerChoices"
-                        [disabled]="selectedMode === 'REVIEW_MODE'"
+                        [disabled]="
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                        "
                         [displayRequiredNote]="displayRadioRequiredNote"
                         (changedValue)="handleInputSelect($event, 'PERMIT')"
                     ></app-ta-input-radiobuttons>
@@ -343,7 +379,10 @@
                             textTransform: 'capitalize',
                             placeholder: 'Please explain',
                             placeholderInsteadOfLabel: true,
-                            isDisabled: selectedMode === 'REVIEW_MODE',
+                            isDisabled:
+                                selectedMode === 'REVIEW_MODE' ||
+                                (selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.isCdlDeniedExplanationValid),
                             incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
                         [incorrectValue]="openAnnotationArray[14].lineInputs[0]"
@@ -363,18 +402,22 @@
                     <app-applicant-review-feedback
                         formControlName="fifthRowReview"
                         [displayAnnotationButton]="
+                            selectedMode === 'REVIEW_MODE' &&
                             openAnnotationArray[14].displayAnnotationButton
                         "
                         [displayAnnotationTextArea]="
+                            selectedMode === 'REVIEW_MODE' &&
                             openAnnotationArray[14].displayAnnotationTextArea
                         "
                         [lineIndex]="14"
                         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
                         [feedbackText]="
-                            'Check the routing number one more time (one number missing)!!!'
+                            selectedMode === 'FEEDBACK_MODE' &&
+                            stepFeedbackValues?.cdlDeniedExplanationMessage
                         "
                         (annotationBtnClickEvent)="
-                            getAnnotationBtnClickValue($event)
+                            selectedMode === 'REVIEW_MODE' &&
+                                getAnnotationBtnClickValue($event)
                         "
                     ></app-applicant-review-feedback>
                 </div>
@@ -391,10 +434,13 @@
     <app-applicant-next-back-btn
         [nextStep]="true"
         [filledCorrectly]="
-            selectedMode === 'APPLICANT_MODE' &&
-            !isEditing &&
             permitForm.valid &&
-            formStatus === 'VALID'
+            formStatus === 'VALID' &&
+            !isEditing &&
+            (selectedMode === 'APPLICANT_MODE' ||
+                (selectedMode === 'FEEDBACK_MODE' &&
+                    isUpperFormFeedbackValueUpdated &&
+                    isBottomFormFeedbackValueUpdated))
         "
         [hasIncorrectFields]="
             selectedMode === 'REVIEW_MODE' &&

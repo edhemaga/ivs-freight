@@ -50,6 +50,7 @@ export class Step3FormComponent
     @Input() formValuesToPatch?: any;
     @Input() markFormInvalid?: boolean;
     @Input() isReviewingCard: boolean;
+    @Input() stepFeedbackValues?: any;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -132,7 +133,10 @@ export class Step3FormComponent
     }
 
     ngAfterViewInit(): void {
-        if (this.selectedMode === SelectedMode.APPLICANT) {
+        if (
+            this.selectedMode === SelectedMode.APPLICANT ||
+            this.selectedMode === SelectedMode.FEEDBACK
+        ) {
             this.licenseForm.statusChanges
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
@@ -179,21 +183,19 @@ export class Step3FormComponent
         }
 
         if (
-            this.selectedMode === SelectedMode.REVIEW ||
-            this.selectedMode === SelectedMode.APPLICANT
+            changes.formValuesToPatch?.previousValue !==
+            changes.formValuesToPatch?.currentValue
         ) {
-            if (
-                changes.formValuesToPatch?.previousValue !==
-                changes.formValuesToPatch?.currentValue
-            ) {
-                setTimeout(() => {
-                    this.patchForm(changes.formValuesToPatch.currentValue);
+            setTimeout(() => {
+                this.patchForm(changes.formValuesToPatch.currentValue);
 
-                    if (this.selectedMode === SelectedMode.APPLICANT) {
-                        this.startValueChangesMonitoring();
-                    }
-                }, 50);
-            }
+                if (
+                    this.selectedMode === SelectedMode.APPLICANT ||
+                    this.selectedMode === SelectedMode.FEEDBACK
+                ) {
+                    this.startValueChangesMonitoring();
+                }
+            }, 50);
         }
     }
 
@@ -458,11 +460,7 @@ export class Step3FormComponent
         this.selectedEndorsments = [];
         this.selectedRestrictions = [];
 
-        console.log('prije', this.licenseForm.value);
-
         this.formService.resetForm(this.licenseForm);
-
-        console.log('poslije', this.licenseForm.value);
     }
 
     public onCancelEditLicense(): void {
