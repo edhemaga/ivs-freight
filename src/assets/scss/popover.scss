@@ -360,9 +360,9 @@
                 .columns-container {
                     width: 100%;
                     height: fit-content;
-                    max-height: 495px;
-                    overflow-x: hidden;
-                    overflow-y: scroll;
+                    // max-height: 495px;
+                    // overflow-x: hidden;
+                    // overflow-y: scroll;
 
                     .column,
                     .group-columns-container {
@@ -1148,9 +1148,9 @@
 .map-list-card-dropdown {
     //margin: 3px 0px 0px 16px;
 
-    &.marker-dropdown-popover {
-        //margin: 11px 0px 0px 12px;
-    }
+    // &.marker-dropdown-popover {
+    //     //margin: 11px 0px 0px 12px;
+    // }
 
     .svg-text-dropdown {
         padding-right: 10px;
