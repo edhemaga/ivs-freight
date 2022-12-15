@@ -76,7 +76,7 @@ export class TaLogoChangeComponent
         showSelectionBar: true,
         hideLimitLabels: true,
     };
-    public ngxSliderPosition = 0.5;
+    public ngxSliderPosition = 0;
 
     public isImageValid: boolean = false;
 
@@ -144,13 +144,13 @@ export class TaLogoChangeComponent
                 points: [188, 101, 260, 191],
                 zoom: this.imageScale,
             });
-            this.ngxSliderPosition = 0;
             this.showUploadZone =
                 this.croppieShape === 'rectangle' ? false : true;
         }
     }
 
     public onUploadImage(event: any) {
+        console.log('aff');
         this.showUploadZone = false;
         this.imageUrl = null;
 
@@ -167,12 +167,21 @@ export class TaLogoChangeComponent
     }
 
     public handleCroppieUpdate() {
-        this.ngxSliderPosition = 0.9;
+        /* this.ngxSliderPosition = 0;
+        this.croppieDirective.croppie.setZoom(0); */
+        console.log(
+            'this.croppieDirective.',
+            this.croppieDirective.croppie.data.boundZoom
+        );
+
+        if (this.croppieDirective.croppie.data.boundZoom > 0) {
+            this.croppieDirective.croppie.setZoom(0);
+        }
     }
 
     public zooming(event: any) {
-        this.imageScale = event ? event : 0.1;
-        this.croppieDirective.croppie.setZoom(this.imageScale);
+        this.imageScale = event ? event : 0.1; /* 
+        this.croppieDirective.croppie.setZoom(this.imageScale); */
     }
 
     public saveImage() {
