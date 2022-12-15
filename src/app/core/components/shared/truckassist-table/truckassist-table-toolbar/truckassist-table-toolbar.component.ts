@@ -84,6 +84,7 @@ export class TruckassistTableToolbarComponent
     timeOutToaggleGroupColumn: any;
     columnsOptions: any[] = [];
     columnsOptionsWithGroups: any[] = [];
+    columnsOptionsWithGroupsActive: number = -1;
     isMapShowning: boolean = false;
     tableConfigurationType: TableType;
     showResetOption: boolean;
@@ -272,10 +273,6 @@ export class TruckassistTableToolbarComponent
                             ''
                         ),
                     });
-
-                    if(!column.hidden){
-                        this.columnsOptionsWithGroups[index].isOpen = true;
-                    }
                 } else {
                     this.columnsOptionsWithGroups.push({
                         ...column,
@@ -416,8 +413,23 @@ export class TruckassistTableToolbarComponent
 
     // Open Column Grop Dropdown
     openColumnsGroupDropdown(index: number) {
+        if (
+            this.columnsOptionsWithGroupsActive !== index &&
+            this.columnsOptionsWithGroupsActive !== -1
+        ) {
+            this.columnsOptionsWithGroups[
+                this.columnsOptionsWithGroupsActive
+            ].isOpen = false;
+        }
+
         this.columnsOptionsWithGroups[index].isOpen =
             !this.columnsOptionsWithGroups[index].isOpen;
+
+        this.columnsOptionsWithGroupsActive = this.columnsOptionsWithGroups[
+            index
+        ].isOpen
+            ? index
+            : -1;
     }
 
     // Toaggle All In Group
