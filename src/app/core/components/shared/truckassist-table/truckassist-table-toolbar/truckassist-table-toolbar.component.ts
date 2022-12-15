@@ -61,6 +61,7 @@ export class TruckassistTableToolbarComponent
             svgPath: 'assets/svg/truckassist-table/import-new.svg',
             active: false,
             hide: false,
+            hasTopBorder: true,
         },
         {
             text: 'Export',

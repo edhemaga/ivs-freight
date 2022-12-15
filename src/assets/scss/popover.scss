@@ -367,7 +367,7 @@
                 }
             }
 
-            .options-border-container {
+            .options-border-container, .toolbar-option-border-container {
                 width: 100%;
                 height: fit-content;
                 display: flex;
@@ -375,11 +375,22 @@
                 justify-content: center;
                 margin: 4px 0;
 
-                .options-border {
-                    width: 190px;
+                .options-border, .option-border {
                     height: 1px;
                     background: #aaaaaa20;
                     border-radius: 1px;
+                }
+            }
+
+            .toolbar-option-border-container{
+                .option-border{
+                    width: 135px;
+                }
+            }
+
+            .options-border-container{
+                .options-border{
+                    width: 190px;
                 }
             }
 
