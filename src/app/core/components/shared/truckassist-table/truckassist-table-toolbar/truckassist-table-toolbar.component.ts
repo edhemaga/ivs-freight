@@ -12,6 +12,7 @@ import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { map } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-truckassist-table-toolbar',
@@ -22,6 +23,7 @@ export class TruckassistTableToolbarComponent
     implements OnInit, OnChanges, OnDestroy
 {
     private destroy$ = new Subject<void>();
+    public dropdownSelection: FormControl = new FormControl();
     @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
     @Input() tableData: any[];
     @Input() options: any;
@@ -273,7 +275,7 @@ export class TruckassistTableToolbarComponent
                         ),
                     });
 
-                    if(!column.hidden){
+                    if (!column.hidden) {
                         this.columnsOptionsWithGroups[index].isOpen = true;
                     }
                 } else {
@@ -293,6 +295,14 @@ export class TruckassistTableToolbarComponent
         this.toolBarAction.emit({
             action: 'tab-selected',
             tabData: selectedTabData,
+        });
+    }
+
+    // Select Dropdown
+    onSelectDropdown(data, action: string) {
+        this.toolBarAction.emit({
+            action: action,
+            tabData: data,
         });
     }
 
