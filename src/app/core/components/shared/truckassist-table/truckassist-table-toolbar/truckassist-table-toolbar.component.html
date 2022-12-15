@@ -201,41 +201,137 @@
 
         <!-- COLUMNS LIST  -->
         <div class="columns-options" *ngIf="optionsPopupContent[4].active">
-            <div
-                (click)="onToaggleColumn(column, i)"
-                class="column"
-                *ngFor="let column of columnsOptions; let i = index"
-            >
-                <div class="checkbox" *ngIf="!column.isPined">
-                    <input
-                        [checked]="!column.hidden"
-                        class="columns-options-checkbox"
-                        id="checkbox{{ i }}"
-                        type="checkbox"
-                    />
-                    <label
-                        class="columns-options-label"
-                        for="checkbox{{ i }}"
-                    ></label>
-                </div>
-
-                <div class="not-allowed-action" *ngIf="column.isPined">
-                    <svg-icon
-                        [svgStyle]="{
-                            'width.px': 14,
-                            'height.px': 14
-                        }"
-                        [src]="
-                            'assets/svg/truckassist-table/user-owner-icon.svg'
-                        "
-                    ></svg-icon>
-                </div>
-
+            <div class="columns-container">
                 <div
-                    class="column-text"
-                    [ngClass]="{ 'selectable-text': !column.isPined }"
+                    *ngFor="
+                        let column of columnsOptionsWithGroups;
+                        let i = index
+                    "
                 >
-                    {{ column.title !== '' ? column.title : column.name }}
+                    <div
+                        (click)="onToaggleColumn(column, i)"
+                        class="column"
+                        *ngIf="!column.isGroup"
+                    >
+                        <div class="checkbox" *ngIf="!column.isPined">
+                            <input
+                                [checked]="!column.hidden"
+                                class="columns-options-checkbox"
+                                id="checkbox{{ i }}"
+                                type="checkbox"
+                            />
+                            <label
+                                class="columns-options-label"
+                                for="checkbox{{ i }}"
+                            ></label>
+                        </div>
+
+                        <div class="not-allowed-action" *ngIf="column.isPined">
+                            <svg-icon
+                                [svgStyle]="{
+                                    'width.px': 14,
+                                    'height.px': 14
+                                }"
+                                [src]="
+                                    'assets/svg/truckassist-table/user-owner-icon.svg'
+                                "
+                            ></svg-icon>
+                        </div>
+
+                        <div
+                            class="column-text"
+                            [ngClass]="{ 'selectable-text': !column.isPined }"
+                        >
+                            {{
+                                column.title !== '' ? column.title : column.name
+                            }}
+                        </div>
+                    </div>
+
+                    <div class="group-columns-container" *ngIf="column.isGroup" [ngClass]="{'group-columns-active': column.isOpen}">
+                        <div class="group-columns-title">
+                            <div class="checkbox">
+                                <input
+                                    [checked]="column.areAllActive"
+                                    (click)="onToaggleAllInGroup(column)"
+                                    class="columns-options-checkbox"
+                                    id="checkbox{{ i }}"
+                                    type="checkbox"
+                                />
+                                <label
+                                    class="columns-options-label"
+                                    for="checkbox{{ i }}"
+                                ></label>
+                            </div>
+
+                            <div class="column-text selectable-text" (click)="openColumnsGroupDropdown(i)">
+                                {{ column.optionsGroupName }}
+                            </div>
+
+                            <div class="group-columns-arrow" (click)="openColumnsGroupDropdown(i)">
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': 7.18,
+                                        'height.px': 12.66
+                                    }"
+                                    [src]="
+                                        '../../../../../../assets/svg/truckassist-table/toolbar-group-dropdown-arrow.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+                        </div>
+
+                        <div class="group-columns">
+                            <div
+                                class="group-column"
+                                (click)="onToaggleGroupColumn(columnGroup, j)"
+                                *ngFor="
+                                    let columnGroup of column.group;
+                                    let j = index
+                                "
+                            >
+                                <div
+                                    class="checkbox"
+                                    *ngIf="!columnGroup.isPined"
+                                >
+                                    <input
+                                        [checked]="!columnGroup.hidden"
+                                        class="columns-options-checkbox"
+                                        id="checkbox{{ columnGroup.groupColumnTitle + j }}"
+                                        type="checkbox"
+                                    />
+                                    <label
+                                        class="columns-options-label"
+                                        for="checkbox{{ columnGroup.groupColumnTitle + j }}"
+                                    ></label>
+                                </div>
+
+                                <div
+                                    class="not-allowed-action"
+                                    *ngIf="columnGroup.isPined"
+                                >
+                                    <svg-icon
+                                        [svgStyle]="{
+                                            'width.px': 14,
+                                            'height.px': 14
+                                        }"
+                                        [src]="
+                                            'assets/svg/truckassist-table/user-owner-icon.svg'
+                                        "
+                                    ></svg-icon>
+                                </div>
+
+                                <div
+                                    class="column-text"
+                                    [ngClass]="{
+                                        'selectable-text': !columnGroup.isPined
+                                    }"
+                                >
+                                    {{ columnGroup.groupColumnTitle }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

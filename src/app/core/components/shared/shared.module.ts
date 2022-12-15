@@ -222,7 +222,7 @@ export function playerFactory() {
         TaCustomCardV2Component,
         PayrollStatusesComponent,
         TaCheckboxCardComponent,
-        GpsProgressbarComponent,
+        GpsProgressbarComponent
     ],
     imports: [
         CommonModule,

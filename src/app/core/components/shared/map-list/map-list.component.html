@@ -72,7 +72,7 @@
             </div>
             <div class="marker-divider"></div>
         </div>
-        <div class="map-list-body">
+        <div class="map-list-body" (scroll)="mapListScroll($event)">
             <ng-content></ng-content>
         </div>
         <div

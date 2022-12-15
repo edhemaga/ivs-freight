@@ -79,7 +79,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
         // -------------- DEVELOP MODE --------------------
         this.companyUser = JSON.parse(localStorage.getItem('user'));
-
+        console.log(this.editData);
         if (this.editData?.type === 'edit') {
             this.editTask(this.editData.id);
         }
@@ -480,7 +480,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
                 this.taskForm
                     .get('departmentIdsHelper')
-                    .patchValue(JSON.stringify(this.selectedDepartments));
+                    .patchValue(
+                        this.selectedDepartments.length
+                            ? JSON.stringify(this.selectedDepartments)
+                            : null
+                    );
 
                 if (this.selectedDepartments?.length) {
                     this.resCompanyUsers = [...usersForDepartment];
@@ -493,7 +497,11 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                 this.selectedCompanyUsers = [...event];
                 this.taskForm
                     .get('companyUserIdsHeleper')
-                    .patchValue(JSON.stringify(this.selectedCompanyUsers));
+                    .patchValue(
+                        this.selectedCompanyUsers.length
+                            ? JSON.stringify(this.selectedCompanyUsers)
+                            : null
+                    );
 
                 break;
             }

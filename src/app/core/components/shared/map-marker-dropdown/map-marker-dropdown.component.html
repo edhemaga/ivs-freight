@@ -801,9 +801,18 @@
 <div class="cluster-list" *ngIf="type == 'cluster'">
     <div class="cluster-list-header">
         <div class="header-content">
-            <div class="cluster-count">
+            <app-ta-counter
+                [count]="item.count"
+                [countBackground]="'#424242'"
+                [countColor]="'#ffffff'"
+                [countHeight]="'22px'"
+                [countWidth]="'22px'"
+                [countBorderRadius]="'11px'"
+                [marginLeft]="'4px'"
+            ></app-ta-counter>
+            <!-- <div class="cluster-count">
                 <div class="header-text">{{ item.count }}</div>
-            </div>
+            </div> -->
             <div class="header-text" [style]="{ 'margin-left': '4px' }">
                 {{ title }}
             </div>

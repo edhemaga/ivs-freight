@@ -487,9 +487,9 @@
         </agm-circle>
 
         <!-- routes -->
-        <div *ngIf="mapType == 'routing' && routes?.length">
-            <div *ngFor="let route of routes; let i = index">
-                <div *ngIf="route.stops?.length">
+        <ng-container *ngIf="mapType == 'routing' && routes?.length">
+            <ng-container *ngFor="let route of routes; let i = index">
+                <ng-container *ngIf="route.stops?.length">
                     <div
                         *ngFor="
                             let e of [].constructor(route.stops.length);
@@ -639,7 +639,7 @@
                                                     font-family="Montserrat-Bold, Montserrat"
                                                     font-weight="700"
                                                 >
-                                                    <tspan>{{ j + 1 }}</tspan>
+                                                    <tspan>{{ route.stops[j].stopNumber != null ? route.stops[j].stopNumber : j + 1 }}</tspan>
                                                 </text>
                                             </g>
                                         </svg>
@@ -734,8 +734,8 @@
                             [visible]="!route.hidden"
                         ></agm-direction>
                     </div>
-                </div>
-            </div>
-        </div>
+                </ng-container>
+            </ng-container>
+        </ng-container>
     </agm-map>
 </div>

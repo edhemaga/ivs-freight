@@ -1,3 +1,4 @@
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -11,6 +12,7 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import {
     CreateDispatchCommand,
     DispatchStatus,
+    SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
 import { LabelType, Options } from 'ng5-slider';
@@ -38,6 +40,8 @@ export class DispatchTableComponent implements OnInit {
     driverList: any[];
     copyIndex: number = -1;
     testTimeout: any;
+    startIndexTrailer: number;
+    startIndexDriver: number;
     @Input() set smallList(value) {
         const newTruckList = JSON.parse(JSON.stringify(value.trucks));
         this.truckList = newTruckList.map((item) => {
@@ -449,5 +453,144 @@ export class DispatchTableComponent implements OnInit {
             item.note,
             item.dispatchIndex
         );
+    }
+
+    // CDL DRAG AND DROP
+
+    dropList(event) {
+        moveItemInArray(
+            this.dData.dispatches,
+            event.previousIndex,
+            event.currentIndex
+        );
+
+        this.__change_in_proggress = true;
+        this.dss
+            .reorderDispatchboard({
+                dispatchBoardId: this.dData.id,
+                dispatches: [
+                    {
+                        id: this.dData.dispatches[event.currentIndex].id,
+                        order: this.dData.dispatches[event.previousIndex].order,
+                    },
+                    {
+                        id: this.dData.dispatches[event.previousIndex].id,
+                        order: this.dData.dispatches[event.currentIndex].order,
+                    },
+                ],
+            })
+            .subscribe((res) => {
+                this.__change_in_proggress = false;
+            });
+    }
+
+    dropTrailer(event, finalIndx) {
+        if (finalIndx === this.startIndexTrailer) return;
+        const finalIndexData = this.getDataForUpdate(
+            this.dData.dispatches[finalIndx]
+        );
+        const startingIndexData = this.getDataForUpdate(
+            this.dData.dispatches[this.startIndexTrailer]
+        );
+
+        this.__change_in_proggress = true;
+        this.dss
+            .switchDispathboard({
+                dispatchBoardId: this.dData.id,
+                firstDispatch: {
+                    ...startingIndexData,
+                    id: this.dData.dispatches[this.startIndexTrailer].id,
+                    trailerId: this.dData.dispatches[finalIndx]?.trailer?.id,
+                },
+                secondDispatch: {
+                    ...finalIndexData,
+                    id: this.dData.dispatches[finalIndx].id,
+                    trailerId:
+                        this.dData.dispatches[this.startIndexTrailer]?.trailer
+                            ?.id,
+                },
+            })
+            .subscribe((res) => {
+                this.dss
+                    .updateDispatchboardRowById(
+                        this.dData.dispatches[this.startIndexTrailer].id,
+                        this.dData.id
+                    )
+                    .subscribe((res) => {
+                        this.__change_in_proggress = false;
+                    });
+                this.dss
+                    .updateDispatchboardRowById(
+                        this.dData.dispatches[finalIndx].id,
+                        this.dData.id
+                    )
+                    .subscribe((res) => {
+                        this.__change_in_proggress = false;
+                    });
+            });
+    }
+
+    dropDriver(event, finalIndx) {
+        if (finalIndx === this.startIndexDriver) return;
+        const finalIndexData = this.getDataForUpdate(
+            this.dData.dispatches[finalIndx]
+        );
+        const startingIndexData = this.getDataForUpdate(
+            this.dData.dispatches[this.startIndexDriver]
+        );
+
+        this.__change_in_proggress = true;
+        this.dss
+            .switchDispathboard({
+                dispatchBoardId: this.dData.id,
+                firstDispatch: {
+                    ...startingIndexData,
+                    id: this.dData.dispatches[this.startIndexDriver].id,
+                    driverId: this.dData.dispatches[finalIndx]?.driver?.id,
+                },
+                secondDispatch: {
+                    ...finalIndexData,
+                    id: this.dData.dispatches[finalIndx].id,
+                    driverId:
+                        this.dData.dispatches[this.startIndexDriver]?.driver
+                            ?.id,
+                },
+            })
+            .subscribe((res) => {
+                this.dss
+                    .updateDispatchboardRowById(
+                        this.dData.dispatches[this.startIndexDriver].id,
+                        this.dData.id
+                    )
+                    .subscribe((res) => {
+                        this.__change_in_proggress = false;
+                    });
+                this.dss
+                    .updateDispatchboardRowById(
+                        this.dData.dispatches[finalIndx].id,
+                        this.dData.id
+                    )
+                    .subscribe((res) => {
+                        this.__change_in_proggress = false;
+                    });
+            });
+    }
+
+    getDataForUpdate(oldData): SwitchDispatchCommand {
+        return {
+            truckId: oldData.truck ? oldData.truck?.id : null,
+            trailerId: oldData.trailer ? oldData.trailer?.id : null,
+            driverId: oldData.driver ? oldData.driver?.id : null,
+            coDriverId: oldData.coDriver ? oldData.coDriver?.id : null,
+            location: oldData.location?.address ? oldData.location : null,
+        };
+    }
+
+    cdkDragStartedTrailer(event, indx) {
+        this.startIndexTrailer = indx;
+    }
+
+    cdkDragStartedDriver(event, indx) {
+        this.startIndexDriver = indx;
     }
 }

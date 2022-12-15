@@ -111,6 +111,9 @@ model/brakes.ts
 model/brokerContactGroupResponse.ts
 model/brokerContactResponse.ts
 model/brokerContactShortResponse.ts
+model/brokerFilterListResponse.ts
+model/brokerFilterResponse.ts
+model/brokerFilterResponsePagination.ts
 model/brokerInvoiceAgeingResponse.ts
 model/brokerLoadModalResponse.ts
 model/brokerLoadsResponse.ts
