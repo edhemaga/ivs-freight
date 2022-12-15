@@ -99,6 +99,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public selectedRepairType: any = null;
 
+    public addNewAfterSave: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -142,7 +144,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             odometer: [null, repairOdometerValidation],
             date: [null],
             invoice: [null, invoiceValidation],
-            repairShopId: [null, Validators.required],
+            repairShopId: [null],
             items: this.formBuilder.array([]),
             note: [null],
             files: [null],
@@ -166,6 +168,20 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
             case 'close': {
+                break;
+            }
+            case 'save and add new': {
+                if (this.repairOrderForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.repairOrderForm);
+                    return;
+                }
+                this.addRepair();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
+
                 break;
             }
             case 'save': {
@@ -372,6 +388,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 checked: item.id === event.id,
             };
         });
+
+        if (this.headerTabs[1].checked) {
+            this.inputService.changeValidators(
+                this.repairOrderForm.get('repairShopId')
+            );
+        } else {
+            this.inputService.changeValidators(
+                this.repairOrderForm.get('repairShopId'),
+                false
+            );
+        }
     }
 
     public onTypeOfRepair(event: any, action?: string) {
@@ -749,7 +776,65 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairService
             .addRepair(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    if (this.addNewAfterSave) {
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                        });
+                        this.formService.resetForm(this.repairOrderForm);
+
+                        this.selectedPM = [];
+                        this.selectedPMIndex = null;
+                        this.selectedRepairShop = null;
+                        this.selectedRepairType = null;
+                        this.selectedUnit = null;
+                        this.selectedHeaderTab = 1;
+
+                        this.headerTabs = this.headerTabs.map((item, index) => {
+                            return {
+                                ...item,
+                                checked: index === 0,
+                            };
+                        });
+
+                        this.typeOfRepair = this.typeOfRepair.map(
+                            (item, index) => {
+                                return {
+                                    ...item,
+                                    checked: index === 0,
+                                };
+                            }
+                        );
+
+                        this.onTypeOfRepair(this.typeOfRepair[0]);
+
+                        this.services = this.services.map((item) => {
+                            return {
+                                ...item,
+                                active: false,
+                            };
+                        });
+
+                        this.itemsCounter = 0;
+                        this.quantity = [];
+                        this.subtotal = [];
+                        this.selectedPM = [];
+                        this.items.controls = [];
+                        setTimeout(() => {
+                            this.addItems({ check: true, action: null });
+                        }, 100);
+
+                        this.documents = [];
+                        this.fileModified = null;
+                        this.filesForDelete = [];
+
+                        this.addNewAfterSave = false;
+                    }
+                },
+                error: () => {},
+            });
     }
 
     private updateRepair(id: number) {

@@ -137,7 +137,11 @@ export class TruckassistTableHeadComponent
     // Set Column Name To Upper Case
     setColumnNameUpperCase() {
         this.columns = this.columns.map((column) => {
-            column.name = column.name.toUpperCase();
+            let headTitle = column.groupName
+                ? column.title.replace(column.groupName, '')
+                : column.title;
+
+            column.tableHeadTitle = headTitle.toUpperCase();
 
             return column;
         });

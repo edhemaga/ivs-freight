@@ -3,7 +3,7 @@ import { RepairModalResponse } from './../../../../../../appcoretruckassist/mode
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { RepairService } from 'appcoretruckassist/api/repair.service';
-import { Observable, Subject, takeUntil, tap, of } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import {
     CreateResponse,
     RepairResponse,
@@ -55,54 +55,51 @@ export class RepairTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.repairService.apiRepairPost().pipe(
             tap((res: any) => {
-                const subShop = this.getRepairShopById(data.repairShopId)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (shop: RepairShopResponse | any) => {
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                tab: 'repair-shop',
-                                data: shop,
-                                id: shop.id,
-                            });
-                            subShop.unsubscribe();
-                        },
-                    });
-                const subRepair = this.getRepairById(res.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (repair: RepairResponse | any) => {
-                            const repairCount = JSON.parse(
-                                localStorage.getItem(
-                                    'repairTruckTrailerTableCount'
-                                )
-                            );
-
-                            if (repair.truckId) {
-                                this.repairTruckStore.add(repair);
-                                repairCount.repairTrucks++;
-                            } else if (repair.trailerId) {
-                                this.repairTrailerStore.add(repair);
-                                repairCount.repairTrailers++;
-                            }
-                            localStorage.setItem(
-                                'repairTruckTrailerTableCount',
-                                JSON.stringify({
-                                    repairTrucks: repairCount.repairTrucks,
-                                    repairTrailers: repairCount.repairTrailers,
-                                })
-                            );
-
-                            this.tableService.sendActionAnimation({
-                                animation: 'add',
-                                tab: repair?.truckId ? 'active' : 'inactive',
-                                data: repair,
-                                id: repair.id,
-                            });
-
-                            subRepair.unsubscribe();
-                        },
-                    });
+                // const subShop = this.getRepairShopById(data.repairShopId)
+                //     .pipe(takeUntil(this.destroy$))
+                //     .subscribe({
+                //         next: (shop: RepairShopResponse | any) => {
+                //             this.tableService.sendActionAnimation({
+                //                 animation: 'update',
+                //                 tab: 'repair-shop',
+                //                 data: shop,
+                //                 id: shop.id,
+                //             });
+                //             subShop.unsubscribe();
+                //         },
+                //     });
+                // const subRepair = this.getRepairById(res.id)
+                //     .pipe(takeUntil(this.destroy$))
+                //     .subscribe({
+                //         next: (repair: RepairResponse | any) => {
+                //             const repairCount = JSON.parse(
+                //                 localStorage.getItem(
+                //                     'repairTruckTrailerTableCount'
+                //                 )
+                //             );
+                //             if (repair.truckId) {
+                //                 this.repairTruckStore.add(repair);
+                //                 repairCount.repairTrucks++;
+                //             } else if (repair.trailerId) {
+                //                 this.repairTrailerStore.add(repair);
+                //                 repairCount.repairTrailers++;
+                //             }
+                //             localStorage.setItem(
+                //                 'repairTruckTrailerTableCount',
+                //                 JSON.stringify({
+                //                     repairTrucks: repairCount.repairTrucks,
+                //                     repairTrailers: repairCount.repairTrailers,
+                //                 })
+                //             );
+                //             this.tableService.sendActionAnimation({
+                //                 animation: 'add',
+                //                 tab: repair?.truckId ? 'active' : 'inactive',
+                //                 data: repair,
+                //                 id: repair.id,
+                //             });
+                //             subRepair.unsubscribe();
+                //         },
+                //     });
             })
         );
     }

@@ -78,7 +78,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         } else if (key === 27) {
             this.insertBeforeActive = -1;
 
-            const focusedInput = this.inputAddress.find((input) => input.addressExpanded);
+            const focusedInput = this.inputAddress.find(
+                (input) => input.addressExpanded
+            );
 
             if (focusedInput) {
                 focusedInput.inputDropdown?.inputRef?.input.nativeElement.blur();
@@ -106,12 +108,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             /* Up and Down arrow */
             event.preventDefault();
 
-            const focusedInput = this.inputAddress.find((input) => input.addressExpanded);
+            const focusedInput = this.inputAddress.find(
+                (input) => input.addressExpanded
+            );
 
-            if (
-                this.focusedRouteIndex != null &&
-                !focusedInput
-            ) {
+            if (this.focusedRouteIndex != null && !focusedInput) {
                 this.onUpAndDownArrow(event);
             }
         } else if (key === 119) {
@@ -172,8 +173,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
             if (this.focusedRouteIndex != null) {
                 var inputInFocus = this.checkInputFocus(this.focusedRouteIndex);
-                
-                const focusedInput = this.inputAddress.find((input) => input.addressExpanded);
+
+                const focusedInput = this.inputAddress.find(
+                    (input) => input.addressExpanded
+                );
 
                 if (
                     focusedInput ||
@@ -292,7 +295,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'settings',
             show: true,
             svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-            iconName: 'edit'
+            iconName: 'edit',
         },
         {
             title: 'border',
@@ -316,7 +319,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 { subName: 'State / Country', actionName: 'State / Country' },
                 { subName: 'Toll Calculator', actionName: 'Toll Calculator' },
             ],
-            iconName: 'add-new'
+            iconName: 'add-new',
         },
         {
             title: 'Duplicate',
@@ -325,7 +328,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'duplicate',
             show: true,
             svg: 'assets/svg/common/routing/ic_route_duplicate.svg',
-            iconName: 'ic_route_duplicate'
+            iconName: 'ic_route_duplicate',
         },
         {
             title: 'Reverse',
@@ -334,7 +337,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'reverse',
             show: true,
             svg: 'assets/svg/common/routing/ic_route_reverse.svg',
-            iconName: 'ic_route_reverse'
+            iconName: 'ic_route_reverse',
         },
         {
             title: 'Clear Stops',
@@ -344,7 +347,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             show: true,
             svg: 'assets/svg/common/routing/ic_route_clear.svg',
             redIcon: true,
-            iconName: 'ic_route_clear'
+            iconName: 'ic_route_clear',
         },
         {
             title: 'border',
@@ -354,7 +357,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             name: 'share',
             svg: 'assets/svg/common/share-icon.svg',
             show: true,
-            iconName: 'share'
+            iconName: 'share',
         },
         {
             title: 'Print',
@@ -363,7 +366,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'print',
             show: true,
             svg: 'assets/svg/common/ic_print.svg',
-            iconName: 'print'
+            iconName: 'print',
         },
         {
             title: 'border',
@@ -379,7 +382,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             danger: true,
             svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
             redIcon: true,
-            iconName: 'delete'
+            iconName: 'delete',
         },
     ];
 
@@ -627,11 +630,53 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 } else if (res.type == 'route') {
                     this.addRoute(res.mapId);
                 } else if (res.type == 'edit-route') {
-                    this.getRouteList(
-                        this.tableData[this.selectedMapIndex].id,
-                        1,
-                        8
-                    );
+                    console.log('edit-route res', res);
+
+                    const routeIndex = this.tableData[
+                        this.selectedMapIndex
+                    ].routes.findIndex((item) => {
+                        return item.id === res.id;
+                    });
+
+                    var combinedRoute = {
+                        ...this.tableData[this.selectedMapIndex].routes[
+                            routeIndex
+                        ],
+                        ...res.data,
+                    };
+
+                    this.tableData[this.selectedMapIndex].routes[routeIndex] =
+                        combinedRoute;
+
+                    this.tableData[this.selectedMapIndex].routes[
+                        routeIndex
+                    ].stops.map((stop) => {
+                        stop.cityAddress =
+                            stop.address.city +
+                            ', ' +
+                            stop.address.state +
+                            ' ' +
+                            (stop.address.zipCode ? stop.address.zipCode : '');
+                        stop.lat = stop.latitude;
+                        stop.long = stop.longitude;
+                    });
+
+                    if (
+                        this.tableData[this.selectedMapIndex].routes[routeIndex]
+                            .stops?.length > 1
+                    ) {
+                        this.decodeRouteShape(
+                            this.tableData[this.selectedMapIndex].routes[
+                                routeIndex
+                            ]
+                        );
+                    }
+
+                    // this.getRouteList(
+                    //     this.tableData[this.selectedMapIndex].id,
+                    //     1,
+                    //     8
+                    // );
                 } else if (res.type == 'delete-route') {
                     this.getRouteList(
                         this.tableData[this.selectedMapIndex].id,
@@ -1023,12 +1068,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             .updateRoute(updateRouteObj)
                             .pipe(takeUntil(this.destroy$))
                             .subscribe({
-                                next: () => {
-                                 
-                                },
-                                error: () => {
-                                  
-                                },
+                                next: () => {},
+                                error: () => {},
                             });
                     }
                 },
@@ -1275,12 +1316,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     .updateRoute(updateRouteObj)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: () => {
-                           
-                        },
-                        error: () => {
-                           
-                        },
+                        next: () => {},
+                        error: () => {},
                     });
             } else {
                 this.getRouteShape(route);
@@ -1537,9 +1574,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         } else if (actionName === 'clear-route-stops') {
             this.clearRouteStops(currentId);
         } else if (actionName === 'delete') {
+            let route = this.getRouteById(currentId);
+
             var routeObj = {
                 id: currentId,
                 type: 'delete-item',
+                data: route,
             };
 
             this.modalService.openModal(
@@ -1613,17 +1653,11 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             .updateRoute(updateRouteObj)
                             .pipe(takeUntil(this.destroy$))
                             .subscribe({
-                                next: () => {
-                                    
-                                },
-                                error: () => {
-                                    
-                                },
+                                next: () => {},
+                                error: () => {},
                             });
                     },
-                    error: () => {
-                       
-                    },
+                    error: () => {},
                 });
 
             // this.tableData[this.selectedMapIndex].length =
@@ -1727,12 +1761,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 .updateRoute(updateRouteObj)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
-                    next: () => {
-                        
-                    },
-                    error: () => {
-                        
-                    },
+                    next: () => {},
+                    error: () => {},
                 });
 
             //route.stops = [];
@@ -1959,7 +1989,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     if (route.isFocused) {
                         this.focusRoute(routeIndex);
                     }
-                    
+
                     this.deleteRouteLine(route);
 
                     route.stops.map((stop) => {
@@ -2751,7 +2781,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             event.stopPropagation();
             event.preventDefault();
         }
-        
+
         if (
             !this.tableData[this.selectedMapIndex].routes[routeIndex].isFocused
         ) {
@@ -2759,7 +2789,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         }
 
         this.inputAddress.map((addressInput, inputIndex) => {
-            if ( inputIndex == routeIndex && !blur ) {
+            if (inputIndex == routeIndex && !blur) {
                 addressInput.addressExpand();
                 addressInput.inputDropdown?.inputRef?.input.nativeElement.focus();
                 setTimeout(() => {
@@ -2794,7 +2824,19 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.addressFlag = this.addressFlag == 'Empty' ? 'Loaded' : 'Empty';
 
         this.inputAddress.map((addressInput) => {
-            addressInput.changeStopType();
+            if (addressInput.addressExpanded) {
+                addressInput.changeStopType();
+            } else {
+                let flag = false;
+                if (addressInput.stopType == 'EMPTY') {
+                    addressInput.stopType = 'LOADED';
+                    flag = true;
+                } else {
+                    addressInput.stopType = 'EMPTY';
+                }
+
+                addressInput.changeFlag.emit(flag);
+            }
         });
 
         if (event) {
@@ -2907,7 +2949,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     this.tableData[mapIndex].routes.push(newRoute);
                 });
 
-                if ( this.selectedMapIndex == mapIndex ) {
+                if (this.selectedMapIndex == mapIndex) {
                     this.tableData[mapIndex].routes.map((item) => {
                         //this.calculateDistanceBetweenStops(index);
                         this.calculateRouteWidth(item);
@@ -3002,15 +3044,21 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         var stopsLatLong = [];
         var stopArr = [];
         route.stops.map((stop, stopIndex) => {
-            stopsLatLong.push({ latitude: stop.lat, longitude: stop.long });
+            var stopLatitude = stop.lat ? stop.lat : stop.latitude;
+            var stopLongitude = stop.long ? stop.long : stop.longitude;
+
+            stopsLatLong.push({
+                latitude: stopLatitude,
+                longitude: stopLongitude,
+            });
 
             var stopObj = <any>{
                 id: stop.id ? stop.id : 0,
                 address: stop.address,
                 leg: 0,
                 total: 0,
-                longitude: stop.long,
-                latitude: stop.lat,
+                longitude: stopLongitude,
+                latitude: stopLatitude,
                 orderNumber: stop.orderNumber
                     ? stop.orderNumber
                     : stopIndex + 1,
@@ -3065,12 +3113,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     .updateRoute(updateRouteObj)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: () => {
-                          
-                        },
-                        error: () => {
-                        
-                        },
+                        next: () => {},
+                        error: () => {},
                     });
             });
     }
