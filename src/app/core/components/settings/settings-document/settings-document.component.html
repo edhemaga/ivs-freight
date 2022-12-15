@@ -1,3 +1,22 @@
+<div class="settings_documents_header">
+    <div class="settings_documents_title">Document ({{documents?.length}})</div>
+    <div class="settings_documents_bar">
+        <div class="bar_holder">
+            <div
+                class="settings_documents_search"
+                ngbTooltip
+                mainTooltip="Search"
+                position="bottom"
+                tooltipBackground="#6C6C6C"
+            >
+                <app-truckassist-search
+                    [selectedTabData]=""
+                ></app-truckassist-search>
+            </div>
+            <div class="border-right"></div>
+        </div>
+    </div>
+</div>
 <app-ta-upload-files
     [files]="documents"
     [size]="'large'"

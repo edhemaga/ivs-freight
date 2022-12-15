@@ -1,0 +1,46 @@
+.settings_documents_header {
+    display: flex;
+    width: 100%;
+    margin-bottom: 12px;
+    .settings_documents_title {
+        margin-right: 12px;
+
+        font-size: 26px;
+        font-weight: 900;
+        line-height: 32px;
+
+        &::-moz-selection {
+            color: #6c6c6c;
+            background: #6c6c6c20;
+        }
+
+        &::selection {
+            color: #6c6c6c;
+            background: #6c6c6c20;
+        }
+    }
+
+    .settings_documents_bar {
+        flex: 1;
+        height: 34px;
+        padding: 4px;
+
+        background-color: #FFFFFF;
+        border-radius: 3px;
+
+        .bar_holder {
+            display: flex;
+            align-items: center;
+            .settings_documents_search {
+                display: flex;
+            }
+
+            .border-right {
+                width: 2px;
+                height: 20px;
+                border-radius: 1px;
+                background-color: #f3f3f3;
+            }
+        }
+    }
+}
