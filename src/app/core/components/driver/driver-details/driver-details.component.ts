@@ -32,6 +32,7 @@ import moment from 'moment';
     styleUrls: ['./driver-details.component.scss'],
     providers: [DetailsPageService],
 })
+
 export class DriverDetailsComponent implements OnInit, OnDestroy {
     public driverDetailsConfig: any[] = [];
     public dataTest: any;
@@ -142,28 +143,41 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 let query;
                 if (this.driverDQuery.hasEntity(id)) {
                     query = this.driverDQuery.selectEntity(id).pipe(take(1));
+                    query.subscribe({
+                        next: (res: any) => {
+                            this.currentIndex = this.driversList.findIndex(
+                                (driver) => driver.id === res.id
+                            );
+                            this.initTableOptions(res);
+                            if (this.cdlActiveId > 0) {
+                                this.getCdlById(this.cdlActiveId);
+                            }
+                            this.detailCongif(res);
+    
+                            if (this.router.url.includes('details')) {
+                                this.router.navigate([`/driver/${res.id}/details`]);
+                            }
+    
+                            this.cdRef.detectChanges();
+                        },
+                        error: () => {},
+                    });
+
                 } else {
-                    query = this.driverService.getDriverById(id);
+                    //query = this.driverService.getDriverById(id);
+                    this.router.navigate([`/driver/${id}/details`]);
+                    this.cdRef.detectChanges();
+
+                    setTimeout(()=>{
+                        let newDriverData = {...this.DriversItemStore?.getValue()?.entities[id]};
+                        console.log('--newDriverData', newDriverData)
+                        this.DetailsDataService.setNewData(newDriverData);
+                        this.detailCongif(newDriverData);
+                        this.initTableOptions(newDriverData);
+                    }, 400)
+                
                 }
-                query.subscribe({
-                    next: (res: any) => {
-                        this.currentIndex = this.driversList.findIndex(
-                            (driver) => driver.id === res.id
-                        );
-                        this.initTableOptions(res);
-                        if (this.cdlActiveId > 0) {
-                            this.getCdlById(this.cdlActiveId);
-                        }
-                        this.detailCongif(res);
-
-                        if (this.router.url.includes('details')) {
-                            this.router.navigate([`/driver/${res.id}/details`]);
-                        }
-
-                        this.cdRef.detectChanges();
-                    },
-                    error: () => {},
-                });
+                
             });
     }
 
@@ -260,7 +274,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             }
         });
 
-        if(data.mvrs.length>0){
+        if(data.mvrs?.length>0){
         data?.mvrs.map((el)=>{
             if(moment(el.issueDate).isAfter(moment())){
             this.arrayMedical.push(false)

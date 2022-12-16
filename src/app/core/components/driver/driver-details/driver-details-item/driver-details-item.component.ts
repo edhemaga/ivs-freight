@@ -112,7 +112,7 @@ export class DriverDetailsItemComponent
             this.drivers = changes.drivers.currentValue;
             this.getExpireDate();
 
-            this.activeCdl = changes.drivers.currentValue[0].data.cdls.filter(
+            this.activeCdl = changes.drivers.currentValue[0].data?.cdls?.filter(
                 (item) => item.status === 1
             );
         }
@@ -230,7 +230,6 @@ export class DriverDetailsItemComponent
         data?.cdls?.map((item) => {
             let endDate = moment(item.expDate);
             let daysDiff = endDate.diff(moment(), 'days');
-            console.log('--item', item);
             if (moment(item.expDate).isBefore(moment())) {
                  this.expiredCard.push(true);
             } else {
@@ -248,8 +247,6 @@ export class DriverDetailsItemComponent
                 this.arrayOfRenewCdl.push(false);
             }
         });
-
-        console.log('---this.activateShow---', this.activateShow);
 
         this.dataDropDown = {
             disabledMutedStyle: null,

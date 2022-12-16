@@ -99,23 +99,43 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     query = this.trailerDetailListQuery
                         .selectEntity(id)
                         .pipe(take(1));
-                } else {
-                    query = this.trailerService.getTrailerById(id);
-                }
-                query.pipe(takeUntil(this.destroy$)).subscribe({
-                    next: (res: TrailerResponse) => {
-                        this.currentIndex = this.trailerList.findIndex(
-                            (trailer) => trailer.id === res.id
-                        );
-                        this.DetailsDataService.setNewData(res);
-                        this.trailerConf(res);
-                        this.initTableOptions(res);
-                        this.router.navigate([`/trailer/${res.id}/details`]);
 
-                        this.cdRef.detectChanges();
-                    },
-                    error: () => {},
-                });
+                        query.pipe(takeUntil(this.destroy$)).subscribe({
+                            next: (res: TrailerResponse) => {
+                                this.currentIndex = this.trailerList.findIndex(
+                                    (trailer) => trailer.id === res.id
+                                );
+                                            
+                                this.DetailsDataService.setNewData(res);
+                                this.trailerConf(res);
+                                this.initTableOptions(res);
+                
+                                this.router.navigate([`/trailer/${res.id}/details`]);
+        
+                                this.cdRef.detectChanges();
+                            },
+                            error: () => {},
+                        });    
+
+
+
+                } else {
+                    //query = this.trailerService.getTrailerById(id);
+                    this.router.navigate([`/trailer/${id}/details`]);
+                    this.cdRef.detectChanges();
+
+                
+                    setTimeout(()=>{
+                        let newTrailerData = {...this.trailerItemStore?.getValue()?.entities[id]};
+                        this.DetailsDataService.setNewData(newTrailerData);
+                        this.trailerConf(newTrailerData);
+                        this.initTableOptions(newTrailerData);
+                    }, 200)
+                    
+
+                }
+                
+                
             });
         this.trailerConf(trailerData);
     }
@@ -173,7 +193,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         this.currentIndex = this.trailerList.findIndex(
             (trailer) => trailer.id === data.id
         );
-        console.log('---called here---')
         //this.getTrailerById(data.id);
         this.dataHeaderDropDown = {
             disabledMutedStyle: null,
