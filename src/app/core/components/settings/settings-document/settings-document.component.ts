@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
-import { CompanyStore } from '../state/company-state/company-settings.store';
 
 @Component({
     selector: 'app-settings-document',
@@ -10,13 +9,58 @@ import { CompanyStore } from '../state/company-state/company-settings.store';
 })
 export class SettingsDocumentComponent implements OnInit {
     private destroy$ = new Subject<void>();
-    constructor(private settingsCompanyService: SettingsCompanyService, private companyStore: CompanyStore) {}
+    constructor(private settingsCompanyService: SettingsCompanyService) {}
 
     public documents: any = [];
-    public showDropzone: boolean = true;
+    public showDropzone: boolean = false;
+    selectedTab: string = 'active';
+    tableOptions: any = {
+        toolbarActions: {
+            showArhiveFilter: true,
+            viewModeOptions: [],
+        },
+        actions: [],
+    };
+    tableData: any[] = [{
+        title: 'Document',
+        field: 'active',
+        length: 0,
+        data: [],
+        gridNameTitle: 'Document',
+        tableConfiguration: null,
+        isActive: true,
+        gridColumns: [],
+    }];
+    viewData: any[] = [];
+    columns: any[] = [];
+    resizeObserver: any;
+    tableContainerWidth: number = 0;
 
     ngOnInit() {
         this.companyDocumentsGet();
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.observTableContainer();
+        }, 10);
+    }
+
+    observTableContainer() {
+        this.resizeObserver = new ResizeObserver((entries) => {
+            entries.forEach((entry) => {
+                this.tableContainerWidth = entry.contentRect.width;
+            });
+        });
+
+        this.resizeObserver.observe(document.querySelector('.table-container'));
+    }
+
+    public onToolBarAction(event) {
+        if (event.action === 'open-modal') {
+            this.showDropzone = true;
+            this.tableOptions.toolbarActions.hideOpenModalButton = true
+        }
     }
 
     public companyDocumentsGet() {
@@ -24,54 +68,56 @@ export class SettingsDocumentComponent implements OnInit {
         .getCompanyDocuments()
         .pipe(takeUntil(this.destroy$))
         .subscribe((res)=>{
-            console.log(this.companyStore, 'companyStore')
             this.documents = res?.files;
+            this.tableData[0].length = this.documents.length;
         });
+    }
+
+    public hideDropzone() {
+        this.tableOptions.toolbarActions.hideOpenModalButton = false;
+        this.showDropzone = false;
     }
 
     public onFilesEvent(event: any) {
         this.documents = event.files;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
+        switch (event.action) {
+            case 'add': {
+                let documents = [];
+                this.documents.map((item) => {
+                    if (item.realFile) {
+                        documents.push(item.realFile);
+                    }
+                });
+
+                let newData: any = {
+                    files: documents,
+                    filesForDeleteIds: []
+                }
+
+                this.settingsCompanyService
+                .addCompanyDocuments(newData)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+                break;
             }
-        });
-
-        let newData: any = {
-            files: documents,
-            filesForDeleteIs: []
+            case 'delete': {
+                if (event.deleteId) {
+                    let newData: any = {
+                        files: [],
+                        filesForDeleteIds: [event.deleteId]
+                    }
+    
+                    this.settingsCompanyService
+                    .addCompanyDocuments(newData)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe();
+                }
+                break;
+            }
+            default: {
+                break;
+            }
         }
-
-        this.settingsCompanyService
-        .addCompanyDocuments(newData)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe();
-
-        // switch (event.action) {
-        //     case 'add': {
-        //         this.driverForm
-        //             .get('files')
-        //             .patchValue(JSON.stringify(event.files));
-        //         break;
-        //     }
-        //     case 'delete': {
-        //         this.driverForm
-        //             .get('files')
-        //             .patchValue(
-        //                 event.files.length ? JSON.stringify(event.files) : null
-        //             );
-        //         if (event.deleteId) {
-        //             this.filesForDelete.push(event.deleteId);
-        //         }
-
-        //         this.fileModified = true;
-        //         break;
-        //     }
-        //     default: {
-        //         break;
-        //     }
-        // }
     }
 }

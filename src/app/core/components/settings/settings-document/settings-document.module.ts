@@ -4,10 +4,10 @@ import { SettingsDocumentComponent } from './settings-document.component';
 import { SettingsDocumentRoutes } from './settings-document.routing';
 import { SharedModule } from '../../shared/shared.module';
 import { TruckassistSearchModule } from '../../shared/truckassist-search/truckassist-search.module';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { TruckassistTableModule } from '../../shared/truckassist-table/truckassist-table.module';
 
 @NgModule({
-    imports: [CommonModule, SettingsDocumentRoutes, SharedModule, TruckassistSearchModule, NgbTooltipModule],
+    imports: [CommonModule, SettingsDocumentRoutes, SharedModule, TruckassistSearchModule, TruckassistTableModule],
     declarations: [SettingsDocumentComponent],
 })
 export class SettingsDocumentModule {}

@@ -341,7 +341,7 @@ export class SettingsCompanyService implements OnDestroy {
         return this.settingService.apiCompanyDocumentsGet();
     }
 
-    public addCompanyDocuments(data: any): Observable<CreateResponse> {
+    public addCompanyDocuments(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.settingService.apiCompanyDocumentsPost();
     }

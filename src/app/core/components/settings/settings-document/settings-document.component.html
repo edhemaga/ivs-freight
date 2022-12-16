@@ -1,32 +1,25 @@
-<div class="settings_documents_header">
-    <div class="settings_documents_title">Document ({{documents?.length}})</div>
-    <div class="settings_documents_bar">
-        <div class="bar_holder">
-            <div
-                class="settings_documents_search"
-                ngbTooltip
-                mainTooltip="Search"
-                position="bottom"
-                tooltipBackground="#6C6C6C"
-            >
-                <app-truckassist-search
-                    [selectedTabData]=""
-                ></app-truckassist-search>
-            </div>
-            <div class="border-right"></div>
-        </div>
+<div class="table-container">
+    <div class="documents_toolbar">
+        <app-truckassist-table-toolbar
+            (toolBarAction)="onToolBarAction($event)"
+            [options]="tableOptions"
+            [tableData]="tableData"
+            [columns]="columns"
+            [tableContainerWidth]="tableContainerWidth"
+            [selectedTab]="selectedTab"
+        ></app-truckassist-table-toolbar>
     </div>
+    <app-ta-upload-files
+        [files]="documents"
+        [size]="'large'"
+        [showDropzone]="showDropzone"
+        [dontUseSlider]="true"
+        (onFileEvent)="onFilesEvent($event)"
+        (closeDropzone)="hideDropzone()"
+        [customClassName]="'company-documents'"
+        [hasTagsDropdown]="true"
+        [tags]="[{
+            tagName: 'IFTA Licence'
+        }]"
+    ></app-ta-upload-files>
 </div>
-<app-ta-upload-files
-    [files]="documents"
-    [size]="'large'"
-    [showDropzone]="showDropzone"
-    [dontUseSlider]="true"
-    (onFileEvent)="onFilesEvent($event)"
-    (closeDropzone)="showDropzone = false"
-    [customClassName]="'company-documents'"
-    [hasTagsDropdown]="true"
-    [tags]="[{
-        tagName: 'IFTA Licence'
-    }]"
-></app-ta-upload-files>

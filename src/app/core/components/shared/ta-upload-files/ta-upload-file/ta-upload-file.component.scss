@@ -979,6 +979,16 @@
         }
     }
 
+    &.company-documents {
+        .ta-upload-file-footer {
+            opacity: 1;
+
+            .ta-upload-file-name {
+                background-color: #eeeeee !important;
+            }
+        }
+    }
+
     &.driver-details-pdf {
         width: 312px;
         height: 312px;
@@ -1028,8 +1038,8 @@
         }
 
         .ta-upload-file-delete-template {
-            width: 294px;
-            height: 294px;
+            width: 302px;
+            height: 332px;
         }
     }
 
