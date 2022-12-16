@@ -1,12 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { catchError, filter, map, mergeMap, throwError } from 'rxjs';
+import {
+    catchError,
+    filter,
+    map,
+    mergeMap,
+    of,
+    switchMap,
+    throwError,
+} from 'rxjs';
 import { scrollButtonAnimation } from './app.component.animation';
 import { GpsServiceService } from './global/services/gps-service.service';
 import { SignInResponse } from '../../appcoretruckassist/model/signInResponse';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AccountService } from '../../appcoretruckassist/api/account.service';
+import { configFactory } from './app.config';
+import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 
 @Component({
     selector: 'app-root',
@@ -24,7 +34,8 @@ export class AppComponent implements OnInit {
         public titleService: Title,
         private activatedRoute: ActivatedRoute,
         private gpsService: GpsServiceService,
-        private accountService: AccountService
+        private accountService: AccountService,
+        private userLoggedService: UserLoggedService
     ) {}
 
     ngOnInit() {
@@ -68,21 +79,30 @@ export class AppComponent implements OnInit {
     public checkRefreshTokenExpiration() {
         const user: SignInResponse = JSON.parse(localStorage.getItem('user'));
 
-        this.accountService
-            .apiAccountRefreshPost({
-                refreshToken: user.refreshToken,
-            })
-            .pipe(
-                catchError((err: HttpErrorResponse) => {
-                    if (err.status === 404 || err.status === 500) {
-                        this.currentPage = 'login';
-                        localStorage.removeItem('user');
-                        this.router.navigate(['/auth']);
-                        window.location.reload();
-                    }
-                    return throwError(() => err);
+        if (user) {
+            this.accountService
+                .apiAccountRefreshPost({
+                    refreshToken: user.refreshToken,
                 })
-            )
-            .subscribe();
+                .pipe(
+                    switchMap((res: any) => {
+                        user.token = res.token;
+                        user.refreshToken = res.refreshToken;
+                        localStorage.setItem('user', JSON.stringify(user));
+                        configFactory(this.userLoggedService);
+                        return of(true);
+                    }),
+                    catchError((err: HttpErrorResponse) => {
+                        if (err.status === 404 || err.status === 500) {
+                            this.currentPage = 'login';
+                            localStorage.removeItem('user');
+                            this.router.navigate(['/auth']);
+                            window.location.reload();
+                        }
+                        return throwError(() => err);
+                    })
+                )
+                .subscribe();
+        }
     }
 }
