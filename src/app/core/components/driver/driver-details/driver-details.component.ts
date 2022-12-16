@@ -54,6 +54,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     public dataCdl: any;
     public cdlActiveId: number;
     private destroy$ = new Subject<void>();
+    private newDriverId: number;
     constructor(
         private activated_route: ActivatedRoute,
         private modalService: ModalService,
@@ -72,7 +73,17 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private DetailsDataService: DetailsDataService,
         private DriversDetailsListStore: DriversDetailsListStore,
         private DriversItemStore: DriversItemStore
-    ) {}
+    ) {
+
+        let storeData$ = this.DriversItemStore._select(state => state);
+
+        storeData$.subscribe(state => {
+            let newDriverData = {...state.entities[this.newDriverId]};
+            this.DetailsDataService.setNewData(newDriverData);
+            this.detailCongif(newDriverData);
+            this.initTableOptions(newDriverData);
+          });
+    }
 
     ngOnInit() {
         let dataId = this.activated_route.snapshot.params.id;
@@ -153,7 +164,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                                 this.getCdlById(this.cdlActiveId);
                             }
                             this.detailCongif(res);
-    
+                            this.newDriverId = id;
                             if (this.router.url.includes('details')) {
                                 this.router.navigate([`/driver/${res.id}/details`]);
                             }
@@ -165,17 +176,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
                 } else {
                     //query = this.driverService.getDriverById(id);
+                    this.newDriverId = id;
                     this.router.navigate([`/driver/${id}/details`]);
-                    this.cdRef.detectChanges();
-
-                    setTimeout(()=>{
-                        let newDriverData = {...this.DriversItemStore?.getValue()?.entities[id]};
-                        console.log('--newDriverData', newDriverData)
-                        this.DetailsDataService.setNewData(newDriverData);
-                        this.detailCongif(newDriverData);
-                        this.initTableOptions(newDriverData);
-                    }, 400)
-                
+                    this.cdRef.detectChanges();        
                 }
                 
             });

@@ -37,6 +37,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     public truckList: any = this.truckMinimalListQuery.getAll();
     public currentIndex: number = 0;
     public truckId: number;
+    public newTruckId: number;
     constructor(
         private truckTService: TruckTService,
         private notificationService: NotificationService,
@@ -53,7 +54,16 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         private truckMinimalStore: TrucksMinimalListStore,
         private DetailsDataService: DetailsDataService,
         private TruckItemStore: TruckItemStore
-    ) {}
+    ) {
+        let storeData$ = this.TruckItemStore._select(state => state);
+
+        storeData$.subscribe(state => {
+            let newTruckData = {...state.entities[this.newTruckId]};
+            this.DetailsDataService.setNewData(newTruckData);
+            this.truckConf(newTruckData);
+            this.initTableOptions(newTruckData);
+          });
+    }
 
     ngOnInit(): void {
 
@@ -111,6 +121,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             next: (res: any) => {
                                 this.truckConf(res);
                                 this.initTableOptions(res);
+                                this.newTruckId = id;
                                 if (this.router.url.includes('details')) {
                                     this.router.navigate([`/truck/${res.id}/details`]);
                                 }
@@ -122,16 +133,9 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 } else {
                     //query = this.truckTService.getTruckById(id);
 
+                    this.newTruckId = id;
                     this.router.navigate([`/truck/${id}/details`]);
                     this.cdRef.detectChanges();
-
-                
-                    setTimeout(()=>{
-                        let newTruckData = {...this.TruckItemStore?.getValue()?.entities[id]};
-                        this.DetailsDataService.setNewData(newTruckData);
-                        this.truckConf(newTruckData);
-                        this.initTableOptions(newTruckData);
-                    }, 200)
                 }
                 
             });
