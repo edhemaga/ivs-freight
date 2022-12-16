@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map, mergeMap } from 'rxjs';
+import { catchError, filter, map, mergeMap, throwError } from 'rxjs';
 import { scrollButtonAnimation } from './app.component.animation';
 import { GpsServiceService } from './global/services/gps-service.service';
+import { SignInResponse } from '../../appcoretruckassist/model/signInResponse';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AccountService } from '../../appcoretruckassist/api/account.service';
 
 @Component({
     selector: 'app-root',
@@ -20,7 +23,8 @@ export class AppComponent implements OnInit {
         private router: Router,
         public titleService: Title,
         private activatedRoute: ActivatedRoute,
-        private gpsService: GpsServiceService
+        private gpsService: GpsServiceService,
+        private accountService: AccountService
     ) {}
 
     ngOnInit() {
@@ -48,6 +52,10 @@ export class AppComponent implements OnInit {
                     'CarrierAssist' + ' | ' + event.title
                 );
             });
+
+        setTimeout(() => {
+            this.checkRefreshTokenExpiration();
+        }, 300);
     }
 
     /**
@@ -55,5 +63,26 @@ export class AppComponent implements OnInit {
      */
     public top() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    public checkRefreshTokenExpiration() {
+        const user: SignInResponse = JSON.parse(localStorage.getItem('user'));
+
+        this.accountService
+            .apiAccountRefreshPost({
+                refreshToken: user.refreshToken,
+            })
+            .pipe(
+                catchError((err: HttpErrorResponse) => {
+                    if (err.status === 404 || err.status === 500) {
+                        this.currentPage = 'login';
+                        localStorage.removeItem('user');
+                        this.router.navigate(['/auth']);
+                        window.location.reload();
+                    }
+                    return throwError(() => err);
+                })
+            )
+            .subscribe();
     }
 }

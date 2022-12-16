@@ -32,7 +32,7 @@ import { FormService } from '../../../services/form/form.service';
 })
 export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    private user: SignInResponse = JSON.parse(localStorage.getItem('user'));
+    private user: SignInResponse;
 
     public selectedTab: number = 1;
 
@@ -79,6 +79,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        this.user = JSON.parse(localStorage.getItem('user'));
         this.createForm();
         this.getUserById();
         this.changeCheckboxDetection();

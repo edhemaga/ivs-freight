@@ -48,6 +48,10 @@
             font-weight: $nav-font-bold;
             color: $nav-text-color-darker;
             margin-left: 6px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         &:hover {
@@ -70,6 +74,10 @@
             font-size: 14px;
             font-weight: 500;
             line-height: 18px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .user-company-text-active {

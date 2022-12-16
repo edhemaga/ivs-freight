@@ -90,29 +90,11 @@
     &.dropdown-label-active {
         background-color: $input-background-color-normal-focus !important;
         color: $input-text-color-normal-focus;
-
-        &::-moz-selection {
-            background-color: $input-background-selection-normal !important;
-            color: $input-text-selection-normal !important;
-        }
-
-        &::selection {
-            background-color: $input-background-selection-normal !important;
-            color: $input-text-selection-normal !important;
-        }
     }
 
     &.password-eye-invalid {
         background-color: $input-background-color-invalid-focus !important;
         color: $input-text-color-normal-focus;
-
-        &::-moz-selection {
-            background-color: $input-background-selection-invalid-focus !important;
-        }
-
-        &::selection {
-            background-color: $input-background-selection-invalid-focus !important;
-        }
     }
 
     &.has-input-icon {
@@ -212,16 +194,6 @@
         &::placeholder {
             color: $input-placeholder-color-valid-focus;
         }
-
-        &::-moz-selection {
-            background-color: $input-background-selection-valid-focus !important;
-            color: $input-text-color-normal-focus !important;
-        }
-
-        &::selection {
-            background-color: $input-background-selection-valid-focus !important;
-            color: $input-text-color-normal-focus !important;
-        }
     }
 
     &.valid-focus-out-filled {
@@ -239,16 +211,6 @@
 
     &.invalid-focus-in {
         background-color: $input-background-color-invalid-focus !important;
-
-        &::-moz-selection {
-            background-color: $input-background-selection-invalid-focus !important;
-            color: $input-text-color-normal-focus !important;
-        }
-
-        &::selection {
-            background-color: $input-background-selection-invalid-focus !important;
-            color: $input-text-color-normal-focus !important;
-        }
     }
 
     &.invalid-focus-out-filled {
