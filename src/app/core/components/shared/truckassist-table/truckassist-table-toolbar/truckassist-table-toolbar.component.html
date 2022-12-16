@@ -184,39 +184,76 @@
         <!-- TOOLBAR OPTIONS -->
         <div
             (click)="onOptions(option)"
-            [ngClass]="{ 'active-option': option.active }"
+            [ngClass]="{
+                'active-option': option.active,
+                'inactiv-option': option.isInactive
+            }"
             *ngFor="let option of optionsPopupContent"
             class="options"
-            [ngStyle]="{ display: !option.show ? 'none' : 'flex' }"
+            [ngStyle]="{ display: option.hide ? 'none' : 'flex' }"
+            (mouseover)="option.showBackToList = true"
+            (mouseleave)="option.showBackToList = false"
         >
-            <div class="icon">
-                <svg-icon
-                    [svgStyle]="{
-                        'width.px': option.width,
-                        'height.px': option.height
-                    }"
-                    [src]="option.svgPath"
-                ></svg-icon>
-            </div>
-
-            <div class="text">{{ option.text }}</div>
-
             <div
-                class="additional-drop-icon"
-                *ngIf="option.additionalDropIcon && option.active"
+                class="back-to-list-icon"
+                *ngIf="
+                    option?.showBackToList &&
+                    option.hasOwnSubOpions &&
+                    option.active
+                "
             >
                 <svg-icon
                     [svgStyle]="{
-                        'width.px': option.additionalDropIcon.width,
-                        'height.px': option.additionalDropIcon.height
+                        'width.px': 14,
+                        'height.px': 14
                     }"
-                    [src]="option.additionalDropIcon.path"
+                    [src]="option.backToListIcon"
+                ></svg-icon>
+            </div>
+
+            <div class="text">
+                {{
+                    option?.showBackToList &&
+                    option.hasOwnSubOpions &&
+                    option.active
+                        ? 'Back to Menu'
+                        : option.text
+                }}
+            </div>
+
+            <div class="icon">
+                <svg-icon
+                    *ngIf="!option.backToListIcon || !option.active"
+                    class="option-icon"
+                    [svgStyle]="{
+                        'width.px': 18,
+                        'height.px': 18
+                    }"
+                    [src]="option.svgPath"
+                ></svg-icon>
+
+                <svg-icon
+                    (click)="onResetTable()"
+                    *ngIf="option.backToListIcon && option.active"
+                    class="columns-active-icon"
+                    [svgStyle]="{
+                        'width.px': 18,
+                        'height.px': 18
+                    }"
+                    [src]="'assets/svg/truckassist-table/reset-icon.svg'"
                 ></svg-icon>
             </div>
         </div>
 
+        <div
+            class="options-border-container"
+            *ngIf="optionsPopupContent[0].active"
+        >
+            <div class="options-border"></div>
+        </div>
+
         <!-- COLUMNS LIST  -->
-        <div class="columns-options" *ngIf="optionsPopupContent[4].active">
+        <div class="columns-options" *ngIf="optionsPopupContent[0].active">
             <div class="columns-container">
                 <div
                     *ngFor="

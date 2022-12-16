@@ -316,7 +316,7 @@ export class TruckassistTableBodyComponent
                     c.ngTemplate !== 'checkbox' &&
                     c.ngTemplate !== 'user-checkbox'
                 ) {
-                    this.pinedWidth += 22;
+                    this.pinedWidth += 6;
                 }
             }
 
@@ -325,7 +325,7 @@ export class TruckassistTableBodyComponent
                 this.notPinedColumns.push(c);
 
                 notPinedWidth +=
-                    c.minWidth > c.width ? c.minWidth + 22 : c.width + 22;
+                    c.minWidth > c.width ? c.minWidth + 6 : c.width + 6;
             }
 
             // Actions

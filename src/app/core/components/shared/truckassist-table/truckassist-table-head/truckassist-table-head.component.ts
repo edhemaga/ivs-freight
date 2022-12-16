@@ -189,7 +189,7 @@ export class TruckassistTableHeadComponent
                     v.ngTemplate !== 'checkbox' &&
                     v.ngTemplate !== 'user-checkbox'
                 ) {
-                    this.pinedWidth += 22;
+                    this.pinedWidth += 6;
                 }
             }
 
