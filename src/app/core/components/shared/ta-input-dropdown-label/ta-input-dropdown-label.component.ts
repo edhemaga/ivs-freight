@@ -53,6 +53,7 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
      * SELECT FROM ITEMS DROPDOWN
      */
     public onSelectDropdown(event: any, action: string) {
+        console.log('dropdown label select event: ', event);
         if (event?.id === 7655) {
             this.editModeLabel.emit(true);
         }
@@ -73,9 +74,9 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     /**
      * Select label mode
      */
-    public onSelectLabelMode(event: 'Label' | 'Color') {
+    public selectedLabelMode(event: 'Label' | 'Color') {
         this.switchMode = event;
-
+        // console.log('mide dropdown label: ', event);
         if (event === 'Color') {
             this.editModeLabel.emit(true);
         } else {
