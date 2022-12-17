@@ -20,16 +20,15 @@ export class TaInputService {
 
     public dropDownShowHide$: Subject<boolean> = new Subject<boolean>();
 
-    public dropDownKeyNavigation$: Subject<{ keyCode: number; obj: any }> =
-        new Subject<{ keyCode: number; obj: any }>();
+    public dropDownKeyNavigation$: Subject<{
+        keyCode: number;
+        data: ITaInput | any;
+    }> = new Subject<{ keyCode: number; data: ITaInput | any }>();
 
     public dropDownItemSelectedOnEnter$: Subject<{
         action: boolean;
-        selectedItem: string;
-    }> = new Subject<{
-        action: boolean;
-        selectedItem: string;
-    }>();
+        inputConfig: ITaInput;
+    }> = new Subject<{ action: boolean; inputConfig: ITaInput }>();
 
     public dropDownAddMode$: Subject<{
         action: boolean;

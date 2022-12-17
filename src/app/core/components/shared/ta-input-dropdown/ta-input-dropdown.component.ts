@@ -327,17 +327,17 @@ export class TaInputDropdownComponent
     private dropDownKeyboardNavigationEvent() {
         this.inputService.dropDownKeyNavigation$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: { keyCode: number; obj: any }) => {
+            .subscribe(({ keyCode, data }) => {
                 // Navigate down
-                if (res.keyCode === 40) {
+                if (keyCode === 40) {
                     this.dropdownNavigation(1);
                 }
                 // Navigate up
-                if (res.keyCode === 38) {
+                if (keyCode === 38) {
                     this.dropdownNavigation(-1);
                 }
                 // Press 'enter'
-                if (res.keyCode === 13) {
+                if (keyCode === 13) {
                     let selectedItem = $('.dropdown-option-hovered')
                         .text()
                         .trim();
@@ -351,33 +351,61 @@ export class TaInputDropdownComponent
                         selectedItem = this.options[0].name;
                     }
 
-                    // Dropdown Label
+                    // Input Dropdown Bank Name
                     if (
-                        this.inputConfig.name === 'Input Dropdown Label' &&
-                        !selectedItem
+                        !selectedItem &&
+                        this.inputConfig.name === 'Input Dropdown Bank Name'
                     ) {
-                        this.commandEvent(res.obj);
-                        return;
+                        this.inputConfig.commands.active = false;
+                        this.activeItem = {
+                            id: 9191,
+                            name: this.getSuperControl.value,
+                        };
+                        this.addNewItem();
                     }
 
-                    if (
-                        this.inputConfig.name === 'Input Dropdown Bank Name' &&
-                        res.obj
-                    ) {
-                        console.log('after pick: ', res);
-                        this.addNewItem();
-                        this.inputConfig.blackInput = false;
-                        return;
+                    // Input Dropdown Label
+                    if (!selectedItem && this.inputConfig.dropdownLabel) {
+                        this.commandEvent({
+                            data: this.getSuperControl.value,
+                            action: 'confirm',
+                            mode: data.dropdownLabelNew ? 'new' : 'edit',
+                        });
+                        setTimeout(() => {
+                            this.getSuperControl.setErrors(null);
+                            this.inputConfig.dropdownLabelNew = false;
+                            this.inputConfig.commands.active = false;
+                            this.inputConfig.blackInput = false;
+                            this.inputRef.focusInput = false;
+                            this.inputRef.editInputMode = false;
+                            this.inputRef.input.nativeElement.blur();
+                        }, 150);
                     }
 
                     // ADD NEW Option
                     if (selectedItem === 'ADD NEW') {
                         this.addNewConfig();
-                        this.inputService.dropDownItemSelectedOnEnter$.next({
-                            action: true,
-                            selectedItem,
-                        });
+
+                        if (this.inputConfig.dropdownLabel) {
+                            // DropDown label
+                            if (this.inputConfig.dropdownLabel) {
+                                this.inputConfig.dropdownLabelNew = true;
+                                this.inputRef.editInputMode = true;
+                                this.selectedLabelMode.emit('Color');
+                                this.inputConfig.commands.active = true;
+                                this.inputRef.setInputCursorAtTheEnd(
+                                    this.inputRef.input.nativeElement
+                                );
+                                this.inputConfig.blackInput = true;
+                                this.selectedItem.emit({
+                                    id: 7655,
+                                    name: 'ADD NEW',
+                                });
+                            }
+                        }
+                        selectedItem = null;
                     }
+
                     // Normal Pick Dropdown
                     else {
                         const existItem = this.options
@@ -412,7 +440,10 @@ export class TaInputDropdownComponent
                                     };
                                 }
                                 // Dropdown Labels
-                                else if (item?.dropLabel) {
+                                else if (
+                                    item?.dropLabel ||
+                                    this.inputConfig.dropdownLabel
+                                ) {
                                     return { ...item };
                                 }
                                 // Default
@@ -426,22 +457,28 @@ export class TaInputDropdownComponent
                                 }
                             })
                             .find((item) => {
-                                return (
-                                    item.name.toLowerCase() ===
-                                    (item?.dropLabel
-                                        ? selectedItem.substring(
-                                              0,
-                                              selectedItem.lastIndexOf(' ')
-                                          )
-                                        : selectedItem.toLowerCase())
-                                );
+                                if (
+                                    selectedItem.substring(
+                                        0,
+                                        selectedItem.lastIndexOf(' ')
+                                    ) === item.name.toLowerCase()
+                                )
+                                    return (
+                                        item.name.toLowerCase() ===
+                                        (item?.dropLabel ||
+                                        this.inputConfig.dropdownLabel
+                                            ? selectedItem.substring(
+                                                  0,
+                                                  selectedItem.lastIndexOf(' ')
+                                              )
+                                            : selectedItem.toLowerCase())
+                                    );
                             });
 
                         // MultiSelect Dropdown
                         if (this.inputConfig.multiselectDropdown) {
                             this.onMultiselectSelect(existItem);
                         }
-
                         // Normal Dropdown
                         else {
                             this.inputConfig = {
@@ -449,13 +486,38 @@ export class TaInputDropdownComponent
                                 blackInput: true,
                             };
 
-                            this.getSuperControl.setValue(existItem?.name);
-                            this.selectedItem.emit(existItem);
-                            this.activeItem = existItem;
+                            // Dropdown labels option selected
+                            if (this.inputConfig.dropdownLabel) {
+                                if (this.labelMode === 'Label') {
+                                    this.activeItem = existItem;
+                                    this.getSuperControl.setValue(
+                                        existItem.name
+                                    );
+                                    this.options = this.originalOptions;
+                                    this.selectedItem.emit(existItem);
 
-                            this.inputService.dropDownItemSelectedOnEnter$.next(
-                                { action: true, selectedItem }
-                            );
+                                    this.inputService.dropDownItemSelectedOnEnter$.next(
+                                        {
+                                            action: true,
+                                            inputConfig: null,
+                                        }
+                                    );
+                                }
+
+                                if (this.labelMode === 'Color') {
+                                    this.activeItemColor = existItem;
+
+                                    this.selectedItemColor.emit(
+                                        this.activeItemColor
+                                    );
+                                }
+                            }
+                            // Normal
+                            else {
+                                this.getSuperControl.setValue(existItem?.name);
+                                this.selectedItem.emit(existItem);
+                                this.activeItem = existItem;
+                            }
 
                             if (this.inputConfig.name !== 'RoutingAddress') {
                                 const timeout = setTimeout(() => {
@@ -471,7 +533,7 @@ export class TaInputDropdownComponent
                     }
                 }
 
-                if (res.keyCode === 9) {
+                if (keyCode === 9) {
                     this.popoverRef.open();
                 }
             });
@@ -641,9 +703,12 @@ export class TaInputDropdownComponent
         }
         // ADD NEW
         else if (option.id === 7655) {
+            // Open New Modal
             if (this.canOpenModal) {
                 this.selectedItem.emit({ ...option, canOpenModal: true });
-            } else {
+            }
+            // Work with current modal
+            else {
                 // DropDown label
                 if (this.inputConfig.dropdownLabel) {
                     this.inputConfig.dropdownLabelNew = true;
@@ -678,7 +743,6 @@ export class TaInputDropdownComponent
                     this.selectedItemColor.emit(this.activeItemColor);
                 }
             }
-
             // Normal Dropdown option selected
             else {
                 this.inputConfig = {
@@ -773,6 +837,10 @@ export class TaInputDropdownComponent
         }
 
         if (event.action === 'cancel') {
+            this.saveItem.emit({
+                data: this.activeItem,
+                action: 'cancel',
+            });
             this.selectedLabelMode.emit('Label');
         }
     }
@@ -782,7 +850,7 @@ export class TaInputDropdownComponent
             id: uuidv4(),
             name: this.getSuperControl.value,
         };
-        console.log('active item: ', this.activeItem);
+
         this.saveItem.emit({ data: this.activeItem, action: 'new' });
 
         if (this.inputConfig.dropdownLabel) {
@@ -817,7 +885,7 @@ export class TaInputDropdownComponent
         this.inputConfig = {
             ...this.inputConfig,
             commands: {
-                active: false,
+                active: true,
                 type: 'confirm-cancel',
                 firstCommand: {
                     popup: {
@@ -839,7 +907,6 @@ export class TaInputDropdownComponent
             placeholder: null,
         };
 
-        this.inputConfig.dropdownLabelNew = true; // share this config with label
         this.inputService.dropDownAddMode$.next({
             action: true,
             inputConfig: this.inputConfig,

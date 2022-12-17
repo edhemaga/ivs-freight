@@ -199,6 +199,16 @@
     &.valid-focus-out-filled {
         background-color: $input-background-color-valid-focus-out !important;
         color: $input-text-color-valid-focus-out !important;
+
+        &::-moz-selection {
+            background-color: rgb(47, 47, 47, 0.2) !important;
+            color: #2f2f2f !important;
+        }
+
+        &::selection {
+            background-color: rgb(47, 47, 47, 0.2) !important;
+            color: #2f2f2f !important;
+        }
     }
 
     &.valid-focus-out-filled-datepicker {
@@ -216,6 +226,16 @@
     &.invalid-focus-out-filled {
         background-color: $input-background-color-invalid-focus-out !important;
         color: $input-text-color-invalid-focus-out !important;
+
+        &::-moz-selection {
+            background-color: rgb(47, 47, 47, 0.2) !important;
+            color: #2f2f2f !important;
+        }
+
+        &::selection {
+            background-color: rgb(47, 47, 47, 0.2) !important;
+            color: #2f2f2f !important;
+        }
     }
 
     &.disabled {

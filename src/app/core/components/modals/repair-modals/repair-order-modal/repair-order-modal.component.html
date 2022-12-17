@@ -227,9 +227,9 @@
                                 class="common-fake-table-card"
                                 [ngClass]="{
                                     'card-item-active':
-                                        !selectedPM[ind]?.logoName?.includes(
-                                            'custom_pm'
-                                        )
+                                        selectedPM[ind]?.logoName &&
+                                        selectedPM[ind]?.logoName !==
+                                            'assets/svg/common/repair-pm/ic_custom_pm.svg'
                                 }"
                             >
                                 <p>
@@ -246,6 +246,7 @@
                                             maxLength: 160,
                                             textTransform: 'capitalize',
                                             blueInputColor:
+                                                selectedPM[ind]?.logoName &&
                                                 !selectedPM[
                                                     ind
                                                 ]?.logoName?.includes(
@@ -287,9 +288,10 @@
 
                                     <ng-template #pmDropdownPopover>
                                         <div
+                                            *ngIf="pmOptions?.length"
                                             class="options"
                                             [ngClass]="{
-                                                scroll: pmOptions.length > 6
+                                                scroll: pmOptions?.length > 6
                                             }"
                                         >
                                             <div
@@ -324,6 +326,7 @@
                                         type: 'text',
                                         thousandSeparator: true,
                                         blueInputColor:
+                                            selectedPM[ind]?.logoName &&
                                             !selectedPM[
                                                 ind
                                             ]?.logoName?.includes(
@@ -345,6 +348,7 @@
                                         name: 'QTY',
                                         type: 'text',
                                         blueInputColor:
+                                            selectedPM[ind]?.logoName &&
                                             !selectedPM[
                                                 ind
                                             ]?.logoName?.includes(

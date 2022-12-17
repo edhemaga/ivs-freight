@@ -139,7 +139,7 @@ export class TaInputComponent
                 });
         }
 
-        // Dropdown select add mode
+        // Dropdown add mode
         if (
             (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) &&
             !this.inputConfig.isDisabled
@@ -147,13 +147,17 @@ export class TaInputComponent
             this.inputService.dropDownAddMode$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(
-                    (res: { action: boolean; inputConfig: ITaInput }) => {
-                        if (res.action) {
+                    (data: { action: boolean; inputConfig: ITaInput }) => {
+                        if (data.action) {
                             this.dropdownToggler = false;
 
-                            this.inputConfig = res.inputConfig;
-                            this.getSuperControl.patchValue(null);
-                            this.onEditInput();
+                            setTimeout(() => {
+                                this.inputConfig = data.inputConfig;
+                                this.setInputCursorAtTheEnd(
+                                    this.input.nativeElement
+                                );
+                                this.isVisibleCommands = true;
+                            }, 300);
                         }
                     }
                 );
@@ -162,18 +166,11 @@ export class TaInputComponent
             this.inputService.dropDownItemSelectedOnEnter$
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(
-                    (data: { action: boolean; selectedItem: string }) => {
+                    (data: { action: boolean; inputConfig: ITaInput }) => {
                         if (data.action) {
                             this.dropdownToggler = false;
+                            this.focusInput = false;
                             this.input.nativeElement.blur();
-                            this.blurOnDropDownArrow();
-
-                            if (data.selectedItem === 'ADD NEW') {
-                                setTimeout(() => {
-                                    this.getSuperControl.patchValue(null);
-                                    this.onEditInput();
-                                }, 150);
-                            }
                         }
                     }
                 );
@@ -405,11 +402,6 @@ export class TaInputComponent
 
         this.inputService.onFocusOutInput$.next(true);
         this.touchedInput = true;
-
-        // commands
-        if (this.editInputMode) {
-            this.getSuperControl.setErrors({ required: true });
-        }
     }
 
     private blurOnPassword() {
@@ -569,55 +561,14 @@ export class TaInputComponent
             if (event.keyCode === 40 || event.keyCode === 38) {
                 this.inputService.dropDownKeyNavigation$.next({
                     keyCode: event.keyCode,
-                    obj: null,
+                    data: null,
                 });
             }
             if (event.keyCode === 13) {
-                // On Enter Dropdown Label
-                if (
-                    this.inputConfig.name === 'Input Dropdown Label' &&
-                    this.editInputMode &&
-                    this.inputConfig.commands.active
-                ) {
-                    this.inputService.dropDownKeyNavigation$.next({
-                        keyCode: event.keyCode,
-                        obj: {
-                            data: this.getSuperControl.value,
-                            action: 'confirm',
-                            mode: !this.inputConfig.dropdownLabelNew
-                                ? 'edit'
-                                : 'new',
-                        },
-                    });
-                    this.getSuperControl.setErrors(null);
-                    this.editInputMode = false;
-                    this.inputConfig.commands.active = false;
-                    this.onBlur();
-                }
-                // Bank Enter Event..
-                else if (
-                    this.inputConfig.name.includes(
-                        'Input Dropdown Bank Name'
-                    ) &&
-                    this.editInputMode &&
-                    this.inputConfig.commands.active
-                ) {
-                    this.inputService.dropDownKeyNavigation$.next({
-                        keyCode: event.keyCode,
-                        obj: this.getSuperControl.value,
-                    });
-                    this.getSuperControl.setErrors(null);
-                    this.editInputMode = false;
-                    this.inputConfig.commands.active = false;
-                    this.onBlur();
-                }
-                // Navigation through dropdown
-                else {
-                    this.inputService.dropDownKeyNavigation$.next({
-                        keyCode: event.keyCode,
-                        obj: null,
-                    });
-                }
+                this.inputService.dropDownKeyNavigation$.next({
+                    keyCode: event.keyCode,
+                    data: this.inputConfig,
+                });
 
                 if (this.inputConfig.name == 'Address') {
                     this.input.nativeElement.blur();
@@ -632,7 +583,7 @@ export class TaInputComponent
                 this.input.nativeElement.focus();
                 this.inputService.dropDownKeyNavigation$.next({
                     keyCode: event.keyCode,
-                    obj: null,
+                    data: null,
                 });
             }
         }
@@ -664,7 +615,9 @@ export class TaInputComponent
             this.input.nativeElement.value =
                 this.input.nativeElement.value.trim();
             this.getSuperControl.patchValue(this.input.nativeElement.value);
-        } else {
+        }
+        // not paste
+        else {
             this.input.nativeElement.value = value;
         }
 
@@ -694,7 +647,6 @@ export class TaInputComponent
                     .toString()
                     .split('')
                     .every((value) => {
-                        console.log('every value: ', value);
                         return value === '0';
                     }) &&
                 this.getSuperControl.value.split('').length > 0
@@ -743,6 +695,21 @@ export class TaInputComponent
                 this.getSuperControl.setErrors(null);
             }
         }
+
+        if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
+            if (
+                this.getSuperControl.value
+                    .toString()
+                    .split('')
+                    .every((value) => {
+                        return value === '0';
+                    }) &&
+                this.getSuperControl.value.split('').length > 0
+            ) {
+                this.getSuperControl.patchValue('0');
+                return;
+            }
+        }
     }
 
     public selectionChange(event: any) {
@@ -751,16 +718,17 @@ export class TaInputComponent
         }
     }
 
-    public onEditInput(event?: Event) {
-        if (event) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
+    public onEditInput(event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
 
         this.editInputMode = true;
+        this.inputConfig.dropdownLabelNew = false;
+        this.inputConfig.blackInput = true;
         this.inputConfig.commands.active = true;
         this.focusInput = true;
         this.setInputCursorAtTheEnd(this.input.nativeElement);
+        this.getSuperControl.setErrors({ required: true });
         this.commandEvent.emit({
             data: this.getSuperControl.value,
             action: 'Edit Input',
@@ -770,6 +738,7 @@ export class TaInputComponent
     public onCommands(event: Event, type: string, action: string) {
         event.stopPropagation();
         event.preventDefault();
+
         switch (type) {
             case 'pm-increment-decrement': {
                 const value = convertThousanSepInNumber(
@@ -838,9 +807,12 @@ export class TaInputComponent
                         this.commandEvent.emit({
                             data: this.getSuperControl.value,
                             action: 'confirm',
-                            mode: !this.inputConfig.dropdownLabelNew
-                                ? 'edit'
-                                : 'new',
+                            mode:
+                                !this.inputConfig.dropdownLabelNew &&
+                                this.inputConfig.name !==
+                                    'Input Dropdown Bank Name'
+                                    ? 'edit'
+                                    : 'new',
                         });
                         break;
                     }
@@ -854,7 +826,9 @@ export class TaInputComponent
                 }
                 this.getSuperControl.setErrors(null);
                 this.editInputMode = false;
+                this.inputConfig.dropdownLabelNew = false;
                 this.inputConfig.commands.active = false;
+                this.inputConfig.blackInput = false;
                 this.onBlur();
                 break;
             }
@@ -1000,7 +974,7 @@ export class TaInputComponent
                 'detention-rate',
                 'fuel per miles',
                 'fuel price map',
-            ].includes(this.inputConfig.name.toString().toLowerCase())
+            ].includes(this.inputConfig.name.toLowerCase())
         ) {
             if (
                 this.inputService
@@ -1319,6 +1293,7 @@ export class TaInputComponent
 
         if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
             if (
+                !this.inputSelection &&
                 this.inputService
                     .getInputRegexPattern('hos')
                     .test(String.fromCharCode(event.charCode))
@@ -1328,6 +1303,13 @@ export class TaInputComponent
                     this.inputConfig.max
                 );
             } else {
+                if (this.inputSelection) {
+                    this.getSuperControl.patchValue(
+                        String.fromCharCode(event.charCode)
+                    );
+                    this.inputSelection = false;
+                }
+
                 event.preventDefault();
                 return false;
             }
