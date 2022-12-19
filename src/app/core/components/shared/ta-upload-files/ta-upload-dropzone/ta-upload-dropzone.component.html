@@ -1,11 +1,13 @@
 <!-- Dropzone -->
+<div class="dropzone_focus" #dropzoneFocusElem [class.active]="windowDragOver" *ngIf="dropzoneFocus && windowDragOver"></div>
 <div
     class="ta-upload-dropzone"
     *ngIf="!unSupporetedType"
     [class.required]="isRequired && showRequired && !textChangeOverModal"
+    [class.dropzone_focused]="dropzoneFocus && windowDragOver"
 >
     <svg-icon
-        *ngIf="dropzoneClose"
+        *ngIf="dropzoneClose && (dropzoneFocus && !windowDragOver)"
         class="ta-upload-dropzone-close"
         [src]="'/assets/svg/common/ic_x.svg'"
         (click)="dropZoneClose()"

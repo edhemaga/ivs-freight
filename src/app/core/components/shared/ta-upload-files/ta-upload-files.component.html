@@ -53,13 +53,14 @@
         </div>
     </app-ta-upload-files-carousel>
 
-    <div class="documents_holder" *ngIf="files?.length && dontUseSlider">
+    <div class="documents_holder" *ngIf="dontUseSlider">
         <app-ta-upload-dropzone
             *ngIf="showDropzone"
             (onFileEvent)="onUploadFiles($event)"
             [isRequired]="isRequired"
             [showRequired]="showRequired"
             [dropzoneClose]="true"
+            [dropzoneFocus]="dropzoneFocus"
             (closeDropzone)="dropZoneClose()"
         ></app-ta-upload-dropzone>
         <div
@@ -94,5 +95,6 @@
         (onFileEvent)="onUploadFiles($event)"
         [isRequired]="isRequired"
         [showRequired]="showRequired"
+        [dropzoneFocus]="dropzoneFocus"
     ></app-ta-upload-dropzone>
 </div>

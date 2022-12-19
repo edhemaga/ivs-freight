@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
 
@@ -8,6 +8,7 @@ import { SettingsCompanyService } from '../state/company-state/settings-company.
     styleUrls: ['./settings-document.component.scss'],
 })
 export class SettingsDocumentComponent implements OnInit {
+    @ViewChild('uploadFiles', { static: false }) public uploadFiles: any;
     private destroy$ = new Subject<void>();
     constructor(private settingsCompanyService: SettingsCompanyService) {}
 
@@ -34,7 +35,7 @@ export class SettingsDocumentComponent implements OnInit {
     viewData: any[] = [];
     columns: any[] = [];
     resizeObserver: any;
-    tableContainerWidth: number = 0;
+    tableContainerWidth: number = 1832;
 
     ngOnInit() {
         this.companyDocumentsGet();
@@ -79,12 +80,12 @@ export class SettingsDocumentComponent implements OnInit {
     }
 
     public onFilesEvent(event: any) {
-        this.documents = event.files;
-
+        //this.documents = event.files;
+        this.tableData[0].length = event.files.length;
         switch (event.action) {
             case 'add': {
                 let documents = [];
-                this.documents.map((item) => {
+                event.files.map((item) => {
                     if (item.realFile) {
                         documents.push(item.realFile);
                     }
@@ -98,7 +99,17 @@ export class SettingsDocumentComponent implements OnInit {
                 this.settingsCompanyService
                 .addCompanyDocuments(newData)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe();
+                .subscribe((res: any)=>{
+                    if(this.uploadFiles?.files?.length) {
+                        this.uploadFiles.files.map((item, index)=>{
+                            res.uploads.map((upl, indx)=>{
+                                if (item.realFile?.name == upl.fileName) {
+                                    item.fileId = upl.fileId;
+                                }
+                            });
+                        });
+                    }
+                });
                 break;
             }
             case 'delete': {

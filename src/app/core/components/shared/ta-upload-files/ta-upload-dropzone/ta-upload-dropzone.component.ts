@@ -1,9 +1,11 @@
 import {
     Component,
+    ElementRef,
     EventEmitter,
     HostListener,
     Input,
     Output,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { UploadFile } from '../ta-upload-file/ta-upload-file.component';
@@ -31,6 +33,8 @@ export interface DropZoneConfig {
 })
 export class TaUploadDropzoneComponent {
     private files: UploadFile[] = [];
+    @ViewChild('dropzoneFocusElem')
+    dropzoneFocusElem: ElementRef;
 
     @Input() dropZoneConfig: DropZoneConfig = {
         dropZoneType: 'files', // files | image | media
@@ -46,6 +50,7 @@ export class TaUploadDropzoneComponent {
     @Input() isRequired: boolean = false;
     @Input() showRequired: boolean = false;
     @Input() dropzoneClose: boolean = false;
+    @Input() dropzoneFocus: boolean = false;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[];
@@ -60,6 +65,8 @@ export class TaUploadDropzoneComponent {
     @Output() closeDropzone = new EventEmitter<{}>();
 
     public textChangeOverModal: boolean = false;
+    public windowDragOver: boolean = false;
+    public hoveredZone: boolean = false;
 
     public unSupporetedType: boolean = false;
     public supportedExtensions: string[] = [];
@@ -69,6 +76,7 @@ export class TaUploadDropzoneComponent {
         evt.stopPropagation();
         this.onDropBackground.emit({ action: 'dragover', value: true });
         this.textChangeOverModal = true;
+        this.windowDragOver = true;
     }
 
     @HostListener('dragleave', ['$event'])
@@ -87,6 +95,25 @@ export class TaUploadDropzoneComponent {
 
         await this.onFileUpload(evt.dataTransfer.files);
         this.textChangeOverModal = false;
+        this.windowDragOver = false;
+    }
+
+    @HostListener('window:dragenter', ['$event'])
+        onWindowDragEnter(event: any): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.windowDragOver = true;
+        const target = this.dropzoneFocusElem?.nativeElement;
+        if(target) {
+            target.addEventListener('dragleave', (event) => {
+                setTimeout(()=>{
+                    if(!this.textChangeOverModal) {
+                        this.windowDragOver = false;
+                        target.removeAllListeners();
+                    }
+                },100);
+            });
+        }
     }
 
     public async onFileUpload(files: FileList) {

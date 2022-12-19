@@ -36,6 +36,7 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() hasLandscapeOption: boolean = false;
     @Input() showDropzone: boolean = false;
     @Input() dontUseSlider: boolean = false;
+    @Input() dropzoneFocus: boolean = false;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[] | UploadFile | any;
@@ -130,7 +131,7 @@ export class TaUploadFilesComponent implements OnInit {
                     this.currentSlide = 0;
                 }
 
-                if (isLastDeleted) {
+                if (isLastDeleted && this.modalCarousel) {
                     const slideTo =
                         this.modalCarousel.customClass == 'large'
                             ? 3
