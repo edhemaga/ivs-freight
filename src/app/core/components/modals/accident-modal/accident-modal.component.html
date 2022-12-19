@@ -357,6 +357,7 @@
                         <app-ta-custom-card
                             [cardName]="'Violation'"
                             [isCardOpen]="violations.length > 0"
+                            [disabledCard]="!violations.length"
                             [hasScrollBody]="violations.length > 10"
                         >
                             <div
@@ -439,6 +440,7 @@
                         [isCardOpen]="insurances.length > 0"
                         [hasBodyData]="insurances.length > 0"
                         [hasScrollBody]="false"
+                        [disabledCard]="!insurances.length"
                         (onActionEvent)="addInsurance($event)"
                     >
                         <div

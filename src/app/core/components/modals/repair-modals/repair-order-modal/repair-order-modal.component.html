@@ -193,6 +193,7 @@
                 [isCardOpen]="items.length > 0"
                 [hasBodyData]="items.length > 0"
                 [hasScrollBody]="items.length > 10"
+                [disabledCard]="!items.length"
                 (onActionEvent)="addItems($event)"
             >
                 <div

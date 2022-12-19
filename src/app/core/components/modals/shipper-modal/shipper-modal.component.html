@@ -334,6 +334,7 @@
                         [hasScrollBody]="shipperContacts.length > 10"
                         [hasBodyData]="shipperContacts.length > 0"
                         (onActionEvent)="addShipperContacts($event)"
+                        [disabledCard]="!shipperContacts.length"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'

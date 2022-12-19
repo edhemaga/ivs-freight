@@ -477,6 +477,7 @@
                         [hasScrollBody]="brokerContacts.length > 10"
                         [hasBodyData]="brokerContacts.length > 0"
                         (onActionEvent)="addBrokerContacts($event)"
+                        [disabledCard]="!brokerContacts.length"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'

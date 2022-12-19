@@ -119,11 +119,12 @@
             [actionText]="'ADD PHONE'"
             [isCardOpen]="contactPhones.length > 0"
             [hasBodyData]="contactPhones.length > 0"
-            (onActionEvent)="addContactPhones($event)"
+            [disabledCard]="!contactPhones.length"
             [animationMarginParams]="{
                 marginTop: '10px',
                 marginBottom: '12px'
             }"
+            (onActionEvent)="addContactPhones($event)"
         >
             <div
                 formArrayName="contactPhones"
@@ -266,11 +267,12 @@
             [actionText]="'ADD EMAIL'"
             [isCardOpen]="contactEmails.length > 0"
             [hasBodyData]="contactEmails.length > 0"
-            (onActionEvent)="addContactEmails($event)"
+            [disabledCard]="!contactEmails.length"
             [animationMarginParams]="{
                 marginTop: '10px',
                 marginBottom: '12px'
             }"
+            (onActionEvent)="addContactEmails($event)"
         >
             <div
                 formArrayName="contactEmails"

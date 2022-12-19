@@ -360,6 +360,7 @@
                             [cardName]="'Violation'"
                             [isCardOpen]="violations.length > 0"
                             [hasScrollBody]="violations.length > 10"
+                            [disabledCard]="!violations.length"
                             [animationMarginParams]="{
                                 marginTop: '18px',
                                 marginBottom: '5px'

@@ -179,11 +179,12 @@
                         [hasScrollBody]="departmentContacts.length > 10"
                         [hasBodyData]="departmentContacts.length > 0"
                         (onOpenCard)="isDepartmentContactCardOpen = $event"
-                        (onActionEvent)="addDepartmentContacts($event)"
+                        [disabledCard]="!departmentContacts.length"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '0px'
                         }"
+                        (onActionEvent)="addDepartmentContacts($event)"
                     >
                         <div
                             formArrayName="departmentContacts"

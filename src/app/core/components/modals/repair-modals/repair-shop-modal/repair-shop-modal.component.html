@@ -381,11 +381,12 @@
                         [isCardOpen]="contacts.length > 0"
                         [hasScrollBody]="contacts.length > 10"
                         [hasBodyData]="contacts.length > 0"
-                        (onActionEvent)="addContacts($event)"
+                        [disabledCard]="!contacts.length"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
                         }"
+                        (onActionEvent)="addContacts($event)"
                     >
                         <div
                             formArrayName="contacts"

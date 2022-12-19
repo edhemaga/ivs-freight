@@ -28,6 +28,7 @@
             [isCommentData]="true"
             [isCardOpen]="defaultPMs.length > 0"
             [hasScrollBody]="defaultPMs.length > 18"
+            [disabledCard]="!defaultPMs.length"
             (onActionEvent)="
                 addPMs(null, 'new-pm', editData?.header === 'Truck' ? 5000 : 1)
             "

@@ -369,6 +369,7 @@
                         [hasBodyData]="departmentContacts.length"
                         [isCardOpen]="departmentContacts.length"
                         [hasScrollBody]="departmentContacts.length > 10"
+                        [disabledCard]="!departmentContacts.length"
                         (onActionEvent)="addDepartmentContacts($event)"
                     >
                         <div
@@ -490,6 +491,7 @@
                         [hasBodyData]="bankAccounts.length"
                         [isCardOpen]="bankAccounts.length"
                         [hasScrollBody]="bankAccounts.length > 10"
+                        [disabledCard]="!bankAccounts.length"
                         (onActionEvent)="addBankAccount($event)"
                     >
                         <div
@@ -619,6 +621,7 @@
                         [hasBodyData]="bankCards.length"
                         [isCardOpen]="bankCards.length"
                         [hasScrollBody]="bankCards.length > 10"
+                        [disabledCard]="!bankCards.length"
                         (onActionEvent)="addBankCard($event)"
                     >
                         <div

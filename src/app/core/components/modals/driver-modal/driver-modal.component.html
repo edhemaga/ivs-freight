@@ -653,11 +653,12 @@
                         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                         [isCardOpen]="offDutyLocations.length > 0"
                         [hasBodyData]="offDutyLocations.length > 0"
-                        (onActionEvent)="addOffDutyLocation($event)"
+                        [disabledCard]="!offDutyLocations.length"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '12px'
                         }"
+                        (onActionEvent)="addOffDutyLocation($event)"
                     >
                         <div
                             formArrayName="offDutyLocations"
