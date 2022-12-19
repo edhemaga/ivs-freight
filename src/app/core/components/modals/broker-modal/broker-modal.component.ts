@@ -148,6 +148,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public addNewAfterSave: boolean = false;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -165,6 +167,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.followIsBillingAddressSame();
 
         if (this.editData?.id) {
+            this.disableCardAnimation = true;
             this.editBrokerById(this.editData.id);
             this.tabs.push({
                 id: 3,
@@ -1054,6 +1057,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                   checked: false,
                               }
                     );
+
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

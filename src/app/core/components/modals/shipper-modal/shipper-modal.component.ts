@@ -99,6 +99,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public addNewAfterSave: boolean = false;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -114,6 +116,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.getShipperDropdowns();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.editShipperById(this.editData.id);
             this.tabs.push({
                 id: 3,
@@ -664,6 +667,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         upRatingCount: res.upCount,
                         currentCompanyUserRating: res.currentCompanyUserRating,
                     });
+
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

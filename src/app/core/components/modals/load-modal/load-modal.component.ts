@@ -350,6 +350,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public deliveryDateRange: boolean = false;
     public isActiveDeliveryStop: boolean = false;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -2275,7 +2277,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getLoadById(id: number) {}
+    private getLoadById(id: number) {
+        setTimeout(() => {
+            this.disableCardAnimation = false;
+        }, 1000);
+    }
 
     private addLoad() {
         const { ...form } = this.loadForm.value;

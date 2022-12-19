@@ -95,6 +95,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     public loadingOwnerEin: boolean = false;
 
+    public disableCardAnimation: boolean = false;
+
     public tabs: any[] = [
         {
             id: 1,
@@ -166,6 +168,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.onTwicTypeSelected();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.editDriverById(this.editData.id);
         }
 
@@ -1908,6 +1911,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 res.address;
                         }
                     }
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

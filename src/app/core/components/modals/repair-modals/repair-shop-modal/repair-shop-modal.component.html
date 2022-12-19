@@ -154,6 +154,7 @@
                     <app-ta-custom-card
                         [hasCounter]="pickedServices() ? pickedServices() : 0"
                         [cardName]="'Service'"
+                        [disableAnimation]="disableCardAnimation"
                         [isCardOpen]="true"
                     >
                         <div class="repair-shop-services">
@@ -176,6 +177,7 @@
                         <app-ta-custom-card
                             [cardName]="'Work Hours'"
                             [isCardOpen]="true"
+                            [disableAnimation]="disableCardAnimation"
                             [hasBodyData]="true"
                         >
                             <div
@@ -283,6 +285,7 @@
                     <app-ta-custom-card
                         [cardName]="'Bank Account'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -344,6 +347,7 @@
                                 documents.length ? documents.length : 0
                             "
                             [cardName]="'Documents'"
+                            [disableAnimation]="disableCardAnimation"
                             [isCardOpen]="documents.length > 0"
                         >
                             <app-ta-upload-files
@@ -382,6 +386,7 @@
                         [hasScrollBody]="contacts.length > 10"
                         [hasBodyData]="contacts.length > 0"
                         [disabledCard]="!contacts.length"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
@@ -526,11 +531,12 @@
                         [hasBodyData]="reviews.length > 0"
                         [hasScrollBody]="reviews.length > 6"
                         [disableMultipleReviews]="disableOneMoreReview"
-                        (onActionEvent)="createReview()"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '12px'
                         }"
+                        (onActionEvent)="createReview()"
                     >
                         <div class="no-review-broker" *ngIf="!reviews.length">
                             <svg-icon

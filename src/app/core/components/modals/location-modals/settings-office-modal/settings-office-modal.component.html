@@ -180,6 +180,7 @@
                         [hasBodyData]="departmentContacts.length > 0"
                         (onOpenCard)="isDepartmentContactCardOpen = $event"
                         [disabledCard]="!departmentContacts.length"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '0px'

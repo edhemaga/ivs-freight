@@ -146,6 +146,7 @@
                     <app-ta-custom-card
                         [cardName]="'Payroll'"
                         [isCardOpen]="!driverForm.get('isOwner').value"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -654,6 +655,7 @@
                         [isCardOpen]="offDutyLocations.length > 0"
                         [hasBodyData]="offDutyLocations.length > 0"
                         [disabledCard]="!offDutyLocations.length"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '12px'
@@ -738,6 +740,7 @@
                                 documents?.length ? documents.length : 0
                             "
                             [cardName]="'Document'"
+                            [disableAnimation]="disableCardAnimation"
                             [isCardOpen]="documents?.length > 0"
                         >
                             <app-ta-upload-files
@@ -791,6 +794,7 @@
                     <app-ta-custom-card
                         [cardName]="'Emergency Contact'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -856,6 +860,7 @@
                     <app-ta-custom-card
                         [cardName]="'Profile Picture'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                     >
                         <app-ta-logo-change
                             [customClass]="'modal-container-M'"
@@ -868,6 +873,7 @@
                         <app-ta-custom-card
                             [cardName]="'Cards & MVR Exp.'"
                             [isCardOpen]="true"
+                            [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '18px',
                                 marginBottom: '22px'
@@ -942,6 +948,7 @@
                     <app-ta-custom-card
                         [cardName]="'Notification'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                     >
                         <div class="driver-notification">
                             <p>GENERAL</p>

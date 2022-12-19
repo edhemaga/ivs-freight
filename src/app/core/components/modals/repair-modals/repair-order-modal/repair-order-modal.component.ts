@@ -42,6 +42,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: any;
 
+    public disableCardAnimation: boolean = false;
+
     public repairOrderForm: FormGroup;
     public selectedHeaderTab: number = 1;
     public headerTabs = [
@@ -127,11 +129,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         // storage data
         if (this.editData?.storageData) {
+            this.disableCardAnimation = true;
             this.populateForm(this.editData?.storageData);
         }
 
         // Edit mode
         if (this.editData?.type?.includes('edit')) {
+            this.disableCardAnimation = true;
             this.editRepairById(this.editData.id);
         }
     }
@@ -998,7 +1002,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }
                 clearTimeout(timeout2);
             }, 250);
-
+            setTimeout(() => {
+                this.disableCardAnimation = false;
+            }, 1000);
             clearTimeout(timeout);
         }, 400);
     }
@@ -1170,6 +1176,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             this.itemsCounter = res.items[i].id;
                         }
                     }
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

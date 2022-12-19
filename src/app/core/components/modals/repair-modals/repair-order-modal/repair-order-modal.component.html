@@ -194,6 +194,7 @@
                 [hasBodyData]="items.length > 0"
                 [hasScrollBody]="items.length > 10"
                 [disabledCard]="!items.length"
+                [disableAnimation]="disableCardAnimation"
                 (onActionEvent)="addItems($event)"
             >
                 <div
@@ -397,6 +398,7 @@
         <app-ta-custom-card
             [hasCounter]="pickedServices() ? pickedServices() : 0"
             [cardName]="'Service'"
+            [disableAnimation]="disableCardAnimation"
             [isCardOpen]="true"
         >
             <div class="repair-shop-services">
@@ -415,6 +417,7 @@
             <app-ta-custom-card
                 [hasCounter]="documents.length ? documents.length : 0"
                 [cardName]="'Documents'"
+                [disableAnimation]="disableCardAnimation"
                 [isCardOpen]="documents.length > 0"
             >
                 <app-ta-upload-files

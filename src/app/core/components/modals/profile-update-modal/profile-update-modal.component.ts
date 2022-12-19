@@ -38,6 +38,8 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
     public profileUserForm: FormGroup;
 
+    public disableCardAnimation: boolean = false;
+
     public tabs: any[] = [
         {
             id: 1,
@@ -81,6 +83,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.user = JSON.parse(localStorage.getItem('user'));
         this.createForm();
+        this.disableCardAnimation = true;
         this.getUserById();
         this.changeCheckboxDetection();
     }
@@ -283,6 +286,9 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
                         avatar: res.avatar ? res.avatar : null,
                     });
                     this.selectedAddress = res.address;
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

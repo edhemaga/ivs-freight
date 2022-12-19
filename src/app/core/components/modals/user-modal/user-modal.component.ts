@@ -151,6 +151,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     public userStatus: boolean = true;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -167,6 +169,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         this.onBankSelected();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.getUserById(this.editData.id);
         }
 
@@ -776,6 +779,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     );
 
                     this.isPhoneExtExist = !!res.extensionPhone;
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

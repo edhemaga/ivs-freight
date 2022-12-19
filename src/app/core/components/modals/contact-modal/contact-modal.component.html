@@ -120,6 +120,7 @@
             [isCardOpen]="contactPhones.length > 0"
             [hasBodyData]="contactPhones.length > 0"
             [disabledCard]="!contactPhones.length"
+            [disableAnimation]="disableCardAnimation"
             [animationMarginParams]="{
                 marginTop: '10px',
                 marginBottom: '12px'
@@ -268,6 +269,7 @@
             [isCardOpen]="contactEmails.length > 0"
             [hasBodyData]="contactEmails.length > 0"
             [disabledCard]="!contactEmails.length"
+            [disableAnimation]="disableCardAnimation"
             [animationMarginParams]="{
                 marginTop: '10px',
                 marginBottom: '12px'
@@ -409,6 +411,7 @@
         <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
                 [cardName]="'Contact Image'"
+                [disableAnimation]="disableCardAnimation"
                 [isCardOpen]="true"
             >
                 <app-ta-logo-change

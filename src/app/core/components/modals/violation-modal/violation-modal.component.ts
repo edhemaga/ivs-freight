@@ -38,6 +38,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     public violationForm: FormGroup;
 
+    public disableCardAnimation: boolean = false;
+
     public selectedTab: number = 1;
     public tabs: any[] = [
         {
@@ -175,6 +177,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.editViolationById(this.editData.id);
         }
     }
@@ -618,6 +621,9 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             }
                         );
                     }
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

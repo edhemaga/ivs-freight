@@ -67,6 +67,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     public disabledFormValidation: boolean = false;
 
+    public disableCardAnimation: boolean = false;
+
     public dropZoneConfig: DropZoneConfig = {
         dropZoneType: 'image',
         dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
@@ -105,6 +107,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         this.followSharedCheckbox();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.getCompanyContactById(this.editData.id);
         }
     }
@@ -393,6 +396,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
                     this.selectedAddress = res.address;
                     // TODO: shared departments label selected
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });
