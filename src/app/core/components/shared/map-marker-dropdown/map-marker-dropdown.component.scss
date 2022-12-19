@@ -377,11 +377,12 @@
                 justify-content: center;
                 align-items: center;
 
-                width: 22px;
+                min-width: 22px;
                 height: 22px;
                 background: #424242;
-                border-radius: 50%;
+                border-radius: 11px;
                 user-select: none;
+                padding: 0 6px;
 
                 .header-text {
                     color: #fff;

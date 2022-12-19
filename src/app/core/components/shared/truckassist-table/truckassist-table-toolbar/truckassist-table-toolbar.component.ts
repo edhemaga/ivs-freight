@@ -34,45 +34,39 @@ export class TruckassistTableToolbarComponent
     tableLocked: boolean = true;
     optionsPopupContent: any[] = [
         {
+            text: 'Columns',
+            svgPath: 'assets/svg/truckassist-table/columns-new.svg',
+            active: false,
+            hide: false,
+            showBackToList: false,
+            hasOwnSubOpions: true,
+            backToListIcon:
+                'assets/svg/truckassist-table/arrow-back-to-list.svg',
+        },
+        {
             text: 'Unlock table',
-            svgPath: 'assets/svg/truckassist-table/lock.svg',
-            width: 14,
-            height: 16,
-            show: true,
+            svgPath: 'assets/svg/truckassist-table/lock-new.svg',
+            active: false,
+            hide: false,
+        },
+        {
+            text: 'Reset Table',
+            svgPath: 'assets/svg/truckassist-table/reset-icon.svg',
+            isInactive: true,
+            active: false,
+            hide: false,
         },
         {
             text: 'Import',
-            svgPath: 'assets/svg/truckassist-table/import.svg',
-            width: 16,
-            height: 16,
-            show: true,
+            svgPath: 'assets/svg/truckassist-table/import-new.svg',
+            active: false,
+            hide: false,
         },
         {
             text: 'Export',
-            svgPath: 'assets/svg/truckassist-table/export.svg',
-            width: 16,
-            height: 16,
-            show: true,
-        },
-        {
-            text: 'Reset Columns',
-            svgPath: 'assets/svg/truckassist-table/new-reset-icon.svg',
-            width: 16,
-            height: 16,
-            show: true,
-        },
-        {
-            text: 'Columns',
-            svgPath: 'assets/svg/truckassist-table/columns.svg',
-            width: 16,
-            height: 16,
+            svgPath: 'assets/svg/truckassist-table/export-new.svg',
             active: false,
-            additionalDropIcon: {
-                path: 'assets/svg/truckassist-table/arrow-columns-drop.svg',
-                width: 6,
-                height: 8,
-            },
-            show: true,
+            hide: false,
         },
     ];
     tableRowsSelected: any[] = [];
@@ -84,6 +78,7 @@ export class TruckassistTableToolbarComponent
     timeOutToaggleGroupColumn: any;
     columnsOptions: any[] = [];
     columnsOptionsWithGroups: any[] = [];
+    columnsOptionsWithGroupsActive: number = -1;
     isMapShowning: boolean = false;
     tableConfigurationType: TableType;
     showResetOption: boolean;
@@ -171,7 +166,9 @@ export class TruckassistTableToolbarComponent
             localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
         );
 
-        this.optionsPopupContent[3].show = tableColumnsConfig ? true : false;
+        this.optionsPopupContent[2].isInactive = tableColumnsConfig
+            ? false
+            : true;
 
         this.tableConfigurationType = td.tableConfiguration;
     }
@@ -207,7 +204,7 @@ export class TruckassistTableToolbarComponent
                     c.ngTemplate !== 'note' &&
                     c.ngTemplate !== 'actions'
                 ) {
-                    columnsSumWidth += 22;
+                    columnsSumWidth += 6;
                 }
             }
 
@@ -272,10 +269,6 @@ export class TruckassistTableToolbarComponent
                             ''
                         ),
                     });
-
-                    if(!column.hidden){
-                        this.columnsOptionsWithGroups[index].isOpen = true;
-                    }
                 } else {
                     this.columnsOptionsWithGroups.push({
                         ...column,
@@ -340,21 +333,22 @@ export class TruckassistTableToolbarComponent
         }
 
         this.optionsPopupOpen = optionsPopup.isOpen();
-        this.optionsPopupContent[4].active = false;
     }
 
     //  On Toolbar Option Actions
     onOptions(action: any) {
         if (action.text === 'Unlock table' || action.text === 'Lock table') {
+            action.active = !action.active;
+
             this.tableLocked = !this.tableLocked;
 
-            this.optionsPopupContent[0].text = this.tableLocked
+            this.optionsPopupContent[1].text = this.tableLocked
                 ? 'Unlock table'
                 : 'Lock table';
 
-            this.optionsPopupContent[0].svgPath = this.tableLocked
-                ? 'assets/svg/truckassist-table/lock.svg'
-                : 'assets/svg/truckassist-table/unlocked-table.svg';
+            this.optionsPopupContent[1].svgPath = this.tableLocked
+                ? 'assets/svg/truckassist-table/lock-new.svg'
+                : 'assets/svg/truckassist-table/new-unlocked-table.svg';
 
             this.tableService.sendUnlockTable({
                 toaggleUnlockTable: true,
@@ -374,7 +368,26 @@ export class TruckassistTableToolbarComponent
             }
         } else if (action.text === 'Columns') {
             action.active = !action.active;
-        } else if (action.text === 'Reset Columns') {
+
+            console.log(action.active);
+
+            this.optionsPopupContent.map((option) => {
+                if (option.text !== 'Columns') {
+                    option.hide = action.active;
+                }
+
+                return option;
+            });
+        } else if (action.text === 'Reset Table') {
+            this.onResetTable();
+        } else {
+            alert('Treba da se odradi!');
+        }
+    }
+
+    // Reset Table
+    onResetTable() {
+        if (!this.optionsPopupContent[2].isInactive) {
             this.tableReseting = true;
 
             localStorage.removeItem(
@@ -382,12 +395,6 @@ export class TruckassistTableToolbarComponent
             );
 
             this.tableService.sendResetColumns(true);
-        } else {
-            alert('Treba da se odradi!');
-        }
-
-        if (action.text !== 'Columns') {
-            this.optionsPopup.close();
         }
     }
 
@@ -416,8 +423,23 @@ export class TruckassistTableToolbarComponent
 
     // Open Column Grop Dropdown
     openColumnsGroupDropdown(index: number) {
+        if (
+            this.columnsOptionsWithGroupsActive !== index &&
+            this.columnsOptionsWithGroupsActive !== -1
+        ) {
+            this.columnsOptionsWithGroups[
+                this.columnsOptionsWithGroupsActive
+            ].isOpen = false;
+        }
+
         this.columnsOptionsWithGroups[index].isOpen =
             !this.columnsOptionsWithGroups[index].isOpen;
+
+        this.columnsOptionsWithGroupsActive = this.columnsOptionsWithGroups[
+            index
+        ].isOpen
+            ? index
+            : -1;
     }
 
     // Toaggle All In Group

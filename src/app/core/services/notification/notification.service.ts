@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 const notificationOptions: Partial<IndividualConfig> = {
     progressBar: false,
     progressAnimation: 'increasing',
-    positionClass: 'toast-bottom-left',
+    positionClass: 'toast-bottom-center',
     tapToDismiss: false,
     timeOut: 3000,
     extendedTimeOut: 1500,
