@@ -19,6 +19,7 @@ import { TrucksMinimalListStore } from './truck-details-minima-list-state/truck-
 import { TruckItemStore } from './truck-details-state/truck.details.store';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrucksDetailsListStore } from './truck-details-list-state/truck-details-list.store';
+import { FormDataService } from '../../../services/formData/form-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class TruckTService implements OnDestroy {
@@ -40,7 +41,8 @@ export class TruckTService implements OnDestroy {
         private tdlStore: TrucksDetailsListStore,
         private RegistrationService: RegistrationService,
         private TitleService: TitleService,
-        private InspectionService: InspectionService
+        private InspectionService: InspectionService,
+        private formDataService: FormDataService
     ) {}
 
     //Get Truck Minimal List
@@ -77,7 +79,8 @@ export class TruckTService implements OnDestroy {
     /* Observable<CreateTruckResponse> */
 
     public addTruck(data: any): Observable<any> {
-        return this.truckService.apiTruckPost(data).pipe(
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.truckService.apiTruckPost().pipe(
             tap((res: any) => {
                 const subTruck = this.getTruckById(res.id)
                     .pipe(takeUntil(this.destroy$))
@@ -113,7 +116,8 @@ export class TruckTService implements OnDestroy {
     }
 
     public updateTruck(data: any): Observable<any> {
-        return this.truckService.apiTruckPut(data).pipe(
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.truckService.apiTruckPut().pipe(
             tap(() => {
                 let storedTruckData = {
                     ...this.truckItem?.getValue()?.entities[data.id],

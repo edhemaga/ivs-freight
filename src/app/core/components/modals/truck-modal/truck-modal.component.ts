@@ -203,6 +203,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             dcInverter: [false],
             blower: [false],
             pto: [false],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.truckForm);

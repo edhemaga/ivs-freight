@@ -306,13 +306,13 @@ export class OwnerInfoComponent implements OnInit, OnDestroy {
         this.selectedBank = bank.data;
 
         this.bankVerificationService
-            .createBank({ name: this.selectedBank.name })
+            .createBank({ name: bank.data.name })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
                     this.selectedBank = {
                         id: res.id,
-                        name: this.selectedBank.name,
+                        name: bank.data.name,
                     };
 
                     this.banksDropdownList = [

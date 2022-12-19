@@ -56,18 +56,15 @@
                                     image: false,
                                     url: selectedTrailerType?.logoName,
                                     template: 'trailer',
-                                    class: selectedTrailerType?.name
-                                        ?.toLowerCase()
-                                        .includes('liquid')
-                                        ? 'tanker-liquid'
+                                    class: [
+                                        'Tanker',
+                                        'Pneumatic Tanker'
+                                    ].includes(selectedTrailerType?.name)
+                                        ? 'tanker'
                                         : selectedTrailerType?.name
                                               ?.toLowerCase()
                                               ?.includes('rgn')
                                         ? 'low-boy-rgn'
-                                        : selectedTrailerType?.name
-                                              ?.toLowerCase()
-                                              .includes('dry-bulk')
-                                        ? 'tanker-dry-bulk'
                                         : selectedTrailerType?.name
                                               ?.trim()
                                               .replace(' ', '')
@@ -395,7 +392,7 @@
                     <!-------------------------------- SECOND ROW -------------------------------->
                     <div class="row">
                         <div
-                            class="col-4"
+                            class="col-3"
                             *ngIf="
                                 trailerForm.get('trailerTypeId').value ===
                                 'Reefer'
@@ -419,14 +416,11 @@
                         </div>
                         <div
                             *ngIf="
-                                (trailerForm.get('trailerTypeId').value ===
-                                    'Dry Van' ||
-                                    trailerForm.get('trailerTypeId').value ===
-                                        'Container') &&
-                                trailerForm.get('trailerTypeId').value !==
-                                    'Reefer'
+                                ['Dry Van', 'Container'].includes(
+                                    trailerForm.get('trailerTypeId').value
+                                )
                             "
-                            class="col-4"
+                            class="col-3"
                         >
                             <app-ta-input-dropdown
                                 formControlName="doorType"
@@ -445,11 +439,26 @@
                             ></app-ta-input-dropdown>
                         </div>
                         <div
-                            class="col-4"
                             *ngIf="
-                                trailerForm
-                                    .get('trailerTypeId')
-                                    .value?.includes('Tanker')
+                                [
+                                    'Tanker',
+                                    'Pneumatic Tanker',
+                                    'Reefer',
+                                    'Dry Van',
+                                    'Container',
+                                    'Side Kit',
+                                    'Conestoga',
+                                    'Dumper'
+                                ].includes(
+                                    trailerForm.get('trailerTypeId').value
+                                )
+                            "
+                            [ngClass]="
+                                ['Reefer', 'Dry Van', 'Container'].includes(
+                                    trailerForm.get('trailerTypeId').value
+                                )
+                                    ? 'col-3'
+                                    : 'col-4'
                             "
                         >
                             <app-ta-input
@@ -470,16 +479,24 @@
                         </div>
                         <div
                             class="{{
-                                trailerForm.get('trailerTypeId').value ===
-                                    'Dry Van' ||
-                                trailerForm.get('trailerTypeId').value ===
-                                    'Container' ||
-                                trailerForm.get('trailerTypeId').value ===
-                                    'Reefer' ||
-                                trailerForm
-                                    .get('trailerTypeId')
-                                    .value?.includes('Tanker')
-                                    ? 'col-4'
+                                [
+                                    'Tanker',
+                                    'Pneumatic Tanker',
+                                    'Side Kit',
+                                    'Conestoga',
+                                    'Dumper'
+                                ].includes(
+                                    trailerForm.get('trailerTypeId').value
+                                )
+                                    ? 'col-4 no-p-left'
+                                    : [
+                                          'Dry Van',
+                                          'Container',
+                                          'Reefer'
+                                      ].includes(
+                                          trailerForm.get('trailerTypeId').value
+                                      )
+                                    ? 'col-3 no-p-left'
                                     : 'col-6'
                             }}"
                         >
@@ -488,7 +505,7 @@
                                 [inputConfig]="{
                                     name: 'Empty Weight',
                                     type: 'text',
-                                    label: 'Empty Weight',
+                                    label: 'Empty Wgt.',
                                     minLength: 4,
                                     maxLength: 6,
                                     placeholderText: 'ibs',
@@ -503,16 +520,24 @@
                         </div>
                         <div
                             class="{{
-                                trailerForm.get('trailerTypeId').value ===
-                                    'Dry Van' ||
-                                trailerForm.get('trailerTypeId').value ===
-                                    'Container' ||
-                                trailerForm.get('trailerTypeId').value ===
-                                    'Reefer' ||
-                                trailerForm
-                                    .get('trailerTypeId')
-                                    .value?.includes('Tanker')
+                                [
+                                    'Tanker',
+                                    'Pneumatic Tanker',
+                                    'Side Kit',
+                                    'Conestoga',
+                                    'Dumper'
+                                ].includes(
+                                    trailerForm.get('trailerTypeId').value
+                                )
                                     ? 'col-4 no-p-left'
+                                    : [
+                                          'Dry Van',
+                                          'Container',
+                                          'Reefer'
+                                      ].includes(
+                                          trailerForm.get('trailerTypeId').value
+                                      )
+                                    ? 'col-3 no-p-left'
                                     : 'col-6'
                             }}"
                         >

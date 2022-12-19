@@ -19,6 +19,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { TrailerItemStore } from './trailer-details-state/trailer-details.store';
 import { TrailersMinimalListQuery } from './trailer-minimal-list-state/trailer-minimal.query';
 import { TrailerDetailsListStore } from './trailer-details-list-state/trailer-details-list.store';
+import { FormDataService } from '../../../services/formData/form-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerTService implements OnDestroy {
@@ -39,12 +40,14 @@ export class TrailerTService implements OnDestroy {
         private tadl: TrailerDetailsListStore,
         private RegistrationService: RegistrationService,
         private TitleService: TitleService,
-        private InspectionService: InspectionService
+        private InspectionService: InspectionService,
+        private formDataService: FormDataService
     ) {}
 
     /* Observable<CreateTrailerResponse> */
     public addTrailer(data: any): Observable<any> {
-        return this.trailerService.apiTrailerPost(data).pipe(
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.trailerService.apiTrailerPost().pipe(
             tap((res: any) => {
                 console.log('---called here---');
                 const subTrailer = this.getTrailerById(res.id)
@@ -116,7 +119,8 @@ export class TrailerTService implements OnDestroy {
     }
 
     public updateTrailer(data: any): Observable<any> {
-        return this.trailerService.apiTrailerPut(data).pipe(
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.trailerService.apiTrailerPut().pipe(
             tap(() => {
                 let storedTrailerData = {
                     ...this.trailerItemStore?.getValue()?.entities[data.id],

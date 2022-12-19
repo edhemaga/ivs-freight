@@ -156,6 +156,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             purchaseDate: [null],
             purchasePrice: [null],
             fhwaExp: [null, Validators.required],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.trailerForm);
@@ -278,6 +279,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: GetTrailerModalResponse) => {
+                    console.log(res.trailerTypes);
                     this.trailerType = res.trailerTypes.map((item) => {
                         return {
                             ...item,
@@ -470,18 +472,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
         };
 
+        console.log(newData);
+
         this.trailerModalService
             .updateTrailer(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                    });
-                },
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private populateStorageData(res) {

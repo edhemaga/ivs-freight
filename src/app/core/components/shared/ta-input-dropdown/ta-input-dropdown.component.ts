@@ -356,11 +356,6 @@ export class TaInputDropdownComponent
                         !selectedItem &&
                         this.inputConfig.name === 'Input Dropdown Bank Name'
                     ) {
-                        this.inputConfig.commands.active = false;
-                        this.activeItem = {
-                            id: 9191,
-                            name: this.getSuperControl.value,
-                        };
                         this.addNewItem();
                     }
 
@@ -458,10 +453,14 @@ export class TaInputDropdownComponent
                             })
                             .find((item) => {
                                 if (
-                                    selectedItem.substring(
-                                        0,
-                                        selectedItem.lastIndexOf(' ')
-                                    ) === item.name.toLowerCase()
+                                    item?.dropLabel ||
+                                    this.inputConfig.dropdownLabel
+                                        ? selectedItem.substring(
+                                              0,
+                                              selectedItem.lastIndexOf(' ')
+                                          )
+                                        : selectedItem.toLowerCase() ===
+                                          item.name.toLowerCase()
                                 )
                                     return (
                                         item.name.toLowerCase() ===
@@ -517,6 +516,8 @@ export class TaInputDropdownComponent
                                 this.getSuperControl.setValue(existItem?.name);
                                 this.selectedItem.emit(existItem);
                                 this.activeItem = existItem;
+                                this.inputRef.focusInput = false;
+                                this.inputRef.input.nativeElement.blur();
                             }
 
                             if (this.inputConfig.name !== 'RoutingAddress') {
@@ -850,6 +851,9 @@ export class TaInputDropdownComponent
             id: uuidv4(),
             name: this.getSuperControl.value,
         };
+        this.inputConfig.commands.active = false;
+        this.inputRef.isVisibleCommands = false;
+        this.inputRef.focusInput = false;
 
         this.saveItem.emit({ data: this.activeItem, action: 'new' });
 

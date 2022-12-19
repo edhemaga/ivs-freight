@@ -307,7 +307,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     public onSaveNewBank(bank: { data: any; action: string }) {
         this.selectedBank = bank.data;
-        console.log('save bank: ', bank);
+
         this.bankVerificationService
             .createBank({ name: bank.data.name })
             .pipe(takeUntil(this.destroy$))

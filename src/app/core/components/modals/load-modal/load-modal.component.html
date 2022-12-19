@@ -225,18 +225,15 @@
                                     image: false,
                                     url: selectedTrailerReq?.logoName,
                                     template: 'trailer',
-                                    class: selectedTrailerReq?.name
-                                        ?.toLowerCase()
-                                        .includes('liquid')
-                                        ? 'tanker-liquid'
+                                    class: [
+                                        'Tanker',
+                                        'Tanker Pneumatic'
+                                    ].includes(selectedTrailerReq?.name)
+                                        ? 'tanker'
                                         : selectedTrailerReq?.name
                                               ?.toLowerCase()
                                               ?.includes('rgn')
                                         ? 'low-boy-rgn'
-                                        : selectedTrailerReq?.name
-                                              ?.toLowerCase()
-                                              .includes('dry-bulk')
-                                        ? 'tanker-dry-bulk'
                                         : selectedTrailerReq?.name
                                               ?.trim()
                                               .replace(' ', '')
