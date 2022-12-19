@@ -13,13 +13,7 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-    CreateTruckCommand,
-    GetTruckModalResponse,
-    TruckResponse,
-    UpdateTruckCommand,
-    VinDecodeResponse,
-} from 'appcoretruckassist';
+import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -745,7 +739,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
 
     public addTruck() {
-        const newData: CreateTruckCommand = {
+        const newData: any = {
             ...this.truckForm.value,
 
             apUnit: this.selectedAPUnit ? this.selectedAPUnit.name : null,
@@ -858,7 +852,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
 
     public updateTruck(id: number) {
-        const newData: UpdateTruckCommand = {
+        const newData: any = {
             id: id,
             ...this.truckForm.value,
             apUnit: this.selectedAPUnit ? this.selectedAPUnit.name : null,

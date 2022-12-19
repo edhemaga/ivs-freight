@@ -9,12 +9,7 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import {
-    CreateTrailerCommand,
-    GetTrailerModalResponse,
-    UpdateTrailerCommand,
-    VinDecodeResponse,
-} from 'appcoretruckassist';
+import { GetTrailerModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 import {
     axlesValidation,
     emptyWeightValidation,
@@ -315,7 +310,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private addTrailer(): void {
-        const newData: CreateTrailerCommand = {
+        const newData: any = {
             ...this.trailerForm.value,
             trailerTypeId: this.selectedTrailerType.id,
             trailerMakeId: this.selectedTrailerMake.id,
@@ -408,7 +403,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private updateTrailer(id: number): void {
-        const newData: UpdateTrailerCommand = {
+        const newData: any = {
             id: id,
             ...this.trailerForm.value,
             trailerTypeId: this.selectedTrailerType.id,

@@ -83,7 +83,6 @@ model/addIntegrationCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
-model/apUnit.ts
 model/apiCategory.ts
 model/applicantAdminResponse.ts
 model/applicantCompanyInfoResponse.ts
@@ -109,7 +108,6 @@ model/bankCardResponse.ts
 model/bankListResponse.ts
 model/bankResponse.ts
 model/bankResponsePagination.ts
-model/brakes.ts
 model/brokerContactGroupResponse.ts
 model/brokerContactResponse.ts
 model/brokerContactShortResponse.ts
@@ -243,8 +241,6 @@ model/createTrafficViolationCommand.ts
 model/createTrafficViolationItemCommand.ts
 model/createTrafficViolationItemReviewCommand.ts
 model/createTrafficViolationReviewCommand.ts
-model/createTrailerCommand.ts
-model/createTruckCommand.ts
 model/createWithUploadsResponse.ts
 model/createWorkExperienceCommand.ts
 model/createWorkExperienceItemCommand.ts
@@ -275,6 +271,7 @@ model/dispatchShortResponse.ts
 model/dispatchStatus.ts
 model/dispatchStatusResponse.ts
 model/driverAccidentResponse.ts
+model/driverDispatchResponse.ts
 model/driverFilterListResponse.ts
 model/driverFilterResponse.ts
 model/driverFilterResponsePagination.ts
@@ -328,7 +325,6 @@ model/fuelStopShortResponse.ts
 model/fuelTransactionListResponse.ts
 model/fuelTransactionResponse.ts
 model/fuelTransactionResponsePagination.ts
-model/fuelType.ts
 model/fuelledVehicleHistoryListResponse.ts
 model/fuelledVehicleResponse.ts
 model/fuelledVehicleResponsePagination.ts
@@ -700,9 +696,7 @@ model/updateTrafficViolationCommand.ts
 model/updateTrafficViolationItemCommand.ts
 model/updateTrafficViolationItemReviewCommand.ts
 model/updateTrafficViolationReviewCommand.ts
-model/updateTrailerCommand.ts
 model/updateTrailerPMUnitCommand.ts
-model/updateTruckCommand.ts
 model/updateTruckPMUnitCommand.ts
 model/updateUserCommand.ts
 model/updateWorkExperienceCommand.ts
@@ -723,7 +717,6 @@ model/violationCategoryResponse.ts
 model/violationResponse.ts
 model/weatherDataResponse.ts
 model/weatherDaysResponse.ts
-model/wheelsType.ts
 model/workExperienceFeedbackResponse.ts
 model/workExperienceItemResponse.ts
 model/workExperienceItemReviewResponse.ts
