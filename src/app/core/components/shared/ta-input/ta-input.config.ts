@@ -17,14 +17,6 @@ export interface ITaInput {
     name: string;
     type: string;
     label?: string;
-    multipleInputValues?: {
-        options: IMultipleInput[];
-        customClass: string;
-    };
-    multipleLabel?: {
-        labels: string[]; // ['Driver', 'Truck #', 'Trailer #']
-        customClass: string;
-    };
     placeholder?: string; // only for dropdown, otherwise placeholder is label !!!
     placeholderIcon?: string;
     placeholderIconRightSide?: string;
@@ -58,7 +50,29 @@ export interface ITaInput {
         color?: string; // black, gray, white, blueLight, blueDark
         isLoading?: boolean;
     };
+    addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark\
+    // Custom classes
+    // - 'input-22' -> height: 22px
+    // - 'input-26' = DEFAULT = -> height: 26px,
+    // - 'input-30' -> height: 30px,
+    // - 'input-32' -> height: 32px,
+    // - 'line-input-26' -> centered elements into input, when input not a part of form tag or part of boostrap popover
+    // - 'line-input-26-in-card' -> when input implement in custom-card and not aligned
+    // - 'datetimeclass' -> date/time pickers
+    // - 'dollar-placeholderIcon' -> when input has dollar icon
+    customClass?: string;
 
+    // ***************** Multiple Inputs & Labels *****************
+    multipleInputValues?: {
+        options: IMultipleInput[];
+        customClass: string;
+    };
+    multipleLabel?: {
+        labels: string[]; // ['Driver', 'Truck #', 'Trailer #']
+        customClass: string;
+    };
+
+    // ***************** Input Actions (confirm-cancel buttons) *****************
     commands?: {
         active?: boolean;
         type?: string; // examples:  'increment-decrement', 'confirm-cancel'
@@ -81,16 +95,7 @@ export interface ITaInput {
         setTimeout?: number; // if must keep focus on input
     };
 
-    // Custom classes
-    // - 'input-22' -> height: 22px
-    // - 'input-26' = DEFAULT = -> height: 26px,
-    // - 'input-30' -> height: 30px,
-    // - 'input-32' -> height: 32px,
-    // - 'line-input-26' -> centered elements into input, when input not a part of form tag or part of boostrap popover
-    // - 'line-input-26-in-card' -> when input implement in custom-card and not aligned
-    // - 'datetimeclass' -> date/time pickers
-    // - 'dollar-placeholderIcon' -> when input has dollar icon
-    customClass?: string;
+    // ***************** DROPDOWNS *****************
 
     // Pure Dropdown
     isDropdown?: boolean;
@@ -114,7 +119,4 @@ export interface ITaInput {
     // MultiSelect Dropdown
     multiselectDropdown?: boolean;
     multiSelectDropdownActive?: boolean;
-
-    // Address
-    addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark\
 }

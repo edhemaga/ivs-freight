@@ -174,11 +174,12 @@
                         [cardName]="'Parking Slot'"
                         [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
                         [isCardOpen]="true"
-                        (onOpenCard)="isParkingCardOpen = $event"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '12px'
                         }"
+                        (onOpenCard)="isParkingCardOpen = $event"
                     >
                         <div class="checkbox-card-body">
                             <div class="row">
@@ -217,6 +218,7 @@
                     <app-ta-custom-card
                         [cardName]="'Features'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -254,11 +256,12 @@
                     <app-ta-custom-card
                         [cardName]="'Finance'"
                         [isCardOpen]="true"
-                        (onOpenCard)="isFinanceCardOpen = $event"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '12px'
                         }"
+                        (onOpenCard)="isFinanceCardOpen = $event"
                     >
                         <div class="location-parking-financial-card">
                             <app-ta-input
