@@ -433,7 +433,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RoadsideInspectionResponse) => {
-                    console.log('get violation id: ', res);
                     this.violationForm.patchValue({
                         report: res.report,
                         categoryReport: res.violationCategory?.name
@@ -578,7 +577,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     };
 
                     if (res.violations.length) {
-                        console.log('violations: ', res.violations);
                         for (let i = 0; i < res.violations.length; i++) {
                             this.violations.push(
                                 this.createViolation({
