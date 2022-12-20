@@ -7,6 +7,7 @@ import {
     ViewChild,
     Input,
     ViewChildren,
+    SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -27,7 +28,10 @@ import {
     state,
     keyframes,
 } from '@angular/animations';
+import { Titles } from 'src/app/core/utils/application.decorators';
+import { OnChanges } from '@angular/core';
 
+@Titles()
 @Component({
     selector: 'app-truck-details-item',
     templateUrl: './truck-details-item.component.html',
@@ -55,7 +59,7 @@ import {
         ]),
     ]),],
 })
-export class TruckDetailsItemComponent implements OnInit, OnDestroy {
+export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
     @ViewChildren('fhwaUpload') fhwaUpload: any;
     @ViewChildren('registrationUpload') registrationUpload: any;
@@ -399,4 +403,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
         this.tableService.sendActionAnimation({});
     }
+
+    ngOnChanges(changes: SimpleChanges): void {}
 }

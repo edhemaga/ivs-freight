@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs';
 import { scrollButtonAnimation } from './app.component.animation';
+import { StaticInjectorService } from './core/utils/application.decorators';
 import { GpsServiceService } from './global/services/gps-service.service';
 
 @Component({
@@ -20,7 +21,8 @@ export class AppComponent implements OnInit {
         private router: Router,
         public titleService: Title,
         private activatedRoute: ActivatedRoute,
-        private gpsService: GpsServiceService
+        private gpsService: GpsServiceService,
+        private _: StaticInjectorService
     ) {}
 
     ngOnInit() {
