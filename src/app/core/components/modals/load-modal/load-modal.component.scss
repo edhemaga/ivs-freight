@@ -86,3 +86,17 @@
         }
     }
 }
+
+.load-financial-container {
+    display: grid;
+    grid-template-columns: repeat(2, 184px) 1fr;
+    column-gap: 19px;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    .load-financial-billing {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+}

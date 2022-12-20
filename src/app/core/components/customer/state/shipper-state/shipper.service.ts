@@ -289,24 +289,25 @@ export class ShipperTService implements OnDestroy {
         search1?: string,
         search2?: string
     ): Observable<Array<ClusterResponse>> {
-        return this.shipperService.apiShipperClustersGet(
-            northEastLatitude,
-            northEastLongitude,
-            southWestLatitude,
-            southWestLongitude,
-            zoomLevel,
-            shipperLong,
-            shipperLat,
-            shipperDistance,
-            shipperStates,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        );
+        // return this.shipperService.apiShipperClustersGet(
+        //     northEastLatitude,
+        //     northEastLongitude,
+        //     southWestLatitude,
+        //     southWestLongitude,
+        //     zoomLevel,
+        //     shipperLong,
+        //     shipperLat,
+        //     shipperDistance,
+        //     shipperStates,
+        //     pageIndex,
+        //     pageSize,
+        //     companyId,
+        //     sort,
+        //     search,
+        //     search1,
+        //     search2
+        // );
+        return of();
     }
 
     public getShipperMapList(

@@ -1,0 +1,143 @@
+.load-financial-card {
+    display: flex;
+    flex-direction: column;
+
+    .load-financial-card-header {
+        display: grid;
+        grid-template-columns: repeat(3, 202px);
+        align-items: center;
+        justify-content: center;
+        padding: 0 5px;
+        margin: 4px 0px;
+
+        .load-financial-header {
+            display: grid;
+            grid-template-columns: 112px 1fr;
+            align-items: center;
+            justify-content: space-between;
+
+            .load-financial-title {
+                margin: 0;
+                padding: 0;
+                font-size: 14px;
+                font-weight: 800;
+                line-height: 18px;
+                color: #424242;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            .load-financial-value-action-container {
+                align-self: flex-end;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                .load-financial-value {
+                    margin: 0;
+                    padding: 0;
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 18px;
+                    color: #919191;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                .load-financial-action {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 4px;
+                    padding: 4px;
+                    width: 26px;
+                    height: 26px;
+                    background-color: #eeeeee;
+                    cursor: pointer;
+
+                    &-svg {
+                        width: 17px;
+                        height: 18px;
+                        line-height: 18px;
+                        svg {
+                            path {
+                                fill: #3074d3;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .load-financial-arrow {
+                justify-self: flex-end;
+                cursor: pointer;
+                svg {
+                    transform: rotate(0deg);
+                    transition: all 0.3s ease-in-out;
+                    path {
+                        fill: #919191;
+                    }
+                }
+
+                &.rotate {
+                    svg {
+                        transform: rotate(180deg);
+                        transition: all 0.3s ease-in-out;
+                        path {
+                            fill: #aaaaaa;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .load-financial-card-content {
+        &.scroll {
+            overflow-y: scroll !important;
+            scrollbar-width: none !important; /* Firefox */
+
+            &::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: transparent;
+                border: 6px solid #6c6c6c;
+                border-radius: 1px;
+            }
+
+            &::-webkit-scrollbar-track {
+                padding: 0;
+                position: relative;
+                right: 0;
+                top: 0;
+                background: transparent;
+            }
+
+            &::-moz-selection {
+                background-color: rgb(229, 229, 229, 0.2);
+                color: #6c6c6c;
+            }
+        }
+
+        .content-holder {
+            &.innactive {
+                height: 0px !important;
+                overflow: hidden !important;
+                opacity: 0 !important;
+                margin-top: 0px !important;
+                margin-bottom: 0px !important;
+            }
+
+            &.active {
+                overflow: visible !important;
+                opacity: 1 !important;
+            }
+        }
+    }
+}
