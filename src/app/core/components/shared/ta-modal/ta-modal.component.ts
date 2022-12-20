@@ -429,10 +429,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
             );
     }
 
-    onKeyUp(ev: KeyboardEvent) {
-        // do something meaningful with it
-        console.log(`The user just pressed ${ev.keyCode}!`);
-        this.action.emit({ action: 'save', bool: false });
+    public onKeyUp(ev: KeyboardEvent) {
+        if (ev.keyCode === 13)
+            this.action.emit({ action: 'save', bool: false });
     }
 
     ngOnDestroy(): void {
