@@ -30,6 +30,7 @@ export interface LoadStopResponse {
     depart?: string | null;
     wait?: { [key: string]: number; } | null;
     items?: Array<LoadStopItemResponse> | null;
+    milesType?: EnumValue;
     legMiles?: number | null;
     legHours?: number | null;
     legMinutes?: number | null;

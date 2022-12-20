@@ -1,15 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnChanges, SimpleChanges, Input } from '@angular/core';
+import { Titles } from 'src/app/core/utils/application.decorators';
 
+@Titles()
 @Component({
     selector: 'app-dashboard-performance',
     templateUrl: './dashboard-performance.component.html',
     styleUrls: ['./dashboard-performance.component.scss'],
 })
-export class DashboardPerformanceComponent implements OnInit {
+export class DashboardPerformanceComponent implements OnInit, OnChanges {
     @ViewChild('topChart', { static: false }) public topChart: any;
     @ViewChild('bottomChart', { static: false }) public bottomChart: any;
     @ViewChild('timePeriod', { static: false }) public timePeriod: any;
     @ViewChild('t2') t2: any;
+    @Input() title: string;
 
     dashboardSwitchTabs: any[] = [];
 
@@ -618,4 +621,6 @@ export class DashboardPerformanceComponent implements OnInit {
     removeOtherChartHover() {
         this.topChart.chartHoverOut();
     }
+
+    ngOnChanges(changes: SimpleChanges): void {}
 }

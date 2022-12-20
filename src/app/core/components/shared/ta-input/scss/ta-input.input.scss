@@ -90,27 +90,11 @@
     &.dropdown-label-active {
         background-color: $input-background-color-normal-focus !important;
         color: $input-text-color-normal-focus;
-
-        &::-moz-selection {
-            background-color: $input-background-selection-normal-focus !important;
-        }
-
-        &::selection {
-            background-color: $input-background-selection-normal-focus !important;
-        }
     }
 
     &.password-eye-invalid {
         background-color: $input-background-color-invalid-focus !important;
         color: $input-text-color-normal-focus;
-
-        &::-moz-selection {
-            background-color: $input-background-selection-invalid-focus !important;
-        }
-
-        &::selection {
-            background-color: $input-background-selection-invalid-focus !important;
-        }
     }
 
     &.has-input-icon {
@@ -210,21 +194,21 @@
         &::placeholder {
             color: $input-placeholder-color-valid-focus;
         }
-
-        &::-moz-selection {
-            background-color: $input-background-selection-valid-focus !important;
-            color: $input-text-color-normal-focus !important;
-        }
-
-        &::selection {
-            background-color: $input-background-selection-valid-focus !important;
-            color: $input-text-color-normal-focus !important;
-        }
     }
 
     &.valid-focus-out-filled {
         background-color: $input-background-color-valid-focus-out !important;
         color: $input-text-color-valid-focus-out !important;
+
+        &::-moz-selection {
+            background-color: rgb(47, 47, 47, 0.2) !important;
+            color: #2f2f2f !important;
+        }
+
+        &::selection {
+            background-color: rgb(47, 47, 47, 0.2) !important;
+            color: #2f2f2f !important;
+        }
     }
 
     &.valid-focus-out-filled-datepicker {
@@ -237,21 +221,21 @@
 
     &.invalid-focus-in {
         background-color: $input-background-color-invalid-focus !important;
-
-        &::-moz-selection {
-            background-color: $input-background-selection-invalid-focus !important;
-            color: $input-text-color-normal-focus !important;
-        }
-
-        &::selection {
-            background-color: $input-background-selection-invalid-focus !important;
-            color: $input-text-color-normal-focus !important;
-        }
     }
 
     &.invalid-focus-out-filled {
         background-color: $input-background-color-invalid-focus-out !important;
         color: $input-text-color-invalid-focus-out !important;
+
+        &::-moz-selection {
+            background-color: rgb(47, 47, 47, 0.2) !important;
+            color: #2f2f2f !important;
+        }
+
+        &::selection {
+            background-color: rgb(47, 47, 47, 0.2) !important;
+            color: #2f2f2f !important;
+        }
     }
 
     &.disabled {

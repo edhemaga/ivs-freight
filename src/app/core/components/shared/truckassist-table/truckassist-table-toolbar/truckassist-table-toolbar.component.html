@@ -18,28 +18,44 @@
 
     <!-- TABS -->
     <div class="tab-wrapper" *ngIf="tableData.length > 1">
-        <div
-            *ngFor="let data of tableData; let i = index"
-            class="tab-container"
-            [ngClass]="{
-                'tab-inactive': selectedTab !== data.field,
-                'tab-active': selectedTab === data.field,
-                'tab-margin': i !== tableData.length - 1
-            }"
-            (click)="onSelectTab(data)"
-        >
-            <div class="tab">
-                <div class="data-count" *ngIf="!data.hideDataCount">
-                    {{ data.length }}
+        <ng-container *ngFor="let data of tableData; let i = index">
+            <ng-container [ngSwitch]="data.type">
+                <div *ngSwitchCase="'dropdown'" class="tab-container tab-margin">
+                    <app-ta-input-dropdown
+                        [formControl]="dropdownSelection"
+                        [template]="data.template"
+                        [inputConfig]="data.inputConfig"
+                        [options]="data.dropdownData"
+                        [activeItem]="data.selectedDispatcher"
+                        (selectedItem)="
+                            onSelectDropdown($event, data.actionType)
+                        "
+                    ></app-ta-input-dropdown>
                 </div>
-                <svg-icon
-                    *ngIf="data.iconLink"
-                    [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
-                    [src]="data.iconLink"
-                ></svg-icon>
-                <div class="tab-title">{{ data.title }}</div>
-            </div>
-        </div>
+                <div
+                    *ngSwitchDefault
+                    class="tab-container"
+                    [ngClass]="{
+                        'tab-inactive': selectedTab !== data.field,
+                        'tab-active': selectedTab === data.field,
+                        'tab-margin': i !== tableData.length - 1
+                    }"
+                    (click)="onSelectTab(data)"
+                >
+                    <div class="tab">
+                        <div class="data-count" *ngIf="!data.hideDataCount">
+                            {{ data.length }}
+                        </div>
+                        <svg-icon
+                            *ngIf="data.iconLink"
+                            [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
+                            [src]="data.iconLink"
+                        ></svg-icon>
+                        <div class="tab-title">{{ data.title }}</div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
     </div>
 
     <!-- TOOLBAR FILTERS AND OTHER -->

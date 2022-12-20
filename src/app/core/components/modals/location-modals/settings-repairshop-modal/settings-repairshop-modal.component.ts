@@ -77,6 +77,8 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
 
     public isServiceCardOpen: boolean = true;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -90,6 +92,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         if (this.editData?.type === 'edit') {
+            this.disableCardAnimation = true;
             this.editRepairShopById(this.editData.id);
         }
     }
@@ -330,6 +333,10 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                     if (res.phoneExt) {
                         this.isPhoneExtExist = true;
                     }
+
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

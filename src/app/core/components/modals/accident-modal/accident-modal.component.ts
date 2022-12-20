@@ -73,6 +73,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
 
     public accidentModalName: string = null;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -86,6 +88,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.editAccidentById(this.editData.id);
         }
     }
@@ -338,6 +341,9 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     //     ],
                     //   }),
                     // ]
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });
@@ -360,6 +366,12 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                         return {
                             id: item.id,
                             name: item.trailerNumber,
+                        };
+                    });
+                    this.labelsAccidentCustomer = res.brokers.map((item) => {
+                        return {
+                            id: item.id,
+                            name: item.businessName,
                         };
                     });
                     this.labelsInsuranceType = res.insuranceType;

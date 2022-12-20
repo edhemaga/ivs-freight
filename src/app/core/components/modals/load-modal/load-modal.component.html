@@ -173,6 +173,7 @@
             <!-- Requirements Card -->
             <app-ta-custom-card
                 [cardName]="'Requirements'"
+                [disableAnimation]="disableCardAnimation"
                 [animationMarginParams]="{
                     marginTop: '18px',
                     marginBottom: '22px'
@@ -225,18 +226,15 @@
                                     image: false,
                                     url: selectedTrailerReq?.logoName,
                                     template: 'trailer',
-                                    class: selectedTrailerReq?.name
-                                        ?.toLowerCase()
-                                        .includes('liquid')
-                                        ? 'tanker-liquid'
+                                    class: [
+                                        'Tanker',
+                                        'Tanker Pneumatic'
+                                    ].includes(selectedTrailerReq?.name)
+                                        ? 'tanker'
                                         : selectedTrailerReq?.name
                                               ?.toLowerCase()
                                               ?.includes('rgn')
                                         ? 'low-boy-rgn'
-                                        : selectedTrailerReq?.name
-                                              ?.toLowerCase()
-                                              .includes('dry-bulk')
-                                        ? 'tanker-dry-bulk'
                                         : selectedTrailerReq?.name
                                               ?.trim()
                                               .replace(' ', '')
@@ -350,11 +348,12 @@
                 "
                 [isCardOpen]="true"
                 [hasBodyData]="true"
-                (onActionEvent)="createNewExtraStop()"
+                [disableAnimation]="disableCardAnimation"
                 [animationMarginParams]="{
                     marginTop: '10px',
                     marginBottom: '12px'
                 }"
+                (onActionEvent)="createNewExtraStop()"
             >
                 <!-- Stops Header -->
                 <div class="stops-header-bar">
@@ -521,11 +520,12 @@
                             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                             [isCardOpen]="true"
                             [hasBodyData]="true"
-                            (onActionEvent)="createNewRowInStopItems('pickup')"
+                            [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '10px',
                                 marginBottom: '12px'
                             }"
+                            (onActionEvent)="createNewRowInStopItems('pickup')"
                         >
                             Tabel Pickup Component - Boki
                         </app-ta-custom-card>
@@ -775,6 +775,9 @@
                                                 'delivery'.indx
                                             )
                                         "
+                                        [disableAnimation]="
+                                            disableCardAnimation
+                                        "
                                         [animationMarginParams]="{
                                             marginTop: '10px',
                                             marginBottom: '12px'
@@ -926,13 +929,14 @@
                             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                             [isCardOpen]="true"
                             [hasBodyData]="true"
-                            (onActionEvent)="
-                                createNewRowInStopItems('delivery')
-                            "
+                            [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '10px',
                                 marginBottom: '12px'
                             }"
+                            (onActionEvent)="
+                                createNewRowInStopItems('delivery')
+                            "
                         >
                             Tabel Delivery Component - Boki
                         </app-ta-custom-card>
@@ -952,64 +956,100 @@
                 </div>
             </app-ta-custom-card>
 
-            <app-ta-custom-card
-                [cardName]="'Billing'"
+            <app-load-financial
+                [firstHeaderTitle]="'Billing'"
+                [billing]="0"
+                [secondHeaderTitle]="'Payment'"
+                [payment]="0"
+                [thirdHeaderTitle]="'Invoice Ageing'"
                 [isCardOpen]="true"
+                [disableAnimation]="disableCardAnimation"
                 [animationMarginParams]="{
                     marginTop: '18px',
                     marginBottom: '22px'
                 }"
+                (action)="onFinancialAction($event)"
             >
-                <div class="billing-payment-load">
-                    <!-- Base Rate -->
-                    <app-ta-input
-                        formControlName="baseRate"
-                        [inputConfig]="{
-                            name: 'base-rate',
-                            type: 'text',
-                            label: 'Base Rate',
-                            isRequired: true,
-                            placeholderIcon: 'dollar',
-                            customClass: 'dollar-placeholderIcon',
-                            thousandSeparator: true,
-                            blackInput: true
-                        }"
-                        [ngStyle]="{ width: '130px' }"
-                    ></app-ta-input>
-
-                    <div
-                        #t2="ngbPopover"
-                        popoverClass="load-additional-options"
-                        [ngbPopover]="taInputDropdownPopover"
-                        [placement]="['bottom-left']"
-                        [container]="'body'"
-                        ngbTooltip
-                        mainTooltip="Additional"
-                        tooltipBackground="#536BC2"
-                        position="top"
-                        class="load-plus-button"
-                    >
-                        <svg-icon
-                            src="assets/svg/common/ic_plus.svg"
-                        ></svg-icon>
+                <div class="load-financial-container">
+                    <div class="load-financial-billing">
+                        <!-- Base Rate -->
+                        <app-ta-input
+                            formControlName="baseRate"
+                            [inputConfig]="{
+                                name: 'base-rate',
+                                type: 'text',
+                                label: 'Base Rate',
+                                isRequired: true,
+                                placeholderIcon: 'dollar',
+                                customClass: 'dollar-placeholderIcon',
+                                thousandSeparator: true
+                            }"
+                        ></app-ta-input>
+                        <!-- Driver Rate -->
+                        <app-ta-input
+                            *ngIf="
+                                selectedDispatches &&
+                                selectedDispatches.payType === 'Flat Rate'
+                            "
+                            formControlName="driverRate"
+                            [inputConfig]="{
+                                name: 'base-rate',
+                                type: 'text',
+                                label: 'Driver Rate',
+                                isRequired: true,
+                                placeholderIcon: 'dollar',
+                                customClass: 'dollar-placeholderIcon',
+                                thousandSeparator: true
+                            }"
+                        ></app-ta-input>
+                        <!-- Adjusted Rate -->
+                        <app-ta-input
+                            *ngIf="
+                                selectedDispatches &&
+                                selectedDispatches.payType !== 'Flat Rate'
+                            "
+                            formControlName="adjustedRate"
+                            [inputConfig]="{
+                                name: 'base-rate',
+                                type: 'text',
+                                label: 'Adjusted',
+                                placeholderIcon: 'dollar',
+                                customClass: 'dollar-placeholderIcon',
+                                thousandSeparator: true
+                            }"
+                        ></app-ta-input>
                     </div>
-
-                    <ng-template #taInputDropdownPopover>
-                        <div class="load-additional-container">
-                            <div
-                                *ngFor="
-                                    let option of additionalBillingTypes;
-                                    trackBy: identity
-                                "
-                                class="dropdown-option"
-                                (click)="onSelectAdditionalOption(option)"
-                            >
-                                {{ option.name }}
-                            </div>
-                        </div>
-                    </ng-template>
+                    <div class="load-financial-payment">
+                        <app-ta-input
+                            formControlName="advancePay"
+                            [inputConfig]="{
+                                name: 'base-rate',
+                                type: 'text',
+                                label: 'Advance',
+                                isRequired: true,
+                                placeholderIcon: 'dollar',
+                                customClass: 'dollar-placeholderIcon',
+                                thousandSeparator: true
+                            }"
+                        ></app-ta-input>
+                    </div>
+                    <div class="load-financial-invoice">
+                        <app-ta-input
+                            formControlName="invoiced"
+                            [inputConfig]="{
+                                name: 'datepicker',
+                                type: 'text',
+                                isDropdown: true,
+                                label: 'Invoiced',
+                                isDisabled: true,
+                                placeholderIcon: 'date',
+                                isRequired: true,
+                                customClass: 'datetimeclass'
+                            }"
+                        ></app-ta-input>
+                    </div>
                 </div>
-            </app-ta-custom-card>
+            </app-load-financial>
 
             <!-- Comments -->
             <app-ta-custom-card
@@ -1025,11 +1065,12 @@
                         ? 'assets/svg/common/ic_plus.svg'
                         : ''
                 "
-                (onActionEvent)="createComment()"
+                [disableAnimation]="disableCardAnimation"
                 [animationMarginParams]="{
                     marginTop: '10px',
                     marginBottom: '12px'
                 }"
+                (onActionEvent)="createComment()"
             >
                 <app-ta-user-review
                     *ngIf="comments.length"
@@ -1043,6 +1084,7 @@
             <app-ta-custom-card
                 [hasCounter]="documents.length ? documents.length : 0"
                 [cardName]="'Document'"
+                [disableAnimation]="disableCardAnimation"
                 [isCardOpen]="documents.length > 0"
             >
                 <app-ta-upload-files

@@ -65,6 +65,8 @@ export class TaCustomCardComponent {
         marginBottom: '12px',
     };
 
+    @Input() disableAnimation: boolean = false; // forward true for disable
+
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
 

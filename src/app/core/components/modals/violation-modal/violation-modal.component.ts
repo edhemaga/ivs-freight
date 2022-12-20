@@ -38,6 +38,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
     public violationForm: FormGroup;
 
+    public disableCardAnimation: boolean = false;
+
     public selectedTab: number = 1;
     public tabs: any[] = [
         {
@@ -175,6 +177,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.editViolationById(this.editData.id);
         }
     }
@@ -383,10 +386,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         return this.specialChecks.filter((item) => item.active).length;
     }
 
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
-
     private updateViolation(id: number) {
         const { ...form } = this.violationForm.value;
 
@@ -434,7 +433,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RoadsideInspectionResponse) => {
-                    console.log('get violation id: ', res);
                     this.violationForm.patchValue({
                         report: res.report,
                         categoryReport: res.violationCategory?.name
@@ -618,6 +616,9 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             }
                         );
                     }
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });
@@ -668,6 +669,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                 reason: item.get('reason').value,
             };
         });
+    }
+
+    public identity(index: number, item: any): number {
+        return item.id;
     }
 
     ngOnDestroy(): void {

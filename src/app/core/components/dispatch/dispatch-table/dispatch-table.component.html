@@ -137,7 +137,12 @@
                             "
                             [cdkDragDisabled]="__isBoardLocked || !item.trailer"
                             cdkDragLockAxis="y"
-                            [cdkDragPreviewClass]="'trailer_' + ('trailer' | colorFinder : item.trailer.trailerType.id)"
+                            [cdkDragPreviewClass]="
+                                'trailer_' +
+                                ('trailer'
+                                    | colorFinder
+                                        : item.trailer?.trailerType?.id)
+                            "
                             cdkDragPreviewContainer="parent"
                         >
                             <div
@@ -291,7 +296,11 @@
                                     position="right"
                                 >
                                     <svg-icon
-                                        *ngIf="item.driver.owner"
+                                        *ngIf="
+                                            item.driver.owner &&
+                                            driverHover.indx != rowIndex &&
+                                            driverHover.txt == ''
+                                        "
                                         [src]="
                                             'assets/svg/common/ic_driver-owner.svg'
                                         "
@@ -628,13 +637,16 @@
 
             <tr>
                 <td class="truck-field">
-                    <div class="main_inside addNew">
+                    <div class="main_inside" [class.addNew]="truckList.length">
                         <div
                             class="padding-inside"
                             *ngIf="openedTruckDropdown != -2"
                         >
                             <div
-                                *ngIf="openedTruckDropdown != -2"
+                                *ngIf="
+                                    openedTruckDropdown != -2 &&
+                                    truckList.length
+                                "
                                 class="add_new"
                                 (click)="showTruckDropdown(-2)"
                             >
@@ -675,10 +687,16 @@
                     </div>
                 </td>
                 <td class="trailer-field">
-                    <div class="main_inside addNew">
+                    <div
+                        class="main_inside"
+                        [class.addNew]="trailerList.length"
+                    >
                         <div
                             class="padding-inside"
-                            *ngIf="openedTrailerDropdown != -2"
+                            *ngIf="
+                                openedTrailerDropdown != -2 &&
+                                trailerList.length
+                            "
                         >
                             <div
                                 class="add_new"
@@ -722,10 +740,12 @@
                     </div>
                 </td>
                 <td class="driver-field">
-                    <div class="main_inside addNew">
+                    <div class="main_inside" [class.addNew]="driverList.length">
                         <div
                             class="padding-inside"
-                            *ngIf="openedDriverDropdown != -2"
+                            *ngIf="
+                                openedDriverDropdown != -2 && driverList.length
+                            "
                         >
                             <div
                                 class="add_new"

@@ -1,9 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-    DriverListResponse,
-    MedicalResponse,
-} from 'appcoretruckassist';
+import { DriverListResponse, MedicalResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DriverTService } from '../../../driver/state/driver.service';
 import { MedicalTService } from '../../../driver/state/medical.service';
@@ -38,6 +35,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private driverService: DriverTService,
@@ -51,6 +50,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         this.createForm();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.getDriverById(this.editData.id);
 
             if (this.editData.type === 'edit-medical') {
@@ -86,6 +86,9 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: any) => {
                     this.modalName = res.firstName.concat(' ', res.lastName);
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });
@@ -215,6 +218,9 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                     });
 
                     this.documents = res.files ? (res.files as any) : [];
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

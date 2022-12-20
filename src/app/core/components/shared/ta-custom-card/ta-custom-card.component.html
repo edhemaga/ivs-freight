@@ -202,7 +202,11 @@
     </div>
 
     <!-- BODY -->
-    <div class="ta-card-body" [ngClass]="{ scroll: hasScrollBody }">
+    <div
+        class="ta-card-body"
+        [ngClass]="{ scroll: hasScrollBody }"
+        [@.disabled]="disableAnimation"
+    >
         <div
             [ngClass]="noActive"
             [ngStyle]="animationMarginParams"

@@ -8,8 +8,6 @@ import {
     TitleService,
     RegistrationModalResponse,
     TitleModalResponse,
-    TruckResponse,
-    TrailerResponse,
 } from 'appcoretruckassist';
 
 import { Observable, tap } from 'rxjs';
@@ -60,20 +58,21 @@ export class CommonTruckTrailerService {
                     const truckData = JSON.parse(JSON.stringify(tr.entities));
                     let newData = truckData[data.truckId];
 
-                    let regApi = this.trailerService.getTrailerRegistrationByRegistrationId(newRegId).subscribe({
-                        next: (resp: any) => {
-                            
-                            newData.registrations.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tdlStore.add(newData);
-                            this.truckItemStore.set([newData]);
-                            regApi.unsubscribe();
-                        },
-                    });   
+                    let regApi = this.trailerService
+                        .getTrailerRegistrationByRegistrationId(newRegId)
+                        .subscribe({
+                            next: (resp: any) => {
+                                newData.registrations.push(resp);
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: newData,
+                                    id: newData.id,
+                                });
+                                this.tdlStore.add(newData);
+                                this.truckItemStore.set([newData]);
+                                regApi.unsubscribe();
+                            },
+                        });
                 }
                 // Trailer Add Registration
                 else if (data.trailerId) {
@@ -81,21 +80,22 @@ export class CommonTruckTrailerService {
                     const tr = this.trailerItemStore.getValue();
                     const trailerData = JSON.parse(JSON.stringify(tr.entities));
                     let newData = trailerData[data.trailerId];
-                    
-                    let regApi = this.trailerService.getTrailerRegistrationByRegistrationId(newRegId).subscribe({
-                        next: (resp: any) => {
-                            
-                            newData.registrations.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tadl.add(newData);
-                            this.trailerItemStore.set([newData]);
-                            regApi.unsubscribe();
-                        },
-                    }); 
+
+                    let regApi = this.trailerService
+                        .getTrailerRegistrationByRegistrationId(newRegId)
+                        .subscribe({
+                            next: (resp: any) => {
+                                newData.registrations.push(resp);
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: newData,
+                                    id: newData.id,
+                                });
+                                this.tadl.add(newData);
+                                this.trailerItemStore.set([newData]);
+                                regApi.unsubscribe();
+                            },
+                        });
                 }
             })
         );
@@ -162,43 +162,45 @@ export class CommonTruckTrailerService {
                     const tr = this.truckItemStore.getValue();
                     const truckData = JSON.parse(JSON.stringify(tr.entities));
                     let newData = truckData[data.truckId];
-                    
-                    let inspApi = this.trailerService.getTrailerInspectionByInspectionId(newInspId).subscribe({
-                        next: (resp: any) => {   
-                            newData.inspections.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tdlStore.add(newData);
-                            this.truckItemStore.set([newData]);
-                           
-                            
-                            inspApi.unsubscribe();
-                        },
-                    }); 
+
+                    let inspApi = this.trailerService
+                        .getTrailerInspectionByInspectionId(newInspId)
+                        .subscribe({
+                            next: (resp: any) => {
+                                newData.inspections.push(resp);
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: newData,
+                                    id: newData.id,
+                                });
+                                this.tdlStore.add(newData);
+                                this.truckItemStore.set([newData]);
+
+                                inspApi.unsubscribe();
+                            },
+                        });
                 } else if (data.trailerId) {
                     let newInspId = res?.id;
                     const tr = this.trailerItemStore.getValue();
                     const trailerData = JSON.parse(JSON.stringify(tr.entities));
                     let newData = trailerData[data.trailerId];
-                    
-                    let inspApi = this.trailerService.getTrailerInspectionByInspectionId(newInspId).subscribe({
-                        next: (resp: any) => {   
-                            newData.inspections.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tadl.add(newData);
-                            this.trailerItemStore.set([newData]);
-                           
-                            
-                            inspApi.unsubscribe();
-                        },
-                    }); 
+
+                    let inspApi = this.trailerService
+                        .getTrailerInspectionByInspectionId(newInspId)
+                        .subscribe({
+                            next: (resp: any) => {
+                                newData.inspections.push(resp);
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: newData,
+                                    id: newData.id,
+                                });
+                                this.tadl.add(newData);
+                                this.trailerItemStore.set([newData]);
+
+                                inspApi.unsubscribe();
+                            },
+                        });
                 }
             })
         );
@@ -260,20 +262,22 @@ export class CommonTruckTrailerService {
                     const tr = this.trailerItemStore.getValue();
                     const trailerData = JSON.parse(JSON.stringify(tr.entities));
                     let newData = trailerData[data.trailerId];
-    
-                    let titleApi = this.trailerService.getTrailerTitleByTitleId(newTitleId).subscribe({
-                        next: (resp: any) => {  
-                            newData.titles.push(resp);  
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: newData,
-                                id: newData.id,
-                            });
-                            this.tadl.add(newData);
-                            this.trailerItemStore.set([newData]);
-                            titleApi.unsubscribe();
-                        },
-                    }); 
+
+                    let titleApi = this.trailerService
+                        .getTrailerTitleByTitleId(newTitleId)
+                        .subscribe({
+                            next: (resp: any) => {
+                                newData.titles.push(resp);
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: newData,
+                                    id: newData.id,
+                                });
+                                this.tadl.add(newData);
+                                this.trailerItemStore.set([newData]);
+                                titleApi.unsubscribe();
+                            },
+                        });
                 }
             })
         );
@@ -311,39 +315,40 @@ export class CommonTruckTrailerService {
             const truckData = JSON.parse(JSON.stringify(tr.entities));
             let newData = truckData[truckId];
 
-            if ( cardUpdated == 'registration' ) {
+            if (cardUpdated == 'registration') {
+                let regApi = this.truckService
+                    .getTruckRegistrationByRegistrationId(cardId)
+                    .subscribe({
+                        next: (res: any) => {
+                            newData.registrations.map(
+                                (reg: any, index: any) => {
+                                    if (reg.id == res.id) {
+                                        newData.registrations[index] = res;
+                                    }
+                                }
+                            );
 
-                let regApi = this.truckService.getTruckRegistrationByRegistrationId(cardId).subscribe({
-                    next: (res: any) => {
-                        newData.registrations.map((reg: any, index: any) => {
-                            if ( reg.id == res.id ) {
-                                newData.registrations[index] = res;  
-                            }
-                        })
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
 
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-
-                        this.tdlStore.add(newData);
-                        this.truckItemStore.set([newData]);
-                        regApi.unsubscribe();
-                       
-                    },
-                });
-            }   else if ( cardUpdated == 'deleteRegistration' ) {
-
+                            this.tdlStore.add(newData);
+                            this.truckItemStore.set([newData]);
+                            regApi.unsubscribe();
+                        },
+                    });
+            } else if (cardUpdated == 'deleteRegistration') {
                 let indexNum;
                 newData.registrations.map((reg: any, index: any) => {
-                    if ( reg.id == cardId ) {
+                    if (reg.id == cardId) {
                         indexNum = index;
                     }
-                })
-               
+                });
+
                 newData.registrations.splice(indexNum, 1);
-                
+
                 this.tableService.sendActionAnimation({
                     animation: 'update',
                     data: newData,
@@ -351,38 +356,37 @@ export class CommonTruckTrailerService {
                 });
                 this.tdlStore.add(newData);
                 this.truckItemStore.set([newData]);
+            } else if (cardUpdated == 'inspection') {
+                let inspectionApi = this.trailerService
+                    .getTrailerInspectionByInspectionId(cardId)
+                    .subscribe({
+                        next: (res: any) => {
+                            newData.inspections.map((insp: any, index: any) => {
+                                if (insp.id == res.id) {
+                                    newData.inspections[index] = res;
+                                }
+                            });
 
-            } else if ( cardUpdated == 'inspection' ) {
-                let inspectionApi = this.trailerService.getTrailerInspectionByInspectionId(cardId).subscribe({
-                    next: (res: any) => {
-                        newData.inspections.map((insp: any, index: any) => {
-                            if ( insp.id == res.id ) {
-                                newData.inspections[index] = res;  
-                            }
-                        })
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-                        this.tdlStore.add(newData);
-                        this.truckItemStore.set([newData]);
-                        inspectionApi.unsubscribe();
-                       
-                    },
-                });
-            } else if ( cardUpdated == 'deleteInspection' ) {
-
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tdlStore.add(newData);
+                            this.truckItemStore.set([newData]);
+                            inspectionApi.unsubscribe();
+                        },
+                    });
+            } else if (cardUpdated == 'deleteInspection') {
                 let indexNum;
                 newData.inspections.map((reg: any, index: any) => {
-                    if ( reg.id == cardId ) {
+                    if (reg.id == cardId) {
                         indexNum = index;
                     }
-                })
-               
+                });
+
                 newData.inspections.splice(indexNum, 1);
-                
+
                 this.tableService.sendActionAnimation({
                     animation: 'update',
                     data: newData,
@@ -390,37 +394,37 @@ export class CommonTruckTrailerService {
                 });
                 this.tdlStore.add(newData);
                 this.truckItemStore.set([newData]);
+            } else if (cardUpdated == 'title') {
+                let titleApi = this.trailerService
+                    .getTrailerTitleByTitleId(cardId)
+                    .subscribe({
+                        next: (res: any) => {
+                            newData.titles.map((insp: any, index: any) => {
+                                if (insp.id == res.id) {
+                                    newData.titles[index] = res;
+                                }
+                            });
 
-            } else if ( cardUpdated == 'title' ) {
-                let titleApi = this.trailerService.getTrailerTitleByTitleId(cardId).subscribe({
-                    next: (res: any) => {
-                        newData.titles.map((insp: any, index: any) => {
-                            if ( insp.id == res.id ) {
-                                newData.titles[index] = res;  
-                            }
-                        })
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-                        this.tdlStore.add(newData);
-                        this.truckItemStore.set([newData]);
-                        titleApi.unsubscribe();
-                       
-                    },
-                });
-            } else if ( cardUpdated == 'deleteTitle' ) {
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tdlStore.add(newData);
+                            this.truckItemStore.set([newData]);
+                            titleApi.unsubscribe();
+                        },
+                    });
+            } else if (cardUpdated == 'deleteTitle') {
                 let indexNum;
                 newData.titles.map((reg: any, index: any) => {
-                    if ( reg.id == cardId ) {
+                    if (reg.id == cardId) {
                         indexNum = index;
                     }
-                })
-               
+                });
+
                 newData.titles.splice(indexNum, 1);
-                
+
                 this.tableService.sendActionAnimation({
                     animation: 'update',
                     data: newData,
@@ -446,29 +450,26 @@ export class CommonTruckTrailerService {
                                     }
                                 }
                             );
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-                        this.tadl.add(newData);
-                        this.trailerItemStore.set([newData]);
-                        regApi.unsubscribe();
-                       
-                    },
-                });
-                
-            } else if ( cardUpdated == 'deleteRegistration' ) {
-                
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tadl.add(newData);
+                            this.trailerItemStore.set([newData]);
+                            regApi.unsubscribe();
+                        },
+                    });
+            } else if (cardUpdated == 'deleteRegistration') {
                 let indexNum;
                 newData.registrations.map((reg: any, index: any) => {
-                    if ( reg.id == cardId ) {
+                    if (reg.id == cardId) {
                         indexNum = index;
                     }
-                })
-               
+                });
+
                 newData.registrations.splice(indexNum, 1);
-                
+
                 this.tableService.sendActionAnimation({
                     animation: 'update',
                     data: newData,
@@ -476,39 +477,37 @@ export class CommonTruckTrailerService {
                 });
                 this.tadl.add(newData);
                 this.trailerItemStore.set([newData]);
-                
+            } else if (cardUpdated == 'inspection') {
+                let inspectionApi = this.trailerService
+                    .getTrailerInspectionByInspectionId(cardId)
+                    .subscribe({
+                        next: (res: any) => {
+                            newData.inspections.map((insp: any, index: any) => {
+                                if (insp.id == res.id) {
+                                    newData.inspections[index] = res;
+                                }
+                            });
 
-            } else if ( cardUpdated == 'inspection' ){
-                let inspectionApi = this.trailerService.getTrailerInspectionByInspectionId(cardId).subscribe({
-                    next: (res: any) => {
-                        newData.inspections.map((insp: any, index: any) => {
-                            if ( insp.id == res.id ) {
-                                newData.inspections[index] = res;  
-                            }
-                        })
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-                        this.tadl.add(newData);
-                        this.trailerItemStore.set([newData]);
-                        inspectionApi.unsubscribe();
-                       
-                    },
-                });
-            } else if ( cardUpdated == 'deleteInspection' ) {
-
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tadl.add(newData);
+                            this.trailerItemStore.set([newData]);
+                            inspectionApi.unsubscribe();
+                        },
+                    });
+            } else if (cardUpdated == 'deleteInspection') {
                 let indexNum;
                 newData.inspections.map((reg: any, index: any) => {
-                    if ( reg.id == cardId ) {
+                    if (reg.id == cardId) {
                         indexNum = index;
                     }
-                })
-               
+                });
+
                 newData.inspections.splice(indexNum, 1);
-                
+
                 this.tableService.sendActionAnimation({
                     animation: 'update',
                     data: newData,
@@ -516,37 +515,37 @@ export class CommonTruckTrailerService {
                 });
                 this.tadl.add(newData);
                 this.trailerItemStore.set([newData]);
+            } else if (cardUpdated == 'title') {
+                let titleApi = this.trailerService
+                    .getTrailerTitleByTitleId(cardId)
+                    .subscribe({
+                        next: (res: any) => {
+                            newData.titles.map((insp: any, index: any) => {
+                                if (insp.id == res.id) {
+                                    newData.titles[index] = res;
+                                }
+                            });
 
-            } else if ( cardUpdated == 'title' ) {
-                let titleApi = this.trailerService.getTrailerTitleByTitleId(cardId).subscribe({
-                    next: (res: any) => {
-                        newData.titles.map((insp: any, index: any) => {
-                            if ( insp.id == res.id ) {
-                                newData.titles[index] = res;  
-                            }
-                        })
-
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
-                        this.tadl.add(newData);
-                        this.trailerItemStore.set([newData]);
-                        titleApi.unsubscribe();
-                       
-                    },
-                });
-            } else if ( cardUpdated == 'deleteTitle' ) {
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+                            this.tadl.add(newData);
+                            this.trailerItemStore.set([newData]);
+                            titleApi.unsubscribe();
+                        },
+                    });
+            } else if (cardUpdated == 'deleteTitle') {
                 let indexNum;
                 newData.titles.map((reg: any, index: any) => {
-                    if ( reg.id == cardId ) {
+                    if (reg.id == cardId) {
                         indexNum = index;
                     }
-                })
-               
+                });
+
                 newData.titles.splice(indexNum, 1);
-                
+
                 this.tableService.sendActionAnimation({
                     animation: 'update',
                     data: newData,

@@ -247,6 +247,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     public displayDeleteAction: boolean = false;
     public displayUploadZone: boolean = false;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -268,6 +270,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
             if (this.editData.type === 'edit-division') {
                 const timeout = setTimeout(() => {
+                    this.disableCardAnimation = true;
                     this.editCompanyDivision();
                     clearTimeout(timeout);
                 });
@@ -282,6 +285,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (this.editData.type === 'edit-company') {
             const timeout = setTimeout(() => {
                 this.editCompany();
+                this.disableCardAnimation = true;
                 clearTimeout(timeout);
             });
         }
@@ -289,6 +293,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (this.editData?.type === 'payroll-tab') {
             const timeout = setTimeout(() => {
                 this.tabChange({ id: 3 });
+                this.disableCardAnimation = true;
                 this.editCompany();
                 clearTimeout(timeout);
             });
@@ -1209,6 +1214,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 );
             }
         }
+        setTimeout(() => {
+            this.disableCardAnimation = false;
+        }, 1000);
     }
 
     public updateCompanyDivision(id: number) {
@@ -2064,6 +2072,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (this.companyForm.get('logo').value) {
             this.displayDeleteAction = true;
         }
+
+        setTimeout(() => {
+            this.disableCardAnimation = false;
+        }, 1000);
     }
 
     public handleDeleteClick(event: any) {

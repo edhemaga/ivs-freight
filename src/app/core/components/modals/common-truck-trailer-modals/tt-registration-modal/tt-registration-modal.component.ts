@@ -38,6 +38,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     public stateTypes: any[] = [];
     public selectedStateType: any = null;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private commonTruckTrailerService: CommonTruckTrailerService,
@@ -50,6 +52,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.getModalDropdowns();
         if (this.editData.type === 'edit-registration') {
+            this.disableCardAnimation = true;
             this.editRegistrationById();
         }
     }
@@ -225,6 +228,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                         ...res.state,
                         name: res.state.stateShortName,
                     };
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

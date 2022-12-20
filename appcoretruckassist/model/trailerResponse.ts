@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { TrailerLengthResponse } from './trailerLengthResponse';
 import { TrailerTypeResponse } from './trailerTypeResponse';
 import { DispatchShortResponse } from './dispatchShortResponse';
@@ -50,5 +51,6 @@ export interface TrailerResponse {
     updatedAt?: string;
     ownerHistories?: Array<OwnerHistoryResponse> | null;
     assignedTo?: DispatchShortResponse;
+    files?: Array<FileResponse> | null;
 }
 
