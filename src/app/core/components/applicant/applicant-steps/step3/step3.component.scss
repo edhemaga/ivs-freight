@@ -33,21 +33,20 @@
 
     .top-section {
         margin-top: 12px;
-        width: 820px;
+        width: 616px;
 
         p {
-            color: $bw6-2;
             font-size: 14px;
             line-height: 22px;
 
             &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
             }
 
             &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
             }
         }
     }
@@ -319,38 +318,38 @@
     }
 
     .form-section {
-        margin-top: 22px;
+        margin-top: 32px;
 
         .permit-container {
             width: 616px;
 
             .permit-title-box {
                 .question-title {
-                    color: $bw6-2;
+                    color: $ta-black-2;
                     font-size: 14px;
                     line-height: 18px;
 
                     &::-moz-selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black-2;
+                        background: rgb(47, 47, 47, 0.2);
                     }
 
                     &::selection {
-                        color: $bw6-2;
-                        background: rgb(108, 108, 108, 0.2);
+                        color: $ta-black-2;
+                        background: rgb(47, 47, 47, 0.2);
                     }
 
                     .required-star {
                         color: $progress-danger;
 
                         &::-moz-selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
+                            color: $ta-black-2;
+                            background: rgb(47, 47, 47, 0.2);
                         }
 
                         &::selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
+                            color: $ta-black-2;
+                            background: rgb(47, 47, 47, 0.2);
                         }
                     }
                 }

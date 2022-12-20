@@ -63,7 +63,7 @@ export class Step3Component implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public subscription: Subscription;
 
@@ -286,24 +286,6 @@ export class Step3Component implements OnInit, OnDestroy {
                   expDate: null,
               };
 
-        for (let i = 0; i < filteredLicenseArray.length; i++) {
-            const firstEmptyObjectInList = this.openAnnotationArray.find(
-                (item) => Object.keys(item).length === 0
-            );
-
-            const indexOfFirstEmptyObjectInList =
-                this.openAnnotationArray.indexOf(firstEmptyObjectInList);
-
-            this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                lineIndex: this.openAnnotationArray.indexOf(
-                    firstEmptyObjectInList
-                ),
-                lineInputs: [false],
-                displayAnnotationButton: false,
-                displayAnnotationTextArea: false,
-            };
-        }
-
         this.permitForm.patchValue({
             permit: cdlDenied,
             permitExplain: cdlDeniedExplanation,
@@ -377,6 +359,25 @@ export class Step3Component implements OnInit, OnDestroy {
                 licenseItemsReview.pop();
 
                 for (let i = 0; i < licenseItemsReview.length; i++) {
+                    const firstEmptyObjectInList =
+                        this.openAnnotationArray.find(
+                            (item) => Object.keys(item).length === 0
+                        );
+
+                    const indexOfFirstEmptyObjectInList =
+                        this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        );
+
+                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                        lineIndex: this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        ),
+                        lineInputs: [false],
+                        displayAnnotationButton: false,
+                        displayAnnotationTextArea: false,
+                    };
+
                     const licenseItemReview: any = {
                         ...licenseItemsReview[i],
                     };
@@ -1015,22 +1016,16 @@ export class Step3Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            if (
-                !this.isUpperFormFeedbackValueUpdated ||
-                !this.isBottomFormFeedbackValueUpdated
-            ) {
-                return;
-            }
-        }
-
         const { permit, permitExplain } = this.permitForm.value;
 
         if (
             this.permitForm.invalid ||
             this.formStatus === 'INVALID' ||
             permit === null ||
-            this.isEditing
+            this.isEditing ||
+            (this.selectedMode === SelectedMode.FEEDBACK &&
+                (!this.isUpperFormFeedbackValueUpdated ||
+                    !this.isBottomFormFeedbackValueUpdated))
         ) {
             if (this.permitForm.invalid) {
                 this.inputService.markInvalid(this.permitForm);

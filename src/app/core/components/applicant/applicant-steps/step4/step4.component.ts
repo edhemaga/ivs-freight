@@ -40,7 +40,7 @@ import {
 export class Step4Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public accidentForm: FormGroup;
 
@@ -216,24 +216,6 @@ export class Step4Component implements OnInit, OnDestroy {
                       vehicleType: null,
                       description: null,
                   };
-
-            for (let i = 0; i < filteredAccidentArray.length; i++) {
-                const firstEmptyObjectInList = this.openAnnotationArray.find(
-                    (item) => Object.keys(item).length === 0
-                );
-
-                const indexOfFirstEmptyObjectInList =
-                    this.openAnnotationArray.indexOf(firstEmptyObjectInList);
-
-                this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                    lineIndex: this.openAnnotationArray.indexOf(
-                        firstEmptyObjectInList
-                    ),
-                    lineInputs: [false],
-                    displayAnnotationButton: false,
-                    displayAnnotationTextArea: false,
-                };
-            }
         }
 
         if (this.selectedMode === SelectedMode.REVIEW) {
@@ -247,6 +229,25 @@ export class Step4Component implements OnInit, OnDestroy {
                 accidentItemsReview.pop();
 
                 for (let i = 0; i < accidentItemsReview.length; i++) {
+                    const firstEmptyObjectInList =
+                        this.openAnnotationArray.find(
+                            (item) => Object.keys(item).length === 0
+                        );
+
+                    const indexOfFirstEmptyObjectInList =
+                        this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        );
+
+                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                        lineIndex: this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        ),
+                        lineInputs: [false],
+                        displayAnnotationButton: false,
+                        displayAnnotationTextArea: false,
+                    };
+
                     const accidentItemReview = {
                         ...accidentItemsReview[i],
                     };
@@ -826,17 +827,19 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            if (!this.isFeedbackValueUpdated) {
-                return;
-            }
-        }
-
-        this.checkIsHazmatSpillNotChecked = true;
-
-        if (this.formStatus === 'INVALID' || this.isEditing) {
+        if (
+            this.formStatus === 'INVALID' ||
+            this.isEditing ||
+            !this.displayRadioRequiredNote ||
+            (this.selectedMode === SelectedMode.FEEDBACK &&
+                !this.isFeedbackValueUpdated)
+        ) {
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;
+            }
+
+            if (!this.displayRadioRequiredNote) {
+                this.checkIsHazmatSpillNotChecked = true;
             }
 
             return;

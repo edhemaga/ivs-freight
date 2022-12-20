@@ -271,7 +271,7 @@ export class Step5FormComponent
         this.violationsForm.patchValue({
             date: formValue?.date,
             vehicleType: formValue?.vehicleType,
-            location: formValue.location ? formValue?.location?.address : null,
+            location: formValue?.location ? formValue?.location?.address : null,
             description: formValue?.description,
         });
 
@@ -291,6 +291,7 @@ export class Step5FormComponent
                 const {
                     id,
                     reviewId,
+                    vehicleTypeLogoName,
                     date,
                     location,
                     isEditingViolation,
@@ -361,6 +362,9 @@ export class Step5FormComponent
         const saveData: ViolationModel = {
             ...violationsForm,
             isEditingViolation: false,
+            vehicleTypeLogoName: this.vehicleType.find(
+                (item) => item.name === violationsForm.vehicleType
+            ).logoName,
             location: selectedAddress,
         };
 
@@ -372,13 +376,24 @@ export class Step5FormComponent
         this.formService.resetForm(this.violationsForm);
     }
 
-    public onSaveEditedViolation(): void {
-        if (this.violationsForm.invalid) {
-            this.inputService.markInvalid(this.violationsForm);
-            return;
-        }
+    public onCancelEditAccident(): void {
+        this.cancelFormEditingEmitter.emit(1);
 
-        if (!this.isViolationEdited) {
+        this.isViolationEdited = false;
+
+        this.formStatusEmitter.emit('VALID');
+
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    }
+
+    public onSaveEditedViolation(): void {
+        if (this.violationsForm.invalid || !this.isViolationEdited) {
+            if (this.violationsForm.invalid) {
+                this.inputService.markInvalid(this.violationsForm);
+            }
+
             return;
         }
 
@@ -393,29 +408,22 @@ export class Step5FormComponent
 
         const saveData: ViolationModel = {
             ...violationsForm,
+            isEditingViolation: false,
+            vehicleTypeLogoName: this.vehicleType.find(
+                (item) => item.name === violationsForm.vehicleType
+            ).logoName,
             location: this.selectedAddress
                 ? selectedAddress
                 : this.editingCardAddress,
-            isEditingViolation: false,
         };
 
         this.saveFormEditingEmitter.emit(saveData);
 
         this.isViolationEdited = false;
 
-        this.formService.resetForm(this.violationsForm);
-
-        this.subscription.unsubscribe();
-    }
-
-    public onCancelEditAccident(): void {
-        this.cancelFormEditingEmitter.emit(1);
-
-        this.isViolationEdited = false;
-
-        this.formService.resetForm(this.violationsForm);
-
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     public onGetBtnClickValue(event: any): void {

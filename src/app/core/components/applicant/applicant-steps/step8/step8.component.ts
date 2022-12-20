@@ -755,14 +755,15 @@ export class Step8Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            if (!this.isFeedbackValueUpdated) {
-                return;
+        if (
+            this.drugAlcoholStatementForm.invalid ||
+            (this.selectedMode === SelectedMode.FEEDBACK &&
+                !this.isFeedbackValueUpdated)
+        ) {
+            if (this.drugAlcoholStatementForm.invalid) {
+                this.inputService.markInvalid(this.drugAlcoholStatementForm);
             }
-        }
 
-        if (this.drugAlcoholStatementForm.invalid) {
-            this.inputService.markInvalid(this.drugAlcoholStatementForm);
             return;
         }
 

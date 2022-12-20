@@ -457,24 +457,6 @@ export class Step6Component implements OnInit, OnDestroy {
                   relationship: null,
               };
 
-        for (let i = 0; i < filteredContactsArray.length; i++) {
-            const firstEmptyObjectInList = this.openAnnotationArray.find(
-                (item) => Object.keys(item).length === 0
-            );
-
-            const indexOfFirstEmptyObjectInList =
-                this.openAnnotationArray.indexOf(firstEmptyObjectInList);
-
-            this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                lineIndex: this.openAnnotationArray.indexOf(
-                    firstEmptyObjectInList
-                ),
-                lineInputs: [false],
-                displayAnnotationButton: false,
-                displayAnnotationTextArea: false,
-            };
-        }
-
         this.educationForm.patchValue({
             specialTraining,
             otherTraining,
@@ -656,6 +638,25 @@ export class Step6Component implements OnInit, OnDestroy {
                 emergencyContactItemsReview.pop();
 
                 for (let i = 0; i < emergencyContactItemsReview.length; i++) {
+                    const firstEmptyObjectInList =
+                        this.openAnnotationArray.find(
+                            (item) => Object.keys(item).length === 0
+                        );
+
+                    const indexOfFirstEmptyObjectInList =
+                        this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        );
+
+                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                        lineIndex: this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        ),
+                        lineInputs: [false],
+                        displayAnnotationButton: false,
+                        displayAnnotationTextArea: false,
+                    };
+
                     const emergencyContactItemReview: any = {
                         ...emergencyContactItemsReview[i],
                     };
@@ -1453,15 +1454,6 @@ export class Step6Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            if (
-                !this.isUpperFormFeedbackValueUpdated ||
-                !this.isBottomFormFeedbackValueUpdated
-            ) {
-                return;
-            }
-        }
-
         const {
             specialTraining,
             specialTrainingExplain,
@@ -1493,7 +1485,10 @@ export class Step6Component implements OnInit, OnDestroy {
             this.formStatus === 'INVALID' ||
             !this.selectedGrade ||
             isAnyRadioUnchecked ||
-            this.isEditing
+            this.isEditing ||
+            (this.selectedMode === SelectedMode.FEEDBACK &&
+                (!this.isUpperFormFeedbackValueUpdated ||
+                    !this.isBottomFormFeedbackValueUpdated))
         ) {
             if (this.educationForm.invalid) {
                 this.inputService.markInvalid(this.educationForm);

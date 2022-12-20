@@ -288,6 +288,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         },
     ];
 
+    public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
+
     public openAnnotationArray: {
         lineIndex?: number;
         lineInputs?: boolean[];
@@ -427,6 +431,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             felonyExplain: [null],
             misdemeanorExplain: [null],
             drunkDrivingExplain: [null],
+            files: [null, Validators.required],
 
             firstRowReview: [null],
             secondRowReview: [null],
@@ -1135,6 +1140,32 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
+    public onFilesAction(event: any): void {
+        this.documents = event.files;
+
+        this.displayDocumentsRequiredNote = false;
+
+        switch (event.action) {
+            case 'add':
+                this.personalInfoForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+
+                break;
+            case 'delete':
+                this.personalInfoForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
     private createNewAddress(): FormGroup {
         this.cardReviewIndex++;
 
@@ -1787,6 +1818,10 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         if (this.personalInfoForm.invalid || isAnyRadioUnchecked) {
             if (this.personalInfoForm.invalid) {
                 this.inputService.markInvalid(this.personalInfoForm);
+
+                if (!this.documents.length) {
+                    this.displayDocumentsRequiredNote = true;
+                }
             }
 
             if (isAnyRadioUnchecked) {

@@ -1,6 +1,18 @@
 @import 'src/theme/variables.scss';
 
 .step-form {
+    br {
+        &::-moz-selection {
+            color: $ta-black;
+            background: rgb(47, 47, 47, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black;
+            background: rgb(47, 47, 47, 0.2);
+        }
+    }
+
     .line-container {
         position: relative;
 
@@ -54,21 +66,89 @@
     .endorsments-group {
         width: 616px;
         margin-right: 0 !important;
+        margin-bottom: 22px;
+    }
+
+    .files-section {
+        h4 {
+            font-size: 14px;
+            line-height: 22px;
+            margin-bottom: 22px !important;
+
+            &::-moz-selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            span {
+                &::-moz-selection {
+                    color: $ta-black-2;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black-2;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+            }
+        }
+
+        .files-container {
+            width: 616px;
+            margin-bottom: 22px;
+
+            .files-header {
+                border-top: 0.2px solid $ta-light-grey-4;
+                border-radius: 1px;
+                margin-bottom: 9px;
+                padding-top: 5px;
+                height: 24px;
+
+                .counter-container {
+                    border-radius: 2px;
+                    background: $ta-light-grey-4;
+                    width: 24px;
+                    height: 24px;
+
+                    p {
+                        font-size: 14px;
+                        color: $bw6-2;
+                        user-select: none;
+                    }
+                }
+
+                .document-title-container {
+                    .documents-title {
+                        height: 18px;
+                        font-size: 14px;
+                        color: $bw6-2;
+                        user-select: none;
+                        margin-left: 4px !important;
+                    }
+                }
+            }
+        }
     }
 
     .add-license-title {
-        color: $bw6-2;
+        color: $ta-black;
         font-size: 14px;
-        margin-right: 12px !important;
+        height: 18px;
+        margin-bottom: 12px !important;
 
         &::-moz-selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
         }
 
         &::selection {
-            color: $bw6-2;
-            background: rgb(108, 108, 108, 0.2);
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
         }
     }
 }

@@ -637,12 +637,6 @@ export class Step7Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            if (!this.isFeedbackValueUpdated) {
-                return;
-            }
-        }
-
         const {
             hosArray,
             isValidHos,
@@ -659,7 +653,12 @@ export class Step7Component implements OnInit, OnDestroy {
 
         const isAnyRadioUnchecked = isAnyRadioInArrayUnChecked(radioButtons);
 
-        if (this.sevenDaysHosForm.invalid || isAnyRadioUnchecked) {
+        if (
+            this.sevenDaysHosForm.invalid ||
+            isAnyRadioUnchecked ||
+            (this.selectedMode === SelectedMode.FEEDBACK &&
+                !this.isFeedbackValueUpdated)
+        ) {
             if (this.sevenDaysHosForm.invalid) {
                 this.inputService.markInvalid(this.sevenDaysHosForm);
             }

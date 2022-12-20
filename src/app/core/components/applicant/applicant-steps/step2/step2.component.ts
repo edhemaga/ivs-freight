@@ -86,7 +86,7 @@ export class Step2Component implements OnInit, OnDestroy {
         { id: 0, displayRadioRequiredNote: false },
         { id: 1, displayRadioRequiredNote: false },
     ];
-    public checkIsHazmatSpillNotChecked: boolean = false;
+    public checkIsRadioUnchecked: boolean = false;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -317,24 +317,6 @@ export class Step2Component implements OnInit, OnDestroy {
                       reasonForLeaving: null,
                       accountForPeriod: null,
                   };
-
-            for (let i = 0; i < filteredWorkExperienceArray.length; i++) {
-                const firstEmptyObjectInList = this.openAnnotationArray.find(
-                    (item) => Object.keys(item).length === 0
-                );
-
-                const indexOfFirstEmptyObjectInList =
-                    this.openAnnotationArray.indexOf(firstEmptyObjectInList);
-
-                this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                    lineIndex: this.openAnnotationArray.indexOf(
-                        firstEmptyObjectInList
-                    ),
-                    lineInputs: [false],
-                    displayAnnotationButton: false,
-                    displayAnnotationTextArea: false,
-                };
-            }
         } else {
             this.formStatus = 'VALID';
         }
@@ -350,6 +332,25 @@ export class Step2Component implements OnInit, OnDestroy {
                 workExperienceItemsReview.pop();
 
                 for (let i = 0; i < workExperienceItemsReview.length; i++) {
+                    const firstEmptyObjectInList =
+                        this.openAnnotationArray.find(
+                            (item) => Object.keys(item).length === 0
+                        );
+
+                    const indexOfFirstEmptyObjectInList =
+                        this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        );
+
+                    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+                        lineIndex: this.openAnnotationArray.indexOf(
+                            firstEmptyObjectInList
+                        ),
+                        lineInputs: [false],
+                        displayAnnotationButton: false,
+                        displayAnnotationTextArea: false,
+                    };
+
                     const workExperienceItemReview = {
                         ...workExperienceItemsReview[i],
                     };
@@ -1097,18 +1098,14 @@ export class Step2Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            if (!this.isFeedbackValueUpdated) {
-                return;
-            }
-        }
-
-        this.checkIsHazmatSpillNotChecked = true;
+        this.checkIsRadioUnchecked = true;
 
         if (
             this.formStatus === 'INVALID' ||
             this.innerFormStatus === 'INVALID' ||
-            this.isEditing
+            this.isEditing ||
+            (this.selectedMode === SelectedMode.FEEDBACK &&
+                !this.isFeedbackValueUpdated)
         ) {
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;

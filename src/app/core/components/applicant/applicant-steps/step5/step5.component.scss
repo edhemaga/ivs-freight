@@ -246,7 +246,126 @@
             }
         }
 
-        .violations-view-container {
+        .violations-container {
+            width: 616px;
+
+            .line-container {
+                position: relative;
+
+                .review-feedback-container {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    transform: translateX(calc(100% + 5px));
+                    width: 429px;
+                }
+            }
+
+            .title-container {
+                width: 100%;
+                margin-bottom: 4px;
+                padding-left: 10px;
+                display: grid;
+                grid-template-columns: 200px 308px;
+                grid-column-gap: 22px;
+
+                .date-location-title-box,
+                .vehicle-description-title-box {
+                    p {
+                        color: $bw5;
+                        font-size: 11px;
+
+                        &::-moz-selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+                    }
+                }
+            }
+
+            .violation-info-container {
+                width: 100%;
+                margin-bottom: 4px;
+                padding: 6px 10px;
+                border-radius: 2px;
+                background: $ta-blue-10;
+
+                .info-btn-container {
+                    width: 100%;
+                    cursor: pointer;
+                    display: grid;
+                    grid-template-columns: 200px 308px;
+                    grid-column-gap: 22px;
+
+                    .date-box,
+                    .location-box,
+                    .vehicle-box,
+                    .description-box {
+                        p {
+                            line-height: 14px;
+                            font-size: 11px;
+                        }
+
+                        &.date-box,
+                        &.vehicle-box {
+                            p {
+                                color: $ta-black-2;
+
+                                &::-moz-selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+                            }
+
+                            &.date-box {
+                                margin-bottom: 7px;
+                            }
+
+                            &.vehicle-box {
+                                .truck-icon {
+                                    margin-right: 6px;
+
+                                    svg {
+                                        path {
+                                            fill: $ta-black;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &.location-box,
+                        &.description-box {
+                            p {
+                                color: $bw5;
+
+                                &::-moz-selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /* .violations-view-container {
             width: 616px;
 
             .line-container {
@@ -504,14 +623,19 @@
                     }
                 }
             }
+        } */
+
+        .btn-instead-form-container {
+            margin-top: 22px;
         }
 
         .certify-container {
             width: 616px;
-            margin: 0 auto 22px auto;
+            margin: 22px auto 0 auto;
 
             p {
                 width: 450px;
+                line-height: 14px;
                 font-size: 12px;
                 margin-top: -5px !important;
                 user-select: none;

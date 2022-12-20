@@ -88,6 +88,10 @@ export class Step3FormComponent
     public selectedRestrictions: CdlRestrictionResponse[] = [];
     public selectedEndorsments: CdlEndorsementResponse[] = [];
 
+    public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
+
     public openAnnotationArray: {
         lineIndex?: number;
         lineInputs?: boolean[];
@@ -210,6 +214,7 @@ export class Step3FormComponent
             endorsments: [null],
             restrictionsSubscription: [null],
             endorsmentsSubscription: [null],
+            files: [null, Validators.required],
 
             firstRowReview: [null],
             secondRowReview: [null],
@@ -424,6 +429,37 @@ export class Step3FormComponent
                     .patchValue(this.selectedEndorsments);
 
                 break;
+            default:
+                break;
+        }
+    }
+
+    public onFilesAction(event: any): void {
+        this.documents = event.files;
+
+        this.displayDocumentsRequiredNote = false;
+
+        switch (event.action) {
+            case 'add':
+                this.licenseForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+
+                break;
+            case 'delete':
+                this.licenseForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+
+                this.documentsForDeleteIds = [
+                    ...this.documentsForDeleteIds,
+                    event.deleteId,
+                ];
+
+                break;
+
             default:
                 break;
         }

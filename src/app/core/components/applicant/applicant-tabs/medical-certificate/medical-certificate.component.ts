@@ -33,7 +33,7 @@ import { UploadFile } from '../../../shared/ta-upload-files/ta-upload-file/ta-up
 export class MedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.APPLICANT;
+    public selectedMode: string = SelectedMode.REVIEW;
 
     public medicalCertificateForm: FormGroup;
 
@@ -124,6 +124,7 @@ export class MedicalCertificateComponent implements OnInit, OnDestroy {
     }
 
     public onFilesAction(event: any): void {
+        console.log('event', event);
         this.documents = event.files;
 
         this.displayDocumentsRequiredNote = false;

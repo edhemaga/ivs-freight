@@ -159,7 +159,158 @@
 
             <!-- CREATED VIOLATIONS DATA -->
 
-            <div
+            <ng-container *ngIf="violationsArray.length">
+                <div
+                    class="d-flex flex-column justify-content-center violations-container"
+                    [formGroup]="violationsForm"
+                >
+                    <div class="align-items-center title-container">
+                        <div class="align-items-center date-location-title-box">
+                            <p class="m-0 ta-font-bold">DATE & LOCATION</p>
+                        </div>
+
+                        <div
+                            class="align-items-center vehicle-description-title-box"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                VEHICLE TYPE & DESCRIPTION
+                            </p>
+                        </div>
+                    </div>
+
+                    <ng-container
+                        *ngFor="
+                            let violation of violationsArray;
+                            let i = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <ng-container *ngIf="!violation.isEditingViolation">
+                            <div
+                                class="d-flex align-items-center violation-info-container line-container"
+                            >
+                                <div
+                                    class="align-items-center info-btn-container"
+                                    (click)="
+                                        selectedMode === 'REVIEW_MODE'
+                                            ? onCardReview(i)
+                                            : onEditViolation(i)
+                                    "
+                                >
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <div
+                                            class="d-flex align-items-center date-box"
+                                        >
+                                            <p class="m-0 ta-font-bold">
+                                                {{ violation.date }}
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            class="d-flex align-items-center location-box"
+                                        >
+                                            <p
+                                                class="m-0 ta-font-medium d-inline-block text-truncate"
+                                                style="max-width: 200px"
+                                                ngbTooltip
+                                                [mainTooltip]="
+                                                    violation.location.address
+                                                "
+                                                tooltipBackground="#2F2F2F"
+                                                position="bottom-left"
+                                            >
+                                                {{ violation.location.address }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <div
+                                            class="d-flex align-items-center vehicle-box"
+                                        >
+                                            <svg-icon
+                                                class="truck-icon"
+                                                [src]="
+                                                    'assets/svg/truckassist-table/truck/' +
+                                                    violation.vehicleTypeLogoName
+                                                "
+                                                [svgStyle]="{
+                                                    'width.px': '32',
+                                                    'height.px': '12'
+                                                }"
+                                            ></svg-icon>
+
+                                            <p class="m-0 ta-font-bold">
+                                                {{ violation.vehicleType }}
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            class="d-flex align-items-center description-box"
+                                        >
+                                            <p
+                                                class="m-0 ta-font-medium d-inline-block text-truncate"
+                                                style="max-width: 308px"
+                                                ngbTooltip
+                                                [mainTooltip]="
+                                                    violation.description
+                                                "
+                                                tooltipBackground="#2F2F2F"
+                                                position="bottom-left"
+                                            >
+                                                {{ violation.description }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="violation.isEditingViolation">
+                            <div
+                                [ngStyle]="{
+                                    'margin-bottom':
+                                        violationsArray.length > 1 ? '4px' : 0
+                                }"
+                            >
+                                <app-step5-form
+                                    [mode]="selectedMode"
+                                    [isEditing]="isEditing"
+                                    [formValuesToPatch]="formValuesToPatch"
+                                    [isReviewingCard]="isReviewingCard"
+                                    [stepFeedbackValues]="feedbackValuesToPatch"
+                                    (formValuesEmitter)="
+                                        getViolationFormValues($event)
+                                    "
+                                    (cancelFormEditingEmitter)="
+                                        cancelViolationEditing($event)
+                                    "
+                                    (saveFormEditingEmitter)="
+                                        saveEditedViolation($event)
+                                    "
+                                    (formStatusEmitter)="
+                                        onGetFormStatus($event)
+                                    "
+                                    (cancelFormReviewingEmitter)="
+                                        cancelViolationReview($event)
+                                    "
+                                    (cardOpenAnnotationArrayValuesEmitter)="
+                                        onGetCardOpenAnnotationArrayValues(
+                                            $event
+                                        )
+                                    "
+                                ></app-step5-form>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+            <!--  <div
                 class="d-flex flex-column justify-content-center violations-view-container"
                 [ngStyle]="{
                     'margin-bottom': isEditing ? '0' : '32px'
@@ -408,7 +559,7 @@
                             </div>
                         </div>
 
-                        <!-- REVIEW AND FEEDBACK -->
+                       // REVIEW AND FEEDBACK
 
                         <div
                             class="review-feedback-container"
@@ -478,44 +629,59 @@
                         ></app-step5-form>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- DATE, VEHICLE TYPE, LOCATION -->
 
-            <form
+            <ng-container
                 *ngIf="
-                    ((selectedMode === 'APPLICANT_MODE' ||
-                        selectedMode === 'FEEDBACK_MODE') &&
-                        !isEditing) ||
+                    (selectedMode !== 'REVIEW_MODE' &&
+                        !hideFormOnEdit &&
+                        !displayButtonInsteadOfForm) ||
                     (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
                 "
             >
-                <app-step5-form
-                    [mode]="selectedMode"
-                    [isEditing]="isEditing"
-                    [markFormInvalid]="markFormInvalid"
-                    [formValuesToPatch]="formValuesToPatch"
-                    [isReviewingCard]="isReviewingCard"
-                    [stepFeedbackValues]="feedbackValuesToPatch"
-                    (formValuesEmitter)="getViolationFormValues($event)"
-                    (formStatusEmitter)="onGetFormStatus($event)"
-                    (markInvalidEmitter)="onMarkInvalidEmit($event)"
-                    (lastFormValuesEmitter)="onGetLastFormValues($event)"
-                    (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
-                    (openAnnotationArrayValuesEmitter)="
-                        onGetOpenAnnotationArrayValues($event)
-                    "
-                ></app-step5-form>
-            </form>
+                <form>
+                    <app-step5-form
+                        [mode]="selectedMode"
+                        [isEditing]="isEditing"
+                        [markFormInvalid]="markFormInvalid"
+                        [formValuesToPatch]="formValuesToPatch"
+                        [isReviewingCard]="isReviewingCard"
+                        [stepFeedbackValues]="feedbackValuesToPatch"
+                        (formValuesEmitter)="getViolationFormValues($event)"
+                        (cancelFormEditingEmitter)="
+                            cancelViolationEditing($event)
+                        "
+                        (saveFormEditingEmitter)="saveEditedViolation($event)"
+                        (formStatusEmitter)="onGetFormStatus($event)"
+                        (markInvalidEmitter)="onMarkInvalidEmit($event)"
+                        (lastFormValuesEmitter)="onGetLastFormValues($event)"
+                        (hasIncorrectFieldsEmitter)="
+                            onHasIncorrectFields($event)
+                        "
+                        (openAnnotationArrayValuesEmitter)="
+                            onGetOpenAnnotationArrayValues($event)
+                        "
+                    ></app-step5-form>
+                </form>
+            </ng-container>
+
+            <ng-container *ngIf="displayButtonInsteadOfForm">
+                <div class="btn-instead-form-container">
+                    <app-applicant-add-save-btn
+                        [addBtn]="true"
+                        [btnText]="'Add Another Violation'"
+                        (clickValueEmitter)="onGetBtnClickValue($event)"
+                    ></app-applicant-add-save-btn>
+                </div>
+            </ng-container>
 
             <!-- CERTIFY -->
 
             <div
                 class="d-flex flex-column align-items-center justify-content-center certify-container"
                 [formGroup]="certifyForm"
-                [ngStyle]="{
-                    'margin-top': isEditing ? '22px' : '0'
-                }"
             >
                 <app-ta-checkbox
                     formControlName="certify"

@@ -83,7 +83,7 @@ export class Step2FormComponent
         id: number;
         displayRadioRequiredNote: boolean;
     };
-    @Input() checkIsHazmatSpillNotChecked: boolean;
+    @Input() checkIsRadioUnchecked: boolean;
     @Input() stepFeedbackValues?: any;
 
     @Output() formValuesEmitter = new EventEmitter<any>();
@@ -396,13 +396,13 @@ export class Step2FormComponent
             }
 
             if (
-                changes.checkIsHazmatSpillNotChecked?.previousValue !==
-                changes.checkIsHazmatSpillNotChecked?.currentValue
+                changes.checkIsRadioUnchecked?.previousValue !==
+                changes.checkIsRadioUnchecked?.currentValue
             ) {
                 let cfrPartRadios: any;
                 let fmcsaRadios: any;
 
-                if (!changes.checkIsHazmatSpillNotChecked?.firstChange) {
+                if (!changes.checkIsRadioUnchecked?.firstChange) {
                     cfrPartRadios =
                         this.workExperienceForm.get('cfrPart').value;
 
