@@ -43,6 +43,9 @@ import {
             transition('closed => open', animate(200)),
         ]),
     ],
+    host: {
+        '(document:keyup)': 'onKeyUp($event)',
+    },
 })
 export class TaModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -130,27 +133,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.modalService.modalStatus$
-            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe((data: { name: string; status: boolean }) => {
-                switch (data?.name) {
-                    case 'deactivate': {
-                        this.isDeactivated = data.status;
-                        break;
-                    }
-                    case 'dnu': {
-                        this.isDNU = data.status;
-                        break;
-                    }
-                    case 'bfb': {
-                        this.isBFB = data.status;
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-            });
+        this.onModalStatus();
+        this.onModalSpinner();
 
         this.uploadFileService.visibilityDropZone$
             .pipe(takeUntil(this.destroy$))
@@ -161,65 +145,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
                     this.dragDrop();
                 }
             });
-
-        this.modalService.modalSpinner$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                (data: {
-                    action: string;
-                    status: boolean;
-                    setFasterTimeout: boolean;
-                }) => {
-                    switch (data.action) {
-                        case 'delete': {
-                            this.deleteSpinnerVisibility = data.status;
-                            break;
-                        }
-                        case 'save and add new': {
-                            this.saveAddNewSpinnerVisibility = data.status;
-                            break;
-                        }
-                        case 'resend email': {
-                            this.resendEmailSpinnerVisibility = data.status;
-                            break;
-                        }
-                        case 'load-template': {
-                            this.loadTemplateSpinnerVisibility = data.status;
-                            break;
-                        }
-                        case 'set-map-settings': {
-                            this.setMapSettingsSpinnerVisibility = data.status;
-                            break;
-                        }
-                        case 'create-map-route': {
-                            this.setMapRouteSpinnerVisibility = data.status;
-                            break;
-                        }
-                        default: {
-                            this.saveSpinnerVisibility = data.status;
-                            break;
-                        }
-                    }
-
-                    if (
-                        !['save and add new', 'load-template'].includes(
-                            data.action
-                        )
-                    ) {
-                        setTimeout(
-                            () => {
-                                $('.pac-container').remove();
-                                this.ngbActiveModal.close();
-                                this.uploadFileService.visibilityDropZone(
-                                    false
-                                );
-                                this.uploadFileService.uploadFiles(null);
-                            },
-                            data?.setFasterTimeout ? 1000 : 2000
-                        );
-                    }
-                }
-            );
     }
 
     public dragOver() {
@@ -417,6 +342,96 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 break;
             }
         }
+    }
+
+    public onModalStatus() {
+        this.modalService.modalStatus$
+            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .subscribe((data: { name: string; status: boolean }) => {
+                switch (data?.name) {
+                    case 'deactivate': {
+                        this.isDeactivated = data.status;
+                        break;
+                    }
+                    case 'dnu': {
+                        this.isDNU = data.status;
+                        break;
+                    }
+                    case 'bfb': {
+                        this.isBFB = data.status;
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            });
+    }
+
+    public onModalSpinner() {
+        this.modalService.modalSpinner$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+                (data: {
+                    action: string;
+                    status: boolean;
+                    setFasterTimeout: boolean;
+                }) => {
+                    switch (data.action) {
+                        case 'delete': {
+                            this.deleteSpinnerVisibility = data.status;
+                            break;
+                        }
+                        case 'save and add new': {
+                            this.saveAddNewSpinnerVisibility = data.status;
+                            break;
+                        }
+                        case 'resend email': {
+                            this.resendEmailSpinnerVisibility = data.status;
+                            break;
+                        }
+                        case 'load-template': {
+                            this.loadTemplateSpinnerVisibility = data.status;
+                            break;
+                        }
+                        case 'set-map-settings': {
+                            this.setMapSettingsSpinnerVisibility = data.status;
+                            break;
+                        }
+                        case 'create-map-route': {
+                            this.setMapRouteSpinnerVisibility = data.status;
+                            break;
+                        }
+                        default: {
+                            this.saveSpinnerVisibility = data.status;
+                            break;
+                        }
+                    }
+
+                    if (
+                        !['save and add new', 'load-template'].includes(
+                            data.action
+                        )
+                    ) {
+                        setTimeout(
+                            () => {
+                                $('.pac-container').remove();
+                                this.ngbActiveModal.close();
+                                this.uploadFileService.visibilityDropZone(
+                                    false
+                                );
+                                this.uploadFileService.uploadFiles(null);
+                            },
+                            data?.setFasterTimeout ? 1000 : 2000
+                        );
+                    }
+                }
+            );
+    }
+
+    public onKeyUp(ev: KeyboardEvent) {
+        if (ev.keyCode === 13)
+            this.action.emit({ action: 'save', bool: false });
     }
 
     ngOnDestroy(): void {

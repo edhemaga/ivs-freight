@@ -73,6 +73,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public isDepartmentCardsScrolling: boolean = false;
 
+    public disableCardAnimation: boolean = false;
+
     public tabs: any[] = [
         {
             id: 1,
@@ -102,6 +104,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         this.getCompanyOfficeDropdowns();
 
         if (this.editData?.type === 'edit') {
+            this.disableCardAnimation = true;
             this.editCompanyOfficeById(this.editData.id);
         }
     }
@@ -460,6 +463,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                                 res.departmentContacts[index].department.id,
                         };
                     }
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

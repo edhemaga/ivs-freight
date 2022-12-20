@@ -45,6 +45,8 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public addNewAfterSave: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private formService: FormService,
@@ -107,6 +109,19 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
             case 'close': {
+                break;
+            }
+            case 'save and add new': {
+                if (this.mapRouteForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.mapRouteForm);
+                    return;
+                }
+                this.addRoute();
+                this.modalService.setModalSpinner({
+                    action: 'save and add new',
+                    status: true,
+                });
+                this.addNewAfterSave = true;
                 break;
             }
             case 'create-map-route': {
@@ -184,7 +199,23 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
             .addRoute(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {},
+                next: () => {
+                    if (this.addNewAfterSave) {
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                        });
+                        this.formService.resetForm(this.mapRouteForm);
+                        this.selectedTruckType = null;
+                        this.routeTabs = this.routeTabs.map((item, index) => {
+                            return {
+                                ...item,
+                                checked: index === 0,
+                            };
+                        });
+                        this.addNewAfterSave = true;
+                    }
+                },
                 error: () => {},
             });
     }

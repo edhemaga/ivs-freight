@@ -26,6 +26,7 @@ export interface TodoResponse {
     deadline?: string | null;
     note?: string | null;
     commentsCount?: number;
+    setAsDoneAt?: string | null;
     createdAt?: string;
     updatedAt?: string;
     todoUsers?: Array<TodoUserResponse> | null;

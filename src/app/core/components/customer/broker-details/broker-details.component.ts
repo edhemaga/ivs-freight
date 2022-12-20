@@ -144,7 +144,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.getBrokerById(data.id);
         let totalCost;
         this.DetailsDataService.setNewData(data);
-        if (data.loads.length) {
+        if (data.loads?.length) {
             totalCost = this.sumArr.transform(
                 data?.loads.map((item) => {
                     return {

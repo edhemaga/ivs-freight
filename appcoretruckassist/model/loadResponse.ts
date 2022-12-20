@@ -61,6 +61,7 @@ export interface LoadResponse {
     comments?: Array<CommentResponse> | null;
     totalPaid?: number | null;
     totalDue?: number;
+    loadedMiles?: number;
     totalMiles?: number;
     totalTimeDays?: number;
     totalTimeHours?: number;

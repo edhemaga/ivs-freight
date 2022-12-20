@@ -173,6 +173,7 @@
             <!-- Requirements Card -->
             <app-ta-custom-card
                 [cardName]="'Requirements'"
+                [disableAnimation]="disableCardAnimation"
                 [animationMarginParams]="{
                     marginTop: '18px',
                     marginBottom: '22px'
@@ -225,18 +226,15 @@
                                     image: false,
                                     url: selectedTrailerReq?.logoName,
                                     template: 'trailer',
-                                    class: selectedTrailerReq?.name
-                                        ?.toLowerCase()
-                                        .includes('liquid')
-                                        ? 'tanker-liquid'
+                                    class: [
+                                        'Tanker',
+                                        'Tanker Pneumatic'
+                                    ].includes(selectedTrailerReq?.name)
+                                        ? 'tanker'
                                         : selectedTrailerReq?.name
                                               ?.toLowerCase()
                                               ?.includes('rgn')
                                         ? 'low-boy-rgn'
-                                        : selectedTrailerReq?.name
-                                              ?.toLowerCase()
-                                              .includes('dry-bulk')
-                                        ? 'tanker-dry-bulk'
                                         : selectedTrailerReq?.name
                                               ?.trim()
                                               .replace(' ', '')
@@ -350,11 +348,12 @@
                 "
                 [isCardOpen]="true"
                 [hasBodyData]="true"
-                (onActionEvent)="createNewExtraStop()"
+                [disableAnimation]="disableCardAnimation"
                 [animationMarginParams]="{
                     marginTop: '10px',
                     marginBottom: '12px'
                 }"
+                (onActionEvent)="createNewExtraStop()"
             >
                 <!-- Stops Header -->
                 <div class="stops-header-bar">
@@ -521,11 +520,12 @@
                             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                             [isCardOpen]="true"
                             [hasBodyData]="true"
-                            (onActionEvent)="createNewRowInStopItems('pickup')"
+                            [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '10px',
                                 marginBottom: '12px'
                             }"
+                            (onActionEvent)="createNewRowInStopItems('pickup')"
                         >
                             Tabel Pickup Component - Boki
                         </app-ta-custom-card>
@@ -775,6 +775,9 @@
                                                 'delivery'.indx
                                             )
                                         "
+                                        [disableAnimation]="
+                                            disableCardAnimation
+                                        "
                                         [animationMarginParams]="{
                                             marginTop: '10px',
                                             marginBottom: '12px'
@@ -926,13 +929,14 @@
                             [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                             [isCardOpen]="true"
                             [hasBodyData]="true"
-                            (onActionEvent)="
-                                createNewRowInStopItems('delivery')
-                            "
+                            [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '10px',
                                 marginBottom: '12px'
                             }"
+                            (onActionEvent)="
+                                createNewRowInStopItems('delivery')
+                            "
                         >
                             Tabel Delivery Component - Boki
                         </app-ta-custom-card>
@@ -955,6 +959,7 @@
             <app-ta-custom-card
                 [cardName]="'Billing'"
                 [isCardOpen]="true"
+                [disableAnimation]="disableCardAnimation"
                 [animationMarginParams]="{
                     marginTop: '18px',
                     marginBottom: '22px'
@@ -1025,11 +1030,12 @@
                         ? 'assets/svg/common/ic_plus.svg'
                         : ''
                 "
-                (onActionEvent)="createComment()"
+                [disableAnimation]="disableCardAnimation"
                 [animationMarginParams]="{
                     marginTop: '10px',
                     marginBottom: '12px'
                 }"
+                (onActionEvent)="createComment()"
             >
                 <app-ta-user-review
                     *ngIf="comments.length"
@@ -1043,6 +1049,7 @@
             <app-ta-custom-card
                 [hasCounter]="documents.length ? documents.length : 0"
                 [cardName]="'Document'"
+                [disableAnimation]="disableCardAnimation"
                 [isCardOpen]="documents.length > 0"
             >
                 <app-ta-upload-files

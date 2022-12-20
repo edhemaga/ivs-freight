@@ -2,6 +2,7 @@ export const environment = {
     API_ENDPOINT: 'https://api.carrierassist.io',
     GPS_ENDPOINT: 'https://apiex.truckassist.io',
     staging: true,
+    production: false,
     perPage: 1000,
     page: 1,
     dateFormat: {
