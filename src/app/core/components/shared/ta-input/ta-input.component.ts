@@ -1539,6 +1539,12 @@ export class TaInputComponent
 
         // Max Length For Paste
         if (this.inputConfig.maxLength) {
+            if (
+                pastedText.startsWith('+1') &&
+                this.inputConfig.name === 'Phone'
+            ) {
+                pastedText = pastedText.split('+1')[1];
+            }
             for (const character of pastedText) {
                 if (character.match(regexType)) {
                     formatedText += character;
@@ -1576,6 +1582,7 @@ export class TaInputComponent
             if ('phone' === this.inputConfig.name.toLowerCase()) {
                 const timeout = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
+
                     this.input.nativeElement.value = newText.substring(0, 10);
                     this.getSuperControl.setValue(
                         '(' +

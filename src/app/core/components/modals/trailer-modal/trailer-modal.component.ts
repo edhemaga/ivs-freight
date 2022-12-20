@@ -531,6 +531,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 name: 'deactivate',
                 status: this.trailerStatus,
             });
+
             clearTimeout(timeout);
         }, 50);
     }

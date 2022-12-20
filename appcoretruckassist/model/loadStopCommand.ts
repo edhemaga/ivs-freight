@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { LoadStopType } from './loadStopType';
-
 import { TimeType } from './timeType';
 
 export interface LoadStopCommand {

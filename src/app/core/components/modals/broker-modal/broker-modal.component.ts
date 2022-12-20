@@ -35,7 +35,7 @@ import {
     TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
-import { Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
 import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validations';
@@ -272,6 +272,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+
+        setTimeout(() => {
+            this.trackBrokerContactEmail();
+        }, 50);
     }
 
     public removeBrokerContacts(id: number) {
@@ -281,6 +285,38 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         if (this.brokerContacts.length === 0) {
             this.brokerForm.markAsUntouched();
         }
+    }
+
+    public trackBrokerContactEmail() {
+        const helper = new Array(this.brokerContacts.length).fill(false);
+
+        this.brokerContacts.valueChanges
+            .pipe(debounceTime(300), takeUntil(this.destroy$))
+            .subscribe((items) => {
+                items.forEach((item, index) => {
+                    if (item.email && helper[index] === false) {
+                        helper[index] = true;
+
+                        this.inputService.changeValidators(
+                            this.brokerContacts.at(index).get('phone'),
+                            false
+                        );
+                    }
+
+                    if (!item.email && helper[index] === true) {
+                        this.brokerContacts
+                            .at(index)
+                            .get('email')
+                            .patchValue(null);
+                        this.inputService.changeValidators(
+                            this.brokerContacts.at(index).get('phone'),
+                            true,
+                            [phoneFaxRegex]
+                        );
+                        helper[index] = false;
+                    }
+                });
+            });
     }
 
     public onScrollingBrokerContacts(event: any) {

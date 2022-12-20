@@ -35,7 +35,7 @@ import {
     TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
-import { Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { FormService } from '../../../services/form/form.service';
 import { convertTimeFromBackend } from '../../../utils/methods.calculations';
@@ -267,11 +267,47 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'email',
             this.destroy$
         );
+
+        setTimeout(() => {
+            this.trackShipperContactEmail();
+        }, 50);
     }
 
     public removeShipperContacts(id: number) {
         this.shipperContacts.removeAt(id);
         this.selectedContractDepartmentFormArray.splice(id, 1);
+    }
+
+    public trackShipperContactEmail() {
+        const helper = new Array(this.shipperContacts.length).fill(false);
+
+        this.shipperContacts.valueChanges
+            .pipe(debounceTime(300), takeUntil(this.destroy$))
+            .subscribe((items) => {
+                items.forEach((item, index) => {
+                    if (item.email && helper[index] === false) {
+                        helper[index] = true;
+
+                        this.inputService.changeValidators(
+                            this.shipperContacts.at(index).get('phone'),
+                            false
+                        );
+                    }
+
+                    if (!item.email && helper[index] === true) {
+                        this.shipperContacts
+                            .at(index)
+                            .get('email')
+                            .patchValue(null);
+                        this.inputService.changeValidators(
+                            this.shipperContacts.at(index).get('phone'),
+                            true,
+                            [phoneFaxRegex]
+                        );
+                        helper[index] = false;
+                    }
+                });
+            });
     }
 
     public onScrollingShipperContacts(event: any) {

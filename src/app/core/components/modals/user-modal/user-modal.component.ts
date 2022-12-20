@@ -237,6 +237,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             case 'save': {
                 if (this.userForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.userForm);
+
                     return;
                 }
                 if (this.editData) {

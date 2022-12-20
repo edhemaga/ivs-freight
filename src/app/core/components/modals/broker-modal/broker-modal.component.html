@@ -478,13 +478,13 @@
                         [isCardOpen]="brokerContacts.length > 0"
                         [hasScrollBody]="brokerContacts.length > 10"
                         [hasBodyData]="brokerContacts.length > 0"
-                        (onActionEvent)="addBrokerContacts($event)"
                         [disabledCard]="!brokerContacts.length"
                         [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
                         }"
+                        (onActionEvent)="addBrokerContacts($event)"
                     >
                         <div
                             formArrayName="brokerContacts"

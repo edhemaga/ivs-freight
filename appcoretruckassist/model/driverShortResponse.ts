@@ -41,7 +41,7 @@ export interface DriverShortResponse {
     soloFlatRate?: number | null;
     teamFlatRate?: number | null;
     twic?: boolean;
-    twicExpDate?: string | null;
+    twicExpirationDays?: number | null;
     fuelCard?: string | null;
     emergencyContactName?: string | null;
     emergencyContactPhone?: string | null;
