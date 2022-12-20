@@ -119,6 +119,7 @@ import { TaCheckboxCardComponent } from './ta-checkbox-card/ta-checkbox-card.com
 import { LoadModalProgressBarComponent } from '../modals/load-modal/load-modal-progress-bar/load-modal-progress-bar.component';
 import { LoadStopComponent } from '../modals/load-modal/load-stop/load-stop.component';
 import { GpsProgressbarComponent } from './gps-progressbar/gps-progressbar.component';
+import { LoadFinancialComponent } from '../modals/load-modal/load-financial/load-financial.component';
 
 export function playerFactory() {
     return import('lottie-web');
@@ -194,13 +195,16 @@ export function playerFactory() {
         RepairPmModalComponent,
         RepairOrderModalComponent,
         ProfileUpdateModalComponent,
+        // Load Modal
         LoadModalComponent,
         LoadModalHazardousComponent,
         LoadModalProgressBarComponent,
         LoadStopComponent,
+        LoadModalStatusesComponent,
+        LoadFinancialComponent,
+        //-------------
         TtTitleModalComponent,
         ConfirmationModalComponent,
-        LoadModalStatusesComponent,
         MapSettingsModalComponent,
         MapRouteModalComponent,
 
@@ -222,7 +226,7 @@ export function playerFactory() {
         TaCustomCardV2Component,
         PayrollStatusesComponent,
         TaCheckboxCardComponent,
-        GpsProgressbarComponent
+        GpsProgressbarComponent,
     ],
     imports: [
         CommonModule,
@@ -366,13 +370,16 @@ export function playerFactory() {
         RepairPmModalComponent,
         RepairOrderModalComponent,
         ProfileUpdateModalComponent,
+        // Load Modal
         LoadModalComponent,
         LoadModalHazardousComponent,
         LoadModalProgressBarComponent,
         LoadStopComponent,
+        LoadModalStatusesComponent,
+        LoadFinancialComponent,
+        //-------------
         TtTitleModalComponent,
         ConfirmationModalComponent,
-        LoadModalStatusesComponent,
         MapSettingsModalComponent,
         MapRouteModalComponent,
         PayrollStatusesComponent,

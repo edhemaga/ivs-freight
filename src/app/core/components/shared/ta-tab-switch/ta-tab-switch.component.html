@@ -1,15 +1,16 @@
 <div class="tab-switch-holder {{ type }}">
     <div
         *ngFor="let item of tabs; let indx = index"
-        class="tab-switch-items-holder"
+        class="tab-switch-items-holder {{item.color ? 'tab-switch-' + item.color : ''}}"
         [class.active]="indx == indexSwitch"
         (click)="switchTab($event, indx, item)"
         #popoverHolder
         app-autoclose-popover
         [customClass]="'custompopovermain'"
+        [class.disabled]="item.disabled"
         [isDisabled]="!item.custom"
     >
-        <div mainContent style="pointer-events: none">
+        <div class="tab-switch-text"  mainContent style="pointer-events: none">
             {{ item.name }}
         </div>
         <div popoverContent>

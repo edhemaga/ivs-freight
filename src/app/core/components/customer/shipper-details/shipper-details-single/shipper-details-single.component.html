@@ -155,7 +155,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="parking-template-item">
+                            <div class="parking-template-item" *ngIf="shipperContact?.phone">
                                 <svg-icon
                                     src="assets/svg/common/ic_phone.svg"
                                 ></svg-icon>
@@ -163,7 +163,7 @@
                                     shipperContact?.phone | formatPhoneP
                                 }}</span>
                             </div>
-                            <div class="parking-template-item">
+                            <div class="parking-template-item" *ngIf="shipperContact?.phoneExt">
                                 <div class="parking-template-item">
                                     <svg-icon
                                         src="assets/svg/common/ic_phone-extension.svg"
@@ -175,6 +175,7 @@
                             </div>
                             <div
                                 class="parking-template-item parking-template-email"
+                                *ngIf="shipperContact?.email"
                             >
                                 <svg-icon
                                     src="assets/svg/common/ic_email.svg"

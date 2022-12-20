@@ -8,7 +8,7 @@
             <div *ngSwitchCase="'load'" class="load">
                 <div
                     class="broker-details-table-container"
-                    *ngIf="broker.data.loads.length"
+                    *ngIf="broker?.data?.loads?.length"
                 >
                     <div class="t-headear-broker">
                         <div class="t-head-items">
@@ -42,7 +42,7 @@
                         <div
                             class="t-body-broker"
                             *ngFor="
-                                let loads of broker?.data.loads;
+                                let loads of broker?.data?.loads;
                                 trackBy: identity
                             "
                         >
