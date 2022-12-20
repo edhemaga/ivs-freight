@@ -70,6 +70,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         {
             id: 3,
             name: 'Review',
+            disabled: true
         },
     ];
 

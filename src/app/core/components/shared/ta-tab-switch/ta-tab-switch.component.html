@@ -7,6 +7,7 @@
         #popoverHolder
         app-autoclose-popover
         [customClass]="'custompopovermain'"
+        [class.disabled]="item.disabled"
         [isDisabled]="!item.custom"
     >
         <div class="tab-switch-text"  mainContent style="pointer-events: none">
