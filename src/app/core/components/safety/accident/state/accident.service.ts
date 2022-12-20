@@ -5,7 +5,7 @@ import {
     AccidentService,
     CreateResponse,
 } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AccidentModalResponse } from '../../../../../../../appcoretruckassist/model/accidentModalResponse';
 
 @Injectable({
@@ -38,45 +38,41 @@ export class AccidentTService {
         search1?: string,
         search2?: string
     ): Observable<AccidentListResponse> {
-        /* return this.accidentService.apiAccidentListGet(
-      active,
-      reported,
-      dateFrom,
-      dateTo,
-      _long,
-      lat,
-      distance,
-      driverIds,
-      truckIds,
-      trailerIds,
-      injury,
-      fatality,
-      towing,
-      hazMat,
-      pageIndex,
-      pageSize,
-      companyId,
-      sort,
-      search,
-      search1,
-      search2
-    ); */
-        return of();
+        return this.accidentService.apiAccidentListGet(
+            active,
+            reported,
+            dateFrom,
+            dateTo,
+            _long,
+            lat,
+            distance,
+            driverIds,
+            truckIds,
+            trailerIds,
+            injury,
+            fatality,
+            towing,
+            hazMat,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
     }
 
     public addAccident(data: any): Observable<CreateResponse> {
-        /* return this.accidentService.apiAccidentPost(data); */
-        return of();
+        return this.accidentService.apiAccidentPost(data);
     }
 
     public updateAccident(data: any): Observable<any> {
-        /* return this.accidentService.apiAccidentPut(data); */
-        return of();
+        return this.accidentService.apiAccidentPut(data);
     }
 
     public getAccidentById(id: number): Observable<AccidentResponse> {
-        /* return this.accidentService.apiAccidentIdGet(id); */
-        return of();
+        return this.accidentService.apiAccidentIdGet(id);
     }
 
     public getModalDropdowns(): Observable<AccidentModalResponse> {

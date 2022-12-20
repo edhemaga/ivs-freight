@@ -527,6 +527,7 @@
                                     name: 'Department',
                                     label: 'Police Department',
                                     type: 'text',
+                                    textTransform: 'capitalize',
                                     minLength: 2,
                                     maxLength: 36
                                 }"
@@ -536,7 +537,8 @@
                                 [inputConfig]="{
                                     name: 'Police Officer',
                                     type: 'text',
-                                    label: 'Police Officer'
+                                    label: 'Police Officer',
+                                    textTransform: 'capitalize'
                                 }"
                             ></app-ta-input>
                             <app-ta-input
@@ -620,6 +622,7 @@
                                     [inputConfig]="{
                                         name: 'Highway',
                                         type: 'text',
+                                        textTransform: 'capitalize',
                                         label: 'Highway'
                                     }"
                                 ></app-ta-input>
@@ -630,6 +633,7 @@
                                     [inputConfig]="{
                                         name: 'Mile Post',
                                         type: 'text',
+                                        textTransform: 'capitalize',
                                         label: 'Mile Post'
                                     }"
                                 ></app-ta-input>
@@ -695,6 +699,7 @@
                                     type: 'text',
                                     label: 'Customer',
                                     isDropdown: true,
+                                    textTransform: 'uppercase',
                                     dropdownWidthClass: 'w-col-272'
                                 }"
                                 [options]="labelsViolationCustomer"
