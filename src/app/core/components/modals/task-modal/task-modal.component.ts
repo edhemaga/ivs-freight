@@ -325,7 +325,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             filesForDeleteIds: this.filesForDelete,
         };
 
-        this.todoService.updateTodo(newData);
+        this.todoService.updateTodo(newData).subscribe();
     }
 
     private addTask() {

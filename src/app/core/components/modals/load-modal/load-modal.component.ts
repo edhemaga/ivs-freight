@@ -29,6 +29,7 @@ import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-vali
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
+import { IBilling } from './load-financial/load-financial.component';
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
@@ -129,26 +130,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     ];
 
     public loadNumber: string;
-
-    public loadModalBill: {
-        baseRate: number;
-        adjusted: number;
-        advance: number;
-        layover: number;
-        lumper: number;
-        fuelSurcharge: number;
-        escort: number;
-        detention: number;
-    } = {
-        baseRate: 0,
-        adjusted: 0,
-        advance: 0,
-        layover: 0,
-        lumper: 0,
-        fuelSurcharge: 0,
-        escort: 0,
-        detention: 0,
-    };
 
     public labelsTemplate: any[] = [];
     public labelsDispatcher: any[] = [];
@@ -360,6 +341,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    // Billing part
+    public loadModalBill: IBilling = {
+        baseRate: 0,
+        adjusted: 0,
+        advance: 0,
+        layover: 0,
+        lumper: 0,
+        fuelSurcharge: 0,
+        escort: 0,
+        detention: 0,
+    };
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -439,12 +432,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             // Billing
             baseRate: [null, Validators.required],
             adjustedRate: [null],
+            driverRate: [null],
             advancePay: [null],
             layoverRate: [null],
             lumperRate: [null],
             fuelSurchargeRate: [null],
             escortRate: [null],
             detentionRate: [null],
+            invoiced: [null],
             // -------------
             note: [null],
             files: [null],
@@ -617,6 +612,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ?.concat(' ', event?.trailer?.name)
                             .concat(' ', event?.driver?.name),
                     };
+
+                    console.log(this.selectedDispatches);
 
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
@@ -1430,7 +1427,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    // Billing Payment
+    // ****************  Billing Payment ****************
     public trackBillingPayment() {
         this.loadForm
             .get('baseRate')
@@ -1538,12 +1535,30 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSelectAdditionalOption(option: any) {
-        if (!this.loadForm.get('baseRate').value) {
-            return;
+    // public onSelectAdditionalOption(option: any) {
+    //     if (!this.loadForm.get('baseRate').value) {
+    //         return;
+    //     }
+    //     option.active = !option.active;
+    // }
+
+    public onFinancialAction(data: { type: string; action: boolean }) {
+        if (data.action) {
+            switch (data.type) {
+                case 'billing': {
+                    break;
+                }
+                case 'payment': {
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
         }
-        option.active = !option.active;
     }
+
+    // **************** end ****************
 
     // Load Stop
     public createNewExtraStop() {

@@ -1,0 +1,75 @@
+<div class="load-financial-card">
+    <div *ngIf="hasDivider" class="divider"></div>
+    <div class="load-financial-card-header">
+        <div class="load-financial-header">
+            <p class="load-financial-title">{{ firstHeaderTitle }}</p>
+            <div class="load-financial-value-action-container">
+                <p class="load-financial-value">
+                    {{ (billing?.baseRate ? billing?.baseRate : 0) | currency }}
+                </p>
+                <div
+                    ngbTooltip
+                    [mainTooltip]="'Add Billing'"
+                    [tooltipBackground]="'#3074d3'"
+                    position="top"
+                    class="load-financial-action"
+                    (click)="onAction($event, 'first-header-action')"
+                >
+                    <svg-icon
+                        class="load-financial-action-svg"
+                        [src]="'assets/svg/common/ic_plus.svg'"
+                    ></svg-icon>
+                </div>
+            </div>
+        </div>
+        <div class="load-financial-header">
+            <p class="load-financial-title">{{ secondHeaderTitle }}</p>
+            <div class="load-financial-value-action-container">
+                <p class="load-financial-value">
+                    {{ (payment?.advance ? payment?.advance : 0) | currency }}
+                </p>
+                <div
+                    ngbTooltip
+                    [mainTooltip]="'Add Payment'"
+                    [tooltipBackground]="'#3074d3'"
+                    position="top"
+                    class="load-financial-action"
+                    (click)="onAction($event, 'first-header-action')"
+                >
+                    <svg-icon
+                        class="load-financial-action-svg"
+                        [src]="'assets/svg/common/ic_plus.svg'"
+                    ></svg-icon>
+                </div>
+            </div>
+        </div>
+        <div class="load-financial-header">
+            <p class="load-financial-title">{{ thirdHeaderTitle }}</p>
+            <svg-icon
+                class="load-financial-arrow"
+                [ngClass]="{
+                    rotate: _isCardOpen && _isCardOpen != 'null'
+                }"
+                [src]="'assets/svg/common/ic_arrow_down_updated.svg'"
+                (click)="onAction($event, 'third-header-action')"
+            ></svg-icon>
+        </div>
+    </div>
+    <div
+        class="load-financial-card-content"
+        [ngClass]="{ scroll: hasScrollBody }"
+        [@.disabled]="disableAnimation"
+    >
+        <div
+            [ngClass]="noActive"
+            [ngStyle]="animationMarginParams"
+            [@showHideCardBody]="{
+                value: _isCardOpen.toString(),
+                params: animationMarginParams
+            }"
+            class="content-holder"
+        >
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>
