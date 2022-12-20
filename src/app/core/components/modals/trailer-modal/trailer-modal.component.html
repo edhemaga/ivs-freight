@@ -226,7 +226,22 @@
                             </div>
                         </div>
                     </app-ta-checkbox-card>
-
+                    <div class="ta-card-body-overflow-none">
+                        <app-ta-custom-card
+                            [hasCounter]="
+                                documents.length ? documents.length : 0
+                            "
+                            [cardName]="'Documents'"
+                            [isCardOpen]="documents.length > 0"
+                        >
+                            <app-ta-upload-files
+                                [files]="documents"
+                                [size]="'small'"
+                                (onFileEvent)="onFilesEvent($event)"
+                                [showDropzone]="true"
+                            ></app-ta-upload-files>
+                        </app-ta-custom-card>
+                    </div>
                     <app-ta-input-note
                         formControlName="note"
                         [isVisibleNote]="

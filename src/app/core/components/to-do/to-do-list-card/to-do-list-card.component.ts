@@ -257,7 +257,8 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         this.todoTService
             .updateTodoItem(todo)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((resp: TodoListResponse) => {
+            .subscribe((resp: any) => {
+                console.log(resp, 'resp')
                 this.startChangingStatus = false;
                 this.updateTodosList(this.cardData, true);
             });

@@ -122,6 +122,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
     public skipVinDecocerEdit: boolean = false;
 
+    public documents: any[] = [];
+    public filesForDelete: any[] = [];
+    public fileModified: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -652,6 +656,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.selectedFuelType = res.fuelType;
                     this.truckStatus = res.status !== 1;
                     this.selectedTruckLengthId = res.truckLength;
+                    this.documents = res.files;
 
                     this.modalService.changeModalStatus({
                         name: 'deactivate',
@@ -740,6 +745,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
 
     public addTruck() {
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
         const newData: any = {
             ...this.truckForm.value,
 
@@ -819,6 +831,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                       )
                     : null
                 : null,
+            files: documents,
         };
 
         this.truckModalService
@@ -853,6 +866,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
 
     public updateTruck(id: number) {
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
         const newData: any = {
             id: id,
             ...this.truckForm.value,
@@ -936,6 +956,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                       )
                     : null
                 : null,
+            files: documents ? documents : this.truckForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         this.truckModalService
@@ -949,6 +971,34 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             .deleteTruckById(id, this.editData.tabSelected)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.truckForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.truckForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {
