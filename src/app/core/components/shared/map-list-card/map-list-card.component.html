@@ -22,7 +22,7 @@
             <div class="d-flex">
                 <svg-icon
                     class="favorite-svg"
-                    [ngClass]="{ 'active': item?.pinned }"
+                    [ngClass]="{ 'active': item?.pinned || (item?.fuelStopExtensions && item?.fuelStopExtensions[0]?.favourite) }"
                     src="assets/svg/detail-cards/favorite.svg"
                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                     (click)="onFavorite($event)"

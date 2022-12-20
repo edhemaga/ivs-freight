@@ -5,7 +5,7 @@
                 <div class="marker-business-name text-ellipsis">
                     {{ title }}
                 </div>
-                <span *ngIf="item?.pinned">
+                <span *ngIf="item?.pinned || (item?.fuelStopExtensions && item?.fuelStopExtensions[0]?.favourite)">
                     <svg-icon
                         class="favorite-svg active"
                         src="assets/svg/detail-cards/favorite.svg"
