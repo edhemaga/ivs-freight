@@ -102,6 +102,22 @@ const handleTitleAppChange = (mainTitle, changes) => {
                 title = `${driverFirstName} ${driverLast} | Driver Details`;
             }
             break;
+        case '/customershipper-details':
+            if (changes.shipper) {
+                const shipperName =
+                    changes.shipper.currentValue[0].data.businessName;
+
+                title = `${shipperName} | Shiper Details`;
+            }
+            break;
+        case '/customerbroker-details':
+            if (changes.brokerData) {
+                const brokerName =
+                    changes.brokerData.currentValue[0].data.businessName;
+
+                title = `${brokerName} | Broker Details`;
+            }
+            break;
     }
 
     if (title) appTitle.setTitle(title);
