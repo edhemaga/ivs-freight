@@ -1,16 +1,14 @@
 import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import {
-    CreateTrailerCommand,
     GetTrailerModalResponse,
     TrailerListResponse,
     TrailerMinimalListResponse,
     TrailerResponse,
     TrailerService,
-    UpdateTrailerCommand,
     RegistrationService,
     TitleService,
-    InspectionService
+    InspectionService,
 } from 'appcoretruckassist';
 import { TrailerActiveStore } from './trailer-active-state/trailer-active.store';
 import { TrailerInactiveStore } from './trailer-inactive-state/trailer-inactive.store';
@@ -21,6 +19,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { TrailerItemStore } from './trailer-details-state/trailer-details.store';
 import { TrailersMinimalListQuery } from './trailer-minimal-list-state/trailer-minimal.query';
 import { TrailerDetailsListStore } from './trailer-details-list-state/trailer-details-list.store';
+import { FormDataService } from '../../../services/formData/form-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerTService implements OnDestroy {
@@ -42,11 +41,13 @@ export class TrailerTService implements OnDestroy {
         private RegistrationService: RegistrationService,
         private TitleService: TitleService,
         private InspectionService: InspectionService,
+        private formDataService: FormDataService
     ) {}
 
     /* Observable<CreateTrailerResponse> */
-    public addTrailer(data: CreateTrailerCommand): Observable<any> {
-        return this.trailerService.apiTrailerPost(data).pipe(
+    public addTrailer(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.trailerService.apiTrailerPost().pipe(
             tap((res: any) => {
                 const subTrailer = this.getTrailerById(res.id)
                     .pipe(takeUntil(this.destroy$))
@@ -116,8 +117,9 @@ export class TrailerTService implements OnDestroy {
         );
     }
 
-    public updateTrailer(data: UpdateTrailerCommand): Observable<any> {
-        return this.trailerService.apiTrailerPut(data).pipe(
+    public updateTrailer(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.trailerService.apiTrailerPut().pipe(
             tap(() => {
                 let storedTrailerData = {...this.trailerItemStore?.getValue()?.entities[data.id]};
                 const subTrailer = this.getTrailerById(data.id)
@@ -127,8 +129,9 @@ export class TrailerTService implements OnDestroy {
                             this.trailerActiveStore.remove(
                                 ({ id }) => id === data.id
                             );
-                            
-                            trailer.registrations = storedTrailerData.registrations;
+
+                            trailer.registrations =
+                                storedTrailerData.registrations;
                             trailer.titles = storedTrailerData.titles;
                             trailer.inspections = storedTrailerData.inspections;
 
@@ -282,39 +285,33 @@ export class TrailerTService implements OnDestroy {
         return this.trailerService.apiTrailerIdGet(trailerId);
     }
 
-    public getTrailerRegistrationsById(
-        trailerId: number,
-    ){
-        return this.RegistrationService.apiRegistrationListGet(undefined,trailerId);
+    public getTrailerRegistrationsById(trailerId: number) {
+        return this.RegistrationService.apiRegistrationListGet(
+            undefined,
+            trailerId
+        );
     }
 
-    public getTrailerRegistrationByRegistrationId(
-        registrationId: number,
-    ){
+    public getTrailerRegistrationByRegistrationId(registrationId: number) {
         return this.RegistrationService.apiRegistrationIdGet(registrationId);
     }
 
-    public getTrailerInspectionsById(
-        trailerId: number,
-    ){
-        return this.InspectionService.apiInspectionListGet(undefined,trailerId);
+    public getTrailerInspectionsById(trailerId: number) {
+        return this.InspectionService.apiInspectionListGet(
+            undefined,
+            trailerId
+        );
     }
 
-    public getTrailerInspectionByInspectionId(
-        inspectionId: number,
-    ){
+    public getTrailerInspectionByInspectionId(inspectionId: number) {
         return this.InspectionService.apiInspectionIdGet(inspectionId);
     }
 
-    public getTrailerTitlesById(
-        trailerId: number,
-    ){
-        return this.TitleService.apiTitleListGet(undefined,trailerId);
+    public getTrailerTitlesById(trailerId: number) {
+        return this.TitleService.apiTitleListGet(undefined, trailerId);
     }
 
-    public getTrailerTitleByTitleId(
-        titleId: number,
-    ){
+    public getTrailerTitleByTitleId(titleId: number) {
         return this.TitleService.apiTitleIdGet(titleId);
     }
 

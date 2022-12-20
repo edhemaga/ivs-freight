@@ -76,6 +76,8 @@ export class SettingsInsurancePolicyModalComponent
 
     public isFormDirty: boolean;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -90,6 +92,7 @@ export class SettingsInsurancePolicyModalComponent
         this.trackCheckboxValues();
 
         if (this.editData.type === 'edit') {
+            this.disableCardAnimation = true;
             this.editInsurancePolicyById(this.editData.company);
         }
     }
@@ -1098,6 +1101,9 @@ export class SettingsInsurancePolicyModalComponent
                 }
             }
         }
+        setTimeout(() => {
+            this.disableCardAnimation = false;
+        }, 1000);
     }
 
     ngOnDestroy(): void {

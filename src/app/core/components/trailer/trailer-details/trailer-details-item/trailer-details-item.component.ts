@@ -5,6 +5,7 @@ import {
     OnDestroy,
     Input,
     ViewChildren,
+    SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TrailerResponse } from 'appcoretruckassist';
@@ -25,7 +26,10 @@ import {
     state,
     keyframes,
 } from '@angular/animations';
+import { Titles } from 'src/app/core/utils/application.decorators';
+import { OnChanges } from '@angular/core';
 
+@Titles()
 @Component({
     selector: 'app-trailer-details-item',
     templateUrl: './trailer-details-item.component.html',
@@ -53,7 +57,7 @@ import {
         ]),
     ]),],
 })
-export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
+export class TrailerDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChildren('fhwaUpload') fhwaUpload: any;
     @ViewChildren('registrationUpload') registrationUpload: any;
     @ViewChildren('titleUpload') titleUpload: any;
@@ -364,4 +368,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
         this.destroy$.next();
         this.destroy$.complete();
     }
+
+    ngOnChanges(changes: SimpleChanges): void {}
 }
+

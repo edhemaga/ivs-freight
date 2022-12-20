@@ -7,7 +7,9 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
+import { Titles } from 'src/app/core/utils/application.decorators';
 
+@Titles()
 @Component({
     selector: 'app-broker-details-single',
     templateUrl: './broker-details-single.component.html',

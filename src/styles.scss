@@ -12,7 +12,12 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $carrierassist-fe-primary: mat.define-palette(mat.$indigo-palette);
-$carrierassist-fe-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$carrierassist-fe-accent: mat.define-palette(
+    mat.$pink-palette,
+    A200,
+    A100,
+    A400
+);
 
 // The warn palette is optional (defaults to red).
 $carrierassist-fe-warn: mat.define-palette(mat.$red-palette);
@@ -69,7 +74,6 @@ html {
 @import './assets/scss/detail-cards.scss';
 @import './assets/scss/ngxslider.scss';
 @import './assets/scss/fonts.scss';
-@import './assets/scss/ta-input-dropdown-label.scss';
 @import './assets/scss/toast-messages.scss';
 @import './assets/scss/table';
 @import './assets/scss/dispatcher.scss';

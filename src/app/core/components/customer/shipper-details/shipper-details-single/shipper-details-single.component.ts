@@ -7,7 +7,9 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { ShipperResponse } from 'appcoretruckassist';
+import { Titles } from 'src/app/core/utils/application.decorators';
 
+@Titles()
 @Component({
     selector: 'app-shipper-details-single',
     templateUrl: './shipper-details-single.component.html',

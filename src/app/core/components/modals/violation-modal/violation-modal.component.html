@@ -129,6 +129,7 @@
                     <app-ta-custom-card
                         [cardName]="'Driver'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -179,6 +180,7 @@
                     <app-ta-custom-card
                         [cardName]="'Co-Driver'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -229,6 +231,7 @@
                     <app-ta-custom-card
                         [cardName]="'Truck'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -292,6 +295,7 @@
                     <app-ta-custom-card
                         [cardName]="'Trailer'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -360,6 +364,8 @@
                             [cardName]="'Violation'"
                             [isCardOpen]="violations.length > 0"
                             [hasScrollBody]="violations.length > 10"
+                            [disabledCard]="!violations.length"
+                            [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '18px',
                                 marginBottom: '5px'
@@ -477,6 +483,7 @@
                     <app-ta-custom-card
                         [hasCounter]="documents.length ? documents.length : 0"
                         [cardName]="'Documents'"
+                        [disableAnimation]="disableCardAnimation"
                         [isCardOpen]="documents.length > 0"
                     >
                         <app-ta-upload-files
@@ -507,6 +514,7 @@
                     <app-ta-custom-card
                         [cardName]="'Authority Details'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -519,6 +527,7 @@
                                     name: 'Department',
                                     label: 'Police Department',
                                     type: 'text',
+                                    textTransform: 'capitalize',
                                     minLength: 2,
                                     maxLength: 36
                                 }"
@@ -528,7 +537,8 @@
                                 [inputConfig]="{
                                     name: 'Police Officer',
                                     type: 'text',
-                                    label: 'Police Officer'
+                                    label: 'Police Officer',
+                                    textTransform: 'capitalize'
                                 }"
                             ></app-ta-input>
                             <app-ta-input
@@ -587,6 +597,7 @@
                     <app-ta-custom-card
                         [cardName]="'Location & Shipping Info'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -611,6 +622,7 @@
                                     [inputConfig]="{
                                         name: 'Highway',
                                         type: 'text',
+                                        textTransform: 'capitalize',
                                         label: 'Highway'
                                     }"
                                 ></app-ta-input>
@@ -621,6 +633,7 @@
                                     [inputConfig]="{
                                         name: 'Mile Post',
                                         type: 'text',
+                                        textTransform: 'capitalize',
                                         label: 'Mile Post'
                                     }"
                                 ></app-ta-input>
@@ -686,6 +699,7 @@
                                     type: 'text',
                                     label: 'Customer',
                                     isDropdown: true,
+                                    textTransform: 'uppercase',
                                     dropdownWidthClass: 'w-col-272'
                                 }"
                                 [options]="labelsViolationCustomer"
@@ -720,11 +734,12 @@
                         "
                         [cardName]="'Special Checks'"
                         [isCardOpen]="isSpecialChecksOpen"
-                        (onOpenCard)="isSpecialChecksOpen = $event"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '0px'
                         }"
+                        (onOpenCard)="isSpecialChecksOpen = $event"
                     >
                         <div class="violation-special-checks">
                             <div

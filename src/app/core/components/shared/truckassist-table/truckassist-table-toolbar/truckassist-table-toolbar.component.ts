@@ -12,6 +12,7 @@ import { TableType } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { map } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-truckassist-table-toolbar',
@@ -22,6 +23,7 @@ export class TruckassistTableToolbarComponent
     implements OnInit, OnChanges, OnDestroy
 {
     private destroy$ = new Subject<void>();
+    dropdownSelection = new FormControl();
     @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
     @Input() tableData: any[];
     @Input() options: any;
