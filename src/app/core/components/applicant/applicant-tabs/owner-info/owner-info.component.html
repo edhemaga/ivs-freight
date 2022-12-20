@@ -766,20 +766,17 @@
                                                     image: false,
                                                     url: selectedTrailerType?.logoName,
                                                     template: 'trailer',
-                                                    class: selectedTrailerType?.name
-                                                        ?.toLowerCase()
-                                                        .includes('liquid')
-                                                        ? 'tanker-liquid'
+                                                    class: [
+                                                        'Tanker',
+                                                        'Tanker Pneumatic'
+                                                    ].includes(
+                                                        selectedTrailerType?.name
+                                                    )
+                                                        ? 'tanker'
                                                         : selectedTrailerType?.name
                                                               ?.toLowerCase()
                                                               ?.includes('rgn')
                                                         ? 'low-boy-rgn'
-                                                        : selectedTrailerType?.name
-                                                              ?.toLowerCase()
-                                                              .includes(
-                                                                  'dry-bulk'
-                                                              )
-                                                        ? 'tanker-dry-bulk'
                                                         : selectedTrailerType?.name
                                                               ?.trim()
                                                               .replace(' ', '')

@@ -340,6 +340,7 @@
                         [cardName]="'Logo'"
                         [isCardOpen]="true"
                         [hasDeleteAction]="displayDeleteAction"
+                        [disableAnimation]="disableCardAnimation"
                         (onActionEvent)="handleDeleteClick($event)"
                     >
                         <app-ta-logo-change
@@ -369,6 +370,8 @@
                         [hasBodyData]="departmentContacts.length"
                         [isCardOpen]="departmentContacts.length"
                         [hasScrollBody]="departmentContacts.length > 10"
+                        [disabledCard]="!departmentContacts.length"
+                        [disableAnimation]="disableCardAnimation"
                         (onActionEvent)="addDepartmentContacts($event)"
                     >
                         <div
@@ -490,6 +493,8 @@
                         [hasBodyData]="bankAccounts.length"
                         [isCardOpen]="bankAccounts.length"
                         [hasScrollBody]="bankAccounts.length > 10"
+                        [disabledCard]="!bankAccounts.length"
+                        [disableAnimation]="disableCardAnimation"
                         (onActionEvent)="addBankAccount($event)"
                     >
                         <div
@@ -619,6 +624,8 @@
                         [hasBodyData]="bankCards.length"
                         [isCardOpen]="bankCards.length"
                         [hasScrollBody]="bankCards.length > 10"
+                        [disabledCard]="!bankCards.length"
+                        [disableAnimation]="disableCardAnimation"
                         (onActionEvent)="addBankCard($event)"
                     >
                         <div
@@ -722,6 +729,7 @@
                         <app-ta-custom-card
                             [cardName]="'Load Format and Customer Billing'"
                             [isCardOpen]="true"
+                            [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '18px',
                                 marginBottom: '22px'
@@ -853,6 +861,7 @@
                         <app-ta-custom-card
                             [cardName]="'Expiration'"
                             [isCardOpen]="true"
+                            [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '18px',
                                 marginBottom: '22px'
@@ -968,6 +977,7 @@
                     <app-ta-custom-card
                         [cardName]="'Driver & Owner'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -1352,6 +1362,7 @@
                     <app-ta-custom-card
                         [cardName]="'Accounting'"
                         [isCardOpen]="false"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -1423,6 +1434,7 @@
                     <app-ta-custom-card
                         [cardName]="'Company Owner'"
                         [isCardOpen]="false"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -1494,6 +1506,7 @@
                     <app-ta-custom-card
                         [cardName]="'Dispatch'"
                         [isCardOpen]="false"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -1586,6 +1599,7 @@
                     <app-ta-custom-card
                         [cardName]="'Manager'"
                         [isCardOpen]="false"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -1678,6 +1692,7 @@
                     <app-ta-custom-card
                         [cardName]="'Recruiting'"
                         [isCardOpen]="false"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -1749,6 +1764,7 @@
                     <app-ta-custom-card
                         [cardName]="'Repair'"
                         [isCardOpen]="false"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -1820,6 +1836,7 @@
                     <app-ta-custom-card
                         [cardName]="'Safety'"
                         [isCardOpen]="false"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -1891,6 +1908,7 @@
                     <app-ta-custom-card
                         [cardName]="'Other'"
                         [isCardOpen]="false"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'

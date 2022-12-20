@@ -62,6 +62,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     public addNewAfterSave: boolean = false;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -79,8 +81,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
         // -------------- DEVELOP MODE --------------------
         this.companyUser = JSON.parse(localStorage.getItem('user'));
-        console.log(this.editData);
+
         if (this.editData?.type === 'edit') {
+            this.disableCardAnimation = true;
             this.editTask(this.editData.id);
         }
     }
@@ -436,6 +439,9 @@ export class TaskModalComponent implements OnInit, OnDestroy {
                     );
                     this.taskStatus = res.status;
                     this.documents = res.files ? (res.files as any) : [];
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

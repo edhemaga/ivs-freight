@@ -33,6 +33,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     public trailerObject: any;
     public trailerList: any = this.trailerMinimalQuery.getAll();
     public currentIndex: number = 0;
+    public newTrailerId: number;
     constructor(
         private activated_route: ActivatedRoute,
         private modalService: ModalService,
@@ -49,7 +50,17 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         private trailerMinimalStore: TrailersMinimalListStore,
         private DetailsDataService: DetailsDataService,
         private trailerItemStore: TrailerItemStore,
-    ) {}
+    ) {
+
+        let storeData$ = this.trailerItemStore._select(state => state);
+
+        storeData$.subscribe(state => {
+            let newTrailerData = {...state.entities[this.newTrailerId]};
+            this.DetailsDataService.setNewData(newTrailerData);
+            this.trailerConf(newTrailerData);
+            this.initTableOptions(newTrailerData);
+          });
+    }
 
     ngOnInit(): void {
         let dataId = this.activated_route.snapshot.params.id;
@@ -99,23 +110,35 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     query = this.trailerDetailListQuery
                         .selectEntity(id)
                         .pipe(take(1));
-                } else {
-                    query = this.trailerService.getTrailerById(id);
-                }
-                query.pipe(takeUntil(this.destroy$)).subscribe({
-                    next: (res: TrailerResponse) => {
-                        this.currentIndex = this.trailerList.findIndex(
-                            (trailer) => trailer.id === res.id
-                        );
-                        this.DetailsDataService.setNewData(res);
-                        this.trailerConf(res);
-                        this.initTableOptions(res);
-                        this.router.navigate([`/trailer/${res.id}/details`]);
 
-                        this.cdRef.detectChanges();
-                    },
-                    error: () => {},
-                });
+                        query.pipe(takeUntil(this.destroy$)).subscribe({
+                            next: (res: TrailerResponse) => {
+                                this.currentIndex = this.trailerList.findIndex(
+                                    (trailer) => trailer.id === res.id
+                                );
+                                            
+                                this.DetailsDataService.setNewData(res);
+                                this.trailerConf(res);
+                                this.initTableOptions(res);
+                                this.newTrailerId = id;
+                                this.router.navigate([`/trailer/${res.id}/details`]);
+        
+                                this.cdRef.detectChanges();
+                            },
+                            error: () => {},
+                        });    
+
+
+
+                } else {
+                    //query = this.trailerService.getTrailerById(id);
+                    
+                    this.newTrailerId = id;
+                    this.router.navigate([`/trailer/${id}/details`]);
+                    this.cdRef.detectChanges();
+                }
+                
+                
             });
         this.trailerConf(trailerData);
     }
@@ -173,7 +196,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         this.currentIndex = this.trailerList.findIndex(
             (trailer) => trailer.id === data.id
         );
-        console.log('---called here---')
         //this.getTrailerById(data.id);
         this.dataHeaderDropDown = {
             disabledMutedStyle: null,

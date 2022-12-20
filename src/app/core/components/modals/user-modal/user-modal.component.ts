@@ -151,6 +151,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     public userStatus: boolean = true;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -167,6 +169,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         this.onBankSelected();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.getUserById(this.editData.id);
         }
 
@@ -234,6 +237,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             case 'save': {
                 if (this.userForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.userForm);
+
                     return;
                 }
                 if (this.editData) {
@@ -384,13 +388,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
         this.selectedBank = bank.data;
 
         this.bankVerificationService
-            .createBank({ name: this.selectedBank.name })
+            .createBank({ name: bank.data.name })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
                     this.selectedBank = {
                         id: res.id,
-                        name: this.selectedBank.name,
+                        name: bank.data.name,
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
@@ -776,6 +780,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
                     );
 
                     this.isPhoneExtExist = !!res.extensionPhone;
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

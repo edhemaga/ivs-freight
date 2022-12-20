@@ -3,7 +3,7 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { ShipperResponse } from 'appcoretruckassist';
 
 export interface ShipperMinimalListState
-    extends EntityState<ShipperResponse, number> {}
+    extends EntityState<any, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'shipperMinimalList' })
