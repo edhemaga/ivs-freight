@@ -34,7 +34,9 @@ import {
     state,
     keyframes,
 } from '@angular/animations';
+import { Titles } from 'src/app/core/utils/application.decorators';
 
+@Titles()
 @Component({
     selector: 'app-driver-details-item',
     templateUrl: './driver-details-item.component.html',
