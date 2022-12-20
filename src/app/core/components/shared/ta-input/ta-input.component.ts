@@ -747,6 +747,7 @@ export class TaInputComponent
             case 'confirm-cancel': {
                 switch (action) {
                     case 'confirm': {
+                        console.log('commandEvent confirm', this.getSuperControl.value);
                         this.commandEvent.emit({
                             data: this.getSuperControl.value,
                             action: 'confirm',
@@ -757,6 +758,7 @@ export class TaInputComponent
                         break;
                     }
                     case 'cancel': {
+                        console.log('commandEvent cancel');
                         this.commandEvent.emit({ action: 'cancel' });
                         break;
                     }

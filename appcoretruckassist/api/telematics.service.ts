@@ -54,7 +54,7 @@ export class TelematicsService {
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
-    public gpsPath: string = 'https://apiex.truckassist.io';
+    public gpsPath: string = 'https://api-stage.carrierassist.io';
 
     constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string|string[], @Optional() configuration: Configuration) {
         if (configuration) {
