@@ -1834,32 +1834,6 @@
     }
 }
 
-.load-additional-options {
-    .popover-body {
-        .load-additional-container {
-            background-color: #ffffff;
-            border-radius: 2px;
-            padding: 2px;
-            box-shadow: 0 0 4px rgb(0 0 0 / 15%);
-
-            .dropdown-option {
-                margin-bottom: 2px;
-                font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
-                padding: 4px;
-                border-radius: 2px;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: #f7f7f7;
-                    color: #3c3c3c;
-                }
-            }
-        }
-    }
-}
-
 .load-modal-statuses {
     .popover-body {
         .load-modal-status-container {

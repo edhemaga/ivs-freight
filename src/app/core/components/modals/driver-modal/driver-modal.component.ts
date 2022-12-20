@@ -1793,11 +1793,20 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             }
                         );
 
+                    console.log(
+                        'fleet type - flat rate: ',
+                        res.fleetType,
+                        res.soloFlatRate
+                    );
                     this.driverForm
                         .get('soloFlatRate')
                         .patchValue(
                             ['Solo', 'Combined'].includes(res.fleetType.name)
-                                ? convertNumberInThousandSep(res.soloFlatRate)
+                                ? res.soloFlatRate
+                                    ? convertNumberInThousandSep(
+                                          res.soloFlatRate
+                                      )
+                                    : null
                                 : null,
                             { emitEvent: false }
                         );
@@ -1806,7 +1815,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         .get('teamFlatRate')
                         .patchValue(
                             ['Team', 'Combined'].includes(res.fleetType.name)
-                                ? convertNumberInThousandSep(res.teamFlatRate)
+                                ? res.teamFlatRate
+                                    ? convertNumberInThousandSep(
+                                          res.teamFlatRate
+                                      )
+                                    : null
                                 : null,
                             { emitEvent: false }
                         );
