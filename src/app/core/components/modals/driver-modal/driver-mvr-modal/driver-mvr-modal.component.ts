@@ -1,9 +1,6 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-    GetMvrModalResponse,
-    MvrResponse,
-} from 'appcoretruckassist';
+import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
 import { DriverTService } from '../../../driver/state/driver.service';
 import { MvrTService } from '../../../driver/state/mvr.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -43,6 +40,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private driverService: DriverTService,
@@ -56,6 +55,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         this.createForm();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.getDriverById(this.editData.id);
             this.getModalDropdowns(this.editData.id);
 
@@ -92,6 +92,9 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: any) => {
                     this.modalName = res.firstName.concat(' ', res.lastName);
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });
@@ -246,8 +249,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                         id: res.cdlId,
                         name: res.cdlNumber,
                     };
-
                     this.documents = res.files ? (res.files as any) : [];
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

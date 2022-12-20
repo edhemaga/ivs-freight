@@ -9,13 +9,7 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import {
-    CreateTrailerCommand,
-    GetTrailerModalResponse,
-    TrailerResponse,
-    UpdateTrailerCommand,
-    VinDecodeResponse,
-} from 'appcoretruckassist';
+import { GetTrailerModalResponse, VinDecodeResponse } from 'appcoretruckassist';
 import {
     axlesValidation,
     emptyWeightValidation,
@@ -162,6 +156,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             purchaseDate: [null],
             purchasePrice: [null],
             fhwaExp: [null, Validators.required],
+            files: [null],
         });
 
         this.formService.checkFormChange(this.trailerForm);
@@ -284,6 +279,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: GetTrailerModalResponse) => {
+                    console.log(res.trailerTypes);
                     this.trailerType = res.trailerTypes.map((item) => {
                         return {
                             ...item,
@@ -316,7 +312,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private addTrailer(): void {
-        const newData: CreateTrailerCommand = {
+        const newData: any = {
             ...this.trailerForm.value,
             trailerTypeId: this.selectedTrailerType.id,
             trailerMakeId: this.selectedTrailerMake.id,
@@ -409,7 +405,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private updateTrailer(id: number): void {
-        const newData: UpdateTrailerCommand = {
+        const newData: any = {
             id: id,
             ...this.trailerForm.value,
             trailerTypeId: this.selectedTrailerType.id,
@@ -476,18 +472,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
         };
 
+        console.log(newData);
+
         this.trailerModalService
             .updateTrailer(newData)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                    });
-                },
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private populateStorageData(res) {
@@ -541,6 +531,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 name: 'deactivate',
                 status: this.trailerStatus,
             });
+
             clearTimeout(timeout);
         }, 50);
     }

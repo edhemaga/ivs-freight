@@ -125,6 +125,7 @@
                     <app-ta-custom-card
                         [cardName]="'Employe Details'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -393,7 +394,7 @@
                                         formControlName="bankId"
                                         [template]="'svg-template'"
                                         [inputConfig]="{
-                                            name: 'Input Dropdown  Bank Name',
+                                            name: 'Input Dropdown Bank Name',
                                             type: 'text',
                                             label: 'Bank Name',
                                             minLength: 2,

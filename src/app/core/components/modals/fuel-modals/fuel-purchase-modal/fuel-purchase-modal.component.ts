@@ -65,6 +65,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     public fuelTransactionName: string = null;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -82,6 +84,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.getTruckList();
 
         if (this.editData?.type === 'edit') {
+            this.disableCardAnimation = true;
             this.getFuelById(this.editData.id);
         }
 
@@ -477,6 +480,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                             this.bluringFuelItemsPrice.push(false);
                         }
                     }
+
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

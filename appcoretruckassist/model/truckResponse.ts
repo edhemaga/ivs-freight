@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { DispatchShortResponse } from './dispatchShortResponse';
 import { TruckMakeResponse } from './truckMakeResponse';
 import { EnumValue } from './enumValue';
@@ -67,5 +68,6 @@ export interface TruckResponse {
     updatedAt?: string;
     ownerHistories?: Array<OwnerHistoryResponse> | null;
     assignedTo?: DispatchShortResponse;
+    files?: Array<FileResponse> | null;
 }
 

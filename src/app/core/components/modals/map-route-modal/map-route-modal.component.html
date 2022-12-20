@@ -8,6 +8,8 @@
     [editName]="editData?.name"
     [editData]="editData"
     [customClass]="'modal-container-S'"
+    [saveAndAddNew]="editData?.type !== 'edit'"
+    [customTextSaveAndAddNew]="'Save & Create New'"
     (action)="onModalAction($event)"
 >
     <form origin [formGroup]="mapRouteForm" class="form-container">

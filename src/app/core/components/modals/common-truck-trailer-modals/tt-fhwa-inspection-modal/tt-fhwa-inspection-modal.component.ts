@@ -31,6 +31,8 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private commonTruckTrailerService: CommonTruckTrailerService,
@@ -43,6 +45,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
         this.createForm();
 
         if (this.editData.type === 'edit-inspection') {
+            this.disableCardAnimation = true;
             this.editInspectionById();
         }
     }
@@ -107,6 +110,9 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
                             : null,
                     });
                     this.documents = res.files;
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

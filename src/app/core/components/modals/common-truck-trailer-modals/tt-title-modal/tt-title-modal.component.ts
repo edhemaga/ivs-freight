@@ -33,6 +33,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean = false;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -46,6 +48,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         if (this.editData.type === 'edit-title') {
+            this.disableCardAnimation = true;
             this.editTitleById(this.editData.file_id);
         }
     }
@@ -220,6 +223,9 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                         name: res.state.stateShortName,
                     };
                     this.documents = res.files;
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

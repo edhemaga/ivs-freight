@@ -125,12 +125,10 @@ export class TaInputComponent
     }
 
     ngOnInit(): void {
-        
         if (
             this.inputConfig.name === 'datepicker' ||
             this.inputConfig.name === 'timepicker'
         ) {
-            
             this.calendarService.dateChanged
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((date) => {
@@ -148,24 +146,34 @@ export class TaInputComponent
         ) {
             this.inputService.dropDownAddMode$
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((action) => {
-                    if (action) {
-                        this.dropdownToggler = false;
+                .subscribe(
+                    (data: { action: boolean; inputConfig: ITaInput }) => {
+                        if (data.action) {
+                            this.dropdownToggler = false;
 
-                        this.setInputCursorAtTheEnd(this.input.nativeElement);
+                            setTimeout(() => {
+                                this.inputConfig = data.inputConfig;
+                                this.setInputCursorAtTheEnd(
+                                    this.input.nativeElement
+                                );
+                                this.isVisibleCommands = true;
+                            }, 300);
+                        }
                     }
-                });
+                );
 
             // Dropdown select item with enter
             this.inputService.dropDownItemSelectedOnEnter$
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((action) => {
-                    if (action) {
-                        this.dropdownToggler = false;
-                        this.input.nativeElement.blur();
-                        this.blurOnDropDownArrow();
+                .subscribe(
+                    (data: { action: boolean; inputConfig: ITaInput }) => {
+                        if (data.action) {
+                            this.dropdownToggler = false;
+                            this.focusInput = false;
+                            this.input.nativeElement.blur();
+                        }
                     }
-                });
+                );
         }
 
         // Auto Focus First Input
@@ -218,9 +226,12 @@ export class TaInputComponent
             text = moment(new Date(date)).format('MM/DD/YY');
             dateFormat = text.split('/');
         } else {
-            date = date instanceof Date ? date : new Date(moment().format("MM/DD/YYYY") + " " + date);
+            date =
+                date instanceof Date
+                    ? date
+                    : new Date(moment().format('MM/DD/YYYY') + ' ' + date);
             text = moment(new Date(date)).format('HH:mm');
-            
+
             timeFormat = moment(new Date(date)).format('hh/mm/A');
             dateFormat = timeFormat.split('/');
         }
@@ -548,10 +559,17 @@ export class TaInputComponent
             this.inputConfig.name == 'Address'
         ) {
             if (event.keyCode === 40 || event.keyCode === 38) {
-                this.inputService.dropDownKeyNavigation$.next(event.keyCode);
+                this.inputService.dropDownKeyNavigation$.next({
+                    keyCode: event.keyCode,
+                    data: null,
+                });
             }
             if (event.keyCode === 13) {
-                this.inputService.dropDownKeyNavigation$.next(event.keyCode);
+                this.inputService.dropDownKeyNavigation$.next({
+                    keyCode: event.keyCode,
+                    data: this.inputConfig,
+                });
+
                 if (this.inputConfig.name == 'Address') {
                     this.input.nativeElement.blur();
                 }
@@ -563,7 +581,10 @@ export class TaInputComponent
             if (event.keyCode === 9) {
                 this.onFocus();
                 this.input.nativeElement.focus();
-                this.inputService.dropDownKeyNavigation$.next(event.keyCode);
+                this.inputService.dropDownKeyNavigation$.next({
+                    keyCode: event.keyCode,
+                    data: null,
+                });
             }
         }
 
@@ -594,7 +615,9 @@ export class TaInputComponent
             this.input.nativeElement.value =
                 this.input.nativeElement.value.trim();
             this.getSuperControl.patchValue(this.input.nativeElement.value);
-        } else {
+        }
+        // not paste
+        else {
             this.input.nativeElement.value = value;
         }
 
@@ -619,9 +642,25 @@ export class TaInputComponent
         }
 
         if (this.inputConfig.thousandSeparator && this.getSuperControl.value) {
-            this.getSuperControl.patchValue(
-                this.thousandSeparatorPipe.transform(this.getSuperControl.value)
-            );
+            if (
+                this.getSuperControl.value
+                    .toString()
+                    .split('')
+                    .every((value) => {
+                        return value === '0';
+                    }) &&
+                this.getSuperControl.value.split('').length > 0
+            ) {
+                this.getSuperControl.patchValue('0');
+                return;
+            }
+
+            if (this.getSuperControl.value.toString())
+                this.getSuperControl.patchValue(
+                    this.thousandSeparatorPipe.transform(
+                        this.getSuperControl.value
+                    )
+                );
         }
 
         /**
@@ -656,6 +695,21 @@ export class TaInputComponent
                 this.getSuperControl.setErrors(null);
             }
         }
+
+        if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
+            if (
+                this.getSuperControl.value
+                    .toString()
+                    .split('')
+                    .every((value) => {
+                        return value === '0';
+                    }) &&
+                this.getSuperControl.value.split('').length > 0
+            ) {
+                this.getSuperControl.patchValue('0');
+                return;
+            }
+        }
     }
 
     public selectionChange(event: any) {
@@ -669,6 +723,8 @@ export class TaInputComponent
         event.stopPropagation();
 
         this.editInputMode = true;
+        this.inputConfig.dropdownLabelNew = false;
+        this.inputConfig.blackInput = true;
         this.inputConfig.commands.active = true;
         this.focusInput = true;
         this.setInputCursorAtTheEnd(this.input.nativeElement);
@@ -682,6 +738,7 @@ export class TaInputComponent
     public onCommands(event: Event, type: string, action: string) {
         event.stopPropagation();
         event.preventDefault();
+
         switch (type) {
             case 'pm-increment-decrement': {
                 const value = convertThousanSepInNumber(
@@ -750,9 +807,12 @@ export class TaInputComponent
                         this.commandEvent.emit({
                             data: this.getSuperControl.value,
                             action: 'confirm',
-                            mode: !this.inputConfig.dropdownLabelNew
-                                ? 'edit'
-                                : 'new',
+                            mode:
+                                !this.inputConfig.dropdownLabelNew &&
+                                this.inputConfig.name !==
+                                    'Input Dropdown Bank Name'
+                                    ? 'edit'
+                                    : 'new',
                         });
                         break;
                     }
@@ -766,8 +826,9 @@ export class TaInputComponent
                 }
                 this.getSuperControl.setErrors(null);
                 this.editInputMode = false;
-                this.inputConfig.dropdownLabelNew;
+                this.inputConfig.dropdownLabelNew = false;
                 this.inputConfig.commands.active = false;
+                this.inputConfig.blackInput = false;
                 this.onBlur();
                 break;
             }
@@ -1232,6 +1293,7 @@ export class TaInputComponent
 
         if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
             if (
+                !this.inputSelection &&
                 this.inputService
                     .getInputRegexPattern('hos')
                     .test(String.fromCharCode(event.charCode))
@@ -1241,6 +1303,13 @@ export class TaInputComponent
                     this.inputConfig.max
                 );
             } else {
+                if (this.inputSelection) {
+                    this.getSuperControl.patchValue(
+                        String.fromCharCode(event.charCode)
+                    );
+                    this.inputSelection = false;
+                }
+
                 event.preventDefault();
                 return false;
             }
@@ -1470,6 +1539,12 @@ export class TaInputComponent
 
         // Max Length For Paste
         if (this.inputConfig.maxLength) {
+            if (
+                pastedText.startsWith('+1') &&
+                this.inputConfig.name === 'Phone'
+            ) {
+                pastedText = pastedText.split('+1')[1];
+            }
             for (const character of pastedText) {
                 if (character.match(regexType)) {
                     formatedText += character;
@@ -1507,6 +1582,7 @@ export class TaInputComponent
             if ('phone' === this.inputConfig.name.toLowerCase()) {
                 const timeout = setTimeout(() => {
                     this.getSuperControl.setErrors(null);
+
                     this.input.nativeElement.value = newText.substring(0, 10);
                     this.getSuperControl.setValue(
                         '(' +

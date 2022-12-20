@@ -48,6 +48,10 @@
             font-weight: $nav-font-bold;
             color: $nav-text-color-darker;
             margin-left: 6px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         &:hover {
@@ -65,11 +69,19 @@
 
     .user-company-content {
         padding: 5px 14px 5px 8px;
+        width: 100%;
 
         .user-company-text {
             font-size: 14px;
             font-weight: 500;
             line-height: 18px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .user-company-text-active {
