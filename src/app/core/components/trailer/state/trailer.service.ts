@@ -49,7 +49,6 @@ export class TrailerTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.trailerService.apiTrailerPost().pipe(
             tap((res: any) => {
-                console.log('---called here---');
                 const subTrailer = this.getTrailerById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -122,10 +121,7 @@ export class TrailerTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.trailerService.apiTrailerPut().pipe(
             tap(() => {
-                let storedTrailerData = {
-                    ...this.trailerItemStore?.getValue()?.entities[data.id],
-                };
-                console.log('---called here---');
+                let storedTrailerData = {...this.trailerItemStore?.getValue()?.entities[data.id]};
                 const subTrailer = this.getTrailerById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
@@ -188,7 +184,6 @@ export class TrailerTService implements OnDestroy {
                         inactive: trailerCount.inactive,
                     })
                 );
-                console.log('---called here---');
                 const subTrailer = this.getTrailerById(this.trailerId, true)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({

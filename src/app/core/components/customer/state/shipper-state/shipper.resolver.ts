@@ -15,15 +15,13 @@ export class ShipperResolver implements Resolve<ShipperState> {
         private shipperStore: ShipperStore
     ) {}
     resolve(): Observable<ShipperState | boolean> {
-        return this.shipperService
-            .getShippersList(null, null, undefined, undefined, 1, 25)
-            .pipe(
-                catchError(() => {
-                    return of('No shipper data...');
-                }),
-                tap((shipperPagination: ShipperListResponse) => {
-                    this.shipperStore.set(shipperPagination.pagination.data);
-                })
-            );
+        return this.shipperService.getShippersList(null, null, 1, 25).pipe(
+            catchError(() => {
+                return of('No shipper data...');
+            }),
+            tap((shipperPagination: ShipperListResponse) => {
+                this.shipperStore.set(shipperPagination.pagination.data);
+            })
+        );
     }
 }
