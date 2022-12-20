@@ -386,10 +386,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         return this.specialChecks.filter((item) => item.active).length;
     }
 
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
-
     private updateViolation(id: number) {
         const { ...form } = this.violationForm.value;
 
@@ -582,6 +578,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     };
 
                     if (res.violations.length) {
+                        console.log('violations: ', res.violations);
                         for (let i = 0; i < res.violations.length; i++) {
                             this.violations.push(
                                 this.createViolation({
@@ -674,6 +671,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                 reason: item.get('reason').value,
             };
         });
+    }
+
+    public identity(index: number, item: any): number {
+        return item.id;
     }
 
     ngOnDestroy(): void {
