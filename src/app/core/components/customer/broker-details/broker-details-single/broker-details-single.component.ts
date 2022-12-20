@@ -7,7 +7,9 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
+import { Titles } from 'src/app/core/utils/application.decorators';
 
+@Titles()
 @Component({
     selector: 'app-broker-details-single',
     templateUrl: './broker-details-single.component.html',
@@ -48,7 +50,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
 
     public getStops(data: BrokerResponse) {
         let datas;
-        data.loads.map((item) => {
+        data.loads?.map((item) => {
             datas = item.stops.map((itemStop) => {
                 if (itemStop.stopType.name === 'Pickup') {
                     return {
