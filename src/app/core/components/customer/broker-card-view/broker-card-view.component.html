@@ -167,7 +167,7 @@
                         }}</span>
                     </div>
                     <div
-                        *ngIf="broker.payTerm.name === 'Unlimited'"
+                        *ngIf="broker?.payTerm?.name === 'Unlimited'"
                         class="invoice-agein-unlimited"
                     >
                         Avg.
@@ -181,7 +181,7 @@
                 </div>
                 <app-progress-invoices
                     *ngIf="
-                        broker.payTerm.name !== 'Unlimited' &&
+                        broker?.payTerm?.name !== 'Unlimited' &&
                         broker?.invoiceAgeingGroupOne
                     "
                     [invoiceDays]="broker?.invoiceAgeingGroupOne?.periodOfDays"
@@ -195,7 +195,7 @@
 
                 <app-progress-invoices
                     *ngIf="
-                        broker.payTerm.name !== 'Unlimited' &&
+                        broker?.payTerm?.name !== 'Unlimited' &&
                         broker?.invoiceAgeingGroupTwo
                     "
                     [invoiceDays]="broker?.invoiceAgeingGroupTwo?.periodOfDays"
@@ -208,7 +208,7 @@
                 </app-progress-invoices>
                 <app-progress-invoices
                     *ngIf="
-                        broker.payTerm.name !== 'Unlimited' &&
+                        broker?.payTerm?.name !== 'Unlimited' &&
                         broker?.invoiceAgeingGroupThree
                     "
                     [invoiceDays]="
@@ -223,7 +223,7 @@
                 </app-progress-invoices>
                 <app-progress-invoices
                     *ngIf="
-                        broker.payTerm.name !== 'Unlimited' &&
+                        broker?.payTerm?.name !== 'Unlimited' &&
                         broker?.invoiceAgeingGroupFour
                     "
                     [invoiceDays]="broker?.invoiceAgeingGroupFour?.periodOfDays"

@@ -12,7 +12,6 @@
 import { LoadStopType } from './loadStopType';
 import { TimeType } from './timeType';
 
-
 export interface LoadStopCommand {
     id?: number | null;
     stopType?: LoadStopType;
@@ -34,4 +33,3 @@ export interface LoadStopCommand {
     totalLegMinutes?: number | null;
     items?: Array<any> | null;
 }
-

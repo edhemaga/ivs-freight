@@ -89,8 +89,14 @@
     &.dropdown-position-image,
     &.dropdown-label-position,
     &.repair-m-pm {
+        // OVDE JE NEKAD BIO SAMO TOP: 0, PA JE DODAT 50% PLUS TRANSFORM I DOLE ZA SVG-ICON DISPLAY FLEX
         right: 27px !important;
-        top: 0px;
+        top: 50% !important;
+        transform: translateY(-50%);
+
+        svg-icon{
+            display: flex;
+        }
     }
 
     &.dropdown-label-hide {

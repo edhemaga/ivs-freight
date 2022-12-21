@@ -69,11 +69,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 id: 3000,
                 name: 'Pickup',
                 checked: true,
+                color: "26A690"
             },
             {
                 id: 4000,
                 name: 'Delivery',
                 checked: false,
+                color: 'EF5350'
             },
         ],
     ];
@@ -84,11 +86,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id: 5,
             name: 'Open',
             checked: true,
+            color: '3074D3'
         },
         {
             id: 6,
             name: 'APPT',
             checked: false,
+            color: '3074D3'
         },
     ];
 
@@ -98,11 +102,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id: 7,
             name: 'Open',
             checked: true,
+            color: '3074D3'
         },
         {
             id: 8,
             name: 'APPT',
             checked: false,
+            color: '3074D3'
         },
     ];
 
@@ -112,11 +118,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 id: 7900,
                 name: 'Open',
                 checked: true,
+                color: '3074D3'
             },
             {
                 id: 9000,
                 name: 'APPT',
                 checked: false,
+                color: '3074D3'
             },
         ],
     ];
@@ -1623,11 +1631,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         id: 3000 + this.loadExtraStops().length,
                         name: 'Pickup',
                         checked: true,
+                        color: '26A690'
                     },
                     {
                         id: 4000 + this.loadExtraStops().length,
                         name: 'Delivery',
                         checked: false,
+                        color: 'EF5350'
                     },
                 ]);
 
@@ -1636,11 +1646,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         id: 7900 + this.loadExtraStops().length,
                         name: 'Open',
                         checked: true,
+                        color: '3074D3'
                     },
                     {
                         id: 9000 + this.loadExtraStops().length,
                         name: 'APPT',
                         checked: false,
+                        color: '3074D3'
                     },
                 ]);
             }

@@ -19,6 +19,7 @@ import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal
 import { ShipperDetailsListStore } from './shipper-details-state/shipper-details-list-state/shipper-details-list.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
 import { GetRepairShopClustersQuery } from 'appcoretruckassist/model/getRepairShopClustersQuery';
+import { ShipperItemStore } from '../shipper-state/shipper-details-state/shipper-details.store';
 
 @Injectable({
     providedIn: 'root',
@@ -36,7 +37,8 @@ export class ShipperTService implements OnDestroy {
         private shipperMinimalStore: ShipperMinimalListStore,
         private shipperMinimalQuery: ShipperMinimalListQuery,
         private sListStore: ShipperDetailsListStore,
-        private formDataService: FormDataService
+        private formDataService: FormDataService,
+        private ShipperItemStore: ShipperItemStore,
     ) {}
 
     // Create Shipper
@@ -47,7 +49,7 @@ export class ShipperTService implements OnDestroy {
                 const subShipper = this.getShipperById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (shipper: ShipperResponse | any) => {
+                        next: (shipper: any) => {
                             this.shipperStore.add(shipper);
                             this.shipperMinimalStore.add(shipper);
                             const brokerShipperCount = JSON.parse(
@@ -83,16 +85,22 @@ export class ShipperTService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.shipperService.apiShipperPut().pipe(
             tap(() => {
+                let shipperData = {
+                    ...this.ShipperItemStore?.getValue()?.entities[data.id],
+                }; 
                 const subShipper = this.getShipperById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (shipper: ShipperResponse | any) => {
+                        next: (shipper: any) => {
                             this.shipperStore.remove(
                                 ({ id }) => id === data.id
                             );
                             this.shipperMinimalStore.remove(
                                 ({ id }) => id === data.id
                             );
+                            
+                            shipper.loadStops = shipperData.loadStops;
+
                             this.shipperStore.add(shipper);
                             this.shipperMinimalStore.add(shipper);
                             this.sListStore.update(shipper.id, shipper);
@@ -156,7 +164,7 @@ export class ShipperTService implements OnDestroy {
     public getShipperById(
         shipperId: number,
         getIndex?: boolean
-    ): Observable<ShipperResponse> {
+    ): Observable<any> {
         this.shipperMinimalQuery
             .selectAll()
             .pipe(takeUntil(this.destroy$))
@@ -224,7 +232,7 @@ export class ShipperTService implements OnDestroy {
                 const subShipper = this.getShipperById(this.shipperId, true)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
-                        next: (shipper: ShipperResponse | any) => {
+                        next: (shipper: any) => {
                             this.tableService.sendActionAnimation({
                                 animation: 'delete',
                                 tab: 'shipper',
@@ -361,6 +369,13 @@ export class ShipperTService implements OnDestroy {
     public updateReview(review: UpdateReviewCommand): Observable<any> {
         return this.ratingReviewService.apiRatingReviewReviewPut(review);
     }
+
+    public getShipperLoads(
+        shipperId: number
+    ){
+        return this.shipperService.apiShipperLoadsGet(undefined, undefined, undefined, undefined, undefined, undefined, shipperId);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

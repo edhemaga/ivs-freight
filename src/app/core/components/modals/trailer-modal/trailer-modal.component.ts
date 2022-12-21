@@ -96,6 +96,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
     public skipVinDecocerEdit: boolean = false;
 
+    public documents: any[] = [];
+    public filesForDelete: any[] = [];
+    public fileModified: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -312,6 +316,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private addTrailer(): void {
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
         const newData: any = {
             ...this.trailerForm.value,
             trailerTypeId: this.selectedTrailerType.id,
@@ -364,6 +375,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                       )
                     : null
                 : null,
+            files: documents,
         };
 
         this.trailerModalService
@@ -405,6 +417,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private updateTrailer(id: number): void {
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
         const newData: any = {
             id: id,
             ...this.trailerForm.value,
@@ -470,6 +489,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                       )
                     : null
                 : null,
+            files: documents ? documents : this.trailerForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         console.log(newData);
@@ -598,6 +619,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     this.selectedDoorType = res.doorType;
                     this.selectedReeferType = res.reeferUnit;
                     this.trailerStatus = res.status !== 1;
+                    this.documents = res.files;
 
                     this.modalService.changeModalStatus({
                         name: 'deactivate',
@@ -715,6 +737,34 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         });
                 }
             });
+    }
+
+    public onFilesEvent(event: any) {
+        this.documents = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.trailerForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.trailerForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                this.fileModified = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     ngOnDestroy(): void {

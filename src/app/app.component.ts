@@ -11,6 +11,7 @@ import {
     throwError,
 } from 'rxjs';
 import { scrollButtonAnimation } from './app.component.animation';
+import { StaticInjectorService } from './core/utils/application.decorators';
 import { GpsServiceService } from './global/services/gps-service.service';
 import { SignInResponse } from '../../appcoretruckassist';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -34,6 +35,7 @@ export class AppComponent implements OnInit {
         public titleService: Title,
         private activatedRoute: ActivatedRoute,
         private gpsService: GpsServiceService,
+        private _: StaticInjectorService,
         private accountService: AccountService,
         private userLoggedService: UserLoggedService
     ) {}
