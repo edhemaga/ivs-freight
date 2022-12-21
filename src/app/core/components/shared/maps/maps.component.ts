@@ -447,11 +447,13 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    callClusters(clustersObj, changedSearchOrSort, clusterPagination?) {
+    callClusters(clustersObj, changedSearchOrSort, clusterPagination?, addedNew?) {
         var pageIndex = clusterPagination
             ? clusterPagination.pagination.pageIndex
             : 1;
         var pageSize = 25;
+
+        var addedNewFlag = addedNew != null ? addedNew : false;
 
         if (this.mapType == 'repairShop') {
             this.repairShopService
@@ -590,6 +592,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     clustersObj.southWestLatitude,
                     clustersObj.southWestLongitude,
                     clustersObj.zoomLevel,
+                    addedNewFlag, // addedNew
                     null, // shipperLong
                     null, // shipperLat
                     null, // shipperDistance
@@ -738,7 +741,25 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                 });
         } else if (this.mapType == 'fuelStop') {
             this.fuelStopService
-                .getFuelStopClusters(clustersObj)
+                .getFuelStopClusters(
+                    clustersObj.northEastLatitude,
+                    clustersObj.northEastLongitude,
+                    clustersObj.southWestLatitude,
+                    clustersObj.southWestLongitude,
+                    clustersObj.zoomLevel,
+                    addedNewFlag, // addedNew
+                    null, // shipperLong
+                    null, // shipperLat
+                    null, // shipperDistance
+                    null, // shipperStates
+                    pageIndex,
+                    pageSize,
+                    null, // companyId
+                    this.sortBy, // sort
+                    this.searchText, // search
+                    null, // search1
+                    null // search2
+                )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((clustersResponse: any) => {
                     var clustersToShow = [];
@@ -834,7 +855,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                     null, //pageIndex,
                     null, //pageSize,
                     null, //companyId
-                    null, //this.sortBy
+                    this.sortBy, //this.sortBy
                     this.searchText
                 )
                 .pipe(takeUntil(this.destroy$))
@@ -1158,14 +1179,14 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
             zoomLevel: this.mapZoom,
         };
 
-        if (moveMap) {
-            this.mapLatitude = this.mapLatitude + 0.000001;
-            this.mapLongitude = this.mapLongitude + 0.000001;
-        }
+        // if (moveMap) {
+        //     this.mapLatitude = this.mapLatitude + 0.000001;
+        //     this.mapLongitude = this.mapLongitude + 0.000001;
+        // }
 
         this.lastClusterCoordinates = clustersObject;
 
-        this.callClusters(clustersObject, changedSearchOrSort);
+        this.callClusters(clustersObject, changedSearchOrSort, false, moveMap);
     }
 
     showMoreData(item) {

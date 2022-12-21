@@ -5,7 +5,13 @@
                 <div class="marker-business-name text-ellipsis">
                     {{ title }}
                 </div>
-                <span *ngIf="item?.pinned || (item?.fuelStopExtensions && item?.fuelStopExtensions[0]?.favourite)">
+                <span
+                    *ngIf="
+                        item?.pinned ||
+                        (item?.fuelStopExtensions &&
+                            item?.fuelStopExtensions[0]?.favourite)
+                    "
+                >
                     <svg-icon
                         class="favorite-svg active"
                         src="assets/svg/detail-cards/favorite.svg"
@@ -825,7 +831,14 @@
             (click)="openClusterItemInfo(item2)"
             *ngFor="let item2 of item.pagination.data"
         >
-            {{ item2.name }}
+            <span class="cluster-list-name">{{ item2.name }}</span>
+            
+            <svg-icon
+                *ngIf="item2?.pinned || item2?.favourite"
+                class="favorite-svg active"
+                src="assets/svg/detail-cards/favorite.svg"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+            ></svg-icon>
         </div>
     </div>
 </div>

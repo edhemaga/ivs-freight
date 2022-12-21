@@ -436,19 +436,31 @@
         }
 
         .cluster-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
             height: 26px;
             padding: 4px 6px;
             margin-bottom: 4px;
             border-radius: 2px;
 
-            color: #2F2F2F;
-            font-weight: 400;
-            text-transform: uppercase;
+            .cluster-list-name {
+                max-width: 100%;
 
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
+                color: #2F2F2F;
+                font-weight: 400;
+                text-transform: uppercase;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+
+                overflow: hidden;
+            }
+
+            .favorite-svg {
+                margin-right: 0px;
+                margin-left: 7px;
+            }
 
             &:last-child {
                 margin-bottom: 0px;
