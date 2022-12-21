@@ -433,10 +433,7 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     public handleCheckboxParagraphClick(type: string): void {
-        if (
-            this.selectedMode === SelectedMode.FEEDBACK ||
-            this.selectedMode === SelectedMode.REVIEW
-        ) {
+        if (this.selectedMode !== SelectedMode.APPLICANT) {
             return;
         }
 
@@ -580,6 +577,13 @@ export class Step5Component implements OnInit, OnDestroy {
             this.isEditing = true;
 
             this.displayButtonInsteadOfForm = false;
+
+            this.formValuesToPatch = {
+                date: null,
+                vehicleType: null,
+                location: null,
+                description: null,
+            };
         }
     }
 
@@ -786,7 +790,7 @@ export class Step5Component implements OnInit, OnDestroy {
         }
     }
 
-    public onCardReview(index: number) {
+    public onCardReview(index: number): void {
         if (this.isReviewingCard) {
             return;
         }
@@ -920,10 +924,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 

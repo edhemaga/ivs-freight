@@ -855,7 +855,7 @@ export class Step3Component implements OnInit, OnDestroy {
         }
     }
 
-    public onCardReview(index: number) {
+    public onCardReview(index: number): void {
         if (this.isReviewingCard) {
             return;
         }

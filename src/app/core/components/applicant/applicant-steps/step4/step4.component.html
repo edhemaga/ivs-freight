@@ -3,11 +3,11 @@
 
     <!-- TOP SECTION -->
 
-    <div class="d-flex justify-content-center text-center top-section">
+    <div class="d-flex text-center top-section">
         <p
-            class="m-0 ta-font-bold"
+            class="m-0 ta-font-regular"
             [ngStyle]="{
-                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#2F2F2F'
             }"
         >
             Please list all motor vehicle collisions in which you were
@@ -28,20 +28,270 @@
             [name]="'hasPastAccident'"
             [label]="'No accidents for past 3 years'"
             [customClass]="'bold-12'"
-            [disabledStillCheckMark]="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-            "
+            [disabledStillCheckMark]="selectedMode !== 'APPLICANT_MODE'"
         ></app-ta-checkbox>
     </div>
 
-    <div
-        class="d-flex flex-column form-section"
-        *ngIf="!accidentForm.get('hasPastAccident').value"
-    >
-        <!-- CREATED ACCIDENT DATA -->
+    <ng-container *ngIf="!accidentForm.get('hasPastAccident').value">
+        <div class="d-flex flex-column form-section">
+            <!--  CREATED ACCIDENT DATA -->
 
-        <div
+            <ng-container *ngIf="accidentArray.length">
+                <div
+                    class="d-flex flex-column justify-content-center accidents-container"
+                    [formGroup]="accidentForm"
+                >
+                    <div class="align-items-center title-container">
+                        <div class="align-items-center date-state-title-box">
+                            <p class="m-0 ta-font-bold">STATE & DATE</p>
+                        </div>
+
+                        <div class="align-items-center statistics-title-box">
+                            <p class="m-0 ta-font-bold">STATISTICS</p>
+                        </div>
+
+                        <div
+                            class="align-items-center hazmat-description-title-box"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                H. SPILL & DESCRIPTION
+                            </p>
+                        </div>
+                    </div>
+
+                    <ng-container
+                        *ngFor="
+                            let accident of accidentArray;
+                            let i = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <ng-container *ngIf="!accident.isEditingAccident">
+                            <div
+                                class="d-flex align-items-center accident-info-container line-container"
+                            >
+                                <div
+                                    class="align-items-center info-btn-container"
+                                    (click)="
+                                        selectedMode === 'REVIEW_MODE'
+                                            ? onCardReview(i)
+                                            : onEditAccident(i)
+                                    "
+                                >
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <div
+                                            class="d-flex align-items-center state-box"
+                                        >
+                                            <p
+                                                class="m-0 ta-font-bold d-inline-block text-truncate"
+                                                style="max-width: 126px"
+                                                ngbTooltip
+                                                [mainTooltip]="
+                                                    accident.accidentState +
+                                                    ' ' +
+                                                    '(' +
+                                                    accident.accidentStateShort +
+                                                    ')'
+                                                "
+                                                tooltipBackground="#2F2F2F"
+                                                position="bottom-left"
+                                            >
+                                                {{ accident.accidentState }} ({{
+                                                    accident.accidentStateShort
+                                                }})
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            class="d-flex align-items-center date-box"
+                                        >
+                                            <p class="m-0 ta-font-medium">
+                                                {{ accident.date }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <div
+                                            class="d-flex align-items-center fatalities-box"
+                                        >
+                                            <div
+                                                class="d-flex justify-content-center align-items-center number-box"
+                                            >
+                                                <p class="m-0 ta-font-bold">
+                                                    {{ accident.fatalities }}
+                                                </p>
+                                            </div>
+
+                                            <p class="m-0 ta-font-regular">
+                                                Fatalities
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            class="d-flex align-items-center injuries-box"
+                                        >
+                                            <div
+                                                class="d-flex justify-content-center align-items-center number-box"
+                                            >
+                                                <p class="m-0 ta-font-bold">
+                                                    {{ accident.injuries }}
+                                                </p>
+                                            </div>
+
+                                            <p class="m-0 ta-font-regular">
+                                                Injuries
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <div
+                                            class="d-flex align-items-center hazmat-box"
+                                        >
+                                            <svg-icon
+                                                class="hazmat-icon"
+                                                [src]="
+                                                    'assets/svg/common/ic_hazmat.svg'
+                                                "
+                                                [svgStyle]="{
+                                                    'width.px': '14',
+                                                    'height.px': '14'
+                                                }"
+                                            ></svg-icon>
+
+                                            <p class="m-0 ta-font-semi-bold">
+                                                {{
+                                                    accident.hazmatSpill
+                                                        ? 'Yes'
+                                                        : 'No'
+                                                }}
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            class="d-flex align-items-center description-box"
+                                        >
+                                            <p
+                                                class="m-0 ta-font-medium d-inline-block text-truncate"
+                                                style="max-width: 250px"
+                                                ngbTooltip
+                                                [mainTooltip]="
+                                                    accident.description
+                                                "
+                                                tooltipBackground="#2F2F2F"
+                                                position="bottom-left"
+                                            >
+                                                {{ accident.description }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- REVIEW AND FEEDBACK -->
+
+                                <ng-container
+                                    *ngIf="selectedMode !== 'APPLICANT_MODE'"
+                                >
+                                    <div class="review-feedback-container">
+                                        <app-applicant-review-feedback
+                                            [formControlName]="
+                                                'cardReview' + (i + 1)
+                                            "
+                                            [displayAnnotationButton]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[i]
+                                                    .displayAnnotationButton
+                                            "
+                                            [displayAnnotationTextArea]="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                openAnnotationArray[i]
+                                                    .displayAnnotationTextArea
+                                            "
+                                            [lineIndex]="i"
+                                            [cardsLength]="accidentArray.length"
+                                            [cardsType]="'accidentRecord'"
+                                            [cardIndex]="i"
+                                            [isFeedback]="
+                                                selectedMode === 'FEEDBACK_MODE'
+                                            "
+                                            [feedbackText]="
+                                                selectedMode ===
+                                                    'FEEDBACK_MODE' &&
+                                                stepFeedbackValues[i]
+                                                    .commonMessage
+                                            "
+                                            (annotationBtnClickEvent)="
+                                                selectedMode ===
+                                                    'REVIEW_MODE' &&
+                                                    getAnnotationBtnClickValue(
+                                                        $event
+                                                    )
+                                            "
+                                        ></app-applicant-review-feedback>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="accident.isEditingAccident">
+                            <div
+                                [ngStyle]="{
+                                    'margin-bottom':
+                                        accidentArray.length > 1 ? '4px' : 0
+                                }"
+                            >
+                                <app-step4-form
+                                    [mode]="selectedMode"
+                                    [isEditing]="isEditing"
+                                    [formValuesToPatch]="formValuesToPatch"
+                                    [isReviewingCard]="isReviewingCard"
+                                    [displayRadioRequiredNote]="
+                                        displayRadioRequiredNote
+                                    "
+                                    [checkIsHazmatSpillNotChecked]="
+                                        checkIsHazmatSpillNotChecked
+                                    "
+                                    [stepFeedbackValues]="feedbackValuesToPatch"
+                                    (formValuesEmitter)="
+                                        getAccidentFormValues($event)
+                                    "
+                                    (cancelFormEditingEmitter)="
+                                        cancelAccidentEditing($event)
+                                    "
+                                    (saveFormEditingEmitter)="
+                                        saveEditedAccident($event)
+                                    "
+                                    (formStatusEmitter)="
+                                        onGetFormStatus($event)
+                                    "
+                                    (cancelFormReviewingEmitter)="
+                                        cancelAccidentReview($event)
+                                    "
+                                    (cardOpenAnnotationArrayValuesEmitter)="
+                                        onGetCardOpenAnnotationArrayValues(
+                                            $event
+                                        )
+                                    "
+                                    (radioRequiredNoteEmitter)="
+                                        onGetRadioRequiredNoteEmit($event)
+                                    "
+                                ></app-step4-form>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+            <!--  <div
             class="d-flex flex-column justify-content-center accident-view-container"
             *ngIf="accidentArray.length"
             [formGroup]="accidentForm"
@@ -276,7 +526,7 @@
                         </div>
                     </div>
 
-                    <!-- REVIEW AND FEEDBACK -->
+                    REVIEW AND FEEDBACK
 
                     <div
                         class="review-feedback-container"
@@ -347,39 +597,58 @@
                     ></app-step4-form>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <!-- FORM SECTION -->
+            <!-- FORM SECTION -->
 
-        <form
-            *ngIf="
-                ((selectedMode === 'APPLICANT_MODE' ||
-                    selectedMode === 'FEEDBACK_MODE') &&
-                    !isEditing) ||
-                (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
-            "
-        >
-            <app-step4-form
-                [mode]="selectedMode"
-                [isEditing]="isEditing"
-                [markFormInvalid]="markFormInvalid"
-                [formValuesToPatch]="formValuesToPatch"
-                [isReviewingCard]="isReviewingCard"
-                [displayRadioRequiredNote]="displayRadioRequiredNote"
-                [checkIsHazmatSpillNotChecked]="checkIsHazmatSpillNotChecked"
-                [stepFeedbackValues]="feedbackValuesToPatch"
-                (formValuesEmitter)="getAccidentFormValues($event)"
-                (formStatusEmitter)="onGetFormStatus($event)"
-                (markInvalidEmitter)="onMarkInvalidEmit($event)"
-                (lastFormValuesEmitter)="onGetLastFormValues($event)"
-                (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
-                (openAnnotationArrayValuesEmitter)="
-                    onGetOpenAnnotationArrayValues($event)
+            <ng-container
+                *ngIf="
+                    (selectedMode !== 'REVIEW_MODE' &&
+                        !hideFormOnEdit &&
+                        !displayButtonInsteadOfForm) ||
+                    (selectedMode === 'REVIEW_MODE' && !isReviewingCard)
                 "
-                (radioRequiredNoteEmitter)="onGetRadioRequiredNoteEmit($event)"
-            ></app-step4-form>
-        </form>
-    </div>
+            >
+                <app-step4-form
+                    [mode]="selectedMode"
+                    [isEditing]="isEditing"
+                    [markFormInvalid]="markFormInvalid"
+                    [formValuesToPatch]="formValuesToPatch"
+                    [isReviewingCard]="isReviewingCard"
+                    [displayRadioRequiredNote]="displayRadioRequiredNote"
+                    [checkIsHazmatSpillNotChecked]="
+                        checkIsHazmatSpillNotChecked
+                    "
+                    [stepFeedbackValues]="feedbackValuesToPatch"
+                    (formValuesEmitter)="getAccidentFormValues($event)"
+                    (cancelFormEditingEmitter)="cancelAccidentEditing($event)"
+                    (saveFormEditingEmitter)="saveEditedAccident($event)"
+                    (formStatusEmitter)="onGetFormStatus($event)"
+                    (markInvalidEmitter)="onMarkInvalidEmit($event)"
+                    (lastFormValuesEmitter)="onGetLastFormValues($event)"
+                    (hasIncorrectFieldsEmitter)="onHasIncorrectFields($event)"
+                    (openAnnotationArrayValuesEmitter)="
+                        onGetOpenAnnotationArrayValues($event)
+                    "
+                    (radioRequiredNoteEmitter)="
+                        onGetRadioRequiredNoteEmit($event)
+                    "
+                ></app-step4-form>
+            </ng-container>
+
+            <ng-container *ngIf="displayButtonInsteadOfForm">
+                <div
+                    class="d-flex justify-content-center align-items-center btn-instead-form-container"
+                >
+                    <app-applicant-add-save-btn
+                        [addBtn]="true"
+                        [btnText]="'Add Another Accident'"
+                        (clickValueEmitter)="onGetBtnClickValue($event)"
+                    ></app-applicant-add-save-btn>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
 </div>
 
 <!-- NEXT BTN -->

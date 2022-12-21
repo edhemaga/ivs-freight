@@ -32,22 +32,21 @@
     }
 
     .top-section {
-        margin-top: 22px;
-        width: 820px;
+        margin-top: 12px;
+        width: 616px;
 
         p {
-            color: $bw6-2;
             font-size: 14px;
             line-height: 22px;
 
             &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
             }
 
             &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
             }
         }
     }
@@ -60,7 +59,176 @@
     .form-section {
         width: 616px;
 
-        .accident-view-container {
+        .accidents-container {
+            width: 616px;
+
+            .line-container {
+                position: relative;
+
+                .review-feedback-container {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    transform: translateX(calc(100% + 5px));
+                    width: 429px;
+                }
+            }
+
+            .title-container {
+                width: 100%;
+                margin-bottom: 4px;
+                padding-left: 10px;
+                display: grid;
+                grid-template-columns: 126px 110px 250px;
+                grid-gap: 22px;
+
+                .date-state-title-box,
+                .statistics-title-box,
+                .hazmat-description-title-box {
+                    p {
+                        color: $bw5;
+                        font-size: 11px;
+
+                        &::-moz-selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+                    }
+                }
+            }
+
+            .accident-info-container {
+                width: 100%;
+                margin-bottom: 4px;
+                padding: 6px 10px;
+                border-radius: 2px;
+                background: $ta-blue-10;
+
+                .info-btn-container {
+                    width: 100%;
+                    cursor: pointer;
+                    display: grid;
+                    grid-template-columns: 126px 110px 250px;
+                    grid-column-gap: 22px;
+
+                    .state-box,
+                    .date-box,
+                    .fatalities-box,
+                    .injuries-box,
+                    .hazmat-box,
+                    .description-box {
+                        p {
+                            line-height: 14px;
+                            font-size: 11px;
+                        }
+
+                        &.state-box,
+                        &.hazmat-box {
+                            p {
+                                color: $ta-black-2;
+
+                                &::-moz-selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+                            }
+
+                            &.state-box {
+                                margin-bottom: 4px;
+                            }
+
+                            &.hazmat-box {
+                                .hazmat-icon {
+                                    margin-right: 4px;
+
+                                    svg {
+                                        path {
+                                            fill: $bw5;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &.date-box,
+                        &.description-box {
+                            p {
+                                color: $bw5;
+
+                                &::-moz-selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+                            }
+                        }
+
+                        &.fatalities-box,
+                        &.injuries-box {
+                            p {
+                                color: $ta-black-2;
+
+                                &::-moz-selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+                            }
+
+                            .number-box {
+                                width: 24px;
+                                height: 14px;
+                                border-radius: 2px;
+                                margin-right: 4px;
+                                background: $bw5;
+
+                                p {
+                                    color: $white;
+
+                                    &::-moz-selection {
+                                        color: $white;
+                                        background: rgb(255, 255, 255, 0.2);
+                                    }
+
+                                    &::selection {
+                                        color: $white;
+                                        background: rgb(255, 255, 255, 0.2);
+                                    }
+                                }
+                            }
+
+                            &.fatalities-box {
+                                margin-bottom: 2px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .btn-instead-form-container {
+            margin-top: 22px;
+        }
+
+        /* .accident-view-container {
             width: 616px;
             margin-bottom: 32px;
 
@@ -350,7 +518,7 @@
                     }
                 }
             }
-        }
+        } */
     }
 }
 

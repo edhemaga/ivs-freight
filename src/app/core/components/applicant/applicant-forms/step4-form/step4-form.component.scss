@@ -1,5 +1,24 @@
 @import 'src/theme/variables.scss';
 
+.accident-border-container {
+    border: 1px solid #2f2f2f;
+    border-radius: 2px;
+    padding: 4px 4px 12px 4px;
+}
+
+.accident-header {
+    padding: 8px;
+    border-radius: 2px;
+    background: $ta-black-2;
+    margin-bottom: 28px;
+
+    p {
+        font-size: 14px;
+        line-height: 18px;
+        color: $white;
+    }
+}
+
 .step-form {
     .line-container {
         position: relative;
@@ -21,10 +40,6 @@
             margin-right: 0;
             margin-bottom: 0;
         }
-    }
-
-    .location-group {
-        width: 445px;
     }
 
     .date-group {
@@ -101,12 +116,10 @@
 
     .truck-type-group {
         width: 231px;
-        margin-bottom: 0;
+        margin-bottom: 0 !important;
     }
 
     .description-group {
-        width: 373px;
-        margin-bottom: 0;
-        margin-right: 0;
+        margin: 0 0 12px 0 !important;
     }
 }

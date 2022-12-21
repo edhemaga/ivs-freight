@@ -130,10 +130,7 @@ export class Step5FormComponent
     }
 
     ngAfterViewInit(): void {
-        if (
-            this.selectedMode === SelectedMode.APPLICANT ||
-            this.selectedMode === SelectedMode.FEEDBACK
-        ) {
+        if (this.selectedMode !== SelectedMode.REVIEW) {
             this.violationsForm.statusChanges
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
@@ -185,10 +182,7 @@ export class Step5FormComponent
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
 
-                if (
-                    this.selectedMode === SelectedMode.APPLICANT ||
-                    this.selectedMode === SelectedMode.FEEDBACK
-                ) {
+                if (this.selectedMode !== SelectedMode.REVIEW) {
                     this.startValueChangesMonitoring();
                 }
             }, 50);

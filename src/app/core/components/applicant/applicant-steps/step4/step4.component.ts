@@ -59,8 +59,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
     public applicantId: number;
 
-    public selectedAccidentIndex: number;
-    public helperIndex: number = 2;
+    public selectedAccidentIndex: number = -1;
 
     public displayRadioRequiredNote: boolean = false;
     public checkIsHazmatSpillNotChecked: boolean = false;
@@ -68,8 +67,10 @@ export class Step4Component implements OnInit, OnDestroy {
     public isEditing: boolean = false;
     public isReviewingCard: boolean = false;
 
+    public displayButtonInsteadOfForm: boolean = false;
+    public hideFormOnEdit: boolean = false;
+
     public formValuesToPatch: any;
-    public previousFormValuesOnEdit: any;
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -159,7 +160,8 @@ export class Step4Component implements OnInit, OnDestroy {
                         reviewId: item.accidentItemReview?.id,
                         isEditingAccident: false,
                         location: item.location,
-                        accidentState: item.location.stateShortName,
+                        accidentState: item.location.state,
+                        accidentStateShort: item.location.stateShortName,
                         date: convertDateFromBackend(item.date).replace(
                             /-/g,
                             '/'
@@ -181,7 +183,9 @@ export class Step4Component implements OnInit, OnDestroy {
                 reviewId: lastItemInAccidentArray.accidentItemReview?.id,
                 isEditingAccident: false,
                 location: lastItemInAccidentArray.location,
-                accidentState: lastItemInAccidentArray.location.stateShortName,
+                accidentState: lastItemInAccidentArray.location.state,
+                accidentStateShort:
+                    lastItemInAccidentArray.location.stateShortName,
                 date: convertDateFromBackend(
                     lastItemInAccidentArray.date
                 ).replace(/-/g, '/'),
@@ -203,19 +207,15 @@ export class Step4Component implements OnInit, OnDestroy {
                 JSON.stringify(filteredAccidentArray)
             );
 
-            this.formValuesToPatch = filteredLastItemInAccidentArray;
             this.previousFormValuesOnReview = filteredLastItemInAccidentArray;
-            this.previousFormValuesOnEdit = this.accidentArray.length
-                ? filteredLastItemInAccidentArray
-                : {
-                      location: null,
-                      date: null,
-                      fatalities: 0,
-                      injuries: 0,
-                      hazmatSpill: null,
-                      vehicleType: null,
-                      description: null,
-                  };
+
+            if (accidents.length === 1) {
+                this.formValuesToPatch = filteredLastItemInAccidentArray;
+            } else {
+                this.formStatus = 'VALID';
+
+                this.displayButtonInsteadOfForm = true;
+            }
         }
 
         if (this.selectedMode === SelectedMode.REVIEW) {
@@ -362,46 +362,20 @@ export class Step4Component implements OnInit, OnDestroy {
         this.accidentArray.splice(index, 1);
     }
 
-    public onEditAccident(index: number): void {
-        if (this.isEditing) {
-            this.isEditing = false;
-            this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
-                false;
-
-            this.helperIndex = 2;
-            this.selectedAccidentIndex = -1;
-        }
-
-        this.helperIndex = index;
-        this.selectedAccidentIndex = index;
-
-        this.isEditing = true;
-        this.accidentArray[index].isEditingAccident = true;
-
-        const selectedAccident = this.accidentArray[index];
-
-        if (this.lastAccidentCard) {
-            this.previousFormValuesOnEdit = {
-                location: this.lastAccidentCard?.location,
-                date: this.lastAccidentCard?.date,
-                hazmatSpill: this.lastAccidentCard?.hazmatSpill,
-                fatalities: this.lastAccidentCard?.fatalities,
-                injuries: this.lastAccidentCard?.injuries,
-                vehicleType: this.lastAccidentCard?.vehicleType,
-                description: this.lastAccidentCard?.description,
-            };
-        }
-
-        this.formValuesToPatch = selectedAccident;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.selectedAccidentIndex];
-        }
-    }
-
     public getAccidentFormValues(event: any): void {
         this.accidentArray = [...this.accidentArray, event];
+
+        this.isEditing = true;
+
+        this.formValuesToPatch = {
+            location: null,
+            date: null,
+            hazmatSpill: null,
+            fatalities: 0,
+            injuries: 0,
+            vehicleType: null,
+            description: null,
+        };
 
         if (this.lastAccidentCard.id) {
             this.accidentArray[this.accidentArray.length - 1].id =
@@ -411,59 +385,118 @@ export class Step4Component implements OnInit, OnDestroy {
         } else {
             this.accidentArray[this.accidentArray.length - 1].id = null;
         }
+    }
 
-        this.helperIndex = 2;
+    public onEditAccident(index: number): void {
+        this.accidentArray
+            .filter((item) => item.isEditingAccident)
+            .forEach((item) => (item.isEditingAccident = false));
 
-        const firstEmptyObjectInList = this.openAnnotationArray.find(
-            (item) => Object.keys(item).length === 0
-        );
+        this.selectedAccidentIndex = index;
 
-        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
-            firstEmptyObjectInList
-        );
+        this.isEditing = true;
+        this.accidentArray[this.selectedAccidentIndex].isEditingAccident = true;
 
-        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        };
+        this.hideFormOnEdit = true;
+        this.displayButtonInsteadOfForm = false;
+
+        const selectedAccident = this.accidentArray[this.selectedAccidentIndex];
+
+        this.formValuesToPatch = selectedAccident;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.selectedAccidentIndex];
+        }
     }
 
     public cancelAccidentEditing(_: any): void {
-        this.isEditing = false;
-        this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
-            false;
-
-        this.helperIndex = 2;
-        this.selectedAccidentIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
-
         if (this.selectedMode === SelectedMode.FEEDBACK) {
             this.feedbackValuesToPatch =
                 this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
         }
+
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+
+        if (this.accidentArray.length === 1) {
+            const selectedAccident = this.accidentArray[0];
+
+            this.formValuesToPatch = selectedAccident;
+
+            this.accidentArray = [];
+        } else {
+            if (this.selectedAccidentIndex >= 0) {
+                this.accidentArray[
+                    this.selectedAccidentIndex
+                ].isEditingAccident = false;
+            }
+
+            this.formValuesToPatch = {
+                location: null,
+                date: null,
+                hazmatSpill: null,
+                fatalities: 0,
+                injuries: 0,
+                vehicleType: null,
+                description: null,
+            };
+
+            this.displayButtonInsteadOfForm = true;
+        }
+
+        this.selectedAccidentIndex = -1;
     }
 
     public saveEditedAccident(event: any): void {
-        this.isEditing = false;
-        this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
-            false;
-
-        this.accidentArray[this.selectedAccidentIndex] = {
-            ...this.accidentArray[this.selectedAccidentIndex],
-            ...event,
-        };
-
-        this.helperIndex = 2;
-        this.selectedAccidentIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
-
         if (this.selectedMode === SelectedMode.FEEDBACK) {
             this.feedbackValuesToPatch =
                 this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
+
+        if (this.selectedAccidentIndex >= 0) {
+            this.accidentArray[this.selectedAccidentIndex] = {
+                ...this.accidentArray[this.selectedAccidentIndex],
+                ...event,
+            };
+        } else {
+            this.accidentArray = [...this.accidentArray, event];
+        }
+
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+        this.displayButtonInsteadOfForm = true;
+
+        this.formValuesToPatch = {
+            location: null,
+            date: null,
+            hazmatSpill: null,
+            fatalities: 0,
+            injuries: 0,
+            vehicleType: null,
+            description: null,
+        };
+
+        this.selectedAccidentIndex = -1;
+    }
+
+    public onGetBtnClickValue(event: any): void {
+        if (event.notDisabledClick) {
+            this.isEditing = true;
+
+            this.displayButtonInsteadOfForm = false;
+
+            this.formValuesToPatch = {
+                location: null,
+                date: null,
+                hazmatSpill: null,
+                fatalities: 0,
+                injuries: 0,
+                vehicleType: null,
+                description: null,
+            };
         }
     }
 
@@ -544,7 +577,6 @@ export class Step4Component implements OnInit, OnDestroy {
             this.hasIncorrectFields = false;
         }
 
-        this.helperIndex = 2;
         this.selectedAccidentIndex = -1;
 
         this.previousFormValuesOnReview.accidentItemReview = {
@@ -570,7 +602,6 @@ export class Step4Component implements OnInit, OnDestroy {
         this.accidentArray[this.selectedAccidentIndex].isEditingAccident =
             false;
 
-        this.helperIndex = 2;
         this.selectedAccidentIndex = -1;
 
         this.previousFormValuesOnReview.accidentItemReview = {
@@ -674,12 +705,11 @@ export class Step4Component implements OnInit, OnDestroy {
         }
     }
 
-    public onCardReview(index: number) {
+    public onCardReview(index: number): void {
         if (this.isReviewingCard) {
             return;
         }
 
-        this.helperIndex = index;
         this.selectedAccidentIndex = index;
 
         this.accidentArray[index].isEditingAccident = true;
@@ -809,10 +839,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -827,19 +854,16 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        this.checkIsHazmatSpillNotChecked = true;
+
         if (
             this.formStatus === 'INVALID' ||
             this.isEditing ||
-            !this.displayRadioRequiredNote ||
             (this.selectedMode === SelectedMode.FEEDBACK &&
                 !this.isFeedbackValueUpdated)
         ) {
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;
-            }
-
-            if (!this.displayRadioRequiredNote) {
-                this.checkIsHazmatSpillNotChecked = true;
             }
 
             return;

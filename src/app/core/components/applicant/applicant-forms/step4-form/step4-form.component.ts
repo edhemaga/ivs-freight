@@ -160,10 +160,7 @@ export class Step4FormComponent
     ngAfterViewInit(): void {
         this.hazmatSpillRadios = this.component.buttons;
 
-        if (
-            this.selectedMode === SelectedMode.APPLICANT ||
-            this.selectedMode === SelectedMode.FEEDBACK
-        ) {
+        if (this.selectedMode !== SelectedMode.REVIEW) {
             this.accidentForm.statusChanges
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
@@ -240,10 +237,7 @@ export class Step4FormComponent
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
 
-                if (
-                    this.selectedMode === SelectedMode.APPLICANT ||
-                    this.selectedMode === SelectedMode.FEEDBACK
-                ) {
+                if (this.selectedMode !== SelectedMode.REVIEW) {
                     this.startValueChangesMonitoring();
                 }
             }, 50);
@@ -369,6 +363,7 @@ export class Step4FormComponent
                     date,
                     location,
                     accidentState,
+                    accidentStateShort,
                     isEditingAccident,
                     accidentItemReview,
                     id,
@@ -453,24 +448,17 @@ export class Step4FormComponent
         const saveData: AccidentModel = {
             ...accidentForm,
             location: selectedAddress,
-            accidentState: this.selectedAddress.stateShortName,
+            accidentState: this.selectedAddress.state,
+            accidentStateShort: this.selectedAddress.stateShortName,
             isEditingAccident: false,
         };
 
         this.formValuesEmitter.emit(saveData);
 
-        this.hazmatSpillRadios[0].checked = false;
-        this.hazmatSpillRadios[1].checked = false;
-
         this.selectedAddress = null;
         this.selectedVehicleType = null;
 
         this.formService.resetForm(this.accidentForm);
-
-        this.accidentForm.patchValue({
-            fatalities: 0,
-            injuries: 0,
-        });
     }
 
     public onCancelEditAccident(): void {
@@ -478,21 +466,19 @@ export class Step4FormComponent
 
         this.isAccidentEdited = false;
 
-        this.hazmatSpillRadios[0].checked = false;
-        this.hazmatSpillRadios[1].checked = false;
+        this.formStatusEmitter.emit('VALID');
 
-        this.formService.resetForm(this.accidentForm);
-
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     public onSaveEditedAccident(): void {
-        if (this.accidentForm.invalid) {
-            this.inputService.markInvalid(this.accidentForm);
-            return;
-        }
+        if (this.accidentForm.invalid || !this.isAccidentEdited) {
+            if (this.accidentForm.invalid) {
+                this.inputService.markInvalid(this.accidentForm);
+            }
 
-        if (!this.isAccidentEdited) {
             return;
         }
 
@@ -511,6 +497,9 @@ export class Step4FormComponent
                 ? selectedAddress
                 : this.editingCardAddress,
             accidentState: this.selectedAddress
+                ? this.selectedAddress.state
+                : this.editingCardAddress.state,
+            accidentStateShort: this.selectedAddress
                 ? this.selectedAddress.stateShortName
                 : this.editingCardAddress.stateShortName,
             isEditingAccident: false,
@@ -520,9 +509,9 @@ export class Step4FormComponent
 
         this.isAccidentEdited = false;
 
-        this.formService.resetForm(this.accidentForm);
-
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     public onGetBtnClickValue(event: any): void {

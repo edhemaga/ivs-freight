@@ -8,7 +8,7 @@
     <div class="d-flex flex-column step-form" [formGroup]="violationsForm">
         <div
             class="d-flex line-container"
-            [ngStyle]="{ padding: isEditing ? '4px' : 0 }"
+            [ngStyle]="{ padding: isEditing ? '0 4px 0 4px' : 0 }"
         >
             <div
                 class="group date-group"
@@ -130,7 +130,7 @@
 
         <div
             class="d-flex line-container"
-            [ngStyle]="{ padding: isEditing ? '4px' : 0 }"
+            [ngStyle]="{ padding: isEditing ? '0 4px 0 4px' : 0 }"
         >
             <div
                 class="description-group"
@@ -195,7 +195,8 @@
         <div
             class="d-flex justify-content-center align-items-center"
             [ngStyle]="{
-                padding: isEditing ? '12px 8px 0 8px' : 0,
+                'padding-top': isEditing ? '12px' : 0,
+                margin: isEditing ? '0 4px 0 4px' : '10px 0 0 0',
                 'border-top': isEditing ? '1px solid #DADADA' : 0
             }"
         >
