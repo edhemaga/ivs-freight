@@ -208,7 +208,8 @@ export class DriverDetailsCardComponent
         private dropDownService: DropDownService
     ) {}
     ngOnChanges(changes: SimpleChanges) {
-        if (!changes?.driver?.firstChange && changes?.driver) {
+        if (!changes?.driver?.firstChange && changes?.driver.currentValue && changes?.driver.currentValue.id ) {
+            console.log('---iff-----')
             this.note.patchValue(changes?.driver?.currentValue?.note);
             this.getExpireDate(changes?.driver?.currentValue);
             this.getYearsAndDays(changes?.driver?.currentValue);
@@ -230,6 +231,7 @@ export class DriverDetailsCardComponent
     }
 
     ngOnInit(): void {
+        console.log('---- this.driver here first--', this.driver)
         this.getDriverById(this.driver.id);
         this.note.patchValue(this.driver.note);
         // Confirmation Subscribe
@@ -263,6 +265,7 @@ export class DriverDetailsCardComponent
             .subscribe((res: any) => {
                 if (res.animation) {
                     this.driver = res.data;
+                    console.log('---- this.driver here--', this.driver)
                     this.getExpireDate(res.data);
                     this.cdRef.detectChanges();
                 }
@@ -342,6 +345,9 @@ export class DriverDetailsCardComponent
         this.selectedTab = ev.id;
     }
     public getDriverById(id: number) {
+        if (!id) {
+            return false;
+        }
         this.driverService
             .getDriverById(id, true)
             .pipe(takeUntil(this.destroy$))
@@ -487,6 +493,7 @@ export class DriverDetailsCardComponent
 
     /**Function for dots in cards */
     public initTableOptionsCard(data: any): void {
+        console.log('---initTableOptionsCard----', data);
         this.dropData = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -542,6 +549,8 @@ export class DriverDetailsCardComponent
     }
 
     public getExpireDate(data: any) {
+
+        console.log('---data----', data);
         this.dataCDl = data?.cdls?.map((ele) => {
             if (moment(ele.expDate).isBefore(moment())) {
                 this.expDateCard = false;
