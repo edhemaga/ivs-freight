@@ -429,6 +429,7 @@
                     .main_inside {
                         .circles-holder,
                         .cdk-drag {
+                            cursor: grab;
                             @each $truck_col in $truck_colors {
                                 &.truck_#{$truck_col} {
                                     &:hover {
@@ -541,6 +542,10 @@
                                     }
                                 }
                             }
+
+                            &:active{
+                                cursor: grabbing;
+                            }
                         }
                     }
                 }
@@ -620,6 +625,13 @@
     position: relative;
     background-color: #2f2f2f;
     border-radius: 3px;
+    z-index: 9999999 !important;
+    cursor: grabbing !important;
+
+    .cdk-drag-handle{
+        cursor: grabbing !important;
+    }
+
     .main_inside {
         background-color: transparent !important;
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DispatcherStoreService } from '../state/dispatcher.service';
+import { DispatcherStoreService } from '../../dispatch/state/dispatcher.service';
 
 @Component({
     selector: 'app-dispatcher-parking',

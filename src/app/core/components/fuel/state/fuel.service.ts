@@ -265,14 +265,42 @@ export class FuelTService {
     // Map Clusters
 
     public getFuelStopClusters(
-        clustersQuery: GetRepairShopClustersQuery
+        northEastLatitude?: number, 
+        northEastLongitude?: number, 
+        southWestLatitude?: number, 
+        southWestLongitude?: number, 
+        zoomLevel?: number, 
+        addedNew?: boolean, 
+        shipperLong?: number, 
+        shipperLat?: number, 
+        shipperDistance?: number, 
+        shipperStates?: Array<string>, 
+        pageIndex?: number, 
+        pageSize?: number, 
+        companyId?: number, 
+        sort?: string, 
+        search?: string, 
+        search1?: string, 
+        search2?: string
     ): Observable<Array<ClusterResponse>> {
         return this.fuelService.apiFuelClustersGet(
-            clustersQuery.northEastLatitude,
-            clustersQuery.northEastLongitude,
-            clustersQuery.southWestLatitude,
-            clustersQuery.southWestLongitude,
-            clustersQuery.zoomLevel
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            zoomLevel,
+            addedNew,
+            shipperLong,
+            shipperLat,
+            shipperDistance,
+            shipperStates,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
         );
     }
 
