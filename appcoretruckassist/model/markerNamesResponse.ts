@@ -14,5 +14,6 @@
 export interface MarkerNamesResponse { 
     id?: number;
     name?: string | null;
+    favourite?: boolean;
 }
 

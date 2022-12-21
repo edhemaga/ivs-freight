@@ -469,10 +469,11 @@
                                     label: 'Volume',
                                     minLength: 5,
                                     maxLength: 7,
-                                    placeholderText: !trailerForm.get('volume')
+                                    placeholderText: trailerForm.get('volume')
                                         .value
-                                        ? ''
-                                        : 'gal',
+                                        ? selectedTrailerType?.name === 'Tanker'
+                                        ? 'gal' : 'cu_ft'
+                                        : null,
                                     thousandSeparator: true
                                 }"
                             ></app-ta-input>
