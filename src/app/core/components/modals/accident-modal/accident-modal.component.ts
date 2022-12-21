@@ -368,6 +368,12 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                             name: item.trailerNumber,
                         };
                     });
+                    this.labelsAccidentCustomer = res.brokers.map((item) => {
+                        return {
+                            id: item.id,
+                            name: item.businessName,
+                        };
+                    });
                     this.labelsInsuranceType = res.insuranceType;
                 },
                 error: () => {},

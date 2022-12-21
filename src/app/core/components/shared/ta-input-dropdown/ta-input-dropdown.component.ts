@@ -178,17 +178,6 @@ export class TaInputDropdownComponent
                 clearTimeout(timeout);
             });
         }
-
-        if (
-            this.inputConfig.name === 'Address' ||
-            this.inputConfig.name === 'RoutingAddress'
-        ) {
-            if (this.getSuperControl.value && this.inputRef?.focusInput) {
-                this.popoverRef?.open();
-            } else {
-                this.popoverRef?.close();
-            }
-        }
     }
 
     ngAfterViewInit() {
@@ -587,6 +576,13 @@ export class TaInputDropdownComponent
                         id: 7654,
                         name: 'No Results',
                     });
+
+                    if (
+                        this.inputConfig.name === 'Address' ||
+                        this.inputConfig.name === 'RoutingAddress'
+                    ) {
+                        this.popoverRef?.open();
+                    }
                 }
             } else {
                 this.options = this.originalOptions;

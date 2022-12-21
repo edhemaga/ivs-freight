@@ -245,6 +245,10 @@
                             text-align: right;
                             display: none;
                             margin-right: 0px;
+
+                            &.container {
+                                right: 13px;
+                            }
                         }
                     }
 

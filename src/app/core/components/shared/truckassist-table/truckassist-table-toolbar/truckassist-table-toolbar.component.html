@@ -20,7 +20,10 @@
     <div class="tab-wrapper" *ngIf="tableData.length > 1">
         <ng-container *ngFor="let data of tableData; let i = index">
             <ng-container [ngSwitch]="data.type">
-                <div *ngSwitchCase="'dropdown'" class="tab-container tab-margin">
+                <div
+                    *ngSwitchCase="'dropdown'"
+                    class="tab-container tab-margin"
+                >
                     <app-ta-input-dropdown
                         [formControl]="dropdownSelection"
                         [template]="data.template"
@@ -28,7 +31,7 @@
                         [options]="data.dropdownData"
                         [activeItem]="data.selectedDispatcher"
                         (selectedItem)="
-                            onSelectDropdown($event, data.actionType)
+                            onToolBarSelectAction($event)
                         "
                     ></app-ta-input-dropdown>
                 </div>

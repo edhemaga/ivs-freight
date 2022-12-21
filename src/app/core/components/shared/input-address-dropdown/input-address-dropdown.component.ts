@@ -117,6 +117,9 @@ export class InputAddressDropdownComponent
                 takeUntil(this.destroy$),
                 filter((term: string) => {
                     if (!term) {
+                        this.inputConfig.loadingSpinner = {
+                            isLoading: false
+                        };
                         this.addresList = [];
                     } else if (
                         term != this.currentAddressData?.address.address &&
@@ -141,6 +144,12 @@ export class InputAddressDropdownComponent
                     return term?.length >= 3;
                 }),
                 switchMap((query) => {
+                    this.inputConfig.loadingSpinner = {
+                        size: 'small',
+                        color: 'white',
+                        isLoading: true
+                    };
+
                     return this.addressService.getAddresses(
                         query,
                         this.searchLayers,
@@ -149,6 +158,10 @@ export class InputAddressDropdownComponent
                 })
             )
             .subscribe((res) => {
+                this.inputConfig.loadingSpinner = {
+                    isLoading: false
+                };
+
                 this.addresList = res.addresses.map((item, indx) => {
                     return {
                         ...item,

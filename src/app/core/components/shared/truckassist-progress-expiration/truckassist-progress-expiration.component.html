@@ -5,7 +5,11 @@
         'todo-progress': expiresSettings === 'todo-list'
     }"
 >
-    <div class="table-progress" [class]="'bg-' + progressBarLength">
+    <div
+        class="table-progress"
+        [class]="'bg-' + progressBarLength"
+        *ngIf="!completedDate || completedDate == 'Invalid date'"
+    >
         <div
             [class]="'bg-' + progressbarColor"
             [ngClass]="{ 'progres-default': !progressbarColor }"
@@ -52,7 +56,12 @@
         </span>
 
         <!-- EXPIRED AGO -->
-        <span *ngIf="negative" class="progress-text">
+        <span
+            *ngIf="
+                negative && (!completedDate || completedDate == 'Invalid date')
+            "
+            class="progress-text"
+        >
             <span>
                 {{
                     expiresSettings !== 'todo-list' ? 'Expired' : 'Deadline was'
@@ -77,6 +86,31 @@
             </span>
         </span>
 
+        <span
+            *ngIf="negative && completedDate && completedDate != 'Invalid date'"
+            class="progress-text"
+        >
+            <span
+                class="color_done_red"
+                [ngClass]="{
+                    'expires-settings-bold': expiresSettings !== 'todo-list'
+                }"
+                *ngIf="progresDay > 0"
+            >
+                Completed {{ progresDay }} {{ progresDay > 1 ? 'days' : 'day' }} past
+                deadline
+            </span>
+            <span
+                class="color_done_red"
+                [ngClass]="{
+                    'expires-settings-bold': expiresSettings !== 'todo-list'
+                }"
+                *ngIf="progresDay == 0"
+            >
+                Completed {{ timeDifference }} h. past deadline
+            </span>
+        </span>
+
         <!-- DAYS -->
         <span
             *ngIf="
@@ -88,7 +122,7 @@
             "
             class="progress-days"
         >
-            <span>
+            <span *ngIf="!completedDate || completedDate == 'Invalid date'">
                 {{
                     expiresSettings !== 'todo-list'
                         ? 'Expires in'
@@ -108,6 +142,26 @@
                     *ngIf="daysDiff == 0"
                     >{{ timeDifference }} h.</span
                 >
+            </span>
+            <span
+                class="color_done_green"
+                *ngIf="completedDate && completedDate != 'Invalid date'"
+            >
+                <span
+                    [ngClass]="{
+                        'progress-days-bold': expiresSettings !== 'todo-list'
+                    }"
+                    *ngIf="daysDiff !== 0"
+                    >Completed {{ daysDiff }} {{ daysDiff > 1 ? 'days' : 'day' }}</span
+                >
+                <span
+                    [ngClass]="{
+                        'progress-days-bold': expiresSettings !== 'todo-list'
+                    }"
+                    *ngIf="daysDiff == 0"
+                    >Completed {{ timeDifference }} h.</span
+                >
+                before deadline
             </span>
         </span>
 
