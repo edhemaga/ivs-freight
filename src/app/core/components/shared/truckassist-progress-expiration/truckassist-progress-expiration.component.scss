@@ -48,10 +48,10 @@
         }
 
         &.bg-progress-done {
-            background: #4DB6A233;
+            background: #4db6a233;
 
             .table-progress-bar {
-                background: #4DB6A2;
+                background: #4db6a2;
             }
         }
     }
@@ -71,6 +71,14 @@
                     color: #6c6c6c;
                     background: #6c6c6c20;
                 }
+            }
+
+            .color_done_red {
+                color: #e57373;
+            }
+
+            .color_done_green {
+                color: #80cbba;
             }
 
             .expires-settings {
@@ -111,6 +119,14 @@
                     color: #6c6c6c;
                     background: rgb(108, 108, 108, 0.2);
                 }
+            }
+
+            .color_done_red {
+                color: #e57373;
+            }
+
+            .color_done_green {
+                color: #80cbba;
             }
         }
 

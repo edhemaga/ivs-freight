@@ -493,7 +493,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     name: 'edit',
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'border',
@@ -503,21 +503,21 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     show: true,
-                    iconName: 'view-details'
+                    iconName: 'view-details',
                 },
                 {
                     title: 'Send Message',
                     name: 'dm',
                     svg: 'assets/svg/common/ic_dm.svg',
                     show: true,
-                    iconName: 'dm'
+                    iconName: 'dm',
                 },
                 {
                     title: 'Go to Link',
                     name: 'link',
                     svg: 'assets/svg/common/ic_web.svg',
                     show: true,
-                    iconName: 'ic_web'
+                    iconName: 'ic_web',
                 },
                 {
                     title: 'Add Comment',
@@ -525,7 +525,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_plus.svg',
                     show: true,
                     blueIcon: true,
-                    iconName: 'ic_plus'
+                    iconName: 'ic_plus',
                 },
                 {
                     title: 'Mark as Ongoing',
@@ -550,14 +550,14 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     name: 'share',
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share'
+                    iconName: 'share',
                 },
                 {
                     title: 'Print',
                     name: 'print-truck',
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
-                    iconName: 'print'
+                    iconName: 'print',
                 },
                 {
                     title: 'border',
@@ -571,7 +571,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete'
+                    iconName: 'delete',
                 },
             ],
             export: true,
@@ -715,11 +715,8 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     this.scene.children[this.currentHoldIndex].children[
                         this.currentChildIndex
                     ].comments.unshift(this.comments[0]);
-                   
                 },
-                error: () => {
-                   
-                },
+                error: () => {},
             });
     }
 
