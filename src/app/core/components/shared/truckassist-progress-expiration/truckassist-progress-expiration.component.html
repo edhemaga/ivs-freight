@@ -5,7 +5,11 @@
         'todo-progress': expiresSettings === 'todo-list'
     }"
 >
-    <div class="table-progress" [class]="'bg-' + progressBarLength" *ngIf="!completedDate || completedDate == 'Invalid date'">
+    <div
+        class="table-progress"
+        [class]="'bg-' + progressBarLength"
+        *ngIf="!completedDate || completedDate == 'Invalid date'"
+    >
         <div
             [class]="'bg-' + progressbarColor"
             [ngClass]="{ 'progres-default': !progressbarColor }"
@@ -139,7 +143,10 @@
                     >{{ timeDifference }} h.</span
                 >
             </span>
-            <span class="color_done_green" *ngIf="completedDate && completedDate != 'Invalid date'">
+            <span
+                class="color_done_green"
+                *ngIf="completedDate && completedDate != 'Invalid date'"
+            >
                 <span
                     [ngClass]="{
                         'progress-days-bold': expiresSettings !== 'todo-list'

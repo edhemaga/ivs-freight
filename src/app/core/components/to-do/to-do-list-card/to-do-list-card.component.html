@@ -220,9 +220,12 @@
                                 <div class="list-top-holder">
                                     <div class="list-items-frame">
                                         <div class="list-title">
-                                          <svg-icon *ngIf="item.status?.name == 'Done'"
-                                              src="/assets/svg/applicant/check.svg"
-                                          ></svg-icon>
+                                            <svg-icon
+                                                *ngIf="
+                                                    item.status?.name == 'Done'
+                                                "
+                                                src="/assets/svg/applicant/check.svg"
+                                            ></svg-icon>
                                             {{ item.title }}
                                         </div>
                                         <div class="icons-frame">
@@ -256,7 +259,9 @@
                                             </div>
                                             <div
                                                 class="icon-box"
-                                                [class.documents]="item.files?.length"
+                                                [class.documents]="
+                                                    item.files?.length
+                                                "
                                                 ngbTooltip
                                                 [mainTooltip]="
                                                     item.files?.length
@@ -284,7 +289,12 @@
                                                 <svg-icon
                                                     src="assets/svg/common/ic_attachment.svg"
                                                 ></svg-icon>
-                                                <div class="documents_counter" *ngIf="item.files?.length">{{item.files.length}}</div>
+                                                <div
+                                                    class="documents_counter"
+                                                    *ngIf="item.files?.length"
+                                                >
+                                                    {{ item.files.length }}
+                                                </div>
                                             </div>
                                             <div
                                                 class="icon-box"
@@ -608,7 +618,9 @@
                                         [startDate]="
                                             item.createdAt | formatDateP
                                         "
-                                        [completedDate]="item.setAsDoneAt | formatDateP"
+                                        [completedDate]="
+                                            item.setAsDoneAt | formatDateP
+                                        "
                                         [expiresSettings]="'todo-list'"
                                     >
                                     </app-truckassist-progress-expiration>
