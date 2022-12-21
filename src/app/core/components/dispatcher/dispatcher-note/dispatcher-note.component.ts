@@ -68,8 +68,8 @@ export class DispatcherNoteComponent implements OnInit {
     }
 
     checkActiveItems() {
-        if(this.noteContainer && this.noteContainer?.checkActiveItems) {
-            this.noteContainer?.checkActiveItems();     
+        if (this.noteContainer && this.noteContainer?.checkActiveItems) {
+            this.noteContainer?.checkActiveItems();
         }
     }
 

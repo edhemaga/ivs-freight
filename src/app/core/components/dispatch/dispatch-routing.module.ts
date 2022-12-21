@@ -4,7 +4,8 @@ import { DispatchComponent } from './dispatch/dispatch.component';
 
 const routes: Routes = [{
   path: "",
-  component: DispatchComponent
+  component: DispatchComponent,
+  data: {test: 1}
 }];
 
 @NgModule({
