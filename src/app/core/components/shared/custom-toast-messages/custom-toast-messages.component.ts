@@ -111,7 +111,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'account/signupcompany',
             value: 'COMPANY',
-            blockLeft: true,
+        },
+        {
+            api : 'company/documents',
+            value: 'DOCUMENT'
         },
         {
             api: 'companycontactlabel',
@@ -277,14 +280,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 item.api === apiEndPoint || apiEndPoint.indexOf(item.api) > -1
         );
         this.actionType = item ? item.value : '';
-        let blockLeft = item.blockLeft ? true : false; 
+    
 
         let splitUrl = this.httpRequest.url.split('/');
         let splitLength = splitUrl.length;
         let lastPlace = splitLength - 1;
         let lastVal = parseInt(splitUrl[lastPlace]);
  
-        if (this.actionType == 'LOGIN' || ( this.actionType == 'COMPANY' && blockLeft ) ) {
+        if (this.actionType == 'LOGIN' || ( this.actionType == 'COMPANY' ) ) {
             this.leftSideMove = false;
         }
 
@@ -928,7 +931,20 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'LABEL':
                 let labelName = this.httpRequest.body?.name ? this.httpRequest.body?.name : '';
                 this.message = labelName;
-                break;    
+                break; 
+            case 'DOCUMENT':
+                let fileName = '';
+                if ( this.httpRequest.body.getAll('filesForDeleteIds')[0] ) {
+                    this.actionTitle = this.toastrType == 'toast-error' ? 'DELETE' : 'DELETED';
+                    fileName = this.DetailsDataService.documentName;
+                }
+
+                if ( this.httpRequest.body.getAll('files')[0] ) {
+                    fileName = this.httpRequest.body.getAll('files')[0]['name'];
+                }
+
+                this.message = fileName;
+                break;       
         }
 
         if (this.actionType == 'DRIVER' && !this.message) {

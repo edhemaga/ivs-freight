@@ -16,6 +16,7 @@ import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 import { UrlExtensionPipe } from 'src/app/core/pipes/url-extension.pipe';
+import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 
 export interface UploadFile {
     fileName: string;
@@ -81,7 +82,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     constructor(
         private inputService: TaInputService,
         private urlExt: UrlExtensionPipe,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
+        private detailsDataService: DetailsDataService,
     ) {}
 
     ngOnInit(): void {
@@ -251,6 +253,11 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
             this.file.tagId = [];
             this.ref.detectChanges();
         }, 200);
+    }
+
+    public openDeletePopup(name){
+        this.detailsDataService.setDocumentName(name);
+        this.isFileDelete = true;
     }
 
     ngOnDestroy(): void {

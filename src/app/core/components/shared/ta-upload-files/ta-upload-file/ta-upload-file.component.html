@@ -160,7 +160,7 @@
                 tooltipBackground="#EF5350"
                 position="top"
                 class="ta-upload-action-delete"
-                (click)="isFileDelete = true"
+                (click)="openDeletePopup(file?.fileName)"
                 *ngIf="type != 'details' && type != 'todo' && reviewMode != 'REVIEW_MODE'"
             >
                 <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
