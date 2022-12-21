@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { BankResponse } from './bankResponse';
-import { TagResponse } from './tagResponse';
 import { EnumValue } from './enumValue';
 import { FleetType } from './fleetType';
 import { PerMileEntity } from './perMileEntity';
@@ -30,6 +29,5 @@ export interface GetDriverModalResponse {
     defaultTeamDriverCommission?: number | null;
     soloFlatRate?: number | null;
     teamFlatRate?: number | null;
-    tags?: Array<TagResponse> | null;
 }
 

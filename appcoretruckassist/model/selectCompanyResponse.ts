@@ -14,9 +14,7 @@
 export interface SelectCompanyResponse { 
     companyName?: string | null;
     token?: string | null;
-    refreshToken?: string | null;
     companyUserId?: number;
-    userId?: number;
     firstName?: string | null;
     lastName?: string | null;
     avatar?: string | null;

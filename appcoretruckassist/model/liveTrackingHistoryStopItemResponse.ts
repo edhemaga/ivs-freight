@@ -13,9 +13,6 @@ import { GpsMotionStatus } from './gpsMotionStatus';
 
 
 export interface LiveTrackingHistoryStopItemResponse { 
-    no?: number;
-    latitude?: number | null;
-    longitude?: number | null;
     location?: string | null;
     stopTime?: string | null;
     totalLegMiles?: number | null;

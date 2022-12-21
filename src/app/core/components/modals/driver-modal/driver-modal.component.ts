@@ -151,8 +151,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         globalDropZone: false,
     };
 
-    public tags: any[] = [];
-
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -285,7 +283,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             pushNotificationPayroll: [false],
             smsNotificationPayroll: [false],
             files: [null],
-            tags: [null],
         });
 
         this.inputService.customInputValidator(
@@ -855,7 +852,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         .patchValue(data.mvrExpiration);
                     this.fleetType = data.fleetType;
                     this.hasMilesSameRate = data.loadedAndEmptySameRate;
-                    this.tags = data.tags;
 
                     if (['Solo', 'Combined'].includes(this.fleetType)) {
                         this.driverForm
@@ -1066,16 +1062,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         } = this.driverForm.value;
 
         let documents = [];
-        let tagsArray = [];
         this.documents.map((item) => {
-            if(item.tagId?.length)
-            tagsArray.push(
-                {
-                    fileName: item.realFile.name,
-                    tagIds: item.tagId
-                }
-            );
-
             if (item.realFile) {
                 documents.push(item.realFile);
             }
@@ -1298,7 +1285,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     : false
                 : null,
             files: documents,
-            tags: tagsArray
         };
 
         this.driverTService

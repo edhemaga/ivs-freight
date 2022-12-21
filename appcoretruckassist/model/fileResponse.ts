@@ -16,6 +16,5 @@ export interface FileResponse {
     fileName?: string | null;
     url?: string | null;
     fileSize?: number | null;
-    tags?: Array<string> | null;
 }
 

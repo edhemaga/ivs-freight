@@ -16,7 +16,6 @@ export interface ApplicantFileResponse {
     fileName?: string | null;
     url?: string | null;
     fileSize?: number | null;
-    tags?: Array<string> | null;
     storageId?: number;
     review?: object;
 }

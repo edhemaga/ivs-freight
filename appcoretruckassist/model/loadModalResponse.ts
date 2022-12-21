@@ -13,15 +13,14 @@ import { TrailerLengthResponse } from './trailerLengthResponse';
 import { ShipperLoadModalResponse } from './shipperLoadModalResponse';
 import { TrailerTypeResponse } from './trailerTypeResponse';
 import { CompanyShortResponse } from './companyShortResponse';
-import { TagResponse } from './tagResponse';
-import { EnumValue } from './enumValue';
-import { TruckTypeResponse } from './truckTypeResponse';
-import { CompanyUserShortResponse } from './companyUserShortResponse';
-import { HazardousMaterialResponse } from './hazardousMaterialResponse';
 import { ShipperContactGroupResponse } from './shipperContactGroupResponse';
 import { BrokerLoadModalResponse } from './brokerLoadModalResponse';
+import { EnumValue } from './enumValue';
 import { BrokerContactGroupResponse } from './brokerContactGroupResponse';
+import { TruckTypeResponse } from './truckTypeResponse';
+import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { DispatchLoadModalResponse } from './dispatchLoadModalResponse';
+import { HazardousMaterialResponse } from './hazardousMaterialResponse';
 
 
 export interface LoadModalResponse { 
@@ -52,6 +51,5 @@ export interface LoadModalResponse {
     driverAssist?: Array<EnumValue> | null;
     hazardousMaterials?: Array<HazardousMaterialResponse> | null;
     loadPossibleNextStatuses?: Array<EnumValue> | null;
-    tags?: Array<TagResponse> | null;
 }
 

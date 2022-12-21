@@ -33,6 +33,6 @@ export interface LoadStopCommand {
     totalLegMiles?: number | null;
     totalLegHours?: number | null;
     totalLegMinutes?: number | null;
-    items?: Array<any /*LoadStopItemCommand*/> | null;
+    items?: Array<any> | null;
 }
 
