@@ -15,6 +15,7 @@ import moment from 'moment';
 })
 export class TruckassistProgressExpirationComponent implements OnInit {
     @Input() expireDate: any;
+    @Input() completedDate: any;
     @Input() status: any;
     @Input() expiresSettings: string = null;
     @Input() customText: string = 'Expires';
@@ -41,6 +42,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
     daysDiff: any;
     progressBarLength: string;
     endingDate: any;
+    progressExp: number = 0;
 
     constructor() {}
 
@@ -72,19 +74,28 @@ export class TruckassistProgressExpirationComponent implements OnInit {
             this.negative = true;
         }
         if (this._startDate !== undefined) {
-            this.totalDays = moment
-                .utc(this.expireDate)
-                .diff(moment.utc(this._startDate), 'days');
+            this.totalDays =
+                this.completedDate && this.completedDate != 'Invalid date'
+                    ? moment
+                          .utc(this.expireDate)
+                          .diff(moment.utc(this.completedDate), 'days')
+                    : moment
+                          .utc(this.expireDate)
+                          .diff(moment.utc(this._startDate), 'days');
         }
 
         if (!this.expireDate && !this._startDate) {
             this.showProgress = false;
         }
 
-        const currentDate = moment();
+        const currentDate =
+            this.completedDate && this.completedDate != 'Invalid date'
+                ? moment(this.completedDate)
+                : moment();
         const endDate = moment(this.expireDate);
         this.endingDate = endDate.format('MM/DD/YY');
         const diffDays = endDate.diff(currentDate, 'd');
+        const diffDaysPeriod = endDate.diff(this._startDate, 'd');
         this.diffD = diffDays;
         if (diffDays < 0) {
             this.negative = true;
@@ -100,6 +111,10 @@ export class TruckassistProgressExpirationComponent implements OnInit {
         } else {
             this.negative = false;
             this.expire = diffDays;
+            this.progressExp =
+                this.completedDate && this.completedDate != 'Invalid date'
+                    ? Math.abs(diffDaysPeriod)
+                    : Math.abs(diffDays);
             if (this.expire > 365) {
                 this.year = Math.floor(this.expire / 365);
                 this.days = this.expire % 365;
@@ -126,8 +141,14 @@ export class TruckassistProgressExpirationComponent implements OnInit {
             return 100;
         } else {
             if (this.diffD !== 0) {
-                return this.totalDays !== undefined
+                return this.totalDays !== undefined &&
+                    (!this.completedDate ||
+                        this.completedDate == 'Invalid date')
                     ? (this.expire / this.totalDays) * 100
+                    : this.totalDays !== undefined &&
+                      this.completedDate &&
+                      this.completedDate != 'Invalid date'
+                    ? 100 - (this.expire / this.progressExp) * 100
                     : (this.expire / 365) * 100;
             } else {
                 if (this.timeDifference > 0) {
@@ -171,6 +192,8 @@ export class TruckassistProgressExpirationComponent implements OnInit {
     setProgressbarColorToDo() {
         if (this.negative) {
             return 'progress-short';
+        } else if (this.completedDate && this.completedDate != 'Invalid date') {
+            return 'progress-done';
         } else {
             const progress = this.calculateProgress();
             /* 66% - 100% */
