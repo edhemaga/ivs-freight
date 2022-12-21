@@ -129,6 +129,8 @@
 
                         &.state-box,
                         &.hazmat-box {
+                            margin-bottom: 2px;
+
                             p {
                                 color: $ta-black-2;
 
@@ -143,13 +145,10 @@
                                 }
                             }
 
-                            &.state-box {
-                                margin-bottom: 4px;
-                            }
-
                             &.hazmat-box {
                                 .hazmat-icon {
                                     margin-right: 4px;
+                                    line-height: 12px;
 
                                     svg {
                                         path {

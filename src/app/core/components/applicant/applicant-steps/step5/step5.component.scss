@@ -313,6 +313,8 @@
 
                         &.date-box,
                         &.vehicle-box {
+                            margin-bottom: 2px;
+
                             p {
                                 color: $ta-black-2;
 
@@ -327,13 +329,10 @@
                                 }
                             }
 
-                            &.date-box {
-                                margin-bottom: 7px;
-                            }
-
                             &.vehicle-box {
                                 .truck-icon {
                                     margin-right: 6px;
+                                    line-height: 12px;
 
                                     svg {
                                         path {
