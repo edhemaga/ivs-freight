@@ -718,25 +718,21 @@ body:not(.modal-open) {
     }
 }
 
+
 // STATUS CHANGE MODAL
 .ta_status_main_holder {
+    position: relative;
     .status_change_wrapper {
         position: absolute;
-        top: 0;
+        top: 0px;
         width: 100%;
-        background-color: #fff;
+       // background-color: #fff;
         border-radius: 3px;
         //box-shadow: $box-shadow !important;
-        padding: 4px;
+       // padding: 4px;
 
         &.popover-wraper {
             background-color: #424242;
-
-            .switch_statuses {
-                &:hover {
-                    background-color: #2f2f2f !important;
-                }
-            }
         }
 
         &.active {
@@ -760,8 +756,6 @@ body:not(.modal-open) {
             justify-content: center;
             align-items: center;
 
-            padding-top: 2px;
-
             font-family: 'Montserrat', sans-serif !important;
             font-weight: 900;
             font-size: 11px;
@@ -773,10 +767,7 @@ body:not(.modal-open) {
             user-select: none;
             transition: padding 0.3s;
 
-            &:hover:not(.active) {
-                background-color: #f7f7f7;
-                border-radius: 2px;
-            }
+           
 
             .time_ago {
                 display: none;
@@ -786,7 +777,7 @@ body:not(.modal-open) {
 
                 font-size: 11px;
                 font-weight: 400;
-                color: #b7b7b7b3;
+                color: #fff;
                 text-align: center;
                 text-transform: lowercase;
             }
@@ -832,6 +823,33 @@ body:not(.modal-open) {
                 .time_ago {
                     display: block;
                     bottom: 0px;
+                }
+            }
+        }
+
+        @each $col in $dispatch-status-colors {
+            &.status-color-#{$col}:not(.popover-wraper){
+                background-color: unquote("#" + $col + '33');
+
+                .switch_statuses{
+                    color: unquote("#" + $col);
+                }
+
+                &:hover{
+                    background-color: unquote("#" + $col);
+                    .switch_statuses{
+                        color: #fff;
+                    }
+                }
+            }
+
+            .status-popover-item-#{$col}{
+                color: unquote("#" + $col);
+
+                &:hover{
+                    background-color: unquote("#" + $col);
+                    border-radius: 2px;
+                    color: #fff;
                 }
             }
         }

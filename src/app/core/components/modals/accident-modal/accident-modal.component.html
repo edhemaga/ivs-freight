@@ -711,6 +711,7 @@
                                 [inputConfig]="{
                                     name: 'Police Officer',
                                     type: 'text',
+                                    textTransform: 'capitalize',
                                     label: 'Police Officer'
                                 }"
                             ></app-ta-input>
@@ -834,8 +835,10 @@
                                     type: 'text',
                                     label: 'Customer',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-273'
+                                    textTransform: 'capitalize',
+                                    dropdownWidthClass: 'w-col-272'
                                 }"
+                                [activeItem]="selectedAccidentCustomer"
                                 [options]="labelsAccidentCustomer"
                                 (selectedItem)="
                                     onSelectDropDown(
@@ -849,6 +852,7 @@
                                 [inputConfig]="{
                                     name: 'BoL',
                                     type: 'text',
+                                    textTransform: 'capitalize',
                                     label: 'BoL'
                                 }"
                             ></app-ta-input>
@@ -857,6 +861,7 @@
                                 [inputConfig]="{
                                     name: 'Cargo',
                                     type: 'text',
+                                    textTransform: 'capitalize',
                                     label: 'Cargo'
                                 }"
                             ></app-ta-input>

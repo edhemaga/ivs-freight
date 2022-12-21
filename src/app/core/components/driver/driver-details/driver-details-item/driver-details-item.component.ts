@@ -114,7 +114,7 @@ export class DriverDetailsItemComponent
             this.drivers = changes.drivers.currentValue;
             this.getExpireDate();
 
-            this.activeCdl = changes.drivers.currentValue[0].data.cdls.filter(
+            this.activeCdl = changes.drivers.currentValue[0].data?.cdls?.filter(
                 (item) => item.status === 1
             );
         }
@@ -137,6 +137,8 @@ export class DriverDetailsItemComponent
             .subscribe({
                 next: (res: any) => {
                     console.log('confirmation service: ', res);
+                    console.log('confirmation service: ', this.drivers);
+                    let driverData = this.drivers[0].data;
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'cdl') {
@@ -154,16 +156,19 @@ export class DriverDetailsItemComponent
                             switch (res.template) {
                                 case 'cdl': {
                                     const timeout = setTimeout(() => {
+                                        console.log('---here----', res);
+                                        console.log('---driverData----', driverData);
+                                        
                                         this.modalService.openModal(
                                             DriverCdlModalComponent,
                                             { size: 'small' },
                                             {
-                                                id: res.data.driver?.id,
+                                                id: driverData.id,
                                                 file_id:
-                                                    res.data.driver?.file_id,
+                                                    driverData?.file_id,
                                                 type: 'renew-licence',
                                                 renewData:
-                                                    res.data.driver?.renewData,
+                                                    res?.data,
                                             }
                                         );
                                         clearTimeout(timeout);
@@ -187,6 +192,7 @@ export class DriverDetailsItemComponent
     public getExpireDate() {
         this.dataCDl = this.drivers[0]?.data?.cdls?.map((ele) => {
             let endDate = moment(ele.expDate);
+          
             if (
                 moment(ele.expDate).isBefore(moment()) ||
                 endDate.diff(moment(), 'days') <= 365
@@ -226,13 +232,12 @@ export class DriverDetailsItemComponent
         data?.cdls?.map((item) => {
             let endDate = moment(item.expDate);
             let daysDiff = endDate.diff(moment(), 'days');
-
             if (moment(item.expDate).isBefore(moment())) {
                  this.expiredCard.push(true);
             } else {
                 this.expiredCard.push(false);
             }
-            if (item.dateDeactivated) {
+            if (!item.status) {
                 this.activateShow.push(true);
             } else {
                 this.activateShow.push(false);

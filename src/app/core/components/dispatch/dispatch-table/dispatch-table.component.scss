@@ -1,6 +1,27 @@
 @import 'src/theme/variables';
 
 .dispatch-table {
+    position: relative;
+
+    .loadingItem {
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 32px);
+        z-index: 105;
+        background-color: rgb(255 255 255 / 50%);
+        border-radius: 3px;
+        transition: background-color 0.3s;
+
+        &.error {
+            background-color: rgb(255 93 93 / 50%);
+            transition: background-color 0.3s;
+        }
+
+        &.goTop {
+            top: 35px;
+            height: calc(100% - 35px);
+        }
+    }
     table {
         width: 100%;
 
@@ -20,6 +41,11 @@
             color: #2f2f2f;
             font-size: 14px;
             font-weight: 700;
+
+            &::selection,
+            ::selection {
+                background-color: #2f2f2f22;
+            }
         }
 
         td {
@@ -28,6 +54,10 @@
                 height: 34px;
                 background-color: #f7f7f7;
                 border-radius: 3px;
+
+                &.cdk-drop-list {
+                    overflow: hidden;
+                }
 
                 .padding-inside {
                     position: relative;
@@ -53,6 +83,7 @@
                         .text {
                             color: #ffffff;
                             font-size: 14px;
+                            user-select: none;
                         }
 
                         svg-icon {
@@ -180,6 +211,7 @@
                             color: #919191;
                             font-weight: 500;
                             text-transform: uppercase;
+                            user-select: none;
                         }
 
                         .driver-copy {
@@ -333,15 +365,15 @@
 
             &.truck-field,
             &.trailer-field {
-                min-width: 120px;
-                max-width: 120px;
-                width: 120px;
+                min-width: 100px;
+                max-width: 100px;
+                width: 100px;
             }
 
             &.driver-field {
-                min-width: 230px;
-                max-width: 230px;
-                width: 230px;
+                min-width: 200px;
+                max-width: 200px;
+                width: 200px;
             }
 
             &.location-field {
@@ -357,9 +389,9 @@
             }
 
             &.pickup-delivery-field {
-                min-width: 340px;
-                max-width: 340px;
-                width: 340px;
+                min-width: 270px;
+                max-width: 270px;
+                width: 270px;
             }
 
             &.progress-field {
@@ -375,9 +407,9 @@
             }
 
             &.note-field {
-                min-width: 240px;
-                max-width: 240px;
-                width: 240px;
+                min-width: 190px;
+                max-width: 190px;
+                width: 190px;
             }
 
             .drop-item {
@@ -585,6 +617,7 @@
 //.assets/svg/common/ic_dragging_arrows.svg
 
 .reorder-row.cdk-drag-preview {
+    position: relative;
     background-color: #2f2f2f;
     border-radius: 3px;
     .main_inside {
@@ -593,6 +626,25 @@
         *:not(.switch_statuses) {
             color: #fff !important;
         }
+    }
+
+    .new_load_dispatch_hold {
+        display: none !important;
+    }
+
+    &:after {
+        content: '';
+        width: 18px;
+        height: 18px;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+
+        transform: translateY(-50%);
+        background-image: url('../../../../../assets/svg/common/ic_dragging_arrows.svg');
+        background-size: 20px 17px;
+        background-repeat: no-repeat;
+        background-position: center;
     }
 }
 

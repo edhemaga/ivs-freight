@@ -24,6 +24,7 @@ import { NotificationService } from '../../../services/notification/notification
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import moment from 'moment';
 
 @Component({
     selector: 'app-to-do-list-card',
@@ -239,6 +240,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                 newStatus = TodoStatus.Done;
                 e.status.name = TodoStatus.Done;
                 e.status.id = 3;
+                e.setAsDoneAt = moment();
             }
 
             this.updatedStatusData = {

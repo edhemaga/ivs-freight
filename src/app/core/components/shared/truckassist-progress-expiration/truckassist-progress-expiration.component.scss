@@ -46,6 +46,14 @@
                 background: #aaaaaa;
             }
         }
+
+        &.bg-progress-done {
+            background: #4DB6A233;
+
+            .table-progress-bar {
+                background: #4DB6A2;
+            }
+        }
     }
 
     .table-progress-panel {

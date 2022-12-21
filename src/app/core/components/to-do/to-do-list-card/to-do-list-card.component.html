@@ -432,19 +432,6 @@
                                                     >
                                                     </app-profile-images>
                                                 </div>
-                                                <div
-                                                    class="user_tooltip_name_hold"
-                                                >
-                                                    <div
-                                                        class="user_tooltip_name"
-                                                    >
-                                                        {{
-                                                            user.firstName +
-                                                                ' ' +
-                                                                user.lastName
-                                                        }}
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -611,6 +598,19 @@
                                     *ngIf="item.deadline"
                                 >
                                     <app-truckassist-progress-expiration
+                                        *ngIf="item.status?.name == 'Done'"
+                                        [expireDate]="
+                                            item.deadline | formatDateP
+                                        "
+                                        [startDate]="
+                                            item.createdAt | formatDateP
+                                        "
+                                        [completedDate]="item.setAsDoneAt | formatDateP"
+                                        [expiresSettings]="'todo-list'"
+                                    >
+                                    </app-truckassist-progress-expiration>
+                                    <app-truckassist-progress-expiration
+                                        *ngIf="item.status?.name != 'Done'"
                                         [expireDate]="
                                             item.deadline | formatDateP
                                         "

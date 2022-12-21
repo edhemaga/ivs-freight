@@ -601,7 +601,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .getShipperById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: ShipperResponse) => {
+                next: (res: any) => {
                     this.shipperForm.patchValue({
                         businessName: res.businessName,
                         phone: res.phone,
