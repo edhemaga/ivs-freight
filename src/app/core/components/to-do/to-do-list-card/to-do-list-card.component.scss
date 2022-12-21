@@ -201,6 +201,10 @@
             .todo_deadline_hold {
                 width: 100%;
                 margin-top: 12px;
+
+                &.done {
+                    height: 18px;
+                }
             }
 
             .list-top-holder {
@@ -231,7 +235,7 @@
                             margin-right: 6px;
 
                             path {
-                                fill: #26A690;
+                                fill: #26a690;
                             }
                         }
                     }
@@ -261,6 +265,17 @@
                         margin-left: 4px;
                         border-radius: 2px;
                         cursor: pointer;
+
+                        .documents_counter {
+                            margin-left: 2px;
+                            font-size: 11px;
+                            font-weight: 700;
+                            color: #919191;
+                        }
+
+                        &.documents {
+                            width: 32px;
+                        }
 
                         &.dots {
                             margin-left: 8px;
@@ -302,6 +317,10 @@
                                     display: flex;
                                     cursor: pointer;
                                 }
+                            }
+
+                            .documents_counter {
+                                color: #3074d3 !important;
                             }
                         }
 
@@ -386,6 +405,10 @@
                                 circle {
                                     fill: #6c6c6c;
                                 }
+                            }
+
+                            .documents_counter {
+                                color: #6c6c6c;
                             }
                         }
 
