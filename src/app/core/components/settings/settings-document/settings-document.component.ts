@@ -69,7 +69,7 @@ export class SettingsDocumentComponent implements OnInit {
         .getCompanyDocuments()
         .pipe(takeUntil(this.destroy$))
         .subscribe((res)=>{
-            this.documents = res?.files;
+            this.documents = res?.files?.data;
             this.tableData[0].length = this.documents.length;
         });
     }
