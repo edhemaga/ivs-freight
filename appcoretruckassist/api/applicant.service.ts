@@ -39,8 +39,6 @@ import { AuthorizationFeedbackResponse } from '../model/authorizationFeedbackRes
 // @ts-ignore
 import { CdlFeedbackResponse } from '../model/cdlFeedbackResponse';
 // @ts-ignore
-import { CompanySettingsDocumentsResponse } from '../model/companySettingsDocumentsResponse';
-// @ts-ignore
 import { CreateAccidentRecordCommand } from '../model/createAccidentRecordCommand';
 // @ts-ignore
 import { CreateAccidentRecordReviewCommand } from '../model/createAccidentRecordReviewCommand';
@@ -128,6 +126,8 @@ import { MoveToApplicantsCommand } from '../model/moveToApplicantsCommand';
 import { MvrAuthFeedbackResponse } from '../model/mvrAuthFeedbackResponse';
 // @ts-ignore
 import { PersonalInfoFeedbackResponse } from '../model/personalInfoFeedbackResponse';
+// @ts-ignore
+import { PreviousEmployerDocumentsResponse } from '../model/previousEmployerDocumentsResponse';
 // @ts-ignore
 import { PreviousEmployerModalResponse } from '../model/previousEmployerModalResponse';
 // @ts-ignore
@@ -5598,9 +5598,9 @@ export class ApplicantService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantPreviousemployerDocumentsPreviousEmployerProspectIdGet(previousEmployerProspectId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CompanySettingsDocumentsResponse>;
-    public apiApplicantPreviousemployerDocumentsPreviousEmployerProspectIdGet(previousEmployerProspectId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CompanySettingsDocumentsResponse>>;
-    public apiApplicantPreviousemployerDocumentsPreviousEmployerProspectIdGet(previousEmployerProspectId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanySettingsDocumentsResponse>>;
+    public apiApplicantPreviousemployerDocumentsPreviousEmployerProspectIdGet(previousEmployerProspectId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PreviousEmployerDocumentsResponse>;
+    public apiApplicantPreviousemployerDocumentsPreviousEmployerProspectIdGet(previousEmployerProspectId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PreviousEmployerDocumentsResponse>>;
+    public apiApplicantPreviousemployerDocumentsPreviousEmployerProspectIdGet(previousEmployerProspectId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PreviousEmployerDocumentsResponse>>;
     public apiApplicantPreviousemployerDocumentsPreviousEmployerProspectIdGet(previousEmployerProspectId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (previousEmployerProspectId === null || previousEmployerProspectId === undefined) {
             throw new Error('Required parameter previousEmployerProspectId was null or undefined when calling apiApplicantPreviousemployerDocumentsPreviousEmployerProspectIdGet.');
@@ -5647,7 +5647,7 @@ export class ApplicantService {
         }
 
         let localVarPath = `/api/applicant/previousemployer/documents/${this.configuration.encodeParam({name: "previousEmployerProspectId", value: previousEmployerProspectId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
-        return this.httpClient.request<CompanySettingsDocumentsResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PreviousEmployerDocumentsResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

@@ -9,11 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DepartmentResponse } from './departmentResponse';
 
 
-export interface MarkerNamesResponse { 
+export interface RepairShopContactResponse { 
     id?: number;
-    name?: string | null;
-    favourite?: boolean;
+    repairShopId?: number;
+    department?: DepartmentResponse;
+    fullName?: string | null;
+    phone?: string | null;
+    phoneExt?: string | null;
+    email?: string | null;
 }
 
