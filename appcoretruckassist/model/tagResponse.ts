@@ -11,11 +11,8 @@
  */
 
 
-export interface FileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    tags?: Array<string> | null;
+export interface TagResponse { 
+    tagId?: number;
+    tagName?: string | null;
 }
 

@@ -25,7 +25,7 @@ export class TaUploadFilesComponent implements OnInit {
 
     @Input() customClassName: string;
     @Input() files: UploadFile[] = [];
-    @Input() hasTag: boolean = false;
+    @Input() hasTagsDropdown: boolean = false;
     @Input() hasNumberOfPages: boolean = false;
     @Input() size: string = 'small'; // small | medium | large
     @Input() hasCarouselBottomTabs: boolean;
@@ -35,6 +35,8 @@ export class TaUploadFilesComponent implements OnInit {
     @Input() showRequired: boolean = false;
     @Input() hasLandscapeOption: boolean = false;
     @Input() showDropzone: boolean = false;
+    @Input() dontUseSlider: boolean = false;
+    @Input() dropzoneFocus: boolean = false;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[] | UploadFile | any;
@@ -56,6 +58,8 @@ export class TaUploadFilesComponent implements OnInit {
     }> = new EventEmitter<{ file: UploadFile; message: string }>(null);
     @Input() slideWidth: number = 180;
     @Input() categoryTag: string;
+
+    @Output() closeDropzone = new EventEmitter<{}>();
 
     public currentSlide: number = 0;
 
@@ -89,7 +93,7 @@ export class TaUploadFilesComponent implements OnInit {
                 this.files.map((item, index) => {
                     if (
                         item.fileName == data.file.fileName &&
-                        index == this.files.length - 1
+                        (index == this.files.length - 1 || index == this.files.length - 2)
                     ) {
                         isLastDeleted = true;
                     }
@@ -127,7 +131,7 @@ export class TaUploadFilesComponent implements OnInit {
                     this.currentSlide = 0;
                 }
 
-                if (isLastDeleted) {
+                if (isLastDeleted && this.modalCarousel) {
                     const slideTo =
                         this.modalCarousel.customClass == 'large'
                             ? 3
@@ -176,6 +180,14 @@ export class TaUploadFilesComponent implements OnInit {
     public onUploadFiles(data: { files: UploadFile[]; action: string }) {
         switch (data.action) {
             case 'add': {
+                data.files.map((files, i)=>{
+                    for(var a = 0; a<this.files.length; a++) {
+                        if(files.realFile?.name == this.files[a].realFile?.name) {
+                            data.files.splice(i);
+                        }
+                    }
+                });
+
                 data.files.map((file) => {
                     let setName = '';
                     const name = file.fileName.split('');
@@ -190,6 +202,28 @@ export class TaUploadFilesComponent implements OnInit {
 
                 this.files = [...oldFiles, ...data.files];
                 this.onFileEvent.emit({ files: this.files, action: 'add' });
+                const slideTo =
+                        this.modalCarousel?.customClass == 'large'
+                            ? 3
+                            : this.modalCarousel?.customClass == 'medium'
+                            ? 2
+                            : 1;
+                    const allowSlide =
+                        this.modalCarousel?.customClass == 'large' &&
+                        this.files.length > 2
+                            ? true
+                            : this.modalCarousel?.customClass == 'medium' &&
+                              this.files.length > 1
+                            ? true
+                            : this.modalCarousel?.customClass == 'small' &&
+                              this.files.length > 0
+                            ? true
+                            : false;
+                    if (allowSlide) {
+                        this.modalCarousel?.slideToFile(
+                            this.files.length - slideTo
+                        );
+                    }
                 break;
             }
         }
@@ -227,6 +261,10 @@ export class TaUploadFilesComponent implements OnInit {
         if (landscape) {
             this.customClassName = 'landscape-details-view';
         }
+    }
+
+    public dropZoneClose() {
+        this.closeDropzone.emit();
     }
 
     ngOnDestroy(): void {
