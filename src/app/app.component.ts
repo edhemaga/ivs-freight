@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
 
     public checkRefreshTokenExpiration() {
         const user: SignInResponse = JSON.parse(localStorage.getItem('user'));
-
+      console.log('App Component: ', user)
         if (user) {
             this.accountService
                 .apiAccountRefreshPost({
@@ -88,9 +88,12 @@ export class AppComponent implements OnInit {
                     switchMap((res: any) => {
                         user.token = res.token;
                         user.refreshToken = res.refreshToken;
-                        localStorage.setItem('user', JSON.stringify(user));
-                        configFactory(this.userLoggedService);
-                        return of(true);
+                        setTimeout(() => {
+                          localStorage.removeItem('user');
+                          localStorage.setItem('user', JSON.stringify(user));
+                        }, 300)
+                      configFactory(this.userLoggedService);
+                      return of(true);
                     }),
                     catchError((err: HttpErrorResponse) => {
                         if (err.status === 404 || err.status === 500) {

@@ -377,7 +377,8 @@ export class TaInputComponent
             } else {
                 this.blurOnDropDownArrow();
             }
-        } else {
+        }
+        else {
             let selection = window.getSelection();
             selection.removeAllRanges();
 
@@ -401,10 +402,9 @@ export class TaInputComponent
     }
 
     private blurOnPassword() {
-
-        setTimeout(() => {
             this.isVisiblePasswordEye = false;
-        }, 300);
+            this.focusInput = false;
+            this.input.nativeElement.blur();
     }
 
     private blurOnCommands() {
