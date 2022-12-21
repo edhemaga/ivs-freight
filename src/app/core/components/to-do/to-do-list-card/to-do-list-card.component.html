@@ -256,6 +256,7 @@
                                             </div>
                                             <div
                                                 class="icon-box"
+                                                [class.documents]="item.files?.length"
                                                 ngbTooltip
                                                 [mainTooltip]="
                                                     item.files?.length
@@ -283,6 +284,7 @@
                                                 <svg-icon
                                                     src="assets/svg/common/ic_attachment.svg"
                                                 ></svg-icon>
+                                                <div class="documents_counter" *ngIf="item.files?.length">{{item.files.length}}</div>
                                             </div>
                                             <div
                                                 class="icon-box"
@@ -595,6 +597,7 @@
                                 </div>
                                 <div
                                     class="todo_deadline_hold"
+                                    [class.done]="item.status?.name == 'Done'"
                                     *ngIf="item.deadline"
                                 >
                                     <app-truckassist-progress-expiration
