@@ -20,7 +20,6 @@ export class FilesService implements OnDestroy {
     }
 
     public getFiles(entity: string, id: number) {
-        console.log(entity, 'entity')
         switch (entity) {
             case 'Driver':
                 return this.getDriverFiles(id);
