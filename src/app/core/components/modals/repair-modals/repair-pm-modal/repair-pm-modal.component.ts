@@ -36,6 +36,8 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private pmTService: PmTService,
@@ -48,10 +50,8 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         this.createForm();
 
         if (this.editData?.action?.includes('unit-pm')) {
-            this.editData = {
-                ...this.editData,
-                id: 1,
-            };
+            // TODO: Proveri sa bokija da li je povezao kako treba
+            this.disableCardAnimation = true;
         }
         this.getPMList();
     }
@@ -730,6 +730,10 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             } else {
                 this.getPMTrailerUnit(this.editData.id);
             }
+
+            setTimeout(() => {
+                this.disableCardAnimation = false;
+            }, 1000);
         }
     }
 

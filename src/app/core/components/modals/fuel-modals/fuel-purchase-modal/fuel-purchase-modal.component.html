@@ -94,18 +94,14 @@
                             image: false,
                             url: selectedTrailerType?.logoName,
                             template: 'trailer',
-                            class: selectedTrailerType?.name
-                                ?.toLowerCase()
-                                .includes('liquid')
-                                ? 'tanker-liquid'
+                            class: ['Tanker', 'Tanker Pneumatic'].includes(
+                                selectedTrailerType?.name
+                            )
+                                ? 'tanker'
                                 : selectedTrailerType?.name
                                       ?.toLowerCase()
                                       ?.includes('rgn')
                                 ? 'low-boy-rgn'
-                                : selectedTrailerType?.name
-                                      ?.toLowerCase()
-                                      .includes('dry-bulk')
-                                ? 'tanker-dry-bulk'
                                 : selectedTrailerType?.name
                                       ?.trim()
                                       .replace(' ', '')
@@ -269,6 +265,8 @@
             [hasBodyData]="fuelItems.length > 0"
             [hasScrollBody]="fuelItems.length > 10"
             [actionText]="'ADD NEW ITEM'"
+            [disabledCard]="!fuelItems.length"
+            [disableAnimation]="disableCardAnimation"
             (onActionEvent)="addFuelItems($event)"
         >
             <div
@@ -407,6 +405,7 @@
             <app-ta-custom-card
                 [hasCounter]="documents.length ? documents.length : 0"
                 [cardName]="'Documents'"
+                [disableAnimation]="disableCardAnimation"
                 [isCardOpen]="documents.length > 0"
             >
                 <app-ta-upload-files

@@ -1,4 +1,5 @@
 import {
+    AfterContentInit,
     AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -23,7 +24,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
+import { Titles } from 'src/app/core/utils/application.decorators';
 
+@Titles()
 @Component({
     selector: 'app-truckassist-table-body',
     templateUrl: './truckassist-table-body.component.html',
@@ -37,7 +40,7 @@ import { DetailsDataService } from '../../../../services/details-data/details-da
     ],
 })
 export class TruckassistTableBodyComponent
-    implements OnInit, OnChanges, AfterViewInit, OnDestroy
+    implements OnInit, OnChanges, AfterViewInit, OnDestroy,AfterContentInit
 {
     private destroy$ = new Subject<void>();
     @ViewChild('tableScrollRef', { static: false })
@@ -189,6 +192,7 @@ export class TruckassistTableBodyComponent
 
     // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
+        console.log("CHANGES INSIDE BODY");
         if (!changes?.viewData?.firstChange && changes?.viewData) {
             clearTimeout(this.viewDataTimeOut);
 
@@ -273,6 +277,8 @@ export class TruckassistTableBodyComponent
         this.getNotPinedMaxWidth();
     }
 
+    ngAfterContentInit(): void {}
+
     onHorizontalScroll(scrollEvent: any) {
         if (scrollEvent.eventAction === 'scrolling') {
             document
@@ -316,7 +322,7 @@ export class TruckassistTableBodyComponent
                     c.ngTemplate !== 'checkbox' &&
                     c.ngTemplate !== 'user-checkbox'
                 ) {
-                    this.pinedWidth += 22;
+                    this.pinedWidth += 6;
                 }
             }
 
@@ -325,7 +331,7 @@ export class TruckassistTableBodyComponent
                 this.notPinedColumns.push(c);
 
                 notPinedWidth +=
-                    c.minWidth > c.width ? c.minWidth + 22 : c.width + 22;
+                    c.minWidth > c.width ? c.minWidth + 6 : c.width + 6;
             }
 
             // Actions

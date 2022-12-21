@@ -14,6 +14,8 @@ import { card_component_animation } from '../../shared/animations/card-component
 import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
 import { TrailerTService } from '../state/trailer.service';
 import { animate, style, transition, trigger, state } from '@angular/animations';
+import { TrailerItemStore } from '../state/trailer-details-state/trailer-details.store';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -60,7 +62,9 @@ export class TrailerDetailsCardComponent
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private trailerMinimalQuery: TrailersMinimalListQuery,
-        private trailerService: TrailerTService
+        private trailerService: TrailerTService,
+        private trailerItemStore: TrailerItemStore,
+        private activated_route: ActivatedRoute,
     ) {}
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.trailer?.firstChange) {
@@ -148,6 +152,7 @@ export class TrailerDetailsCardComponent
             });
     }
     public onSelectedTrailer(event: any) {
+        /*
         if (event.id !== this.trailer.id) {
             this.trailerDropDowns = this.trailerMinimalQuery
                 .getAll()
@@ -162,12 +167,16 @@ export class TrailerDetailsCardComponent
                     };
                 });
             this.detailsPageDriverSer.getDataDetailId(event.id);
+            console.log('---getDataDetailId', this.detailsPageDriverSer.getDataDetailId(event.id));
         }
+        */
     }
     public onChangeTrailer(action: string) {
+        
         let currentIndex = this.trailer_list.findIndex(
             (trailer) => trailer.id === this.trailer.id
         );
+
         switch (action) {
             case 'previous': {
                 currentIndex = --currentIndex;

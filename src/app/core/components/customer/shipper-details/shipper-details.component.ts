@@ -13,6 +13,8 @@ import { ShipperMinimalListStore } from '../state/shipper-state/shipper-details-
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ShipperDetailsListQuery } from '../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.query';
+import { ShipperDetailsListStore } from '../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
+import { ShipperItemStore } from '../state/shipper-state/shipper-details-state/shipper-details.store';
 
 @Component({
     selector: 'app-shipper-details',
@@ -41,7 +43,9 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         private shipperMinimalQuery: ShipperMinimalListQuery,
         private confirmationService: ConfirmationService,
         private slq: ShipperDetailsListQuery,
-        private DetailsDataService: DetailsDataService
+        private shipperStore: ShipperDetailsListStore,
+        private DetailsDataService: DetailsDataService,
+        private ShipperItemStore: ShipperItemStore,
     ) {}
 
     ngOnInit(): void {
@@ -85,7 +89,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 }
 
                 query.pipe(takeUntil(this.destroy$)).subscribe({
-                    next: (res: ShipperResponse) => {
+                    next: (res: any) => {
                         this.shipperConf(res);
                         this.router.navigate([
                             `/customer/${res.id}/shipper-details`,
@@ -97,15 +101,20 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     },
                 });
             });
-        this.shipperConf(this.activated_route.snapshot.data.shipper);
+        
+        let shipperId = this.activated_route.snapshot.params.id;   
+        let shipperData = {
+            ...this.ShipperItemStore?.getValue()?.entities[shipperId],
+        };
+        this.shipperConf(shipperData);
     }
 
-    public shipperConf(data: ShipperResponse) {
+    public shipperConf(data: any) {
         this.DetailsDataService.setNewData(data);
         this.currentIndex = this.shipperList.findIndex(
             (shipper) => shipper.id === data.id
         );
-        this.getShipperById(data.id);
+        //this.getShipperById(data.id);
         this.shipperConfig = [
             {
                 id: 0,
@@ -219,6 +228,23 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             );
         }, 100);
     }
+
+    public onModalAction(event: any){
+        let eventObject = {
+            data: undefined,
+            id: this.shipperObject.id,
+            type: 'edit',
+            openedTab: event,
+        }
+        setTimeout(() => {
+            this.dropDownService.dropActionsHeaderShipperBroker(
+                eventObject,
+                this.shipperObject,
+                'shipper'
+            );
+        }, 100);
+    }
+
     /**Function for dots in cards */
     public initTableOptions(): void {
         this.shipperDrop = {

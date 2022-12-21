@@ -1,3 +1,5 @@
+$tab-colors: '26A690', 'EF5350', '3074D3';
+
 .tab-switch-holder {
     position: relative;
     width: 100%;
@@ -36,6 +38,14 @@
         &:hover:not(.active) {
             color: #919191;
         }
+
+        &.disabled{
+            pointer-events: none !important;
+
+            .tab-switch-text{
+                color: #AAAAAA33;
+            }
+        }
     }
 
     .slide-active-holder {
@@ -51,10 +61,10 @@
 
     &.type1-modal-popup {
         margin-top: 12px;
-        height: 30px;
-        background-color: #f7f7f7;
-        line-height: 30px;
-        padding: 2px;
+        height: 34px;
+        background-color: #EEEEEE;
+        line-height: 34px;
+        padding: 4px;
 
         .tab-switch-items-holder {
             height: 30px;
@@ -65,7 +75,7 @@
             }
 
             &:hover:not(.active) {
-                background-color: #f3f3f3;
+                //background-color: #f3f3f3;
                 color: #6c6c6c;
             }
         }
@@ -73,15 +83,21 @@
         .slide-active-holder {
             background-color: #fff;
             box-shadow: 0 0 2px #ffffff1a;
-            height: calc(100% - 4px);
+            height: calc(100% - 8px);
         }
     }
 
     &.type2-modal-popup {
         height: 26px;
-        background-color: #f7f7f7;
+        background-color: #EEEEEE;
         line-height: 26px;
-        padding: 2px;
+        padding: 4px;
+
+        .tab-switch-text{
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
 
         .tab-switch-items-holder {
             height: 26px;
@@ -93,7 +109,7 @@
             }
 
             &:hover:not(.active) {
-                background-color: #f3f3f3;
+                //background-color: #f3f3f3;
                 color: #6c6c6c;
             }
         }
@@ -101,7 +117,7 @@
         .slide-active-holder {
             background-color: #fff;
             box-shadow: 0 0 2px #ffffff1a;
-            height: calc(100% - 4px);
+            height: calc(100% - 8px);
         }
     }
 
@@ -260,6 +276,17 @@
                     color: #fff;
                 }
             }
+        }
+    }
+}
+
+@each $col in $tab-colors {
+    .tab-switch-#{$col}.active{
+        & ~ .slide-active-holder{ 
+            background-color: unquote('#' + $col + '33') !important;
+        }
+        .tab-switch-text{
+            color: unquote('#' + $col) !important;
         }
     }
 }

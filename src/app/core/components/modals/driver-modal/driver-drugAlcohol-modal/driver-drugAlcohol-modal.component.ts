@@ -55,6 +55,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
     private storeDrugType: any = null;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private driverService: DriverTService,
@@ -69,6 +71,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
         this.getDrugDropdowns();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.getDriverById(this.editData.id);
             if (this.editData.type === 'edit-drug') {
                 this.getTestById(this.editData.file_id);
@@ -137,6 +140,9 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: any) => {
                     this.modalName = res.firstName.concat(' ', res.lastName);
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });
@@ -312,6 +318,9 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     } else {
                         this.reasons = this.alcoholReasons;
                     }
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

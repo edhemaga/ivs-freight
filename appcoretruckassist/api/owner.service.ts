@@ -741,14 +741,16 @@ export class OwnerService {
      * @param accountNumber 
      * @param routingNumber 
      * @param note 
+     * @param longitude 
+     * @param latitude 
      * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiOwnerPost(ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -854,6 +856,12 @@ export class OwnerService {
         if (note !== undefined) {
             localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
         }
+        if (longitude !== undefined) {
+            localVarFormParams = localVarFormParams.append('Longitude', <any>longitude) as any || localVarFormParams;
+        }
+        if (latitude !== undefined) {
+            localVarFormParams = localVarFormParams.append('Latitude', <any>latitude) as any || localVarFormParams;
+        }
         if (files) {
             files.forEach((element) => {
                 localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
@@ -906,15 +914,17 @@ export class OwnerService {
      * @param accountNumber 
      * @param routingNumber 
      * @param note 
+     * @param longitude 
+     * @param latitude 
      * @param files 
      * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiOwnerPut(id?: number, ownerType?: OwnerType, name?: string, ssnEin?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, phone?: string, email?: string, bankId?: number, accountNumber?: string, routingNumber?: string, note?: string, longitude?: number, latitude?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1022,6 +1032,12 @@ export class OwnerService {
         }
         if (note !== undefined) {
             localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (longitude !== undefined) {
+            localVarFormParams = localVarFormParams.append('Longitude', <any>longitude) as any || localVarFormParams;
+        }
+        if (latitude !== undefined) {
+            localVarFormParams = localVarFormParams.append('Latitude', <any>latitude) as any || localVarFormParams;
         }
         if (files) {
             files.forEach((element) => {
