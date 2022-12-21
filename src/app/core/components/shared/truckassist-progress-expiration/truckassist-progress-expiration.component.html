@@ -97,7 +97,7 @@
                 }"
                 *ngIf="progresDay > 0"
             >
-                {{ progresDay }} {{ progresDay > 1 ? 'days' : 'day' }} after
+                Completed {{ progresDay }} {{ progresDay > 1 ? 'days' : 'day' }} past
                 deadline
             </span>
             <span
@@ -107,7 +107,7 @@
                 }"
                 *ngIf="progresDay == 0"
             >
-                {{ timeDifference }} h. after deadline
+                Completed {{ timeDifference }} h. past deadline
             </span>
         </span>
 
@@ -152,14 +152,14 @@
                         'progress-days-bold': expiresSettings !== 'todo-list'
                     }"
                     *ngIf="daysDiff !== 0"
-                    >{{ daysDiff }} {{ daysDiff > 1 ? 'days' : 'day' }}</span
+                    >Completed {{ daysDiff }} {{ daysDiff > 1 ? 'days' : 'day' }}</span
                 >
                 <span
                     [ngClass]="{
                         'progress-days-bold': expiresSettings !== 'todo-list'
                     }"
                     *ngIf="daysDiff == 0"
-                    >{{ timeDifference }} h.</span
+                    >Completed {{ timeDifference }} h.</span
                 >
                 before deadline
             </span>

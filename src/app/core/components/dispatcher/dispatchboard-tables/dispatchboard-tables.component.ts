@@ -16,8 +16,6 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
-import { DispatcherStoreService } from '../state/dispatcher.service';
 import {
     CreateDispatchCommand,
     SwitchDispatchCommand,
@@ -31,6 +29,8 @@ import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 import { Options } from '@angular-slider/ngx-slider';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { LabelType } from 'ng5-slider';
+import { DispatchBoardLocalResponse } from '../../dispatch/state/dispatcher.model';
+import { DispatcherStoreService } from '../../dispatch/state/dispatcher.service';
 
 @Component({
     selector: 'app-dispatchboard-tables',

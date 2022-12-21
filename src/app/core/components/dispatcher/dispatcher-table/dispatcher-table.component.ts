@@ -10,10 +10,9 @@ import { Observable, Subject } from 'rxjs';
 import * as AppConst from 'src/app/const';
 import { Enums } from 'src/app/core/model/enums';
 import { AppDispatcherTableNewComponent } from '../app-dispatcher-table-new/app-dispatcher-table-new.component';
-import { DispatcherStoreService } from '../state/dispatcher.service';
-
-import { DispatcherQuery } from './../state/dispatcher.query';
 import { takeUntil } from 'rxjs/operators';
+import { DispatcherQuery } from '../../dispatch/state/dispatcher.query';
+import { DispatcherStoreService } from '../../dispatch/state/dispatcher.service';
 
 @Component({
     selector: 'app-dispatcher-table',
