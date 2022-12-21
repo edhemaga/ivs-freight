@@ -176,7 +176,7 @@ export class TaInputComponent
 
         // Auto Focus First Input
         if (this.inputConfig.autoFocus && !this.getSuperControl.value) {
-             setTimeout(() => {
+            setTimeout(() => {
                 if (
                     this.inputConfig.name !== 'datepicker' &&
                     this.inputConfig.name !== 'timepicker'
@@ -377,8 +377,7 @@ export class TaInputComponent
             } else {
                 this.blurOnDropDownArrow();
             }
-        }
-        else {
+        } else {
             let selection = window.getSelection();
             selection.removeAllRanges();
 
@@ -399,28 +398,41 @@ export class TaInputComponent
 
         this.inputService.onFocusOutInput$.next(true);
         this.touchedInput = true;
+
+        // setTimeout(() => {
+        //     console.log('class-1: ', this.containValidFocusOutFilledClass);
+        //     console.dir(e);
+        //     console.dir(e.target?.classList);
+
+        //     this.containValidFocusOutFilledClass =
+        //         e.target?.classList.value.includes('valid-focus-out-filled');
+
+        //     console.log(e.target?.classList.value);
+
+        //     console.log('class-2: ', this.containValidFocusOutFilledClass);
+        // }, 200);
     }
 
     private blurOnPassword() {
+        setTimeout(() => {
             this.isVisiblePasswordEye = false;
             this.focusInput = false;
             this.input.nativeElement.blur();
+            this.refChange.detectChanges();
+        }, 150);
     }
 
     private blurOnCommands() {
-
-       setTimeout(() => {
+        setTimeout(() => {
             this.isVisibleCommands = false;
-
         }, 150);
     }
 
     private blurOnDropDownArrow() {
-       setTimeout(() => {
+        setTimeout(() => {
             this.dropdownToggler = false;
             this.focusInput = false;
             this.inputService.dropDownShowHide$.next(false);
-
         }, 150);
     }
 
@@ -505,14 +517,13 @@ export class TaInputComponent
         }
     }
 
-    public onTogglePassword(event: Event): void {
+    public onTogglePassword(event: any): void {
         event.stopPropagation();
         event.preventDefault();
-        if(this.isVisiblePasswordEye) {
-            this.setInputCursorAtTheEnd(this.input.nativeElement);
-        }
+
         this.togglePassword = !this.togglePassword;
 
+        this.setInputCursorAtTheEnd(this.input.nativeElement);
     }
 
     public setInputCursorAtTheEnd(input: any, time: number = 120): void {
@@ -520,9 +531,8 @@ export class TaInputComponent
         if (input.setSelectionRange) {
             input.setSelectionRange(selectionEnd, selectionEnd);
         }
-         setTimeout(() => {
+        setTimeout(() => {
             input.focus();
-
         }, time);
     }
 
@@ -566,8 +576,15 @@ export class TaInputComponent
                 }
             }
             if (event.keyCode === 27) {
+                console.log('escape');
+                this.isVisibleCommands = false;
+                this.onBlur();
                 this.blurOnDropDownArrow();
                 this.input.nativeElement.blur();
+                this.inputService.dropDownKeyNavigation$.next({
+                    keyCode: event.keyCode,
+                    data: null,
+                });
             }
             if (event.keyCode === 9) {
                 this.onFocus();
@@ -1230,7 +1247,6 @@ export class TaInputComponent
                         }
                         return true;
                     }
-
                 }, 0);
             } else {
                 event.preventDefault();
@@ -1530,15 +1546,14 @@ export class TaInputComponent
         if (this.inputConfig.maxLength) {
             if (
                 pastedText.startsWith('+1') ||
-                pastedText.startsWith('1') &&
-                    this.inputConfig.name === 'Phone'
+                (pastedText.startsWith('1') &&
+                    this.inputConfig.name === 'Phone')
             ) {
-              if(pastedText.startsWith('+1')) {
-                pastedText = pastedText.split('+1')[1];
-              }
-              else {
-                pastedText = pastedText.slice(pastedText.indexOf('1') + 1);
-              }
+                if (pastedText.startsWith('+1')) {
+                    pastedText = pastedText.split('+1')[1];
+                } else {
+                    pastedText = pastedText.slice(pastedText.indexOf('1') + 1);
+                }
             }
             for (const character of pastedText) {
                 if (character.match(regexType)) {
@@ -1575,7 +1590,7 @@ export class TaInputComponent
             )
         ) {
             if ('phone' === this.inputConfig.name.toLowerCase()) {
-                 setTimeout(() => {
+                setTimeout(() => {
                     this.getSuperControl.setErrors(null);
 
                     this.input.nativeElement.value = newText.substring(0, 10);
@@ -1587,8 +1602,6 @@ export class TaInputComponent
                             '-' +
                             this.input.nativeElement.value.substring(6)
                     );
-
-
                 }, 0);
             }
 
@@ -1601,7 +1614,6 @@ export class TaInputComponent
                             '-' +
                             this.input.nativeElement.value.substring(2)
                     );
-
                 }, 0);
             }
 
