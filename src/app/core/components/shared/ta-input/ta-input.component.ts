@@ -82,8 +82,6 @@ export class TaInputComponent
 
     public dateTimeInputDate: Date = new Date();
 
-    public timeout = null;
-
     // Number of spaces
     public numberOfConsecutivelySpaces: number = 0;
     public oneSpaceOnlyCounter: number = 0;
@@ -178,7 +176,7 @@ export class TaInputComponent
 
         // Auto Focus First Input
         if (this.inputConfig.autoFocus && !this.getSuperControl.value) {
-            const timeout = setTimeout(() => {
+             setTimeout(() => {
                 if (
                     this.inputConfig.name !== 'datepicker' &&
                     this.inputConfig.name !== 'timepicker'
@@ -187,7 +185,6 @@ export class TaInputComponent
                 }
 
                 this.input.nativeElement.focus();
-                clearTimeout(timeout);
             }, 250);
         }
 
@@ -258,9 +255,8 @@ export class TaInputComponent
             this.inputConfig.name === 'timepicker'
         ) {
             if (obj) {
-                const timeout = setTimeout(() => {
+                setTimeout(() => {
                     this.setTimeDateInput(obj);
-                    clearTimeout(timeout);
                 }, 300);
             } else {
                 this.input.nativeElement.value = obj;
@@ -405,31 +401,26 @@ export class TaInputComponent
     }
 
     private blurOnPassword() {
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(() => {
+
+        setTimeout(() => {
             this.isVisiblePasswordEye = false;
-            clearTimeout(this.timeout);
-        }, 150);
+        }, 300);
     }
 
     private blurOnCommands() {
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(() => {
+
+       setTimeout(() => {
             this.isVisibleCommands = false;
-            clearTimeout(this.timeout);
+
         }, 150);
     }
 
     private blurOnDropDownArrow() {
-        this.timeout = setTimeout(() => {
+       setTimeout(() => {
             this.dropdownToggler = false;
             this.focusInput = false;
             this.inputService.dropDownShowHide$.next(false);
-            clearTimeout(this.timeout);
+
         }, 150);
     }
 
@@ -509,7 +500,6 @@ export class TaInputComponent
         this.inputService.dropDownShowHide$.next(this.dropdownToggler);
 
         if (this.dropdownToggler) {
-            clearTimeout(this.timeout);
             this.input.nativeElement.focus();
             this.focusInput = true;
         }
@@ -518,10 +508,11 @@ export class TaInputComponent
     public onTogglePassword(event: Event): void {
         event.stopPropagation();
         event.preventDefault();
-
+        if(this.isVisiblePasswordEye) {
+            this.setInputCursorAtTheEnd(this.input.nativeElement);
+        }
         this.togglePassword = !this.togglePassword;
-        clearTimeout(this.timeout);
-        this.setInputCursorAtTheEnd(this.input.nativeElement);
+
     }
 
     public setInputCursorAtTheEnd(input: any, time: number = 120): void {
@@ -529,9 +520,9 @@ export class TaInputComponent
         if (input.setSelectionRange) {
             input.setSelectionRange(selectionEnd, selectionEnd);
         }
-        const timeout = setTimeout(() => {
+         setTimeout(() => {
             input.focus();
-            clearTimeout(timeout);
+
         }, time);
     }
 
@@ -797,7 +788,6 @@ export class TaInputComponent
                         break;
                     }
                 }
-                clearTimeout(this.timeout);
                 this.setInputCursorAtTheEnd(this.input.nativeElement);
                 break;
             }
@@ -864,7 +854,6 @@ export class TaInputComponent
                         break;
                     }
                 }
-                clearTimeout(this.timeout);
                 this.setInputCursorAtTheEnd(this.input.nativeElement);
                 break;
             }
@@ -1226,7 +1215,7 @@ export class TaInputComponent
                     .getInputRegexPattern('per stop')
                     .test(String.fromCharCode(event.charCode))
             ) {
-                const timeout = setTimeout(() => {
+                setTimeout(() => {
                     if (this.getSuperControl.value) {
                         let perStopValue = this.getSuperControl.value.replace(
                             /,/g,
@@ -1241,7 +1230,7 @@ export class TaInputComponent
                         }
                         return true;
                     }
-                    clearTimeout(timeout);
+
                 }, 0);
             } else {
                 event.preventDefault();
@@ -1540,10 +1529,16 @@ export class TaInputComponent
         // Max Length For Paste
         if (this.inputConfig.maxLength) {
             if (
-                pastedText.startsWith('+1') &&
-                this.inputConfig.name === 'Phone'
+                pastedText.startsWith('+1') ||
+                pastedText.startsWith('1') &&
+                    this.inputConfig.name === 'Phone'
             ) {
+              if(pastedText.startsWith('+1')) {
                 pastedText = pastedText.split('+1')[1];
+              }
+              else {
+                pastedText = pastedText.slice(pastedText.indexOf('1') + 1);
+              }
             }
             for (const character of pastedText) {
                 if (character.match(regexType)) {
@@ -1580,7 +1575,7 @@ export class TaInputComponent
             )
         ) {
             if ('phone' === this.inputConfig.name.toLowerCase()) {
-                const timeout = setTimeout(() => {
+                 setTimeout(() => {
                     this.getSuperControl.setErrors(null);
 
                     this.input.nativeElement.value = newText.substring(0, 10);
@@ -1593,12 +1588,12 @@ export class TaInputComponent
                             this.input.nativeElement.value.substring(6)
                     );
 
-                    clearTimeout(timeout);
+
                 }, 0);
             }
 
             if ('ein' === this.inputConfig.name.toLowerCase()) {
-                const timeout = setTimeout(() => {
+                setTimeout(() => {
                     this.getSuperControl.setErrors(null);
                     this.input.nativeElement.value = newText.substring(0, 9);
                     this.getSuperControl.patchValue(
@@ -1606,12 +1601,12 @@ export class TaInputComponent
                             '-' +
                             this.input.nativeElement.value.substring(2)
                     );
-                    clearTimeout(timeout);
+
                 }, 0);
             }
 
             if ('ssn' === this.inputConfig.name.toLowerCase()) {
-                const timeout = setTimeout(() => {
+                setTimeout(() => {
                     this.getSuperControl.setErrors(null);
                     this.input.nativeElement.value = newText.substring(0, 9);
                     this.getSuperControl.patchValue(
@@ -1621,8 +1616,6 @@ export class TaInputComponent
                             '-' +
                             this.input.nativeElement.value.substring(5)
                     );
-
-                    clearTimeout(timeout);
                 }, 0);
             }
         }

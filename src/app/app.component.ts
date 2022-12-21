@@ -12,9 +12,9 @@ import {
 } from 'rxjs';
 import { scrollButtonAnimation } from './app.component.animation';
 import { GpsServiceService } from './global/services/gps-service.service';
-import { SignInResponse } from '../../appcoretruckassist/model/signInResponse';
+import { SignInResponse } from '../../appcoretruckassist';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AccountService } from '../../appcoretruckassist/api/account.service';
+import { AccountService } from '../../appcoretruckassist';
 import { configFactory } from './app.config';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 
@@ -94,10 +94,10 @@ export class AppComponent implements OnInit {
                     }),
                     catchError((err: HttpErrorResponse) => {
                         if (err.status === 404 || err.status === 500) {
+                            window.location.reload();
                             this.currentPage = 'login';
                             localStorage.removeItem('user');
                             this.router.navigate(['/auth']);
-                            window.location.reload();
                         }
                         return throwError(() => err);
                     })
