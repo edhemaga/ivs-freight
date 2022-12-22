@@ -56,9 +56,13 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
 
         storeData$.subscribe(state => {
             let newTrailerData = {...state.entities[this.newTrailerId]};
-            this.DetailsDataService.setNewData(newTrailerData);
-            this.trailerConf(newTrailerData);
-            this.initTableOptions(newTrailerData);
+
+            if ( !this.isEmpty(newTrailerData) ) {
+                this.DetailsDataService.setNewData(newTrailerData);
+                this.trailerConf(newTrailerData);
+                this.initTableOptions(newTrailerData);
+            }
+           
           });
     }
 
@@ -142,6 +146,10 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             });
         this.trailerConf(trailerData);
     }
+
+    public isEmpty(obj: Record<string, any>): boolean {
+        return Object.keys(obj).length === 0;
+      }
 
     trailerConf(data: any) {
         this.DetailsDataService.setNewData(data);
