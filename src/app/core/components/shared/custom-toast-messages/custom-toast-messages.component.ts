@@ -85,7 +85,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     actionType: string = '';
     wideMessage: any = false;
     storesArray: any = JSON.parse(localStorage.getItem('AkitaStores'));
-    leftSideMove: any = false;
 
     apiConfObj: any[] = [
         {
@@ -111,7 +110,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'account/signupcompany',
             value: 'COMPANY',
-            blockLeft: true,
         },
         {
             api: 'companycontactlabel',
@@ -277,17 +275,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 item.api === apiEndPoint || apiEndPoint.indexOf(item.api) > -1
         );
         this.actionType = item ? item.value : '';
-        let blockLeft = item.blockLeft ? true : false; 
 
         let splitUrl = this.httpRequest.url.split('/');
         let splitLength = splitUrl.length;
         let lastPlace = splitLength - 1;
         let lastVal = parseInt(splitUrl[lastPlace]);
- 
-        if (this.actionType == 'LOGIN' || ( this.actionType == 'COMPANY' && blockLeft ) ) {
-            this.leftSideMove = false;
-        }
-
+        
         switch (this.httpRequest.method) {
             case 'POST':
                 this.actionTitle =
@@ -622,8 +615,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     ? this.errorData.error.error
                     : 'Error occurred';
                 this.message = errorMessage;
-                this.leftSideMove = false;
-
                 break;
             case 'TRAILER':
                 let trailerNum = this.httpRequest.body?.trailerNumber
