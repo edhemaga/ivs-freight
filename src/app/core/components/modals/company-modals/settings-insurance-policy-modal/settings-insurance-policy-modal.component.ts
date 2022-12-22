@@ -462,10 +462,10 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
-        let documentsUpdate = [];
+        let documents = [];
         this.documents.map((item) => {
             if (item.realFile) {
-                documentsUpdate.push(item.realFile);
+                documents.push(item.realFile);
             }
         });
 
@@ -477,10 +477,9 @@ export class SettingsInsurancePolicyModalComponent
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
-            files: documentsUpdate
-                ? documentsUpdate
-                : this.insurancePolicyForm.value.files,
-            filesForDeleteIds: this.filesForDelete,
+            files: documents
+                ? documents
+                : this.insurancePolicyForm.value.files
         };
 
         const commLiablity = commericalGeneralLiability
@@ -607,17 +606,9 @@ export class SettingsInsurancePolicyModalComponent
             insurancePolicyAddons.push(trailInterchange);
         }
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
         newData = {
             ...newData,
             insurancePolicyAddons,
-            files: documents,
         };
 
         this.settingsCompanyService
@@ -682,6 +673,13 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
         let newData: any = {
             id: id,
             ...form,
@@ -690,6 +688,8 @@ export class SettingsInsurancePolicyModalComponent
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
+            files: documents ? documents : this.insurancePolicyForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         const commLiablity = commericalGeneralLiability
@@ -824,7 +824,6 @@ export class SettingsInsurancePolicyModalComponent
         newData = {
             ...newData,
             insurancePolicyAddons,
-            files: [],
         };
 
         this.settingsCompanyService

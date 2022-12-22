@@ -28,7 +28,6 @@
         position: absolute;
         width: 24px;
         height: 100%;
-        cursor: pointer;
         border-radius: 2px;
         text-align: center;
         display: none;
@@ -41,12 +40,12 @@
         }
 
         &.prev {
-            left: -4px;
+            left: -7px;
             padding-right: 1px;
         }
 
         &.next {
-            left: 90%;
+            right: -7px;
             padding-left: 1px;
         }
 
@@ -55,8 +54,9 @@
                 path {
                     stroke-linejoin: round;
                     paint-order: stroke;
-                    filter: drop-shadow(0 0 4px rgb(0 0 0 / 15%));
+                    filter: drop-shadow(0 0 4px rgb(0 0 0 / 10%));
                     fill: rgba(255, 255, 255, 0.7) !important;
+                    cursor:  pointer;
                 }
             }
 
@@ -65,6 +65,9 @@
                     display: flex;
                     width: 24px;
                     height: 32px;
+                    path {
+                        cursor:  pointer;
+                    }
                 }
             }
         }
@@ -91,27 +94,35 @@
         }
     }
 
-    &.medium {
-        .ta-upload-carousel-control-bg {
-            &.next {
-                left: 95%;
-            }
-        }
-    }
-
-    &.large {
-        .ta-upload-carousel-control-bg {
-            &.next {
-                left: 510px;
-            }
-        }
-    }
-
     &.driver-details-pdf {
-        grid-template-rows: 303px;
+        grid-template-rows: 312px;
 
         .ta-upload-files-carousel {
-            grid-template-rows: 303px;
+            grid-template-rows: 312px;
+        }
+    }
+
+    &.modals {
+        grid-template-rows: 194px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 194px;
+        }
+    }
+
+    &.company-documents {
+        grid-template-rows: 332px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 332px;
+        }
+    }
+
+    &.driver-card-pdf {
+        grid-template-rows: 428px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 428px;
         }
     }
 
@@ -124,9 +135,47 @@
         }
     }
 
+    &.company-details-pdf {
+        grid-template-rows: 378px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 378px;
+        }
+    }
+
     &.driver-details-pdf,
-    &.landscape-details-view {
+    &.driver-card-pdf,
+    &.company-details-pdf,
+    &.landscape-details-view,
+    &.company-documents {
         .ta-upload-carousel-control-bg {
+            &.prev {
+                left: 4px;
+            }
+
+            &.next {
+                right: 5px;
+                padding-left: 1px;
+            }
+
+            .ta-upload-files-control {
+                line-height: 24px;
+            }
+        }
+    }
+
+    &.todo-details {
+        grid-template-rows: 200px;
+
+        .ta-upload-files-carousel {
+            grid-template-rows: 200px;
+        }
+
+        .ta-upload-carousel-control-bg {
+            &.prev {
+                left: 1.5%;
+            }
+
             &.next {
                 left: 94%;
                 padding-left: 1px;
@@ -138,7 +187,7 @@
         }
     }
 
-    &.todo-details {
+    &.table-details {
         grid-template-rows: 200px;
 
         .ta-upload-files-carousel {

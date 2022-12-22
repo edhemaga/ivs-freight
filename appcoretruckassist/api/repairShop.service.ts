@@ -33,6 +33,8 @@ import { PayPeriod } from '../model/payPeriod';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
+import { RepairShopContactCommand } from '../model/repairShopContactCommand';
+// @ts-ignore
 import { RepairShopListResponse } from '../model/repairShopListResponse';
 // @ts-ignore
 import { RepairShopMinimalListResponse } from '../model/repairShopMinimalListResponse';
@@ -1362,16 +1364,21 @@ export class RepairShopService {
      * @param monthlyDay 
      * @param longitude 
      * @param latitude 
+     * @param openHoursSameAllDays 
+     * @param openAlways 
+     * @param startTimeAllDays 
+     * @param endTimeAllDays 
      * @param serviceTypes 
      * @param openHours 
+     * @param contacts 
      * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1498,6 +1505,18 @@ export class RepairShopService {
         if (latitude !== undefined) {
             localVarFormParams = localVarFormParams.append('Latitude', <any>latitude) as any || localVarFormParams;
         }
+        if (openHoursSameAllDays !== undefined) {
+            localVarFormParams = localVarFormParams.append('OpenHoursSameAllDays', <any>openHoursSameAllDays) as any || localVarFormParams;
+        }
+        if (openAlways !== undefined) {
+            localVarFormParams = localVarFormParams.append('OpenAlways', <any>openAlways) as any || localVarFormParams;
+        }
+        if (startTimeAllDays !== undefined) {
+            localVarFormParams = localVarFormParams.append('StartTimeAllDays', <any>startTimeAllDays) as any || localVarFormParams;
+        }
+        if (endTimeAllDays !== undefined) {
+            localVarFormParams = localVarFormParams.append('EndTimeAllDays', <any>endTimeAllDays) as any || localVarFormParams;
+        }
         if (serviceTypes) {
             serviceTypes.forEach((element) => {
                 localVarFormParams = localVarFormParams.append('ServiceTypes', <any>element) as any || localVarFormParams;
@@ -1506,6 +1525,11 @@ export class RepairShopService {
         if (openHours) {
             openHours.forEach((element) => {
                 localVarFormParams = localVarFormParams.append('OpenHours', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (contacts) {
+            contacts.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Contacts', <any>element) as any || localVarFormParams;
             })
         }
         if (files) {
@@ -1567,17 +1591,22 @@ export class RepairShopService {
      * @param payPeriod 
      * @param weeklyDay 
      * @param monthlyDay 
+     * @param openHoursSameAllDays 
+     * @param openAlways 
+     * @param startTimeAllDays 
+     * @param endTimeAllDays 
      * @param serviceTypes 
      * @param openHours 
+     * @param contacts 
      * @param files 
      * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1707,6 +1736,18 @@ export class RepairShopService {
         if (monthlyDay !== undefined) {
             localVarFormParams = localVarFormParams.append('MonthlyDay', <any>monthlyDay) as any || localVarFormParams;
         }
+        if (openHoursSameAllDays !== undefined) {
+            localVarFormParams = localVarFormParams.append('OpenHoursSameAllDays', <any>openHoursSameAllDays) as any || localVarFormParams;
+        }
+        if (openAlways !== undefined) {
+            localVarFormParams = localVarFormParams.append('OpenAlways', <any>openAlways) as any || localVarFormParams;
+        }
+        if (startTimeAllDays !== undefined) {
+            localVarFormParams = localVarFormParams.append('StartTimeAllDays', <any>startTimeAllDays) as any || localVarFormParams;
+        }
+        if (endTimeAllDays !== undefined) {
+            localVarFormParams = localVarFormParams.append('EndTimeAllDays', <any>endTimeAllDays) as any || localVarFormParams;
+        }
         if (serviceTypes) {
             serviceTypes.forEach((element) => {
                 localVarFormParams = localVarFormParams.append('ServiceTypes', <any>element) as any || localVarFormParams;
@@ -1715,6 +1756,11 @@ export class RepairShopService {
         if (openHours) {
             openHours.forEach((element) => {
                 localVarFormParams = localVarFormParams.append('OpenHours', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (contacts) {
+            contacts.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Contacts', <any>element) as any || localVarFormParams;
             })
         }
         if (files) {

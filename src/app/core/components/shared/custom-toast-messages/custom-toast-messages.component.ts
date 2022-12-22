@@ -112,6 +112,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'COMPANY',
         },
         {
+            api : 'company/documents',
+            value: 'DOCUMENT'
+        },
+        {
             api: 'companycontactlabel',
             value: 'LABEL'
         },
@@ -280,7 +284,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         let splitLength = splitUrl.length;
         let lastPlace = splitLength - 1;
         let lastVal = parseInt(splitUrl[lastPlace]);
-        
+
         switch (this.httpRequest.method) {
             case 'POST':
                 this.actionTitle =
@@ -928,7 +932,20 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'LABEL':
                 let labelName = this.httpRequest.body?.name ? this.httpRequest.body?.name : '';
                 this.message = labelName;
-                break;    
+                break; 
+            case 'DOCUMENT':
+                let fileName = '';
+                if ( this.httpRequest.body.getAll('filesForDeleteIds')[0] ) {
+                    this.actionTitle = this.toastrType == 'toast-error' ? 'DELETE' : 'DELETED';
+                    fileName = this.DetailsDataService.documentName;
+                }
+
+                if ( this.httpRequest.body.getAll('files')[0] ) {
+                    fileName = this.httpRequest.body.getAll('files')[0]['name'];
+                }
+
+                this.message = fileName;
+                break;       
         }
 
         if (this.actionType == 'DRIVER' && !this.message) {

@@ -13,6 +13,7 @@ import { FileResponse } from './fileResponse';
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
+import { RepairShopContactResponse } from './repairShopContactResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
 import { AddressEntity } from './addressEntity';
 import { ReviewResponse } from './reviewResponse';
@@ -32,6 +33,10 @@ export interface RepairShopResponse {
     pinned?: boolean;
     order?: number;
     cost?: number;
+    openHoursSameAllDays?: boolean | null;
+    openAlways?: boolean | null;
+    startTimeAllDays?: string | null;
+    endTimeAllDays?: string | null;
     openHoursToday?: string | null;
     note?: string | null;
     companyOwned?: boolean;
@@ -50,6 +55,7 @@ export interface RepairShopResponse {
     updatedAt?: string;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
+    contacts?: Array<RepairShopContactResponse> | null;
     reviews?: Array<ReviewResponse> | null;
     files?: Array<FileResponse> | null;
 }
