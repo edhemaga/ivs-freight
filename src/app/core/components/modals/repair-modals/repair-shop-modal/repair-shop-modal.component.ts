@@ -70,7 +70,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         {
             id: 3,
             name: 'Review',
-            disabled: true
+            disabled: true,
         },
     ];
 
@@ -142,6 +142,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
         if (this.editData?.id) {
             this.disableCardAnimation = true;
+            this.tabs = this.tabs.map((item) => {
+                return {
+                    ...item,
+                    disabled: false,
+                };
+            });
             this.editRepairShopById(this.editData.id);
             this.ratingChanges();
         }
@@ -167,6 +173,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
             openHours: this.formBuilder.array([]),
+            openHoursSameAllDays: [null],
+            startTimeAllDays: [null],
+            endTimeAllDays: [null],
+            openAlways: [null],
             bankId: [null, [...bankValidation]],
             routing: [null, routingBankValidation],
             account: [null, accountBankValidation],
@@ -338,15 +348,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private createContacts(data?: {
-        contactName: string;
+        id: number;
+        fullName: string;
         departmentId: string;
         phone: string;
-        extensionPhone: string;
+        phoneExt: string;
         email: string;
     }): FormGroup {
         return this.formBuilder.group({
-            contactName: [
-                data?.contactName ? data.contactName : null,
+            id: [data?.id ? data.id : null],
+            fullName: [
+                data?.fullName ? data.fullName : null,
                 Validators.required,
             ],
             departmentId: [
@@ -357,8 +369,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 data?.phone ? data.phone : null,
                 [Validators.required, phoneFaxRegex],
             ],
-            extensionPhone: [
-                data?.extensionPhone ? data.extensionPhone : null,
+            phoneExt: [
+                data?.phoneExt ? data.phoneExt : null,
                 [...phoneExtension],
             ],
             email: [data?.email ? data.email : null],
@@ -471,6 +483,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RepairShopResponse) => {
+                    console.log('get by id: ', res);
                     this.repairShopForm.patchValue({
                         name: res.name,
                         pinned: res.pinned,
@@ -480,6 +493,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         address: res.address.address,
                         addressUnit: res.address.addressUnit,
                         openHours: [],
+                        openHoursSameAllDays: res.openHoursSameAllDays,
+                        startTimeAllDays: res.startTimeAllDays,
+                        endTimeAllDays: res.endTimeAllDays,
+                        openAlways: res.openAlways,
                         bankId: res.bank ? res.bank.name : null,
                         routing: res.routing,
                         account: res.account,
@@ -500,62 +517,82 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             active: item.active,
                         };
                     });
+
                     // Contacts
-                    //   if (reasponse.contacts) {
-                    //     for (const contact of reasponse.contacts) {
-                    //         this.contacts.push(
-                    //             this.createContacts({
-                    //                 contactName: contact.contactName,
-                    //                 departmentId: contact.department.name,
-                    //                 phone: contact.phone,
-                    //                 extensionPhone: contact.extensionPhone,
-                    //                 email: contact.email,
-                    //             })
-                    //         );
+                    if (res.contacts) {
+                        for (const contact of res.contacts) {
+                            this.contacts.push(
+                                this.createContacts({
+                                    id: contact.id,
+                                    fullName: contact.fullName,
+                                    departmentId: contact.department.name,
+                                    phone: contact.phone,
+                                    phoneExt: contact.phoneExt,
+                                    email: contact.email,
+                                })
+                            );
 
-                    //         this.selectedContractDepartmentFormArray.push(
-                    //             contact.department
-                    //         );
-                    //     }
-                    // }
+                            this.selectedContractDepartmentFormArray.push(
+                                contact.department
+                            );
+                        }
+                    }
 
-                    // Review
-                    // this.reviews = reasponse.reviews.map((item: any) => ({
-                    //     ...item,
-                    //     companyUser: {
-                    //         ...item.companyUser,
-                    //         avatar: item.companyUser.avatar,
-                    //     },
-                    //     commentContent: item.comment,
-                    //     rating: item.ratingFromTheReviewer,
-                    // }));
+                    // Reviews
+                    if (res.reviews?.length) {
+                        this.reviews = res.reviews.map((item: any) => ({
+                            ...item,
+                            companyUser: {
+                                ...item.companyUser,
+                                avatar: item.companyUser.avatar,
+                            },
+                            commentContent: item.comment,
+                            rating: item.ratingFromTheReviewer,
+                        }));
 
-                    // const reviewIndex = this.reviews.findIndex(
-                    //     (item) =>
-                    //         item.companyUser.id ===
-                    //         this.companyUser.companyUserId
-                    // );
-
-                    // if (reviewIndex !== -1) {
-                    //     this.disableOneMoreReview = true;
-                    // }
-
-                    // this.taLikeDislikeService.populateLikeDislikeEvent({
-                    //     downRatingCount: reasponse.downCount,
-                    //     upRatingCount: reasponse.upCount,
-                    //     currentCompanyUserRating:
-                    //         reasponse.currentCompanyUserRating,
-                    // });
-
-                    res.openHours.forEach((el) => {
-                        this.addOpenHours(
-                            el.dayOfWeek,
-                            !!(el.startTime && el.endTime),
-                            this.openHoursDays.indexOf(el.dayOfWeek),
-                            convertTimeFromBackend(el.startTime),
-                            convertTimeFromBackend(el.endTime)
+                        const reviewIndex = this.reviews.findIndex(
+                            (item) =>
+                                item.companyUser.id ===
+                                this.companyUser.companyUserId
                         );
+
+                        if (reviewIndex !== -1) {
+                            this.disableOneMoreReview = true;
+                        }
+                    }
+
+                    this.taLikeDislikeService.populateLikeDislikeEvent({
+                        downRatingCount: res.downCount,
+                        upRatingCount: res.upCount,
+                        currentCompanyUserRating: res.currentCompanyUserRating,
                     });
+
+                    // Open Hours
+                    if (res.openHoursSameAllDays) {
+                        this.openHoursDays.forEach((el, index) => {
+                            this.addOpenHours(
+                                el,
+                                true,
+                                index,
+                                convertTimeFromBackend(res.startTimeAllDays),
+                                convertTimeFromBackend(res.endTimeAllDays)
+                            );
+                        });
+                    } else {
+                        this.addOpenHours('MON - SAT', true, 0);
+                        this.isDaysVisible = true;
+                        res.openHours.forEach((el) => {
+                            this.addOpenHours(
+                                el.dayOfWeek,
+                                !!(el.startTime && el.endTime),
+                                this.openHoursDays.indexOf(el.dayOfWeek),
+                                convertTimeFromBackend(el.startTime),
+                                convertTimeFromBackend(el.endTime)
+                            );
+                        });
+                    }
+
+                    console.log(this.openHours.value);
 
                     setTimeout(() => {
                         this.disableCardAnimation = false;
@@ -566,7 +603,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepairShop() {
-        let { addressUnit, openHours, ...form } = this.repairShopForm.value;
+        let {
+            addressUnit,
+            openHours,
+            contacts,
+            openHoursSameAllDays,
+            startTimeAllDays,
+            endTimeAllDays,
+            openAlways,
+            ...form
+        } = this.repairShopForm.value;
 
         let documents = [];
         this.documents.map((item) => {
@@ -575,26 +621,27 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        openHours = openHours.map((item) => {
-            if (!this.toggleDays) {
+        openHours = openHours.map((item, index) => {
+            if (!this.isDaysVisible && index === 0) {
                 return {
                     dayOfWeek: openHours[0].dayOfWeek,
                     startTime: openHours[0].startTime,
                     endTime: openHours[0].endTime,
                 };
-            }
-            if (item.isDay) {
-                return {
-                    dayOfWeek: item.dayOfWeek,
-                    startTime: item.startTime,
-                    endTime: item.endTime,
-                };
             } else {
-                return {
-                    dayOfWeek: item.dayOfWeek,
-                    startTime: null,
-                    endTime: null,
-                };
+                if (item.isDay) {
+                    return {
+                        dayOfWeek: item.dayOfWeek,
+                        startTime: item.startTime,
+                        endTime: item.endTime,
+                    };
+                } else {
+                    return {
+                        dayOfWeek: item.dayOfWeek,
+                        startTime: null,
+                        endTime: null,
+                    };
+                }
             }
         });
 
@@ -602,7 +649,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            openHours: openHours,
+            openHoursSameAllDays: !this.isDaysVisible,
+            startTimeAllDays: !this.isDaysVisible
+                ? openHours[0].startTime
+                : null,
+            endTimeAllDays: !this.isDaysVisible ? openHours[0].endTime : null,
+            openAlways: false,
+            openHours: !this.isDaysVisible ? [] : openHours,
             serviceTypes: this.services.map((item) => {
                 return {
                     serviceType: item.serviceType,
@@ -612,14 +665,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             files: documents,
         };
 
-        for (let index = 0; index < this.contacts.length; index++) {
-            this.contacts[index].departmentId =
+        for (let index = 0; index < contacts.length; index++) {
+            contacts[index].departmentId =
                 this.selectedContractDepartmentFormArray[index].id;
         }
 
         newData = {
             ...newData,
-            contacts: this.contacts,
+            contacts: contacts,
         };
 
         this.shopService
@@ -688,7 +741,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepairShop(id: number) {
-        let { addressUnit, openHours, ...form } = this.repairShopForm.value;
+        let {
+            addressUnit,
+            openHours,
+            contacts,
+            openHoursSameAllDays,
+            startTimeAllDays,
+            endTimeAllDays,
+            openAlways,
+            ...form
+        } = this.repairShopForm.value;
 
         let documents = [];
         this.documents.map((item) => {
@@ -697,23 +759,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        openHours = openHours.map((item) => {
-            if (!this.toggleDays) {
-                return {
-                    dayOfWeek: openHours[0].dayOfWeek,
-                    startTime: openHours[0].startTime,
-                    endTime: openHours[0].endTime,
-                };
-            }
+        const hours = openHours.slice(1).map((item, index) => {
             if (item.isDay) {
                 return {
-                    dayOfWeek: item.dayOfWeek,
+                    dayOfWeek: index,
                     startTime: item.startTime,
                     endTime: item.endTime,
                 };
             } else {
                 return {
-                    dayOfWeek: item.dayOfWeek,
+                    dayOfWeek: index,
                     startTime: null,
                     endTime: null,
                 };
@@ -723,28 +778,35 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         let newData: any = {
             id: id,
             ...form,
-            bankId: this.selectedBank ? this.selectedBank.id : null,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
-            openHours: openHours,
+            bankId: this.selectedBank ? this.selectedBank.id : null,
+            openHoursSameAllDays: !this.isDaysVisible,
+            startTimeAllDays: !this.isDaysVisible
+                ? openHours[0].startTime
+                : null,
+            endTimeAllDays: !this.isDaysVisible ? openHours[0].endTime : null,
+            openAlways: false,
+            openHours: !this.isDaysVisible ? [] : hours,
             serviceTypes: this.services.map((item) => {
                 return {
                     serviceType: item.serviceType,
                     active: item.active,
                 };
             }),
-            files: documents ? documents : this.repairShopForm.value.files,
-            filesForDeleteIds: this.filesForDelete,
+            files: documents,
         };
 
-        for (let index = 0; index < this.contacts.length; index++) {
-            this.contacts[index].departmentId =
+        for (let index = 0; index < contacts.length; index++) {
+            contacts[index].departmentId =
                 this.selectedContractDepartmentFormArray[index].id;
         }
 
         newData = {
             ...newData,
-            contacts: this.contacts,
+            contacts: contacts,
         };
+
+        console.log('update: ', newData);
 
         this.shopService
             .updateRepairShop(newData)
@@ -766,7 +828,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: RepairShopModalResponse) => {
                     this.labelsBank = res.banks;
-
+                    this.labelsDepartments = res.departments;
                     this.services = res.serviceTypes.map((item) => {
                         return {
                             id: item.serviceType.id,

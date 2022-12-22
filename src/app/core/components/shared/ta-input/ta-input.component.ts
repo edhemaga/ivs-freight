@@ -109,6 +109,9 @@ export class TaInputComponent
     // Input Selection
     public inputSelection: boolean = false;
 
+    // Password Timeout
+    public timeoutPassword = null;
+
     constructor(
         @Self() public superControl: NgControl,
         private inputService: TaInputService,
@@ -123,6 +126,14 @@ export class TaInputComponent
     }
 
     ngOnInit(): void {
+        // Toggle label transition animation
+        $('.input-label').addClass('no-transition');
+
+        setTimeout(() => {
+            $('.input-label').removeClass('no-transition');
+        }, 1000);
+
+        // DatePicker
         if (
             this.inputConfig.name === 'datepicker' ||
             this.inputConfig.name === 'timepicker'
@@ -333,13 +344,13 @@ export class TaInputComponent
     }
 
     focusBlur: any;
-
+    public savedFocusEl: any = null;
     public onBlur(e?): void {
         // DropDown Label
         if (this.inputConfig.dropdownLabel && !this.editInputMode) {
             this.inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
         }
-
+        this.savedFocusEl = e.target;
         // Edit Input
         if (this.editInputMode) {
             this.getSuperControl.setErrors({ invalid: true });
@@ -398,26 +409,13 @@ export class TaInputComponent
 
         this.inputService.onFocusOutInput$.next(true);
         this.touchedInput = true;
-
-        // setTimeout(() => {
-        //     console.log('class-1: ', this.containValidFocusOutFilledClass);
-        //     console.dir(e);
-        //     console.dir(e.target?.classList);
-
-        //     this.containValidFocusOutFilledClass =
-        //         e.target?.classList.value.includes('valid-focus-out-filled');
-
-        //     console.log(e.target?.classList.value);
-
-        //     console.log('class-2: ', this.containValidFocusOutFilledClass);
-        // }, 200);
     }
 
     private blurOnPassword() {
-        setTimeout(() => {
+        this.timeoutPassword = setTimeout(() => {
             this.isVisiblePasswordEye = false;
             this.focusInput = false;
-            this.input.nativeElement.blur();
+            this.savedFocusEl = null;
             this.refChange.detectChanges();
         }, 150);
     }
@@ -518,12 +516,14 @@ export class TaInputComponent
     }
 
     public onTogglePassword(event: any): void {
-        event.stopPropagation();
         event.preventDefault();
-
+        event.stopPropagation();
+        console.log(event);
+        clearTimeout(this.timeoutPassword);
         this.togglePassword = !this.togglePassword;
-
-        this.setInputCursorAtTheEnd(this.input.nativeElement);
+        if (this.savedFocusEl) {
+            this.setInputCursorAtTheEnd(this.input.nativeElement);
+        }
     }
 
     public setInputCursorAtTheEnd(input: any, time: number = 120): void {

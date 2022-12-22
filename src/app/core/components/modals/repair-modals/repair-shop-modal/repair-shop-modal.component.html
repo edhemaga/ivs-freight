@@ -167,7 +167,10 @@
                                 [ngClass]="{ active: repair.active }"
                                 (click)="repair.active = !repair.active"
                             >
-                                <svg-icon src="{{ repair.svg }}"></svg-icon>
+                                <svg-icon
+                                    *ngIf="repair.svg.includes('.svg')"
+                                    src="{{ repair.svg }}"
+                                ></svg-icon>
                                 <p>{{ repair.serviceType }}</p>
                             </div>
                         </div>
@@ -418,7 +421,7 @@
                                         class="common-fake-table-card"
                                     >
                                         <app-ta-input
-                                            formControlName="contactName"
+                                            formControlName="fullName"
                                             [inputConfig]="{
                                                 id: 'Full Name' + ind,
                                                 name: 'Full Name',
@@ -451,7 +454,7 @@
                                             "
                                             [options]="labelsDepartments"
                                             (selectedItem)="
-                                                onSelectDropDown(
+                                                onSelectDropdown(
                                                     $event,
                                                     'contact-department',
                                                     ind
@@ -471,7 +474,7 @@
                                             }"
                                         ></app-ta-input>
                                         <app-ta-input
-                                            formControlName="extensionPhone"
+                                            formControlName="phoneExt"
                                             [inputConfig]="{
                                                 id: 'Phone Extension' + ind,
                                                 name: 'phone-extension',

@@ -92,7 +92,7 @@ export class AppComponent implements OnInit {
                         setTimeout(() => {
                             localStorage.removeItem('user');
                             localStorage.setItem('user', JSON.stringify(user));
-                        }, 300);
+                        }, 100);
                         configFactory(this.userLoggedService);
                         return of(true);
                     }),

@@ -977,8 +977,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         brokerContacts: [],
                     });
 
-                    console.log(reasponse);
-
                     this.modalService.changeModalStatus({
                         name: 'dnu',
                         status: reasponse.dnu,
@@ -1047,6 +1045,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.disableOneMoreReview = true;
                     }
 
+                    console.log(
+                        'response: ',
+                        reasponse.downCount,
+                        reasponse.upCount,
+                        reasponse.currentCompanyUserRating
+                    );
                     this.taLikeDislikeService.populateLikeDislikeEvent({
                         downRatingCount: reasponse.downCount,
                         upRatingCount: reasponse.upCount,
@@ -1063,19 +1067,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     this.tabPhysicalAddressChange(
                         this.selectedPhysicalAddress.address
                             ? {
-                                  id: 'physicaladdress',
+                                  id: 3,
                                   name: 'Physical Address',
                                   inputName: 'a',
                                   checked: true,
                               }
                             : {
-                                  id: 'poboxphysical',
+                                  id: 4,
                                   name: 'PO Box Physical',
                                   inputName: 'a',
                                   checked: false,
                               }
                     );
-                    // TODO: Check after Bojan fixes
+
                     this.tabBillingAddressChange(
                         this.selectedBillingAddressTab === 5 ||
                             reasponse.mainAddress.address ===
