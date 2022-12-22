@@ -2940,7 +2940,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         stopTime: '',
                         mpg: '',
                         fuelPrice: '',
-                        shape: route.shape,
+                        shape: '',
                         stops: stopsArr,
                         color: this.findRouteColor(),
                         isFocused: this.focusedRouteIndex == index,
@@ -3009,6 +3009,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
+                    console.log('decodeRouteShape res', res);
+
                     const polyLineCoordinates = [];
 
                     if (this.routePolylines[route.id]) {
@@ -3097,10 +3099,14 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     stopArr[index + 1].totalPrice = totalPrice;
                     stopArr[index + 1].time = leg.hours + ':' + leg.minutes;
                     stopArr[index + 1].totalTime = hours + ':' + minutes;
+                    stopArr[index + 1].shape = leg.shape;
                 });
+
+                console.log('getRouteShape', routing);
 
                 stopArr[0].leg = 0;
                 stopArr[0].total = 0;
+                stopArr[0].shape = '';
 
                 var updateRouteObj = {
                     id: route.id,
