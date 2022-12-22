@@ -12,7 +12,7 @@
 
 
 export interface AssignGpsDevicesToTruckCommand { 
-    deviceId?: number;
+    deviceId?: string | null;
     truckId?: number;
 }
 

@@ -9,10 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DepartmentResponse } from './departmentResponse';
 
 
-export interface AssignGpsDevicesToTrailerCommand { 
-    deviceId?: string | null;
-    trailerId?: number;
+export interface RepairShopContactResponse { 
+    id?: number;
+    repairShopId?: number;
+    department?: DepartmentResponse;
+    fullName?: string | null;
+    phone?: string | null;
+    phoneExt?: string | null;
+    email?: string | null;
 }
 

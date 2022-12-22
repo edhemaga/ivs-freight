@@ -9,10 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
-export interface AssignGpsDevicesToTrailerCommand { 
-    deviceId?: string | null;
-    trailerId?: number;
+export interface FileResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<FileResponse> | null;
 }
 
