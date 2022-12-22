@@ -11,7 +11,7 @@ import {
     ChangeDetectorRef,
     HostListener,
 } from '@angular/core';
-import { filter, Subject, switchMap, takeUntil } from 'rxjs';
+import { distinctUntilChanged, filter, Subject, switchMap, takeUntil, throttleTime } from 'rxjs';
 import { AddressService } from 'src/app/core/services/shared/address.service';
 import { AddressEntity } from 'appcoretruckassist';
 import {
@@ -114,6 +114,8 @@ export class InputAddressDropdownComponent
     ngOnInit(): void {
         this.getSuperControl.valueChanges
             .pipe(
+                distinctUntilChanged(),
+                throttleTime(1),
                 takeUntil(this.destroy$),
                 filter((term: string) => {
                     if (!term) {
