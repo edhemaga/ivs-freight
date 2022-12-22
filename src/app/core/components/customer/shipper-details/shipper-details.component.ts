@@ -220,9 +220,17 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     }
     public onDropActions(event: any) {
         this.getShipperById(event.id);
+
+        let eventObject = {
+            data: undefined,
+            id: event.id,
+            type: 'edit',
+            openedTab: event.type,
+        }
+
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
-                event,
+                eventObject,
                 this.shipperObject,
                 'shipper'
             );
@@ -236,6 +244,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             type: 'edit',
             openedTab: event,
         }
+        
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
@@ -272,7 +281,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: 'Add Contact',
-                    name: 'add-contact',
+                    name: 'Contact',
                     svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
                     iconName: 'add-contact'
