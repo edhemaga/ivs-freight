@@ -630,8 +630,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 } else if (res.type == 'route') {
                     this.addRoute(res.mapId);
                 } else if (res.type == 'edit-route') {
-                    console.log('edit-route res', res);
-
                     const routeIndex = this.tableData[
                         this.selectedMapIndex
                     ].routes.findIndex((item) => {
@@ -3009,8 +3007,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    console.log('decodeRouteShape res', res);
-
                     const polyLineCoordinates = [];
 
                     if (this.routePolylines[route.id]) {
@@ -3101,8 +3097,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     stopArr[index + 1].totalTime = hours + ':' + minutes;
                     stopArr[index + 1].shape = leg.shape;
                 });
-
-                console.log('getRouteShape', routing);
 
                 stopArr[0].leg = 0;
                 stopArr[0].total = 0;
