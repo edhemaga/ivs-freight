@@ -85,7 +85,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     actionType: string = '';
     wideMessage: any = false;
     storesArray: any = JSON.parse(localStorage.getItem('AkitaStores'));
-    leftSideMove: any = false;
 
     apiConfObj: any[] = [
         {
@@ -111,7 +110,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         {
             api: 'account/signupcompany',
             value: 'COMPANY',
-            blockLeft: true,
+        },
+        {
+            api : 'company/documents',
+            value: 'DOCUMENT'
         },
         {
             api: 'companycontactlabel',
@@ -277,16 +279,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 item.api === apiEndPoint || apiEndPoint.indexOf(item.api) > -1
         );
         this.actionType = item ? item.value : '';
-        let blockLeft = item.blockLeft ? true : false; 
 
         let splitUrl = this.httpRequest.url.split('/');
         let splitLength = splitUrl.length;
         let lastPlace = splitLength - 1;
         let lastVal = parseInt(splitUrl[lastPlace]);
- 
-        if (this.actionType == 'LOGIN' || ( this.actionType == 'COMPANY' && blockLeft ) ) {
-            this.leftSideMove = false;
-        }
 
         switch (this.httpRequest.method) {
             case 'POST':
@@ -622,12 +619,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     ? this.errorData.error.error
                     : 'Error occurred';
                 this.message = errorMessage;
-                this.leftSideMove = false;
-
                 break;
             case 'TRAILER':
-                let trailerNum = this.httpRequest.body?.trailerNumber
-                    ? this.httpRequest.body.trailerNumber
+                let trailerNum = this.httpRequest.body.getAll('trailerNumber')[0]
+                    ? this.httpRequest.body.getAll('trailerNumber')[0]
                     : '';
                 let activeTrailer = this.DetailsDataService.mainData?.status
                     ? true
@@ -674,8 +669,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
                 break;
             case 'TRUCK':
-                let truckNum = this.httpRequest.body?.truckNumber
-                    ? this.httpRequest.body.truckNumber
+                let truckNum = this.httpRequest.body.getAll('truckNumber')[0]
+                    ? this.httpRequest.body.getAll('truckNumber')[0]
                     : '';
                 let activeTruck = this.DetailsDataService.mainData?.status
                     ? true
@@ -805,9 +800,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = testName;
                 break;
             case 'TASK':
-                let toDoName = this.httpRequest.body?.title
-                    ? this.httpRequest.body?.title
-                    : '';
+                let toDoName = '';
+
+                if ( !this.httpRequest.body.id ) {
+                    toDoName = this.httpRequest.body.getAll('title')[0];
+                }    
+
                 if (!toDoName) {
                     toDoName = this.DetailsDataService.mainData?.title;
                 }
@@ -934,7 +932,20 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'LABEL':
                 let labelName = this.httpRequest.body?.name ? this.httpRequest.body?.name : '';
                 this.message = labelName;
-                break;    
+                break; 
+            case 'DOCUMENT':
+                let fileName = '';
+                if ( this.httpRequest.body.getAll('filesForDeleteIds')[0] ) {
+                    this.actionTitle = this.toastrType == 'toast-error' ? 'DELETE' : 'DELETED';
+                    fileName = this.DetailsDataService.documentName;
+                }
+
+                if ( this.httpRequest.body.getAll('files')[0] ) {
+                    fileName = this.httpRequest.body.getAll('files')[0]['name'];
+                }
+
+                this.message = fileName;
+                break;       
         }
 
         if (this.actionType == 'DRIVER' && !this.message) {

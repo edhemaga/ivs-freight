@@ -143,6 +143,7 @@
                     <app-ta-custom-card
                         [cardName]="'Receiving Hours'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '22px',
                             marginBottom: '22px'
@@ -223,6 +224,7 @@
                         [isCardOpen]="
                             !shipperForm.get('shippingHoursSameReceiving').value
                         "
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -294,6 +296,7 @@
                                 documents.length ? documents.length : 0
                             "
                             [cardName]="'Documents'"
+                            [disableAnimation]="disableCardAnimation"
                             [isCardOpen]="documents.length > 0"
                         >
                             <app-ta-upload-files
@@ -301,6 +304,7 @@
                                 [size]="'medium'"
                                 [showDropzone]="true"
                                 (onFileEvent)="onFilesEvent($event)"
+                                [customClassName]="'modals'"
                             ></app-ta-upload-files>
                         </app-ta-custom-card>
                     </div>
@@ -333,11 +337,13 @@
                         [isCardOpen]="shipperContacts.length > 0"
                         [hasScrollBody]="shipperContacts.length > 10"
                         [hasBodyData]="shipperContacts.length > 0"
-                        (onActionEvent)="addShipperContacts($event)"
+                        [disabledCard]="!shipperContacts.length"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
                         }"
+                        (onActionEvent)="addShipperContacts($event)"
                     >
                         <div
                             formArrayName="shipperContacts"
@@ -476,12 +482,13 @@
                         [hasBodyData]="reviews.length > 0"
                         [isCommentData]="true"
                         [hasScrollBody]="reviews.length > 6"
+                        [disableAnimation]="disableCardAnimation"
                         [disableMultipleReviews]="disableOneMoreReview"
-                        (onActionEvent)="createReview()"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '12px'
                         }"
+                        (onActionEvent)="createReview()"
                     >
                         <div class="no-review-shipper" *ngIf="!reviews.length">
                             <svg-icon

@@ -76,6 +76,8 @@ export class SettingsInsurancePolicyModalComponent
 
     public isFormDirty: boolean;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -90,6 +92,7 @@ export class SettingsInsurancePolicyModalComponent
         this.trackCheckboxValues();
 
         if (this.editData.type === 'edit') {
+            this.disableCardAnimation = true;
             this.editInsurancePolicyById(this.editData.company);
         }
     }
@@ -459,10 +462,10 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
-        let documentsUpdate = [];
+        let documents = [];
         this.documents.map((item) => {
             if (item.realFile) {
-                documentsUpdate.push(item.realFile);
+                documents.push(item.realFile);
             }
         });
 
@@ -474,10 +477,9 @@ export class SettingsInsurancePolicyModalComponent
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
-            files: documentsUpdate
-                ? documentsUpdate
-                : this.insurancePolicyForm.value.files,
-            filesForDeleteIds: this.filesForDelete,
+            files: documents
+                ? documents
+                : this.insurancePolicyForm.value.files
         };
 
         const commLiablity = commericalGeneralLiability
@@ -604,17 +606,9 @@ export class SettingsInsurancePolicyModalComponent
             insurancePolicyAddons.push(trailInterchange);
         }
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
         newData = {
             ...newData,
             insurancePolicyAddons,
-            files: documents,
         };
 
         this.settingsCompanyService
@@ -679,6 +673,13 @@ export class SettingsInsurancePolicyModalComponent
             };
         }
 
+        let documents = [];
+        this.documents.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
         let newData: any = {
             id: id,
             ...form,
@@ -687,6 +688,8 @@ export class SettingsInsurancePolicyModalComponent
             address: this.selectedAddress?.address
                 ? this.selectedAddress
                 : null,
+            files: documents ? documents : this.insurancePolicyForm.value.files,
+            filesForDeleteIds: this.filesForDelete,
         };
 
         const commLiablity = commericalGeneralLiability
@@ -821,7 +824,6 @@ export class SettingsInsurancePolicyModalComponent
         newData = {
             ...newData,
             insurancePolicyAddons,
-            files: [],
         };
 
         this.settingsCompanyService
@@ -1098,6 +1100,9 @@ export class SettingsInsurancePolicyModalComponent
                 }
             }
         }
+        setTimeout(() => {
+            this.disableCardAnimation = false;
+        }, 1000);
     }
 
     ngOnDestroy(): void {

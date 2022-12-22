@@ -3,13 +3,14 @@
 //-------------------- Input Dropdown arrow -----------------
 .input-dropdown-arrow {
     position: absolute;
+    display: flex;
     right: 6px;
-    top: 3px;
+    top: 50%;
     width: 14px;
     height: 14px;
     line-height: 18px;
-    display: inline-block;
     cursor: pointer;
+    transform: translateY(-50%);
     -webkit-user-select: none;
     user-select: none;
     z-index: 10;
@@ -20,7 +21,6 @@
         width: 26px;
         height: 26px;
         right: 0px;
-        top: 0px;
         justify-content: flex-end;
         padding-right: 6px;
 

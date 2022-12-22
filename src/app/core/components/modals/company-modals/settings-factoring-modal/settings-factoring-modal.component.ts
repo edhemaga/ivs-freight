@@ -29,6 +29,8 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     public isFormDirty: boolean;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -40,6 +42,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
         if (this.editData.type === 'edit') {
+            this.disableCardAnimation = true;
             this.editFactoringCompany(this.editData.company);
         }
     }
@@ -161,6 +164,10 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
             address: company.factoringCompany.address,
             valid: company.factoringCompany.address.address ? true : false,
         });
+
+        setTimeout(() => {
+            this.disableCardAnimation = false;
+        }, 1000);
     }
 
     ngOnDestroy(): void {

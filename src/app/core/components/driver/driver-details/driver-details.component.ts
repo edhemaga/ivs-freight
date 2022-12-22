@@ -32,6 +32,7 @@ import moment from 'moment';
     styleUrls: ['./driver-details.component.scss'],
     providers: [DetailsPageService],
 })
+
 export class DriverDetailsComponent implements OnInit, OnDestroy {
     public driverDetailsConfig: any[] = [];
     public dataTest: any;
@@ -53,6 +54,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     public dataCdl: any;
     public cdlActiveId: number;
     private destroy$ = new Subject<void>();
+    private newDriverId: number;
     constructor(
         private activated_route: ActivatedRoute,
         private modalService: ModalService,
@@ -71,7 +73,17 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private DetailsDataService: DetailsDataService,
         private DriversDetailsListStore: DriversDetailsListStore,
         private DriversItemStore: DriversItemStore
-    ) {}
+    ) {
+
+        let storeData$ = this.DriversItemStore._select(state => state);
+
+        storeData$.subscribe(state => {
+            let newDriverData = {...state.entities[this.newDriverId]};
+            this.DetailsDataService.setNewData(newDriverData);
+            this.detailCongif(newDriverData);
+            this.initTableOptions(newDriverData);
+          });
+    }
 
     ngOnInit() {
         let dataId = this.activated_route.snapshot.params.id;
@@ -142,28 +154,33 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 let query;
                 if (this.driverDQuery.hasEntity(id)) {
                     query = this.driverDQuery.selectEntity(id).pipe(take(1));
+                    query.subscribe({
+                        next: (res: any) => {
+                            this.currentIndex = this.driversList.findIndex(
+                                (driver) => driver.id === res.id
+                            );
+                            this.initTableOptions(res);
+                            if (this.cdlActiveId > 0) {
+                                this.getCdlById(this.cdlActiveId);
+                            }
+                            this.detailCongif(res);
+                            this.newDriverId = id;
+                            if (this.router.url.includes('details')) {
+                                this.router.navigate([`/driver/${res.id}/details`]);
+                            }
+    
+                            this.cdRef.detectChanges();
+                        },
+                        error: () => {},
+                    });
+
                 } else {
-                    query = this.driverService.getDriverById(id);
+                    //query = this.driverService.getDriverById(id);
+                    this.newDriverId = id;
+                    this.router.navigate([`/driver/${id}/details`]);
+                    this.cdRef.detectChanges();        
                 }
-                query.subscribe({
-                    next: (res: any) => {
-                        this.currentIndex = this.driversList.findIndex(
-                            (driver) => driver.id === res.id
-                        );
-                        this.initTableOptions(res);
-                        if (this.cdlActiveId > 0) {
-                            this.getCdlById(this.cdlActiveId);
-                        }
-                        this.detailCongif(res);
-
-                        if (this.router.url.includes('details')) {
-                            this.router.navigate([`/driver/${res.id}/details`]);
-                        }
-
-                        this.cdRef.detectChanges();
-                    },
-                    error: () => {},
-                });
+                
             });
     }
 
@@ -260,7 +277,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             }
         });
 
-        if(data.mvrs.length>0){
+        if(data.mvrs?.length>0){
         data?.mvrs.map((el)=>{
             if(moment(el.issueDate).isAfter(moment())){
             this.arrayMedical.push(false)

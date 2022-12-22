@@ -29,6 +29,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                 const user: SignInResponse = JSON.parse(
                     localStorage.getItem('user')
                 );
+
                 if (err.status === 401 && user) {
                     return this.accountService
                         .apiAccountRefreshPost({

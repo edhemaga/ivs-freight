@@ -11,9 +11,9 @@
  */
 import { TruckMinimalResponse } from './truckMinimalResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
+import { DriverDispatchResponse } from './driverDispatchResponse';
 import { EnumValue } from './enumValue';
 import { DispatchHosResponse } from './dispatchHosResponse';
-import { DriverMinimalResponse } from './driverMinimalResponse';
 import { LoadShortResponse } from './loadShortResponse';
 import { AddressEntity } from './addressEntity';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
@@ -27,8 +27,8 @@ export interface DispatchResponse {
     dispatcher?: CompanyUserShortResponse;
     truck?: TruckMinimalResponse;
     trailer?: TrailerMinimalResponse;
-    driver?: DriverMinimalResponse;
-    coDriver?: DriverMinimalResponse;
+    driver?: DriverDispatchResponse;
+    coDriver?: DriverDispatchResponse;
     phone?: string | null;
     email?: string | null;
     location?: AddressEntity;

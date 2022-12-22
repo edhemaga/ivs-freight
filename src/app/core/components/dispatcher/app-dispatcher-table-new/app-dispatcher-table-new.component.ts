@@ -23,7 +23,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { SharedService } from '../../../services/shared/shared.service';
 import { AppLoadService } from '../../../services/load/app-load.service';
-import { DispatcherStoreService } from '../state/dispatcher.service';
+import { DispatcherStoreService } from '../../dispatch/state/dispatcher.service';
 
 declare var google: any;
 

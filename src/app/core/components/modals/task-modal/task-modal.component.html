@@ -125,11 +125,12 @@
             [hasActionSvg]="
                 editData?.type === 'edit' ? 'assets/svg/common/ic_plus.svg' : ''
             "
-            (onActionEvent)="createComment()"
+            [disableAnimation]="disableCardAnimation"
             [animationMarginParams]="{
                 marginTop: '10px',
                 marginBottom: '12px'
             }"
+            (onActionEvent)="createComment()"
         >
             <app-ta-user-review
                 *ngIf="comments.length"
@@ -142,12 +143,14 @@
             <app-ta-custom-card
                 [hasCounter]="documents.length ? documents.length : 0"
                 [cardName]="'Documents'"
+                [disableAnimation]="disableCardAnimation"
                 [isCardOpen]="documents.length > 0"
             >
                 <app-ta-upload-files
                     [files]="documents"
                     [showDropzone]="true"
                     (onFileEvent)="onFilesEvent($event)"
+                    [customClassName]="'modals'"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
         </div>

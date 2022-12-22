@@ -12,6 +12,7 @@
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
 import { ServiceTypeResponse } from './serviceTypeResponse';
+import { DepartmentResponse } from './departmentResponse';
 
 
 export interface RepairShopModalResponse { 
@@ -20,5 +21,6 @@ export interface RepairShopModalResponse {
     banks?: Array<BankResponse> | null;
     payPeriods?: Array<EnumValue> | null;
     monthlyDays?: Array<EnumValue> | null;
+    departments?: Array<DepartmentResponse> | null;
 }
 

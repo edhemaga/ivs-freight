@@ -346,6 +346,7 @@
                     <app-ta-custom-card
                         [cardName]="'Billing'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -437,12 +438,14 @@
                                 documents.length ? documents.length : 0
                             "
                             [cardName]="'Documents'"
+                            [disableAnimation]="disableCardAnimation"
                             [isCardOpen]="documents.length > 0"
                         >
                             <app-ta-upload-files
                                 [files]="documents"
                                 [size]="'medium'"
                                 (onFileEvent)="onFilesEvent($event)"
+                                [customClassName]="'modals'"
                                 [showDropzone]="true"
                             ></app-ta-upload-files>
                         </app-ta-custom-card>
@@ -476,11 +479,13 @@
                         [isCardOpen]="brokerContacts.length > 0"
                         [hasScrollBody]="brokerContacts.length > 10"
                         [hasBodyData]="brokerContacts.length > 0"
-                        (onActionEvent)="addBrokerContacts($event)"
+                        [disabledCard]="!brokerContacts.length"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '5px'
                         }"
+                        (onActionEvent)="addBrokerContacts($event)"
                     >
                         <div
                             formArrayName="brokerContacts"
@@ -622,11 +627,12 @@
                         [hasBodyData]="reviews.length > 0"
                         [hasScrollBody]="reviews.length > 6"
                         [disableMultipleReviews]="disableOneMoreReview"
-                        (onActionEvent)="createReview()"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '12px'
                         }"
+                        (onActionEvent)="createReview()"
                     >
                         <div class="no-review-broker" *ngIf="!reviews.length">
                             <svg-icon

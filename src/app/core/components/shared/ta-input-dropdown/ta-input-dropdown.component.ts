@@ -178,17 +178,6 @@ export class TaInputDropdownComponent
                 clearTimeout(timeout);
             });
         }
-
-        if (
-            this.inputConfig.name === 'Address' ||
-            this.inputConfig.name === 'RoutingAddress'
-        ) {
-            if (this.getSuperControl.value && this.inputRef?.focusInput) {
-                this.popoverRef?.open();
-            } else {
-                this.popoverRef?.close();
-            }
-        }
     }
 
     ngAfterViewInit() {
@@ -327,7 +316,7 @@ export class TaInputDropdownComponent
     private dropDownKeyboardNavigationEvent() {
         this.inputService.dropDownKeyNavigation$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((keyCode) => {
+            .subscribe(({ keyCode, data }) => {
                 // Navigate down
                 if (keyCode === 40) {
                     this.dropdownNavigation(1);
@@ -350,10 +339,57 @@ export class TaInputDropdownComponent
                     ) {
                         selectedItem = this.options[0].name;
                     }
+
+                    // Input Dropdown Bank Name
+                    if (
+                        !selectedItem &&
+                        this.inputConfig.name === 'Input Dropdown Bank Name'
+                    ) {
+                        this.addNewItem();
+                    }
+
+                    // Input Dropdown Label
+                    if (!selectedItem && this.inputConfig.dropdownLabel) {
+                        this.commandEvent({
+                            data: this.getSuperControl.value,
+                            action: 'confirm',
+                            mode: data.dropdownLabelNew ? 'new' : 'edit',
+                        });
+                        setTimeout(() => {
+                            this.getSuperControl.setErrors(null);
+                            this.inputConfig.dropdownLabelNew = false;
+                            this.inputConfig.commands.active = false;
+                            this.inputConfig.blackInput = false;
+                            this.inputRef.focusInput = false;
+                            this.inputRef.editInputMode = false;
+                            this.inputRef.input.nativeElement.blur();
+                        }, 150);
+                    }
+
                     // ADD NEW Option
                     if (selectedItem === 'ADD NEW') {
                         this.addNewConfig();
+
+                        if (this.inputConfig.dropdownLabel) {
+                            // DropDown label
+                            if (this.inputConfig.dropdownLabel) {
+                                this.inputConfig.dropdownLabelNew = true;
+                                this.inputRef.editInputMode = true;
+                                this.selectedLabelMode.emit('Color');
+                                this.inputConfig.commands.active = true;
+                                this.inputRef.setInputCursorAtTheEnd(
+                                    this.inputRef.input.nativeElement
+                                );
+                                this.inputConfig.blackInput = true;
+                                this.selectedItem.emit({
+                                    id: 7655,
+                                    name: 'ADD NEW',
+                                });
+                            }
+                        }
+                        selectedItem = null;
                     }
+
                     // Normal Pick Dropdown
                     else {
                         const existItem = this.options
@@ -388,7 +424,10 @@ export class TaInputDropdownComponent
                                     };
                                 }
                                 // Dropdown Labels
-                                else if (item?.dropLabel) {
+                                else if (
+                                    item?.dropLabel ||
+                                    this.inputConfig.dropdownLabel
+                                ) {
                                     return { ...item };
                                 }
                                 // Default
@@ -402,22 +441,32 @@ export class TaInputDropdownComponent
                                 }
                             })
                             .find((item) => {
-                                return (
-                                    item.name.toLowerCase() ===
-                                    (item?.dropLabel
+                                if (
+                                    item?.dropLabel ||
+                                    this.inputConfig.dropdownLabel
                                         ? selectedItem.substring(
                                               0,
                                               selectedItem.lastIndexOf(' ')
                                           )
-                                        : selectedItem.toLowerCase())
-                                );
+                                        : selectedItem?.toLowerCase() ===
+                                          item?.name.toLowerCase()
+                                )
+                                    return (
+                                        item?.name.toLowerCase() ===
+                                        (item?.dropLabel ||
+                                        this.inputConfig.dropdownLabel
+                                            ? selectedItem.substring(
+                                                  0,
+                                                  selectedItem?.lastIndexOf(' ')
+                                              )
+                                            : selectedItem?.toLowerCase())
+                                    );
                             });
 
                         // MultiSelect Dropdown
                         if (this.inputConfig.multiselectDropdown) {
                             this.onMultiselectSelect(existItem);
                         }
-
                         // Normal Dropdown
                         else {
                             this.inputConfig = {
@@ -425,12 +474,40 @@ export class TaInputDropdownComponent
                                 blackInput: true,
                             };
 
-                            this.getSuperControl.setValue(existItem?.name);
-                            this.selectedItem.emit(existItem);
-                            this.activeItem = existItem;
-                            this.inputService.dropDownItemSelectedOnEnter$.next(
-                                true
-                            );
+                            // Dropdown labels option selected
+                            if (this.inputConfig.dropdownLabel) {
+                                if (this.labelMode === 'Label') {
+                                    this.activeItem = existItem;
+                                    this.getSuperControl.setValue(
+                                        existItem.name
+                                    );
+                                    this.options = this.originalOptions;
+                                    this.selectedItem.emit(existItem);
+
+                                    this.inputService.dropDownItemSelectedOnEnter$.next(
+                                        {
+                                            action: true,
+                                            inputConfig: null,
+                                        }
+                                    );
+                                }
+
+                                if (this.labelMode === 'Color') {
+                                    this.activeItemColor = existItem;
+
+                                    this.selectedItemColor.emit(
+                                        this.activeItemColor
+                                    );
+                                }
+                            }
+                            // Normal
+                            else {
+                                this.getSuperControl.setValue(existItem?.name);
+                                this.selectedItem.emit(existItem);
+                                this.activeItem = existItem;
+                                this.inputRef.focusInput = false;
+                                this.inputRef.input.nativeElement.blur();
+                            }
 
                             if (this.inputConfig.name !== 'RoutingAddress') {
                                 const timeout = setTimeout(() => {
@@ -499,6 +576,13 @@ export class TaInputDropdownComponent
                         id: 7654,
                         name: 'No Results',
                     });
+
+                    if (
+                        this.inputConfig.name === 'Address' ||
+                        this.inputConfig.name === 'RoutingAddress'
+                    ) {
+                        this.popoverRef?.open();
+                    }
                 }
             } else {
                 this.options = this.originalOptions;
@@ -616,9 +700,12 @@ export class TaInputDropdownComponent
         }
         // ADD NEW
         else if (option.id === 7655) {
+            // Open New Modal
             if (this.canOpenModal) {
                 this.selectedItem.emit({ ...option, canOpenModal: true });
-            } else {
+            }
+            // Work with current modal
+            else {
                 // DropDown label
                 if (this.inputConfig.dropdownLabel) {
                     this.inputConfig.dropdownLabelNew = true;
@@ -653,7 +740,6 @@ export class TaInputDropdownComponent
                     this.selectedItemColor.emit(this.activeItemColor);
                 }
             }
-
             // Normal Dropdown option selected
             else {
                 this.inputConfig = {
@@ -761,6 +847,9 @@ export class TaInputDropdownComponent
             id: uuidv4(),
             name: this.getSuperControl.value,
         };
+        this.inputConfig.commands.active = false;
+        this.inputRef.isVisibleCommands = false;
+        this.inputRef.focusInput = false;
 
         this.saveItem.emit({ data: this.activeItem, action: 'new' });
 
@@ -818,8 +907,10 @@ export class TaInputDropdownComponent
             placeholder: null,
         };
 
-        this.inputConfig.dropdownLabelNew = true; // share this config with label
-        this.inputService.dropDownAddMode$.next(true);
+        this.inputService.dropDownAddMode$.next({
+            action: true,
+            inputConfig: this.inputConfig,
+        });
         this.popoverRef.close();
 
         this.isInAddMode = true;

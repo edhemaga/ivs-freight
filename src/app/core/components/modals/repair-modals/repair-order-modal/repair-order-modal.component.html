@@ -193,6 +193,8 @@
                 [isCardOpen]="items.length > 0"
                 [hasBodyData]="items.length > 0"
                 [hasScrollBody]="items.length > 10"
+                [disabledCard]="!items.length"
+                [disableAnimation]="disableCardAnimation"
                 (onActionEvent)="addItems($event)"
             >
                 <div
@@ -227,9 +229,9 @@
                                 class="common-fake-table-card"
                                 [ngClass]="{
                                     'card-item-active':
-                                        !selectedPM[ind]?.logoName?.includes(
-                                            'custom_pm'
-                                        )
+                                        selectedPM[ind]?.logoName &&
+                                        selectedPM[ind]?.logoName !==
+                                            'assets/svg/common/repair-pm/ic_custom_pm.svg'
                                 }"
                             >
                                 <p>
@@ -246,6 +248,7 @@
                                             maxLength: 160,
                                             textTransform: 'capitalize',
                                             blueInputColor:
+                                                selectedPM[ind]?.logoName &&
                                                 !selectedPM[
                                                     ind
                                                 ]?.logoName?.includes(
@@ -287,9 +290,10 @@
 
                                     <ng-template #pmDropdownPopover>
                                         <div
+                                            *ngIf="pmOptions?.length"
                                             class="options"
                                             [ngClass]="{
-                                                scroll: pmOptions.length > 6
+                                                scroll: pmOptions?.length > 6
                                             }"
                                         >
                                             <div
@@ -324,6 +328,7 @@
                                         type: 'text',
                                         thousandSeparator: true,
                                         blueInputColor:
+                                            selectedPM[ind]?.logoName &&
                                             !selectedPM[
                                                 ind
                                             ]?.logoName?.includes(
@@ -345,6 +350,7 @@
                                         name: 'QTY',
                                         type: 'text',
                                         blueInputColor:
+                                            selectedPM[ind]?.logoName &&
                                             !selectedPM[
                                                 ind
                                             ]?.logoName?.includes(
@@ -392,6 +398,7 @@
         <app-ta-custom-card
             [hasCounter]="pickedServices() ? pickedServices() : 0"
             [cardName]="'Service'"
+            [disableAnimation]="disableCardAnimation"
             [isCardOpen]="true"
         >
             <div class="repair-shop-services">
@@ -410,12 +417,14 @@
             <app-ta-custom-card
                 [hasCounter]="documents.length ? documents.length : 0"
                 [cardName]="'Documents'"
+                [disableAnimation]="disableCardAnimation"
                 [isCardOpen]="documents.length > 0"
             >
                 <app-ta-upload-files
                     [files]="documents"
                     [size]="'large'"
                     [showDropzone]="true"
+                    [customClassName]="'modals'"
                     (onFileEvent)="onFilesEvent($event)"
                 ></app-ta-upload-files>
             </app-ta-custom-card>

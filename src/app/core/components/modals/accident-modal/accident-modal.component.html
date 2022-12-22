@@ -164,6 +164,7 @@
                     <app-ta-custom-card
                         [cardName]="'Driver'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -214,6 +215,7 @@
                     <app-ta-custom-card
                         [cardName]="'Truck'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -282,6 +284,7 @@
                     <app-ta-custom-card
                         [cardName]="'Trailer'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -357,7 +360,9 @@
                         <app-ta-custom-card
                             [cardName]="'Violation'"
                             [isCardOpen]="violations.length > 0"
+                            [disabledCard]="!violations.length"
                             [hasScrollBody]="violations.length > 10"
+                            [disableAnimation]="disableCardAnimation"
                         >
                             <div
                                 formArrayName="violations"
@@ -439,6 +444,8 @@
                         [isCardOpen]="insurances.length > 0"
                         [hasBodyData]="insurances.length > 0"
                         [hasScrollBody]="false"
+                        [disabledCard]="!insurances.length"
+                        [disableAnimation]="disableCardAnimation"
                         (onActionEvent)="addInsurance($event)"
                     >
                         <div
@@ -568,6 +575,7 @@
                     <app-ta-custom-card
                         [hasCounter]="documents.length ? documents.length : 0"
                         [cardName]="'Documents'"
+                        [disableAnimation]="disableCardAnimation"
                         [isCardOpen]="documents.length > 0"
                     >
                         <app-ta-upload-files
@@ -575,12 +583,14 @@
                             [size]="'large'"
                             [showDropzone]="true"
                             (onFileEvent)="onFilesEvent($event)"
+                            [customClassName]="'modals'"
                         ></app-ta-upload-files>
                     </app-ta-custom-card>
 
                     <app-ta-custom-card
                         [hasCounter]="media.length ? media.length : 0"
                         [cardName]="'Media'"
+                        [disableAnimation]="disableCardAnimation"
                         [isCardOpen]="media.length > 0"
                     >
                         <app-ta-upload-files
@@ -588,6 +598,7 @@
                             [size]="'large'"
                             [showDropzone]="true"
                             (onFileEvent)="onFilesEvent($event)"
+                            [customClassName]="'modals'"
                         ></app-ta-upload-files>
                     </app-ta-custom-card>
 
@@ -612,6 +623,7 @@
                     <app-ta-custom-card
                         [cardName]="'Crash Environment'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -680,6 +692,7 @@
                     <app-ta-custom-card
                         [cardName]="'Authority Details'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -700,6 +713,7 @@
                                 [inputConfig]="{
                                     name: 'Police Officer',
                                     type: 'text',
+                                    textTransform: 'capitalize',
                                     label: 'Police Officer'
                                 }"
                             ></app-ta-input>
@@ -759,12 +773,13 @@
                     </app-ta-custom-card>
                     <app-ta-custom-card
                         [cardName]="'Location & Shipping info'"
+                        [disableAnimation]="disableCardAnimation"
                         [isCardOpen]="isLocationAndShippingOpen"
-                        (onOpenCard)="isLocationAndShippingOpen = $event"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
                         }"
+                        (onOpenCard)="isLocationAndShippingOpen = $event"
                     >
                         <div class="row">
                             <div class="col-6">
@@ -822,8 +837,10 @@
                                     type: 'text',
                                     label: 'Customer',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-273'
+                                    textTransform: 'capitalize',
+                                    dropdownWidthClass: 'w-col-272'
                                 }"
+                                [activeItem]="selectedAccidentCustomer"
                                 [options]="labelsAccidentCustomer"
                                 (selectedItem)="
                                     onSelectDropDown(
@@ -837,6 +854,7 @@
                                 [inputConfig]="{
                                     name: 'BoL',
                                     type: 'text',
+                                    textTransform: 'capitalize',
                                     label: 'BoL'
                                 }"
                             ></app-ta-input>
@@ -845,6 +863,7 @@
                                 [inputConfig]="{
                                     name: 'Cargo',
                                     type: 'text',
+                                    textTransform: 'capitalize',
                                     label: 'Cargo'
                                 }"
                             ></app-ta-input>

@@ -1,9 +1,6 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-    CdlResponse,
-    GetCdlModalResponse,
-} from 'appcoretruckassist';
+import { CdlResponse, GetCdlModalResponse } from 'appcoretruckassist';
 import { CdlTService } from '../../../driver/state/cdl.service';
 import { DriverTService } from '../../../driver/state/driver.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -53,6 +50,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private driverService: DriverTService,
@@ -65,9 +64,11 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.getCdlDropdowns();
         this.createForm();
+        console.log('this.editData.id', this.editData);
         this.getDriverById(this.editData.id);
 
         if (this.editData.type === 'edit-licence') {
+            this.disableCardAnimation = true;
             this.getCdlById();
         }
 
@@ -218,6 +219,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     }
 
     private getDriverById(id: number) {
+        console.log('---id', id);
         this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
@@ -323,6 +325,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         ...res.state,
                         name: res.state.stateShortName,
                     };
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

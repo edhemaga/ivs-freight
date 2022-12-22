@@ -7,6 +7,7 @@ import {
     ChangeDetectorRef,
 } from '@angular/core';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
 
 @Component({
     selector: 'app-map-marker-dropdown',
@@ -41,7 +42,10 @@ export class MapMarkerDropdownComponent implements OnInit {
         '#919191',
     ];
 
-    constructor(private ref: ChangeDetectorRef) {}
+    constructor(
+        private ref: ChangeDetectorRef,
+        private detailsDataService: DetailsDataService
+    ) {}
 
     ngOnInit(): void {}
 
@@ -108,6 +112,12 @@ export class MapMarkerDropdownComponent implements OnInit {
         event.preventDefault();
         event.stopPropagation();
 
+        this.detailsDataService.setNewData(this.item);
+        this.detailsDataService.changeRateStatus(
+            'like',
+            !this.rating?.hasLiked
+        );
+
         this.bodyActions.emit({
             data: this.item,
             type: 'raiting',
@@ -118,6 +128,12 @@ export class MapMarkerDropdownComponent implements OnInit {
     onDislike(event) {
         event.preventDefault();
         event.stopPropagation();
+
+        this.detailsDataService.setNewData(this.item);
+        this.detailsDataService.changeRateStatus(
+            'dislike',
+            !this.rating?.hasDislike
+        );
 
         this.bodyActions.emit({
             data: this.item,

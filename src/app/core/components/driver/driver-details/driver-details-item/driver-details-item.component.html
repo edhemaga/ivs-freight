@@ -152,10 +152,7 @@
                                 </div>
                             </div>
                             <div
-                                class="card-row-progress"
-                                [ngClass]="{
-                                    'second-progress': toggler[i + 'cdl']
-                                }"
+                                class="card-row-progress second-progress"
                             >
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
@@ -242,7 +239,7 @@
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
                                     [type]="'details'"
-                                    [slideWidth]="315"
+                                    [slideWidth]="324"
                                     [hasLandscapeOption]="true"
                                 ></app-ta-upload-files>
                             </div>
@@ -281,7 +278,7 @@
                         trackBy: identity
                     "
                     [hasToggler]="true"
-                    [options]="dataDropDown"
+                    [options]="dataDropDownMvr"
                     [cardNameCommon]="test?.testingDate | formatDateP"
                     (resizePage)="toggleResizePage(i, 'test')"
                     [optionsId]="test.id"
@@ -325,8 +322,7 @@
                             </div>
                         </div>
                     </div>
-                    <div
-                        [ngClass]="{ 'second-progress': toggler[i + 'test'] }"
+                    <div class="second-progress"
                     ></div>
                     <div class="cards-container">
                         <div
@@ -381,7 +377,7 @@
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
                                     [type]="'details'"
-                                    [slideWidth]="315"
+                                    [slideWidth]="324"
                                 ></app-ta-upload-files>
                             </div>
                             <div class="divider"></div>
@@ -440,10 +436,7 @@
                     <div class="cards-container">
                         <div class="card-body-cdl">
                             <div
-                                class="card-row-progress"
-                                [ngClass]="{
-                                    'second-progress': toggler[i + 'medical']
-                                }"
+                                class="card-row-progress second-progress"
                             >
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
@@ -511,7 +504,7 @@
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
                                     [type]="'details'"
-                                    [slideWidth]="315"
+                                    [slideWidth]="324"
                                 ></app-ta-upload-files>
                             </div>
                             <div class="divider"></div>
@@ -572,10 +565,7 @@
                     <div class="cards-container">
                         <div class="card-body-cdl">
                             <div
-                                class="card-row-progress"
-                                [ngClass]="{
-                                    'second-progress': toggler[i + 'mvr']
-                                }"
+                                class="card-row-progress second-progress"
                             >
                                 <div class="card-details-progress-container">
                                     <app-truckassist-progress-expiration
@@ -643,7 +633,7 @@
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
                                     [type]="'details'"
-                                    [slideWidth]="315"
+                                    [slideWidth]="324"
                                 ></app-ta-upload-files>
                             </div>
                             <div class="divider"></div>

@@ -146,6 +146,7 @@
                     <app-ta-custom-card
                         [cardName]="'Payroll'"
                         [isCardOpen]="!driverForm.get('isOwner').value"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -467,7 +468,7 @@
                                     formControlName="soloFlatRate"
                                     [inputConfig]="{
                                         name: 'Flat Rate',
-                                        label: 'Solo Rate',
+                                        label: 'Rate',
                                         type: 'text',
                                         placeholderIcon: 'dollar',
                                         customClass: 'dollar-placeholderIcon',
@@ -514,7 +515,7 @@
                                     formControlName="bankId"
                                     [template]="'svg-template'"
                                     [inputConfig]="{
-                                        name: 'Input Dropdown  Bank Name',
+                                        name: 'Input Dropdown Bank Name',
                                         type: 'text',
                                         label: 'Bank Name',
                                         minLength: 2,
@@ -653,11 +654,13 @@
                         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                         [isCardOpen]="offDutyLocations.length > 0"
                         [hasBodyData]="offDutyLocations.length > 0"
-                        (onActionEvent)="addOffDutyLocation($event)"
+                        [disabledCard]="!offDutyLocations.length"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '12px'
                         }"
+                        (onActionEvent)="addOffDutyLocation($event)"
                     >
                         <div
                             formArrayName="offDutyLocations"
@@ -737,6 +740,7 @@
                                 documents?.length ? documents.length : 0
                             "
                             [cardName]="'Document'"
+                            [disableAnimation]="disableCardAnimation"
                             [isCardOpen]="documents?.length > 0"
                         >
                             <app-ta-upload-files
@@ -744,45 +748,7 @@
                                 [size]="'medium'"
                                 [showDropzone]="true"
                                 (onFileEvent)="onFilesEvent($event)"
-                                [hasTag]="true"
-                                [tags]="[
-                                    {
-                                        name: 'No Tag',
-                                        checked: true
-                                    },
-                                    {
-                                        name: 'HOS Agreement',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'Unsafe Driving Agreement',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'Maintenance Agreement',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'Application',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'MVR Auth',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'PSP Auth',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'HOS Rules',
-                                        checked: false
-                                    },
-                                    {
-                                        name: 'SPH Auth',
-                                        checked: false
-                                    }
-                                ]"
+                                [customClassName]="'modals'"
                             ></app-ta-upload-files>
                         </app-ta-custom-card>
                     </div>
@@ -790,6 +756,7 @@
                     <app-ta-custom-card
                         [cardName]="'Emergency Contact'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '18px',
                             marginBottom: '22px'
@@ -855,6 +822,7 @@
                     <app-ta-custom-card
                         [cardName]="'Profile Picture'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                     >
                         <app-ta-logo-change
                             [customClass]="'modal-container-M'"
@@ -867,6 +835,7 @@
                         <app-ta-custom-card
                             [cardName]="'Cards & MVR Exp.'"
                             [isCardOpen]="true"
+                            [disableAnimation]="disableCardAnimation"
                             [animationMarginParams]="{
                                 marginTop: '18px',
                                 marginBottom: '22px'
@@ -941,6 +910,7 @@
                     <app-ta-custom-card
                         [cardName]="'Notification'"
                         [isCardOpen]="true"
+                        [disableAnimation]="disableCardAnimation"
                     >
                         <div class="driver-notification">
                             <p>GENERAL</p>

@@ -70,6 +70,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         {
             id: 3,
             name: 'Review',
+            disabled: true
         },
     ];
 
@@ -120,6 +121,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public addNewAfterSave: boolean = false;
     public isFormDirty: boolean;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -138,6 +141,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.onBankSelected();
 
         if (this.editData?.id) {
+            this.disableCardAnimation = true;
             this.editRepairShopById(this.editData.id);
             this.ratingChanges();
         }
@@ -430,13 +434,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.selectedBank = bank.data;
 
         this.bankVerificationService
-            .createBank({ name: this.selectedBank.name })
+            .createBank({ name: bank.data.name })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
                     this.selectedBank = {
                         id: res.id,
-                        name: this.selectedBank.name,
+                        name: bank.data.name,
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
@@ -552,6 +556,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             convertTimeFromBackend(el.endTime)
                         );
                     });
+
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

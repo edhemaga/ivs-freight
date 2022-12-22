@@ -95,6 +95,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     public loadingOwnerEin: boolean = false;
 
+    public disableCardAnimation: boolean = false;
+
     public tabs: any[] = [
         {
             id: 1,
@@ -166,6 +168,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.onTwicTypeSelected();
 
         if (this.editData) {
+            this.disableCardAnimation = true;
             this.editDriverById(this.editData.id);
         }
 
@@ -390,13 +393,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.selectedBank = bank.data;
 
         this.bankVerificationService
-            .createBank({ name: this.selectedBank.name })
+            .createBank({ name: bank.data.name })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
                     this.selectedBank = {
                         id: res.id,
-                        name: this.selectedBank.name,
+                        name: bank.data.name,
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
@@ -1059,7 +1062,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         } = this.driverForm.value;
 
         let documents = [];
-        this.documents?.map((item) => {
+        this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
             }
@@ -1790,11 +1793,20 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             }
                         );
 
+                    console.log(
+                        'fleet type - flat rate: ',
+                        res.fleetType,
+                        res.soloFlatRate
+                    );
                     this.driverForm
                         .get('soloFlatRate')
                         .patchValue(
                             ['Solo', 'Combined'].includes(res.fleetType.name)
-                                ? convertNumberInThousandSep(res.soloFlatRate)
+                                ? res.soloFlatRate
+                                    ? convertNumberInThousandSep(
+                                          res.soloFlatRate
+                                      )
+                                    : null
                                 : null,
                             { emitEvent: false }
                         );
@@ -1803,7 +1815,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         .get('teamFlatRate')
                         .patchValue(
                             ['Team', 'Combined'].includes(res.fleetType.name)
-                                ? convertNumberInThousandSep(res.teamFlatRate)
+                                ? res.teamFlatRate
+                                    ? convertNumberInThousandSep(
+                                          res.teamFlatRate
+                                      )
+                                    : null
                                 : null,
                             { emitEvent: false }
                         );
@@ -1908,6 +1924,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                                 res.address;
                         }
                     }
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

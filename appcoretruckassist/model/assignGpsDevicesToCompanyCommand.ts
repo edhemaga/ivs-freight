@@ -12,6 +12,6 @@
 
 
 export interface AssignGpsDevicesToCompanyCommand { 
-    ids?: Array<number> | null;
+    deviceIds?: Array<string> | null;
 }
 

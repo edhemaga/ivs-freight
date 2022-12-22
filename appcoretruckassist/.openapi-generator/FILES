@@ -52,7 +52,9 @@ api/test.service.ts
 api/title.service.ts
 api/todo.service.ts
 api/trailer.service.ts
+api/trailerType.service.ts
 api/truck.service.ts
+api/truckType.service.ts
 api/user.service.ts
 api/vinDecode.service.ts
 api/violation.service.ts
@@ -81,7 +83,6 @@ model/addIntegrationCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
 model/addressResponse.ts
-model/apUnit.ts
 model/apiCategory.ts
 model/applicantAdminResponse.ts
 model/applicantCompanyInfoResponse.ts
@@ -107,7 +108,6 @@ model/bankCardResponse.ts
 model/bankListResponse.ts
 model/bankResponse.ts
 model/bankResponsePagination.ts
-model/brakes.ts
 model/brokerContactGroupResponse.ts
 model/brokerContactResponse.ts
 model/brokerContactShortResponse.ts
@@ -241,8 +241,6 @@ model/createTrafficViolationCommand.ts
 model/createTrafficViolationItemCommand.ts
 model/createTrafficViolationItemReviewCommand.ts
 model/createTrafficViolationReviewCommand.ts
-model/createTrailerCommand.ts
-model/createTruckCommand.ts
 model/createWithUploadsResponse.ts
 model/createWorkExperienceCommand.ts
 model/createWorkExperienceItemCommand.ts
@@ -273,6 +271,7 @@ model/dispatchShortResponse.ts
 model/dispatchStatus.ts
 model/dispatchStatusResponse.ts
 model/driverAccidentResponse.ts
+model/driverDispatchResponse.ts
 model/driverFilterListResponse.ts
 model/driverFilterResponse.ts
 model/driverFilterResponsePagination.ts
@@ -302,6 +301,7 @@ model/eventResponse.ts
 model/eventType.ts
 model/factoringCompany.ts
 model/fileResponse.ts
+model/fileResponsePagination.ts
 model/fileReviewCommand.ts
 model/fleetType.ts
 model/forgotPasswordCommand.ts
@@ -326,7 +326,6 @@ model/fuelStopShortResponse.ts
 model/fuelTransactionListResponse.ts
 model/fuelTransactionResponse.ts
 model/fuelTransactionResponsePagination.ts
-model/fuelType.ts
 model/fuelledVehicleHistoryListResponse.ts
 model/fuelledVehicleResponse.ts
 model/fuelledVehicleResponsePagination.ts
@@ -483,6 +482,7 @@ model/personalInfoFeedbackResponse.ts
 model/poBoxEntity.ts
 model/preferredLoadType.ts
 model/previousEmployerAccidentHistoryItemCommand.ts
+model/previousEmployerDocumentsResponse.ts
 model/previousEmployerModalResponse.ts
 model/previousEmployerRequestResponse.ts
 model/problemDetails.ts
@@ -504,6 +504,7 @@ model/repairModalResponse.ts
 model/repairResponse.ts
 model/repairResponsePagination.ts
 model/repairServiceTypeResponse.ts
+model/repairShopContactResponse.ts
 model/repairShopListResponse.ts
 model/repairShopMinimalListResponse.ts
 model/repairShopMinimalResponse.ts
@@ -606,6 +607,7 @@ model/trailerMinimalResponsePagination.ts
 model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
+model/trailerTypeFilterResponse.ts
 model/trailerTypeResponse.ts
 model/transponderGroup.ts
 model/truckAccidentResponse.ts
@@ -622,6 +624,7 @@ model/truckMinimalResponsePagination.ts
 model/truckResponse.ts
 model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
+model/truckTypeFilterResponse.ts
 model/truckTypeResponse.ts
 model/updateAccidentItemCommand.ts
 model/updateAccidentItemReviewCommand.ts
@@ -696,9 +699,7 @@ model/updateTrafficViolationCommand.ts
 model/updateTrafficViolationItemCommand.ts
 model/updateTrafficViolationItemReviewCommand.ts
 model/updateTrafficViolationReviewCommand.ts
-model/updateTrailerCommand.ts
 model/updateTrailerPMUnitCommand.ts
-model/updateTruckCommand.ts
 model/updateTruckPMUnitCommand.ts
 model/updateUserCommand.ts
 model/updateWorkExperienceCommand.ts
@@ -719,7 +720,6 @@ model/violationCategoryResponse.ts
 model/violationResponse.ts
 model/weatherDataResponse.ts
 model/weatherDaysResponse.ts
-model/wheelsType.ts
 model/workExperienceFeedbackResponse.ts
 model/workExperienceItemResponse.ts
 model/workExperienceItemReviewResponse.ts
