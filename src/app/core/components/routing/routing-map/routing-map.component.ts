@@ -3079,7 +3079,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 // hazMat
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((routing) => {
+            .subscribe((routing: any) => {
                 var totalMiles = 0;
                 var totalTime = 0;
                 var totalPrice = 0;
