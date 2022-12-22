@@ -755,11 +755,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'REGISTRATION':
             case 'TITLE':
                 let messageText = '';
-                console.log('this.DetailsDataService.mainData', this.DetailsDataService.mainData);
-                if (this.httpRequest.body.getAll('unitType')[0] == 'Truck') {
+                if (this.httpRequest.body.getAll('unitType')[0] == 'Truck' || this.httpRequest.body.getAll('truckId')[0] ) {
                     let repairTruckNum = this.DetailsDataService.mainData?.truckNumber ? this.DetailsDataService.mainData?.truckNumber : '';
                     messageText = 'Truck - ' + repairTruckNum;
-                } else if (this.httpRequest.body.getAll('unitType')[0] == 'Trailer' ) {
+                } else if (this.httpRequest.body.getAll('unitType')[0] == 'Trailer' || this.httpRequest.body.getAll('trailerId') ) {
                     let repairTrailerNum = this.DetailsDataService.mainData?.trailerNumber ? this.DetailsDataService.mainData?.trailerNumber : '';
                     messageText = 'Trailer - ' + repairTrailerNum;
                 }
