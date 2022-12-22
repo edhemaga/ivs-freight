@@ -19,8 +19,8 @@ import {
 import { LabelType, Options } from 'ng5-slider';
 import { catchError, of } from 'rxjs';
 import { ColorFinderPipe } from '../../dispatcher/pipes/color-finder.pipe';
-import { DispatchBoardLocalResponse } from '../../dispatcher/state/dispatcher.model';
-import { DispatcherStoreService } from '../../dispatcher/state/dispatcher.service';
+import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
+import { DispatcherStoreService } from '../state/dispatcher.service';
 
 @Component({
     selector: 'app-dispatch-table',

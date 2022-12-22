@@ -208,7 +208,7 @@ export class DriverDetailsCardComponent
         private dropDownService: DropDownService
     ) {}
     ngOnChanges(changes: SimpleChanges) {
-        if (!changes?.driver?.firstChange && changes?.driver) {
+        if (!changes?.driver?.firstChange && changes?.driver.currentValue && changes?.driver.currentValue.id ) {
             this.note.patchValue(changes?.driver?.currentValue?.note);
             this.getExpireDate(changes?.driver?.currentValue);
             this.getYearsAndDays(changes?.driver?.currentValue);
@@ -342,6 +342,9 @@ export class DriverDetailsCardComponent
         this.selectedTab = ev.id;
     }
     public getDriverById(id: number) {
+        if (!id) {
+            return false;
+        }
         this.driverService
             .getDriverById(id, true)
             .pipe(takeUntil(this.destroy$))

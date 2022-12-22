@@ -178,17 +178,6 @@ export class TaInputDropdownComponent
                 clearTimeout(timeout);
             });
         }
-
-        if (
-            this.inputConfig.name === 'Address' ||
-            this.inputConfig.name === 'RoutingAddress'
-        ) {
-            if (this.getSuperControl.value && this.inputRef?.focusInput) {
-                this.popoverRef?.open();
-            } else {
-                this.popoverRef?.close();
-            }
-        }
     }
 
     ngAfterViewInit() {
@@ -486,18 +475,18 @@ export class TaInputDropdownComponent
                                               0,
                                               selectedItem.lastIndexOf(' ')
                                           )
-                                        : selectedItem.toLowerCase() ===
-                                          item.name.toLowerCase()
+                                        : selectedItem?.toLowerCase() ===
+                                          item?.name.toLowerCase()
                                 )
                                     return (
-                                        item.name.toLowerCase() ===
+                                        item?.name.toLowerCase() ===
                                         (item?.dropLabel ||
                                         this.inputConfig.dropdownLabel
                                             ? selectedItem.substring(
                                                   0,
-                                                  selectedItem.lastIndexOf(' ')
+                                                  selectedItem?.lastIndexOf(' ')
                                               )
-                                            : selectedItem.toLowerCase())
+                                            : selectedItem?.toLowerCase())
                                     );
                             });
 
@@ -614,6 +603,13 @@ export class TaInputDropdownComponent
                         id: 7654,
                         name: 'No Results',
                     });
+
+                    if (
+                        this.inputConfig.name === 'Address' ||
+                        this.inputConfig.name === 'RoutingAddress'
+                    ) {
+                        this.popoverRef?.open();
+                    }
                 }
             } else {
                 this.options = this.originalOptions;

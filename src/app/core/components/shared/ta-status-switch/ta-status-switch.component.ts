@@ -10,8 +10,8 @@ import {
 import { animate, style, transition, trigger } from '@angular/animations';
 import moment from 'moment-timezone';
 import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
-import { DispatcherStoreService } from '../../dispatcher/state/dispatcher.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { DispatcherStoreService } from '../../dispatch/state/dispatcher.service';
 
 export interface IDispatchModel {
     id: number;

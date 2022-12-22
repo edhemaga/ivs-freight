@@ -11,6 +11,20 @@
         height: 194px;
     }
 
+    .documents_holder {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 4px;
+    }
+
+    &.documents {
+        display: block !important;
+
+        .ta-upload-dropzone {
+            height: 332px;
+        }
+    }
+
     &-small {
         grid-template-columns: 168px 1fr;
         grid-template-rows: 194px;
@@ -67,7 +81,22 @@
 
     &.driver-details-pdf {
         grid-template-columns: 1fr;
-        grid-template-rows: 303px;
+        grid-template-rows: 312px;
+    }
+
+    &.company-documents {
+        grid-template-columns: 1fr;
+        grid-template-rows: 332px;
+    }
+
+    &.driver-card-pdf {
+        grid-template-columns: 1fr;
+        grid-template-rows: 428px;
+    }
+
+    &.company-details-pdf {
+        grid-template-columns: 1fr;
+        grid-template-rows: 378px;
     }
 
     &.landscape-details-view {
@@ -76,6 +105,11 @@
     }
 
     &.todo-details {
+        grid-template-columns: 100% 1fr;
+        grid-template-rows: 200px;
+    }
+
+    &.table-details {
         grid-template-columns: 100% 1fr;
         grid-template-rows: 200px;
     }

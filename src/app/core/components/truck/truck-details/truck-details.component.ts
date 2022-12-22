@@ -59,9 +59,13 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
 
         storeData$.subscribe(state => {
             let newTruckData = {...state.entities[this.newTruckId]};
-            this.DetailsDataService.setNewData(newTruckData);
-            this.truckConf(newTruckData);
-            this.initTableOptions(newTruckData);
+
+            if ( !this.isEmpty(newTruckData) ) {
+                this.DetailsDataService.setNewData(newTruckData);
+                this.truckConf(newTruckData);
+                this.initTableOptions(newTruckData);
+            }
+            
           });
     }
 
@@ -143,6 +147,12 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             
         this.truckConf(truckData);
     }
+
+    public isEmpty(obj: Record<string, any>): boolean {
+        return Object.keys(obj).length === 0;
+      }
+
+
     /**Function retrun id */
     public identity(index: number, item: any): number {
         return index;

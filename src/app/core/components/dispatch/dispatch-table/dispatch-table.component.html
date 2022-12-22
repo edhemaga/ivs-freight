@@ -105,7 +105,7 @@
                                     type: 'text',
                                     label: 'Unit No',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-118',
+                                    dropdownWidthClass: 'w-col-98',
                                     placeholderInsteadOfLabel: true,
                                     hideDropdownArrow: true,
                                     autoFocus: true
@@ -223,7 +223,7 @@
                                         type: 'text',
                                         label: 'Unit No',
                                         isDropdown: true,
-                                        dropdownWidthClass: 'w-col-118',
+                                        dropdownWidthClass: 'w-col-98',
                                         placeholderInsteadOfLabel: true,
                                         hideDropdownArrow: true,
                                         autoFocus: true
@@ -242,7 +242,7 @@
                         [class.addNew]="!item.driver && driverList.length"
                         [class.filled]="item.driver"
                         cdkDropList
-                        (cdkDropListDropped)="dropTrailer($event, rowIndex)"
+                        (cdkDropListDropped)="dropDriver($event, rowIndex)"
                         id="{{ rowIndex | cdkid: gridIndex:'driver' }}"
                         [cdkDropListData]="dData"
                         [cdkDropListConnectedTo]="
@@ -422,7 +422,7 @@
                                         type: 'text',
                                         label: 'Unit No',
                                         isDropdown: true,
-                                        dropdownWidthClass: 'w-col-228',
+                                        dropdownWidthClass: 'w-col-200',
                                         placeholderInsteadOfLabel: true,
                                         hideDropdownArrow: true,
                                         autoFocus: true
@@ -646,7 +646,7 @@
                                     [openedAll]="true"
                                     [dispatchIndex]="rowIndex"
                                     [parking]="false"
-                                    [noteWidth]="231"
+                                    [noteWidth]="182"
                                     (saveNoteValue)="saveNoteValue($event)"
                                 >
                                 </app-ta-note>
@@ -722,7 +722,7 @@
                                     type: 'text',
                                     label: 'Unit No',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-118',
+                                    dropdownWidthClass: 'w-col-98',
                                     placeholderInsteadOfLabel: true,
                                     hideDropdownArrow: true,
                                     autoFocus: true
@@ -775,7 +775,7 @@
                                     type: 'text',
                                     label: 'Unit No',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-118',
+                                    dropdownWidthClass: 'w-col-98',
                                     placeholderInsteadOfLabel: true,
                                     hideDropdownArrow: true,
                                     autoFocus: true
@@ -823,7 +823,7 @@
                                     type: 'text',
                                     label: 'Unit No',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-228',
+                                    dropdownWidthClass: 'w-col-200',
                                     placeholderInsteadOfLabel: true,
                                     hideDropdownArrow: true,
                                     autoFocus: true
