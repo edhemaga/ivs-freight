@@ -448,18 +448,18 @@ export class TaInputDropdownComponent
                                               0,
                                               selectedItem.lastIndexOf(' ')
                                           )
-                                        : selectedItem.toLowerCase() ===
-                                          item.name.toLowerCase()
+                                        : selectedItem?.toLowerCase() ===
+                                          item?.name.toLowerCase()
                                 )
                                     return (
-                                        item.name.toLowerCase() ===
+                                        item?.name.toLowerCase() ===
                                         (item?.dropLabel ||
                                         this.inputConfig.dropdownLabel
                                             ? selectedItem.substring(
                                                   0,
-                                                  selectedItem.lastIndexOf(' ')
+                                                  selectedItem?.lastIndexOf(' ')
                                               )
-                                            : selectedItem.toLowerCase())
+                                            : selectedItem?.toLowerCase())
                                     );
                             });
 

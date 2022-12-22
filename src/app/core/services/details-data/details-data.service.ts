@@ -12,6 +12,7 @@ export class DetailsDataService {
     public cardMainTitle: any;
     public leftMenuOpened: any = false;
     public stopName: any;
+    public documentName: any;
 
     constructor() {}
 
@@ -49,5 +50,9 @@ export class DetailsDataService {
 
     setStopName(mod) {
         this.stopName = mod;
+    }
+
+    setDocumentName(mod){
+        this.documentName = mod;
     }
 }

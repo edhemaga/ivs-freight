@@ -4,7 +4,7 @@
             class="carousel-slider"
             #fileSlider
             [ngClass]="{
-                'multiple-slider': ['medium', 'large', 'small'].includes(
+                'multiple-slider': ['medium', 'large', 'small', 'extralarge'].includes(
                     this.customClass?.toLowerCase()
                 )
             }"
@@ -44,9 +44,9 @@
             files?.length == 3 &&
             translateXMultipleSlides < 0
         "
-        (click)="onAction('prev')"
     >
         <svg-icon
+            (click)="onAction('prev')"
             class="ta-upload-files-control ta-upload-files-carousel-left"
             src="assets/svg/common/upload-arrow.svg"
         ></svg-icon>
@@ -57,7 +57,7 @@
             (files.length < 2 && customClass === 'small') ||
             (files.length < 3 && customClass === 'medium') ||
             (files.length < 4 && customClass === 'large') ||
-            (files.length < 7 && customClass === 'extraLarge') ||
+            (files.length < 7 && customClass === 'extralarge') ||
             multipleCurrentSlide > files?.length - filesShown
         "
         [class.show]="
@@ -65,9 +65,9 @@
             files?.length == 3 &&
             translateXMultipleSlides == 0
         "
-        (click)="onAction('next')"
     >
         <svg-icon
+            (click)="onAction('next')"
             class="ta-upload-files-control ta-upload-files-carousel-right"
             src="assets/svg/common/upload-arrow.svg"
         ></svg-icon>

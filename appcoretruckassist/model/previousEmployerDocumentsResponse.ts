@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
-export interface MarkerNamesResponse { 
-    id?: number;
-    name?: string | null;
-    favourite?: boolean;
+export interface PreviousEmployerDocumentsResponse { 
+    files?: Array<FileResponse> | null;
 }
 

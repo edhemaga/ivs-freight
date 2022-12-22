@@ -301,6 +301,7 @@ model/eventResponse.ts
 model/eventType.ts
 model/factoringCompany.ts
 model/fileResponse.ts
+model/fileResponsePagination.ts
 model/fileReviewCommand.ts
 model/fleetType.ts
 model/forgotPasswordCommand.ts
@@ -481,6 +482,7 @@ model/personalInfoFeedbackResponse.ts
 model/poBoxEntity.ts
 model/preferredLoadType.ts
 model/previousEmployerAccidentHistoryItemCommand.ts
+model/previousEmployerDocumentsResponse.ts
 model/previousEmployerModalResponse.ts
 model/previousEmployerRequestResponse.ts
 model/problemDetails.ts
@@ -502,6 +504,7 @@ model/repairModalResponse.ts
 model/repairResponse.ts
 model/repairResponsePagination.ts
 model/repairServiceTypeResponse.ts
+model/repairShopContactResponse.ts
 model/repairShopListResponse.ts
 model/repairShopMinimalListResponse.ts
 model/repairShopMinimalResponse.ts

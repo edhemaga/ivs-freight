@@ -1,6 +1,6 @@
 <div
     class="ta-upload-file-container {{ customClassName }}"
-    [class.modal]="!customClassName || customClassName == ''"
+    [class.modal]="!customClassName || customClassName == '' || customClassName == 'modals'"
     [class.keep_open]="t2?.isOpen()"
     [class.applicant_review]="file?.incorrect"
     [class.annotation_hover]="annotationHover"
@@ -92,9 +92,11 @@
         class="ta-upload-file-header"
     >
         <!-- Left Side -->
+        <div class="rightside_bar" *ngIf="customClassName == 'company-documents'"></div>
         <div
+            *ngIf="customClassName != 'company-documents'"
             class="ta-upload-file-action-leftside"
-            [ngClass]="{ 'no-action-tag': !hasTag, active: t2?.isOpen() }"
+            [ngClass]="{ 'no-action-tag': !hasTagsDropdown, active: t2?.isOpen() }"
             #t2="ngbPopover"
             [ngbPopover]="tagsPopover"
             [popoverClass]="'tags_popover'"
@@ -106,7 +108,7 @@
             <div
                 ngbTooltip
                 mainTooltip="Tag"
-                tooltipBackground="#6c6c6c"
+                tooltipBackground="#2F2F2F"
                 position="top"
                 class="ta-upload-action-tag"
                 (click)="onAction('tag')"
@@ -119,13 +121,33 @@
             class="ta-upload-file-action-rightside"
             [ngClass]="{
                 'feedback-mode': isReview && reviewMode === 'FEEDBACK_MODE',
-                small: type == 'details' || type == 'todo'
+                small: type == 'details' || type == 'todo' || reviewMode == 'REVIEW_MODE',
+                'vertical-mode': customClassName == 'company-documents'
             }"
         >
             <div
+                *ngIf="customClassName == 'company-documents'"
+                #t2="ngbPopover"
+                [ngbPopover]="tagsPopover"
+                [popoverClass]="'tags_popover_vertical'"
+                [placement]="'bottom-left'"
+                autoclose="outside"
+                [container]="'body'"
+                triggers="'manual'"
+                ngbTooltip
+                mainTooltip="Tag"
+                tooltipBackground="#2F2F2F"
+                position="top"
+                class="ta-upload-action-tag"
+                [ngClass]="{ active: t2?.isOpen() }"
+                (click)="onAction('tag')"
+            >
+                <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
+            </div>
+            <div
                 ngbTooltip
                 mainTooltip="Download"
-                tooltipBackground="#6c6c6c"
+                tooltipBackground="#2F2F2F"
                 position="top"
                 class="ta-upload-action-download"
                 (click)="onAction('download')"
@@ -138,8 +160,8 @@
                 tooltipBackground="#EF5350"
                 position="top"
                 class="ta-upload-action-delete"
-                (click)="isFileDelete = true"
-                *ngIf="type != 'details' && type != 'todo'"
+                (click)="openDeletePopup(file?.fileName)"
+                *ngIf="type != 'details' && type != 'todo' && reviewMode != 'REVIEW_MODE'"
             >
                 <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
             </div>
@@ -204,14 +226,11 @@
 
         <!-- Tag Content -->
         <div
-            *ngIf="hasTag || categoryTag"
+            *ngIf="(hasTagsDropdown || categoryTag) && file?.tags && file?.tags != '' && file?.tags != 'No Tag'"
             class="ta-upload-file-tag"
-            [ngClass]="{
-                'no-tag': (!categoryTag && !file?.tag) || file?.tag == 'No Tag'
-            }"
         >
             <span>{{
-                file?.tag ? file?.tag : categoryTag ? categoryTag : 'No Tag'
+                file?.tags ? file?.tags : categoryTag ? categoryTag : ''
             }}</span>
         </div>
     </div>
@@ -249,7 +268,7 @@
                         ? file?.extension
                         : (fileExtension | lowercase)
                 }}"
-                [ngClass]="{ 'no-tag': !file?.tag }"
+                [ngClass]="{ 'no-tag': !file?.tags }"
             >
                 <div *ngIf="file?.extension">
                     {{ file?.extension | uppercase }}
@@ -319,16 +338,24 @@
 
 <ng-template #tagsPopover let-data="data">
     <div class="tags_main_holder">
+        <div class="remove_tag_holder" *ngIf="file?.tags" (click)="removeTag()">
+            <div class="remove_tag">
+                Remove Tag
+            </div>
+        </div>
+        <div class="remove_tag_border_holder" *ngIf="file?.tags">
+            <div class="remove_tag_border"></div>
+        </div>
         <div
             class="tags_inner_holder"
-            *ngFor="let tag of tags; index as i"
+            *ngFor="let tag of tagsOptions; index as i"
             [class.firstRow]="i == 0"
-            [class.lastRow]="i == tags?.length - 1"
-            (click)="selectTag(tag?.name)"
+            [class.lastRow]="i == tagsOptions?.length - 1"
+            (click)="selectTag(tag?.tagName)"
         >
             <div class="tag_options_holder">
                 <div class="tag_name" [class.checked]="tag.checked">
-                    {{ tag.name }}
+                    {{ tag.tagName }}
                 </div>
                 <div class="checked_icon" [class.shown]="tag.checked">
                     <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
