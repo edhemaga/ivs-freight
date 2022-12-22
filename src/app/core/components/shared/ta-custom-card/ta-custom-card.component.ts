@@ -65,6 +65,8 @@ export class TaCustomCardComponent {
         marginBottom: '12px',
     };
 
+    @Input() has24Hours: boolean = false;
+
     @Input() disableAnimation: boolean = false; // forward true for disable
 
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
@@ -76,6 +78,8 @@ export class TaCustomCardComponent {
 
     public zoneTriger: boolean = false;
     public isHeaderHover: boolean = false;
+
+    public is24Hours: boolean = false;
 
     constructor(private uploadFileService: TaUploadFileService) {}
 
@@ -119,6 +123,14 @@ export class TaCustomCardComponent {
             }
             case 'delete': {
                 this.onActionEvent.emit({ check: true, action: 'delete' });
+                break;
+            }
+            case 'hours-24': {
+                this.is24Hours = !this.is24Hours;
+                this.onActionEvent.emit({
+                    check: this.is24Hours,
+                    action: 'hours-24',
+                });
                 break;
             }
             default: {

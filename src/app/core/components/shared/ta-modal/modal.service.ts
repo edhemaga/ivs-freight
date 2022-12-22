@@ -121,6 +121,7 @@ export class ModalService {
         options = {
             ...options,
             backdrop: 'static',
+            keyboard: false,
             backdropClass: backdropClass ? backdropClass : 'myDropback',
         };
 

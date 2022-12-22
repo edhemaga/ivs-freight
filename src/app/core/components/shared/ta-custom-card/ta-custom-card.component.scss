@@ -32,6 +32,8 @@
             }
 
             .capsula-wrapper {
+                width: -webkit-max-content;
+                width: -moz-max-content;
                 width: max-content;
                 background-color: #424242;
                 border-radius: 11px;
@@ -233,6 +235,44 @@
                         path {
                             fill: #919191;
                         }
+                    }
+                }
+            }
+
+            // 24/7 status
+            ._24-7-status {
+                width: 57px;
+                height: 22px;
+                border-radius: 2px;
+                background-color: #aaaaaa;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+
+                p {
+                    margin: 0;
+                    padding: 0;
+                    color: #ffffff;
+                    font-size: 11px;
+                    font-weight: 700;
+                    line-height: 14px;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                &:hover {
+                    background-color: #919191;
+                }
+
+                &.active {
+                    background-color: #3074d3;
+
+                    &:hover {
+                        background-color: #536bc2;
                     }
                 }
             }
