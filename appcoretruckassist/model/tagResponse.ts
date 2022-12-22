@@ -11,9 +11,8 @@
  */
 
 
-export interface MarkerNamesResponse { 
-    id?: number;
-    name?: string | null;
-    favourite?: boolean;
+export interface TagResponse { 
+    tagId?: number;
+    tagName?: string | null;
 }
 

@@ -12,12 +12,13 @@
             files?.length && files?.length >= 2 && size === 'large',
         'ta-upload-large-threefiles':
             files?.length && files?.length >= 3 && size === 'large',
-        'ta-upload-review-mode': isReview
+        'ta-upload-review-mode': isReview,
+        'documents': dontUseSlider
     }"
 >
     <!-- Carousel Files -->
     <app-ta-upload-files-carousel
-        *ngIf="files?.length"
+        *ngIf="files?.length && !dontUseSlider"
         [files]="files"
         [hasCarouselBottomTabs]="hasCarouselBottomTabs"
         [customClass]="size"
@@ -32,7 +33,7 @@
             <div>
                 <app-ta-upload-file
                     [file]="file"
-                    [hasTag]="hasTag"
+                    [hasTagsDropdown]="hasTagsDropdown"
                     [isReview]="isReview"
                     [reviewMode]="reviewMode"
                     [feedbackText]="feedbackText"
@@ -51,10 +52,49 @@
             </div>
         </div>
     </app-ta-upload-files-carousel>
+
+    <div class="documents_holder" *ngIf="dontUseSlider">
+        <app-ta-upload-dropzone
+            *ngIf="showDropzone"
+            (onFileEvent)="onUploadFiles($event)"
+            [isRequired]="isRequired"
+            [showRequired]="showRequired"
+            [dropzoneClose]="true"
+            [dropzoneFocus]="dropzoneFocus"
+            (closeDropzone)="dropZoneClose()"
+        ></app-ta-upload-dropzone>
+        <div
+            class="ta-upload-carousel-container"
+            *ngFor="let file of files; let ind = index; trackBy: identity"
+        >
+            <div>
+                <app-ta-upload-file
+                    [file]="file"
+                    [hasTagsDropdown]="hasTagsDropdown"
+                    [isReview]="isReview"
+                    [reviewMode]="reviewMode"
+                    [feedbackText]="feedbackText"
+                    [hasNumberOfPages]="hasNumberOfPages"
+                    [customClassName]="customClassName"
+                    (fileAction)="onFileAction($event)"
+                    (landscapeCheck)="onLandscapeCheck($event)"
+                    (documentReviewInputEvent)="
+                        documentReviewInputEventMethod($event)
+                    "
+                    [tags]="tags"
+                    [type]="type"
+                    [categoryTag]="categoryTag"
+                    [hasLandscapeOption]="hasLandscapeOption"
+                ></app-ta-upload-file>
+            </div>
+        </div>
+    </div>
+
     <app-ta-upload-dropzone
-        *ngIf="showDropzone"
+        *ngIf="showDropzone && !dontUseSlider"
         (onFileEvent)="onUploadFiles($event)"
         [isRequired]="isRequired"
         [showRequired]="showRequired"
+        [dropzoneFocus]="dropzoneFocus"
     ></app-ta-upload-dropzone>
 </div>
