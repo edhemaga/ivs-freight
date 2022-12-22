@@ -61,7 +61,7 @@ export const phoneExtension = [
 
 //---------------- Address & Address Unit
 export const addressValidation = [
-    Validators.minLength(6),
+    Validators.minLength(4),
     Validators.maxLength(256),
 ];
 

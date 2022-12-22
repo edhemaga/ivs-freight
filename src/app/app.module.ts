@@ -33,6 +33,7 @@ import { EncryptionDecryptionService } from './core/services/encryption-decrypti
 
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';
+import { StaticInjectorService } from './core/utils/application.decorators';
 
 @NgModule({
     declarations: [
@@ -87,6 +88,7 @@ import { configFactory } from './app.config';
         ],
         EncryptionDecryptionService,
         GoogleMapsAPIWrapper,
+        StaticInjectorService
     ],
     exports: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

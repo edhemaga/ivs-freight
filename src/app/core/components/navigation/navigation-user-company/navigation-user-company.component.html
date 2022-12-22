@@ -9,9 +9,10 @@
     <div
         class="user-company-content"
         *ngFor="let item of userCompanies; trackBy: identity"
+        (click)="onSelectCompany(item)"
     >
         <p
-            [ngClass]="{ 'user-company-text-active': item.active }"
+            [ngClass]="{ 'user-company-text-active': item.isActive }"
             class="user-company-text"
         >
             {{ item.companyName }}

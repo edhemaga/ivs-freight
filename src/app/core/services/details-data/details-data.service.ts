@@ -40,8 +40,10 @@ export class DetailsDataService {
     changeRateStatus(type, mod) {
         if (type == 'like') {
             this.mainData.raiting.hasLiked = mod;
+            this.mainData.raiting.hasDislike = false;
         } else {
             this.mainData.raiting.hasDislike = mod;
+            this.mainData.raiting.hasLiked = false;
         }
     }
 

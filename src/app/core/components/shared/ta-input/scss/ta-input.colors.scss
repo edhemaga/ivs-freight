@@ -188,8 +188,8 @@ $input-error-color-component-hover: $input-red-color-1;
 // Normal Color
 $input-background-color-normal: $input-white-color-2;
 $input-text-color-normal: $input-gray-color-1;
-$input-background-selection-normal: $input-white-color-7;
-$input-text-selection-normal: $input-black-color-1;
+$input-background-selection-normal: rgb(255, 255, 255, 0.3);
+$input-text-selection-normal: #ffffff;
 
 // Normal Color Hover
 $input-background-color-normal-hover: $input-white-color-5;
@@ -203,7 +203,6 @@ $input-background-selection-normal-focus: $input-gray-color-2;
 
 // Invalid Color Focus
 $input-background-color-invalid-focus: $input-red-color-3;
-$input-background-selection-invalid-focus: $input-red-color-4;
 
 // Invalid Color Focus Out
 $input-background-color-invalid-focus-out: $input-red-color-8;
@@ -212,7 +211,6 @@ $input-text-color-invalid-focus-out: $input-black-color-1;
 // Valid Color Focus
 $input-background-color-valid-focus: $input-blue-color-1;
 $input-placeholder-color-valid-focus: $input-blue-color-3;
-$input-background-selection-valid-focus: $input-blue-color-2;
 
 // Valid Color Focus Out
 $input-background-color-valid-focus-out: $input-blue-color-7;

@@ -47,6 +47,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     public fileModified: boolean = false;
     public filesForDelete: any[] = [];
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -60,6 +62,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         if (this.editData?.type === 'edit') {
+            this.disableCardAnimation = true;
             this.getFuelStopById(this.editData.id);
         }
 
@@ -361,6 +364,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                             .get('businessName')
                             .setValidators(Validators.required);
                     }
+
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

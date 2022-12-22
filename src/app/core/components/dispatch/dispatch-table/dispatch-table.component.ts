@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {
     ChangeDetectionStrategy,
@@ -18,9 +19,8 @@ import {
 import { LabelType, Options } from 'ng5-slider';
 import { catchError, of } from 'rxjs';
 import { ColorFinderPipe } from '../../dispatcher/pipes/color-finder.pipe';
-import { DispatchBoardLocalResponse } from '../../dispatcher/state/dispatcher.model';
-import { DispatcherStoreService } from '../../dispatcher/state/dispatcher.service';
-import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
+import { DispatcherStoreService } from '../state/dispatcher.service';
 
 @Component({
     selector: 'app-dispatch-table',
@@ -29,6 +29,15 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [ColorFinderPipe],
+    animations: [
+        trigger('iconAnimation', [
+            transition(':enter', [
+                style({ opacity: 0 }),
+                animate('100ms', style({ opacity: '*' })),
+            ]),
+            transition(':leave', [animate('100ms', style({ opacity: 0 }))]),
+        ]),
+    ],
 })
 export class DispatchTableComponent implements OnInit {
     checkForEmpty: string = '';
@@ -42,6 +51,8 @@ export class DispatchTableComponent implements OnInit {
     testTimeout: any;
     startIndexTrailer: number;
     startIndexDriver: number;
+    savedTruckData: any = null;
+
     @Input() set smallList(value) {
         const newTruckList = JSON.parse(JSON.stringify(value.trucks));
         this.truckList = newTruckList.map((item) => {
@@ -215,8 +226,10 @@ export class DispatchTableComponent implements OnInit {
     onHideDropdown(e) {
         setTimeout(() => {
             if (this.showAddAddressField != -2)
-                this.dData.dispatches[this.showAddAddressField].truck = null;
+                this.dData.dispatches[this.showAddAddressField].truck =
+                    this.savedTruckData;
             this.showAddAddressField = -1;
+            this.savedTruckData = null;
             this.chd.detectChanges();
         }, 200);
     }
@@ -243,6 +256,8 @@ export class DispatchTableComponent implements OnInit {
             if ([7, 8, 9, 4, 10, 6].includes(e.statusValue.id)) {
                 this.dData.dispatches[this.statusOpenedIndex].status = e;
                 this.showAddAddressField = this.statusOpenedIndex;
+                this.savedTruckData =
+                    this.dData.dispatches[this.statusOpenedIndex].truck;
             } else {
                 this.updateOrAddDispatchBoardAndSend(
                     'status',
@@ -298,6 +313,7 @@ export class DispatchTableComponent implements OnInit {
                 .pipe(
                     catchError((error) => {
                         this.checkEmptySet = '';
+                        this.__change_in_proggress = false;
                         return of([]);
                     })
                 )
@@ -317,6 +333,7 @@ export class DispatchTableComponent implements OnInit {
                 .pipe(
                     catchError((error) => {
                         this.checkEmptySet = '';
+                        this.__change_in_proggress = false;
                         return of([]);
                     })
                 )
@@ -455,6 +472,10 @@ export class DispatchTableComponent implements OnInit {
         );
     }
 
+    openIndex(indx: number) {
+        this.statusOpenedIndex = indx;
+    }
+
     // CDL DRAG AND DROP
 
     dropList(event) {
@@ -479,6 +500,13 @@ export class DispatchTableComponent implements OnInit {
                     },
                 ],
             })
+            .pipe(
+                catchError((error) => {
+                    this.checkEmptySet = '';
+                    this.__change_in_proggress = false;
+                    return of([]);
+                })
+            )
             .subscribe((res) => {
                 this.__change_in_proggress = false;
             });

@@ -102,20 +102,13 @@ export class DepartmentService {
      * @param isCompanyUser 
      * @param isCompanyOffice 
      * @param isToDo 
-     * @param pageIndex 
-     * @param pageSize 
-     * @param companyId 
-     * @param sort 
-     * @param search 
-     * @param search1 
-     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDepartmentFilterGet(isGeneral?: boolean, isBroker?: boolean, isShipper?: boolean, isCompany?: boolean, isCompanyContact?: boolean, isCompanyUser?: boolean, isCompanyOffice?: boolean, isToDo?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<DepartmentFilterResponse>>;
-    public apiDepartmentFilterGet(isGeneral?: boolean, isBroker?: boolean, isShipper?: boolean, isCompany?: boolean, isCompanyContact?: boolean, isCompanyUser?: boolean, isCompanyOffice?: boolean, isToDo?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<DepartmentFilterResponse>>>;
-    public apiDepartmentFilterGet(isGeneral?: boolean, isBroker?: boolean, isShipper?: boolean, isCompany?: boolean, isCompanyContact?: boolean, isCompanyUser?: boolean, isCompanyOffice?: boolean, isToDo?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<DepartmentFilterResponse>>>;
-    public apiDepartmentFilterGet(isGeneral?: boolean, isBroker?: boolean, isShipper?: boolean, isCompany?: boolean, isCompanyContact?: boolean, isCompanyUser?: boolean, isCompanyOffice?: boolean, isToDo?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDepartmentFilterGet(isGeneral?: boolean, isBroker?: boolean, isShipper?: boolean, isCompany?: boolean, isCompanyContact?: boolean, isCompanyUser?: boolean, isCompanyOffice?: boolean, isToDo?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<DepartmentFilterResponse>>;
+    public apiDepartmentFilterGet(isGeneral?: boolean, isBroker?: boolean, isShipper?: boolean, isCompany?: boolean, isCompanyContact?: boolean, isCompanyUser?: boolean, isCompanyOffice?: boolean, isToDo?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<DepartmentFilterResponse>>>;
+    public apiDepartmentFilterGet(isGeneral?: boolean, isBroker?: boolean, isShipper?: boolean, isCompany?: boolean, isCompanyContact?: boolean, isCompanyUser?: boolean, isCompanyOffice?: boolean, isToDo?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<DepartmentFilterResponse>>>;
+    public apiDepartmentFilterGet(isGeneral?: boolean, isBroker?: boolean, isShipper?: boolean, isCompany?: boolean, isCompanyContact?: boolean, isCompanyUser?: boolean, isCompanyOffice?: boolean, isToDo?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (isGeneral !== undefined && isGeneral !== null) {
@@ -149,34 +142,6 @@ export class DepartmentService {
         if (isToDo !== undefined && isToDo !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>isToDo, 'IsToDo');
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
-        }
-        if (companyId !== undefined && companyId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>companyId, 'CompanyId');
-        }
-        if (sort !== undefined && sort !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sort, 'Sort');
-        }
-        if (search !== undefined && search !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search, 'Search');
-        }
-        if (search1 !== undefined && search1 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search1, 'Search1');
-        }
-        if (search2 !== undefined && search2 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search2, 'Search2');
         }
 
         let localVarHeaders = this.defaultHeaders;

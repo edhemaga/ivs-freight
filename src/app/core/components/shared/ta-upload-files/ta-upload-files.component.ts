@@ -155,14 +155,14 @@ export class TaUploadFilesComponent implements OnInit {
             }
             case 'mark-incorrect': {
                 this.onFileEvent.emit({
-                    files: data.file,
+                    files: this.files,
                     action: data.action,
                 });
                 break;
             }
             case 'mark-correct': {
                 this.onFileEvent.emit({
-                    files: data.file,
+                    files: this.files,
                     action: data.action,
                 });
                 break;

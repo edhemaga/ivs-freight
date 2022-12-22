@@ -220,9 +220,12 @@
                                 <div class="list-top-holder">
                                     <div class="list-items-frame">
                                         <div class="list-title">
-                                          <svg-icon *ngIf="item.status?.name == 'Done'"
-                                              src="/assets/svg/applicant/check.svg"
-                                          ></svg-icon>
+                                            <svg-icon
+                                                *ngIf="
+                                                    item.status?.name == 'Done'
+                                                "
+                                                src="/assets/svg/applicant/check.svg"
+                                            ></svg-icon>
                                             {{ item.title }}
                                         </div>
                                         <div class="icons-frame">
@@ -256,6 +259,9 @@
                                             </div>
                                             <div
                                                 class="icon-box"
+                                                [class.documents]="
+                                                    item.files?.length
+                                                "
                                                 ngbTooltip
                                                 [mainTooltip]="
                                                     item.files?.length
@@ -283,6 +289,12 @@
                                                 <svg-icon
                                                     src="assets/svg/common/ic_attachment.svg"
                                                 ></svg-icon>
+                                                <div
+                                                    class="documents_counter"
+                                                    *ngIf="item.files?.length"
+                                                >
+                                                    {{ item.files.length }}
+                                                </div>
                                             </div>
                                             <div
                                                 class="icon-box"
@@ -431,19 +443,6 @@
                                                         [type]="'user'"
                                                     >
                                                     </app-profile-images>
-                                                </div>
-                                                <div
-                                                    class="user_tooltip_name_hold"
-                                                >
-                                                    <div
-                                                        class="user_tooltip_name"
-                                                    >
-                                                        {{
-                                                            user.firstName +
-                                                                ' ' +
-                                                                user.lastName
-                                                        }}
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -608,9 +607,25 @@
                                 </div>
                                 <div
                                     class="todo_deadline_hold"
+                                    [class.done]="item.status?.name == 'Done'"
                                     *ngIf="item.deadline"
                                 >
                                     <app-truckassist-progress-expiration
+                                        *ngIf="item.status?.name == 'Done'"
+                                        [expireDate]="
+                                            item.deadline | formatDateP
+                                        "
+                                        [startDate]="
+                                            item.createdAt | formatDateP
+                                        "
+                                        [completedDate]="
+                                            item.setAsDoneAt | formatDateP
+                                        "
+                                        [expiresSettings]="'todo-list'"
+                                    >
+                                    </app-truckassist-progress-expiration>
+                                    <app-truckassist-progress-expiration
+                                        *ngIf="item.status?.name != 'Done'"
                                         [expireDate]="
                                             item.deadline | formatDateP
                                         "

@@ -172,11 +172,12 @@
                         [hasCounter]="pickedServices() ? pickedServices() : 0"
                         [cardName]="'Service'"
                         [isCardOpen]="true"
-                        (onOpenCard)="isServiceCardOpen = $event"
+                        [disableAnimation]="disableCardAnimation"
                         [animationMarginParams]="{
                             marginTop: '12px',
                             marginBottom: '0px'
                         }"
+                        (onOpenCard)="isServiceCardOpen = $event"
                     >
                         <div class="repair-shop-services">
                             <div

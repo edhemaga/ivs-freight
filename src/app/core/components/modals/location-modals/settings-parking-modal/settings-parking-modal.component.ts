@@ -115,6 +115,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public isFinanceCardOpen: boolean = true;
     public isParkingCardOpen: boolean = true;
 
+    public disableCardAnimation: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -130,6 +132,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         if (this.editData?.type === 'edit') {
+            this.disableCardAnimation = true;
             this.editCompanyParkingById(this.editData.id);
         }
     }
@@ -484,6 +487,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     if (res.extensionPhone) {
                         this.isPhoneExtExist = true;
                     }
+
+                    setTimeout(() => {
+                        this.disableCardAnimation = false;
+                    }, 1000);
                 },
                 error: () => {},
             });

@@ -110,6 +110,10 @@
                 getSuperControl.value &&
                 incorrectValue,
             'dropdown-label-position': selectedDropdownLabelColor,
+            'dropdown-label-hide':
+                getSuperControl.value &&
+                focusInput &&
+                inputConfig.dropdownLabel,
             'dropdown-image-input':
                 inputConfig?.dropdownImageInput?.url && !focusInput
         }"

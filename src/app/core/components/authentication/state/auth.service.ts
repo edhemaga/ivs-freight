@@ -11,10 +11,12 @@ import {
     VerifyOwnerCommand,
     SignupUserCommand,
     VerifyForgotPasswordCommand,
+    SelectCompanyResponse,
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
 import { SignUpUserInfo } from '../../../model/signUpUserInfo';
+import { SelectCompanyCommand } from '../../../../../../appcoretruckassist/model/selectCompanyCommand';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {
@@ -100,5 +102,11 @@ export class AuthStoreService {
 
     public verifyOwner(data: VerifyOwnerCommand): Observable<object> {
         return this.accountService.apiAccountVerifyownerPut(data, 'response');
+    }
+
+    public selectCompanyAccount(
+        data: SelectCompanyCommand
+    ): Observable<SelectCompanyResponse> {
+        return this.accountService.apiAccountSelectcompanyPost(data);
     }
 }

@@ -105,7 +105,8 @@
                 !inputConfig.isDisabled) ||
             ((inputConfig.name == 'Address' ||
                 inputConfig.name == 'RoutingAddress') &&
-                !inputConfig.isDisabled && options?.length)
+                !inputConfig.isDisabled &&
+                options?.length)
         "
         class="dropdown-options  {{ inputConfig.dropdownWidthClass }}"
         [ngClass]="{
@@ -344,10 +345,10 @@
                     class="dropdown-option labels-template"
                     [ngClass]="{
                         disabled: option?.disabled,
+                        'add-new': option.name === 'ADD NEW',
                         'no-result':
                             options.length === 1 &&
                             options[0].name === 'No Results',
-                        'add-new': option.name === 'ADD NEW',
                         'active-label':
                             option.id === activeItem?.id &&
                             labelMode === 'Label'
@@ -377,7 +378,10 @@
                         <div
                             class="labels-template-text"
                             [ngClass]="{
-                                'add-new': option.name === 'ADD NEW'
+                                'add-new': option.name === 'ADD NEW',
+                                'no-result':
+                                    options.length === 1 &&
+                                    options[0].name === 'No Results'
                             }"
                             [innerHtml]="
                                 option.name

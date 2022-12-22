@@ -19,11 +19,15 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateResponse } from '../model/createResponse';
+import { ApUnit } from '../model/apUnit';
 // @ts-ignore
-import { CreateTruckCommand } from '../model/createTruckCommand';
+import { Brakes } from '../model/brakes';
+// @ts-ignore
+import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
 // @ts-ignore
 import { FileResponse } from '../model/fileResponse';
+// @ts-ignore
+import { FuelType } from '../model/fuelType';
 // @ts-ignore
 import { GetTruckModalResponse } from '../model/getTruckModalResponse';
 // @ts-ignore
@@ -41,7 +45,7 @@ import { TruckMinimalListResponse } from '../model/truckMinimalListResponse';
 // @ts-ignore
 import { TruckResponse } from '../model/truckResponse';
 // @ts-ignore
-import { UpdateTruckCommand } from '../model/updateTruckCommand';
+import { WheelsType } from '../model/wheelsType';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -995,14 +999,53 @@ export class TruckService {
     }
 
     /**
-     * @param createTruckCommand 
+     * @param companyOwned 
+     * @param truckNumber 
+     * @param truckTypeId 
+     * @param vin 
+     * @param truckMakeId 
+     * @param truckLengthId 
+     * @param model 
+     * @param year 
+     * @param colorId 
+     * @param ownerId 
+     * @param commission 
+     * @param note 
+     * @param purchaseDate 
+     * @param purchasePrice 
+     * @param truckGrossWeightId 
+     * @param emptyWeight 
+     * @param truckEngineModelId 
+     * @param tireSizeId 
+     * @param fuelTankSize 
+     * @param brakes 
+     * @param frontWheels 
+     * @param rearWheels 
+     * @param transmissionModel 
+     * @param fuelType 
+     * @param shifter 
+     * @param axles 
+     * @param fhwaExp 
+     * @param insurancePolicy 
+     * @param mileage 
+     * @param engineOilType 
+     * @param gearRatio 
+     * @param apUnit 
+     * @param tollTransponder 
+     * @param tollTransponderDeviceNo 
+     * @param doubleBunk 
+     * @param refrigerator 
+     * @param dcInverter 
+     * @param blower 
+     * @param pto 
+     * @param files 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiTruckPost(createTruckCommand?: CreateTruckCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiTruckPost(companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, fhwaExp?: number, insurancePolicy?: string, mileage?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1032,16 +1075,146 @@ export class TruckService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (companyOwned !== undefined) {
+            localVarFormParams = localVarFormParams.append('CompanyOwned', <any>companyOwned) as any || localVarFormParams;
+        }
+        if (truckNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckNumber', <any>truckNumber) as any || localVarFormParams;
+        }
+        if (truckTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckTypeId', <any>truckTypeId) as any || localVarFormParams;
+        }
+        if (vin !== undefined) {
+            localVarFormParams = localVarFormParams.append('Vin', <any>vin) as any || localVarFormParams;
+        }
+        if (truckMakeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckMakeId', <any>truckMakeId) as any || localVarFormParams;
+        }
+        if (truckLengthId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckLengthId', <any>truckLengthId) as any || localVarFormParams;
+        }
+        if (model !== undefined) {
+            localVarFormParams = localVarFormParams.append('Model', <any>model) as any || localVarFormParams;
+        }
+        if (year !== undefined) {
+            localVarFormParams = localVarFormParams.append('Year', <any>year) as any || localVarFormParams;
+        }
+        if (colorId !== undefined) {
+            localVarFormParams = localVarFormParams.append('ColorId', <any>colorId) as any || localVarFormParams;
+        }
+        if (ownerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('OwnerId', <any>ownerId) as any || localVarFormParams;
+        }
+        if (commission !== undefined) {
+            localVarFormParams = localVarFormParams.append('Commission', <any>commission) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (purchaseDate !== undefined) {
+            localVarFormParams = localVarFormParams.append('PurchaseDate', <any>purchaseDate) as any || localVarFormParams;
+        }
+        if (purchasePrice !== undefined) {
+            localVarFormParams = localVarFormParams.append('PurchasePrice', <any>purchasePrice) as any || localVarFormParams;
+        }
+        if (truckGrossWeightId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckGrossWeightId', <any>truckGrossWeightId) as any || localVarFormParams;
+        }
+        if (emptyWeight !== undefined) {
+            localVarFormParams = localVarFormParams.append('EmptyWeight', <any>emptyWeight) as any || localVarFormParams;
+        }
+        if (truckEngineModelId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckEngineModelId', <any>truckEngineModelId) as any || localVarFormParams;
+        }
+        if (tireSizeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TireSizeId', <any>tireSizeId) as any || localVarFormParams;
+        }
+        if (fuelTankSize !== undefined) {
+            localVarFormParams = localVarFormParams.append('FuelTankSize', <any>fuelTankSize) as any || localVarFormParams;
+        }
+        if (brakes !== undefined) {
+            localVarFormParams = localVarFormParams.append('Brakes', <any>brakes) as any || localVarFormParams;
+        }
+        if (frontWheels !== undefined) {
+            localVarFormParams = localVarFormParams.append('FrontWheels', <any>frontWheels) as any || localVarFormParams;
+        }
+        if (rearWheels !== undefined) {
+            localVarFormParams = localVarFormParams.append('RearWheels', <any>rearWheels) as any || localVarFormParams;
+        }
+        if (transmissionModel !== undefined) {
+            localVarFormParams = localVarFormParams.append('TransmissionModel', <any>transmissionModel) as any || localVarFormParams;
+        }
+        if (fuelType !== undefined) {
+            localVarFormParams = localVarFormParams.append('FuelType', <any>fuelType) as any || localVarFormParams;
+        }
+        if (shifter !== undefined) {
+            localVarFormParams = localVarFormParams.append('Shifter', <any>shifter) as any || localVarFormParams;
+        }
+        if (axles !== undefined) {
+            localVarFormParams = localVarFormParams.append('Axles', <any>axles) as any || localVarFormParams;
+        }
+        if (fhwaExp !== undefined) {
+            localVarFormParams = localVarFormParams.append('FhwaExp', <any>fhwaExp) as any || localVarFormParams;
+        }
+        if (insurancePolicy !== undefined) {
+            localVarFormParams = localVarFormParams.append('InsurancePolicy', <any>insurancePolicy) as any || localVarFormParams;
+        }
+        if (mileage !== undefined) {
+            localVarFormParams = localVarFormParams.append('Mileage', <any>mileage) as any || localVarFormParams;
+        }
+        if (engineOilType !== undefined) {
+            localVarFormParams = localVarFormParams.append('EngineOilType', <any>engineOilType) as any || localVarFormParams;
+        }
+        if (gearRatio !== undefined) {
+            localVarFormParams = localVarFormParams.append('GearRatio', <any>gearRatio) as any || localVarFormParams;
+        }
+        if (apUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('ApUnit', <any>apUnit) as any || localVarFormParams;
+        }
+        if (tollTransponder !== undefined) {
+            localVarFormParams = localVarFormParams.append('TollTransponder', <any>tollTransponder) as any || localVarFormParams;
+        }
+        if (tollTransponderDeviceNo !== undefined) {
+            localVarFormParams = localVarFormParams.append('TollTransponderDeviceNo', <any>tollTransponderDeviceNo) as any || localVarFormParams;
+        }
+        if (doubleBunk !== undefined) {
+            localVarFormParams = localVarFormParams.append('DoubleBunk', <any>doubleBunk) as any || localVarFormParams;
+        }
+        if (refrigerator !== undefined) {
+            localVarFormParams = localVarFormParams.append('Refrigerator', <any>refrigerator) as any || localVarFormParams;
+        }
+        if (dcInverter !== undefined) {
+            localVarFormParams = localVarFormParams.append('DcInverter', <any>dcInverter) as any || localVarFormParams;
+        }
+        if (blower !== undefined) {
+            localVarFormParams = localVarFormParams.append('Blower', <any>blower) as any || localVarFormParams;
+        }
+        if (pto !== undefined) {
+            localVarFormParams = localVarFormParams.append('Pto', <any>pto) as any || localVarFormParams;
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1056,10 +1229,10 @@ export class TruckService {
         }
 
         let localVarPath = `/api/truck`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createTruckCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1070,14 +1243,55 @@ export class TruckService {
     }
 
     /**
-     * @param updateTruckCommand 
+     * @param id 
+     * @param companyOwned 
+     * @param truckNumber 
+     * @param truckTypeId 
+     * @param vin 
+     * @param truckMakeId 
+     * @param truckLengthId 
+     * @param model 
+     * @param year 
+     * @param colorId 
+     * @param ownerId 
+     * @param commission 
+     * @param note 
+     * @param purchaseDate 
+     * @param purchasePrice 
+     * @param truckGrossWeightId 
+     * @param emptyWeight 
+     * @param truckEngineModelId 
+     * @param tireSizeId 
+     * @param fuelTankSize 
+     * @param brakes 
+     * @param frontWheels 
+     * @param rearWheels 
+     * @param transmissionModel 
+     * @param fuelType 
+     * @param shifter 
+     * @param axles 
+     * @param insurancePolicy 
+     * @param mileage 
+     * @param fhwaExp 
+     * @param engineOilType 
+     * @param gearRatio 
+     * @param apUnit 
+     * @param tollTransponder 
+     * @param tollTransponderDeviceNo 
+     * @param doubleBunk 
+     * @param refrigerator 
+     * @param dcInverter 
+     * @param blower 
+     * @param pto 
+     * @param files 
+     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckPut(updateTruckCommand?: UpdateTruckCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiTruckPut(updateTruckCommand?: UpdateTruckCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiTruckPut(updateTruckCommand?: UpdateTruckCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiTruckPut(updateTruckCommand?: UpdateTruckCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiTruckPut(id?: number, companyOwned?: boolean, truckNumber?: string, truckTypeId?: number, vin?: string, truckMakeId?: number, truckLengthId?: number, model?: string, year?: number, colorId?: number, ownerId?: number, commission?: number, note?: string, purchaseDate?: string, purchasePrice?: number, truckGrossWeightId?: number, emptyWeight?: number, truckEngineModelId?: number, tireSizeId?: number, fuelTankSize?: number, brakes?: Brakes, frontWheels?: WheelsType, rearWheels?: WheelsType, transmissionModel?: string, fuelType?: FuelType, shifter?: number, axles?: number, insurancePolicy?: string, mileage?: number, fhwaExp?: number, engineOilType?: number, gearRatio?: number, apUnit?: ApUnit, tollTransponder?: number, tollTransponderDeviceNo?: string, doubleBunk?: boolean, refrigerator?: boolean, dcInverter?: boolean, blower?: boolean, pto?: boolean, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1107,16 +1321,154 @@ export class TruckService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (companyOwned !== undefined) {
+            localVarFormParams = localVarFormParams.append('CompanyOwned', <any>companyOwned) as any || localVarFormParams;
+        }
+        if (truckNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckNumber', <any>truckNumber) as any || localVarFormParams;
+        }
+        if (truckTypeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckTypeId', <any>truckTypeId) as any || localVarFormParams;
+        }
+        if (vin !== undefined) {
+            localVarFormParams = localVarFormParams.append('Vin', <any>vin) as any || localVarFormParams;
+        }
+        if (truckMakeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckMakeId', <any>truckMakeId) as any || localVarFormParams;
+        }
+        if (truckLengthId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckLengthId', <any>truckLengthId) as any || localVarFormParams;
+        }
+        if (model !== undefined) {
+            localVarFormParams = localVarFormParams.append('Model', <any>model) as any || localVarFormParams;
+        }
+        if (year !== undefined) {
+            localVarFormParams = localVarFormParams.append('Year', <any>year) as any || localVarFormParams;
+        }
+        if (colorId !== undefined) {
+            localVarFormParams = localVarFormParams.append('ColorId', <any>colorId) as any || localVarFormParams;
+        }
+        if (ownerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('OwnerId', <any>ownerId) as any || localVarFormParams;
+        }
+        if (commission !== undefined) {
+            localVarFormParams = localVarFormParams.append('Commission', <any>commission) as any || localVarFormParams;
+        }
+        if (note !== undefined) {
+            localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
+        }
+        if (purchaseDate !== undefined) {
+            localVarFormParams = localVarFormParams.append('PurchaseDate', <any>purchaseDate) as any || localVarFormParams;
+        }
+        if (purchasePrice !== undefined) {
+            localVarFormParams = localVarFormParams.append('PurchasePrice', <any>purchasePrice) as any || localVarFormParams;
+        }
+        if (truckGrossWeightId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckGrossWeightId', <any>truckGrossWeightId) as any || localVarFormParams;
+        }
+        if (emptyWeight !== undefined) {
+            localVarFormParams = localVarFormParams.append('EmptyWeight', <any>emptyWeight) as any || localVarFormParams;
+        }
+        if (truckEngineModelId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckEngineModelId', <any>truckEngineModelId) as any || localVarFormParams;
+        }
+        if (tireSizeId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TireSizeId', <any>tireSizeId) as any || localVarFormParams;
+        }
+        if (fuelTankSize !== undefined) {
+            localVarFormParams = localVarFormParams.append('FuelTankSize', <any>fuelTankSize) as any || localVarFormParams;
+        }
+        if (brakes !== undefined) {
+            localVarFormParams = localVarFormParams.append('Brakes', <any>brakes) as any || localVarFormParams;
+        }
+        if (frontWheels !== undefined) {
+            localVarFormParams = localVarFormParams.append('FrontWheels', <any>frontWheels) as any || localVarFormParams;
+        }
+        if (rearWheels !== undefined) {
+            localVarFormParams = localVarFormParams.append('RearWheels', <any>rearWheels) as any || localVarFormParams;
+        }
+        if (transmissionModel !== undefined) {
+            localVarFormParams = localVarFormParams.append('TransmissionModel', <any>transmissionModel) as any || localVarFormParams;
+        }
+        if (fuelType !== undefined) {
+            localVarFormParams = localVarFormParams.append('FuelType', <any>fuelType) as any || localVarFormParams;
+        }
+        if (shifter !== undefined) {
+            localVarFormParams = localVarFormParams.append('Shifter', <any>shifter) as any || localVarFormParams;
+        }
+        if (axles !== undefined) {
+            localVarFormParams = localVarFormParams.append('Axles', <any>axles) as any || localVarFormParams;
+        }
+        if (insurancePolicy !== undefined) {
+            localVarFormParams = localVarFormParams.append('InsurancePolicy', <any>insurancePolicy) as any || localVarFormParams;
+        }
+        if (mileage !== undefined) {
+            localVarFormParams = localVarFormParams.append('Mileage', <any>mileage) as any || localVarFormParams;
+        }
+        if (fhwaExp !== undefined) {
+            localVarFormParams = localVarFormParams.append('FhwaExp', <any>fhwaExp) as any || localVarFormParams;
+        }
+        if (engineOilType !== undefined) {
+            localVarFormParams = localVarFormParams.append('EngineOilType', <any>engineOilType) as any || localVarFormParams;
+        }
+        if (gearRatio !== undefined) {
+            localVarFormParams = localVarFormParams.append('GearRatio', <any>gearRatio) as any || localVarFormParams;
+        }
+        if (apUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('ApUnit', <any>apUnit) as any || localVarFormParams;
+        }
+        if (tollTransponder !== undefined) {
+            localVarFormParams = localVarFormParams.append('TollTransponder', <any>tollTransponder) as any || localVarFormParams;
+        }
+        if (tollTransponderDeviceNo !== undefined) {
+            localVarFormParams = localVarFormParams.append('TollTransponderDeviceNo', <any>tollTransponderDeviceNo) as any || localVarFormParams;
+        }
+        if (doubleBunk !== undefined) {
+            localVarFormParams = localVarFormParams.append('DoubleBunk', <any>doubleBunk) as any || localVarFormParams;
+        }
+        if (refrigerator !== undefined) {
+            localVarFormParams = localVarFormParams.append('Refrigerator', <any>refrigerator) as any || localVarFormParams;
+        }
+        if (dcInverter !== undefined) {
+            localVarFormParams = localVarFormParams.append('DcInverter', <any>dcInverter) as any || localVarFormParams;
+        }
+        if (blower !== undefined) {
+            localVarFormParams = localVarFormParams.append('Blower', <any>blower) as any || localVarFormParams;
+        }
+        if (pto !== undefined) {
+            localVarFormParams = localVarFormParams.append('Pto', <any>pto) as any || localVarFormParams;
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1131,10 +1483,10 @@ export class TruckService {
         }
 
         let localVarPath = `/api/truck`;
-        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updateTruckCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
