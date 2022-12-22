@@ -5,6 +5,8 @@ import { DriverService } from './../../../../../appcoretruckassist/api/driver.se
 import { RepairShopService } from './../../../../../appcoretruckassist/api/repairShop.service';
 import { OwnerService } from './../../../../../appcoretruckassist/api/owner.service';
 import { RepairService } from './../../../../../appcoretruckassist/api/repair.service';
+import { TrailerService } from './../../../../../appcoretruckassist/api/trailer.service';
+import { TruckService } from './../../../../../appcoretruckassist/api/truck.service';
 
 @Injectable({
     providedIn: 'root',
@@ -12,7 +14,14 @@ import { RepairService } from './../../../../../appcoretruckassist/api/repair.se
 export class FilesService implements OnDestroy {
     private destroy$ = new Subject<void>();
 
-    constructor(private driverService: DriverService, private repairShopService: RepairShopService, private ownerService: OwnerService, private repairService: RepairService) {}
+    constructor(
+        private driverService: DriverService,
+        private repairShopService: RepairShopService,
+        private ownerService: OwnerService,
+        private repairService: RepairService,
+        private trailerService: TrailerService,
+        private truckService: TruckService
+    ) {}
 
     ngOnDestroy(): void {
         this.destroy$.next();
@@ -29,10 +38,13 @@ export class FilesService implements OnDestroy {
                 return this.getRepairShopFiles(id);
             case 'Owner':
                 return this.getOwnerFiles(id);
+            case 'Trailer':
+                return this.getTrailerFiles(id);
+            case 'Truck':
+                return this.getTruckFiles(id);
             default:
                 break;
         }
-        
     }
 
     public getDriverFiles(id: number) {
@@ -49,5 +61,13 @@ export class FilesService implements OnDestroy {
 
     public getOwnerFiles(id: number) {
         return this.ownerService.apiOwnerFilesIdGet(id);
+    }
+
+    public getTrailerFiles(id: number) {
+        return this.trailerService.apiTrailerFilesIdGet(id);
+    }
+
+    public getTruckFiles(id: number) {
+        return this.truckService.apiTruckFilesIdGet(id);
     }
 }
