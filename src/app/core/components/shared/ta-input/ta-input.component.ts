@@ -111,6 +111,9 @@ export class TaInputComponent
 
     // Password Timeout
     public timeoutPassword = null;
+    public savedFocusEl: any = null;
+
+    public focusBlur: any;
 
     constructor(
         @Self() public superControl: NgControl,
@@ -343,14 +346,12 @@ export class TaInputComponent
         this.focusInput = true;
     }
 
-    focusBlur: any;
-    public savedFocusEl: any = null;
     public onBlur(e?): void {
         // DropDown Label
         if (this.inputConfig.dropdownLabel && !this.editInputMode) {
             this.inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
         }
-        this.savedFocusEl = e.target;
+        this.savedFocusEl = e?.target;
         // Edit Input
         if (this.editInputMode) {
             this.getSuperControl.setErrors({ invalid: true });

@@ -182,6 +182,8 @@
                             [isCardOpen]="true"
                             [disableAnimation]="disableCardAnimation"
                             [hasBodyData]="true"
+                            [has24Hours]="true"
+                            (onActionEvent)="active24Hours($event)"
                         >
                             <div
                                 formArrayName="openHours"
@@ -207,6 +209,9 @@
                                                 ind ===
                                                     openHours.controls.length -
                                                         1 ||
+                                                ind ===
+                                                    openHours.controls.length -
+                                                        2 ||
                                                 isDaysVisible
                                             "
                                         >
@@ -256,6 +261,9 @@
 
                                             <!-- Time Picker -->
                                             <app-ta-input
+                                                *ngIf="
+                                                    openHour.get('isDay').value
+                                                "
                                                 formControlName="startTime"
                                                 [inputConfig]="{
                                                     name: 'timepicker',
@@ -267,6 +275,9 @@
                                                 }"
                                             ></app-ta-input>
                                             <app-ta-input
+                                                *ngIf="
+                                                    openHour.get('isDay').value
+                                                "
                                                 formControlName="endTime"
                                                 [inputConfig]="{
                                                     name: 'timepicker',
