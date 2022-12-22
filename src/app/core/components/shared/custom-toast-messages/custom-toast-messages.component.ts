@@ -617,8 +617,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = errorMessage;
                 break;
             case 'TRAILER':
-                let trailerNum = this.httpRequest.body?.trailerNumber
-                    ? this.httpRequest.body.trailerNumber
+                let trailerNum = this.httpRequest.body.getAll('trailerNumber')[0]
+                    ? this.httpRequest.body.getAll('trailerNumber')[0]
                     : '';
                 let activeTrailer = this.DetailsDataService.mainData?.status
                     ? true
@@ -665,8 +665,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
                 break;
             case 'TRUCK':
-                let truckNum = this.httpRequest.body?.truckNumber
-                    ? this.httpRequest.body.truckNumber
+                let truckNum = this.httpRequest.body.getAll('truckNumber')[0]
+                    ? this.httpRequest.body.getAll('truckNumber')[0]
                     : '';
                 let activeTruck = this.DetailsDataService.mainData?.status
                     ? true
@@ -796,9 +796,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = testName;
                 break;
             case 'TASK':
-                let toDoName = this.httpRequest.body?.title
-                    ? this.httpRequest.body?.title
-                    : '';
+                let toDoName = '';
+
+                if ( !this.httpRequest.body.id ) {
+                    toDoName = this.httpRequest.body.getAll('title')[0];
+                }    
+
                 if (!toDoName) {
                     toDoName = this.DetailsDataService.mainData?.title;
                 }
