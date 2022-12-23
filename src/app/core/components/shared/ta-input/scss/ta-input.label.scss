@@ -69,6 +69,14 @@
         }
     }
 
+    &.in-label {
+        top: 4px;
+
+        &.focus {
+            color: #ffffff !important;
+        }
+    }
+
     &.no-transition {
         transition: none !important;
     }

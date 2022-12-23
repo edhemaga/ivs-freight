@@ -94,7 +94,7 @@
         top: 50% !important;
         transform: translateY(-50%);
 
-        svg-icon{
+        svg-icon {
             display: flex;
         }
     }
@@ -172,6 +172,119 @@
                         fill: $input-clear-rect-fill-invalid-focus-hover !important;
                     }
                 }
+            }
+        }
+    }
+
+    &.remove-input-svg {
+        .input-clear-x {
+            svg {
+                width: 20px !important;
+                height: 20px !important;
+                position: relative;
+                left: 1px;
+                path {
+                    fill: #aaaaaa;
+                }
+                rect {
+                    fill: #aaaaaa;
+                }
+            }
+            &:hover {
+                svg {
+                    path {
+                        fill: #919191;
+                    }
+                    rect {
+                        fill: #919191;
+                    }
+                }
+            }
+        }
+
+        &::before {
+            content: '';
+            display: block;
+            height: 16px;
+            width: 1px;
+            border-radius: 3px;
+            background-color: $input-placeholder-icon-normal-after;
+            position: absolute;
+            right: 22px;
+            top: 5px;
+        }
+
+        &.valid-focus-in {
+            .input-clear-x {
+                svg {
+                    path {
+                        fill: $input-clear-rect-fill-valid-focus;
+                    }
+                    rect {
+                        fill: $input-clear-rect-fill-valid-focus;
+                    }
+                }
+                &:hover {
+                    svg {
+                        path {
+                            fill: $input-clear-rect-fill-valid-focus-hover;
+                        }
+                        rect {
+                            fill: $input-clear-rect-fill-valid-focus-hover;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.valid-focus-out {
+            &::before {
+                content: '';
+                display: block;
+                height: 16px;
+                width: 1px;
+                border-radius: 3px;
+                background-color: $input-placeholder-icon-valid-after;
+                position: absolute;
+                right: 22px;
+                top: 5px;
+            }
+        }
+
+        &.invalid-focus-in {
+            .input-clear-x {
+                svg {
+                    path {
+                        fill: $input-clear-rect-fill-invalid-focus;
+                    }
+                    rect {
+                        fill: $input-clear-rect-fill-invalid-focus;
+                    }
+                }
+                &:hover {
+                    svg {
+                        path {
+                            fill: $input-clear-rect-fill-invalid-focus-hover;
+                        }
+                        rect {
+                            fill: $input-clear-rect-fill-invalid-focus-hover;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.invalid-focus-out {
+            &::before {
+                content: '';
+                display: block;
+                height: 16px;
+                width: 1px;
+                border-radius: 3px;
+                background-color: $input-text-color-invalid-focus-out;
+                position: absolute;
+                right: 22px;
+                top: 5px;
             }
         }
     }
