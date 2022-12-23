@@ -596,7 +596,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'route') {
-                                //this.deleteRoute(res.id);
+                                this.deleteRouteLine(res.data);
+
                                 this.routingService
                                     .deleteRouteById(res.id)
                                     .pipe(takeUntil(this.destroy$))
@@ -668,6 +669,8 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                 routeIndex
                             ]
                         );
+                    } else {
+                        this.deleteRouteLine(this.tableData[this.selectedMapIndex].routes[routeIndex]);
                     }
 
                     // this.getRouteList(
@@ -3060,6 +3063,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 orderNumber: stop.orderNumber
                     ? stop.orderNumber
                     : stopIndex + 1,
+                shape: ''
             };
 
             stopArr.push(stopObj);
@@ -3105,7 +3109,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 var updateRouteObj = {
                     id: route.id,
                     name: route.name,
-                    shape: routing.shape,
+                    shape: '',
                     stops: stopArr,
                 };
 
