@@ -10,6 +10,7 @@
         padding: 0 6px;
         margin: 4px 0px;
         height: 26px;
+        cursor: pointer;
 
         .note-label {
             font-weight: 800;
@@ -45,10 +46,6 @@
         .rotate {
             transform: rotate(180deg);
             transition: all 0.3s ease-in-out;
-        }
-
-        &.hover_on {
-            cursor: pointer;
         }
     }
 
@@ -101,7 +98,6 @@
             scrollbar-width: none !important; /* Firefox */
 
             &.details_textarea {
-                padding-left: 4px;
                 padding-bottom: 7px;
                 padding-right: 20px;
             }
