@@ -67,6 +67,10 @@
             border-radius: 20px !important;
             top: -8.5px;
 
+            .ngx-slider-active {
+                cursor: grabbing;
+            }
+
             &::after {
                 content: none !important;
             }

@@ -155,10 +155,7 @@ export class DriverDetailsItemComponent
                         case 'info': {
                             switch (res.template) {
                                 case 'cdl': {
-                                    const timeout = setTimeout(() => {
-                                        console.log('---here----', res);
-                                        console.log('---driverData----', driverData);
-                                        
+                                    const timeout = setTimeout(() => {                        
                                         this.modalService.openModal(
                                             DriverCdlModalComponent,
                                             { size: 'small' },
