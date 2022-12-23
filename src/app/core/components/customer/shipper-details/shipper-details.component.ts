@@ -227,7 +227,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             type: 'edit',
             openedTab: event.type,
         }
-
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
@@ -240,11 +239,10 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     public onModalAction(event: any){
         let eventObject = {
             data: undefined,
-            id: this.shipperObject.id,
+            id: this.shipperId,
             type: 'edit',
             openedTab: event,
         }
-        
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
@@ -288,7 +286,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: 'Write Review',
-                    name: 'write-review',
+                    name: 'Review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
                     iconName: 'write-review'
