@@ -1050,6 +1050,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             longitude: stop.long,
                             latitude: stop.lat,
                             orderNumber: stop.orderNumber,
+                            shape: stop.shape ? stop.shape : ''
                         };
 
                         stopArr.push(stopObj);
@@ -1301,6 +1302,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         longitude: stop.long,
                         latitude: stop.lat,
                         orderNumber: stopIndex + 1,
+                        shape: stop.shape ? stop.shape : ''
                     };
 
                     stopArr.push(stopObj);
@@ -2926,6 +2928,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             leg: stop.leg,
                             total: stop.total,
                             orderNumber: stop.orderNumber,
+                            shape: stop.shape ? stop.shape : ''
                         };
 
                         stopsArr.push(stopObj);

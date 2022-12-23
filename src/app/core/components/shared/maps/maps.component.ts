@@ -447,7 +447,12 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    callClusters(clustersObj, changedSearchOrSort, clusterPagination?, addedNew?) {
+    callClusters(
+        clustersObj,
+        changedSearchOrSort,
+        clusterPagination?,
+        addedNew?
+    ) {
         var pageIndex = clusterPagination
             ? clusterPagination.pagination.pageIndex
             : 1;
@@ -457,7 +462,25 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
         if (this.mapType == 'repairShop') {
             this.repairShopService
-                .getRepairShopClusters(clustersObj)
+                .getRepairShopClusters(
+                    clustersObj.northEastLatitude,
+                    clustersObj.northEastLongitude,
+                    clustersObj.southWestLatitude,
+                    clustersObj.southWestLongitude,
+                    clustersObj.zoomLevel,
+                    addedNewFlag,
+                    null, // shipperLong
+                    null, // shipperLat
+                    null, // shipperDistance
+                    null, // shipperStates
+                    pageIndex,
+                    pageSize,
+                    null, // companyId
+                    this.sortBy,
+                    this.searchText,
+                    null, // search1
+                    null // search2
+                )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((clustersResponse: any) => {
                     var clustersToShow = [];
@@ -1233,8 +1256,10 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
                                 res.template === 'shipper' ||
                                 res.template === 'repair shop'
                             ) {
-                                console.log('delete modal');
-                                this.callDropDownAction.emit(res);
+                                var resType = res.template === 'repair shop' ? 'delete-repair' : res.type;
+                                var deleteResponse = {...res, type: resType};
+
+                                this.callDropDownAction.emit(deleteResponse);
 
                                 var cluster = this.clusterMarkers.find(
                                     (item) => item.detailedInfo?.id == res.id
@@ -1242,7 +1267,7 @@ export class MapsComponent implements OnInit, OnDestroy, OnChanges {
 
                                 if (cluster) {
                                     cluster.detailedInfo = false;
-                                    this.getClusters(true);
+                                    this.getClusters(true, true);
                                     this.ref.detectChanges();
                                 }
                             }
