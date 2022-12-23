@@ -221,10 +221,17 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     public onDropActions(event: any) {
         this.getShipperById(event.id);
 
+        let eventType = '';
+        if ( event.type == 'Contact' || event.type == 'edit' || event.type == 'Review'){
+            eventType = 'edit'
+        } else {
+            eventType = event.type;
+        }
+
         let eventObject = {
             data: undefined,
             id: event.id,
-            type: 'edit',
+            type: eventType,
             openedTab: event.type,
         }
         setTimeout(() => {
