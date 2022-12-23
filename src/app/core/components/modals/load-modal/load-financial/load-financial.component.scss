@@ -4,15 +4,16 @@
 
     .load-financial-card-header {
         display: grid;
-        grid-template-columns: repeat(3, 202px);
+        grid-template-columns: 192px 193px 187px;
+        -moz-column-gap: 16px;
+        column-gap: 16px;
         align-items: center;
         justify-content: center;
         padding: 0 5px;
         margin: 4px 0px;
 
         .load-financial-header {
-            display: grid;
-            grid-template-columns: 112px 1fr;
+            display: flex;
             align-items: center;
             justify-content: space-between;
 
@@ -75,6 +76,8 @@
             .load-financial-arrow {
                 justify-self: flex-end;
                 cursor: pointer;
+                position: relative;
+                right: -2px;
                 svg {
                     transform: rotate(0deg);
                     transition: all 0.3s ease-in-out;

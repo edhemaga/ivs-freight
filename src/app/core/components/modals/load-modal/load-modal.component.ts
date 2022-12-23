@@ -318,7 +318,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public comments: any[] = [];
 
     // Map Routes
-    public loadStopRoutes: { data: MapRouteModel }[] = [];
+    public loadStopRoutes: MapRouteModel[] = [];
 
     // Hazardous Dropdown
     public isHazardousPicked: boolean = false;
@@ -606,8 +606,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             .concat(' ', event?.driver?.name),
                     };
 
-                    console.log(this.selectedDispatches);
-
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
                         multipleInputValues: {
@@ -657,11 +655,20 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     };
 
                     // Draw Stop on map between deadhead driver and first pickup
-                    if (this.selectedPickupShipper) {
+                    if (this.selectedPickupShipper && this.selectedDispatches) {
+                        console.log(
+                            'dispatches: ',
+                            this.selectedDispatches,
+                            this.selectedPickupShipper
+                        );
                         this.drawStopOnMap(
                             {
-                                ...this.selectedDispatches
-                                    .currentLocationCoordinates,
+                                longitude:
+                                    this.selectedDispatches
+                                        .currentLocationCoordinates.longitude,
+                                latitude:
+                                    this.selectedDispatches
+                                        .currentLocationCoordinates.latitude,
                                 pickup: false,
                                 delivery: false,
                             },
@@ -810,6 +817,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'shipper-pickup': {
                 this.selectedPickupShipper = event;
+                console.log(
+                    'why is undefined: ',
+                    event,
+                    this.selectedPickupShipper
+                );
                 if (this.selectedPickupShipper) {
                     this.loadPickupShipperInputConfig = {
                         ...this.loadPickupShipperInputConfig,
@@ -852,40 +864,54 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         this.selectedPickupShipperContact =
                             this.labelsShipperContacts[1].contacts[0];
 
-                        this.loadForm
-                            .get('pickupShipperContactId')
-                            .patchValue(
-                                this.selectedPickupShipperContact.fullName
-                            );
+                        if (this.selectedPickupShipperContact) {
+                            this.loadForm
+                                .get('pickupShipperContactId')
+                                .patchValue(
+                                    this.selectedPickupShipperContact.fullName
+                                );
 
-                        this.loadPickupShipperContactsInputConfig = {
-                            ...this.loadPickupShipperContactsInputConfig,
-                            multipleInputValues: {
-                                options: [
-                                    {
-                                        value: this.selectedPickupShipperContact
-                                            .name,
-                                        logoName: null,
-                                    },
-                                    {
-                                        value: this.selectedPickupShipperContact
-                                            .originalPhone,
-                                        second_value: `#${this.selectedPickupShipperContact.phoneExtension}`,
-                                        logoName: null,
-                                    },
-                                ],
-                                customClass: 'load-shipper-contact',
-                            },
-                            isDisabled: false,
-                        };
+                            this.loadPickupShipperContactsInputConfig = {
+                                ...this.loadPickupShipperContactsInputConfig,
+                                multipleInputValues: {
+                                    options: [
+                                        {
+                                            value: this
+                                                .selectedPickupShipperContact
+                                                .name,
+                                            logoName: null,
+                                        },
+                                        {
+                                            value: this
+                                                .selectedPickupShipperContact
+                                                .originalPhone,
+                                            second_value: `#${this.selectedPickupShipperContact.phoneExtension}`,
+                                            logoName: null,
+                                        },
+                                    ],
+                                    customClass: 'load-shipper-contact',
+                                },
+                                isDisabled: false,
+                            };
+                        }
                     }
 
                     // Draw Stop on map between deadhead driver and first pickup
-                    if (this.selectedDispatches?.currentLocationCoordinates) {
+                    if (this.selectedDispatches) {
+                        console.log(
+                            'pickup shipper: ',
+                            this.selectedDispatches,
+                            this.selectedPickupShipper
+                                .currentLocationCoordinates
+                        );
                         this.drawStopOnMap(
                             {
-                                ...this.selectedDispatches
-                                    .currentLocationCoordinates,
+                                longitude:
+                                    this.selectedDispatches
+                                        .currentLocationCoordinates.longitude,
+                                latitude:
+                                    this.selectedDispatches
+                                        .currentLocationCoordinates.latitude,
                                 pickup: false,
                                 delivery: false,
                             },
@@ -1857,7 +1883,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         //   )
 
         this.routingService
-            .apiRoutingGet(JSON.stringify([start, end]))
+            .apiRoutingGet(
+                JSON.stringify([
+                    { longitude: start.longitude, latitude: start.latitude },
+                    { longitude: end.longitude, latitude: end.latitude },
+                ])
+            )
             .pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RoutingResponse) => {
@@ -1872,60 +1903,56 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     if (!this.loadStopRoutes[0]) {
                         this.loadStopRoutes[0] = {
-                            data: {
-                                routeColor: '#919191',
-                                stops: [
-                                    {
-                                        lat: start.latitude,
-                                        long: start.longitude,
-                                        empty: true,
-                                        stopColor: start.pickup
-                                            ? '#26A690'
-                                            : start.delivery
-                                            ? '#EF5350'
-                                            : '#919191',
-                                    },
-                                    {
-                                        lat: end.latitude,
-                                        long: end.longitude,
-                                        empty: true,
-                                        stopColor: start.pickup
-                                            ? '#26A690'
-                                            : start.delivery
-                                            ? '#EF5350'
-                                            : '#919191',
-                                    },
-                                ],
-                            },
+                            routeColor: '#919191',
+                            stops: [
+                                {
+                                    lat: start.latitude,
+                                    long: start.longitude,
+                                    empty: true,
+                                    stopColor: start.pickup
+                                        ? '#26A690'
+                                        : start.delivery
+                                        ? '#EF5350'
+                                        : '#919191',
+                                },
+                                {
+                                    lat: end.latitude,
+                                    long: end.longitude,
+                                    empty: true,
+                                    stopColor: start.pickup
+                                        ? '#26A690'
+                                        : start.delivery
+                                        ? '#EF5350'
+                                        : '#919191',
+                                },
+                            ],
                         };
                     } else {
                         this.loadStopRoutes[0] = {
-                            data: {
-                                routeColor: '#919191',
-                                stops: [
-                                    ...this.loadStopRoutes[0].data.stops,
-                                    {
-                                        lat: start.latitude,
-                                        long: start.longitude,
-                                        empty: true,
-                                        stopColor: start.pickup
-                                            ? '#26A690'
-                                            : start.delivery
-                                            ? '#EF5350'
-                                            : '#919191',
-                                    },
-                                    {
-                                        lat: end.latitude,
-                                        long: end.longitude,
-                                        empty: true,
-                                        stopColor: start.pickup
-                                            ? '#26A690'
-                                            : start.delivery
-                                            ? '#EF5350'
-                                            : '#919191',
-                                    },
-                                ],
-                            },
+                            routeColor: '#919191',
+                            stops: [
+                                ...this.loadStopRoutes[0].stops,
+                                {
+                                    lat: start.latitude,
+                                    long: start.longitude,
+                                    empty: true,
+                                    stopColor: start.pickup
+                                        ? '#26A690'
+                                        : start.delivery
+                                        ? '#EF5350'
+                                        : '#919191',
+                                },
+                                {
+                                    lat: end.latitude,
+                                    long: end.longitude,
+                                    empty: true,
+                                    stopColor: start.pickup
+                                        ? '#26A690'
+                                        : start.delivery
+                                        ? '#EF5350'
+                                        : '#919191',
+                                },
+                            ],
                         };
                     }
 
