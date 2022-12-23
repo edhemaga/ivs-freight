@@ -14,6 +14,8 @@
 export interface HosRuleFeedbackResponse { 
     id?: number;
     isConfirm?: boolean;
+    reviewed?: boolean | null;
+    approved?: boolean | null;
     applicantId?: number;
 }
 

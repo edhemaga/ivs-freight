@@ -2930,23 +2930,23 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         stopsArr.push(stopObj);
                     });
 
-                    var newRoute = {
-                        id: route.id,
-                        name: route.name,
-                        hidden: false,
-                        expanded: false,
-                        routeType: 'Practical',
-                        truckId: '',
-                        stopTime: '',
-                        mpg: '',
-                        fuelPrice: '',
-                        shape: route.shape,
-                        stops: stopsArr,
-                        color: this.findRouteColor(),
-                        isFocused: this.focusedRouteIndex == index,
-                    };
+                    // var newRoute = {
+                    //     id: route.id,
+                    //     name: route.name,
+                    //     hidden: false,
+                    //     expanded: false,
+                    //     routeType: 'Practical',
+                    //     truckId: '',
+                    //     stopTime: '',
+                    //     mpg: '',
+                    //     fuelPrice: '',
+                    //     shape: route.shape,
+                    //     stops: stopsArr,
+                    //     color: this.findRouteColor(),
+                    //     isFocused: this.focusedRouteIndex == index,
+                    // };
 
-                    this.tableData[mapIndex].routes.push(newRoute);
+                    // this.tableData[mapIndex].routes.push(newRoute);
                 });
 
                 if (this.selectedMapIndex == mapIndex) {

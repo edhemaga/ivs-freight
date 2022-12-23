@@ -16,5 +16,6 @@ export interface LegResponse {
     cost?: number;
     hours?: number;
     minutes?: number;
+    shape?: string | null;
 }
 
