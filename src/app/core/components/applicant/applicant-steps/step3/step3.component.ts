@@ -83,14 +83,15 @@ export class Step3Component implements OnInit, OnDestroy {
 
     public applicantId: number;
 
-    public selectedLicenseIndex: number;
-    public helperIndex: number = 2;
+    public selectedLicenseIndex: number = -1;
 
     public isEditing: boolean = false;
     public isReviewingCard: boolean = false;
 
+    public displayButtonInsteadOfForm: boolean = false;
+    public hideFormOnEdit: boolean = false;
+
     public formValuesToPatch: any;
-    public previousFormValuesOnEdit: any;
 
     public canadaStates: any[] = [];
     public usStates: any[] = [];
@@ -225,8 +226,6 @@ export class Step3Component implements OnInit, OnDestroy {
 
         const restOfTheItemsInLicenseArray = [...licences];
 
-        restOfTheItemsInLicenseArray.pop();
-
         const filteredLicenseArray = restOfTheItemsInLicenseArray.map(
             (item) => {
                 return {
@@ -235,7 +234,8 @@ export class Step3Component implements OnInit, OnDestroy {
                     isEditingLicense: false,
                     licenseNumber: item.licenseNumber,
                     country: item.country.name,
-                    state: item.state.stateShortName,
+                    state: item.state.stateName,
+                    stateShort: item.state.stateShortName,
                     classType: item.classType.name,
                     expDate: convertDateFromBackend(item.expDate).replace(
                         /-/g,
@@ -243,6 +243,12 @@ export class Step3Component implements OnInit, OnDestroy {
                     ),
                     restrictions: item.cdlRestrictions,
                     endorsments: item.cdlEndorsements,
+                    restrictionsCode: item.cdlRestrictions
+                        .map((resItem) => resItem.code)
+                        .join(', '),
+                    endorsmentsCode: item.cdlEndorsements
+                        .map((resItem) => resItem.code)
+                        .join(', '),
                     licenseReview: item.licenseReview
                         ? item.licenseReview
                         : null,
@@ -256,13 +262,20 @@ export class Step3Component implements OnInit, OnDestroy {
             isEditingLicense: false,
             licenseNumber: lastItemInLicenseArray.licenseNumber,
             country: lastItemInLicenseArray.country.name,
-            state: lastItemInLicenseArray.state.stateShortName,
+            state: lastItemInLicenseArray.state.stateName,
+            stateShort: lastItemInLicenseArray.state.stateShortName,
             classType: lastItemInLicenseArray.classType.name,
             expDate: convertDateFromBackend(
                 lastItemInLicenseArray.expDate
             ).replace(/-/g, '/'),
             restrictions: lastItemInLicenseArray.cdlRestrictions,
             endorsments: lastItemInLicenseArray.cdlEndorsements,
+            restrictionsCode: lastItemInLicenseArray.cdlRestrictions
+                .map((resItem) => resItem.code)
+                .join(', '),
+            endorsmentsCode: lastItemInLicenseArray.cdlEndorsements
+                .map((resItem) => resItem.code)
+                .join(', '),
             licenseReview: lastItemInLicenseArray.licenseReview
                 ? lastItemInLicenseArray.licenseReview
                 : null,
@@ -274,17 +287,11 @@ export class Step3Component implements OnInit, OnDestroy {
 
         this.licenseArray = JSON.parse(JSON.stringify(filteredLicenseArray));
 
-        this.formValuesToPatch = filteredLastItemInLicenseArray;
         this.previousFormValuesOnReview = filteredLastItemInLicenseArray;
-        this.previousFormValuesOnEdit = this.licenseArray.length
-            ? filteredLastItemInLicenseArray
-            : {
-                  licenseNumber: null,
-                  country: null,
-                  state: null,
-                  classType: null,
-                  expDate: null,
-              };
+
+        this.formStatus = 'VALID';
+
+        this.displayButtonInsteadOfForm = true;
 
         this.permitForm.patchValue({
             permit: cdlDenied,
@@ -512,87 +519,20 @@ export class Step3Component implements OnInit, OnDestroy {
         this.licenseArray.splice(index, 1);
     }
 
-    public onEditLicense(index: number): void {
-        if (this.isEditing) {
-            this.isEditing = false;
-            this.licenseArray[this.selectedLicenseIndex].isEditingLicense =
-                false;
-
-            this.helperIndex = 2;
-            this.selectedLicenseIndex = -1;
-        }
-
-        this.helperIndex = index;
-        this.selectedLicenseIndex = index;
-
-        this.isEditing = true;
-        this.licenseArray[index].isEditingLicense = true;
-
-        const selectedLicense = this.licenseArray[index];
-
-        if (this.lastLicenseCard) {
-            this.previousFormValuesOnEdit = {
-                licenseNumber: this.lastLicenseCard.licenseNumber,
-                country: this.lastLicenseCard.country,
-                state: this.lastLicenseCard.state,
-                classType: this.lastLicenseCard.classType,
-                expDate: this.lastLicenseCard.expDate,
-                endorsments: this.lastLicenseCard.endorsments,
-                restrictions: this.lastLicenseCard.restrictions,
-            };
-        }
-
-        this.formValuesToPatch = selectedLicense;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues.licenseItemsReview[
-                    this.selectedLicenseIndex
-                ];
-        }
-    }
-
-    public cancelLicenseEditing(_: any): void {
-        this.isEditing = false;
-        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
-
-        this.helperIndex = 2;
-        this.selectedLicenseIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues.licenseItemsReview[
-                    this.stepFeedbackValues.licenseItemsReview.length - 1
-                ];
-        }
-    }
-
-    public saveEditedLicense(event: any): void {
-        this.isEditing = false;
-        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
-
-        this.licenseArray[this.selectedLicenseIndex] = {
-            ...this.licenseArray[this.selectedLicenseIndex],
-            ...event,
-        };
-
-        this.helperIndex = 2;
-        this.selectedLicenseIndex = -1;
-
-        this.formValuesToPatch = this.previousFormValuesOnEdit;
-
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues.licenseItemsReview[
-                    this.stepFeedbackValues.licenseItemsReview.length - 1
-                ];
-        }
-    }
-
     public getLicenseFormValues(event: any): void {
         this.licenseArray = [...this.licenseArray, event];
+
+        this.isEditing = true;
+
+        this.formValuesToPatch = {
+            licenseNumber: null,
+            country: null,
+            state: null,
+            classType: null,
+            expDate: null,
+            restrictions: null,
+            endorsments: null,
+        };
 
         if (this.lastLicenseCard.id) {
             this.licenseArray[this.licenseArray.length - 1].id =
@@ -602,23 +542,118 @@ export class Step3Component implements OnInit, OnDestroy {
         } else {
             this.licenseArray[this.licenseArray.length - 1].id = null;
         }
+    }
 
-        this.helperIndex = 2;
+    public onEditLicense(index: number): void {
+        this.licenseArray
+            .filter((item) => item.isEditingLicense)
+            .forEach((item) => (item.isEditingLicense = false));
 
-        const firstEmptyObjectInList = this.openAnnotationArray.find(
-            (item) => Object.keys(item).length === 0
-        );
+        this.selectedLicenseIndex = index;
 
-        const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
-            firstEmptyObjectInList
-        );
+        this.isEditing = true;
+        this.licenseArray[this.selectedLicenseIndex].isEditingLicense = true;
 
-        this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-            lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
+        this.hideFormOnEdit = true;
+        this.displayButtonInsteadOfForm = false;
+
+        const selectedLicence = this.licenseArray[this.selectedLicenseIndex];
+
+        this.formValuesToPatch = selectedLicence;
+
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.selectedLicenseIndex];
+        }
+    }
+
+    public cancelLicenseEditing(_: any): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
+
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+
+        if (this.licenseArray.length === 1) {
+            const selectedLicence = this.licenseArray[0];
+
+            this.formValuesToPatch = selectedLicence;
+
+            this.licenseArray = [];
+        } else {
+            if (this.selectedLicenseIndex >= 0) {
+                this.licenseArray[this.selectedLicenseIndex].isEditingLicense =
+                    false;
+            }
+
+            this.formValuesToPatch = {
+                licenseNumber: null,
+                country: null,
+                state: null,
+                classType: null,
+                expDate: null,
+                restrictions: null,
+                endorsments: null,
+            };
+
+            this.displayButtonInsteadOfForm = true;
+        }
+
+        this.selectedLicenseIndex = -1;
+    }
+
+    public saveEditedLicense(event: any): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
+
+        if (this.selectedLicenseIndex >= 0) {
+            this.licenseArray[this.selectedLicenseIndex] = {
+                ...this.licenseArray[this.selectedLicenseIndex],
+                ...event,
+            };
+        } else {
+            this.licenseArray = [...this.licenseArray, event];
+        }
+
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+        this.displayButtonInsteadOfForm = true;
+
+        this.formValuesToPatch = {
+            licenseNumber: null,
+            country: null,
+            state: null,
+            classType: null,
+            expDate: null,
+            restrictions: null,
+            endorsments: null,
         };
+
+        this.selectedLicenseIndex = -1;
+    }
+
+    public onGetBtnClickValue(event: any): void {
+        if (event.notDisabledClick) {
+            this.isEditing = true;
+
+            this.displayButtonInsteadOfForm = false;
+
+            this.formValuesToPatch = {
+                licenseNumber: null,
+                country: null,
+                state: null,
+                classType: null,
+                expDate: null,
+                restrictions: null,
+                endorsments: null,
+            };
+        }
     }
 
     public onGetFormStatus(status: string): void {
@@ -695,7 +730,6 @@ export class Step3Component implements OnInit, OnDestroy {
             this.hasIncorrectFields = false;
         }
 
-        this.helperIndex = 2;
         this.selectedLicenseIndex = -1;
 
         this.previousFormValuesOnReview.licenseReview = {
@@ -712,7 +746,6 @@ export class Step3Component implements OnInit, OnDestroy {
 
         this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
 
-        this.helperIndex = 2;
         this.selectedLicenseIndex = -1;
 
         this.previousFormValuesOnReview.licenseReview = {
@@ -860,7 +893,6 @@ export class Step3Component implements OnInit, OnDestroy {
             return;
         }
 
-        this.helperIndex = index;
         this.selectedLicenseIndex = index;
 
         this.licenseArray[index].isEditingLicense = true;
@@ -998,10 +1030,7 @@ export class Step3Component implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
+            if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
 
@@ -1044,13 +1073,13 @@ export class Step3Component implements OnInit, OnDestroy {
 
         const filteredLicenseArray = this.licenseArray.map((item) => {
             const filteredStateType = this.usStates.find(
-                (stateItem) => stateItem.name === item.state
+                (stateItem) => stateItem.name === item.stateShort
             );
 
             const stateId = filteredStateType
                 ? filteredStateType.id
                 : this.canadaStates.find(
-                      (stateItem) => stateItem.name === item.state
+                      (stateItem) => stateItem.name === item.stateShort
                   ).id;
 
             return {
@@ -1074,47 +1103,57 @@ export class Step3Component implements OnInit, OnDestroy {
             };
         });
 
-        const filteredStateType = this.usStates.find(
-            (stateItem) => stateItem.name === this.lastLicenseCard.state
-        );
+        let filteredLastLicenseCard: any;
 
-        const filteredLastLicenseCardStateId = filteredStateType
-            ? filteredStateType.id
-            : this.canadaStates.find(
-                  (stateItem) => stateItem.name === this.lastLicenseCard.state
-              ).id;
+        if (!this.licenseArray.length) {
+            const filteredStateType = this.usStates.find(
+                (stateItem) =>
+                    stateItem.name === this.lastLicenseCard.stateShort
+            );
 
-        const filteredLastLicenseCard = {
-            ...((this.stepHasValues ||
-                this.selectedMode === SelectedMode.FEEDBACK) && {
-                id: this.lastLicenseCard.id ? this.lastLicenseCard.id : null,
-                licenseReview: this.lastLicenseCard.licenseReview
-                    ? {
-                          ...this.lastLicenseCard.licenseReview,
-                          applicantCdlId: this.lastLicenseCard.id
-                              ? this.lastLicenseCard.id
-                              : null,
-                      }
-                    : null,
-            }),
-            licenseNumber: this.lastLicenseCard.licenseNumber,
-            country: this.lastLicenseCard.country as CountryType,
-            stateId: filteredLastLicenseCardStateId,
-            classType: this.lastLicenseCard.classType,
-            expDate: convertDateToBackend(this.lastLicenseCard.expDate),
-            restrictions: this.lastLicenseCard.restrictions.map(
-                (item) => item.id
-            ),
-            endorsements: this.lastLicenseCard.endorsments.map(
-                (item) => item.id
-            ),
-        };
+            const filteredLastLicenseCardStateId = filteredStateType
+                ? filteredStateType.id
+                : this.canadaStates.find(
+                      (stateItem) =>
+                          stateItem.name === this.lastLicenseCard.stateShort
+                  ).id;
+
+            filteredLastLicenseCard = {
+                ...((this.stepHasValues ||
+                    this.selectedMode === SelectedMode.FEEDBACK) && {
+                    id: this.lastLicenseCard.id
+                        ? this.lastLicenseCard.id
+                        : null,
+                    licenseReview: this.lastLicenseCard.licenseReview
+                        ? {
+                              ...this.lastLicenseCard.licenseReview,
+                              applicantCdlId: this.lastLicenseCard.id
+                                  ? this.lastLicenseCard.id
+                                  : null,
+                          }
+                        : null,
+                }),
+                licenseNumber: this.lastLicenseCard.licenseNumber,
+                country: this.lastLicenseCard.country,
+                stateId: filteredLastLicenseCardStateId,
+                classType: this.lastLicenseCard.classType,
+                expDate: convertDateToBackend(this.lastLicenseCard.expDate),
+                restrictions: this.lastLicenseCard.restrictions.map(
+                    (item) => item.id
+                ),
+                endorsements: this.lastLicenseCard.endorsments.map(
+                    (item) => item.id
+                ),
+            };
+        }
 
         const saveData: any = {
             applicantId: this.applicantId,
             cdlDenied: permit,
             cdlDeniedExplanation: permitExplain,
-            licences: [...filteredLicenseArray, filteredLastLicenseCard],
+            licences: !this.licenseArray.length
+                ? [filteredLastLicenseCard]
+                : [...filteredLicenseArray],
         };
 
         const storeLicenceItems = saveData.licences.map((item) => {

@@ -151,8 +151,6 @@ export class Step4Component implements OnInit, OnDestroy {
 
             const restOfTheItemsInAccidenteArray = [...accidents];
 
-            restOfTheItemsInAccidenteArray.pop();
-
             const filteredAccidentArray = restOfTheItemsInAccidenteArray.map(
                 (item) => {
                     return {
@@ -209,13 +207,9 @@ export class Step4Component implements OnInit, OnDestroy {
 
             this.previousFormValuesOnReview = filteredLastItemInAccidentArray;
 
-            if (accidents.length === 1) {
-                this.formValuesToPatch = filteredLastItemInAccidentArray;
-            } else {
-                this.formStatus = 'VALID';
+            this.formStatus = 'VALID';
 
-                this.displayButtonInsteadOfForm = true;
-            }
+            this.displayButtonInsteadOfForm = true;
         }
 
         if (this.selectedMode === SelectedMode.REVIEW) {
@@ -897,7 +891,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
         let filteredLastAccidentCard: any;
 
-        if (!hasPastAccident) {
+        if (!hasPastAccident && !this.accidentArray.length) {
             filteredLastAccidentCard = {
                 ...((this.stepHasValues ||
                     this.selectedMode === SelectedMode.FEEDBACK) && {
@@ -931,7 +925,9 @@ export class Step4Component implements OnInit, OnDestroy {
             noAccidentInThreeYears: hasPastAccident,
             accidents: hasPastAccident
                 ? []
-                : [...filteredAccidentArray, filteredLastAccidentCard],
+                : !this.accidentArray.length
+                ? [filteredLastAccidentCard]
+                : [...filteredAccidentArray],
         };
 
         const storeAccidentRecordItems = saveData.accidents.map((item) => {

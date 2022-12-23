@@ -202,8 +202,6 @@ export class Step5Component implements OnInit, OnDestroy {
 
             const restOfTheItemsInViolationsArray = [...trafficViolationItems];
 
-            restOfTheItemsInViolationsArray.pop();
-
             const filteredViolationsArray = restOfTheItemsInViolationsArray.map(
                 (item) => {
                     return {
@@ -250,13 +248,9 @@ export class Step5Component implements OnInit, OnDestroy {
 
             this.previousFormValuesOnReview = filteredLastItemInViolationsArray;
 
-            if (trafficViolationItems.length === 1) {
-                this.formValuesToPatch = filteredLastItemInViolationsArray;
-            } else {
-                this.formStatus = 'VALID';
+            this.formStatus = 'VALID';
 
-                this.displayButtonInsteadOfForm = true;
-            }
+            this.displayButtonInsteadOfForm = true;
         } else {
             this.inputService.changeValidatorsCheck(
                 this.notBeenConvictedForm.get('notBeenConvicted'),
@@ -999,7 +993,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
         let filteredLastViolationsCard: any;
 
-        if (!noViolationsForPastTwelveMonths) {
+        if (!noViolationsForPastTwelveMonths && !this.violationsArray.length) {
             filteredLastViolationsCard = {
                 ...((this.stepHasValues ||
                     this.selectedMode === SelectedMode.FEEDBACK) && {
@@ -1041,7 +1035,9 @@ export class Step5Component implements OnInit, OnDestroy {
                 : certify,
             trafficViolationItems: noViolationsForPastTwelveMonths
                 ? []
-                : [...filteredViolationsArray, filteredLastViolationsCard],
+                : !this.violationsArray.length
+                ? [filteredLastViolationsCard]
+                : [...filteredViolationsArray],
         };
 
         const storeTrafficViolationItems = saveData.trafficViolationItems.map(

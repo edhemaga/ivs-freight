@@ -145,6 +145,12 @@
                                 }
                             }
 
+                            &.state-box {
+                                p {
+                                    text-transform: uppercase;
+                                }
+                            }
+
                             &.hazmat-box {
                                 .hazmat-icon {
                                     margin-right: 4px;

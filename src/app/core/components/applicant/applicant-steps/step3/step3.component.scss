@@ -51,7 +51,136 @@
         }
     }
 
-    .license-view-container {
+    .licences-container {
+        width: 616px;
+        margin-top: 22px;
+
+        .line-container {
+            position: relative;
+
+            .review-feedback-container {
+                position: absolute;
+                top: 0;
+                right: 0;
+                transform: translateX(calc(100% + 5px));
+                width: 429px;
+            }
+        }
+
+        .title-container {
+            width: 100%;
+            margin-bottom: 4px;
+            padding-left: 10px;
+            display: grid;
+            grid-template-columns: 160px 160px 184px;
+            grid-gap: 22px;
+
+            .licence-details-box,
+            .state-date-box,
+            .details-box {
+                p {
+                    color: $bw5;
+                    font-size: 11px;
+
+                    &::-moz-selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+                }
+            }
+        }
+
+        .licence-info-container {
+            width: 100%;
+            margin-bottom: 4px;
+            padding: 6px 10px;
+            border-radius: 2px;
+            background: $ta-blue-10;
+
+            .info-btn-container {
+                width: 100%;
+                cursor: pointer;
+                display: grid;
+                grid-template-columns: 160px 160px 184px;
+                grid-column-gap: 22px;
+
+                .licence-box,
+                .class-box,
+                .state-box,
+                .date-box,
+                .restrictions-box,
+                .endorsments-box {
+                    p {
+                        line-height: 14px;
+                        font-size: 11px;
+                    }
+
+                    &.licence-box,
+                    &.state-box,
+                    &.restrictions-box,
+                    &.endorsments-box {
+                        margin-bottom: 2px;
+
+                        p {
+                            color: $ta-black-2;
+
+                            &::-moz-selection {
+                                color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-black-2;
+                                background: rgb(47, 47, 47, 0.2);
+                            }
+
+                            span {
+                                &::-moz-selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+                            }
+                        }
+
+                        &.state-box {
+                            p {
+                                text-transform: uppercase;
+                            }
+                        }
+                    }
+
+                    &.class-box,
+                    &.date-box {
+                        p {
+                            color: $bw5;
+
+                            &::-moz-selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+
+                            &::selection {
+                                color: $bw5;
+                                background: rgb(145, 145, 145, 0.2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* .license-view-container {
         width: 616px;
         margin-top: 22px;
         margin-bottom: 12px;
@@ -315,13 +444,13 @@
                 }
             }
         }
-    }
+    } */
 
     .form-section {
-        margin-top: 32px;
+        width: 616px;
 
         .permit-container {
-            width: 616px;
+            width: 100%;
 
             .permit-title-box {
                 .question-title {

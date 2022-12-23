@@ -137,10 +137,7 @@ export class Step3FormComponent
     }
 
     ngAfterViewInit(): void {
-        if (
-            this.selectedMode === SelectedMode.APPLICANT ||
-            this.selectedMode === SelectedMode.FEEDBACK
-        ) {
+        if (this.selectedMode !== SelectedMode.REVIEW) {
             this.licenseForm.statusChanges
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
@@ -150,6 +147,9 @@ export class Step3FormComponent
             this.licenseForm.valueChanges
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
+                    res.state = this.selectedStateType?.stateName;
+                    res.stateShort = this.selectedStateType?.name;
+
                     res.restrictions = this.selectedRestrictions;
                     res.endorsments = this.selectedEndorsments;
 
@@ -193,10 +193,7 @@ export class Step3FormComponent
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
 
-                if (
-                    this.selectedMode === SelectedMode.APPLICANT ||
-                    this.selectedMode === SelectedMode.FEEDBACK
-                ) {
+                if (this.selectedMode !== SelectedMode.REVIEW) {
                     this.startValueChangesMonitoring();
                 }
             }, 50);
@@ -214,7 +211,7 @@ export class Step3FormComponent
             endorsments: [null],
             restrictionsSubscription: [null],
             endorsmentsSubscription: [null],
-            files: [null, Validators.required],
+            /*  files: [null, Validators.required], */
 
             firstRowReview: [null],
             secondRowReview: [null],
@@ -273,11 +270,11 @@ export class Step3FormComponent
         }
 
         this.licenseForm.patchValue({
-            licenseNumber: formValue.licenseNumber,
-            country: formValue.country,
-            state: formValue.state,
-            classType: formValue.classType,
-            expDate: formValue.expDate,
+            licenseNumber: formValue?.licenseNumber,
+            country: formValue?.country,
+            state: formValue?.stateShort,
+            classType: formValue?.classType,
+            expDate: formValue?.expDate,
         });
 
         setTimeout(() => {
@@ -292,20 +289,20 @@ export class Step3FormComponent
             );
 
             const filteredStateType = this.usStates.find(
-                (stateItem) => stateItem.name === formValue?.state
+                (stateItem) => stateItem.name === formValue?.stateShort
             );
 
             this.selectedStateType = filteredStateType
                 ? filteredStateType
                 : this.canadaStates.find(
-                      (stateItem) => stateItem.name === formValue?.state
+                      (stateItem) => stateItem.name === formValue?.stateShort
                   );
 
             this.selectedClassType = this.classTypes.find(
                 (item) => item.name === formValue?.classType
             );
 
-            this.selectedRestrictions = formValue.restrictions.map((item) => {
+            this.selectedRestrictions = formValue?.restrictions?.map((item) => {
                 return {
                     ...item,
                     name: item.code
@@ -314,7 +311,7 @@ export class Step3FormComponent
                 };
             });
 
-            this.selectedEndorsments = formValue.endorsments.map((item) => {
+            this.selectedEndorsments = formValue?.endorsments?.map((item) => {
                 return {
                     ...item,
                     name: item.code
@@ -335,6 +332,8 @@ export class Step3FormComponent
                     expDate,
                     id,
                     reviewId,
+                    restrictionsCode,
+                    endorsmentsCode,
                     ...previousFormValues
                 } = this.formValuesToPatch;
 
@@ -472,6 +471,7 @@ export class Step3FormComponent
         }
 
         const {
+            state,
             restrictions,
             endorsments,
             restrictionsSubscription,
@@ -483,8 +483,16 @@ export class Step3FormComponent
 
         const saveData: LicenseModel = {
             ...licenseForm,
+            state: this.selectedStateType.stateName,
+            stateShort: this.selectedStateType.name,
             restrictions: this.selectedRestrictions,
             endorsments: this.selectedEndorsments,
+            restrictionsCode: this.selectedRestrictions
+                .map((resItem) => resItem.code)
+                .join(', '),
+            endorsmentsCode: this.selectedEndorsments
+                .map((resItem) => resItem.code)
+                .join(', '),
             isEditingLicense: false,
         };
 
@@ -504,22 +512,24 @@ export class Step3FormComponent
 
         this.isLicenseEdited = false;
 
-        this.formService.resetForm(this.licenseForm);
+        this.formStatusEmitter.emit('VALID');
 
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     public onSaveEditedLicense(): void {
-        if (this.licenseForm.invalid) {
-            this.inputService.markInvalid(this.licenseForm);
-            return;
-        }
+        if (this.licenseForm.invalid || !this.isLicenseEdited) {
+            if (this.licenseForm.invalid) {
+                this.inputService.markInvalid(this.licenseForm);
+            }
 
-        if (!this.isLicenseEdited) {
             return;
         }
 
         const {
+            state,
             restrictions,
             endorsments,
             restrictionsSubscription,
@@ -531,8 +541,16 @@ export class Step3FormComponent
 
         const saveData: LicenseModel = {
             ...licenseForm,
+            state: this.selectedStateType.stateName,
+            stateShort: this.selectedStateType.name,
             restrictions: this.selectedRestrictions,
             endorsments: this.selectedEndorsments,
+            restrictionsCode: this.selectedRestrictions
+                .map((resItem) => resItem.code)
+                .join(', '),
+            endorsmentsCode: this.selectedEndorsments
+                .map((resItem) => resItem.code)
+                .join(', '),
             isEditingLicense: false,
         };
 
@@ -540,15 +558,9 @@ export class Step3FormComponent
 
         this.isLicenseEdited = false;
 
-        this.selectedCountryType = null;
-        this.selectedStateType = null;
-        this.selectedClassType = null;
-        this.selectedEndorsments = [];
-        this.selectedRestrictions = [];
-
-        this.formService.resetForm(this.licenseForm);
-
-        this.subscription.unsubscribe();
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     public onGetBtnClickValue(event: any): void {
