@@ -82,6 +82,24 @@ $transition: all 0.3s ease-in-out;
                 margin-right: 6px;
                 cursor: pointer;
             }
+
+            &.address-cont{
+                padding-right: 20px;
+
+
+                .app-ta-copy-wrapper{
+
+                    .copy-value{
+                        
+                        width: 365px;
+                        text-overflow: ellipsis;
+                        overflow: hidden; 
+                        white-space: nowrap;
+                    }
+                   
+                }
+               
+            }
         }
     }
     .repair-cards {
