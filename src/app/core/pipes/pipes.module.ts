@@ -36,6 +36,7 @@ import { ActiveLoadStatusPipe } from '../components/modals/load-modal/load-modal
 import { UrlExtensionPipe } from './url-extension.pipe';
 import { ByteConvertPipe } from './byte-convert.pipe';
 import { LoadDatetimeRangePipe } from '../components/modals/load-modal/load-datetime-range.pipe';
+import { FinancialCalculationPipe } from '../components/modals/load-modal/load-financial/financialCalculation.pipe';
 
 @NgModule({
     declarations: [
@@ -75,6 +76,7 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/load-date
         UrlExtensionPipe,
         ByteConvertPipe,
         LoadDatetimeRangePipe,
+        FinancialCalculationPipe,
     ],
     imports: [CommonModule],
     exports: [
@@ -114,6 +116,7 @@ import { LoadDatetimeRangePipe } from '../components/modals/load-modal/load-date
         UrlExtensionPipe,
         ByteConvertPipe,
         LoadDatetimeRangePipe,
+        FinancialCalculationPipe,
     ],
     providers: [
         DatePipe,
