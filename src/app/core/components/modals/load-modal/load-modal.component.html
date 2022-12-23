@@ -71,6 +71,7 @@
                         name: 'Company',
                         type: 'text',
                         label: 'Company',
+                        isDisabled: true,
                         isRequired: true,
                         textTransform: 'uppercase'
                     }"
@@ -1092,6 +1093,7 @@
                     [size]="'large'"
                     [showDropzone]="true"
                     (onFileEvent)="onFilesEvent($event)"
+                    [customClassName]="'modals'"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
 

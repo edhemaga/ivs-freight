@@ -429,9 +429,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
             );
     }
 
-    public onKeyUp(ev: KeyboardEvent) {
-        if (ev.keyCode === 13)
+    public onKeyUp(ev: any) {
+        if (ev.keyCode === 13 && !ev.target.closest('.application-dropdown')) {
             this.action.emit({ action: 'save', bool: false });
+        }
+
+        if (ev.key == 'Escape' && !ev.target.closest('.input-control')) {
+            this.ngbActiveModal.close();
+        }
     }
 
     ngOnDestroy(): void {

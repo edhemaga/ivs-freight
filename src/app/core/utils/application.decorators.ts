@@ -118,6 +118,19 @@ const handleTitleAppChange = (mainTitle, changes) => {
                 title = `${brokerName} | Broker Details`;
             }
             break;
+        case '/ads':
+            if (changes.selectedDispatcher) {
+                let dispatcherName =
+                    changes.selectedDispatcher.currentValue.name;
+                if (changes.selectedDispatcher.currentValue.id == 1) {
+                    title = `Team Dispatch Board`;
+                } else if (changes.selectedDispatcher.currentValue.id == -1) {
+                    title = `All Dispatch Board`;
+                } else {
+                    title = `${dispatcherName} | Dispatch Board`;
+                }
+            }
+            break;
     }
 
     if (title) appTitle.setTitle(title);

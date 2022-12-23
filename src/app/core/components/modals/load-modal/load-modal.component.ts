@@ -30,6 +30,7 @@ import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
 import { IBilling } from './load-financial/load-financial.component';
+import { MapRouteModel } from '../../shared/model/map-route';
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
@@ -69,13 +70,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 id: 3000,
                 name: 'Pickup',
                 checked: true,
-                color: "26A690"
+                color: '26A690',
             },
             {
                 id: 4000,
                 name: 'Delivery',
                 checked: false,
-                color: 'EF5350'
+                color: 'EF5350',
             },
         ],
     ];
@@ -86,13 +87,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id: 5,
             name: 'Open',
             checked: true,
-            color: '3074D3'
+            color: '3074D3',
         },
         {
             id: 6,
             name: 'APPT',
             checked: false,
-            color: '3074D3'
+            color: '3074D3',
         },
     ];
 
@@ -102,13 +103,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id: 7,
             name: 'Open',
             checked: true,
-            color: '3074D3'
+            color: '3074D3',
         },
         {
             id: 8,
             name: 'APPT',
             checked: false,
-            color: '3074D3'
+            color: '3074D3',
         },
     ];
 
@@ -118,13 +119,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 id: 7900,
                 name: 'Open',
                 checked: true,
-                color: '3074D3'
+                color: '3074D3',
             },
             {
                 id: 9000,
                 name: 'APPT',
                 checked: false,
-                color: '3074D3'
+                color: '3074D3',
             },
         ],
     ];
@@ -317,15 +318,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public comments: any[] = [];
 
     // Map Routes
-    public loadStopRoutes: {
-        routeColor: string;
-        stops: {
-            lat: number;
-            long: number;
-            empty: boolean;
-            stopColor: string;
-        }[];
-    }[] = [];
+    public loadStopRoutes: { data: MapRouteModel }[] = [];
 
     // Hazardous Dropdown
     public isHazardousPicked: boolean = false;
@@ -1631,13 +1624,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         id: 3000 + this.loadExtraStops().length,
                         name: 'Pickup',
                         checked: true,
-                        color: '26A690'
+                        color: '26A690',
                     },
                     {
                         id: 4000 + this.loadExtraStops().length,
                         name: 'Delivery',
                         checked: false,
-                        color: 'EF5350'
+                        color: 'EF5350',
                     },
                 ]);
 
@@ -1646,13 +1639,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         id: 7900 + this.loadExtraStops().length,
                         name: 'Open',
                         checked: true,
-                        color: '3074D3'
+                        color: '3074D3',
                     },
                     {
                         id: 9000 + this.loadExtraStops().length,
                         name: 'APPT',
                         checked: false,
-                        color: '3074D3'
+                        color: '3074D3',
                     },
                 ]);
             }
@@ -1879,56 +1872,60 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     if (!this.loadStopRoutes[0]) {
                         this.loadStopRoutes[0] = {
-                            routeColor: '#919191',
-                            stops: [
-                                {
-                                    lat: start.latitude,
-                                    long: start.longitude,
-                                    empty: true,
-                                    stopColor: start.pickup
-                                        ? '#26A690'
-                                        : start.delivery
-                                        ? '#EF5350'
-                                        : '#919191',
-                                },
-                                {
-                                    lat: end.latitude,
-                                    long: end.longitude,
-                                    empty: true,
-                                    stopColor: start.pickup
-                                        ? '#26A690'
-                                        : start.delivery
-                                        ? '#EF5350'
-                                        : '#919191',
-                                },
-                            ],
+                            data: {
+                                routeColor: '#919191',
+                                stops: [
+                                    {
+                                        lat: start.latitude,
+                                        long: start.longitude,
+                                        empty: true,
+                                        stopColor: start.pickup
+                                            ? '#26A690'
+                                            : start.delivery
+                                            ? '#EF5350'
+                                            : '#919191',
+                                    },
+                                    {
+                                        lat: end.latitude,
+                                        long: end.longitude,
+                                        empty: true,
+                                        stopColor: start.pickup
+                                            ? '#26A690'
+                                            : start.delivery
+                                            ? '#EF5350'
+                                            : '#919191',
+                                    },
+                                ],
+                            },
                         };
                     } else {
                         this.loadStopRoutes[0] = {
-                            routeColor: '#919191',
-                            stops: [
-                                ...this.loadStopRoutes[0].stops,
-                                {
-                                    lat: start.latitude,
-                                    long: start.longitude,
-                                    empty: true,
-                                    stopColor: start.pickup
-                                        ? '#26A690'
-                                        : start.delivery
-                                        ? '#EF5350'
-                                        : '#919191',
-                                },
-                                {
-                                    lat: end.latitude,
-                                    long: end.longitude,
-                                    empty: true,
-                                    stopColor: start.pickup
-                                        ? '#26A690'
-                                        : start.delivery
-                                        ? '#EF5350'
-                                        : '#919191',
-                                },
-                            ],
+                            data: {
+                                routeColor: '#919191',
+                                stops: [
+                                    ...this.loadStopRoutes[0].data.stops,
+                                    {
+                                        lat: start.latitude,
+                                        long: start.longitude,
+                                        empty: true,
+                                        stopColor: start.pickup
+                                            ? '#26A690'
+                                            : start.delivery
+                                            ? '#EF5350'
+                                            : '#919191',
+                                    },
+                                    {
+                                        lat: end.latitude,
+                                        long: end.longitude,
+                                        empty: true,
+                                        stopColor: start.pickup
+                                            ? '#26A690'
+                                            : start.delivery
+                                            ? '#EF5350'
+                                            : '#919191',
+                                    },
+                                ],
+                            },
                         };
                     }
 
@@ -2210,7 +2207,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.labelsYear = res.years.map((item, index) => {
                         return {
                             id: index + 1,
-                            name: item,
+                            name: item.toString(),
                         };
                     });
 
@@ -2438,7 +2435,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             baseRate: convertThousanSepInNumber(form.baseRate),
             adjustedRate: convertThousanSepInNumber(form.adjustedRate),
             advancePay: convertThousanSepInNumber(form.advancePay),
-            additionalBillingRates: this.premmapedAdditionalBillingRate(),
+            // additionalBillingRates: this.premmapedAdditionalBillingRate(),
             stops: this.premmapedStops() as any,
         };
 
@@ -2457,44 +2454,44 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
 
     private premmapedAdditionalBillingRate() {
-        return this.additionalBillingTypes.map((item) => {
-            return {
-                id: item.id ? item.id : null,
-                additionalBillingType: item.additionalBillingType,
-                rate:
-                    item.additionalBillingType === 1
-                        ? this.loadForm.get('layoverRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('layoverRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 2
-                        ? this.loadForm.get('lumperRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('lumperRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 3
-                        ? this.loadForm.get('fuelSurchargeRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('fuelSurchargeRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 4
-                        ? this.loadForm.get('escortRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('escortRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 5
-                        ? this.loadForm.get('detentionRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('detentionRate').value
-                              )
-                            : null
-                        : null,
-            };
-        });
+        // return this.additionalBillingTypes.map((item) => {
+        //     return {
+        //         id: item.id ? item.id : null,
+        //         additionalBillingType: item.additionalBillingType,
+        //         rate:
+        //             item.additionalBillingType === 1
+        //                 ? this.loadForm.get('layoverRate').value
+        //                     ? convertThousanSepInNumber(
+        //                           this.loadForm.get('layoverRate').value
+        //                       )
+        //                     : null
+        //                 : item.additionalBillingType === 2
+        //                 ? this.loadForm.get('lumperRate').value
+        //                     ? convertThousanSepInNumber(
+        //                           this.loadForm.get('lumperRate').value
+        //                       )
+        //                     : null
+        //                 : item.additionalBillingType === 3
+        //                 ? this.loadForm.get('fuelSurchargeRate').value
+        //                     ? convertThousanSepInNumber(
+        //                           this.loadForm.get('fuelSurchargeRate').value
+        //                       )
+        //                     : null
+        //                 : item.additionalBillingType === 4
+        //                 ? this.loadForm.get('escortRate').value
+        //                     ? convertThousanSepInNumber(
+        //                           this.loadForm.get('escortRate').value
+        //                       )
+        //                     : null
+        //                 : item.additionalBillingType === 5
+        //                 ? this.loadForm.get('detentionRate').value
+        //                     ? convertThousanSepInNumber(
+        //                           this.loadForm.get('detentionRate').value
+        //                       )
+        //                     : null
+        //                 : null,
+        //     };
+        // });
     }
 
     private premmapedStops() {

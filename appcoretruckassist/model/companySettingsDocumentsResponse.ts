@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
+import { FileResponsePagination } from './fileResponsePagination';
 
 
 export interface CompanySettingsDocumentsResponse { 
-    files?: Array<FileResponse> | null;
+    files?: FileResponsePagination;
 }
 

@@ -401,7 +401,7 @@
                                         type: 'text',
                                         label: 'Pay term',
                                         isDropdown: true,
-                                        dropdownWidthClass: 'w-col-176'
+                                        dropdownWidthClass: 'w-col-163'
                                     }"
                                     [options]="labelsPayTerms"
                                     [activeItem]="selectedPayTerm"
@@ -445,6 +445,7 @@
                                 [files]="documents"
                                 [size]="'medium'"
                                 (onFileEvent)="onFilesEvent($event)"
+                                [customClassName]="'modals'"
                                 [showDropzone]="true"
                             ></app-ta-upload-files>
                         </app-ta-custom-card>

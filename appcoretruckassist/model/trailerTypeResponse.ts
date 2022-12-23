@@ -16,5 +16,6 @@ export interface TrailerTypeResponse {
     companyId?: number | null;
     name?: string | null;
     logoName?: string | null;
+    hasVolume?: boolean | null;
 }
 

@@ -45,7 +45,7 @@
                     textTransform: 'uppercase',
                     minLength: 1,
                     maxLength: 8,
-                    dropdownWidthClass: 'w-col-129',
+                    dropdownWidthClass: 'w-col-119',
                     autoFocus:
                         !editData?.type?.includes('edit') &&
                         !editData?.storageData?.unit
@@ -424,6 +424,7 @@
                     [files]="documents"
                     [size]="'large'"
                     [showDropzone]="true"
+                    [customClassName]="'modals'"
                     (onFileEvent)="onFilesEvent($event)"
                 ></app-ta-upload-files>
             </app-ta-custom-card>

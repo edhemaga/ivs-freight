@@ -1,1 +1,27 @@
-<p>settings-document works!</p>
+<div class="table-container">
+    <div class="documents_toolbar">
+        <app-truckassist-table-toolbar
+            (toolBarAction)="onToolBarAction($event)"
+            [options]="tableOptions"
+            [tableData]="tableData"
+            [columns]="columns"
+            [tableContainerWidth]="tableContainerWidth"
+            [selectedTab]="selectedTab"
+        ></app-truckassist-table-toolbar>
+    </div>
+    <app-ta-upload-files
+        #uploadFiles
+        [files]="documents"
+        [size]="'large'"
+        [showDropzone]="showDropzone"
+        [dontUseSlider]="true"
+        (onFileEvent)="onFilesEvent($event)"
+        (closeDropzone)="hideDropzone()"
+        [customClassName]="'company-documents'"
+        [hasTagsDropdown]="true"
+        [dropzoneFocus]="true"
+        [tags]="[{
+            tagName: 'IFTA Licence'
+        }]"
+    ></app-ta-upload-files>
+</div>

@@ -25,6 +25,7 @@ import { TruckassistTableService } from '../../../../services/truckassist-table/
 import { SharedService } from '../../../../services/shared/shared.service';
 import { DetailsDataService } from '../../../../services/details-data/details-data.service';
 import { Titles } from 'src/app/core/utils/application.decorators';
+import { FilesService } from 'src/app/core/services/shared/files.service';
 
 @Titles()
 @Component({
@@ -45,6 +46,8 @@ export class TruckassistTableBodyComponent
     private destroy$ = new Subject<void>();
     @ViewChild('tableScrollRef', { static: false })
     public virtualScrollViewport: CdkVirtualScrollViewport;
+
+    @ViewChild('tableFiles', { static: false }) public tableFiles: any;
 
     @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
@@ -114,7 +117,8 @@ export class TruckassistTableBodyComponent
         private tableService: TruckassistTableService,
         private changeDetectorRef: ChangeDetectorRef,
         private sharedService: SharedService,
-        private detailsDataService: DetailsDataService
+        private detailsDataService: DetailsDataService,
+        private filesService: FilesService
     ) {}
 
     // --------------------------------NgOnInit---------------------------------
@@ -521,6 +525,16 @@ export class TruckassistTableBodyComponent
     onShowAttachments(row: any) {
         if (this.activeAttachment !== row.id) {
             this.activeAttachment = row.id;
+            let entity = this.activeTableData?.gridNameTitle;
+
+            if(entity == 'Repair' && this.selectedTab == 'repair-shop') {
+                entity = 'Repair-Shop';
+            }
+
+            this.filesService.getFiles(entity, row.id).subscribe((res) => {
+                row.tableAttachments = res;
+                this.changeDetectorRef.detectChanges();
+            });
         } else {
             this.activeAttachment = -1;
         }

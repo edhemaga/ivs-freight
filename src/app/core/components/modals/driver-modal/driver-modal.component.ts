@@ -1062,7 +1062,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         } = this.driverForm.value;
 
         let documents = [];
-        this.documents?.map((item) => {
+        this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
             }
