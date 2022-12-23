@@ -630,8 +630,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 } else if (res.type == 'route') {
                     this.addRoute(res.mapId);
                 } else if (res.type == 'edit-route') {
-                    console.log('edit-route res', res);
-
                     const routeIndex = this.tableData[
                         this.selectedMapIndex
                     ].routes.findIndex((item) => {
@@ -2940,7 +2938,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         stopTime: '',
                         mpg: '',
                         fuelPrice: '',
-                        shape: route.shape,
+                        shape: '',
                         stops: stopsArr,
                         color: this.findRouteColor(),
                         isFocused: this.focusedRouteIndex == index,
@@ -3077,7 +3075,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 // hazMat
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((routing) => {
+            .subscribe((routing: any) => {
                 var totalMiles = 0;
                 var totalTime = 0;
                 var totalPrice = 0;
@@ -3097,10 +3095,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                     stopArr[index + 1].totalPrice = totalPrice;
                     stopArr[index + 1].time = leg.hours + ':' + leg.minutes;
                     stopArr[index + 1].totalTime = hours + ':' + minutes;
+                    stopArr[index + 1].shape = leg.shape;
                 });
 
                 stopArr[0].leg = 0;
                 stopArr[0].total = 0;
+                stopArr[0].shape = '';
 
                 var updateRouteObj = {
                     id: route.id,

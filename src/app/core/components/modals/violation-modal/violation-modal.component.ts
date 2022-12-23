@@ -296,6 +296,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         description: string;
         extraDescription: string;
         reason: string;
+        violationCategoryId: number;
     }) {
         return this.formBuilder.group({
             id: [data.id],
@@ -311,6 +312,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                 [...descriptionValidation],
             ],
             reason: [data.reason],
+            violationCategoryId: [data.violationCategoryId],
         });
     }
 
@@ -433,6 +435,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RoadsideInspectionResponse) => {
+                    console.log('violation by id: ', res);
                     this.violationForm.patchValue({
                         report: res.report,
                         categoryReport: res.violationCategory?.name
@@ -598,6 +601,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                                           )
                                         : res.violations[i].description,
                                     reason: res.violations[i].reason,
+                                    violationCategoryId:
+                                        res.violations[i].violationCategory.id,
                                 })
                             );
                             this.violationCategories[i] =
@@ -667,6 +672,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                           .value.replace(item.get('description').value, '')
                     : null,
                 reason: item.get('reason').value,
+                violationCategoryId: item.get('violationCategoryId').value,
             };
         });
     }

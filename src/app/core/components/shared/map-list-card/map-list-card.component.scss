@@ -253,6 +253,15 @@
     color: rgb(48, 116, 211);
     background: rgb(48, 116, 211, 0.2);
     padding: 0;
+
+    &::-moz-selection {
+        color: rgb(48, 116, 211);
+        background: rgb(48, 116, 211, 0.5);
+    }
+    &::selection {
+        color: rgb(48, 116, 211);
+        background: rgb(48, 116, 211, 0.5);
+    }
 }
 
 .delete-animation {

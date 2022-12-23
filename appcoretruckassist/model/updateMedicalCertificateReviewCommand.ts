@@ -9,17 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { FileReviewCommand } from './fileReviewCommand';
 
 
-export interface StopResponse { 
-    id?: number;
-    address?: AddressEntity;
-    leg?: number | null;
-    total?: number | null;
-    longitude?: number;
-    latitude?: number;
-    orderNumber?: number;
-    shape?: string | null;
+export interface UpdateMedicalCertificateReviewCommand { 
+    isIssueDateValid?: boolean;
+    isExpireDateValid?: boolean;
+    dateMessage?: string | null;
+    filesReview?: Array<FileReviewCommand> | null;
+    applicantId?: number;
 }
 

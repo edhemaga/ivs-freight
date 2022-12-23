@@ -64,6 +64,8 @@ export class NavigationUserCompanyComponent implements OnInit {
                         firstName: res.firstName,
                         lastName: res.lastName,
                         token: res.token,
+                        refreshToken: res.refreshToken,
+                        userId: res.userId,
                         companies: user.companies.map((item) => {
                             return {
                                 ...item,

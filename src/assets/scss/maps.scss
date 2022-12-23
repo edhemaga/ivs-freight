@@ -967,6 +967,15 @@
     //background: none;
     //color: inherit;
 
+    &::-moz-selection {
+        color: rgb(48, 116, 211);
+        background: rgb(48, 116, 211, 0.5);
+    }
+    &::selection {
+        color: rgb(48, 116, 211);
+        background: rgb(48, 116, 211, 0.5);
+    }
+
     &.regular-weight {
         font-weight: 400;
     }

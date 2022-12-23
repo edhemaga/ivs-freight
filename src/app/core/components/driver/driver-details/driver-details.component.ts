@@ -78,10 +78,14 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         let storeData$ = this.DriversItemStore._select(state => state);
 
         storeData$.subscribe(state => {
+            
             let newDriverData = {...state.entities[this.newDriverId]};
-            this.DetailsDataService.setNewData(newDriverData);
-            this.detailCongif(newDriverData);
-            this.initTableOptions(newDriverData);
+
+            if ( !this.isEmpty(newDriverData) ) {  
+                this.DetailsDataService.setNewData(newDriverData);
+                this.detailCongif(newDriverData);
+                this.initTableOptions(newDriverData);
+            }
           });
     }
 
@@ -183,6 +187,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                 
             });
     }
+
+    public isEmpty(obj: Record<string, any>): boolean {
+        return Object.keys(obj).length === 0;
+      }
 
     /**Function template and names for header and other options in header */
     public detailCongif(dataDriver: any) {

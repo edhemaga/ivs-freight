@@ -167,6 +167,16 @@
                 </div>
             </div>
 
+            <!-- 24/7 button -->
+            <div
+                *ngIf="has24Hours"
+                class="_24-7-status"
+                [ngClass]="{ active: is24Hours }"
+                (click)="onAction($event, 'hours-24')"
+            >
+                <p>24/7</p>
+            </div>
+
             <!-- Weekly status -->
             <div
                 *ngIf="hasWeeklyStatus"

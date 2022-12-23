@@ -20,5 +20,6 @@ export interface UpdateStopCommand {
     longitude?: number;
     latitude?: number;
     orderNumber?: number;
+    shape?: string | null;
 }
 

@@ -12,7 +12,7 @@ import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import moment from 'moment';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 
 const routeSpecify = {
     '/api/account/login': 'Driver',
@@ -112,16 +112,16 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             value: 'COMPANY',
         },
         {
-            api : 'company/documents',
-            value: 'DOCUMENT'
+            api: 'company/documents',
+            value: 'DOCUMENT',
         },
         {
             api: 'companycontactlabel',
-            value: 'LABEL'
+            value: 'LABEL',
         },
         {
             api: 'companyaccountlabel',
-            value: 'LABEL'
+            value: 'LABEL',
         },
         {
             api: 'companyaccount',
@@ -133,7 +133,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         },
         {
             api: 'companyuser',
-            value: 'USER'
+            value: 'USER',
         },
         {
             api: 'factoringcompany',
@@ -231,7 +231,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             api: 'insurancepolicy',
             value: 'INSURANCE POLICY',
         },
-        
+
         {
             api: 'parking',
             value: 'PARKING',
@@ -242,8 +242,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         },
         {
             api: 'load',
-            value: 'LOAD'
-        }
+            value: 'LOAD',
+        },
     ];
     constructor(
         protected toastrService: ToastrService,
@@ -270,7 +270,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
     createTitleBasedOnHttpRequest() {
         console.log(this.httpRequest);
-        
+
         let url = this.httpRequest.url.split('/api/');
         let apiEndPoint = url[1];
 
@@ -310,8 +310,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 break;
         }
 
-
-        if ( this.errorData?.error?.error ) {
+        if (this.errorData?.error?.error) {
             this.message = this.errorData.error.error;
             return false;
         }
@@ -335,15 +334,19 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.wideMessage = true;
                 break;
             case 'LOAD':
-                    let loadNum = this.httpRequest.body.getAll('referenceNumber')[0] ? this.httpRequest.body.getAll('referenceNumber')[0] : ''; 
-                    this.message = loadNum;
-                break;    
+                let loadNum = this.httpRequest.body.getAll('referenceNumber')[0]
+                    ? this.httpRequest.body.getAll('referenceNumber')[0]
+                    : '';
+                this.message = loadNum;
+                break;
             case 'USER':
-                let userName = this.httpRequest.body.firstName + ' ' + this.httpRequest.body.lastName;
+                let userName =
+                    this.httpRequest.body.firstName +
+                    ' ' +
+                    this.httpRequest.body.lastName;
                 this.message = userName;
-                break;    
+                break;
             case 'DRIVER':
-                
                 let bodyName = this.httpRequest.body.getAll('firstName')[0]
                     ? this.httpRequest.body.getAll('firstName')[0]
                     : '';
@@ -351,7 +354,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     ? this.httpRequest.body.getAll('lastName')[0]
                     : '';
                 let driverNameFull = '';
-              
+
                 if (bodyName && bodyLastName) {
                     driverNameFull = bodyName + ' ' + bodyLastName;
                 }
@@ -474,43 +477,39 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     : this.DetailsDataService.mainData?.firstName.toUpperCase() +
                       ' ' +
                       this.DetailsDataService.mainData?.lastName.toUpperCase();
-                    let cdlNum = this.httpRequest.body.getAll('cdlNumber')[0]
-                        ? this.httpRequest.body.getAll('cdlNumber')[0]
-                        : this.DetailsDataService.cardMainTitle;
+                let cdlNum = this.httpRequest.body.getAll('cdlNumber')[0]
+                    ? this.httpRequest.body.getAll('cdlNumber')[0]
+                    : this.DetailsDataService.cardMainTitle;
 
-                    if (!this.httpRequest.body?.cdlNumber) {
-                        let cdlId = lastVal;
-                        this.DetailsDataService.mainData?.cdls?.map(
-                            (item: any) => {
-                                if (item.id == cdlId) {
-                                    cdlNum = item.cdlNumber;
-                                }
-                            }
-                        );
-                    }
+                if (!this.httpRequest.body?.cdlNumber) {
+                    let cdlId = lastVal;
+                    this.DetailsDataService.mainData?.cdls?.map((item: any) => {
+                        if (item.id == cdlId) {
+                            cdlNum = item.cdlNumber;
+                        }
+                    });
+                }
 
-                    if (this.httpRequest.method == 'POST') {
-                        this.actionTitle =
-                            this.toastrType == 'toast-error'
-                                ? 'ADD NEW'
-                                : 'ADDED NEW';
-                    } else if (this.httpRequest.method == 'PUT') {
-                        this.actionTitle =
-                            this.toastrType == 'toast-error'
-                                ? 'ACTIVATE'
-                                : 'ACTIVATED';
-                    }
+                if (this.httpRequest.method == 'POST') {
+                    this.actionTitle =
+                        this.toastrType == 'toast-error'
+                            ? 'ADD NEW'
+                            : 'ADDED NEW';
+                } else if (this.httpRequest.method == 'PUT') {
+                    this.actionTitle =
+                        this.toastrType == 'toast-error'
+                            ? 'ACTIVATE'
+                            : 'ACTIVATED';
+                }
 
-                    if (apiEndPoint.indexOf('deactivate') > -1) {
-                        this.actionTitle =
-                            this.toastrType == 'toast-error'
-                                ? 'VOID'
-                                : 'VOIDED';
-                    }
+                if (apiEndPoint.indexOf('deactivate') > -1) {
+                    this.actionTitle =
+                        this.toastrType == 'toast-error' ? 'VOID' : 'VOIDED';
+                }
 
-                    this.actionType = 'CDL - ' + driverFullName;
-                    this.wideMessage = true;
-                    this.message = cdlNum;
+                this.actionType = 'CDL - ' + driverFullName;
+                this.wideMessage = true;
+                this.message = cdlNum;
                 break;
             case 'MVR':
             case 'MEDICAL':
@@ -524,7 +523,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 let issuedDate = dateFromData
                     ? moment(dateFromData).format('MM/DD/YY')
                     : '';
-                if (this.httpRequest.method == 'POST'|| this.httpRequest.method == 'PUT') {
+                if (
+                    this.httpRequest.method == 'POST' ||
+                    this.httpRequest.method == 'PUT'
+                ) {
                     this.actionTitle =
                         this.toastrType == 'toast-error'
                             ? 'ADD NEW'
@@ -532,7 +534,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     this.actionType =
                         this.actionType == 'MVR'
                             ? 'MVR - ' + driverName
-                            : 'MEDICAL - ' + driverName;      
+                            : 'MEDICAL - ' + driverName;
                     this.message = 'Issued: ' + issuedDate;
                 }
                 break;
@@ -542,7 +544,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 if (this.httpRequest.body) {
                     messageValue = this.httpRequest.body.getAll('dbaName')[0]
                         ? this.httpRequest.body.getAll('dbaName')[0]
-                        : this.httpRequest.body.getAll('businessName')[0];  
+                        : this.httpRequest.body.getAll('businessName')[0];
                 }
 
                 if (!messageValue) {
@@ -621,7 +623,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = errorMessage;
                 break;
             case 'TRAILER':
-                let trailerNum = this.httpRequest.body.getAll('trailerNumber')[0]
+                let trailerNum = this.httpRequest.body.getAll(
+                    'trailerNumber'
+                )[0]
                     ? this.httpRequest.body.getAll('trailerNumber')[0]
                     : '';
                 let activeTrailer = this.DetailsDataService.mainData?.status
@@ -656,13 +660,17 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                         );
                     }
                 }
-                this.message = trailerNum; 
+                this.message = trailerNum;
                 break;
             case 'COMPANY':
-                let compName = this.httpRequest.body?.companyName ? this.httpRequest.body.companyName : '';
+                let compName = this.httpRequest.body?.companyName
+                    ? this.httpRequest.body.companyName
+                    : '';
 
                 if (!compName) {
-                    compName = this.DetailsDataService?.mainData?.companyName ? this.DetailsDataService?.mainData?.companyName : this.DetailsDataService?.mainData?.name ;
+                    compName = this.DetailsDataService?.mainData?.companyName
+                        ? this.DetailsDataService?.mainData?.companyName
+                        : this.DetailsDataService?.mainData?.name;
                 }
 
                 this.message = compName;
@@ -755,12 +763,23 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'REGISTRATION':
             case 'TITLE':
                 let messageText = '';
-                console.log('this.DetailsDataService.mainData', this.DetailsDataService.mainData);
-                if (this.httpRequest.body.getAll('unitType')[0] == 'Truck') {
-                    let repairTruckNum = this.DetailsDataService.mainData?.truckNumber ? this.DetailsDataService.mainData?.truckNumber : '';
+                if (
+                    this.httpRequest.body.getAll('unitType')[0] == 'Truck' ||
+                    this.httpRequest.body.getAll('truckId')[0]
+                ) {
+                    let repairTruckNum = this.DetailsDataService.mainData
+                        ?.truckNumber
+                        ? this.DetailsDataService.mainData?.truckNumber
+                        : '';
                     messageText = 'Truck - ' + repairTruckNum;
-                } else if (this.httpRequest.body.getAll('unitType')[0] == 'Trailer' ) {
-                    let repairTrailerNum = this.DetailsDataService.mainData?.trailerNumber ? this.DetailsDataService.mainData?.trailerNumber : '';
+                } else if (
+                    this.httpRequest.body.getAll('unitType')[0] == 'Trailer' ||
+                    this.httpRequest.body.getAll('trailerId')
+                ) {
+                    let repairTrailerNum = this.DetailsDataService.mainData
+                        ?.trailerNumber
+                        ? this.DetailsDataService.mainData?.trailerNumber
+                        : '';
                     messageText = 'Trailer - ' + repairTrailerNum;
                 }
 
@@ -802,9 +821,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             case 'TASK':
                 let toDoName = '';
 
-                if ( !this.httpRequest.body.id ) {
+                if (!this.httpRequest.body.id) {
                     toDoName = this.httpRequest.body.getAll('title')[0];
-                }    
+                }
 
                 if (!toDoName) {
                     toDoName = this.DetailsDataService.mainData?.title;
@@ -836,48 +855,51 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                     let noteTrailerNum =
                         this.DetailsDataService.mainData?.trailerNumber;
                     noteName = 'Trailer - ' + noteTrailerNum;
-                } else if ( this.httpRequest.body.entityTypeNote == 'Test' ) {
+                } else if (this.httpRequest.body.entityTypeNote == 'Test') {
                     let testId = this.httpRequest.body?.entityId;
                     let testDate;
 
                     this.DetailsDataService?.mainData?.tests.map((item) => {
-                        if ( item.id ==  testId ) {
-                            testDate = moment(item.testingDate).format('MM/DD/YY')
+                        if (item.id == testId) {
+                            testDate = moment(item.testingDate).format(
+                                'MM/DD/YY'
+                            );
                         }
-                    })
+                    });
                     noteName = 'Test - ' + testDate;
-
-                } else if ( this.httpRequest.body.entityTypeNote == 'Cdl' ) {
-
+                } else if (this.httpRequest.body.entityTypeNote == 'Cdl') {
                     let noteCdlId = this.httpRequest.body?.entityId;
                     let noteCdlNum;
 
                     this.DetailsDataService?.mainData?.cdls.map((item) => {
-                        if ( item.id ==  noteCdlId ) {
+                        if (item.id == noteCdlId) {
                             noteCdlNum = item.cdlNumber;
                         }
-                    })
+                    });
                     noteName = 'Cdl - ' + noteCdlNum;
-                } else if ( this.httpRequest.body.entityTypeNote == 'Medical' ) {
-
+                } else if (this.httpRequest.body.entityTypeNote == 'Medical') {
                     let noteMedicalId = this.httpRequest.body?.entityId;
                     let noteMedicalDate;
                     this.DetailsDataService?.mainData?.medicals.map((item) => {
-                        if ( item.id ==  noteMedicalId ) {
-                            noteMedicalDate = moment(item.issueDate).format('MM/DD/YY')
+                        if (item.id == noteMedicalId) {
+                            noteMedicalDate = moment(item.issueDate).format(
+                                'MM/DD/YY'
+                            );
                         }
-                    })
+                    });
 
                     noteName = 'Medical - ' + noteMedicalDate;
-                } else if ( this.httpRequest.body.entityTypeNote == 'Mvr' ) {
+                } else if (this.httpRequest.body.entityTypeNote == 'Mvr') {
                     let noteMvrId = this.httpRequest.body?.entityId;
                     let noteMvrDate;
-                  
+
                     this.DetailsDataService?.mainData?.mvrs.map((item) => {
-                        if ( item.id ==  noteMvrId ) {
-                            noteMvrDate = moment(item.issueDate).format('MM/DD/YY')
+                        if (item.id == noteMvrId) {
+                            noteMvrDate = moment(item.issueDate).format(
+                                'MM/DD/YY'
+                            );
                         }
-                    })
+                    });
                     noteName = 'Medical - ' + noteMvrDate;
                 }
 
@@ -930,22 +952,25 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
                 this.message = terminalName;
                 break;
             case 'LABEL':
-                let labelName = this.httpRequest.body?.name ? this.httpRequest.body?.name : '';
+                let labelName = this.httpRequest.body?.name
+                    ? this.httpRequest.body?.name
+                    : '';
                 this.message = labelName;
-                break; 
+                break;
             case 'DOCUMENT':
                 let fileName = '';
-                if ( this.httpRequest.body.getAll('filesForDeleteIds')[0] ) {
-                    this.actionTitle = this.toastrType == 'toast-error' ? 'DELETE' : 'DELETED';
+                if (this.httpRequest.body.getAll('filesForDeleteIds')[0]) {
+                    this.actionTitle =
+                        this.toastrType == 'toast-error' ? 'DELETE' : 'DELETED';
                     fileName = this.DetailsDataService.documentName;
                 }
 
-                if ( this.httpRequest.body.getAll('files')[0] ) {
+                if (this.httpRequest.body.getAll('files')[0]) {
                     fileName = this.httpRequest.body.getAll('files')[0]['name'];
                 }
 
                 this.message = fileName;
-                break;       
+                break;
         }
 
         if (this.actionType == 'DRIVER' && !this.message) {
