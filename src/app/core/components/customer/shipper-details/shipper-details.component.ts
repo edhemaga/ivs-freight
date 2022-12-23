@@ -220,9 +220,16 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     }
     public onDropActions(event: any) {
         this.getShipperById(event.id);
+
+        let eventObject = {
+            data: undefined,
+            id: event.id,
+            type: 'edit',
+            openedTab: event.type,
+        }
         setTimeout(() => {
             this.dropDownService.dropActionsHeaderShipperBroker(
-                event,
+                eventObject,
                 this.shipperObject,
                 'shipper'
             );
@@ -232,7 +239,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     public onModalAction(event: any){
         let eventObject = {
             data: undefined,
-            id: this.shipperObject.id,
+            id: this.shipperId,
             type: 'edit',
             openedTab: event,
         }
@@ -272,14 +279,14 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: 'Add Contact',
-                    name: 'add-contact',
+                    name: 'Contact',
                     svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
                     iconName: 'add-contact'
                 },
                 {
                     title: 'Write Review',
-                    name: 'write-review',
+                    name: 'Review',
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
                     iconName: 'write-review'
