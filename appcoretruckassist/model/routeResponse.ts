@@ -15,7 +15,6 @@ import { StopResponse } from './stopResponse';
 export interface RouteResponse { 
     name?: string | null;
     id?: number;
-    shape?: string | null;
     stops?: Array<StopResponse> | null;
 }
 

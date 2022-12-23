@@ -325,6 +325,33 @@ export class TaInputDropdownComponent
                 if (keyCode === 38) {
                     this.dropdownNavigation(-1);
                 }
+
+                // Press Escape
+                if (keyCode === 27) {
+                    if (this.inputConfig?.commands?.active) {
+                        this.inputConfig.commands.active = false;
+                    }
+
+                    if (this.inputConfig.name === 'Input Dropdown Bank Name') {
+                        this.inputConfig.commands.active = false;
+                        this.inputRef.isVisibleCommands = false;
+                        this.inputRef.focusInput = false;
+                    }
+
+                    if (this.inputConfig.dropdownLabel) {
+                        this.getSuperControl.setErrors(null);
+                        this.inputConfig.dropdownLabelNew = false;
+                        this.inputConfig.commands.active = false;
+                        this.inputConfig.blackInput = false;
+                        this.inputRef.focusInput = false;
+                        this.inputRef.editInputMode = false;
+                        this.inputRef.input.nativeElement.blur();
+                        if (this.labelMode === 'Color') {
+                            this.getSuperControl.patchValue(null);
+                            this.selectedLabelMode.emit('Label');
+                        }
+                    }
+                }
                 // Press 'enter'
                 if (keyCode === 13) {
                     let selectedItem = $('.dropdown-option-hovered')
