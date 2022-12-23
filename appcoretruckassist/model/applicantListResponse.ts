@@ -9,17 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { ApplicantShortResponsePagination } from './applicantShortResponsePagination';
 
 
-export interface StopResponse { 
-    id?: number;
-    address?: AddressEntity;
-    leg?: number | null;
-    total?: number | null;
-    longitude?: number;
-    latitude?: number;
-    orderNumber?: number;
-    shape?: string | null;
+export interface ApplicantListResponse { 
+    pagination?: ApplicantShortResponsePagination;
+    count?: number;
+    activeCount?: number;
+    inactiveCount?: number;
+    archived?: number;
 }
 

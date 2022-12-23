@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileReviewResponse } from './fileReviewResponse';
 
 
 export interface ApplicantFileResponse { 
@@ -16,7 +17,6 @@ export interface ApplicantFileResponse {
     fileName?: string | null;
     url?: string | null;
     fileSize?: number | null;
-    storageId?: number;
-    review?: object;
+    review?: FileReviewResponse;
 }
 

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { GetApplicantListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ApplicantTService } from '../applicant.service';
@@ -25,7 +24,7 @@ export class ApplicantTableResolver implements Resolve<ApplicantTableState> {
                 catchError(() => {
                     return of('No applicants data...');
                 }),
-                tap((applicantPagination: GetApplicantListResponse) => {
+                tap((applicantPagination: any /*GetApplicantListResponse*/) => {
                     localStorage.setItem(
                         'applicantTableCount',
                         JSON.stringify({
