@@ -438,6 +438,12 @@ export class TaInputComponent
     public clearInput(event: Event): void {
         event.preventDefault();
         event.stopPropagation();
+        // Clear whole input
+        if (this.inputConfig.removeInput) {
+            this.clearInputEvent.emit(true);
+            return;
+        }
+        // Clear value
         if (this.inputConfig.incorrectInput) {
             this.incorrectValue = !this.incorrectValue;
             this.incorrectInput.emit(this.incorrectValue);
@@ -519,7 +525,6 @@ export class TaInputComponent
     public onTogglePassword(event: any): void {
         event.preventDefault();
         event.stopPropagation();
-        console.log(event);
         clearTimeout(this.timeoutPassword);
         this.togglePassword = !this.togglePassword;
         if (this.savedFocusEl) {
@@ -577,7 +582,6 @@ export class TaInputComponent
                 }
             }
             if (event.keyCode === 27) {
-                console.log('escape');
                 this.isVisibleCommands = false;
                 this.onBlur();
                 this.blurOnDropDownArrow();

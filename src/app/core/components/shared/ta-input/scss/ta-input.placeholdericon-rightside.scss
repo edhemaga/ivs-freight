@@ -1,14 +1,69 @@
+@import './ta-input.colors.scss';
 .placeholder-icon-right-side {
-    &.hide {
-        display: none;
+    position: absolute;
+    right: 4px;
+
+    &.green {
+        svg {
+            path {
+                fill: #4db6a2;
+            }
+        }
     }
 
-    &.focus {
-        opacity: 0.4;
-        pointer-events: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+    &.purple {
+        svg {
+            path {
+                fill: #ba68c8;
+            }
+        }
+    }
+
+    &.blue {
+        svg {
+            path {
+                fill: #6f9ee0;
+            }
+        }
+    }
+
+    &::before {
+        content: '';
+        display: block;
+        height: 16px;
+        width: 1px;
+        border-radius: 3px;
+        background: $input-placeholder-icon-normal-after;
+        position: absolute;
+        right: 22px;
+        top: 5px;
+    }
+
+    // Follow Text
+    &.placeholder-icon-follow-text {
+        &.hide {
+            display: none;
+        }
+
+        &.focus {
+            opacity: 0.4;
+            pointer-events: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    }
+
+    &.valid-required-out {
+        &::before {
+            background-color: $input-placeholder-icon-valid-after !important;
+        }
+    }
+
+    &.invalid {
+        &::before {
+            background-color: $input-placeholder-icon-path-invalid-focus !important;
+        }
     }
 }
