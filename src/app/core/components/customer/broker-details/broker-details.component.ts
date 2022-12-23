@@ -393,11 +393,18 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             });
     }
     public onDropActions(event: any) {
-       
+
+       let eventType = '';
+       if ( event.type == 'Contact' || event.type == 'edit' || event.type == 'Review'){
+            eventType = 'edit'
+       } else {
+            eventType = event.type;
+       }
+
         let eventObject = {
             data: undefined,
             id: this.brokerId,
-            type: 'edit',
+            type: eventType,
             openedTab: event.type,
         }
 
@@ -409,7 +416,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(event: any){
-        
         if ( event == 'Load' ){
             return false;
         }
