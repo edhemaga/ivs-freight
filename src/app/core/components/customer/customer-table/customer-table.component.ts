@@ -473,22 +473,23 @@ export class CustomerTableComponent
         return {
             ...data,
             isSelected: false,
-            textShipWorkHour: 'Nije Povezano',
-            textReceWorkHour: 'Nije Povezano',
-            textContact: data?.shipperContacts?.length
-                ? data.shipperContacts.length
-                : 0,
-            textDbaName: '',
-            textAddress: data?.address?.address ? data.address.address : '',
-            mcNumber: '',
-            loadCount: '',
-            total: '',
-            raiting: {
+            tableAddress: data?.address?.address ? data.address.address : '',
+            tableLoads: 'Nije Povezano',
+            tableAverageWatingTimePickup: 'Nije Povezano',
+            tableAverageWatingTimeDelivery: 'Nije Povezano',
+            tableAvailableHoursShipping: 'Nije Povezano',
+            tableAvailableHoursReceiving: 'Nije Povezano',
+            tableRaiting: {
                 hasLiked: data.currentCompanyUserRating === 1,
                 hasDislike: data.currentCompanyUserRating === -1,
                 likeCount: data?.upCount ? data.upCount : '0',
                 dislikeCount: data?.downCount ? data.downCount : '0',
             },
+            tableContact: data?.shipperContacts?.length
+                ? data.shipperContacts.length
+                : 0,
+            tableAdded: 'Nije Povezano',
+            tableEdited: 'Nije Povezano',
         };
     }
 
