@@ -1266,19 +1266,6 @@ kendo-grid .toolbar-container {
     }
 }
 
-.text {
-    font-weight: bold !important;
-    font-size: 14px;
-    color: #919191 !important;
-    background: #f9f9f9 !important;
-
-    &:hover {
-        background: #f3f3f3 !important;
-
-        color: #6c6c6c !important;
-    }
-}
-
 .legend_pop {
     // width: 180px;
     width: 572px !important;
@@ -1291,67 +1278,6 @@ kendo-grid .toolbar-container {
     transition: all 0.15s ease-in-out !important;
     user-select: none;
     opacity: 1 !important;
-}
-
-.tab {
-    // height: 32px;
-    background: #f9f9f9;
-    cursor: pointer;
-    border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
-    height: 32px;
-    position: relative;
-
-    .type-text {
-        padding: 7px 0 7px 12px;
-        font-weight: bold !important;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 14px;
-        color: #919191 !important;
-    }
-
-    span {
-        svg-icon {
-            padding-right: 6px;
-        }
-
-        border-bottom-right-radius: 3px;
-        border-top-right-radius: 3px;
-        // background: red;
-        // background: #f9f9f9 !important;
-    }
-
-    svg {
-        #Path_1186 {
-            stroke: #919191;
-        }
-
-        #Path_1187 {
-            stroke: #919191;
-        }
-    }
-
-    &:hover {
-        background: #f3f3f3 !important;
-
-        span {
-            background: #f3f3f3 !important;
-            // background: red !important;
-            border-bottom-right-radius: 3px;
-            border-top-right-radius: 3px;
-            color: #6c6c6c !important;
-        }
-
-        svg {
-            #Path_1186 {
-                stroke: #6c6c6c !important;
-            }
-
-            #Path_1187 {
-                stroke: #6c6c6c !important;
-            }
-        }
-    }
 }
 
 .truck {

@@ -13,9 +13,9 @@ import {
 import { scrollButtonAnimation } from './app.component.animation';
 import { StaticInjectorService } from './core/utils/application.decorators';
 import { GpsServiceService } from './global/services/gps-service.service';
-import { SignInResponse } from '../../appcoretruckassist/model/signInResponse';
+import { SignInResponse } from '../../appcoretruckassist';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AccountService } from '../../appcoretruckassist/api/account.service';
+import { AccountService } from '../../appcoretruckassist';
 import { configFactory } from './app.config';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 
@@ -80,7 +80,6 @@ export class AppComponent implements OnInit {
 
     public checkRefreshTokenExpiration() {
         const user: SignInResponse = JSON.parse(localStorage.getItem('user'));
-
         if (user) {
             this.accountService
                 .apiAccountRefreshPost({
@@ -90,16 +89,19 @@ export class AppComponent implements OnInit {
                     switchMap((res: any) => {
                         user.token = res.token;
                         user.refreshToken = res.refreshToken;
-                        localStorage.setItem('user', JSON.stringify(user));
+                        setTimeout(() => {
+                            localStorage.removeItem('user');
+                            localStorage.setItem('user', JSON.stringify(user));
+                        }, 100);
                         configFactory(this.userLoggedService);
                         return of(true);
                     }),
                     catchError((err: HttpErrorResponse) => {
                         if (err.status === 404 || err.status === 500) {
+                            window.location.reload();
                             this.currentPage = 'login';
                             localStorage.removeItem('user');
                             this.router.navigate(['/auth']);
-                            window.location.reload();
                         }
                         return throwError(() => err);
                     })

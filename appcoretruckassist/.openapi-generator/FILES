@@ -87,6 +87,7 @@ model/apiCategory.ts
 model/applicantAdminResponse.ts
 model/applicantCompanyInfoResponse.ts
 model/applicantFileResponse.ts
+model/applicantListResponse.ts
 model/applicantModalResponse.ts
 model/applicantPersonalInfoReviewResponse.ts
 model/applicantPreviousAddressResponse.ts
@@ -301,7 +302,9 @@ model/eventResponse.ts
 model/eventType.ts
 model/factoringCompany.ts
 model/fileResponse.ts
+model/fileResponsePagination.ts
 model/fileReviewCommand.ts
+model/fileReviewResponse.ts
 model/fleetType.ts
 model/forgotPasswordCommand.ts
 model/fuelCardListResponse.ts
@@ -328,7 +331,6 @@ model/fuelTransactionResponsePagination.ts
 model/fuelledVehicleHistoryListResponse.ts
 model/fuelledVehicleResponse.ts
 model/fuelledVehicleResponsePagination.ts
-model/getApplicantListResponse.ts
 model/getAvailableCreditEFSQuery.ts
 model/getBrokerListResponse.ts
 model/getCdlModalResponse.ts
@@ -481,6 +483,7 @@ model/personalInfoFeedbackResponse.ts
 model/poBoxEntity.ts
 model/preferredLoadType.ts
 model/previousEmployerAccidentHistoryItemCommand.ts
+model/previousEmployerDocumentsResponse.ts
 model/previousEmployerModalResponse.ts
 model/previousEmployerRequestResponse.ts
 model/problemDetails.ts
@@ -502,6 +505,7 @@ model/repairModalResponse.ts
 model/repairResponse.ts
 model/repairResponsePagination.ts
 model/repairServiceTypeResponse.ts
+model/repairShopContactResponse.ts
 model/repairShopListResponse.ts
 model/repairShopMinimalListResponse.ts
 model/repairShopMinimalResponse.ts
@@ -636,6 +640,7 @@ model/updateAuthorizationCommand.ts
 model/updateBankAccountCommand.ts
 model/updateBankCardCommand.ts
 model/updateBankCommand.ts
+model/updateCdlCardReviewCommand.ts
 model/updateClassOfEquipmentCommand.ts
 model/updateCommentCommand.ts
 model/updateCompanyAccountCommand.ts
@@ -668,6 +673,8 @@ model/updateHosRulesCommand.ts
 model/updateLoadStatusCommand.ts
 model/updateLoadTemplateCommand.ts
 model/updateMapCommand.ts
+model/updateMedicalCertificateReviewCommand.ts
+model/updateMvrAuthReviewCommand.ts
 model/updateOwnerHistoryCommand.ts
 model/updatePMTrailerDefaultCommand.ts
 model/updatePMTrailerListDefaultCommand.ts
@@ -688,6 +695,7 @@ model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
 model/updateSevenDaysHosReviewCommand.ts
 model/updateSphCommand.ts
+model/updateSsnReviewCommand.ts
 model/updateStopCommand.ts
 model/updateTableConfigCommand.ts
 model/updateTerminalCommand.ts

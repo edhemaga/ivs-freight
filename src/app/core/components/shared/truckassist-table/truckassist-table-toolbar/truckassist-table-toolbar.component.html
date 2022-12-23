@@ -20,7 +20,10 @@
     <div class="tab-wrapper" *ngIf="tableData.length > 1">
         <ng-container *ngFor="let data of tableData; let i = index">
             <ng-container [ngSwitch]="data.type">
-                <div *ngSwitchCase="'dropdown'" class="tab-container tab-margin">
+                <div
+                    *ngSwitchCase="'dropdown'"
+                    class="tab-container tab-margin"
+                >
                     <app-ta-input-dropdown
                         [formControl]="dropdownSelection"
                         [template]="data.template"
@@ -28,7 +31,7 @@
                         [options]="data.dropdownData"
                         [activeItem]="data.selectedDispatcher"
                         (selectedItem)="
-                            onSelectDropdown($event, data.actionType)
+                            onToolBarSelectAction($event)
                         "
                     ></app-ta-input-dropdown>
                 </div>
@@ -182,69 +185,82 @@
 <ng-template #optionsPopover let-data="data" data-toggle="popover">
     <div class="options-container">
         <!-- TOOLBAR OPTIONS -->
-        <div
-            (click)="onOptions(option)"
-            [ngClass]="{
-                'active-option': option.active,
-                'inactiv-option': option.isInactive
-            }"
-            *ngFor="let option of optionsPopupContent"
-            class="options"
-            [ngStyle]="{ display: option.hide ? 'none' : 'flex' }"
-            (mouseover)="option.showBackToList = true"
-            (mouseleave)="option.showBackToList = false"
-        >
+        <div *ngFor="let option of optionsPopupContent">
+            <!-- Option Border -->
             <div
-                class="back-to-list-icon"
-                *ngIf="
-                    option?.showBackToList &&
-                    option.hasOwnSubOpions &&
-                    option.active
-                "
+                class="toolbar-option-border-container"
+                *ngIf="option.hasTopBorder && !optionsPopupContent[0].active"
             >
-                <svg-icon
-                    [svgStyle]="{
-                        'width.px': 14,
-                        'height.px': 14
-                    }"
-                    [src]="option.backToListIcon"
-                ></svg-icon>
+                <div class="option-border"></div>
             </div>
 
-            <div class="text">
-                {{
-                    option?.showBackToList &&
-                    option.hasOwnSubOpions &&
-                    option.active
-                        ? 'Back to Menu'
-                        : option.text
-                }}
-            </div>
+             <!-- Option -->
+            <div
+                (click)="onOptions(option)"
+                [ngClass]="{
+                    'active-option': option.active,
+                    'inactiv-option': option.isInactive
+                }"
+                class="options"
+                [ngStyle]="{ display: option.hide ? 'none' : 'flex' }"
+                (mouseover)="option.showBackToList = true"
+                (mouseleave)="option.showBackToList = false"
+            >
+                <!-- Back To List Icon -->
+                <div
+                    class="back-to-list-icon"
+                    *ngIf="
+                        option?.showBackToList &&
+                        option.hasOwnSubOpions &&
+                        option.active
+                    "
+                >
+                    <svg-icon
+                        [svgStyle]="{
+                            'width.px': 14,
+                            'height.px': 14
+                        }"
+                        [src]="option.backToListIcon"
+                    ></svg-icon>
+                </div>
 
-            <div class="icon">
-                <svg-icon
-                    *ngIf="!option.backToListIcon || !option.active"
-                    class="option-icon"
-                    [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                    }"
-                    [src]="option.svgPath"
-                ></svg-icon>
+                <div class="text">
+                    {{
+                        option?.showBackToList &&
+                        option.hasOwnSubOpions &&
+                        option.active
+                            ? 'Back to Menu'
+                            : option.text
+                    }}
+                </div>
 
-                <svg-icon
-                    (click)="onResetTable()"
-                    *ngIf="option.backToListIcon && option.active"
-                    class="columns-active-icon"
-                    [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                    }"
-                    [src]="'assets/svg/truckassist-table/reset-icon.svg'"
-                ></svg-icon>
+                <!-- Normal Icon -->
+                <div class="icon">
+                    <svg-icon
+                        *ngIf="!option.backToListIcon || !option.active"
+                        class="option-icon"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                        [src]="option.svgPath"
+                    ></svg-icon>
+
+                    <svg-icon
+                        (click)="onResetTable()"
+                        *ngIf="option.backToListIcon && option.active"
+                        class="columns-active-icon"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                        [src]="'assets/svg/truckassist-table/reset-icon.svg'"
+                    ></svg-icon>
+                </div>
             </div>
         </div>
 
+        <!-- Option -->
         <div
             class="options-border-container"
             *ngIf="optionsPopupContent[0].active"

@@ -64,7 +64,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.getCdlDropdowns();
         this.createForm();
-        console.log('this.editData.id', this.editData);
         this.getDriverById(this.editData.id);
 
         if (this.editData.type === 'edit-licence') {
@@ -219,7 +218,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     }
 
     private getDriverById(id: number) {
-        console.log('---id', id);
         this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))

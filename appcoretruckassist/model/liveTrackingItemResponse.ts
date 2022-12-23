@@ -36,11 +36,14 @@ export interface LiveTrackingItemResponse {
     ignition?: boolean | null;
     loadNumber?: string | null;
     dispatchStatus?: DispatchStatus;
+    dispatchId?: number | null;
     stops?: Array<LiveTrackingLoadStopResponse> | null;
     destination?: string | null;
     leftMiles?: number | null;
     totalMiles?: number | null;
     traveledMiles?: number | null;
     progressBarPercentage?: number | null;
+    motionStatusPeriod?: string | null;
+    dispatchStatusPeriod?: string | null;
 }
 

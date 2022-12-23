@@ -178,17 +178,6 @@ export class TaInputDropdownComponent
                 clearTimeout(timeout);
             });
         }
-
-        if (
-            this.inputConfig.name === 'Address' ||
-            this.inputConfig.name === 'RoutingAddress'
-        ) {
-            if (this.getSuperControl.value && this.inputRef?.focusInput) {
-                this.popoverRef?.open();
-            } else {
-                this.popoverRef?.close();
-            }
-        }
     }
 
     ngAfterViewInit() {
@@ -336,6 +325,33 @@ export class TaInputDropdownComponent
                 if (keyCode === 38) {
                     this.dropdownNavigation(-1);
                 }
+
+                // Press Escape
+                if (keyCode === 27) {
+                    if (this.inputConfig?.commands?.active) {
+                        this.inputConfig.commands.active = false;
+                    }
+
+                    if (this.inputConfig.name === 'Input Dropdown Bank Name') {
+                        this.inputConfig.commands.active = false;
+                        this.inputRef.isVisibleCommands = false;
+                        this.inputRef.focusInput = false;
+                    }
+
+                    if (this.inputConfig.dropdownLabel) {
+                        this.getSuperControl.setErrors(null);
+                        this.inputConfig.dropdownLabelNew = false;
+                        this.inputConfig.commands.active = false;
+                        this.inputConfig.blackInput = false;
+                        this.inputRef.focusInput = false;
+                        this.inputRef.editInputMode = false;
+                        this.inputRef.input.nativeElement.blur();
+                        if (this.labelMode === 'Color') {
+                            this.getSuperControl.patchValue(null);
+                            this.selectedLabelMode.emit('Label');
+                        }
+                    }
+                }
                 // Press 'enter'
                 if (keyCode === 13) {
                     let selectedItem = $('.dropdown-option-hovered')
@@ -459,18 +475,18 @@ export class TaInputDropdownComponent
                                               0,
                                               selectedItem.lastIndexOf(' ')
                                           )
-                                        : selectedItem.toLowerCase() ===
-                                          item.name.toLowerCase()
+                                        : selectedItem?.toLowerCase() ===
+                                          item?.name.toLowerCase()
                                 )
                                     return (
-                                        item.name.toLowerCase() ===
+                                        item?.name.toLowerCase() ===
                                         (item?.dropLabel ||
                                         this.inputConfig.dropdownLabel
                                             ? selectedItem.substring(
                                                   0,
-                                                  selectedItem.lastIndexOf(' ')
+                                                  selectedItem?.lastIndexOf(' ')
                                               )
-                                            : selectedItem.toLowerCase())
+                                            : selectedItem?.toLowerCase())
                                     );
                             });
 
@@ -587,6 +603,13 @@ export class TaInputDropdownComponent
                         id: 7654,
                         name: 'No Results',
                     });
+
+                    if (
+                        this.inputConfig.name === 'Address' ||
+                        this.inputConfig.name === 'RoutingAddress'
+                    ) {
+                        this.popoverRef?.open();
+                    }
                 }
             } else {
                 this.options = this.originalOptions;

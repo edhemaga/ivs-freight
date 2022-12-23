@@ -6,10 +6,13 @@ import {
     EventEmitter,
     OnDestroy,
     ChangeDetectorRef,
-    ElementRef
+    ElementRef,
 } from '@angular/core';
 import { MapsService } from '../../../services/shared/maps.service';
 import { Subject, takeUntil } from 'rxjs';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { ConfirmationModalComponent } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ModalService } from './../../shared/ta-modal/modal.service';
 
 @Component({
     selector: 'app-map-list-card',
@@ -34,7 +37,13 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     sortCategory: any = {};
     clickedOnDots: boolean = false;
 
-    constructor(private mapsService: MapsService, private ref: ChangeDetectorRef, public elementRef: ElementRef) {}
+    constructor(
+        private mapsService: MapsService,
+        private ref: ChangeDetectorRef,
+        public elementRef: ElementRef,
+        private detailsDataService: DetailsDataService,
+        private modalService: ModalService
+    ) {}
 
     ngOnInit(): void {
         this.sortCategory = this.mapsService.sortCategory;
@@ -45,14 +54,15 @@ export class MapListCardComponent implements OnInit, OnDestroy {
                 this.sortCategory = category;
             });
 
-        if ( this.mapsService.selectedMarkerId ) {
+        if (this.mapsService.selectedMarkerId) {
             this.isSelected = this.mapsService.selectedMarkerId == this.item.id;
-            this.item.isSelected = this.mapsService.selectedMarkerId == this.item.id;
+            this.item.isSelected =
+                this.mapsService.selectedMarkerId == this.item.id;
         }
     }
 
     selectCard(event) {
-        if ( this.clickedOnDots ) {
+        if (this.clickedOnDots) {
             this.clickedOnDots = false;
             return false;
         }
@@ -67,13 +77,48 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     }
 
     callBodyAction(action) {
-        this.bodyActions.emit(action);
+        if (action.type == 'delete' || action.type == 'delete-repair') {
+            var name =
+                this.type == 'repairShop'
+                    ? action.data.name
+                    : this.type == 'shipper'
+                    ? action.data.name
+                    : '';
+
+            var shipperData = {
+                id: action.id,
+                type: 'delete-item',
+                data: {
+                    ...action.data,
+                    name: name,
+                },
+            };
+
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    ...shipperData,
+                    template:
+                        this.type == 'repairShop' ? 'repair shop' : 'shipper',
+                    type: 'delete',
+                }
+            );
+        } else {
+            this.bodyActions.emit(action);
+        }
     }
 
     // RAITING
     onLike(event) {
         event.preventDefault();
         event.stopPropagation();
+
+        this.detailsDataService.setNewData(this.item);
+        this.detailsDataService.changeRateStatus(
+            'like',
+            !this.rating?.hasLiked
+        );
 
         this.bodyActions.emit({
             data: this.item,
@@ -85,6 +130,12 @@ export class MapListCardComponent implements OnInit, OnDestroy {
     onDislike(event) {
         event.preventDefault();
         event.stopPropagation();
+
+        this.detailsDataService.setNewData(this.item);
+        this.detailsDataService.changeRateStatus(
+            'dislike',
+            !this.rating?.hasDislike
+        );
 
         this.bodyActions.emit({
             data: this.item,
@@ -101,8 +152,11 @@ export class MapListCardComponent implements OnInit, OnDestroy {
         this.isSelected = add;
         this.item.isSelected = add;
 
-        if ( add ) {
-            this.elementRef.nativeElement.scrollIntoView({behavior: 'smooth', block: 'center'});
+        if (add) {
+            this.elementRef.nativeElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
         }
 
         this.ref.detectChanges();
@@ -114,7 +168,7 @@ export class MapListCardComponent implements OnInit, OnDestroy {
 
         this.bodyActions.emit({
             data: this.item,
-            type: 'favorite'
+            type: 'favorite',
         });
     }
 

@@ -201,6 +201,10 @@
             .todo_deadline_hold {
                 width: 100%;
                 margin-top: 12px;
+
+                &.done {
+                    height: 18px;
+                }
             }
 
             .list-top-holder {
@@ -231,7 +235,7 @@
                             margin-right: 6px;
 
                             path {
-                                fill: #26A690;
+                                fill: #26a690;
                             }
                         }
                     }
@@ -261,6 +265,18 @@
                         margin-left: 4px;
                         border-radius: 2px;
                         cursor: pointer;
+
+                        .documents_counter {
+                            margin-left: 2px;
+                            font-size: 11px;
+                            font-weight: 700;
+                            color: #919191;
+                        }
+
+                        &.documents {
+                            width: auto;
+                            padding: 0px 3px 0px 2px;
+                        }
 
                         &.dots {
                             margin-left: 8px;
@@ -302,6 +318,10 @@
                                     display: flex;
                                     cursor: pointer;
                                 }
+                            }
+
+                            .documents_counter {
+                                color: #3074d3 !important;
                             }
                         }
 
@@ -386,6 +406,10 @@
                                 circle {
                                     fill: #6c6c6c;
                                 }
+                            }
+
+                            .documents_counter {
+                                color: #6c6c6c;
                             }
                         }
 
@@ -494,41 +518,6 @@
                             height: 28px;
                             background-size: contain;
                             border-radius: 100%;
-                        }
-
-                        .user_tooltip_name_hold {
-                            grid-row-start: 1;
-                            grid-column-start: 2;
-
-                            height: 18px;
-                            width: 0px;
-                            margin-left: 2px;
-
-                            opacity: 0;
-                            overflow: hidden;
-                            transition: all 0.2s ease-in-out;
-                            pointer-events: none;
-                            z-index: 2;
-                            .user_tooltip_name {
-                                padding: 0px 2px;
-                                width: max-content;
-
-                                font-size: 11px;
-                                line-height: 18px;
-                                font-weight: 700;
-                                color: #fff;
-                                text-align: center;
-
-                                border-radius: 2px;
-                                background-color: #616161;
-                            }
-                        }
-
-                        &:hover {
-                            .user_tooltip_name_hold {
-                                width: 100px;
-                                opacity: 1;
-                            }
                         }
 
                         .user_profile_image {

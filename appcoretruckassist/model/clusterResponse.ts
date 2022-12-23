@@ -15,6 +15,7 @@ import { MarkerNamesResponsePagination } from './markerNamesResponsePagination';
 export interface ClusterResponse { 
     id?: number | null;
     name?: string | null;
+    favourite?: boolean;
     pagination?: MarkerNamesResponsePagination;
     latitude?: number;
     longitude?: number;

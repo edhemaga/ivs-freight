@@ -578,7 +578,25 @@
                     </div>
                 </div>
             </app-ta-custom-card>
-
+            <app-ta-custom-card
+                *ngIf="truck?.files.length"
+                [cardName]="'Document'"
+                [isCardOpen]="false"
+                [hasCounter]="truck?.files?.length ? truck?.files.length : 0"
+                class="item-cards"
+                [bodyTemplate]="'card'"
+            >
+                <div class="card_files_holder" [class.active]="truck?.files?.length > 1">
+                    <app-ta-upload-files
+                        [files]="truck?.files"
+                        [customClassName]="'driver-card-pdf'"
+                        [hasCarouselBottomTabs]="true"
+                        [type]="'details'"
+                        [slideWidth]="440"
+                        [reviewMode]="'REVIEW_MODE'"
+                    ></app-ta-upload-files>
+                </div>
+            </app-ta-custom-card>
             <!--------Note--------->
             <div class="divider"></div>
             <div class="note-cards">

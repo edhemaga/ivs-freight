@@ -12,7 +12,7 @@
 
 
 export interface AssignGpsDevicesToTrailerCommand { 
-    deviceId?: number;
+    deviceId?: string | null;
     trailerId?: number;
 }
 

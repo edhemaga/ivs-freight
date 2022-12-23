@@ -1,4 +1,3 @@
-import { DispatcherResolverService } from './core/components/dispatcher/state/dispatcher-resolver.service';
 import { DashboardResolverService } from './core/components/dashboard/state/dashboard-resolver.service';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -45,6 +44,7 @@ import { FuelResolver } from './core/components/fuel/state/fule-state/fuel-state
 import { ApplicantTableResolver } from './core/components/driver/state/applicant-state/applicant-table.resolver';
 import { ApplicantSphFormResolver } from './core/components/applicant/state/resolver/applicant-sph-form.resolver';
 import { MilesResolverService } from './core/components/miles/state/miles-resolver.service';
+import { DispatcherResolverService } from './core/components/dispatch/state/dispatcher-resolver.service';
 
 const routes: Routes = [
     // Auth Routes
@@ -80,7 +80,7 @@ const routes: Routes = [
         resolve: { dashboard: DashboardResolverService },
     },
     {
-        path: 'dispatcher',
+        path: 'ads',
         loadChildren: () =>
             import('./core/components/dispatcher/dispatcher.module').then(
                 (m) => m.DispatcherModule
@@ -89,7 +89,7 @@ const routes: Routes = [
         resolve: { dispatcher: DispatcherResolverService },
     },
     {
-        path: 'ads',
+        path: 'dispatcher',
         loadChildren: () =>
             import('./core/components/dispatch/dispatch.module').then(
                 (m) => m.DispatchModule

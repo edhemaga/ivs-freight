@@ -71,6 +71,7 @@
                         name: 'Company',
                         type: 'text',
                         label: 'Company',
+                        isDisabled: true,
                         isRequired: true,
                         textTransform: 'uppercase'
                     }"
@@ -146,7 +147,7 @@
                         label: 'Commodity',
                         isDropdown: true,
                         dropdownWidthClass: 'w-col-152',
-                        placeholderIconRightSide: isHazardousPicked
+                        placeholderIconFolllowTextOnRightSide: isHazardousPicked
                             ? 'hazardous'
                             : null,
                         blackInput: true,
@@ -958,9 +959,15 @@
 
             <app-load-financial
                 [firstHeaderTitle]="'Billing'"
-                [billing]="0"
+                [billing]="loadModalBill | financialCalculation | currency"
+                [disableBillAction]="
+                    !loadForm.get('baseRate').value ||
+                    !additionalBillingTypes?.length
+                "
+                [adjusted]="loadForm.get('adjustedRate').value"
                 [secondHeaderTitle]="'Payment'"
                 [payment]="0"
+                [disablePaymentAction]="!loadForm.get('baseRate').value"
                 [thirdHeaderTitle]="'Invoice Ageing'"
                 [isCardOpen]="true"
                 [disableAnimation]="disableCardAnimation"
@@ -979,8 +986,13 @@
                                 name: 'base-rate',
                                 type: 'text',
                                 label: 'Base Rate',
+                                labelInInput: true,
                                 isRequired: true,
-                                placeholderIcon: 'dollar',
+                                placeholderIconRightSide: 'dollar',
+                                placeholderIconColor: 'green',
+                                inputCursorOnRightSide: true,
+                                hideErrorMessage: true,
+                                hideRequiredCheck: true,
                                 customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true
                             }"
@@ -996,8 +1008,13 @@
                                 name: 'base-rate',
                                 type: 'text',
                                 label: 'Driver Rate',
+                                labelInInput: true,
                                 isRequired: true,
-                                placeholderIcon: 'dollar',
+                                placeholderIconRightSide: 'dollar',
+                                placeholderIconColor: 'purple',
+                                inputCursorOnRightSide: true,
+                                hideErrorMessage: true,
+                                hideRequiredCheck: true,
                                 customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true
                             }"
@@ -1013,11 +1030,68 @@
                                 name: 'base-rate',
                                 type: 'text',
                                 label: 'Adjusted',
-                                placeholderIcon: 'dollar',
+                                labelInInput: true,
+                                isRequired: true,
+                                placeholderIconRightSide: 'dollar',
+                                placeholderIconColor: 'purple',
+                                inputCursorOnRightSide: true,
+                                hideErrorMessage: true,
+                                hideRequiredCheck: true,
                                 customClass: 'dollar-placeholderIcon',
                                 thousandSeparator: true
                             }"
                         ></app-ta-input>
+                        <div formArrayName="additionalBillings">
+                            <div
+                                *ngFor="
+                                    let additional of additionalBillings()
+                                        .controls;
+                                    let indx = index
+                                "
+                                [ngStyle]="{ 'margin-bottom': '4px' }"
+                            >
+                                <div [formGroupName]="indx">
+                                    <app-ta-input
+                                        formControlName="billingValue"
+                                        [inputConfig]="{
+                                            name: 'base-rate',
+                                            type: 'text',
+                                            label: additional.get('name').value,
+                                            labelInInput: true,
+                                            placeholderIconRightSide:
+                                                'dollar-additional-load',
+                                            placeholderIconColor: 'blue',
+                                            inputCursorOnRightSide: true,
+                                            removeInput: true,
+                                            isRequired: true,
+                                            hideErrorMessage: true,
+                                            hideRequiredCheck: true,
+                                            customClass:
+                                                'dollar-placeholderIcon',
+                                            thousandSeparator: true
+                                        }"
+                                        (clear)="removeAdditionalBilling(indx)"
+                                    ></app-ta-input>
+                                </div>
+                            </div>
+                        </div>
+                        <app-ta-input-dropdown
+                            *ngIf="isVisibleBillDropdown"
+                            formControlName="billingDropdown"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Additional',
+                                isDropdown: true,
+                                labelInInput: true,
+                                autoFocus: true,
+                                dropdownWidthClass: 'w-col-198',
+                                readOnly: true
+                            }"
+                            [options]="additionalBillingTypes"
+                            [activeItem]="null"
+                            (selectedItem)="addAdditionalBilling($event)"
+                        ></app-ta-input-dropdown>
                     </div>
                     <div class="load-financial-payment">
                         <app-ta-input
@@ -1092,6 +1166,7 @@
                     [size]="'large'"
                     [showDropzone]="true"
                     (onFileEvent)="onFilesEvent($event)"
+                    [customClassName]="'modals'"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
 

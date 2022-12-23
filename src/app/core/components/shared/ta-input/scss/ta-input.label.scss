@@ -69,6 +69,18 @@
         }
     }
 
+    &.in-label {
+        top: 4px;
+
+        &.focus {
+            color: #ffffff !important;
+        }
+    }
+
+    &.no-transition {
+        transition: none !important;
+    }
+
     &.has-input-icon {
         left: 37px;
 

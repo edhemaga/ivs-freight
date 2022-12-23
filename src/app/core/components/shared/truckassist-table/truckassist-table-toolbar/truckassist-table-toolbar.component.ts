@@ -13,7 +13,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { Titles } from 'src/app/core/utils/application.decorators';
 
+@Titles()
 @Component({
     selector: 'app-truckassist-table-toolbar',
     templateUrl: './truckassist-table-toolbar.component.html',
@@ -30,6 +32,7 @@ export class TruckassistTableToolbarComponent
     @Input() selectedTab: string;
     @Input() columns: any[];
     @Input() tableContainerWidth: number;
+    @Input() selectedDispatcher: any;
     listName: string = '';
     optionsPopup: any;
     optionsPopupOpen: boolean = false;
@@ -63,6 +66,7 @@ export class TruckassistTableToolbarComponent
             svgPath: 'assets/svg/truckassist-table/import-new.svg',
             active: false,
             hide: false,
+            hasTopBorder: true,
         },
         {
             text: 'Export',
@@ -298,6 +302,14 @@ export class TruckassistTableToolbarComponent
         });
     }
 
+    // Toolbar Select Action
+    onToolBarSelectAction(actionType: string){
+        this.toolBarAction.emit({
+            action: 'select-action',
+            data: actionType,
+        });
+    }
+
     // Chnage View Mode
     changeModeView(modeView: any) {
         this.toolBarAction.emit({
@@ -408,17 +420,7 @@ export class TruckassistTableToolbarComponent
             if (!column.isPined) {
                 column.hidden = !column.hidden;
 
-                localStorage.setItem(
-                    `table-${this.tableConfigurationType}-Configuration`,
-                    JSON.stringify(this.columns)
-                );
-
-                this.tableService.sendToaggleColumn({
-                    column: column,
-                    index: index,
-                });
-
-                this.getActiveTableData();
+                this.setTableConfig(column, index);
             }
         }, 10);
     }
@@ -456,17 +458,7 @@ export class TruckassistTableToolbarComponent
                     if (column.title === c.title) {
                         column.hidden = columnGroup.areAllActive ? false : true;
 
-                        localStorage.setItem(
-                            `table-${this.tableConfigurationType}-Configuration`,
-                            JSON.stringify(this.columns)
-                        );
-
-                        this.tableService.sendToaggleColumn({
-                            column: column,
-                            index: index,
-                        });
-
-                        this.getActiveTableData();
+                        this.setTableConfig(column, index);
                     }
                 });
             }
@@ -485,21 +477,26 @@ export class TruckassistTableToolbarComponent
                     if (column.title === columnGroup.title) {
                         column.hidden = !column.hidden;
 
-                        localStorage.setItem(
-                            `table-${this.tableConfigurationType}-Configuration`,
-                            JSON.stringify(this.columns)
-                        );
-
-                        this.tableService.sendToaggleColumn({
-                            column: column,
-                            index: index,
-                        });
-
-                        this.getActiveTableData();
+                       this.setTableConfig(column, index);
                     }
                 });
             }
         }, 10);
+    }
+
+    // Set Table Configuration
+    setTableConfig(column: any, index: number){
+        localStorage.setItem(
+            `table-${this.tableConfigurationType}-Configuration`,
+            JSON.stringify(this.columns)
+        );
+
+        this.tableService.sendToaggleColumn({
+            column: column,
+            index: index,
+        });
+
+        this.getActiveTableData();
     }
 
     // --------------------------------ON DESTROY---------------------------------

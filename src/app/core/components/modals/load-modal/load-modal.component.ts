@@ -30,6 +30,7 @@ import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 import moment from 'moment';
 import { CreateLoadTemplateCommand } from '../../../../../../appcoretruckassist/model/createLoadTemplateCommand';
 import { IBilling } from './load-financial/load-financial.component';
+import { MapRouteModel } from '../../shared/model/map-route';
 @Component({
     selector: 'app-load-modal',
     templateUrl: './load-modal.component.html',
@@ -69,13 +70,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 id: 3000,
                 name: 'Pickup',
                 checked: true,
-                color: "26A690"
+                color: '26A690',
             },
             {
                 id: 4000,
                 name: 'Delivery',
                 checked: false,
-                color: 'EF5350'
+                color: 'EF5350',
             },
         ],
     ];
@@ -86,13 +87,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id: 5,
             name: 'Open',
             checked: true,
-            color: '3074D3'
+            color: '3074D3',
         },
         {
             id: 6,
             name: 'APPT',
             checked: false,
-            color: '3074D3'
+            color: '3074D3',
         },
     ];
 
@@ -102,13 +103,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id: 7,
             name: 'Open',
             checked: true,
-            color: '3074D3'
+            color: '3074D3',
         },
         {
             id: 8,
             name: 'APPT',
             checked: false,
-            color: '3074D3'
+            color: '3074D3',
         },
     ];
 
@@ -118,13 +119,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 id: 7900,
                 name: 'Open',
                 checked: true,
-                color: '3074D3'
+                color: '3074D3',
             },
             {
                 id: 9000,
                 name: 'APPT',
                 checked: false,
-                color: '3074D3'
+                color: '3074D3',
             },
         ],
     ];
@@ -317,15 +318,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public comments: any[] = [];
 
     // Map Routes
-    public loadStopRoutes: {
-        routeColor: string;
-        stops: {
-            lat: number;
-            long: number;
-            empty: boolean;
-            stopColor: string;
-        }[];
-    }[] = [];
+    public loadStopRoutes: MapRouteModel[] = [];
 
     // Hazardous Dropdown
     public isHazardousPicked: boolean = false;
@@ -353,6 +346,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         detention: 0,
     };
 
+    public isVisibleBillDropdown: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         private inputService: TaInputService,
@@ -368,7 +363,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.createForm();
         this.getLoadDropdowns();
 
-        // this.trackBillingPayment();
+        this.trackBillingPayment();
     }
 
     private createForm() {
@@ -434,11 +429,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             adjustedRate: [null],
             driverRate: [null],
             advancePay: [null],
-            layoverRate: [null],
-            lumperRate: [null],
-            fuelSurchargeRate: [null],
-            escortRate: [null],
-            detentionRate: [null],
+            additionalBillings: this.formBuilder.array([]),
+            billingDropdown: [null],
+            // layoverRate: [null],
+            // lumperRate: [null],
+            // fuelSurchargeRate: [null],
+            // escortRate: [null],
+            // detentionRate: [null],
             invoiced: [null],
             // -------------
             note: [null],
@@ -605,6 +602,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'dispatches': {
+                console.log('dispatches: ', event);
                 if (event) {
                     this.selectedDispatches = {
                         ...event,
@@ -612,8 +610,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             ?.concat(' ', event?.trailer?.name)
                             .concat(' ', event?.driver?.name),
                     };
-
-                    console.log(this.selectedDispatches);
 
                     this.loadDispatchesTTDInputConfig = {
                         ...this.loadDispatchesTTDInputConfig,
@@ -663,12 +659,33 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         },
                     };
 
+                    if (
+                        this.selectedDispatches.driver.payType === 'Flat Rate'
+                    ) {
+                        this.inputService.changeValidators(
+                            this.loadForm.get('driverRate')
+                        );
+                    } else {
+                        this.inputService.changeValidators(
+                            this.loadForm.get('adjustedRate')
+                        );
+                    }
+
                     // Draw Stop on map between deadhead driver and first pickup
-                    if (this.selectedPickupShipper) {
+                    if (this.selectedPickupShipper && this.selectedDispatches) {
+                        console.log(
+                            'dispatches: ',
+                            this.selectedDispatches,
+                            this.selectedPickupShipper
+                        );
                         this.drawStopOnMap(
                             {
-                                ...this.selectedDispatches
-                                    .currentLocationCoordinates,
+                                longitude:
+                                    this.selectedDispatches
+                                        .currentLocationCoordinates.longitude,
+                                latitude:
+                                    this.selectedDispatches
+                                        .currentLocationCoordinates.latitude,
                                 pickup: false,
                                 delivery: false,
                             },
@@ -688,6 +705,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     };
 
                     this.selectedDispatches = null;
+
+                    this.inputService.changeValidators(
+                        this.loadForm.get('driverRate'),
+                        false
+                    );
+                    this.inputService.changeValidators(
+                        this.loadForm.get('adjustedRate'),
+                        false
+                    );
                 }
                 break;
             }
@@ -817,6 +843,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             }
             case 'shipper-pickup': {
                 this.selectedPickupShipper = event;
+                console.log(
+                    'why is undefined: ',
+                    event,
+                    this.selectedPickupShipper
+                );
                 if (this.selectedPickupShipper) {
                     this.loadPickupShipperInputConfig = {
                         ...this.loadPickupShipperInputConfig,
@@ -859,40 +890,54 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         this.selectedPickupShipperContact =
                             this.labelsShipperContacts[1].contacts[0];
 
-                        this.loadForm
-                            .get('pickupShipperContactId')
-                            .patchValue(
-                                this.selectedPickupShipperContact.fullName
-                            );
+                        if (this.selectedPickupShipperContact) {
+                            this.loadForm
+                                .get('pickupShipperContactId')
+                                .patchValue(
+                                    this.selectedPickupShipperContact.fullName
+                                );
 
-                        this.loadPickupShipperContactsInputConfig = {
-                            ...this.loadPickupShipperContactsInputConfig,
-                            multipleInputValues: {
-                                options: [
-                                    {
-                                        value: this.selectedPickupShipperContact
-                                            .name,
-                                        logoName: null,
-                                    },
-                                    {
-                                        value: this.selectedPickupShipperContact
-                                            .originalPhone,
-                                        second_value: `#${this.selectedPickupShipperContact.phoneExtension}`,
-                                        logoName: null,
-                                    },
-                                ],
-                                customClass: 'load-shipper-contact',
-                            },
-                            isDisabled: false,
-                        };
+                            this.loadPickupShipperContactsInputConfig = {
+                                ...this.loadPickupShipperContactsInputConfig,
+                                multipleInputValues: {
+                                    options: [
+                                        {
+                                            value: this
+                                                .selectedPickupShipperContact
+                                                .name,
+                                            logoName: null,
+                                        },
+                                        {
+                                            value: this
+                                                .selectedPickupShipperContact
+                                                .originalPhone,
+                                            second_value: `#${this.selectedPickupShipperContact.phoneExtension}`,
+                                            logoName: null,
+                                        },
+                                    ],
+                                    customClass: 'load-shipper-contact',
+                                },
+                                isDisabled: false,
+                            };
+                        }
                     }
 
                     // Draw Stop on map between deadhead driver and first pickup
-                    if (this.selectedDispatches?.currentLocationCoordinates) {
+                    if (this.selectedDispatches) {
+                        console.log(
+                            'pickup shipper: ',
+                            this.selectedDispatches,
+                            this.selectedPickupShipper
+                                .currentLocationCoordinates
+                        );
                         this.drawStopOnMap(
                             {
-                                ...this.selectedDispatches
-                                    .currentLocationCoordinates,
+                                longitude:
+                                    this.selectedDispatches
+                                        .currentLocationCoordinates.longitude,
+                                latitude:
+                                    this.selectedDispatches
+                                        .currentLocationCoordinates.latitude,
                                 pickup: false,
                                 delivery: false,
                             },
@@ -1428,124 +1473,68 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
 
     // ****************  Billing Payment ****************
-    public trackBillingPayment() {
-        this.loadForm
-            .get('baseRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                if (!value) {
-                    this.isAvailableAdjustedRate = false;
-                    this.isAvailableAdvanceRate = false;
-
-                    this.loadForm.get('adjustedRate').reset();
-                    this.loadForm.get('advancePay').reset();
-                    this.loadForm.get('layoverRate').reset();
-                    this.loadForm.get('lumperRate').reset();
-                    this.loadForm.get('fuelSurchargeRate').reset();
-                    this.loadForm.get('escortRate').reset();
-                    this.loadForm.get('detentionRate').reset();
-                    this.additionalBillingTypes.filter(
-                        (item) => (item.active = false)
-                    );
-                } else {
-                    this.loadModalBill.baseRate =
-                        convertThousanSepInNumber(value);
-                }
-            });
-
-        this.loadForm
-            .get('adjustedRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                if (!this.loadForm.get('baseRate').value || !value) {
-                    return;
-                }
-
-                if (
-                    convertThousanSepInNumber(value) >
-                    convertThousanSepInNumber(
-                        this.loadForm.get('baseRate').value
-                    )
-                ) {
-                    this.loadModalBill.adjusted = 0;
-                    this.loadForm.get('adjustedRate').reset();
-                } else {
-                    this.loadModalBill.adjusted =
-                        convertThousanSepInNumber(value);
-                }
-            });
-
-        this.loadForm
-            .get('advancePay')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                if (!this.loadForm.get('baseRate').value || !value) {
-                    return;
-                }
-
-                if (
-                    convertThousanSepInNumber(value) >
-                    convertThousanSepInNumber(
-                        this.loadForm.get('baseRate').value
-                    )
-                ) {
-                    this.loadModalBill.advance = 0;
-                    this.loadForm.get('advancePay').reset();
-                    return;
-                } else {
-                    this.loadModalBill.advance =
-                        convertThousanSepInNumber(value);
-                }
-            });
-
-        this.loadForm
-            .get('layoverRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                this.loadModalBill.layover = convertThousanSepInNumber(value);
-            });
-
-        this.loadForm
-            .get('lumperRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                this.loadModalBill.lumper = convertThousanSepInNumber(value);
-            });
-
-        this.loadForm
-            .get('fuelSurchargeRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                this.loadModalBill.fuelSurcharge =
-                    convertThousanSepInNumber(value);
-            });
-
-        this.loadForm
-            .get('escortRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                this.loadModalBill.escort = convertThousanSepInNumber(value);
-            });
-
-        this.loadForm
-            .get('detentionRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((value) => {
-                this.loadModalBill.detention = convertThousanSepInNumber(value);
-            });
+    public additionalBillings(): FormArray {
+        return this.loadForm.get('additionalBillings') as FormArray;
     }
 
-    // public onSelectAdditionalOption(option: any) {
-    //     if (!this.loadForm.get('baseRate').value) {
-    //         return;
-    //     }
-    //     option.active = !option.active;
-    // }
+    public createAdditionaBilling(data: { id: number; name: string }) {
+        return this.formBuilder.group({
+            id: [data?.id ? data.id : null],
+            name: [data?.name ? data?.name : null],
+            billingValue: [null],
+        });
+    }
+
+    public selectedAdditionalBillings: any[] = [];
+    public addAdditionalBilling(event: any) {
+        if (event) {
+            this.selectedAdditionalBillings.push(
+                this.additionalBillingTypes.find((item) => item.id === event.id)
+            );
+
+            this.additionalBillingTypes = this.additionalBillingTypes.filter(
+                (item) => item.id !== event.id
+            );
+
+            this.additionalBillings().push(
+                this.createAdditionaBilling({ id: 1, name: event.name })
+            );
+
+            setTimeout(() => {
+                this.inputService.changeValidators(
+                    this.additionalBillings().at(
+                        this.additionalBillings().length - 1
+                    )
+                );
+            }, 150);
+        }
+
+        this.isVisibleBillDropdown = false;
+        this.loadForm.get('billingDropdown').patchValue(null);
+    }
+
+    public removeAdditionalBilling(index: number) {
+        this.additionalBillingTypes.push(
+            this.selectedAdditionalBillings.find(
+                (item) =>
+                    item.name === this.additionalBillings().at(index).value.name
+            )
+        );
+
+        this.selectedAdditionalBillings =
+            this.selectedAdditionalBillings.filter(
+                (item) =>
+                    item.name !== this.additionalBillings().at(index).value.name
+            );
+
+        this.additionalBillings().removeAt(index);
+    }
 
     public onFinancialAction(data: { type: string; action: boolean }) {
         if (data.action) {
             switch (data.type) {
                 case 'billing': {
+                    this.isVisibleBillDropdown = true;
                     break;
                 }
                 case 'payment': {
@@ -1556,6 +1545,76 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 }
             }
         }
+    }
+
+    public trackBillingPayment() {
+        this.loadForm
+            .get('baseRate')
+            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .subscribe((value) => {
+                if (!value) {
+                    this.isAvailableAdjustedRate = false;
+                    this.isAvailableAdvanceRate = false;
+
+                    this.loadForm.get('adjustedRate').reset();
+                    this.loadForm.get('driverRate').reset();
+                    this.loadForm.get('advancePay').reset();
+                } else {
+                    this.loadModalBill = {
+                        ...this.loadModalBill,
+                        baseRate: value.replaceAll(',', ''),
+                    };
+                }
+            });
+
+        this.loadForm
+            .get('additionalBillings')
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((item) => {
+                switch (item.name) {
+                    case 'Layover': {
+                        this.loadModalBill = {
+                            ...this.loadModalBill,
+                            layover: item.billingValue.replaceAll(',', ''),
+                        };
+                        break;
+                    }
+                    case 'Lumper': {
+                        this.loadModalBill = {
+                            ...this.loadModalBill,
+                            lumper: item.billingValue.replaceAll(',', ''),
+                        };
+                        break;
+                    }
+                    case 'Fuel Surcharge': {
+                        this.loadModalBill = {
+                            ...this.loadModalBill,
+                            fuelSurcharge: item.billingValue.replaceAll(
+                                ',',
+                                ''
+                            ),
+                        };
+                        break;
+                    }
+                    case 'Escort': {
+                        this.loadModalBill = {
+                            ...this.loadModalBill,
+                            escort: item.billingValue.replaceAll(',', ''),
+                        };
+                        break;
+                    }
+                    case 'Detention': {
+                        this.loadModalBill = {
+                            ...this.loadModalBill,
+                            detention: item.billingValue.replaceAll(',', ''),
+                        };
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            });
     }
 
     // **************** end ****************
@@ -1631,13 +1690,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         id: 3000 + this.loadExtraStops().length,
                         name: 'Pickup',
                         checked: true,
-                        color: '26A690'
+                        color: '26A690',
                     },
                     {
                         id: 4000 + this.loadExtraStops().length,
                         name: 'Delivery',
                         checked: false,
-                        color: 'EF5350'
+                        color: 'EF5350',
                     },
                 ]);
 
@@ -1646,13 +1705,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         id: 7900 + this.loadExtraStops().length,
                         name: 'Open',
                         checked: true,
-                        color: '3074D3'
+                        color: '3074D3',
                     },
                     {
                         id: 9000 + this.loadExtraStops().length,
                         name: 'APPT',
                         checked: false,
-                        color: '3074D3'
+                        color: '3074D3',
                     },
                 ]);
             }
@@ -1864,7 +1923,12 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         //   )
 
         this.routingService
-            .apiRoutingGet(JSON.stringify([start, end]))
+            .apiRoutingGet(
+                JSON.stringify([
+                    { longitude: start.longitude, latitude: start.latitude },
+                    { longitude: end.longitude, latitude: end.latitude },
+                ])
+            )
             .pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RoutingResponse) => {
@@ -2210,7 +2274,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.labelsYear = res.years.map((item, index) => {
                         return {
                             id: index + 1,
-                            name: item,
+                            name: item.toString(),
                         };
                     });
 
@@ -2290,15 +2354,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         });
 
                     // Additional Billing Types
-                    this.additionalBillingTypes =
-                        res.additionalBillingTypes.map((item) => {
-                            return {
-                                id: null,
-                                additionalBillingType: item.id,
-                                name: item.name,
-                                active: false,
-                            };
-                        });
+                    this.additionalBillingTypes = res.additionalBillingTypes;
                 },
                 error: () => {},
             });
@@ -2438,7 +2494,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             baseRate: convertThousanSepInNumber(form.baseRate),
             adjustedRate: convertThousanSepInNumber(form.adjustedRate),
             advancePay: convertThousanSepInNumber(form.advancePay),
-            additionalBillingRates: this.premmapedAdditionalBillingRate(),
+            // additionalBillingRates: this.premmapedAdditionalBillingRate(),
             stops: this.premmapedStops() as any,
         };
 
@@ -2457,44 +2513,44 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
 
     private premmapedAdditionalBillingRate() {
-        return this.additionalBillingTypes.map((item) => {
-            return {
-                id: item.id ? item.id : null,
-                additionalBillingType: item.additionalBillingType,
-                rate:
-                    item.additionalBillingType === 1
-                        ? this.loadForm.get('layoverRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('layoverRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 2
-                        ? this.loadForm.get('lumperRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('lumperRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 3
-                        ? this.loadForm.get('fuelSurchargeRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('fuelSurchargeRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 4
-                        ? this.loadForm.get('escortRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('escortRate').value
-                              )
-                            : null
-                        : item.additionalBillingType === 5
-                        ? this.loadForm.get('detentionRate').value
-                            ? convertThousanSepInNumber(
-                                  this.loadForm.get('detentionRate').value
-                              )
-                            : null
-                        : null,
-            };
-        });
+        // return this.additionalBillingTypes.map((item) => {
+        //     return {
+        //         id: item.id ? item.id : null,
+        //         additionalBillingType: item.additionalBillingType,
+        //         rate:
+        //             item.additionalBillingType === 1
+        //                 ? this.loadForm.get('layoverRate').value
+        //                     ? convertThousanSepInNumber(
+        //                           this.loadForm.get('layoverRate').value
+        //                       )
+        //                     : null
+        //                 : item.additionalBillingType === 2
+        //                 ? this.loadForm.get('lumperRate').value
+        //                     ? convertThousanSepInNumber(
+        //                           this.loadForm.get('lumperRate').value
+        //                       )
+        //                     : null
+        //                 : item.additionalBillingType === 3
+        //                 ? this.loadForm.get('fuelSurchargeRate').value
+        //                     ? convertThousanSepInNumber(
+        //                           this.loadForm.get('fuelSurchargeRate').value
+        //                       )
+        //                     : null
+        //                 : item.additionalBillingType === 4
+        //                 ? this.loadForm.get('escortRate').value
+        //                     ? convertThousanSepInNumber(
+        //                           this.loadForm.get('escortRate').value
+        //                       )
+        //                     : null
+        //                 : item.additionalBillingType === 5
+        //                 ? this.loadForm.get('detentionRate').value
+        //                     ? convertThousanSepInNumber(
+        //                           this.loadForm.get('detentionRate').value
+        //                       )
+        //                     : null
+        //                 : null,
+        //     };
+        // });
     }
 
     private premmapedStops() {
