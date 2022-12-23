@@ -19,6 +19,8 @@ export interface PspAuthFeedbackResponse {
     isPspReport?: boolean;
     isDisclosureRegardingReport?: boolean;
     signature?: string | null;
+    reviewed?: boolean | null;
+    approved?: boolean | null;
     applicantId?: number;
 }
 

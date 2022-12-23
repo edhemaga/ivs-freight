@@ -455,6 +455,15 @@
                 white-space: nowrap;
 
                 overflow: hidden;
+
+                &::-moz-selection {
+                    color: #2F2F2F;
+                    background: #2F2F2F33;
+                }
+                &::selection {
+                    color: #2F2F2F;
+                    background: #2F2F2F33;
+                }
             }
 
             .favorite-svg {

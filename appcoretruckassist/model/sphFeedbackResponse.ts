@@ -16,6 +16,8 @@ export interface SphFeedbackResponse {
     authorize?: boolean | null;
     hasReadAndUnderstood?: boolean | null;
     signature?: string | null;
+    reviewed?: boolean | null;
+    approved?: boolean | null;
     applicantId?: number;
 }
 

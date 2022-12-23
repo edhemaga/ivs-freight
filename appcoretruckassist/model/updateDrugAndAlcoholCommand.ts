@@ -20,7 +20,7 @@ export interface UpdateDrugAndAlcoholCommand {
     sapName?: string | null;
     sapPhone?: string | null;
     sapAddress?: AddressEntity;
-    certifyInfomation?: boolean;
+    certifyInformation?: boolean;
     applicantId?: number;
 }
 
