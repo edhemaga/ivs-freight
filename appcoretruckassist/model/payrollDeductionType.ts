@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileReviewResponse } from './fileReviewResponse';
 
 
-export interface ApplicantFileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    review?: FileReviewResponse;
-}
+export type PayrollDeductionType = 'Driver' | 'Truck' | 'Trailer';
+
+export const PayrollDeductionType = {
+    Driver: 'Driver' as PayrollDeductionType,
+    Truck: 'Truck' as PayrollDeductionType,
+    Trailer: 'Trailer' as PayrollDeductionType
+};
 

@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileReviewResponse } from './fileReviewResponse';
 
 
-export interface ApplicantFileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    review?: FileReviewResponse;
-}
+export type PayrollPaymentType = 'Manual' | 'ACH';
+
+export const PayrollPaymentType = {
+    Manual: 'Manual' as PayrollPaymentType,
+    Ach: 'ACH' as PayrollPaymentType
+};
 

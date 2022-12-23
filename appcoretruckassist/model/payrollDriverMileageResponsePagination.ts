@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileReviewResponse } from './fileReviewResponse';
+import { PayrollDriverMileageResponse } from './payrollDriverMileageResponse';
 
 
-export interface ApplicantFileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    review?: FileReviewResponse;
+export interface PayrollDriverMileageResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<PayrollDriverMileageResponse> | null;
 }
 

@@ -9,14 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileReviewResponse } from './fileReviewResponse';
+import { PayrollPaymentCommand } from './payrollPaymentCommand';
 
 
-export interface ApplicantFileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    review?: FileReviewResponse;
+export interface ClosePayrollOwnerCommand { 
+    id?: number;
+    pay?: PayrollPaymentCommand;
 }
 

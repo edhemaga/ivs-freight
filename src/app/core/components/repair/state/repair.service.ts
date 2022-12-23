@@ -22,7 +22,6 @@ import { RepairTruckQuery } from './repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from './repair-trailer-state/repair-trailer.query';
 import { ShopQuery } from './shop-state/shop.query';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { GetRepairShopClustersQuery } from '../../../../../../appcoretruckassist/model/getRepairShopClustersQuery';
 import { RepairDQuery } from './details-state/repair-d.query';
 import { RepairDStore } from './details-state/repair-d.store';
 import { FormDataService } from 'src/app/core/services/formData/form-data.service';
@@ -505,7 +504,7 @@ export class RepairTService implements OnDestroy {
     }
 
     public getRepairShopClusters(
-        clustersQuery: GetRepairShopClustersQuery
+        clustersQuery: any
     ): Observable<Array<ClusterResponse>> {
         return this.shopServices.apiRepairshopClustersGet(
             clustersQuery.northEastLatitude,

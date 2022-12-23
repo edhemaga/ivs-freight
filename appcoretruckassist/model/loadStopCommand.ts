@@ -10,8 +10,6 @@
  * Do not edit the class manually.
  */
 import { LoadStopType } from './loadStopType';
-//import { LoadStopItemCommand } from './loadStopItemCommand';
-import { TimeType } from './timeType';
 
 
 export interface LoadStopCommand { 
@@ -22,7 +20,7 @@ export interface LoadStopCommand {
     shipperContactId?: number | null;
     dateFrom?: string;
     dateTo?: string | null;
-    timeType?: TimeType;
+    timeType?: any;
     timeFrom?: string | null;
     timeTo?: string | null;
     arrive?: string | null;

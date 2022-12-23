@@ -9,14 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileReviewResponse } from './fileReviewResponse';
+import { PayrollCreditType } from './payrollCreditType';
 
 
-export interface ApplicantFileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    review?: FileReviewResponse;
+export interface CreatePayrollCreditCommand { 
+    type?: PayrollCreditType;
+    driverId?: number | null;
+    ownerId?: number | null;
+    date?: string;
+    description?: string | null;
+    amount?: number;
 }
 

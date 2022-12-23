@@ -9,14 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileReviewResponse } from './fileReviewResponse';
+import { EnumValue } from './enumValue';
 
 
-export interface ApplicantFileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    review?: FileReviewResponse;
+export interface PayrollPaymentResponse { 
+    id?: number;
+    type?: EnumValue;
+    date?: string;
+    amount?: number;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

@@ -9,14 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileReviewResponse } from './fileReviewResponse';
+import { DriverMinimalResponse } from './driverMinimalResponse';
 
 
-export interface ApplicantFileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    review?: FileReviewResponse;
+export interface PayrollBonusModalResponse { 
+    drivers?: Array<DriverMinimalResponse> | null;
 }
 

@@ -9,14 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileReviewResponse } from './fileReviewResponse';
+import { FileReviewCommand } from './fileReviewCommand';
 
 
-export interface ApplicantFileResponse { 
-    fileId?: number;
-    fileName?: string | null;
-    url?: string | null;
-    fileSize?: number | null;
-    review?: FileReviewResponse;
+export interface UpdateSsnReviewCommand { 
+    filesReview?: Array<FileReviewCommand> | null;
+    applicantId?: number;
 }
 

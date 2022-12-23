@@ -3,7 +3,6 @@ import {
     ApplicantAdminResponse,
     ApplicantService,
     CreateApplicantCommand,
-    GetApplicantListResponse,
     ResendInviteCommand,
     UpdateApplicantCommand,
 } from '../../../../../../appcoretruckassist';
@@ -73,7 +72,7 @@ export class ApplicantTService {
         applicantSpecParamsSearch?: string,
         applicantSpecParamsSearch1?: string,
         applicantSpecParamsSearch2?: string
-    ): Observable<GetApplicantListResponse> {
+    ): Observable<any> {
         return this.applicantService.apiApplicantAdminListGet(
             applicantSpecParamsArchived,
             applicantSpecParamsHired,
