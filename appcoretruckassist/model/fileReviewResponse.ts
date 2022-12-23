@@ -9,17 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
 
 
-export interface StopResponse { 
+export interface FileReviewResponse { 
     id?: number;
-    address?: AddressEntity;
-    leg?: number | null;
-    total?: number | null;
-    longitude?: number;
-    latitude?: number;
-    orderNumber?: number;
-    shape?: string | null;
+    isValid?: boolean;
+    message?: string | null;
+    storageId?: number;
 }
 
