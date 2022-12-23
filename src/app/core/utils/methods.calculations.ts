@@ -98,7 +98,7 @@ export const convertDateToBackend = (date: string) => {
 
 //------------------------------- DATE FROM BACKEND -------------------------------
 export const convertDateFromBackend = (date: string) => {
-    return moment(new Date(date)).format('MM/DD/YY');
+    return moment.utc(date).local().format('MM/DD/YY');
 };
 
 //------------------------------- TIME FROM BACKEND -------------------------------
