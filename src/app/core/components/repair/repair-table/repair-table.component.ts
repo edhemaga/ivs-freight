@@ -555,14 +555,30 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         return {
             ...data,
             isSelected: false,
-            textAddress: data?.address?.address ? data.address.address : '',
-            shopServices: data?.serviceTypes ? data?.serviceTypes : null,
-            shopRaiting: {
+            tableAddress: data?.address?.address ? data.address.address : '',
+            tableShopServices: data?.serviceTypes ? data?.serviceTypes : null,
+            tableOpenHours: 'Treba Novi Template',
+            tableBankDetailsBankName: 'Nije Povezano',
+            tableBankDetailsRouting: 'Nije Povezano',
+            tableBankDetailsAccount: 'Nije Povezano',
+            tableRepairCountBill: 'Nije Povezano',
+            tableRepairCountOrder: 'Nije Povezano',
+            tableShopRaiting: {
                 hasLiked: data.currentCompanyUserRating === 1,
                 hasDislike: data.currentCompanyUserRating === -1,
                 likeCount: data?.upCount ? data.upCount : '0',
                 dislikeCount: data?.downCount ? data.downCount : '0',
             },
+            tableContact: 'Nije Povezano',
+            tableExpense: 'Nije Povezano',
+            tableLUsed: 'Nije Povezano',
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                : '',
+            isFavorite: false,
             tableAttachments: data?.files ? data.files : [],
         };
     }
