@@ -428,6 +428,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
+        console.log('Selected Tab Data');
+        console.log(td.data)
+
         this.setRepairData(td);
     }
 
@@ -499,17 +502,20 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : data?.trailer?.trailerNumber
                 ? data.trailer.trailerNumber
                 : '',
-            tableType: 'Nije Povezan',
-            tableMake: 'Nije Povezan',
-            tableModel: 'Nije Povezan',
-            tableYear: 'Nije Povezan',
-            tableOdometer: 'Nije Povezan',
+            tableType: 'Nema podatak sa beka',
+            tableMake: 'Nema podatak sa beka',
+            tableModel: 'Nema podatak sa beka',
+            tableYear: 'Nema podatak sa beka',
+            tableOdometer: data.odometer
+                ? this.thousandSeparator.transform(data.odometer)
+                : '',
             tableIssued: data?.date
                 ? this.datePipe.transform(data.date, 'MM/dd/yy')
                 : '',
             tableShopName: data?.repairShop?.name ? data.repairShop.name : '',
-            tableShopAdress: 'Nije Povezan',
-            tableServices: 'Treba Service template',
+            tableShopAdress: data?.repairShop?.address?.address ? data.repairShop.address.address : '',
+            tableServices: data?.serviceTypes ? data?.serviceTypes : null,
+
             tableDescription: data?.items
                 ? data.items
                       .map((item) => item.description?.trim())

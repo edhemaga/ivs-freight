@@ -260,7 +260,7 @@ export function getRepairTruckAndTrailerColumnDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'service',
             title: 'Services',
             field: 'tableServices',
             name: 'Services',
