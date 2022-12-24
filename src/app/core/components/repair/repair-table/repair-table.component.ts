@@ -428,9 +428,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-        console.log('Selected Tab Data');
-        console.log(td.data);
-
         this.setRepairData(td);
     }
 
