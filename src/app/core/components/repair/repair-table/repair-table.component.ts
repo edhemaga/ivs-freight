@@ -31,6 +31,7 @@ import {
 import {
     getRepairTrailerColumnDefinition,
     getRepairsShopColumnDefinition,
+    getRepairTruckColumnDefinition,
 } from '../../../../../assets/utils/settings/repair-columns';
 
 @Component({
@@ -283,7 +284,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             return repair;
                         }
                     );
-                    
+
                     this.ref.detectChanges();
 
                     const inetval = setInterval(() => {
@@ -336,7 +337,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     contentType: 'edit',
                     show: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'Delete',
@@ -351,7 +352,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     danger: true,
                     redIcon: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
-                    iconName: 'delete'
+                    iconName: 'delete',
                 },
             ],
         };
@@ -460,7 +461,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         if (configType === 'REPAIR_TRUCK') {
             return tableColumnsConfig
                 ? tableColumnsConfig
-                : getRepairTrailerColumnDefinition();
+                : getRepairTruckColumnDefinition();
         } else if (configType === 'REPAIR_TRAILER') {
             return tableColumnsConfig
                 ? tableColumnsConfig
@@ -490,11 +491,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     return this.mapShopData(data);
                 }
             });
-
-            // For Testing
-            // for (let i = 0; i < 300; i++) {
-            //   this.viewData.push(this.viewData[0]);
-            // }
         } else {
             this.viewData = [];
         }
@@ -506,17 +502,19 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             ...data,
             isSelected: false,
             isRepairOrder: data?.repairType?.name === 'Order',
-            textUnit: data?.truck?.truckNumber ? data.truck.truckNumber : '',
-            textMaintenanceDate: data?.date
+            tableUnit: data?.truck?.truckNumber ? data.truck.truckNumber : '',
+            tableType: 'Nije Povezan',
+            tableMake: 'Nije Povezan',
+            tableModel: 'Nije Povezan',
+            tableYear: 'Nije Povezan',
+            tableOdometer: 'Nije Povezan',
+            tableIssued: data?.date
                 ? this.datePipe.transform(data.date, 'MM/dd/yy')
                 : '',
-            textRepairShopName: data?.repairShop?.name
-                ? data.repairShop.name
-                : '',
-            textTotal: data?.total
-                ? '$ ' + this.thousandSeparator.transform(data.total)
-                : '',
-            truckDescription: data?.items
+            tableShopName: data?.repairShop?.name ? data.repairShop.name : '',
+            tableShopAdress: 'Nije Povezan',
+            tableServices: 'Treba Service template',
+            tableDescription: data?.items
                 ? data.items
                       .map((item) => item.description?.trim())
                       .join(
@@ -539,6 +537,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       };
                   })
                 : null,
+            tableCost: data?.total
+                ? '$ ' + this.thousandSeparator.transform(data.total)
+                : '',
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                : '',
             tableAttachments: data?.files ? data.files : [],
         };
     }
@@ -930,7 +937,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         return data;
                     });
-                    
+
                     this.ref.detectChanges();
 
                     const inetval = setInterval(() => {
@@ -961,29 +968,40 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mapsComponent.clickedMarker(data[0]);
 
         this.mapListData.map((item) => {
-            if ( item.id == data[0] ) {
+            if (item.id == data[0]) {
                 let itemIndex = this.mapsComponent.viewData.findIndex(
                     (item2) => item2.id === item.id
                 );
 
-                if ( itemIndex > -1 && this.mapsComponent.viewData[itemIndex].showMarker ) {
-                    item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+                if (
+                    itemIndex > -1 &&
+                    this.mapsComponent.viewData[itemIndex].showMarker
+                ) {
+                    item.isSelected =
+                        this.mapsComponent.viewData[itemIndex].isSelected;
                 } else {
                     this.mapsComponent.clusterMarkers.map((cluster) => {
                         var clusterData = cluster.pagination.data;
-            
+
                         let clusterItemIndex = clusterData.findIndex(
                             (item2) => item2.id === data[0]
                         );
-            
-                        if ( clusterItemIndex > -1 ) {
-                            if ( !data[1] ) {
-                                if ( !cluster.isSelected || (cluster.isSelected && cluster.detailedInfo?.id == data[0]) ) {
+
+                        if (clusterItemIndex > -1) {
+                            if (!data[1]) {
+                                if (
+                                    !cluster.isSelected ||
+                                    (cluster.isSelected &&
+                                        cluster.detailedInfo?.id == data[0])
+                                ) {
                                     this.mapsComponent.clickedCluster(cluster);
                                 }
-            
-                                if ( cluster.isSelected ) {
-                                    this.mapsComponent.showClusterItemInfo([cluster, clusterData[clusterItemIndex]]);
+
+                                if (cluster.isSelected) {
+                                    this.mapsComponent.showClusterItemInfo([
+                                        cluster,
+                                        clusterData[clusterItemIndex],
+                                    ]);
                                 }
                             }
 

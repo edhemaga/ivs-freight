@@ -372,7 +372,7 @@ export class TruckassistTableToolbarComponent
                 const tableConfig = localStorage.getItem(
                     `table-${this.tableConfigurationType}-Configuration`
                 );
-
+ 
                 this.tableService
                     .sendTableConfig({
                         tableType: this.tableConfigurationType,
@@ -492,7 +492,7 @@ export class TruckassistTableToolbarComponent
 
         this.timeOutToaggleGroupColumn = setTimeout(() => {
             if (!columnGroup.isPined) {
-                columnGroup.hidden = !columnGroup.hidden;;
+                columnGroup.hidden = !columnGroup.hidden;
 
                 this.columns.filter((column) => {
                     if (column.title === columnGroup.title) {
