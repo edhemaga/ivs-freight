@@ -75,6 +75,17 @@
         }
     }
 
+    &.remove-input-svg {
+        &:hover {
+            .input-clear {
+                display: inline-block;
+            }
+            .placeholder-icon-right-side {
+                opacity: 0;
+            }
+        }
+    }
+
     &.invalid {
         &:hover {
             transition: all 0.3s ease-in-out;

@@ -4,15 +4,16 @@
 
     .load-financial-card-header {
         display: grid;
-        grid-template-columns: repeat(3, 202px);
+        grid-template-columns: 192px 193px 187px;
+        -moz-column-gap: 16px;
+        column-gap: 16px;
         align-items: center;
         justify-content: center;
         padding: 0 5px;
         margin: 4px 0px;
 
         .load-financial-header {
-            display: grid;
-            grid-template-columns: 112px 1fr;
+            display: flex;
             align-items: center;
             justify-content: space-between;
 
@@ -59,7 +60,7 @@
                     background-color: #eeeeee;
                     cursor: pointer;
 
-                    &-svg {
+                    .load-financial-action-svg {
                         width: 17px;
                         height: 18px;
                         line-height: 18px;
@@ -69,12 +70,59 @@
                             }
                         }
                     }
+
+                    &.disabled {
+                        background-color: #eeeeee !important;
+                        pointer-events: none !important;
+
+                        .load-financial-action-svg {
+                            svg {
+                                path {
+                                    fill: #919191 !important;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .with-adjusted {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+
+                    .load-financial-value {
+                        margin: 0;
+                        padding: 0;
+                        font-size: 11px;
+                        font-weight: 800;
+                        line-height: 14px;
+                        color: #2f2f2f;
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+                    }
+
+                    .load-financial-adjusted {
+                        margin: 0;
+                        padding: 0;
+                        font-size: 11px;
+                        font-weight: 500;
+                        line-height: 14px;
+                        color: #ab47bc;
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+                    }
                 }
             }
 
             .load-financial-arrow {
                 justify-self: flex-end;
                 cursor: pointer;
+                position: relative;
+                right: -2px;
                 svg {
                     transform: rotate(0deg);
                     transition: all 0.3s ease-in-out;
