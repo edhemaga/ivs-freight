@@ -29,8 +29,8 @@ import {
     closeAnimationAction,
 } from '../../../utils/methods.globals';
 import {
-    getRepairTrailerColumnDefinition,
     getRepairsShopColumnDefinition,
+    getRepairTruckAndTrailerColumnDefinition,
 } from '../../../../../assets/utils/settings/repair-columns';
 
 @Component({
@@ -212,10 +212,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 // On Add Repair
                 if (res.animation === 'add' && this.selectedTab === res.tab) {
                     this.viewData.push(
-                        res.tab === 'active'
-                            ? this.mapTruckData(res.data)
-                            : res.tab === 'inctive'
-                            ? this.mapTrailerData(res.data)
+                        res.tab === 'active' || res.tab === 'inctive'
+                            ? this.mapTruckAndTrailerData(res.data)
                             : this.mapShopData(res.data)
                     );
 
@@ -242,10 +240,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.selectedTab === res.tab
                 ) {
                     const updatedRepair =
-                        res.tab === 'active'
-                            ? this.mapTruckData(res.data)
-                            : res.tab === 'inctive'
-                            ? this.mapTrailerData(res.data)
+                        res.tab === 'active' || res.tab === 'inctive'
+                            ? this.mapTruckAndTrailerData(res.data)
                             : this.mapShopData(res.data);
 
                     this.viewData = this.viewData.map((repair: any) => {
@@ -283,7 +279,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             return repair;
                         }
                     );
-                    
+
                     this.ref.detectChanges();
 
                     const inetval = setInterval(() => {
@@ -336,7 +332,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     contentType: 'edit',
                     show: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit'
+                    iconName: 'edit',
                 },
                 {
                     title: 'Delete',
@@ -351,7 +347,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     danger: true,
                     redIcon: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
-                    iconName: 'delete'
+                    iconName: 'delete',
                 },
             ],
         };
@@ -457,14 +453,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        if (configType === 'REPAIR_TRUCK') {
+        if (configType === 'REPAIR_TRUCK' || configType === 'REPAIR_TRAILER') {
             return tableColumnsConfig
                 ? tableColumnsConfig
-                : getRepairTrailerColumnDefinition();
-        } else if (configType === 'REPAIR_TRAILER') {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getRepairTrailerColumnDefinition();
+                : getRepairTruckAndTrailerColumnDefinition();
         } else {
             return tableColumnsConfig
                 ? tableColumnsConfig
@@ -482,86 +474,48 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
             this.viewData = this.viewData.map((data: any, index: number) => {
-                if (this.selectedTab === 'active') {
-                    return this.mapTruckData(data);
-                } else if (this.selectedTab === 'inactive') {
-                    return this.mapTrailerData(data);
+                if (
+                    this.selectedTab === 'active' ||
+                    this.selectedTab === 'inactive'
+                ) {
+                    return this.mapTruckAndTrailerData(data);
                 } else {
                     return this.mapShopData(data);
                 }
             });
-
-            // For Testing
-            // for (let i = 0; i < 300; i++) {
-            //   this.viewData.push(this.viewData[0]);
-            // }
         } else {
             this.viewData = [];
         }
     }
 
-    // Map Truck Data
-    mapTruckData(data: any) {
+    // Map Truck And Trailer Data
+    mapTruckAndTrailerData(data: any) {
         return {
             ...data,
             isSelected: false,
             isRepairOrder: data?.repairType?.name === 'Order',
-            textUnit: data?.truck?.truckNumber ? data.truck.truckNumber : '',
-            textMaintenanceDate: data?.date
-                ? this.datePipe.transform(data.date, 'MM/dd/yy')
-                : '',
-            textRepairShopName: data?.repairShop?.name
-                ? data.repairShop.name
-                : '',
-            textTotal: data?.total
-                ? '$ ' + this.thousandSeparator.transform(data.total)
-                : '',
-            truckDescription: data?.items
-                ? data.items
-                      .map((item) => item.description?.trim())
-                      .join(
-                          '<div class="description-dot-container"><span class="description-dot"></span></div>'
-                      )
-                : null,
-            descriptionItems: data?.items
-                ? data.items.map((item) => {
-                      return {
-                          ...item,
-                          descriptionPrice: item?.price
-                              ? '$' +
-                                this.thousandSeparator.transform(item.price)
-                              : '',
-                          descriptionTotalPrice: item?.subtotal
-                              ? '$' +
-                                this.thousandSeparator.transform(item.subtotal)
-                              : '',
-                          pmDescription: item.pmTruck,
-                      };
-                  })
-                : null,
-            tableAttachments: data?.files ? data.files : [],
-        };
-    }
-
-    // Map Trailer Data
-    mapTrailerData(data: any) {
-        return {
-            ...data,
-            isSelected: false,
-            isRepairOrder: data?.repairType?.name === 'Order',
-            textUnit: data?.trailer?.trailerNumber
+            tableUnit: data?.truck?.truckNumber
+                ? data.truck.truckNumber
+                : data?.trailer?.trailerNumber
                 ? data.trailer.trailerNumber
                 : '',
-            textMaintenanceDate: data?.date
+            tableType: 'Nema podatak sa beka',
+            tableMake: 'Nema podatak sa beka',
+            tableModel: 'Nema podatak sa beka',
+            tableYear: 'Nema podatak sa beka',
+            tableOdometer: data.odometer
+                ? this.thousandSeparator.transform(data.odometer)
+                : '',
+            tableIssued: data?.date
                 ? this.datePipe.transform(data.date, 'MM/dd/yy')
                 : '',
-            textRepairShopName: data?.repairShop?.name
-                ? data.repairShop.name
+            tableShopName: data?.repairShop?.name ? data.repairShop.name : '',
+            tableShopAdress: data?.repairShop?.address?.address
+                ? data.repairShop.address.address
                 : '',
-            textTotal: data?.total
-                ? '$ ' + this.thousandSeparator.transform(data.total)
-                : '',
-            trailerDescription: data?.items
+            tableServices: data?.serviceTypes ? data?.serviceTypes : null,
+
+            tableDescription: data?.items
                 ? data.items
                       .map((item) => item.description?.trim())
                       .join(
@@ -580,10 +534,23 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                               ? '$' +
                                 this.thousandSeparator.transform(item.subtotal)
                               : '',
-                          pmDescription: item.pmTrailer,
+                          pmDescription: item?.pmTruck
+                              ? item.pmTruck
+                              : item?.pmTrailer
+                              ? item.pmTrailer
+                              : '',
                       };
                   })
                 : null,
+            tableCost: data?.total
+                ? '$ ' + this.thousandSeparator.transform(data.total)
+                : '',
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                : '',
             tableAttachments: data?.files ? data.files : [],
         };
     }
@@ -593,14 +560,36 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         return {
             ...data,
             isSelected: false,
-            textAddress: data?.address?.address ? data.address.address : '',
-            shopServices: data?.serviceTypes ? data?.serviceTypes : null,
-            shopRaiting: {
+            tableAddress: data?.address?.address ? data.address.address : '',
+            tableShopServices: data?.serviceTypes ? data?.serviceTypes : null,
+            tableOpenHours: 'Treba Novi Template',
+            tableBankDetailsBankName: data?.bank?.name ? data.bank.name : '',
+            tableBankDetailsRouting: data?.routing ? data.routing : '',
+            tableBankDetailsAccount: data?.account ? data.account : '',
+            tableRepairCountBill: 'Nema podatak sa beka',
+            tableRepairCountOrder: data?.order
+                ? this.thousandSeparator.transform(data.order)
+                : '',
+            tableShopRaiting: {
                 hasLiked: data.currentCompanyUserRating === 1,
                 hasDislike: data.currentCompanyUserRating === -1,
                 likeCount: data?.upCount ? data.upCount : '0',
                 dislikeCount: data?.downCount ? data.downCount : '0',
             },
+            tableContact: data?.contacts?.length ? data.contacts.length : 0,
+            tableExpense: data?.cost
+                ? '$' + this.thousandSeparator.transform(data.cost)
+                : '',
+            tableLUsed: data.lastVisited
+                ? this.datePipe.transform(data.lastVisited, 'MM/dd/yy')
+                : '',
+            tableAdded: data.createdAt
+                ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
+                : '',
+            tableEdited: data.updatedAt
+                ? this.datePipe.transform(data.updatedAt, 'MM/dd/yy')
+                : '',
+            isFavorite: false,
             tableAttachments: data?.files ? data.files : [],
         };
     }
@@ -655,9 +644,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.viewData = repair.pagination.data;
 
                     this.viewData = this.viewData.map((data: any) => {
-                        return filter.unitType === 1
-                            ? this.mapTruckData(data)
-                            : this.mapTrailerData(data);
+                        return this.mapTruckAndTrailerData(data);
                     });
 
                     if (isSearch) {
@@ -669,11 +656,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     let newData = [...this.viewData];
 
                     repair.pagination.data.map((data: any) => {
-                        newData.push(
-                            filter.unitType === 1
-                                ? this.mapTruckData(data)
-                                : this.mapTrailerData(data)
-                        );
+                        newData.push(this.mapTruckAndTrailerData(data));
                     });
 
                     this.viewData = [...newData];
@@ -930,7 +913,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         return data;
                     });
-                    
+
                     this.ref.detectChanges();
 
                     const inetval = setInterval(() => {
@@ -961,29 +944,40 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mapsComponent.clickedMarker(data[0]);
 
         this.mapListData.map((item) => {
-            if ( item.id == data[0] ) {
+            if (item.id == data[0]) {
                 let itemIndex = this.mapsComponent.viewData.findIndex(
                     (item2) => item2.id === item.id
                 );
 
-                if ( itemIndex > -1 && this.mapsComponent.viewData[itemIndex].showMarker ) {
-                    item.isSelected = this.mapsComponent.viewData[itemIndex].isSelected;
+                if (
+                    itemIndex > -1 &&
+                    this.mapsComponent.viewData[itemIndex].showMarker
+                ) {
+                    item.isSelected =
+                        this.mapsComponent.viewData[itemIndex].isSelected;
                 } else {
                     this.mapsComponent.clusterMarkers.map((cluster) => {
                         var clusterData = cluster.pagination.data;
-            
+
                         let clusterItemIndex = clusterData.findIndex(
                             (item2) => item2.id === data[0]
                         );
-            
-                        if ( clusterItemIndex > -1 ) {
-                            if ( !data[1] ) {
-                                if ( !cluster.isSelected || (cluster.isSelected && cluster.detailedInfo?.id == data[0]) ) {
+
+                        if (clusterItemIndex > -1) {
+                            if (!data[1]) {
+                                if (
+                                    !cluster.isSelected ||
+                                    (cluster.isSelected &&
+                                        cluster.detailedInfo?.id == data[0])
+                                ) {
                                     this.mapsComponent.clickedCluster(cluster);
                                 }
-            
-                                if ( cluster.isSelected ) {
-                                    this.mapsComponent.showClusterItemInfo([cluster, clusterData[clusterItemIndex]]);
+
+                                if (cluster.isSelected) {
+                                    this.mapsComponent.showClusterItemInfo([
+                                        cluster,
+                                        clusterData[clusterItemIndex],
+                                    ]);
                                 }
                             }
 

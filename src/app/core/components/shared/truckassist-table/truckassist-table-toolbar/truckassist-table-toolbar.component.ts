@@ -303,7 +303,7 @@ export class TruckassistTableToolbarComponent
     }
 
     // Toolbar Select Action
-    onToolBarSelectAction(actionType: string){
+    onToolBarSelectAction(actionType: string) {
         this.toolBarAction.emit({
             action: 'select-action',
             data: actionType,
@@ -372,7 +372,7 @@ export class TruckassistTableToolbarComponent
                 const tableConfig = localStorage.getItem(
                     `table-${this.tableConfigurationType}-Configuration`
                 );
-
+ 
                 this.tableService
                     .sendTableConfig({
                         tableType: this.tableConfigurationType,
@@ -383,7 +383,7 @@ export class TruckassistTableToolbarComponent
         } else if (action.text === 'Columns') {
             action.active = !action.active;
 
-            console.log(action.active);
+            this.checkAreAllSelectedInGroup();
 
             this.optionsPopupContent.map((option) => {
                 if (option.text !== 'Columns') {
@@ -397,6 +397,27 @@ export class TruckassistTableToolbarComponent
         } else {
             alert('Treba da se odradi!');
         }
+    }
+
+    checkAreAllSelectedInGroup() {
+        this.columnsOptionsWithGroups = this.columnsOptionsWithGroups.map(
+            (columns) => {
+                if (columns.isGroup) {
+                    let numOfSelected = 0;
+
+                    columns.group.map((c) => {
+                        if (!c.hidden) {
+                            numOfSelected++;
+                        }
+                    });
+
+                    columns.areAllActive =
+                        numOfSelected === columns.group.length;
+                }
+
+                return columns;
+            }
+        );
     }
 
     // Reset Table
@@ -477,7 +498,9 @@ export class TruckassistTableToolbarComponent
                     if (column.title === columnGroup.title) {
                         column.hidden = !column.hidden;
 
-                       this.setTableConfig(column, index);
+                        this.checkAreAllSelectedInGroup();
+
+                        this.setTableConfig(column, index);
                     }
                 });
             }
@@ -485,7 +508,7 @@ export class TruckassistTableToolbarComponent
     }
 
     // Set Table Configuration
-    setTableConfig(column: any, index: number){
+    setTableConfig(column: any, index: number) {
         localStorage.setItem(
             `table-${this.tableConfigurationType}-Configuration`,
             JSON.stringify(this.columns)
