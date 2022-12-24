@@ -429,7 +429,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         console.log('Selected Tab Data');
-        console.log(td.data)
+        console.log(td.data);
 
         this.setRepairData(td);
     }
@@ -513,7 +513,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? this.datePipe.transform(data.date, 'MM/dd/yy')
                 : '',
             tableShopName: data?.repairShop?.name ? data.repairShop.name : '',
-            tableShopAdress: data?.repairShop?.address?.address ? data.repairShop.address.address : '',
+            tableShopAdress: data?.repairShop?.address?.address
+                ? data.repairShop.address.address
+                : '',
             tableServices: data?.serviceTypes ? data?.serviceTypes : null,
 
             tableDescription: data?.items
@@ -564,20 +566,26 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             tableAddress: data?.address?.address ? data.address.address : '',
             tableShopServices: data?.serviceTypes ? data?.serviceTypes : null,
             tableOpenHours: 'Treba Novi Template',
-            tableBankDetailsBankName: 'Nije Povezano',
-            tableBankDetailsRouting: 'Nije Povezano',
-            tableBankDetailsAccount: 'Nije Povezano',
-            tableRepairCountBill: 'Nije Povezano',
-            tableRepairCountOrder: 'Nije Povezano',
+            tableBankDetailsBankName: data?.bank?.name ? data.bank.name : '',
+            tableBankDetailsRouting: data?.routing ? data.routing : '',
+            tableBankDetailsAccount: data?.account ? data.account : '',
+            tableRepairCountBill: 'Nema podatak sa beka',
+            tableRepairCountOrder: data?.order
+                ? this.thousandSeparator.transform(data.order)
+                : '',
             tableShopRaiting: {
                 hasLiked: data.currentCompanyUserRating === 1,
                 hasDislike: data.currentCompanyUserRating === -1,
                 likeCount: data?.upCount ? data.upCount : '0',
                 dislikeCount: data?.downCount ? data.downCount : '0',
             },
-            tableContact: 'Nije Povezano',
-            tableExpense: 'Nije Povezano',
-            tableLUsed: 'Nije Povezano',
+            tableContact: data?.contacts?.length ? data.contacts.length : 0,
+            tableExpense: data?.cost
+                ? '$' + this.thousandSeparator.transform(data.cost)
+                : '',
+            tableLUsed: data.lastVisited
+                ? this.datePipe.transform(data.lastVisited, 'MM/dd/yy')
+                : '',
             tableAdded: data.createdAt
                 ? this.datePipe.transform(data.createdAt, 'MM/dd/yy')
                 : '',
