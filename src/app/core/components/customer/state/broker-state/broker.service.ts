@@ -339,6 +339,13 @@ export class BrokerTService implements OnDestroy {
     public updateReview(review: UpdateReviewCommand): Observable<any> {
         return this.ratingReviewService.apiRatingReviewReviewPut(review);
     }
+
+    public getBrokerLoads(
+        brokerId: number
+    ){
+        return this.brokerService.apiBrokerLoadsGet(undefined, undefined, undefined, undefined, undefined, brokerId);
+    }public getBrokerLoa
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

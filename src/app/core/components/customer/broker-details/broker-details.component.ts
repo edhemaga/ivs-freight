@@ -14,6 +14,7 @@ import { ConfirmationService } from '../../modals/confirmation-modal/confirmatio
 import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
 import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.store';
 import { BrokerDetailsListQuery } from '../state/broker-details-state/broker-details-list-state/broker-details-list.query';
+import { BrokerDetailsListStore } from '../state/broker-details-state/broker-details-list-state/broker-details-list.store';
 
 @Component({
     selector: 'app-broker-details',
@@ -43,7 +44,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private brokerMinimalStore: BrokerMinimalListStore,
         private bdlq: BrokerDetailsListQuery,
-        private DetailsDataService: DetailsDataService
+        private DetailsDataService: DetailsDataService,
+        private BrokerItemStore: BrokerDetailsListStore,
     ) {}
 
     ngOnInit(): void {
@@ -107,8 +109,12 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     }
                 });
             });
-
-        this.brokerInitConfig(this.activated_route.snapshot.data.broker);
+        
+        let brokerId = this.activated_route.snapshot.params.id;   
+        let brokerData = {
+            ...this.BrokerItemStore?.getValue()?.entities[brokerId],
+        };    
+        this.brokerInitConfig(brokerData);
     }
 
     public deleteBrokerById(id: number) {
