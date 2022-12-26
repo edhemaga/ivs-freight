@@ -24,7 +24,7 @@ import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.c
 import { ITaInput } from '../../shared/ta-input/ta-input.config';
 
 import { Subject, takeUntil } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { descriptionValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 import moment from 'moment';
@@ -602,7 +602,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'dispatches': {
-                console.log('dispatches: ', event);
                 if (event) {
                     this.selectedDispatches = {
                         ...event,
@@ -1521,11 +1520,41 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             )
         );
 
+        console.log(this.additionalBillings().at(index).value.name);
+
         this.selectedAdditionalBillings =
             this.selectedAdditionalBillings.filter(
                 (item) =>
                     item.name !== this.additionalBillings().at(index).value.name
             );
+
+        switch (this.additionalBillings().at(index).value.name) {
+            case 'Layover': {
+                this.loadModalBill.layover = 0;
+                break;
+            }
+            case 'Lumper': {
+                this.loadModalBill.lumper = 0;
+                break;
+            }
+            case 'Fuel Surcharge': {
+                this.loadModalBill.fuelSurcharge = 0;
+                break;
+            }
+            case 'Escort': {
+                this.loadModalBill.escort = 0;
+                break;
+            }
+            case 'Detention': {
+                this.loadModalBill.detention = 0;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+        this.loadModalBill = Object.assign({}, this.loadModalBill);
 
         this.additionalBillings().removeAt(index);
     }
@@ -1550,70 +1579,60 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public trackBillingPayment() {
         this.loadForm
             .get('baseRate')
-            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (!value) {
                     this.isAvailableAdjustedRate = false;
                     this.isAvailableAdvanceRate = false;
-
+                    this.loadModalBill = {
+                        ...this.loadModalBill,
+                        baseRate: 0,
+                    };
                     this.loadForm.get('adjustedRate').reset();
                     this.loadForm.get('driverRate').reset();
                     this.loadForm.get('advancePay').reset();
                 } else {
                     this.loadModalBill = {
                         ...this.loadModalBill,
-                        baseRate: value.replaceAll(',', ''),
+                        baseRate: value,
                     };
                 }
             });
 
-        this.loadForm
-            .get('additionalBillings')
+        this.additionalBillings()
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                switch (item.name) {
-                    case 'Layover': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            layover: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
+            .subscribe((arr) => {
+                console.log(arr);
+                arr.forEach((value) => {
+                    switch (value.name) {
+                        case 'Layover': {
+                            this.loadModalBill.layover = value.billingValue;
+                            break;
+                        }
+                        case 'Lumper': {
+                            this.loadModalBill.lumper = value.billingValue;
+                            break;
+                        }
+                        case 'Fuel Surcharge': {
+                            this.loadModalBill.fuelSurcharge =
+                                value.billingValue;
+                            break;
+                        }
+                        case 'Escort': {
+                            this.loadModalBill.escort = value.billingValue;
+                            break;
+                        }
+                        case 'Detention': {
+                            this.loadModalBill.detention = value.billingValue;
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
                     }
-                    case 'Lumper': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            lumper: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    case 'Fuel Surcharge': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            fuelSurcharge: item.billingValue.replaceAll(
-                                ',',
-                                ''
-                            ),
-                        };
-                        break;
-                    }
-                    case 'Escort': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            escort: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    case 'Detention': {
-                        this.loadModalBill = {
-                            ...this.loadModalBill,
-                            detention: item.billingValue.replaceAll(',', ''),
-                        };
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
+                });
+
+                this.loadModalBill = Object.assign({}, this.loadModalBill);
             });
     }
 
@@ -1933,13 +1952,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: RoutingResponse) => {
                     // TODO: Populate lat and long with routesPoints
-                    console.log('start position: ', start);
-                    console.log('end position: ', end);
-                    console.log(
-                        'coordinate dispatchers: ',
-                        this.selectedDispatches?.currentLocationCoordinates
-                    );
-                    console.log('coordinate response = ', res);
 
                     if (!this.loadStopRoutes[0]) {
                         this.loadStopRoutes[0] = {

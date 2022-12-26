@@ -2,9 +2,7 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnChanges,
     Output,
-    SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
 import { card_modal_animation } from '../../../shared/animations/card-modal.animation';
@@ -38,11 +36,11 @@ export interface IPayment {
     animations: [card_modal_animation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
 })
-export class LoadFinancialComponent implements OnChanges {
+export class LoadFinancialComponent {
     @Input() firstHeaderTitle: string;
     @Input() secondHeaderTitle: string;
     @Input() thirdHeaderTitle: string;
-    @Input() billing: string;
+    @Input() billing: number;
     @Input() adjusted: number;
     @Input() payment: IPayment;
     @Input() disableBillAction: boolean = false;
@@ -67,10 +65,6 @@ export class LoadFinancialComponent implements OnChanges {
     public _isCardOpen: any = 'null';
     public noActive: string;
     public zoneTriger: boolean = false;
-
-    ngOnChanges(changes: SimpleChanges): void {
-        console.log(changes.billing?.currentValue);
-    }
 
     public onAction(event: any, action: string) {
         switch (action) {

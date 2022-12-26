@@ -5,7 +5,10 @@
             <p class="load-financial-title">{{ firstHeaderTitle }}</p>
             <div class="load-financial-value-action-container">
                 <div [ngClass]="{ 'with-adjusted': adjusted }">
-                    <p class="load-financial-value">
+                    <p
+                        class="load-financial-value"
+                        [ngClass]="{ active: billing > 0 }"
+                    >
                         {{ billing }}
                     </p>
                     <p *ngIf="adjusted" class="load-financial-adjusted">
