@@ -14,7 +14,6 @@ import { ConfirmationService } from '../../modals/confirmation-modal/confirmatio
 import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
 import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.store';
 import { BrokerDetailsListQuery } from '../state/broker-details-state/broker-details-list-state/broker-details-list.query';
-import { BrokerDetailsListStore } from '../state/broker-details-state/broker-details-list-state/broker-details-list.store';
 import { BrokerDetailsStore } from '../state/broker-details-state/broker-details.store';
 
 @Component({
@@ -109,24 +108,30 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .subscribe((id) => {
                 let query;
 
-               
-
+            
                 if (this.bdlq.hasEntity(id)) {
                     query = this.bdlq.selectEntity(id).pipe(take(1));
-                } else {
-                    query = this.brokerService.getBrokerById(id);
-                }
+                    query.pipe(takeUntil(this.destroy$)).subscribe({
+                        next: (res: BrokerResponse) => {
+                            this.brokerInitConfig(res);
+                            this.newBrokerId = res.id;
+                            this.router.navigate([
+                                `/customer/${res.id}/broker-details`,
+                            ]);
+                            this.cdRef.detectChanges();
+                        }
+                    });
 
-                query.pipe(takeUntil(this.destroy$)).subscribe({
-                    next: (res: BrokerResponse) => {
-                        this.brokerInitConfig(res);
-                        this.newBrokerId = res.id;
-                        this.router.navigate([
-                            `/customer/${res.id}/broker-details`,
-                        ]);
-                        this.cdRef.detectChanges();
-                    }
-                });
+                } else {
+                    //query = this.brokerService.getBrokerById(id);
+                    this.newBrokerId = id;
+                    this.router.navigate([
+                        `/customer/${id}/broker-details`,
+                    ]);
+                    this.cdRef.detectChanges();
+                }
+               
+                
             });
         
         let brokerId = this.activated_route.snapshot.params.id;   
@@ -171,7 +176,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             (broker) => broker.id === data.id
         );
         this.initTableOptions(data);
-        this.getBrokerById(data.id);
+        //calling api every time data is loaded
+        //this.getBrokerById(data.id);
+       
         let totalCost;
         this.DetailsDataService.setNewData(data);
         if (data?.loads?.length) {
